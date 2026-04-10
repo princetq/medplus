@@ -462,23 +462,30 @@
 
         /* 2. KHU VỰC CÁCH LY: CHỈ ÁP DỤNG CHO ĐIỆN THOẠI (Dưới 600px) */
         @media (max-width: 600px) {
-            /* Ép chiều cao Modal trên mobile không bị lẹm đáy */
-            .iv-modal-content {
+            /* TỌA ĐỘ THOÁT VÙNG MA */
+            #chat-widget-btn, .back-top {
+                bottom: calc(60px + env(safe-area-inset-bottom)) !important; 
+                
+                /* ========================================================= */
+                /* "THUỐC ĐẶC TRỊ" BẤM 2 LẦN TRÊN IOS SAFARI                 */
+                /* ========================================================= */
+                /* 1. Ép nhận thao tác chạm ngay lập tức (bỏ qua delay 300ms) */
+                touch-action: manipulation !important;
+                /* 2. Tắt chớp đen mặc định của iOS khi bấm */
+                -webkit-tap-highlight-color: transparent !important;
+            }
+
+            /* 3. TẮT HOÀN TOÀN HIỆU ỨNG HOVER TRÊN ĐIỆN THOẠI ĐỂ TRÁNH KẸT TAP 1 */
+            #chat-widget-btn:hover, .back-top:hover {
+                transform: none !important; /* Không phóng to khi chạm */
+                /* Trả lại shadow và animation như lúc chưa chạm */
+                box-shadow: 0 6px 20px rgba(0,0,0,0.3) !important; 
+                animation-play-state: running !important;
+            }
+
+            /* Ép chiều cao Modal và Chat AI */
+            .iv-modal-content, #chat-widget-window {
                 height: 85dvh !important; 
-                max-height: 85dvh !important;
-            }
-            
-            /* THOÁT BẪY SAFARI DÀNH CHO CÁC DÒNG IPHONE PRO MAX */
-            #chat-widget-btn {
-                bottom: calc(65px + env(safe-area-inset-bottom)) !important; 
-            }
-            .back-top {
-                bottom: calc(65px + env(safe-area-inset-bottom)) !important;
-            }
-            
-            /* Chỉnh khung chat AI */
-            #chat-widget-window {
-                height: 85dvh !important;
                 max-height: 85dvh !important;
             }
         }
