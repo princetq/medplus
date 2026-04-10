@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Thông Tin Thuốc - MedPlus</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -447,6 +447,39 @@
                 max-width: 710px !important; 
                 height: 95vh !important; 
                 max-height: 900px !important; 
+            }
+        }
+        /* ==============================================================
+           BẢN VÁ LỖI HIỂN THỊ NATIVE TRÊN SAFARI / MOBILE (GITHUB PAGES)
+           ============================================================== */
+        
+        /* 1. Khóa chiều rộng, chống tràn viền ngang (Dùng tốt cho cả PC và Mobile) */
+        html, body {
+            width: 100vw;
+            overflow-x: hidden;
+            min-height: 100dvh; 
+        }
+
+        /* 2. KHU VỰC CÁCH LY: CHỈ ÁP DỤNG CHO ĐIỆN THOẠI (Dưới 600px) */
+        @media (max-width: 600px) {
+            /* Ép chiều cao Modal trên mobile không bị lẹm đáy */
+            .iv-modal-content {
+                height: 85dvh !important; 
+                max-height: 85dvh !important;
+            }
+            
+            /* Đẩy các nút dưới đáy lên trên vùng an toàn (Safe Area) của iPhone */
+            #chat-widget-btn {
+                bottom: calc(12px + env(safe-area-inset-bottom)) !important; 
+            }
+            .back-top {
+                bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+            }
+            
+            /* Chỉnh khung chat AI */
+            #chat-widget-window {
+                height: 85dvh !important;
+                max-height: 85dvh !important;
             }
         }
     </style>
