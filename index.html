@@ -751,12 +751,20 @@
         let currentKeyIndex = 0, currentModelIndex = 0, timerInterval, startTime, activeModelName = "";
 
         // --- THUỐC ĐẶC TRỊ BẤM 2 LẦN CHO IPHONE ---
+        // --- THIẾT LẬP LẠI PHẢN XẠ "CỨNG" CHO IPHONE ---
         function fixSafariTap(btnId, callbackFunction) {
             const btn = document.getElementById(btnId);
             if (!btn) return;
-            btn.addEventListener('touchstart', function(e) {
+
+            // Sử dụng touchend thay vì touchstart để tránh việc đang cuộn mà lỡ tay chạm trúng
+            btn.addEventListener('touchend', function(e) {
+                // CHẶN TUYỆT ĐỐI Safari gọi thanh công cụ lên
+                e.preventDefault(); 
+                e.stopPropagation();
+                
+                // Thực hiện hành động ngay lập tức
                 if (callbackFunction) callbackFunction();
-            }, { passive: true });
+            }, { passive: false }); // Bắt buộc phải là false để lệnh chặn hoạt động
         }
 
         // =========================================================================
