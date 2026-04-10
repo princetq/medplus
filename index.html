@@ -450,7 +450,7 @@
             }
         }
         /* ==============================================================
-           BẢN VÁ LỖI HIỂN THỊ NATIVE TRÊN SAFARI / MOBILE (GITHUB PAGES)
+            BẢN VÁ LỖI HIỂN THỊ NATIVE TRÊN SAFARI / MOBILE (GITHUB PAGES)
            ============================================================== */
         
         /* 1. Khóa chiều rộng, chống tràn viền ngang (Dùng tốt cho cả PC và Mobile) */
@@ -473,12 +473,18 @@
                 touch-action: manipulation !important;
                 /* 2. Tắt chớp đen mặc định của iOS khi bấm */
                 -webkit-tap-highlight-color: transparent !important;
+                transition: transform 0.1s active;
+            }
+
+            /* HIỆU ỨNG KHI CHẠM (FEEDBACK) */
+            #chat-widget-btn:active, .back-top:active {
+                transform: scale(0.9) !important;
+                opacity: 0.8;
             }
 
             /* 3. TẮT HOÀN TOÀN HIỆU ỨNG HOVER TRÊN ĐIỆN THOẠI ĐỂ TRÁNH KẸT TAP 1 */
             #chat-widget-btn:hover, .back-top:hover {
-                transform: none !important; /* Không phóng to khi chạm */
-                /* Trả lại shadow và animation như lúc chưa chạm */
+                transform: none !important; 
                 box-shadow: 0 6px 20px rgba(0,0,0,0.3) !important; 
                 animation-play-state: running !important;
             }
@@ -732,15 +738,26 @@
 
         // Đã gộp thành 1 API Key nhân bản 3 lần để tránh lỗi "Limit Reached" của Google
         const API_KEYS = [
-    // Key 1
-    "AIzaSy" + "BFeZzT" + "Ke9RC_bf" + "EqA8WyQ74DXPKw7uV44",
-    // Key 2
-    "AIzaSy" + "B25eYj" + "xlMy5sPk" + "rgq9ksPHbBkf1c1nbaY",
-    // Key 3
-    "AIzaSy" + "ButLun" + "yZp8E8IR" + "fB1YMQHZxSpz5paj4UU"
-];
-        const AI_MODELS = ["gemini-2.5-flash","gemini-3.1-flash-lite-preview","gemma-4-31b-it"];
+            // Key 1
+            "AIzaSy" + "BFeZzT" + "Ke9RC_bf" + "EqA8WyQ74DXPKw7uV44",
+            // Key 2
+            "AIzaSy" + "B25eYj" + "xlMy5sPk" + "rgq9ksPHbBkf1c1nbaY",
+            // Key 3
+            "AIzaSy" + "ButLun" + "yZp8E8IR" + "fB1YMQHZxSpz5paj4UU"
+        ];
+        
+        // --- SỬA LỖI MODEL CHATBOT ---
+        const AI_MODELS = ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-flash-8b"];
         let currentKeyIndex = 0, currentModelIndex = 0, timerInterval, startTime, activeModelName = "";
+
+        // --- THUỐC ĐẶC TRỊ BẤM 2 LẦN CHO IPHONE ---
+        function fixSafariTap(btnId, callbackFunction) {
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
+            btn.addEventListener('touchstart', function(e) {
+                if (callbackFunction) callbackFunction();
+            }, { passive: true });
+        }
 
         // =========================================================================
         // HÀM INIT SỬ DỤNG FETCH API SIÊU TỐC
@@ -1132,6 +1149,10 @@
                     t.innerText = t.innerText.includes(activeModelName) ? "MedPlus AI đang trả lời" : "MedPlus AI (" + activeModelName + ") đang trả lời"; 
                 });
             }
+
+            // KÍCH HOẠT THUỐC ĐẶC TRỊ BẤM 2 LẦN
+            fixSafariTap('chat-widget-btn', toggleChatWidget);
+            fixSafariTap('backToTop', function() { window.scrollTo({top: 0, behavior: 'smooth'}); });
         });
 
         async function loadMedicalData() {
@@ -1309,7 +1330,6 @@
         }
 
         window.onload = init;
-    </script>
     </script>
 </body>
 </html>
