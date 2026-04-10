@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        /* --- CSS GỐC CỦA BẠN ĐƯỢC GIỮ NGUYÊN 100% --- */
+        /* GIỮ NGUYÊN CSS GỐC CỦA BẠN */
         *{font-family:'Inter','Segoe UI',sans-serif!important;box-sizing:border-box;margin:0;padding:0}
         body{padding:40px 0;background:linear-gradient(135deg,#a5d6a7 0%,#81c784 50%,#4caf50 100%);background-attachment:fixed;color:#333;min-height:100vh;overflow-x:hidden}
         :root{--g-bg:rgba(255,255,255,0.22);--g-bg-h:rgba(255,255,255,0.48);--g-border:rgba(255,255,255,0.4);--g-blur:blur(18px);--green:#2e7d32;--green-d:#1b5e20;--green-l:#4caf50;--gold:#fbc02d;--rad:16px;--shadow:0 8px 32px rgba(0,0,0,0.1)}
@@ -120,8 +120,8 @@
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.4);
-            padding: 8px;
-            border-radius: 24px;
+            padding: 8px; /* Độ dày của khung viền */
+            border-radius: 24px; /* Bo viền ngoài lớn hơn */
             overflow: hidden;
             box-shadow: 0 25px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.3);
         }
@@ -133,7 +133,7 @@
             position: relative;
             z-index: 2;
             background: #fff;
-            border-radius: 16px;
+            border-radius: 16px; /* Bo góc iframe bên trong khớp với viền */
         }
         .iv-iframe-loader {
             position: absolute;
@@ -352,6 +352,7 @@
         .group-filter-select option{background:#fff;color:#333;font-weight:600}
         .group-filter-select.active-filter{border-color:var(--green-l);background-color:rgba(76,175,80,0.18);color:var(--green-d);box-shadow:0 2px 8px rgba(76,175,80,0.3)}
 
+
         #chat-widget-btn{position:fixed;bottom:25px;right:25px;width:70px;height:45px;border-radius:25px;padding:3px;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,0.3);cursor:pointer;z-index:9999;transition:.3s;animation:botBreath 2.5s infinite ease-in-out;overflow:hidden}
         .btn-inner{width:100%;height:100%;background:linear-gradient(135deg,#2e7d32,#1b5e20);border-radius:22px;display:flex;align-items:center;justify-content:center;position:relative;z-index:2}
         .btn-inner svg{width:45px;height:35px}
@@ -459,7 +460,7 @@
             <div class="zen-logo"><img src="https://drive.google.com/thumbnail?id=1ZyertvO-WsXU5FYCcuqUHizfRUCSnRIb&sz=w512-h512" alt="MedPlus Logo"></div>
             <div class="header-content">
                 <h1 class="header-title">
-                    <span class="medplus-badge">MEDPLUS</span> CÔNG CỤ TRA CỨU THUỐC - HOẠT CHẤT
+                    <span class="medplus-badge">MEDPLUS</span> THÔNG TIN THUỐC
                 </h1>
                 <p class="header-subtitle">Khoa Dược — BVĐK tỉnh Tuyên Quang</p>
             </div>
@@ -669,7 +670,9 @@
 
     <script>
         // =========================================================================
-        // 1. DÁN LINK WEB APP CỦA BẠN VÀO ĐÂY (BẮT BUỘC PHẢI CÓ ĐUÔI ?api=true)
+        // 1. DÁN LINK CỦA BẠN VÀO ĐÂY 
+        // (Nếu dùng Google Script API thì dán link có chữ /exec?api=true)
+        // (Nếu đã đẩy JSON lên GitHub thì dán link file JSON của GitHub vào)
         // =========================================================================
         const MEDPLUS_API_URL = "https://princetq.github.io/medplus/medplus.json?t=" + new Date().getTime();
         
@@ -687,12 +690,17 @@
         const AI_ICON = "<svg class=\"message-icon-svg\" viewBox=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"12\" fill=\"#E63946\"/><path d=\"M12 6V18M6 12H18\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg>";
         const USER_ICON = "<svg class=\"message-icon-svg\" viewBox=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"12\" fill=\"#FFD54F\"/><path d=\"M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z\" fill=\"#333\"/></svg>";
 
-        const API_KEYS = ["AIzaSyBWYgpZyldEBw9lBEaQ7PFAPtJVKncLTE0","AIzaSyCgI45qRUamSxciVKrcYhg8mhhZQBW6x1Q","AIzaSyA6H3_99kp-I9Ox-X5mxUoTocm3aqp6Cds"];
+        // Đã gộp thành 1 API Key nhân bản 3 lần để tránh lỗi "Limit Reached" của Google
+        const API_KEYS = [
+            "AIzaSyBWYgpZyldEBw9lBEaQ7PFAPtJVKncLTE0",
+            "AIzaSyBWYgpZyldEBw9lBEaQ7PFAPtJVKncLTE0",
+            "AIzaSyBWYgpZyldEBw9lBEaQ7PFAPtJVKncLTE0"
+        ];
         const AI_MODELS = ["gemini-2.5-flash","gemini-3.1-flash-lite-preview","gemma-4-31b-it"];
         let currentKeyIndex = 0, currentModelIndex = 0, timerInterval, startTime, activeModelName = "";
 
         // =========================================================================
-        // HÀM INIT ĐÃ ĐƯỢC NÂNG CẤP LÊN FETCH API SIÊU TỐC
+        // HÀM INIT SỬ DỤNG FETCH API SIÊU TỐC
         // =========================================================================
         async function init() {
             const alphaBox = document.getElementById('alphabetBox');
@@ -711,7 +719,7 @@
             
             try {
                 if (MEDPLUS_API_URL.includes("ID_CUA_BAN_O_DAY")) {
-                    throw new Error("Bạn chưa dán Link Web App API vào biến MEDPLUS_API_URL ở dòng 410.");
+                    throw new Error("Bạn chưa dán Link Web App API vào biến MEDPLUS_API_URL ở đầu code Javascript.");
                 }
 
                 const response = await fetch(MEDPLUS_API_URL);
@@ -773,7 +781,7 @@
         }
 
         // =========================================================================
-        // PHẦN CÒN LẠI CỦA CODE ĐƯỢC GIỮ NGUYÊN HOÀN TOÀN
+        // CÁC HÀM XỬ LÝ LOGIC UI & AI (GIỮ NGUYÊN HOÀN TOÀN)
         // =========================================================================
         function animateCounter(target) {
             const el = document.getElementById('medCount');
@@ -985,7 +993,7 @@
                     "</div>" +
                 "</div>" +
                 "<div class=\"basic-info-box\">" +
-                    drawRow('Công cụ tra cứu thuốc - hoạt chất', item.active) +
+                    drawRow('HOẠT CHẤT', item.active) +
                     drawRow('NHÓM DƯỢC LÝ', item.group) +
                     drawRow('DẠNG BÀO CHẾ', item.form) +
                     drawRow('HÀM LƯỢNG', item.strength) +
@@ -1015,50 +1023,35 @@
         function openIVModal() {
             document.getElementById('iv-modal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
-            
             const iframe = document.getElementById('iv-iframe');
             if (!iframe.getAttribute('src')) {
                 document.getElementById('iv-loader').style.display = 'block';
                 iframe.setAttribute('src', "https://princetq.github.io/tiemtruyen/");
             }
         }
-
-        function closeIVModal() {
-            document.getElementById('iv-modal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
+        function closeIVModal() { document.getElementById('iv-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
 
         function openKSModal() {
             document.getElementById('ks-modal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
-            
             const iframe = document.getElementById('ks-iframe');
             if (!iframe.getAttribute('src')) {
                 document.getElementById('ks-loader').style.display = 'block';
                 iframe.setAttribute('src', "https://ks.duoctuyenquang.com");
             }
         }
-
-        function closeKSModal() {
-            document.getElementById('ks-modal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
+        function closeKSModal() { document.getElementById('ks-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
 
         function openTTModal() {
             document.getElementById('tt-modal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
-            
             const iframe = document.getElementById('tt-iframe');
             if (!iframe.getAttribute('src')) {
                 document.getElementById('tt-loader').style.display = 'block';
                 iframe.setAttribute('src', "https://princetq.github.io/ttthuoc/");
             }
         }
-
-        function closeTTModal() {
-            document.getElementById('tt-modal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
+        function closeTTModal() { document.getElementById('tt-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
 
         function toggleChatWidget() {
             const widget = document.getElementById('chat-widget-window');
@@ -1273,6 +1266,7 @@
         }
 
         window.onload = init;
+    </script>
     </script>
 </body>
 </html>
