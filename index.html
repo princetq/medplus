@@ -539,8 +539,8 @@
                 </button>
             </div>
             <div class="search-box">
-                <input type="text" id="q" placeholder="Tìm thuốc, hoạt chất..." oninput="filterData()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4caf50" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <input type="text" id="q" placeholder="Tìm thuốc, hoạt chất..." oninput="filterData()">
+    <svg id="search-icon" onclick="clearSearch()" style="cursor:pointer; transition: 0.2s;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4caf50" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </div>
 
             <div class="iv-btn-wrapper">
@@ -957,7 +957,21 @@
         }
 
         function filterData() {
-            const query = document.getElementById('q').value.toLowerCase();
+    const query = document.getElementById('q').value.toLowerCase();
+    
+    // --- ĐỔI ICON TÌM KIẾM <-> DẤU X ---
+    const icon = document.getElementById('search-icon');
+    if (icon) {
+        if (query.length > 0) {
+            // Đổi thành dấu X
+            icon.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>';
+        } else {
+            // Trả về kính lúp
+            icon.innerHTML = '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>';
+        }
+    }
+    // -----------------------------------
+            
             filteredData = rawData.filter(function(i) {
                 const matchesSearch = i.brand.toLowerCase().includes(query) || (i.active && i.active.toLowerCase().includes(query));
                 const matchesLetter = selectedLetter === '' || i.brand.trim().toUpperCase().startsWith(selectedLetter);
@@ -968,6 +982,17 @@
             renderInitial();
         }
 
+        // --- BẠN DÁN HÀM clearSearch VÀO NGAY ĐÂY ---
+        function clearSearch() {
+            const q = document.getElementById('q');
+            if (q.value.length > 0) {
+                q.value = '';
+                filterData(); // Gọi lại filterData để reset danh sách và đổi icon về kính lúp
+                q.focus(); // Trỏ chuột lại vào ô để gõ tiếp
+            }
+        }
+        // -------------------------------------------
+        
         function renderInitial() {
             document.getElementById('grid').innerHTML = '';
             displayedCount = 0;
