@@ -183,7 +183,7 @@
         .glass-card:active{transform:scale(.96)!important;transition:.1s}
         .new-badge{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,#ffeb3b,#fbc02d,#ff9800);color:var(--green-d);padding:5px 14px;font-size:11px;font-weight:900;border-radius:20px;z-index:5;box-shadow:0 3px 12px rgba(251,192,45,0.5);text-transform:uppercase;animation:newPulse 2s ease-in-out infinite;letter-spacing:0.5px;overflow:hidden}
         .new-badge::before{content:'✦';margin-right:4px;animation:sparkle 1s ease-in-out infinite alternate}
-        .new-badge::after{content:'';position:absolute;top:0;left:-100%;width:70%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent);animation:newSweep 2.5s ease-in-out infinite}
+        .new-badge::after{content:'absolute;top:0;left:-100%;width:70%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent);animation:newSweep 2.5s ease-in-out infinite}
         @keyframes newPulse{0%,100%{transform:scale(1);box-shadow:0 3px 12px rgba(251,192,45,0.4)}50%{transform:scale(1.05);box-shadow:0 4px 20px rgba(255,152,0,0.6)}}
         @keyframes sparkle{0%{opacity:0.5;transform:scale(0.8)}100%{opacity:1;transform:scale(1.2)}}
         @keyframes newSweep{0%{left:-100%}60%{left:150%}100%{left:150%}}
@@ -217,7 +217,7 @@
         
         @keyframes scrollEnd {0%, 15% { transform: translateX(0); }85%, 100% { transform: translateX(calc(100cqw - 100%)); }}
 
-        /* --- MOBILE LAYOUT --- */
+        /* --- MOBILE LAYOUT VỚI GIẢI PHÁP CHỐNG LAYOUT SHIFT 100% --- */
         .iv-btn-text{display:inline-block;overflow:hidden;white-space:nowrap;max-width:200px;opacity:1;vertical-align:middle;transition:max-width .4s cubic-bezier(.4,0,.2,1),opacity .35s ease,padding .3s ease}
         
         @media(max-width:600px){
@@ -246,7 +246,7 @@
                 margin: 0;
                 display: flex;
                 gap: 6px;
-                height: 36px !important; /* Đóng băng lưới dọc */
+                height: 36px !important;
                 align-items: center !important;
             }
             .ks-text-pc { display: none !important; }
@@ -254,7 +254,7 @@
             
             .count-badge{grid-column: 1 / -1;grid-row: 4 !important;justify-self: flex-start;font-size: 13px;padding: 4px 10px;margin: 4px 0 0 0; order: unset;}
             
-            /* NÚT TRÒN CỐ ĐỊNH */
+            /* NÚT TRÒN CỐ ĐỊNH, KHÔNG BAO GIỜ THAY ĐỔI KÍCH THƯỚC TRÊN GRID */
             .iv-badge-btn{
                 width:36px !important;
                 height:36px !important;
@@ -266,39 +266,13 @@
                 border: 1.5px solid rgba(255,255,255,0.5) !important;
             }
             
-            /* THỦ THUẬT: VẼ 1 KHỐI NỀN TRÙM KÍN NÚT, GIẢ LÀM NÚT PHÌNH RA */
-            .iv-badge-btn .iv-btn-text {
-                position: absolute !important;
-                right: 0 !important; /* Neo từ mép phải của nút tròn */
-                top: -2px !important; /* Trùm cao hơn nút gốc để che viền */
-                height: 40px !important; 
-                line-height: 38px !important;
-                background: linear-gradient(135deg, #43a047, #1b5e20) !important; /* Đổi sang màu focus */
-                border: 1.5px solid rgba(255,255,255,0.5) !important;
-                border-radius: 20px !important; /* Bo tròn hoàn toàn 2 đầu */
-                padding: 0 !important;
-                max-width: 0 !important;
-                opacity: 0 !important;
-                overflow: hidden !important;
-                transition: max-width .4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity .3s ease, padding .3s ease !important;
-                white-space: nowrap !important;
-                z-index: 20 !important; /* Che luôn cái nút tròn gốc ở dưới */
-                pointer-events: none;
-                font-size: 12px !important;
-                font-weight: 800 !important;
-                color: #fff !important;
-                box-sizing: border-box !important;
-                box-shadow: 0 6px 20px rgba(46,125,50,0.5) !important;
+            /* Kéo nút lên ưu tiên hiển thị khi được bấm */
+            .iv-badge-btn.iv-expanded {
+                z-index: 100 !important;
+                background: linear-gradient(135deg, #43a047, #1b5e20) !important;
             }
             
-            /* KHI BẤM: KHỐI CHỮ MỞ RỘNG (Nhìn y hệt nút phình ra từ phải sang trái) */
-            .iv-badge-btn.iv-expanded .iv-btn-text {
-                max-width: 240px !important;
-                opacity: 1 !important;
-                padding: 0 16px 0 38px !important; /* Căn chữ lùi vào nhường chỗ cho icon */
-            }
-            
-            /* ĐƯA ICON VÀO CHÍNH GIỮA, NỔI LÊN TRÊN CÙNG ĐỂ CHE PHẦN TIẾP GIÁP */
+            /* ĐƯA ICON VÀO CHÍNH GIỮA NÚT TRÒN */
             .iv-badge-btn .syringe-icon{
                 position:absolute !important;
                 width:22px !important;
@@ -308,7 +282,7 @@
                 transform: translate(-50%, -50%) scale(1) rotate(0deg) !important;
                 filter:drop-shadow(-1px 2px 2px rgba(0,0,0,0.25)) !important;
                 transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-                z-index: 30 !important; /* Nổi đè lên trên khối chữ */
+                z-index: 30 !important; /* Đè lên khối chữ */
             }
             
             /* ANIMATION KHI CLICK: ICON TO TRÀN RA NGOÀI VÀ ĐỘNG ĐẬY LIÊN TỤC */
@@ -323,6 +297,38 @@
             .iv-badge-btn.iv-expanded .syringe-icon {
                 animation: iconPopWiggle 1.2s ease-in-out infinite !important;
                 filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.5)) !important;
+            }
+            
+            /* DẢI CHỮ TRƯỢT RA TỪ NÚT: CHỜ ĐỂ KHÔNG BỊ ICON ĐÈ CHE CHỮ */
+            .iv-badge-btn .iv-btn-text {
+                position: absolute !important;
+                right: 0 !important; /* Neo từ mép phải của nút tròn gốc */
+                top: -2px !important; 
+                height: 40px !important; 
+                line-height: 38px !important;
+                background: linear-gradient(135deg, #4caf50, #2e7d32);
+                border: 1.5px solid rgba(255,255,255,0.5) !important;
+                border-radius: 20px !important; /* Bo tròn 2 đầu mượt mà */
+                padding: 0 !important;
+                max-width: 0 !important;
+                opacity: 0 !important;
+                overflow: hidden !important;
+                transition: max-width .4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity .3s ease !important;
+                white-space: nowrap !important;
+                z-index: 20 !important; /* Che nút gốc nhưng nằm dưới icon */
+                pointer-events: none;
+                font-size: 12px !important;
+                color: #fff !important;
+                box-sizing: border-box !important;
+                box-shadow: 0 6px 20px rgba(46,125,50,0.5) !important;
+            }
+            
+            /* KHI BẤM: CHỮ BẮN SANG TRÁI, PADDING-RIGHT 44PX CHỪA CHỖ CHO ICON */
+            .iv-badge-btn.iv-expanded .iv-btn-text {
+                max-width: 260px !important;
+                opacity: 1 !important;
+                padding: 0 44px 0 16px !important; /* Đẩy chữ tránh xa mép phải (nơi icon đứng) 44px */
+                background: linear-gradient(135deg, #43a047, #1b5e20) !important;
             }
             
             /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ */
@@ -601,6 +607,7 @@
                     </svg>
                     <span class="iv-btn-text">TƯƠNG TÁC THUỐC</span>
                 </button>
+                
                 <button class="iv-badge-btn ks-badge-btn" onclick="handleKSClick()" title="Mở công cụ chỉnh liều kháng sinh">
                     <svg class="syringe-icon ks-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g filter="drop-shadow(-2px 4px 4px rgba(0,0,0,0.3))">
