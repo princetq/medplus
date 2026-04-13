@@ -284,24 +284,19 @@
                 transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
             }
             
-            /* ANIMATION KHI CLICK: TO RA VÀ ĐỘNG ĐẬY NHƯ TRƯỚC */
+            /* ANIMATION KHI CLICK: ICON TO TRÀN RA NGOÀI VÀ ĐỘNG ĐẬY LIÊN TỤC */
+            @keyframes iconPopWiggle {
+                0% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
+                20% { transform: translate(-50%, -50%) scale(1.9) rotate(12deg); }
+                40% { transform: translate(-50%, -50%) scale(1.9) rotate(-8deg); }
+                60% { transform: translate(-50%, -50%) scale(1.9) rotate(10deg); }
+                80% { transform: translate(-50%, -50%) scale(1.9) rotate(-5deg); }
+                100% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
+            }
             .iv-badge-btn.iv-expanded .syringe-icon {
-                transform: translate(-50%, -50%) scale(1.2) rotate(8deg) !important;
-            }
-            .iv-badge-btn.iv-expanded .tk-icon {
-                transform: translate(-50%, -50%) scale(1.2) rotate(15deg) !important;
-            }
-            
-            /* HIỆU ỨNG LẮC BÌNH TRÊN MOBILE */
-            @keyframes flaskShakeMobile {
-                0% { transform: translate(-50%, -50%) scale(1.1) rotate(0deg); }
-                25% { transform: translate(-50%, -50%) scale(1.1) rotate(15deg); }
-                50% { transform: translate(-50%, -50%) scale(1.1) rotate(-5deg); }
-                75% { transform: translate(-50%, -50%) scale(1.1) rotate(15deg); }
-                100% { transform: translate(-50%, -50%) scale(1.1) rotate(12deg); }
-            }
-            .iv-badge-btn.iv-expanded .tk-icon {
-                animation: flaskShakeMobile 0.45s ease-in-out forwards !important;
+                animation: iconPopWiggle 1.2s ease-in-out infinite !important;
+                filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.5)) !important;
+                z-index: 10 !important; /* Đảm bảo nổi hẳn lên trên dải chữ */
             }
             
             /* TEXT SẼ ẨN SAU NÚT TRÒN, DÙNG ABSOLUTE ĐỂ KHÔNG ÉP GRID */
@@ -683,18 +678,7 @@
                     </svg>
                     <span class="iv-btn-text">TIÊM TRUYỀN</span>
                 </button>
-                <button class="iv-badge-btn ks-badge-btn" onclick="handleKSClick()" title="Mở công cụ chỉnh liều kháng sinh">
-                    <svg class="syringe-icon ks-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g filter="drop-shadow(-2px 4px 4px rgba(0,0,0,0.3))">
-                            <rect x="18" y="15" width="28" height="58" rx="14" fill="#FFFFFF"/>
-                            <rect x="27" y="24" width="10" height="14" rx="5" fill="#4caf50" opacity="0.85"/>
-                            <path d="M18 44 H46" stroke="#4caf50" stroke-width="2.5" opacity="0.7"/>
-                            <circle cx="68" cy="55" r="22" fill="#FFFFFF"/>
-                            <path d="M54 41 L82 69" stroke="#4caf50" stroke-width="3.5" stroke-linecap="round"/>
-                        </g>
-                    </svg>
-                    <span class="iv-btn-text ks-btn-text"><span class="ks-text-pc">CHỈNH LIỀU KHÁNG SINH</span><span class="ks-text-mobile">CHỈNH LIỀU KS</span></span>
-                </button>
+
                 <button class="iv-badge-btn tt-badge-btn" onclick="handleTTClick()" title="Mở công cụ tương tác thuốc">
                     <svg class="syringe-icon tt-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g filter="drop-shadow(-2px 4px 4px rgba(0,0,0,0.3))">
@@ -708,6 +692,19 @@
                     </svg>
                     <span class="iv-btn-text">TƯƠNG TÁC THUỐC</span>
                 </button>
+                <button class="iv-badge-btn ks-badge-btn" onclick="handleKSClick()" title="Mở công cụ chỉnh liều kháng sinh">
+                    <svg class="syringe-icon ks-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g filter="drop-shadow(-2px 4px 4px rgba(0,0,0,0.3))">
+                            <rect x="18" y="15" width="28" height="58" rx="14" fill="#FFFFFF"/>
+                            <rect x="27" y="24" width="10" height="14" rx="5" fill="#4caf50" opacity="0.85"/>
+                            <path d="M18 44 H46" stroke="#4caf50" stroke-width="2.5" opacity="0.7"/>
+                            <circle cx="68" cy="55" r="22" fill="#FFFFFF"/>
+                            <path d="M54 41 L82 69" stroke="#4caf50" stroke-width="3.5" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                    <span class="iv-btn-text ks-btn-text"><span class="ks-text-pc">CHỈNH LIỀU KHÁNG SINH</span><span class="ks-text-mobile">CHỈNH LIỀU KS</span></span>
+                </button>
+
                 <button class="iv-badge-btn tk-badge-btn" onclick="handleTKClick()" title="Mở công cụ tương hợp - tương kỵ">
                     <svg class="syringe-icon tk-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g filter="drop-shadow(-2px 4px 4px rgba(0,0,0,0.3))">
