@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Thông Tin Thuốc - MedPlus</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -183,7 +183,7 @@
         .glass-card:active{transform:scale(.96)!important;transition:.1s}
         .new-badge{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,#ffeb3b,#fbc02d,#ff9800);color:var(--green-d);padding:5px 14px;font-size:11px;font-weight:900;border-radius:20px;z-index:5;box-shadow:0 3px 12px rgba(251,192,45,0.5);text-transform:uppercase;animation:newPulse 2s ease-in-out infinite;letter-spacing:0.5px;overflow:hidden}
         .new-badge::before{content:'✦';margin-right:4px;animation:sparkle 1s ease-in-out infinite alternate}
-        .new-badge::after{content:'absolute;top:0;left:-100%;width:70%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent);animation:newSweep 2.5s ease-in-out infinite}
+        .new-badge::after{content:'';position:absolute;top:0;left:-100%;width:70%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent);animation:newSweep 2.5s ease-in-out infinite}
         @keyframes newPulse{0%,100%{transform:scale(1);box-shadow:0 3px 12px rgba(251,192,45,0.4)}50%{transform:scale(1.05);box-shadow:0 4px 20px rgba(255,152,0,0.6)}}
         @keyframes sparkle{0%{opacity:0.5;transform:scale(0.8)}100%{opacity:1;transform:scale(1.2)}}
         @keyframes newSweep{0%{left:-100%}60%{left:150%}100%{left:150%}}
@@ -299,23 +299,23 @@
                 filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.5)) !important;
             }
             
-            /* DẢI CHỮ TRƯỢT RA TỪ NÚT: CHỜ ĐỂ KHÔNG BỊ ICON ĐÈ CHE CHỮ */
+            /* THỦ THUẬT: KHỐI CHỮ TRÙM KÍN HOÀN TOÀN NÚT TRÒN ĐỂ KHÔNG BỊ CHẮP VÁ */
             .iv-badge-btn .iv-btn-text {
                 position: absolute !important;
-                right: 0 !important; /* Neo từ mép phải của nút tròn gốc */
-                top: -2px !important; 
-                height: 40px !important; 
+                right: -2px !important; /* Trùm kín viền phải của nút gốc */
+                top: -2px !important; /* Trùm kín viền trên/dưới của nút gốc */
+                height: 40px !important; /* Cao hơn 36px để che hoàn toàn */
                 line-height: 38px !important;
                 background: linear-gradient(135deg, #4caf50, #2e7d32);
                 border: 1.5px solid rgba(255,255,255,0.5) !important;
-                border-radius: 20px !important; /* Bo tròn 2 đầu mượt mà */
+                border-radius: 20px !important; /* Bo tròn cả 2 đầu */
                 padding: 0 !important;
                 max-width: 0 !important;
                 opacity: 0 !important;
                 overflow: hidden !important;
-                transition: max-width .4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity .3s ease !important;
+                transition: max-width .4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity .3s ease, padding .3s ease !important;
                 white-space: nowrap !important;
-                z-index: 20 !important; /* Che nút gốc nhưng nằm dưới icon */
+                z-index: 20 !important; /* Nằm giữa nút gốc (10) và Icon (30) */
                 pointer-events: none;
                 font-size: 12px !important;
                 color: #fff !important;
@@ -323,11 +323,11 @@
                 box-shadow: 0 6px 20px rgba(46,125,50,0.5) !important;
             }
             
-            /* KHI BẤM: CHỮ BẮN SANG TRÁI, PADDING-RIGHT 44PX CHỪA CHỖ CHO ICON */
+            /* KHI BẤM: CHỮ BẮN SANG TRÁI, PADDING-RIGHT 44PX CHỪA CHỖ CHO ICON PHÌNH TO */
             .iv-badge-btn.iv-expanded .iv-btn-text {
                 max-width: 260px !important;
                 opacity: 1 !important;
-                padding: 0 44px 0 16px !important; /* Đẩy chữ tránh xa mép phải (nơi icon đứng) 44px */
+                padding: 0 44px 0 16px !important; /* Chừa 44px bên phải để icon không đè chữ */
                 background: linear-gradient(135deg, #43a047, #1b5e20) !important;
             }
             
@@ -607,7 +607,6 @@
                     </svg>
                     <span class="iv-btn-text">TƯƠNG TÁC THUỐC</span>
                 </button>
-                
                 <button class="iv-badge-btn ks-badge-btn" onclick="handleKSClick()" title="Mở công cụ chỉnh liều kháng sinh">
                     <svg class="syringe-icon ks-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g filter="drop-shadow(-2px 4px 4px rgba(0,0,0,0.3))">
