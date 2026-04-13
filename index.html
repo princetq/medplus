@@ -491,6 +491,17 @@
                 max-height: 85dvh !important;
             }
         }
+        
+        /* --- CHỐT CHẶN 1: KHÓA CUỘN NỀN KHI MỞ MODAL --- */
+        body[style*="overflow: hidden"] {
+            overscroll-behavior: none !important;
+        }
+        .modal-overlay, #image-zoom-overlay {
+            overscroll-behavior: none !important;
+        }
+        .modal-content, #chat-widget-window, .iv-iframe-container {
+            overscroll-behavior: contain !important; /* Chặn lực cuộn lan từ modal xuống nền */
+        }
     </style>
 </head>
 <body>
@@ -1334,6 +1345,17 @@
                 }
             }
         }
+
+        // --- CHỐT CHẶN 2: KHÓA VUỐT NỀN ĐEN TRÊN MOBILE ---
+        document.addEventListener('touchmove', function(e) {
+            // Chỉ kích hoạt khi body đang bị khóa (có modal đang mở)
+            if (document.body.style.overflow === 'hidden') {
+                // Nếu ngón tay đang vuốt trực tiếp lên nền đen (overlay)
+                if (e.target.classList.contains('modal-overlay') || e.target.id === 'image-zoom-overlay') {
+                    e.preventDefault(); // Hủy ngay thao tác vuốt trang
+                }
+            }
+        }, { passive: false });
 
         window.onload = init;
     </script>
