@@ -49,7 +49,7 @@
         .search-box:focus-within{max-width:320px;transform:scale(1.02);border-color:var(--green-l);background:rgba(255,255,255,0.55);box-shadow:0 0 0 3px rgba(76,175,80,0.15)}
         .search-box input{flex:1;border:none;background:transparent;outline:none;font-size:16px;color:var(--green);font-weight:600}
 
-        /* --- CSS NÚT CÔNG CỤ (TK, TT, KS, TIÊM TRUYỀN) --- */
+        /* --- CSS NÚT TIÊM TRUYỀN, KHÁNG SINH, TƯƠNG TÁC THUỐC --- */
         .iv-btn-wrapper {
             position: absolute;
             right: 0;
@@ -97,7 +97,21 @@
             filter: drop-shadow(-3px 5px 5px rgba(0,0,0,0.4));
         }
 
-        /* --- CSS MODAL CÔNG CỤ --- */
+        /* --- HIỆU ỨNG NGHIÊNG & LẮC CHO ICON BÌNH HOÁ HỌC (TK) --- */
+        @keyframes flaskShake {
+            0% { transform: translate(2px, 2px) scale(1.1) rotate(0deg); }
+            20% { transform: translate(2px, 2px) scale(1.1) rotate(15deg); }
+            40% { transform: translate(2px, 2px) scale(1.1) rotate(-5deg); }
+            60% { transform: translate(2px, 2px) scale(1.1) rotate(15deg); }
+            80% { transform: translate(2px, 2px) scale(1.1) rotate(5deg); }
+            100% { transform: translate(2px, 2px) scale(1.1) rotate(12deg); } /* Dừng lại ở tư thế nghiêng phải */
+        }
+        .iv-badge-btn:hover .tk-icon,
+        .iv-badge-btn.iv-expanded .tk-icon {
+            animation: flaskShake 0.45s ease-in-out forwards;
+        }
+
+        /* --- CSS MODAL TIÊM TRUYỀN, KS, TT THUỐC --- */
         .iv-modal-content {
             padding: 0 !important; 
             width: 100% !important;
@@ -239,12 +253,15 @@
             .iv-btn-text{max-width:0 !important;opacity:0 !important;}
             .iv-badge-btn{width:36px !important;height:36px !important;padding:0 !important;border-radius:50% !important;overflow:hidden !important;display:inline-flex !important;align-items:center !important;justify-content:center !important;font-size:12px !important;}
             .iv-badge-btn .syringe-icon{position:static !important;width:26px !important;height:26px !important;left:auto !important;top:auto !important;transform:none !important;filter:drop-shadow(-1px 2px 2px rgba(0,0,0,0.25)) !important;flex-shrink:0 !important;}
-            .iv-badge-btn.iv-expanded{width:auto !important;border-radius:18px !important;padding:4px 12px 4px 8px !important;overflow:visible !important;justify-content:flex-start !important;gap:5px !important;}
+            
+            /* --- SỬA LỖI LAYOUT SHIFT (Khóa cứng height) --- */
+            .iv-badge-btn.iv-expanded{width:auto !important; height:36px !important; border-radius:18px !important;padding:0 12px 0 8px !important;overflow:visible !important;justify-content:flex-start !important;gap:5px !important;}
             .iv-badge-btn.iv-expanded .iv-btn-text{max-width:200px !important;opacity:1 !important;}
             .iv-badge-btn.iv-expanded .syringe-icon{position:static !important;width:22px !important;height:22px !important;left:auto !important;top:auto !important;}
             
+            /* --- SỬA LỖI MẤT VIÊN THUỐC (Khóa min-width 44px) --- */
             .group-filter-wrapper{grid-column: 1 / 4;grid-row: 3;width:-webkit-fit-content;width:fit-content;max-width:205px;order: unset;align-self: center;justify-self: start;flex-shrink:1; overflow: hidden; transition: max-width .4s cubic-bezier(.4,0,.2,1) !important;}
-            .group-filter-wrapper.temp-hide{max-width: 42px !important; pointer-events: none;}
+            .group-filter-wrapper.temp-hide{max-width: 44px !important; min-width: 44px !important; pointer-events: none;}
             .group-filter-wrapper.temp-hide .group-filter-select{padding: 0 !important; background-image: none !important;}
             .group-filter-wrapper.temp-hide .group-text-overlay{opacity: 0 !important;}
             .group-filter-wrapper .group-filter-select{width:100%;max-width:185px;min-width:0;height:34px;font-size:12px;padding:0 28px 0 34px;}
@@ -567,6 +584,7 @@
                     </svg>
                     <span class="iv-btn-text">TƯƠNG HỢP - TƯƠNG KỴ</span>
                 </button>
+
                 <button class="iv-badge-btn tt-badge-btn" onclick="handleTTClick()" title="Mở công cụ tương tác thuốc">
                     <svg class="syringe-icon tt-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g filter="drop-shadow(-2px 4px 4px rgba(0,0,0,0.3))">
@@ -767,13 +785,13 @@
 
         // Đã gộp thành 1 API Key nhân bản 3 lần để tránh lỗi "Limit Reached" của Google
         const API_KEYS = [
-    // Key 1
-    "AIzaSy" + "BFeZzT" + "Ke9RC_bf" + "EqA8WyQ74DXPKw7uV44",
-    // Key 2
-    "AIzaSy" + "B25eYj" + "xlMy5sPk" + "rgq9ksPHbBkf1c1nbaY",
-    // Key 3
-    "AIzaSy" + "ButLun" + "yZp8E8IR" + "fB1YMQHZxSpz5paj4UU"
-];
+            // Key 1
+            "AIzaSy" + "BFeZzT" + "Ke9RC_bf" + "EqA8WyQ74DXPKw7uV44",
+            // Key 2
+            "AIzaSy" + "B25eYj" + "xlMy5sPk" + "rgq9ksPHbBkf1c1nbaY",
+            // Key 3
+            "AIzaSy" + "ButLun" + "yZp8E8IR" + "fB1YMQHZxSpz5paj4UU"
+        ];
         const AI_MODELS = ["gemini-2.5-flash","gemini-3.1-flash-lite-preview","gemma-4-31b-it"];
         let currentKeyIndex = 0, currentModelIndex = 0, timerInterval, startTime, activeModelName = "";
 
@@ -941,7 +959,7 @@
             filterData();
         }
 
-        /* --- THÊM HÀM CLICK CHO CÔNG CỤ TƯƠNG HỢP TƯƠNG KỴ MỚI --- */
+        /* --- XỬ LÝ CLICK CHO 4 NÚT CÔNG CỤ --- */
         function handleTKClick() {
             var btn = document.querySelector('.tk-badge-btn');
             var filterWrap = document.getElementById('groupFilterWrapper');
@@ -991,7 +1009,7 @@
         }
 
         function handleIVClick() {
-            // Cập nhật index lên 3 vì nút TK mới được chèn lên đầu
+            // Nút Tiêm truyền giờ là nút thứ 4 trong danh sách (index = 3)
             var btn = document.querySelectorAll('.iv-badge-btn')[3]; 
             var filterWrap = document.getElementById('groupFilterWrapper');
             if (window.innerWidth > 600) { openIVModal(); return; }
@@ -1008,20 +1026,17 @@
         }
 
         function filterData() {
-    const query = document.getElementById('q').value.toLowerCase();
-    
-    // --- ĐỔI ICON TÌM KIẾM <-> DẤU X ---
-    const icon = document.getElementById('search-icon');
-    if (icon) {
-        if (query.length > 0) {
-            // Đổi thành dấu X
-            icon.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>';
-        } else {
-            // Trả về kính lúp
-            icon.innerHTML = '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>';
-        }
-    }
-    // -----------------------------------
+            const query = document.getElementById('q').value.toLowerCase();
+            
+            // --- ĐỔI ICON TÌM KIẾM <-> DẤU X ---
+            const icon = document.getElementById('search-icon');
+            if (icon) {
+                if (query.length > 0) {
+                    icon.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>';
+                } else {
+                    icon.innerHTML = '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>';
+                }
+            }
             
             filteredData = rawData.filter(function(i) {
                 const matchesSearch = i.brand.toLowerCase().includes(query) || (i.active && i.active.toLowerCase().includes(query));
@@ -1033,16 +1048,14 @@
             renderInitial();
         }
 
-        // --- BẠN DÁN HÀM clearSearch VÀO NGAY ĐÂY ---
         function clearSearch() {
             const q = document.getElementById('q');
             if (q.value.length > 0) {
                 q.value = '';
-                filterData(); // Gọi lại filterData để reset danh sách và đổi icon về kính lúp
-                q.focus(); // Trỏ chuột lại vào ô để gõ tiếp
+                filterData(); 
+                q.focus(); 
             }
         }
-        // -------------------------------------------
         
         function renderInitial() {
             document.getElementById('grid').innerHTML = '';
@@ -1174,7 +1187,6 @@
         }
         function closeTTModal() { document.getElementById('tt-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
 
-        /* --- THÊM HÀM MỞ/ĐÓNG MODAL TƯƠNG HỢP TƯƠNG KỴ --- */
         function openTKModal() {
             document.getElementById('tk-modal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
