@@ -110,7 +110,7 @@
             animation: flaskShake 0.45s ease-in-out forwards !important;
         }
 
-        /* --- CSS MODAL CÁC CÔNG CỤ (IFRAME & NATIVE) --- */
+        /* --- CSS MODAL CÁC CÔNG CỤ (IFRAME) --- */
         .iv-modal-content {
             padding: 0 !important; 
             width: 100% !important;
@@ -217,7 +217,7 @@
         
         @keyframes scrollEnd {0%, 15% { transform: translateX(0); }85%, 100% { transform: translateX(calc(100cqw - 100%)); }}
 
-        /* --- MOBILE LAYOUT VỚI GIẢI PHÁP CHỐNG LAYOUT SHIFT 100% --- */
+        /* --- MOBILE LAYOUT: GIẢI PHÁP UNIFIED PILL (VIÊN THUỐC ĐỒNG NHẤT 100%) --- */
         .iv-btn-text{display:inline-block;overflow:hidden;white-space:nowrap;max-width:200px;opacity:1;vertical-align:middle;transition:max-width .4s cubic-bezier(.4,0,.2,1),opacity .35s ease,padding .3s ease}
         
         @media(max-width:600px){
@@ -254,82 +254,82 @@
             
             .count-badge{grid-column: 1 / -1;grid-row: 4 !important;justify-self: flex-start;font-size: 13px;padding: 4px 10px;margin: 4px 0 0 0; order: unset;}
             
-            /* NÚT TRÒN CỐ ĐỊNH, KHÔNG BAO GIỜ THAY ĐỔI KÍCH THƯỚC TRÊN GRID */
-            .iv-badge-btn{
-                width:36px !important;
-                height:36px !important;
-                padding:0 !important;
-                border-radius:50% !important;
-                display:block !important;
+            /* 1. ĐÂY LÀ GIẢI PHÁP NÚT ĐỒNG NHẤT (UNIFIED PILL) - KHÔNG DÙNG ABSOLUTE CHỞ CHỮ */
+            .iv-badge-btn {
+                min-width: 36px !important;
+                max-width: 36px !important; /* Mặc định là hình tròn */
+                height: 36px !important;
+                padding: 0 !important;
+                border-radius: 18px !important; /* Để luôn là viên nhộng */
+                display: inline-flex !important;
+                justify-content: center !important;
+                align-items: center !important;
                 position: relative !important;
                 z-index: 10 !important;
                 border: 1.5px solid rgba(255,255,255,0.5) !important;
+                box-sizing: border-box !important;
+                /* Transition max-width thay vì width để không bị giật, transition background mượt mà */
+                transition: max-width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding 0.4s ease, background 0.3s ease !important;
+                overflow: visible !important; /* Để icon tràn ra viền */
             }
             
-            /* Kéo nút lên ưu tiên hiển thị khi được bấm */
+            /* Kéo nút lên ưu tiên, đổi màu và mở rộng max-width */
             .iv-badge-btn.iv-expanded {
                 z-index: 100 !important;
+                max-width: 250px !important; /* Đủ rộng để hiển thị chữ */
+                padding: 0 14px 0 8px !important;
+                justify-content: flex-start !important; /* Dồn icon về mép trái */
                 background: linear-gradient(135deg, #43a047, #1b5e20) !important;
             }
             
-            /* ĐƯA ICON VÀO CHÍNH GIỮA NÚT TRÒN */
-            .iv-badge-btn .syringe-icon{
-                position:absolute !important;
-                width:22px !important;
-                height:22px !important;
-                left: 50% !important;
-                top: 50% !important;
-                transform: translate(-50%, -50%) scale(1) rotate(0deg) !important;
-                filter:drop-shadow(-1px 2px 2px rgba(0,0,0,0.25)) !important;
+            /* 2. CĂN CHỈNH ICON */
+            .iv-badge-btn .syringe-icon {
+                position: static !important; /* Về flow bình thường */
+                width: 22px !important;
+                height: 22px !important;
+                flex-shrink: 0 !important;
+                filter: drop-shadow(-1px 2px 2px rgba(0,0,0,0.25)) !important;
+                transform: scale(1) rotate(0deg) !important;
                 transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
             }
             
             /* ANIMATION KHI CLICK: ICON TO TRÀN RA NGOÀI VÀ ĐỘNG ĐẬY LIÊN TỤC */
             @keyframes iconPopWiggle {
-                0% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
-                20% { transform: translate(-50%, -50%) scale(1.9) rotate(12deg); }
-                40% { transform: translate(-50%, -50%) scale(1.9) rotate(-8deg); }
-                60% { transform: translate(-50%, -50%) scale(1.9) rotate(10deg); }
-                80% { transform: translate(-50%, -50%) scale(1.9) rotate(-5deg); }
-                100% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
+                0% { transform: scale(1.6) rotate(0deg); }
+                20% { transform: scale(1.6) rotate(12deg); }
+                40% { transform: scale(1.6) rotate(-8deg); }
+                60% { transform: scale(1.6) rotate(10deg); }
+                80% { transform: scale(1.6) rotate(-5deg); }
+                100% { transform: scale(1.6) rotate(0deg); }
             }
             .iv-badge-btn.iv-expanded .syringe-icon {
                 animation: iconPopWiggle 1.2s ease-in-out infinite !important;
                 filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.5)) !important;
-                z-index: 10 !important; /* Đảm bảo nổi hẳn lên trên dải chữ */
+                z-index: 10 !important; 
             }
             
-            /* TEXT SẼ ẨN SAU NÚT TRÒN, DÙNG ABSOLUTE ĐỂ KHÔNG ÉP GRID */
-            /* TĂNG CHIỀU CAO CHỮ TRƯỢT RA (40px) ĐỂ CHE HOÀN TOÀN CÁC NÚT DƯỚI */
+            /* 3. XỬ LÝ CHỮ BÊN TRONG CÙNG 1 KHỐI VỚI NÚT */
             .iv-badge-btn .iv-btn-text {
-                position: absolute !important;
-                right: 16px !important; 
-                top: -2px !important; /* Dịch lên 2px để trùm khít viền nút 36px */
-                height: 40px !important; /* Lớn hơn viền ngoài để che hoàn toàn cả trên lẫn dưới */
-                line-height: 38px !important;
-                background: linear-gradient(135deg, #4caf50, #2e7d32);
-                border: 1.5px solid rgba(255,255,255,0.5) !important;
-                border-right: none !important;
-                border-radius: 20px 0 0 20px !important;
-                padding: 0 !important;
+                position: static !important; /* Nằm cạnh icon theo luồng Flexbox */
+                display: inline-block !important;
                 max-width: 0 !important;
                 opacity: 0 !important;
                 overflow: hidden !important;
-                transition: max-width .4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity .3s ease, padding .3s ease !important;
                 white-space: nowrap !important;
-                z-index: -1 !important;
-                pointer-events: none;
                 font-size: 12px !important;
                 color: #fff !important;
-                box-sizing: border-box !important;
+                line-height: 34px !important; /* Canh giữa hoàn hảo trong nút 36px */
+                background: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+                margin-left: 0 !important; /* Bình thường không có margin */
+                transition: max-width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease, margin-left 0.3s ease !important;
             }
             
-            /* KHI BẤM: CHỮ BẮN SANG TRÁI, PHỦ KÍN CÁC NÚT BÊN CẠNH */
             .iv-badge-btn.iv-expanded .iv-btn-text {
-                max-width: 240px !important;
+                max-width: 200px !important;
                 opacity: 1 !important;
-                padding: 0 16px 0 14px !important;
-                background: linear-gradient(135deg, #43a047, #1b5e20) !important;
+                margin-left: 8px !important; /* Đẩy chữ cách icon 1 đoạn khi mở */
             }
             
             /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ */
@@ -385,6 +385,21 @@
             .chat-widget-container .send-button{width:38px;height:38px;right:3px;border:1px solid rgba(255,255,255,0.4)}
             
             .chat-widget-container .disclaimer{font-size:14px;padding:3px 10px}
+
+            /* --- BẢO VỆ CHỐNG CRASH iOS KHI DÙNG IFRAME VÀ 2 NGÓN TAY ZOOM --- */
+            .modal-overlay, .iv-iframe-container {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            .modal-overlay {
+                background: rgba(0,0,0,0.85) !important; /* Đổi thành nền đen trong suốt nhẹ, thân thiện RAM */
+            }
+            .iv-iframe-container {
+                background: #fff !important;
+                border: none !important;
+                transform: translateZ(0); /* Ép GPU xử lý mượt mà khi zoom */
+                -webkit-transform: translateZ(0);
+            }
         }
         @media (min-width: 601px) {
             .product-grid.list-view .glass-card:hover .marquee-track {animation: scrollEnd 12s linear 1;}
@@ -750,12 +765,13 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="tk-modal" onclick="if(event.target==this && (!document.getElementById('tk-suggestions') || !document.getElementById('tk-suggestions').contains(event.target))) closeTKModal()">
-        <div class="modal-content iv-modal-content" style="background: var(--bg-color, #e8f5e9) !important; padding: 0 !important; overflow: hidden !important;">
-            <span class="close-btn" onclick="closeTKModal()" style="color: var(--green-d) !important; background: rgba(255,255,255,0.8) !important; box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important; z-index: 1000 !important; right: 10px; top: 10px;">&times;</span>
-            
-            <div id="tk-modal-container" style="height: 100%;"></div>
-
+    <div class="modal-overlay" id="tk-modal" onclick="if(event.target==this) closeTKModal()">
+        <div class="modal-content iv-modal-content">
+            <span class="close-btn" onclick="closeTKModal()">&times;</span>
+            <div class="iv-iframe-container">
+                <div class="iv-iframe-loader" id="tk-loader">Đang tải công cụ...</div>
+                <iframe id="tk-iframe" onload="document.getElementById('tk-loader').style.display='none'"></iframe>
+            </div>
         </div>
     </div>
 
@@ -1243,54 +1259,16 @@
         }
         function closeTTModal() { document.getElementById('tt-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
 
-        /* ========================================================================= */
-        /* --- HÀM TẢI ĐỘNG (NATIVE FETCH) CHO CÔNG CỤ TƯƠNG KỴ TỪ GITHUB ---        */
-        /* ========================================================================= */
-        async function openTKModal() {
+        function openTKModal() {
             document.getElementById('tk-modal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
-
-            const container = document.getElementById('tk-modal-container');
-            
-            // Nếu chưa có giao diện thì mới chạy đi lấy code về (chỉ tải 1 lần)
-            if (container.innerHTML === '') {
-                container.innerHTML = '<div style="text-align:center; padding:60px 20px; color:#2e7d32; font-weight:bold; font-size:16px;">Đang tải công cụ Tương hợp - Tương kỵ... <i class="fas fa-spinner fa-spin"></i></div>';
-                try {
-                    // Gọi sang file tk-module.html anh vừa up lên Github
-                    const response = await fetch('https://princetq.github.io/tuongki/tk-module.html?t=' + new Date().getTime());
-                    if (!response.ok) throw new Error("Lỗi tải dữ liệu từ Github");
-                    const htmlContent = await response.text();
-
-                    // Kỹ thuật chèn HTML và thực thi Script an toàn
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(htmlContent, 'text/html');
-
-                    container.innerHTML = '';
-                    
-                    // 1. Chèn giao diện (DOM)
-                    Array.from(doc.body.childNodes).forEach(node => {
-                        container.appendChild(node.cloneNode(true));
-                    });
-
-                    // 2. Chèn và kích hoạt Javascript của file module
-                    Array.from(doc.getElementsByTagName('script')).forEach(oldScript => {
-                        const newScript = document.createElement('script');
-                        Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-                        newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-                        container.appendChild(newScript);
-                    });
-
-                } catch (error) {
-                    container.innerHTML = `<div style="text-align:center; padding:40px; color:red; font-weight:bold;">Không thể tải công cụ: ${error.message}</div>`;
-                }
+            const iframe = document.getElementById('tk-iframe');
+            if (!iframe.getAttribute('src')) {
+                document.getElementById('tk-loader').style.display = 'block';
+                iframe.setAttribute('src', "https://princetq.github.io/tuongki/");
             }
         }
-
-        function closeTKModal() {
-            document.getElementById('tk-modal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-        /* ========================================================================= */
+        function closeTKModal() { document.getElementById('tk-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
 
         function toggleChatWidget() {
             const widget = document.getElementById('chat-widget-window');
