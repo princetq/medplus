@@ -1348,20 +1348,26 @@
             }
         }
 
-       // --- CHỐT CHẶN 2 (PHIÊN BẢN CỰC MẠNH): QUÉT VÙNG VUỐT ---
-        document.addEventListener('touchmove', function(e) {
-            // Chỉ chạy khi body đang bị khóa (có modal mở)
+       // --- CHỐT CHẶN 2 (PHIÊN BẢN TỐI ƯU HIỆU NĂNG CHỐNG LAG) ---
+        var activeScrollArea = null;
+        var isUnscrollable = false;
+
+        // Bắt sự kiện khi ngón tay VỪA CHẠM vào màn hình (Chỉ tính toán 1 lần)
+        document.addEventListener('touchstart', function(e) {
             if (document.body.style.overflow === 'hidden') {
-                // Quét xem ngón tay có đang nằm trong phần nội dung được phép cuộn không
-                var scrollArea = e.target.closest('.modal-content, .chat-messages');
-                
-                // Trạng thái 1: Chạm ra ngoài vùng cuộn (chạm nền đen, viền, nút X, header...) -> Chặn ngay
-                if (!scrollArea) {
-                    e.preventDefault();
-                } 
-                // Trạng thái 2: Chạm vào vùng cuộn, nhưng nội dung vùng đó quá ngắn (không có thanh cuộn) -> Chặn để chống lỗi nảy trang của iOS
-                else if (scrollArea.scrollHeight <= scrollArea.clientHeight) {
-                    e.preventDefault();
+                activeScrollArea = e.target.closest('.modal-content, .chat-messages');
+                if (activeScrollArea) {
+                    // Đo đạc xem vùng này có bị ngắn quá không
+                    isUnscrollable = activeScrollArea.scrollHeight <= activeScrollArea.clientHeight;
+                }
+            }
+        }, { passive: true });
+
+        // Sự kiện khi ngón tay VUỐT (Không tính toán gì cả, chỉ chặn nếu cần)
+        document.addEventListener('touchmove', function(e) {
+            if (document.body.style.overflow === 'hidden') {
+                if (!activeScrollArea || isUnscrollable) {
+                    if (e.cancelable) e.preventDefault();
                 }
             }
         }, { passive: false });
