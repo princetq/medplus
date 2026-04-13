@@ -309,7 +309,10 @@
                 background: linear-gradient(135deg, #4caf50, #2e7d32);
                 border: 1.5px solid rgba(255,255,255,0.5) !important;
                 border-right: none !important;
-                border-radius: 20px 0 0 20px !important;
+                /* --- BẮT ĐẦU SỬA: ĐỔI TỪ BO TRÁI THÀNH BO PHẢI --- */
+                /* border-radius: 20px 0 0 20px !important; <- DÒNG CŨ */
+                border-radius: 0 20px 20px 0 !important; /* Sửa thành bo góc PHẢI-trên và PHẢI-dưới */
+                /* --- KẾT THÚC SỬA --- */
                 padding: 0 !important;
                 max-width: 0 !important;
                 opacity: 0 !important;
@@ -324,11 +327,12 @@
                 box-shadow: 0 4px 15px rgba(46,125,50,0.3) !important;
             }
             
-            /* KHI BẤM: CHỮ BẮN SANG TRÁI, PADDING-RIGHT 44PX CHỪA CHỖ CHO ICON PHÌNH TO */
+            /* KHI BẤM: CHỮ BẮN SANG TRÁI, PADDING-LEFT 44PX ĐỂ ICON PHÌNH TO BÊN PHẢI CHỮ */
             .iv-badge-btn.iv-expanded .iv-btn-text {
                 max-width: 260px !important;
                 opacity: 1 !important;
-                padding: 0 44px 0 16px !important; /* Chừa 44px bên phải để icon không đè chữ */
+                /* padding: 0 44px 0 16px !important; <- CŨ, padding-right 44px cho icon */
+                padding: 0 16px 0 44px !important; /* Sửa padding: phải 16px cho chữ, trái 44px cho icon phình to */
                 background: linear-gradient(135deg, #43a047, #1b5e20) !important;
                 box-shadow: 0 6px 20px rgba(46,125,50,0.5) !important;
             }
@@ -459,30 +463,6 @@
         .group-filter-select:hover{background-color:var(--g-bg-h)}
         .group-filter-select option{background:#fff;color:#333;font-weight:600}
         .group-filter-select.active-filter{border-color:var(--green-l);background-color:rgba(76,175,80,0.18);color:var(--green-d);box-shadow:0 2px 8px rgba(76,175,80,0.3)}
-
-        /* --- CSS THÊM CHO HIỆU ỨNG CHẠY CHỮ GROUP FILTER (KHÔI PHỤC) --- */
-        .group-filter-select { 
-            color: transparent !important; 
-            text-shadow: 0 0 0 transparent !important; 
-        }
-        .group-filter-select option { 
-            color: #333 !important; 
-            text-shadow: none !important;
-        }
-        .group-text-overlay {
-            position: absolute; left: 38px; right: 30px; top: 0; bottom: 0;
-            display: flex; align-items: center; pointer-events: none;
-            overflow: hidden; z-index: 5; container-type: inline-size;
-        }
-        #groupSelectedText {
-            color: var(--green); font-weight: 700; font-size: 13px;
-            white-space: nowrap; display: inline-block; padding-right: 15px;
-        }
-        .group-filter-select.active-filter + .group-text-overlay #groupSelectedText { color: var(--green-d); }
-        @media(max-width:600px){
-            .group-text-overlay { left: 34px; right: 28px; transition: opacity .2s ease; }
-            #groupSelectedText { font-size: 12px; }
-        }
 
         #chat-widget-btn{position:fixed;bottom:25px;right:25px;width:70px;height:45px;border-radius:25px;padding:3px;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,0.3);cursor:pointer;z-index:9999;transition:.3s;animation:botBreath 2.5s infinite ease-in-out;overflow:hidden}
         .btn-inner{width:100%;height:100%;background:linear-gradient(135deg,#2e7d32,#1b5e20);border-radius:22px;display:flex;align-items:center;justify-content:center;position:relative;z-index:2}
@@ -642,7 +622,6 @@
                 <select id="groupFilter" class="group-filter-select" onchange="filterByGroup()" title="Lọc theo nhóm dược lý">
                     <option value="">Tất cả nhóm dược lý</option>
                 </select>
-                <div class="group-text-overlay"><span id="groupSelectedText">Tất cả nhóm dược lý</span></div>
             </div>
             <div class="alphabet-filter" id="alphabetBox"></div>
             <button class="abc-toggle-btn" id="abcBtn" onclick="toggleAlphabet(event)">
@@ -852,11 +831,7 @@
     </div>
 
     <script>
-        // =========================================================================
-        // 1. DÁN LINK CỦA BẠN VÀO ĐÂY 
-        // =========================================================================
-        const MEDPLUS_API_URL = "https://princetq.github.io/medplus/medplus.json?t=" + new Date().getTime();
-        
+        const API_URL = "https://princetq.github.io/medplus/medplus.json?t=" + new Date().getTime();
         let rawData = [];
         let filteredData = [];
         let selectedLetter = '';
@@ -879,9 +854,6 @@
         const AI_MODELS = ["gemini-2.5-flash","gemini-3.1-flash-lite-preview","gemma-4-31b-it"];
         let currentKeyIndex = 0, currentModelIndex = 0, timerInterval, startTime, activeModelName = "";
 
-        // =========================================================================
-        // HÀM INIT SỬ DỤNG FETCH API SIÊU TỐC
-        // =========================================================================
         async function init() {
             const alphaBox = document.getElementById('alphabetBox');
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('').forEach(function(l) {
@@ -896,23 +868,9 @@
                 l.style.animationDuration = (Math.random()*8+10)+'s';
                 document.getElementById('leaf-container').appendChild(l);
             }
-            
             try {
-                if (MEDPLUS_API_URL.includes("ID_CUA_BAN_O_DAY")) {
-                    throw new Error("Bạn chưa dán Link Web App API vào biến MEDPLUS_API_URL ở đầu code Javascript.");
-                }
-
-                const response = await fetch(MEDPLUS_API_URL);
-                if (!response.ok) throw new Error("Lỗi kết nối HTTP: " + response.status);
-                
+                const response = await fetch(API_URL);
                 const data = await response.json();
-
-                if (!data || data.error) {
-                    document.getElementById('medCount').innerText = "Lỗi kết nối dữ liệu";
-                    alert(data ? data.error : "Không thể tải dữ liệu.");
-                    return;
-                }
-
                 data.sort(function(a, b) {
                     if (a.isNew && !b.isNew) return -1;
                     if (!a.isNew && b.isNew) return 1;
@@ -922,18 +880,15 @@
                     if (brandA > brandB) return 1;
                     return 0;
                 });
-                
                 rawData = data;
                 filteredData = [].concat(rawData);
                 buildGroupFilter(rawData);
                 document.getElementById('skeletonLoader').style.display = 'none';
                 renderInitial();
                 animateCounter(data.length);
-
             } catch (error) {
-                console.error("Lỗi Fetch:", error);
+                console.error("Lỗi:", error);
                 document.getElementById('medCount').innerText = "Lỗi tải dữ liệu";
-                document.getElementById('skeletonLoader').innerHTML = "<p style='text-align:center; grid-column:1/-1; color:#d32f2f; font-weight:bold; background: rgba(255,255,255,0.8); padding: 20px; border-radius: 12px;'>" + error.message + "</p>";
             }
 
             document.addEventListener('click', function(event) {
@@ -960,9 +915,6 @@
             loadMedicalData();
         }
 
-        // =========================================================================
-        // CÁC HÀM XỬ LÝ LOGIC UI & AI (GIỮ NGUYÊN HOÀN TOÀN)
-        // =========================================================================
         function animateCounter(target) {
             const el = document.getElementById('medCount');
             const duration = 1200;
@@ -1028,22 +980,9 @@
             const sel = document.getElementById('groupFilter');
             if (selectedGroup !== '') sel.classList.add('active-filter');
             else sel.classList.remove('active-filter');
-
-            const textSpan = document.getElementById('groupSelectedText');
-            textSpan.innerText = sel.options[sel.selectedIndex].text;
-            textSpan.style.animation = 'none'; 
-            
-            setTimeout(() => {
-                const container = textSpan.parentElement;
-                if (textSpan.scrollWidth > container.clientWidth) {
-                    textSpan.style.animation = 'scrollEnd 14s linear 1';
-                }
-            }, 50);
-
             filterData();
         }
 
-        /* --- XỬ LÝ CLICK CHO 4 NÚT CÔNG CỤ --- */
         function handleTKClick() {
             var btn = document.querySelector('.tk-badge-btn');
             var filterWrap = document.getElementById('groupFilterWrapper');
@@ -1110,16 +1049,14 @@
 
         function filterData() {
             const query = document.getElementById('q').value.toLowerCase();
-            
             const icon = document.getElementById('search-icon');
-            if (icon) {
-                if (query.length > 0) {
-                    icon.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>';
-                } else {
-                    icon.innerHTML = '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>';
-                }
+            if (query.length > 0) {
+                icon.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>';
+                icon.style.stroke = '#d32f2f';
+            } else {
+                icon.innerHTML = '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>';
+                icon.style.stroke = '#4caf50';
             }
-            
             filteredData = rawData.filter(function(i) {
                 const matchesSearch = i.brand.toLowerCase().includes(query) || (i.active && i.active.toLowerCase().includes(query));
                 const matchesLetter = selectedLetter === '' || i.brand.trim().toUpperCase().startsWith(selectedLetter);
@@ -1222,7 +1159,7 @@
                     drawAccordion('CÁCH DÙNG', item.usage) +
                     drawAccordion('CHỐNG CHỈ ĐỊNH - THẬN TRỌNG', item.sideEffects) +
                     drawAccordion('TƯƠNG TÁC THUỐC', item.interaction) +
-                    drawAccordion('TÁC DỤNG KHÔNG MONG MUỐN', item.adr) +
+                    drawAccordion('TÁC DỤNG KHÔNG MONG UMỐN', item.adr) +
                     drawAccordion('DƯỢC ĐỘNG HỌC - DƯỢC LỰC HỌC', item.pkpd) +
                     drawAccordion('LƯU Ý', item.notes) +
                     drawAccordion('TÀI LIỆU THAM KHẢO', item.reference) +
@@ -1492,22 +1429,18 @@
             }
         }
 
-        // --- CHỐT CHẶN 2 (PHIÊN BẢN TỐI ƯU HIỆU NĂNG CHỐNG LAG) ---
         var activeScrollArea = null;
         var isUnscrollable = false;
 
-        // Bắt sự kiện khi ngón tay VỪA CHẠM vào màn hình (Chỉ tính toán 1 lần)
         document.addEventListener('touchstart', function(e) {
             if (document.body.style.overflow === 'hidden') {
                 activeScrollArea = e.target.closest('.modal-content, .chat-messages');
                 if (activeScrollArea) {
-                    // Đo đạc xem vùng này có bị ngắn quá không
                     isUnscrollable = activeScrollArea.scrollHeight <= activeScrollArea.clientHeight;
                 }
             }
         }, { passive: true });
 
-        // Sự kiện khi ngón tay VUỐT (Không tính toán gì cả, chỉ chặn nếu cần)
         document.addEventListener('touchmove', function(e) {
             if (document.body.style.overflow === 'hidden') {
                 if (!activeScrollArea || isUnscrollable) {
