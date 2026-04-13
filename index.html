@@ -49,7 +49,7 @@
         .search-box:focus-within{max-width:320px;transform:scale(1.02);border-color:var(--green-l);background:rgba(255,255,255,0.55);box-shadow:0 0 0 3px rgba(76,175,80,0.15)}
         .search-box input{flex:1;border:none;background:transparent;outline:none;font-size:16px;color:var(--green);font-weight:600}
 
-        /* --- CSS NÚT TIÊM TRUYỀN, KHÁNG SINH, TƯƠNG TÁC THUỐC --- */
+        /* --- CSS NÚT CÔNG CỤ (TK, TT, KS, TIÊM TRUYỀN) --- */
         .iv-btn-wrapper {
             position: absolute;
             right: 0;
@@ -97,7 +97,7 @@
             filter: drop-shadow(-3px 5px 5px rgba(0,0,0,0.4));
         }
 
-        /* --- CSS MODAL TIÊM TRUYỀN, KS, TT THUỐC --- */
+        /* --- CSS MODAL CÔNG CỤ --- */
         .iv-modal-content {
             padding: 0 !important; 
             width: 100% !important;
@@ -557,6 +557,16 @@
             </div>
 
             <div class="iv-btn-wrapper">
+                <button class="iv-badge-btn tk-badge-btn" onclick="handleTKClick()" title="Mở công cụ tương hợp - tương kỵ">
+                    <svg class="syringe-icon tk-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g filter="drop-shadow(-2px 4px 4px rgba(0,0,0,0.3))">
+                            <path d="M42 22 v22 l-18 28 a8 8 0 0 0 7 12 h38 a8 8 0 0 0 7 -12 l-18 -28 v-22" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round"/>
+                            <path d="M36 22 h28" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+                            <path d="M29 62 h42 l4 6.5 a5 5 0 0 1 -4 7.5 h-42 a5 5 0 0 1 -4 -7.5 z" fill="#4caf50" opacity="0.85"/>
+                        </g>
+                    </svg>
+                    <span class="iv-btn-text">TƯƠNG HỢP - TƯƠNG KỴ</span>
+                </button>
                 <button class="iv-badge-btn tt-badge-btn" onclick="handleTTClick()" title="Mở công cụ tương tác thuốc">
                     <svg class="syringe-icon tt-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g filter="drop-shadow(-2px 4px 4px rgba(0,0,0,0.3))">
@@ -653,6 +663,16 @@
             <div class="iv-iframe-container">
                 <div class="iv-iframe-loader" id="tt-loader">Đang tải công cụ...</div>
                 <iframe id="tt-iframe" onload="document.getElementById('tt-loader').style.display='none'"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="tk-modal" onclick="if(event.target==this) closeTKModal()">
+        <div class="modal-content iv-modal-content">
+            <span class="close-btn" onclick="closeTKModal()">&times;</span>
+            <div class="iv-iframe-container">
+                <div class="iv-iframe-loader" id="tk-loader">Đang tải công cụ...</div>
+                <iframe id="tk-iframe" onload="document.getElementById('tk-loader').style.display='none'"></iframe>
             </div>
         </div>
     </div>
@@ -921,6 +941,23 @@
             filterData();
         }
 
+        /* --- THÊM HÀM CLICK CHO CÔNG CỤ TƯƠNG HỢP TƯƠNG KỴ MỚI --- */
+        function handleTKClick() {
+            var btn = document.querySelector('.tk-badge-btn');
+            var filterWrap = document.getElementById('groupFilterWrapper');
+            if (window.innerWidth > 600) { openTKModal(); return; }
+            if (btn.classList.contains('iv-expanded')) { openTKModal(); return; }
+            btn.classList.add('iv-expanded');
+            if (filterWrap) filterWrap.classList.add('temp-hide');
+            setTimeout(function() {
+                openTKModal();
+                setTimeout(function() { 
+                    btn.classList.remove('iv-expanded'); 
+                    if (filterWrap) filterWrap.classList.remove('temp-hide');
+                }, 700);
+            }, 520);
+        }
+
         function handleTTClick() {
             var btn = document.querySelector('.tt-badge-btn');
             var filterWrap = document.getElementById('groupFilterWrapper');
@@ -954,7 +991,8 @@
         }
 
         function handleIVClick() {
-            var btn = document.querySelectorAll('.iv-badge-btn')[2]; 
+            // Cập nhật index lên 3 vì nút TK mới được chèn lên đầu
+            var btn = document.querySelectorAll('.iv-badge-btn')[3]; 
             var filterWrap = document.getElementById('groupFilterWrapper');
             if (window.innerWidth > 600) { openIVModal(); return; }
             if (btn.classList.contains('iv-expanded')) { openIVModal(); return; }
@@ -1135,6 +1173,18 @@
             }
         }
         function closeTTModal() { document.getElementById('tt-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
+
+        /* --- THÊM HÀM MỞ/ĐÓNG MODAL TƯƠNG HỢP TƯƠNG KỴ --- */
+        function openTKModal() {
+            document.getElementById('tk-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            const iframe = document.getElementById('tk-iframe');
+            if (!iframe.getAttribute('src')) {
+                document.getElementById('tk-loader').style.display = 'block';
+                iframe.setAttribute('src', "https://princetq.github.io/tuongki/");
+            }
+        }
+        function closeTKModal() { document.getElementById('tk-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
 
         function toggleChatWidget() {
             const widget = document.getElementById('chat-widget-window');
@@ -1348,7 +1398,7 @@
             }
         }
 
-       // --- CHỐT CHẶN 2 (PHIÊN BẢN TỐI ƯU HIỆU NĂNG CHỐNG LAG) ---
+        // --- CHỐT CHẶN 2 (PHIÊN BẢN TỐI ƯU HIỆU NĂNG CHỐNG LAG) ---
         var activeScrollArea = null;
         var isUnscrollable = false;
 
