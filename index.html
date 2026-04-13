@@ -874,7 +874,7 @@
         }
 
         // =========================================================================
-        // CÁC HÀM XỬ LÝ LOGIC UI & AI (GIỮ NGUYÊN HOÀN TOÀN)
+        // CÁC HÀM XỬ LÝ LOGIC UI & AI
         // =========================================================================
         function animateCounter(target) {
             const el = document.getElementById('medCount');
@@ -922,8 +922,9 @@
         }
 
         function buildGroupFilter(data) {
+            // Đã cập nhật .normalize('NFC') và xóa khoảng trắng thừa
             const groups = [...new Set(
-                data.map(function(d) { return String(d.group || '').trim(); })
+                data.map(function(d) { return String(d.group || '').normalize('NFC').replace(/\s+/g, ' ').trim(); })
                     .filter(function(g) { return g !== ''; })
             )].sort(function(a,b){ return a.localeCompare(b,'vi'); });
             const select = document.getElementById('groupFilter');
@@ -1036,7 +1037,9 @@
             filteredData = rawData.filter(function(i) {
                 const matchesSearch = i.brand.toLowerCase().includes(query) || (i.active && i.active.toLowerCase().includes(query));
                 const matchesLetter = selectedLetter === '' || i.brand.trim().toUpperCase().startsWith(selectedLetter);
-                const matchesGroup = selectedGroup === '' || String(i.group || '').trim() === selectedGroup;
+                // Đã cập nhật .normalize('NFC') vào lúc search filter
+                const itemGroup = String(i.group || '').normalize('NFC').replace(/\s+/g, ' ').trim();
+                const matchesGroup = selectedGroup === '' || itemGroup === selectedGroup;
                 return matchesSearch && matchesLetter && matchesGroup;
             });
             document.getElementById('medCount').innerText = filteredData.length + ' thuốc';
@@ -1301,7 +1304,7 @@
             setTimeout(function() { chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' }); }, 100);
 
             const promptText = "Đây là hình ảnh do người dùng tải lên. \n" +
-            "NẾU LÀ ĐƠN THUỐC: Tuyệt đối không liệt kê các bước của quy trình đăng ký khám. Hãy trích xuất thông tin Họ và tên (tên bệnh nhân), Tên bác sỹ (ở mục ký số bởi), Nội dung chẩn đoán và các thuốc trên đơn. Sau đó trả lời CHÍNH XÁC theo mẫu sau:\n" +
+            "NẾU LÀ ĐƠN THUỐC: Tuyệt đối không liệt kê các bước của quy trình đăng ký khám. Hãy trích xuất thông vị Họ và tên (tên bệnh nhân), Tên bác sỹ (ở mục ký số bởi), Nội dung chẩn đoán và các thuốc trên đơn. Sau đó trả lời CHÍNH XÁC theo mẫu sau:\n" +
             "'Xin chào **[Họ và tên]** bạn đang cầm trên tay đơn thuốc của **<span style=\"color:red\">Bệnh viện Đa khoa tỉnh Tuyên Quang</span>** được kê bởi bác sĩ **[tên bác sĩ]** với chẩn đoán: [nội dung chẩn đoán]. **Chú ý: uống thuốc đúng thời gian và liều dùng trong mục \"Cách dùng\" ở trên đơn**. Đơn thuốc của bạn có những thuốc sau (với đơn có từ 2 thuốc trở lên nếu chỉ có 1 thuốc thì bỏ từ \"những\" đi): [liệt kê tên thuốc, hoạt chất, hàm lượng, dạng và tờ HDSD (hướng dẫn sử dụng) dựa trên dữ liệu y khoa bên dưới]. Nếu không đúng tên biệt dược trong dữ liệu, hãy gợi ý thuốc chứa cùng hoạt chất trên đơn có trong dữ liệu với đầy đủ tên, hoạt chất, hàm lượng, dạng và hướng dẫn sử dụng. Chúc bạn thật nhiều niềm vui và sức khỏe!'\n" +
             "NẾU KHÔNG PHẢI ĐƠN THUỐC: Hãy phân tích bình thường (quét và trích xuất TÊN THUỐC hoặc HOẠT CHẤT. Sau đó đưa ra thông tin chi tiết về: Biệt dược, Hàm lượng, Dạng thuốc, và Hướng dẫn sử dụng. Lưu ý: Nếu có nhiều biệt dược chứa hoạt chất đó, hãy liệt kê rõ ràng).\n\n" +
             (medicalContext ? "Dữ liệu tham khảo (Medical Context):\n" + medicalContext : "");
