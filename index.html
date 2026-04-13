@@ -279,10 +279,10 @@
                 height:22px !important;
                 left: 50% !important;
                 top: 50% !important;
-                /* --- SỬA LỖI TẠI ĐÂY: BỎ !IMPORTANT ĐỂ ANIMATION CHIẾM QUYỀN ƯU TIÊN --- */
+                /* --- SỬA LỖI ICON: BỎ !IMPORTANT ĐỂ ANIMATION CHIẾM QUYỀN ƯU TIÊN --- */
                 transform: translate(-50%, -50%) scale(1) rotate(0deg); 
                 filter:drop-shadow(-1px 2px 2px rgba(0,0,0,0.25)) !important;
-                /* --- SỬA LỖI TẠI ĐÂY: BỎ !IMPORTANT ĐỂ KHÔNG XUNG ĐỘT VỚI ANIMATION --- */
+                /* --- SỬA LỖI ICON: BỎ !IMPORTANT ĐỂ KHÔNG XUNG ĐỘT VỚI ANIMATION --- */
                 transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); 
                 z-index: 30 !important; /* Đè lên khối chữ */
             }
@@ -296,7 +296,6 @@
                 80% { transform: translate(-50%, -50%) scale(1.9) rotate(-5deg); }
                 100% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
             }
-            /* Áp dụng animation cho tất cả icon syringe khi nút được expanded */
             .iv-badge-btn.iv-expanded .syringe-icon {
                 animation: iconPopWiggle 1.2s ease-in-out infinite !important;
                 filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.5)) !important;
@@ -311,8 +310,8 @@
                 line-height: 38px !important;
                 background: linear-gradient(135deg, #4caf50, #2e7d32);
                 border: 1.5px solid rgba(255,255,255,0.5) !important;
-                border-right: none !important;
-                border-radius: 20px 0 0 20px !important;
+                /* --- SỬA LỖI BO GÓC BÊN PHẢI: Khôi phục bo tròn toàn diện --- */
+                border-radius: 20px !important; 
                 padding: 0 !important;
                 max-width: 0 !important;
                 opacity: 0 !important;
@@ -450,7 +449,7 @@
         @keyframes fall{0%{transform:translateY(-5vh) rotate(0);opacity:0}10%{opacity:1}100%{transform:translateY(105vh) rotate(360deg);opacity:0}}
 
         ::-webkit-scrollbar{width:7px;height:7px}
-        ::-webkit-scrollbar track{background:transparent}
+        ::-webkit-scrollbar-track{background:transparent}
         ::-webkit-scrollbar-thumb{background:rgba(0,0,0,0);border-radius:10px}
         ::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,0.35)}
         /* --- NHÓM DƯỢC LÝ FILTER --- */
@@ -1215,7 +1214,7 @@
                     drawRow('HOẠT CHẤT', item.active) +
                     drawRow('NHÓM DƯỢC LÝ', item.group) +
                     drawRow('DẠNG BÀO CHẾ', item.form) +
-                    drawRow('HÀM LƯỢNG', item.strength) +
+                    drawRow('HÀM LƯỢ lượng', item.strength) +
                     drawRow('ĐÓNG GÓI', item.pack) +
                 "</div>" +
                 (item.link ? "<button class=\"notion-btn\" onclick=\"openNotionPopup('" + item.link + "')\">📄 XEM TỜ HƯỚNG DẪN SỬ DỤNG</button>" : "") +
