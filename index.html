@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Thông Tin Thuốc - MedPlus</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -110,7 +110,7 @@
             animation: flaskShake 0.45s ease-in-out forwards !important;
         }
 
-        /* --- CSS MODAL CÁC CÔNG CỤ (IFRAME) --- */
+        /* --- CSS MODAL CÁC CÔNG CỤ --- */
         .iv-modal-content {
             padding: 0 !important; 
             width: 100% !important;
@@ -217,7 +217,7 @@
         
         @keyframes scrollEnd {0%, 15% { transform: translateX(0); }85%, 100% { transform: translateX(calc(100cqw - 100%)); }}
 
-        /* --- MOBILE LAYOUT: GIẢI PHÁP UNIFIED PILL (VIÊN THUỐC ĐỒNG NHẤT 100%) --- */
+        /* --- MOBILE LAYOUT --- */
         .iv-btn-text{display:inline-block;overflow:hidden;white-space:nowrap;max-width:200px;opacity:1;vertical-align:middle;transition:max-width .4s cubic-bezier(.4,0,.2,1),opacity .35s ease,padding .3s ease}
         
         @media(max-width:600px){
@@ -246,7 +246,7 @@
                 margin: 0;
                 display: flex;
                 gap: 6px;
-                height: 36px !important;
+                height: 36px !important; /* Đóng băng lưới dọc */
                 align-items: center !important;
             }
             .ks-text-pc { display: none !important; }
@@ -254,82 +254,75 @@
             
             .count-badge{grid-column: 1 / -1;grid-row: 4 !important;justify-self: flex-start;font-size: 13px;padding: 4px 10px;margin: 4px 0 0 0; order: unset;}
             
-            /* 1. ĐÂY LÀ GIẢI PHÁP NÚT ĐỒNG NHẤT (UNIFIED PILL) - KHÔNG DÙNG ABSOLUTE CHỞ CHỮ */
-            .iv-badge-btn {
-                min-width: 36px !important;
-                max-width: 36px !important; /* Mặc định là hình tròn */
-                height: 36px !important;
-                padding: 0 !important;
-                border-radius: 18px !important; /* Để luôn là viên nhộng */
-                display: inline-flex !important;
-                justify-content: center !important;
-                align-items: center !important;
+            /* NÚT TRÒN CỐ ĐỊNH */
+            .iv-badge-btn{
+                width:36px !important;
+                height:36px !important;
+                padding:0 !important;
+                border-radius:50% !important;
+                display:block !important;
                 position: relative !important;
                 z-index: 10 !important;
                 border: 1.5px solid rgba(255,255,255,0.5) !important;
+            }
+            
+            /* THỦ THUẬT: VẼ 1 KHỐI NỀN TRÙM KÍN NÚT, GIẢ LÀM NÚT PHÌNH RA */
+            .iv-badge-btn .iv-btn-text {
+                position: absolute !important;
+                right: 0 !important; /* Neo từ mép phải của nút tròn */
+                top: -2px !important; /* Trùm cao hơn nút gốc để che viền */
+                height: 40px !important; 
+                line-height: 38px !important;
+                background: linear-gradient(135deg, #43a047, #1b5e20) !important; /* Đổi sang màu focus */
+                border: 1.5px solid rgba(255,255,255,0.5) !important;
+                border-radius: 20px !important; /* Bo tròn hoàn toàn 2 đầu */
+                padding: 0 !important;
+                max-width: 0 !important;
+                opacity: 0 !important;
+                overflow: hidden !important;
+                transition: max-width .4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity .3s ease, padding .3s ease !important;
+                white-space: nowrap !important;
+                z-index: 20 !important; /* Che luôn cái nút tròn gốc ở dưới */
+                pointer-events: none;
+                font-size: 12px !important;
+                font-weight: 800 !important;
+                color: #fff !important;
                 box-sizing: border-box !important;
-                /* Transition max-width thay vì width để không bị giật, transition background mượt mà */
-                transition: max-width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding 0.4s ease, background 0.3s ease !important;
-                overflow: visible !important; /* Để icon tràn ra viền */
+                box-shadow: 0 6px 20px rgba(46,125,50,0.5) !important;
             }
             
-            /* Kéo nút lên ưu tiên, đổi màu và mở rộng max-width */
-            .iv-badge-btn.iv-expanded {
-                z-index: 100 !important;
-                max-width: 250px !important; /* Đủ rộng để hiển thị chữ */
-                padding: 0 14px 0 8px !important;
-                justify-content: flex-start !important; /* Dồn icon về mép trái */
-                background: linear-gradient(135deg, #43a047, #1b5e20) !important;
+            /* KHI BẤM: KHỐI CHỮ MỞ RỘNG (Nhìn y hệt nút phình ra từ phải sang trái) */
+            .iv-badge-btn.iv-expanded .iv-btn-text {
+                max-width: 240px !important;
+                opacity: 1 !important;
+                padding: 0 16px 0 38px !important; /* Căn chữ lùi vào nhường chỗ cho icon */
             }
             
-            /* 2. CĂN CHỈNH ICON */
-            .iv-badge-btn .syringe-icon {
-                position: static !important; /* Về flow bình thường */
-                width: 22px !important;
-                height: 22px !important;
-                flex-shrink: 0 !important;
-                filter: drop-shadow(-1px 2px 2px rgba(0,0,0,0.25)) !important;
-                transform: scale(1) rotate(0deg) !important;
+            /* ĐƯA ICON VÀO CHÍNH GIỮA, NỔI LÊN TRÊN CÙNG ĐỂ CHE PHẦN TIẾP GIÁP */
+            .iv-badge-btn .syringe-icon{
+                position:absolute !important;
+                width:22px !important;
+                height:22px !important;
+                left: 50% !important;
+                top: 50% !important;
+                transform: translate(-50%, -50%) scale(1) rotate(0deg) !important;
+                filter:drop-shadow(-1px 2px 2px rgba(0,0,0,0.25)) !important;
                 transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+                z-index: 30 !important; /* Nổi đè lên trên khối chữ */
             }
             
             /* ANIMATION KHI CLICK: ICON TO TRÀN RA NGOÀI VÀ ĐỘNG ĐẬY LIÊN TỤC */
             @keyframes iconPopWiggle {
-                0% { transform: scale(1.6) rotate(0deg); }
-                20% { transform: scale(1.6) rotate(12deg); }
-                40% { transform: scale(1.6) rotate(-8deg); }
-                60% { transform: scale(1.6) rotate(10deg); }
-                80% { transform: scale(1.6) rotate(-5deg); }
-                100% { transform: scale(1.6) rotate(0deg); }
+                0% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
+                20% { transform: translate(-50%, -50%) scale(1.9) rotate(12deg); }
+                40% { transform: translate(-50%, -50%) scale(1.9) rotate(-8deg); }
+                60% { transform: translate(-50%, -50%) scale(1.9) rotate(10deg); }
+                80% { transform: translate(-50%, -50%) scale(1.9) rotate(-5deg); }
+                100% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
             }
             .iv-badge-btn.iv-expanded .syringe-icon {
                 animation: iconPopWiggle 1.2s ease-in-out infinite !important;
                 filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.5)) !important;
-                z-index: 10 !important; 
-            }
-            
-            /* 3. XỬ LÝ CHỮ BÊN TRONG CÙNG 1 KHỐI VỚI NÚT */
-            .iv-badge-btn .iv-btn-text {
-                position: static !important; /* Nằm cạnh icon theo luồng Flexbox */
-                display: inline-block !important;
-                max-width: 0 !important;
-                opacity: 0 !important;
-                overflow: hidden !important;
-                white-space: nowrap !important;
-                font-size: 12px !important;
-                color: #fff !important;
-                line-height: 34px !important; /* Canh giữa hoàn hảo trong nút 36px */
-                background: transparent !important;
-                border: none !important;
-                padding: 0 !important;
-                margin-left: 0 !important; /* Bình thường không có margin */
-                transition: max-width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease, margin-left 0.3s ease !important;
-            }
-            
-            .iv-badge-btn.iv-expanded .iv-btn-text {
-                max-width: 200px !important;
-                opacity: 1 !important;
-                margin-left: 8px !important; /* Đẩy chữ cách icon 1 đoạn khi mở */
             }
             
             /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ */
@@ -385,21 +378,6 @@
             .chat-widget-container .send-button{width:38px;height:38px;right:3px;border:1px solid rgba(255,255,255,0.4)}
             
             .chat-widget-container .disclaimer{font-size:14px;padding:3px 10px}
-
-            /* --- BẢO VỆ CHỐNG CRASH iOS KHI DÙNG IFRAME VÀ 2 NGÓN TAY ZOOM --- */
-            .modal-overlay, .iv-iframe-container {
-                backdrop-filter: none !important;
-                -webkit-backdrop-filter: none !important;
-            }
-            .modal-overlay {
-                background: rgba(0,0,0,0.85) !important; /* Đổi thành nền đen trong suốt nhẹ, thân thiện RAM */
-            }
-            .iv-iframe-container {
-                background: #fff !important;
-                border: none !important;
-                transform: translateZ(0); /* Ép GPU xử lý mượt mà khi zoom */
-                -webkit-transform: translateZ(0);
-            }
         }
         @media (min-width: 601px) {
             .product-grid.list-view .glass-card:hover .marquee-track {animation: scrollEnd 12s linear 1;}
@@ -539,67 +517,6 @@
         
         .chat-widget-container .disclaimer{background:rgba(255,248,225,0.92);border-left:4px solid #ffc107;padding:5px 12px;border-radius:10px;font-size:15px;line-height:1.4;width:100%;margin-top:6px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
 
-        /* --- CẬP NHẬT KÍCH THƯỚC MODAL CHO PC --- */
-        @media (min-width: 601px) {
-            .iv-modal-content {
-                max-width: 710px !important; 
-                height: 95vh !important; 
-                max-height: 900px !important; 
-            }
-        }
-        /* ==============================================================
-           BẢN VÁ LỖI HIỂN THỊ NATIVE TRÊN SAFARI / MOBILE (GITHUB PAGES)
-           ============================================================== */
-        
-        /* 1. Khóa chiều rộng, chống tràn viền ngang (Dùng tốt cho cả PC và Mobile) */
-        html, body {
-            width: 100vw;
-            overflow-x: hidden;
-            min-height: 100dvh; 
-        }
-
-        /* 2. KHU VỰC CÁCH LY: CHỈ ÁP DỤNG CHO ĐIỆN THOẠI (Dưới 600px) */
-        @media (max-width: 600px) {
-            /* Ép chiều cao Modal trên mobile không bị lẹm đáy */
-            .iv-modal-content {
-                height: 85dvh !important; 
-                max-height: 85dvh !important;
-            }
-            
-            /* THOÁT BẪY SAFARI DÀNH CHO CÁC DÒNG IPHONE PRO MAX */
-            #chat-widget-btn {
-                bottom: calc(60px + env(safe-area-inset-bottom)) !important; 
-            }
-            .back-top {
-                bottom: calc(60px + env(safe-area-inset-bottom)) !important;
-            }
-            
-            /* Chỉnh khung chat AI */
-            #chat-widget-window {
-                height: 85dvh !important;
-                max-height: 85dvh !important;
-            }
-
-            /* --- BẠN DÁN ĐOẠN CSS MỚI VÀO NGAY ĐÂY --- */
-            .modal-content:not(.iv-modal-content) {
-                align-self: flex-start !important;
-                margin-top: 20px !important;
-                max-height: 85dvh !important;
-            }
-        }
-        
-        /* --- CHỐT CHẶN 1 (PHIÊN BẢN CỰC MẠNH): ÉP CỨNG NỀN --- */
-        body[style*="overflow: hidden"] {
-            height: 100dvh !important; /* Khóa chết chiều cao body khi mở modal */
-            overscroll-behavior: none !important;
-        }
-        .modal-overlay, #image-zoom-overlay {
-            overscroll-behavior: none !important;
-        }
-        .modal-content, .chat-messages, .iv-iframe-container {
-            overscroll-behavior: contain !important; /* Ép lực cuộn chỉ giới hạn bên trong modal */
-            -webkit-overflow-scrolling: touch !important; /* Hỗ trợ cuộn cực mượt trên iOS */
-        }
     </style>
 </head>
 <body>
