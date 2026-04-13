@@ -97,7 +97,7 @@
             filter: drop-shadow(-3px 5px 5px rgba(0,0,0,0.4));
         }
 
-        /* --- HIỆU ỨNG LẮC BÌNH (TƯƠNG KỴ) --- */
+        /* --- HIỆU ỨNG LẮC BÌNH (TƯƠNG KỴ) PC --- */
         @keyframes flaskShake {
             0% { transform: translate(2px, 2px) scale(1.1) rotate(0deg); }
             25% { transform: translate(2px, 2px) scale(1.1) rotate(15deg); }
@@ -217,8 +217,9 @@
         
         @keyframes scrollEnd {0%, 15% { transform: translateX(0); }85%, 100% { transform: translateX(calc(100cqw - 100%)); }}
 
-        /* --- MOBILE LAYOUT --- */
+        /* --- MOBILE LAYOUT VỚI GIẢI PHÁP CHỐNG LAYOUT SHIFT 100% --- */
         .iv-btn-text{display:inline-block;overflow:hidden;white-space:nowrap;max-width:200px;opacity:1;vertical-align:middle;transition:max-width .4s cubic-bezier(.4,0,.2,1),opacity .35s ease,padding .3s ease}
+        
         @media(max-width:600px){
             body{padding:20px 0}
             .product-grid{grid-template-columns:repeat(2,1fr);gap:10px}
@@ -235,61 +236,97 @@
             .alphabet-filter{grid-column: 1 / -1;grid-row: 2;width: 100%;max-width: 100%;justify-content: flex-start;margin-top: 8px;overflow-x: auto; order: unset;}
             .alphabet-filter[style*="display: flex"] {display: flex !important;}
             
-            /* KHOÁ CHẶT CHIỀU CAO ROW 3 (CHỐNG LỖI KÉO GIÃN GRID) */
+            /* KHOÁ CHẶT VỊ TRÍ, KHÔNG GIAN CỦA KHUNG CHỨA NÚT */
             .iv-btn-wrapper {
-                position: static !important;
+                position: relative !important;
                 grid-column: 4;
                 grid-row: 3;
                 justify-self: end;
                 align-self: center;
                 margin: 0;
                 display: flex;
-                gap: 2px;
+                gap: 6px;
                 height: 36px !important;
-                min-height: 36px !important;
-                max-height: 36px !important;
-                flex-wrap: nowrap !important;
+                align-items: center !important;
             }
             .ks-text-pc { display: none !important; }
             .ks-text-mobile { display: inline !important; }
             
             .count-badge{grid-column: 1 / -1;grid-row: 4 !important;justify-self: flex-start;font-size: 13px;padding: 4px 10px;margin: 4px 0 0 0; order: unset;}
-            .iv-btn-text{max-width:0 !important;opacity:0 !important;}
             
-            /* KHOÁ CHIỀU CAO & CHẶN XUỐNG DÒNG CỦA TỪNG NÚT */
+            /* NÚT TRÒN CỐ ĐỊNH, KHÔNG BAO GIỜ THAY ĐỔI KÍCH THƯỚC TRÊN GRID */
             .iv-badge-btn{
                 width:36px !important;
                 height:36px !important;
-                min-height:36px !important;
-                max-height:36px !important;
                 padding:0 !important;
                 border-radius:50% !important;
-                overflow:hidden !important;
-                display:inline-flex !important;
-                align-items:center !important;
-                justify-content:center !important;
-                font-size:12px !important;
-                flex-shrink: 0 !important;
+                display:block !important;
+                position: relative !important;
+                z-index: 10 !important;
+                border: 1.5px solid rgba(255,255,255,0.5) !important;
+            }
+            
+            /* Kéo nút lên ưu tiên hiển thị khi được bấm */
+            .iv-badge-btn.iv-expanded {
+                z-index: 100 !important;
+                background: linear-gradient(135deg, #43a047, #1b5e20) !important;
+            }
+            
+            /* ĐƯA ICON VÀO CHÍNH GIỮA NÚT TRÒN */
+            .iv-badge-btn .syringe-icon{
+                position:absolute !important;
+                width:22px !important;
+                height:22px !important;
+                left: 50% !important;
+                top: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                filter:drop-shadow(-1px 2px 2px rgba(0,0,0,0.25)) !important;
+            }
+            
+            /* TEXT SẼ ẨN SAU NÚT TRÒN, DÙNG ABSOLUTE ĐỂ KHÔNG ÉP GRID */
+            .iv-badge-btn .iv-btn-text {
+                position: absolute !important;
+                right: 16px !important; 
+                top: -1.5px !important;
+                height: 36px !important;
+                line-height: 34px !important;
+                background: linear-gradient(135deg, #4caf50, #2e7d32);
+                border: 1.5px solid rgba(255,255,255,0.5) !important;
+                border-right: none !important;
+                border-radius: 18px 0 0 18px !important;
+                padding: 0 !important;
+                max-width: 0 !important;
+                opacity: 0 !important;
+                overflow: hidden !important;
+                transition: max-width .4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity .3s ease, padding .3s ease !important;
                 white-space: nowrap !important;
+                z-index: -1 !important;
+                pointer-events: none;
+                font-size: 12px !important;
+                color: #fff !important;
             }
-            .iv-badge-btn .syringe-icon{position:static !important;width:26px !important;height:26px !important;left:auto !important;top:auto !important;transform:none !important;filter:drop-shadow(-1px 2px 2px rgba(0,0,0,0.25)) !important;flex-shrink:0 !important;}
             
-            /* XỬ LÝ PADDING 0 THEO TRỤC DỌC ĐỂ KHÔNG PHÌNH NÚT KHI MỞ RỘNG */
-            .iv-badge-btn.iv-expanded{
-                width:auto !important;
-                height:36px !important;
-                min-height:36px !important;
-                max-height:36px !important;
-                border-radius:18px !important;
-                padding:0 12px 0 8px !important;
-                overflow:hidden !important;
-                justify-content:flex-start !important;
-                gap:5px !important;
+            /* KHI BẤM: CHỮ BẮN SANG TRÁI, PHỦ KÍN CÁC NÚT BÊN CẠNH */
+            .iv-badge-btn.iv-expanded .iv-btn-text {
+                max-width: 220px !important;
+                opacity: 1 !important;
+                padding: 0 16px 0 14px !important;
+                background: linear-gradient(135deg, #43a047, #1b5e20) !important;
             }
-            .iv-badge-btn.iv-expanded .iv-btn-text{max-width:200px !important;opacity:1 !important;}
-            .iv-badge-btn.iv-expanded .syringe-icon{position:static !important;width:22px !important;height:22px !important;left:auto !important;top:auto !important;}
             
-            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ */
+            /* HIỆU ỨNG LẮC BÌNH TRÊN MOBILE */
+            @keyframes flaskShakeMobile {
+                0% { transform: translate(-50%, -50%) scale(1.1) rotate(0deg); }
+                25% { transform: translate(-50%, -50%) scale(1.1) rotate(15deg); }
+                50% { transform: translate(-50%, -50%) scale(1.1) rotate(-5deg); }
+                75% { transform: translate(-50%, -50%) scale(1.1) rotate(15deg); }
+                100% { transform: translate(-50%, -50%) scale(1.1) rotate(12deg); }
+            }
+            .iv-badge-btn.iv-expanded .tk-icon {
+                animation: flaskShakeMobile 0.45s ease-in-out forwards !important;
+            }
+            
+            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ */
             .group-filter-wrapper{
                 grid-column: 1 / 4;
                 grid-row: 3;
@@ -299,19 +336,19 @@
                 order: unset;
                 align-self: center;
                 justify-self: start;
-                flex-shrink:1; 
+                height: 36px !important;
                 overflow: hidden; 
                 transition: max-width .4s cubic-bezier(.4,0,.2,1) !important;
-                height: 36px !important;
-                min-height: 36px !important;
-                max-height: 36px !important;
             }
-            .group-filter-wrapper.temp-hide{max-width: 44px !important; min-width: 44px !important; pointer-events: none;}
+            .group-filter-wrapper.temp-hide{
+                max-width: 44px !important; 
+                min-width: 44px !important; 
+                pointer-events: none;
+            }
             .group-filter-wrapper.temp-hide .group-filter-select{padding: 0 !important; background-image: none !important;}
             .group-filter-wrapper.temp-hide .group-text-overlay{opacity: 0 !important;}
             .group-filter-wrapper .group-filter-select{width:100%;max-width:185px;min-width:0;height:34px;font-size:12px;padding:0 28px 0 34px;}
 
-            
             .letter-btn{flex-shrink:0}
             .header-main{gap:8px;padding:15px 12px}
             .zen-logo img{width:48px;height:48px}
@@ -505,7 +542,7 @@
             #groupSelectedText { font-size: 12px; }
         }
 
-        /* --- CẬP NHẬT KÍCH THƯỚC MODAL TIÊM TRUYỀN CHO PC --- */
+        /* --- CẬP NHẬT KÍCH THƯỚC MODAL CHO PC --- */
         @media (min-width: 601px) {
             .iv-modal-content {
                 max-width: 710px !important; 
@@ -1054,7 +1091,6 @@
         }
 
         function handleIVClick() {
-            // Nút Tiêm truyền giờ là nút thứ 4 trong danh sách (index = 3)
             var btn = document.querySelectorAll('.iv-badge-btn')[3]; 
             var filterWrap = document.getElementById('groupFilterWrapper');
             if (window.innerWidth > 600) { openIVModal(); return; }
@@ -1073,7 +1109,6 @@
         function filterData() {
             const query = document.getElementById('q').value.toLowerCase();
             
-            // --- ĐỔI ICON TÌM KIẾM <-> DẤU X ---
             const icon = document.getElementById('search-icon');
             if (icon) {
                 if (query.length > 0) {
