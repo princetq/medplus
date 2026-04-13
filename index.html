@@ -97,18 +97,17 @@
             filter: drop-shadow(-3px 5px 5px rgba(0,0,0,0.4));
         }
 
-        /* --- HIỆU ỨNG NGHIÊNG & LẮC CHO ICON BÌNH HOÁ HỌC (TK) --- */
+        /* --- HIỆU ỨNG LẮC BÌNH (TƯƠNG KỴ) --- */
         @keyframes flaskShake {
             0% { transform: translate(2px, 2px) scale(1.1) rotate(0deg); }
-            20% { transform: translate(2px, 2px) scale(1.1) rotate(15deg); }
-            40% { transform: translate(2px, 2px) scale(1.1) rotate(-5deg); }
-            60% { transform: translate(2px, 2px) scale(1.1) rotate(15deg); }
-            80% { transform: translate(2px, 2px) scale(1.1) rotate(5deg); }
-            100% { transform: translate(2px, 2px) scale(1.1) rotate(12deg); } /* Dừng lại ở tư thế nghiêng phải */
+            25% { transform: translate(2px, 2px) scale(1.1) rotate(15deg); }
+            50% { transform: translate(2px, 2px) scale(1.1) rotate(-5deg); }
+            75% { transform: translate(2px, 2px) scale(1.1) rotate(15deg); }
+            100% { transform: translate(2px, 2px) scale(1.1) rotate(12deg); }
         }
         .iv-badge-btn:hover .tk-icon,
         .iv-badge-btn.iv-expanded .tk-icon {
-            animation: flaskShake 0.45s ease-in-out forwards;
+            animation: flaskShake 0.45s ease-in-out forwards !important;
         }
 
         /* --- CSS MODAL TIÊM TRUYỀN, KS, TT THUỐC --- */
@@ -236,6 +235,7 @@
             .alphabet-filter{grid-column: 1 / -1;grid-row: 2;width: 100%;max-width: 100%;justify-content: flex-start;margin-top: 8px;overflow-x: auto; order: unset;}
             .alphabet-filter[style*="display: flex"] {display: flex !important;}
             
+            /* KHOÁ CHIỀU CAO CỦA CỤM NÚT, CHỐNG GIÃN GRID */
             .iv-btn-wrapper {
                 position: static !important;
                 grid-column: 4;
@@ -245,6 +245,7 @@
                 margin: 0;
                 display: flex;
                 gap: 2px;
+                height: 36px !important;
             }
             .ks-text-pc { display: none !important; }
             .ks-text-mobile { display: inline !important; }
@@ -254,12 +255,11 @@
             .iv-badge-btn{width:36px !important;height:36px !important;padding:0 !important;border-radius:50% !important;overflow:hidden !important;display:inline-flex !important;align-items:center !important;justify-content:center !important;font-size:12px !important;}
             .iv-badge-btn .syringe-icon{position:static !important;width:26px !important;height:26px !important;left:auto !important;top:auto !important;transform:none !important;filter:drop-shadow(-1px 2px 2px rgba(0,0,0,0.25)) !important;flex-shrink:0 !important;}
             
-            /* --- SỬA LỖI LAYOUT SHIFT (Khóa cứng height) --- */
-            .iv-badge-btn.iv-expanded{width:auto !important; height:36px !important; border-radius:18px !important;padding:0 12px 0 8px !important;overflow:visible !important;justify-content:flex-start !important;gap:5px !important;}
+            /* KHOÁ CHIỀU CAO 36PX + BẬT OVERFLOW HIDDEN ĐỂ TRÁNH ICON LẮC LÀM GIÃN ROW */
+            .iv-badge-btn.iv-expanded{width:auto !important;height:36px !important;border-radius:18px !important;padding:0 12px 0 8px !important;overflow:hidden !important;justify-content:flex-start !important;gap:5px !important;}
             .iv-badge-btn.iv-expanded .iv-btn-text{max-width:200px !important;opacity:1 !important;}
             .iv-badge-btn.iv-expanded .syringe-icon{position:static !important;width:22px !important;height:22px !important;left:auto !important;top:auto !important;}
             
-            /* --- SỬA LỖI MẤT VIÊN THUỐC (Khóa min-width 44px) --- */
             .group-filter-wrapper{grid-column: 1 / 4;grid-row: 3;width:-webkit-fit-content;width:fit-content;max-width:205px;order: unset;align-self: center;justify-self: start;flex-shrink:1; overflow: hidden; transition: max-width .4s cubic-bezier(.4,0,.2,1) !important;}
             .group-filter-wrapper.temp-hide{max-width: 44px !important; min-width: 44px !important; pointer-events: none;}
             .group-filter-wrapper.temp-hide .group-filter-select{padding: 0 !important; background-image: none !important;}
@@ -1187,6 +1187,7 @@
         }
         function closeTTModal() { document.getElementById('tt-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
 
+        /* --- THÊM HÀM MỞ/ĐÓNG MODAL TƯƠNG HỢP TƯƠNG KỴ --- */
         function openTKModal() {
             document.getElementById('tk-modal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
