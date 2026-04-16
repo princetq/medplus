@@ -1540,11 +1540,7 @@
 
     <script>
         // =========================================================================
-        // HÀM CHUYỂN ĐỔI CHẾ ĐỘ BAN ĐÊM (DARK MODE) NẰM Ở ĐÂY
-        // =========================================================================
-        // =========================================================================
-        // PRE-WARM: Khởi tạo sao trước khi user toggle, dùng DocumentFragment
-        // để tránh layout thrash lần đầu bật dark mode trên mobile
+        // PRE-WARM: Khởi tạo sao trước khi user toggle, kết hợp ÉP BIÊN DỊCH CSS
         // =========================================================================
         function initNightBackground() {
             const nightContainer = document.getElementById('night-container');
@@ -1552,7 +1548,6 @@
 
             const frag = document.createDocumentFragment();
 
-            // 160 ngôi sao - dùng cssText để set 1 lần duy nhất, không trigger reflow
             for (let i = 0; i < 160; i++) {
                 const s = document.createElement('div');
                 s.className = 'star';
@@ -1568,7 +1563,6 @@
                 frag.appendChild(s);
             }
 
-            // 3 sao băng
             for (let i = 0; i < 3; i++) {
                 const ss = document.createElement('div');
                 const fromRight = Math.random() > 0.5;
@@ -1585,12 +1579,24 @@
                 frag.appendChild(ss);
             }
 
-            // 1 lần appendChild duy nhất → 1 lần layout
             nightContainer.appendChild(frag);
+
+            // MẸO 1: THOÁT BẪY LAYOUT THRASING
+            // Kích hoạt display: block từ sớm, nhưng dùng visibility: hidden để giấu đi.
+            // Việc này ép trình duyệt vẽ sẵn 160 ngôi sao vào khung hình ẩn.
+            nightContainer.style.display = 'block';
+            nightContainer.style.opacity = '0';
+            nightContainer.style.visibility = 'hidden';
+
+            // MẸO 2: CSS PRE-WARMING (TUYỆT KỸ CHỐNG JANK)
+            // Thêm class dark-mode, ép CPU tính toán Layout, rồi xóa ngay lập tức!
+            // Toàn bộ diễn ra trong 1 mili-giây, mắt người không thể thấy màn hình nháy, 
+            // nhưng trình duyệt đã kịp lưu cache toàn bộ cấu trúc CSS của Dark Mode.
+            document.body.classList.add('dark-mode');
+            void document.body.offsetHeight; 
+            document.body.classList.remove('dark-mode');
         }
 
-        // Gọi trong idle time sau khi trang đã tải xong (~1-2s sau)
-        // Lúc này user chưa kịp bấm toggle → sao đã sẵn sàng
         if ('requestIdleCallback' in window) {
             requestIdleCallback(initNightBackground, { timeout: 2000 });
         } else {
@@ -1598,7 +1604,7 @@
         }
 
         // =========================================================================
-        // TOGGLE THEME — Đã fix triệt để lỗi giật (Layout Thrashing)
+        // TOGGLE THEME — Mượt mà ngay từ cú chạm đầu tiên
         // =========================================================================
         function toggleTheme() {
             const body = document.body;
@@ -1610,13 +1616,12 @@
             const isDark = body.classList.contains('dark-mode');
 
             if (isDark) {
-                leafContainer.style.display = 'none';
+                // Thay vì dùng display: none (gây giật), ta dùng visibility
+                leafContainer.style.transition = 'opacity 0.3s ease';
+                leafContainer.style.opacity = '0';
+                setTimeout(() => { leafContainer.style.visibility = 'hidden'; }, 300);
 
-                // MẸO CHỐNG GIẬT: Ép display block nhưng opacity = 0 trước
-                // Cho GPU 1 frame để nạp 160 ngôi sao vào bộ nhớ ngầm
-                nightContainer.style.opacity = '0';
-                nightContainer.style.display = 'block';
-
+                nightContainer.style.visibility = 'visible';
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
                         nightContainer.style.transition = 'opacity 0.4s ease';
@@ -1624,12 +1629,11 @@
                     });
                 });
             } else {
+                nightContainer.style.transition = 'opacity 0.3s ease';
                 nightContainer.style.opacity = '0';
-                setTimeout(() => { nightContainer.style.display = 'none'; }, 300);
+                setTimeout(() => { nightContainer.style.visibility = 'hidden'; }, 300);
 
-                leafContainer.style.opacity = '0';
-                leafContainer.style.display = 'block';
-                
+                leafContainer.style.visibility = 'visible';
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
                         leafContainer.style.transition = 'opacity 0.4s ease';
