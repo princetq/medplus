@@ -386,6 +386,55 @@
             
             .chat-widget-container .disclaimer{font-size:14px;padding:3px 10px}
         }
+
+        /* ================================================================
+           FIX GIẬT NÚT CÔNG CỤ MOBILE — THAY max-width BẰNG clip-path
+           max-width trigger LAYOUT mỗi frame → giật
+           clip-path chạy trên GPU compositor → 60fps mượt mà
+           Áp dụng cả light mode lẫn dark mode
+           ================================================================ */
+        @media (max-width: 600px) {
+            /* Hidden state: width tự co theo nội dung, clip từ bên phải */
+            .iv-badge-btn .iv-btn-text {
+                max-width: none !important;
+                width: max-content !important;   /* tự khớp với độ dài chữ, không kéo dài */
+                padding: 0 44px 0 16px !important;
+                opacity: 0 !important;
+                /* clip-path thay thế max-width — GPU composited, zero layout */
+                clip-path: inset(0 100% 0 0 round 20px) !important;
+                -webkit-clip-path: inset(0 100% 0 0 round 20px) !important;
+                overflow: visible !important;
+                transition:
+                    clip-path 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                    -webkit-clip-path 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                    opacity 0.28s ease !important;
+                will-change: clip-path, opacity !important;
+                transform: translateZ(0) !important;
+                -webkit-transform: translateZ(0) !important;
+            }
+            /* Expanded state: reveal hoàn toàn */
+            .iv-badge-btn.iv-expanded .iv-btn-text {
+                clip-path: inset(0 0% 0 0 round 20px) !important;
+                -webkit-clip-path: inset(0 0% 0 0 round 20px) !important;
+                opacity: 1 !important;
+            }
+            /* Reset will-change khi không còn expand (tối ưu RAM) */
+            .iv-badge-btn:not(.iv-expanded) .iv-btn-text {
+                will-change: auto !important;
+            }
+            /* Vẫn giữ dark mode colors */
+            body.dark-mode .iv-badge-btn .iv-btn-text {
+                background: linear-gradient(135deg, #0d4a32, #062a1c) !important;
+                border-color: rgba(80, 220, 180, 0.4) !important;
+                color: #4df5c0 !important;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3), 0 0 10px rgba(80,220,180,0.15) !important;
+            }
+            body.dark-mode .iv-badge-btn.iv-expanded .iv-btn-text {
+                background: linear-gradient(135deg, #165c3f, #0a3527) !important;
+                box-shadow: 0 6px 20px rgba(0,0,0,0.4), 0 0 18px rgba(80,220,180,0.3) !important;
+            }
+        }
+
         @media (min-width: 601px) {
             .product-grid.list-view .glass-card:hover .marquee-track {animation: scrollEnd 12s linear 1;}
         }
