@@ -1171,6 +1171,16 @@
                 backdrop-filter: blur(14px) !important;
                 -webkit-backdrop-filter: blur(14px) !important;
             }
+            /* GPU layer promotion: browser tạo composite layer sẵn
+               → iv-btn-text expand animation mượt ngay lần đầu bấm dark mode */
+            body.dark-mode .iv-badge-btn {
+                transform: translateZ(0);
+                -webkit-transform: translateZ(0);
+            }
+            body.dark-mode .iv-btn-text {
+                transform: translateZ(0);
+                -webkit-transform: translateZ(0);
+            }
             /* Tắt ::before aurora trên mobile để tiết kiệm GPU */
             body.dark-mode::before {
                 display: none !important;
@@ -1546,21 +1556,36 @@
             const nightContainer = document.getElementById('night-container');
             const leafContainer = document.getElementById('leaf-container');
 
-            // 1. Thêm class transition tạm thời
             body.classList.add('dm-transitioning');
-
-            // 2. Toggle dark-mode ngay lập tức
             body.classList.toggle('dark-mode');
             const isDark = body.classList.contains('dark-mode');
 
-            // 3. Show/hide backgrounds — chỉ đổi display, KHÔNG tạo DOM mới
             if (isDark) {
                 leafContainer.style.display = 'none';
-                // Dùng rAF để tách show nightContainer ra frame sau
-                // → tránh cùng frame với classList.toggle gây layout thrash
                 requestAnimationFrame(() => {
                     nightContainer.style.display = 'block';
                 });
+
+                // Double-rAF: force browser composite layer cho .iv-btn-text
+                // TRƯỚC khi user kịp bấm nút → hết giật lần đầu bật dark mode
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        document.querySelectorAll('.iv-btn-text').forEach(function(el) {
+                            el.style.willChange = 'max-width, opacity';
+                        });
+                        // Force style flush trên các nút → browser tính trước
+                        document.querySelectorAll('.iv-badge-btn').forEach(function(btn) {
+                            void btn.offsetHeight;
+                        });
+                        // Reset sau 600ms, không để will-change mãi tốn RAM
+                        setTimeout(function() {
+                            document.querySelectorAll('.iv-btn-text').forEach(function(el) {
+                                el.style.willChange = 'auto';
+                            });
+                        }, 600);
+                    });
+                });
+
             } else {
                 nightContainer.style.display = 'none';
                 requestAnimationFrame(() => {
@@ -1568,9 +1593,9 @@
                 });
             }
 
-            // 4. Xóa class transition sau 420ms
             setTimeout(() => body.classList.remove('dm-transitioning'), 420);
         }
+
 
         // =========================================================================
         // 1. DÁN LINK CỦA BẠN VÀO ĐÂY 
