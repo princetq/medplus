@@ -1102,28 +1102,107 @@
             opacity: 1;
         }
 
-        /* === SMOOTH TRANSITION KHI BẬT/TẮT DARK MODE === */
+        /* === SMOOTH TRANSITION KHI BẬT/TẮT DARK MODE (MOBILE-SAFE) === */
+        /*
+         * KHÔNG dùng "body *" transition — gây jank nặng trên mobile do
+         * buộc browser repaint toàn bộ DOM tree mỗi khi toggle.
+         * Thay bằng: class .dm-transitioning chỉ kích hoạt trong ~400ms khi toggle,
+         * chỉ target các element thực sự cần animate, dùng will-change tiết kiệm.
+         */
+
+        /* Chỉ body + background gradient cần transition */
         body {
-            transition: background 0.5s ease, color 0.3s ease;
+            transition: background-color 0.4s ease, color 0.25s ease;
         }
-        body * {
-            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease, box-shadow 0.3s ease;
+
+        /* Class tạm thời chỉ gắn khi đang toggle (JS thêm/xóa sau 400ms) */
+        body.dm-transitioning .glass-panel,
+        body.dm-transitioning .glass-card,
+        body.dm-transitioning .modal-content,
+        body.dm-transitioning .search-box,
+        body.dm-transitioning .abc-toggle-btn,
+        body.dm-transitioning .view-btn,
+        body.dm-transitioning .letter-btn,
+        body.dm-transitioning .group-filter-select,
+        body.dm-transitioning .count-badge,
+        body.dm-transitioning .hdsd-btn,
+        body.dm-transitioning .iv-badge-btn,
+        body.dm-transitioning .back-top,
+        body.dm-transitioning details,
+        body.dm-transitioning summary,
+        body.dm-transitioning .detail-content,
+        body.dm-transitioning .notion-btn,
+        body.dm-transitioning .footer-badge,
+        body.dm-transitioning #chat-widget-btn,
+        body.dm-transitioning #chat-widget-window,
+        body.dm-transitioning .chat-widget-container header,
+        body.dm-transitioning .chat-widget-container .chat-container,
+        body.dm-transitioning .chat-widget-container .ai-message .message-content {
+            transition: background-color 0.35s ease, border-color 0.3s ease, color 0.25s ease, box-shadow 0.35s ease !important;
+            will-change: background-color, border-color;
         }
-        /* Loại trừ animation transitions không bị ảnh hưởng */
-        body .zen-logo img,
-        body .new-badge,
-        body .shooting-star,
-        body .star,
-        body .leaf,
-        body .glass-card,
-        body .medplus-badge::after {
-            transition: unset;
-        }
+
+        /* Card giữ nguyên transform transition của riêng nó */
         body.dark-mode .glass-card {
             transition: transform 0.35s cubic-bezier(.4,0,.2,1), background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.35s ease !important;
         }
 
-        /* Bầu trời đêm (Ngôi sao lấp lánh & Sao băng lướt chậm đan chéo) */
+        /* Tắt backdrop-filter trên thiết bị yếu (prefers-reduced-motion) */
+        @media (prefers-reduced-motion: reduce) {
+            body.dm-transitioning * {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+
+        /* Mobile: giảm backdrop-filter blur để tránh GPU overload */
+        @media (max-width: 600px) {
+            body.dark-mode .glass-panel,
+            body.dark-mode .glass-card,
+            body.dark-mode .search-box,
+            body.dark-mode .abc-toggle-btn,
+            body.dark-mode .view-btn,
+            body.dark-mode .letter-btn,
+            body.dark-mode .group-filter-select {
+                backdrop-filter: blur(10px) !important;
+                -webkit-backdrop-filter: blur(10px) !important;
+            }
+            body.dark-mode #chat-widget-window {
+                backdrop-filter: blur(14px) !important;
+                -webkit-backdrop-filter: blur(14px) !important;
+            }
+            /* Tắt ::before aurora trên mobile để tiết kiệm GPU */
+            body.dark-mode::before {
+                display: none !important;
+            }
+            /* Giảm glow shadow trên card mobile */
+            body.dark-mode .glass-card:hover {
+                box-shadow: 0 8px 25px rgba(0,0,0,0.4), 0 0 12px rgba(80,220,180,0.1) !important;
+            }
+            /* Tắt ::after glow effect trên card mobile */
+            body.dark-mode .glass-card::after {
+                display: none !important;
+            }
+        }
+
+        /* Touch: thay :hover bằng :active cho mobile */
+        @media (hover: none) and (pointer: coarse) {
+            body.dark-mode .glass-card:active {
+                background: rgba(15, 35, 65, 0.8) !important;
+                border-color: rgba(80, 220, 180, 0.35) !important;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.35) !important;
+                transform: scale(0.97) !important;
+            }
+            body.dark-mode .hdsd-btn:active {
+                background: linear-gradient(135deg, #165c3f, #0a3527) !important;
+                transform: scale(0.97) !important;
+            }
+            body.dark-mode .iv-badge-btn:active {
+                box-shadow: 0 4px 15px rgba(0,0,0,0.35), 0 0 14px rgba(80,220,180,0.3) !important;
+            }
+        }
+
+/* Bầu trời đêm (Ngôi sao lấp lánh & Sao băng lướt chậm đan chéo) */
         .night-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden; }
         .star { position: absolute; background: white; border-radius: 50%; animation: twinkle infinite ease-in-out; }
         @keyframes twinkle {
@@ -1406,7 +1485,9 @@
         // =========================================================================
         function toggleTheme() {
             const body = document.body;
+            body.classList.add('dm-transitioning');
             body.classList.toggle('dark-mode');
+            setTimeout(() => body.classList.remove('dm-transitioning'), 420);
             const nightContainer = document.getElementById('night-container');
             const leafContainer = document.getElementById('leaf-container');
             
