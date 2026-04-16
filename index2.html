@@ -1483,56 +1483,93 @@
         // =========================================================================
         // HÀM CHUYỂN ĐỔI CHẾ ĐỘ BAN ĐÊM (DARK MODE) NẰM Ở ĐÂY
         // =========================================================================
+        // =========================================================================
+        // PRE-WARM: Khởi tạo sao trước khi user toggle, dùng DocumentFragment
+        // để tránh layout thrash lần đầu bật dark mode trên mobile
+        // =========================================================================
+        function initNightBackground() {
+            const nightContainer = document.getElementById('night-container');
+            if (!nightContainer || nightContainer.innerHTML !== '') return;
+
+            const frag = document.createDocumentFragment();
+
+            // 160 ngôi sao - dùng cssText để set 1 lần duy nhất, không trigger reflow
+            for (let i = 0; i < 160; i++) {
+                const s = document.createElement('div');
+                s.className = 'star';
+                const size = (Math.random() * 2 + 1).toFixed(2) + 'px';
+                s.style.cssText = [
+                    'left:' + (Math.random() * 100).toFixed(2) + '%',
+                    'top:' + (Math.random() * 100).toFixed(2) + '%',
+                    'width:' + size,
+                    'height:' + size,
+                    'animation-duration:' + (Math.random() * 3 + 1.5).toFixed(2) + 's',
+                    'animation-delay:' + (Math.random() * 2).toFixed(2) + 's'
+                ].join(';');
+                frag.appendChild(s);
+            }
+
+            // 3 sao băng
+            for (let i = 0; i < 3; i++) {
+                const ss = document.createElement('div');
+                const fromRight = Math.random() > 0.5;
+                ss.className = fromRight ? 'shooting-star right-to-left' : 'shooting-star left-to-right';
+                const leftVal = fromRight
+                    ? (Math.random() * 50 + 50).toFixed(1) + '%'
+                    : (Math.random() * 50 - 20).toFixed(1) + '%';
+                ss.style.cssText = [
+                    'left:' + leftVal,
+                    'top:' + (Math.random() * -20 - 10).toFixed(1) + '%',
+                    'animation-duration:' + (Math.random() * 5 + 6).toFixed(2) + 's',
+                    'animation-delay:' + (Math.random() * 5).toFixed(2) + 's'
+                ].join(';');
+                frag.appendChild(ss);
+            }
+
+            // 1 lần appendChild duy nhất → 1 lần layout
+            nightContainer.appendChild(frag);
+        }
+
+        // Gọi trong idle time sau khi trang đã tải xong (~1-2s sau)
+        // Lúc này user chưa kịp bấm toggle → sao đã sẵn sàng
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(initNightBackground, { timeout: 2000 });
+        } else {
+            setTimeout(initNightBackground, 1200);
+        }
+
+        // =========================================================================
+        // TOGGLE THEME — Instant vì stars đã được pre-warm từ trước
+        // =========================================================================
         function toggleTheme() {
             const body = document.body;
-            body.classList.add('dm-transitioning');
-            body.classList.toggle('dark-mode');
-            setTimeout(() => body.classList.remove('dm-transitioning'), 420);
             const nightContainer = document.getElementById('night-container');
             const leafContainer = document.getElementById('leaf-container');
-            
-            if(body.classList.contains('dark-mode')) {
+
+            // 1. Thêm class transition tạm thời
+            body.classList.add('dm-transitioning');
+
+            // 2. Toggle dark-mode ngay lập tức
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+
+            // 3. Show/hide backgrounds — chỉ đổi display, KHÔNG tạo DOM mới
+            if (isDark) {
                 leafContainer.style.display = 'none';
-                nightContainer.style.display = 'block';
-                
-                // Chỉ khởi tạo sao 1 lần để tránh giật lag khi toggle nhiều lần
-                if(nightContainer.innerHTML === '') {
-                    // 1. Tạo 160 Ngôi sao lấp lánh (Twinkle)
-                    for(let i=0; i<160; i++) {
-                        let s = document.createElement('div');
-                        s.className = 'star';
-                        s.style.left = Math.random() * 100 + '%';
-                        s.style.top = Math.random() * 100 + '%';
-                        let size = (Math.random() * 2 + 1) + 'px';
-                        s.style.width = size;
-                        s.style.height = size;
-                        s.style.animationDuration = (Math.random() * 3 + 1.5) + 's';
-                        s.style.animationDelay = (Math.random() * 2) + 's';
-                        nightContainer.appendChild(s);
-                    }
-                    // 2. Tạo 3 Ngôi sao băng lướt chậm đan chéo 2 phía
-                    for(let i=0; i<3; i++) {
-                        let ss = document.createElement('div');
-                        let fromRight = Math.random() > 0.5;
-                        ss.className = fromRight ? 'shooting-star right-to-left' : 'shooting-star left-to-right';
-                        
-                        if (fromRight) {
-                            ss.style.left = (Math.random() * 50 + 50) + '%'; 
-                            ss.style.top = (Math.random() * -20 - 10) + '%';
-                        } else {
-                            ss.style.left = (Math.random() * 50 - 20) + '%'; 
-                            ss.style.top = (Math.random() * -20 - 10) + '%';
-                        }
-                        
-                        ss.style.animationDuration = (Math.random() * 5 + 6) + 's'; // Slower (6 to 11s)
-                        ss.style.animationDelay = (Math.random() * 5) + 's';
-                        nightContainer.appendChild(ss);
-                    }
-                }
+                // Dùng rAF để tách show nightContainer ra frame sau
+                // → tránh cùng frame với classList.toggle gây layout thrash
+                requestAnimationFrame(() => {
+                    nightContainer.style.display = 'block';
+                });
             } else {
-                leafContainer.style.display = 'block';
                 nightContainer.style.display = 'none';
+                requestAnimationFrame(() => {
+                    leafContainer.style.display = 'block';
+                });
             }
+
+            // 4. Xóa class transition sau 420ms
+            setTimeout(() => body.classList.remove('dm-transitioning'), 420);
         }
 
         // =========================================================================
