@@ -355,7 +355,7 @@
                 box-shadow: 0 6px 20px rgba(46,125,50,0.5) !important;
             }
             
-            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ BẰNG CLIP-PATH */
+            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ BẰNG MAX-WIDTH (ĐỂ KHÔNG CẮT MẤT VIỀN) */
             .group-filter-wrapper{
                 grid-column: 1 / 4;
                 grid-row: 3;
@@ -367,37 +367,38 @@
                 justify-self: start;
                 height: 36px !important;
                 overflow: hidden; 
-                clip-path: inset(0 0% 0 0 round 12px);
-                -webkit-clip-path: inset(0 0% 0 0 round 12px);
-                /* Chuyển động thuần túy bằng gia tốc deceleration */
-                transition: clip-path .38s cubic-bezier(0.2, 0, 0, 1), -webkit-clip-path .38s cubic-bezier(0.2, 0, 0, 1) !important;
-                will-change: clip-path;
+                /* Trở lại dùng max-width, bỏ clip-path vì clip-path cắt luôn cả border */
+                transition: max-width .38s cubic-bezier(0.2, 0, 0, 1) !important;
+                will-change: max-width;
                 transform: translateZ(0);
             }
             .group-filter-wrapper.temp-hide{
-                max-width: 205px !important; /* Cố định chiều rộng để chống giật grid layout */
-                min-width: unset !important; 
-                clip-path: inset(0 calc(100% - 44px) 0 0 round 12px) !important;
-                -webkit-clip-path: inset(0 calc(100% - 44px) 0 0 round 12px) !important;
+                max-width: 44px !important; /* Thu gọn wrapper */
+                min-width: 44px !important; 
                 pointer-events: none;
             }
             .group-filter-wrapper.temp-hide .group-filter-select{
                 background-image: none !important;
+                padding: 0 !important;
+                max-width: 44px !important; /* ĐIỂM MẤU CHỐT: Thu gọn cả select để border chạy theo */
             }
             .group-filter-wrapper.temp-hide .group-text-overlay{
                 opacity: 0 !important;
                 transition: opacity 0.2s ease !important;
             }
 
-            /* FIX: Ôm vừa khít chữ + icon mũi tên trên Mobile */
+            /* FIX: Ôm vừa khít chữ + icon mũi tên trên Mobile và giữ bo góc chuẩn 12px */
             .group-filter-wrapper .group-filter-select{
                 width:-webkit-fit-content;
                 width:fit-content;
                 max-width:185px;
-                min-width:0;
+                min-width:44px !important; /* Luôn giữ form tối thiểu 44px */
                 height:34px;
                 font-size:12px;
                 padding:0 28px 0 34px;
+                border-radius: 12px !important; /* Giống y hệt hộp tìm kiếm */
+                transition: max-width .38s cubic-bezier(0.2, 0, 0, 1), padding .38s cubic-bezier(0.2, 0, 0, 1), background-color 0.2s, border-color 0.2s !important;
+                will-change: max-width, padding;
             }
 
             .letter-btn{flex-shrink:0}
