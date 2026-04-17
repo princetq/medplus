@@ -47,7 +47,7 @@
 
         .search-box{display:flex;align-items:center;padding:8px 15px;width:100%;max-width:280px;transition:.3s ease;background:var(--g-bg);border:1px solid var(--g-border);border-radius:12px;order:5}
         .search-box:focus-within{max-width:320px;transform:scale(1.02);border-color:var(--green-l);background:rgba(255,255,255,0.55);box-shadow:0 0 0 3px rgba(76,175,80,0.15)}
-        .search-box input{flex:1;border:none;background:transparent;outline:none;font-size:16px;color:var(--green);font-weight:600}
+        .search-box input{flex:1;border:none;background:transparent;outline:none;font-size:16px;color:var(--green);font-weight:600;margin:0;padding:0;line-height:normal;height:auto}
 
         /* --- CSS NÚT TIÊM TRUYỀN, KHÁNG SINH, TƯƠNG TÁC THUỐC --- */
         .iv-btn-wrapper {
@@ -162,12 +162,15 @@
             box-shadow: none !important; 
             z-index: 9999;
             font-size: 28px; 
-            width: auto;
-            height: auto;
+            width: 36px;
+            height: 36px;
             padding: 0;
-            display: inline-block;
-            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: absolute;
+            flex-shrink:0;
+            box-sizing:border-box;
         }
         .iv-modal-content .close-btn:hover { 
             background: transparent !important; 
@@ -177,7 +180,7 @@
 
         .product-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
         .product-grid.list-view{grid-template-columns:1fr;gap:10px}
-        .glass-card{padding:14px;display:flex;flex-direction:column;transition:.35s cubic-bezier(.4,0,.2,1);cursor:pointer;position:relative;overflow:hidden;animation:cardIn .45s ease-out both}
+        .glass-card{padding:14px;display:flex;flex-direction:column;transition:.35s cubic-bezier(.4,0,.2,1);cursor:pointer;position:relative;overflow:hidden;animation:cardIn .45s ease-out both; contain: content;}
         @keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
         .glass-card:hover{transform:translateY(-8px);background:var(--g-bg-h);box-shadow:0 20px 45px rgba(0,0,0,0.13),0 0 0 1px rgba(255,255,255,0.5)}
         .glass-card:active{transform:scale(.96)!important;transition:.1s}
@@ -287,17 +290,16 @@
             
             /* ANIMATION KHI CLICK: ICON TO TRÀN RA NGOÀI VÀ ĐỘNG ĐẬY LIÊN TỤC */
             @keyframes iconPopWiggle {
-                0% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
-                20% { transform: translate(-50%, -50%) scale(1.9) rotate(12deg); }
-                40% { transform: translate(-50%, -50%) scale(1.9) rotate(-8deg); }
-                60% { transform: translate(-50%, -50%) scale(1.9) rotate(10deg); }
-                80% { transform: translate(-50%, -50%) scale(1.9) rotate(-5deg); }
-                100% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
+                0% { transform: translate(-50%, -50%) scale(1.35) rotate(0deg); }
+                20% { transform: translate(-50%, -50%) scale(1.35) rotate(12deg); }
+                40% { transform: translate(-50%, -50%) scale(1.35) rotate(-8deg); }
+                60% { transform: translate(-50%, -50%) scale(1.35) rotate(10deg); }
+                80% { transform: translate(-50%, -50%) scale(1.35) rotate(-5deg); }
+                100% { transform: translate(-50%, -50%) scale(1.35) rotate(0deg); }
             }
             .iv-badge-btn.iv-expanded .syringe-icon {
                 animation: iconPopWiggle 1.2s ease-in-out infinite !important;
-                filter: none !important; /* Tắt drop-shadow khi lắc để GPU không bị quá tải */
-                backface-visibility: hidden;
+                filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.5)) !important;
             }
             
             /* THỦ THUẬT: KHỐI CHỮ TRÙM KÍN HOÀN TOÀN NÚT TRÒN ĐỂ KHÔNG BỊ CHẮP VÁ */
@@ -467,7 +469,7 @@
         .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;z-index:10005;align-items:center;justify-content:center;padding:15px;backdrop-filter:blur(8px)}
         .modal-content{width:100%;max-width:820px;max-height:90vh;overflow-y:auto;padding:28px;position:relative;background:rgba(255,255,255,0.96)!important;border:1px solid #fff;border-radius:20px;box-shadow:0 25px 60px rgba(0,0,0,0.2);animation:modalIn .45s cubic-bezier(.25,1,.5,1) forwards}
         @keyframes modalIn{0%{opacity:0;transform:translateY(40px) scale(.95);filter:blur(8px)}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
-        .close-btn{position:absolute;top:4px;right:14px;font-size:30px;cursor:pointer;color:#d32f2f;font-weight:bold;transition:.2s;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;z-index:20;background:rgba(255,255,255,0.85);box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+        .close-btn{position:absolute;top:4px;right:14px;font-size:30px;cursor:pointer;color:#d32f2f;font-weight:bold;transition:.2s;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;z-index:20;background:rgba(255,255,255,0.85);box-shadow:0 2px 8px rgba(0,0,0,0.1);flex-shrink:0;box-sizing:border-box}
         .close-btn:hover{background:rgba(211,47,47,0.1)}
         .modal-drug-header{display:flex;gap:20px;align-items:center;margin-bottom:20px;padding:18px 22px;border-radius:16px;background:linear-gradient(135deg,rgba(76,175,80,0.15),rgba(46,125,50,0.1));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(76,175,80,0.25);box-shadow:0 4px 20px rgba(46,125,50,0.1)}
         
@@ -560,7 +562,7 @@
         .chat-widget-container{width:100%;height:100%;display:flex;flex-direction:column;padding:12px}
         .chat-widget-container header{position:relative;text-align:center;margin-bottom:10px;color:#fff;padding:16px 14px;background:linear-gradient(135deg,rgba(27,94,32,0.9),rgba(46,125,50,0.85));backdrop-filter:blur(12px);border-radius:16px;border:1px solid rgba(255,255,255,0.15);box-shadow:0 6px 25px rgba(0,0,0,0.15),inset 0 1px 0 rgba(255,255,255,0.1);flex-shrink:0}
         
-        .chat-close-btn{position:absolute;top:12px;right:14px;color:rgba(255,255,255,0.7);cursor:pointer;transition:.25s;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,255,255,0.1)}
+        .chat-close-btn{position:absolute;top:12px;right:14px;color:rgba(255,255,255,0.7);cursor:pointer;transition:.25s;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,255,255,0.1);flex-shrink:0;box-sizing:border-box}
         .chat-close-btn svg { width: 18px; height: 18px; }
         .chat-close-btn:hover{color:#fff;background:rgba(255,255,255,0.2);transform:scale(1.1)}
         
@@ -844,12 +846,12 @@
 
         /* === PRODUCT CARDS === */
         body.dark-mode .glass-card {
-            background: rgba(10, 22, 45, 0.6) !important;
+            background: rgba(10, 22, 45, 0.95) !important; /* Đã được tối ưu ở bước trước */
             border: 1px solid rgba(80, 220, 180, 0.12) !important;
             box-shadow: 0 4px 20px rgba(0,0,0,0.35) !important;
         }
         body.dark-mode .glass-card:hover {
-            background: rgba(15, 35, 65, 0.8) !important;
+            background: rgba(15, 35, 65, 0.98) !important;
             border-color: rgba(80, 220, 180, 0.35) !important;
             box-shadow: 0 16px 50px rgba(0,0,0,0.5), 0 0 25px rgba(80, 220, 180, 0.12), 0 0 0 1px rgba(80, 220, 180, 0.2) !important;
             transform: translateY(-8px) !important;
@@ -1222,7 +1224,6 @@
         /* Mobile: giảm backdrop-filter blur để tránh GPU overload */
         @media (max-width: 600px) {
             body.dark-mode .glass-panel,
-            body.dark-mode .glass-card,
             body.dark-mode .search-box,
             body.dark-mode .abc-toggle-btn,
             body.dark-mode .view-btn,
@@ -1230,6 +1231,14 @@
             body.dark-mode .group-filter-select {
                 backdrop-filter: blur(10px) !important;
                 -webkit-backdrop-filter: blur(10px) !important;
+            }
+            /* Tắt hẳn blur trên card mobile dark mode để cuộn 60fps */
+            body.dark-mode .glass-card {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                background: rgba(10, 22, 45, 0.95) !important;
+                transform: translateZ(0);
+                will-change: transform;
             }
             body.dark-mode #chat-widget-window {
                 backdrop-filter: blur(14px) !important;
