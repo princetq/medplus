@@ -227,17 +227,17 @@
         
         /* FIX: Ngăn search box bị lệch khi bàn phím hiện (Toàn cục Mobile) */
         @media (max-width: 600px) {  
-          .search-box:focus-within {    
+          .search-box:focus-within {   
             transform: none !important;    
             max-width: none !important; 
           }  
-          .search-wrapper {    
+          .search-wrapper {   
             position: sticky;    
             top: 0;    
             z-index: 100;    
             background: transparent; 
           }  
-          body:has(#q:focus) {    
+          body:has(#q:focus) {   
             overscroll-behavior: none;  
           }
         }
@@ -310,14 +310,15 @@
             
             /* ANIMATION KHI CLICK: ICON TO VỪA VẶN VÀ LẮC LIÊN TỤC */
             @keyframes iconPopWiggle {
-                0%, 100% { transform: translate(-50%, -50%) scale(1.35) rotate(0deg); }
-                20% { transform: translate(-50%, -50%) scale(1.35) rotate(12deg); }
-                40% { transform: translate(-50%, -50%) scale(1.35) rotate(-8deg); }
-                60% { transform: translate(-50%, -50%) scale(1.35) rotate(10deg); }
-                80% { transform: translate(-50%, -50%) scale(1.35) rotate(-5deg); }
+                0% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
+                20% { transform: translate(-50%, -50%) scale(1.9) rotate(12deg); }
+                40% { transform: translate(-50%, -50%) scale(1.9) rotate(-8deg); }
+                60% { transform: translate(-50%, -50%) scale(1.9) rotate(10deg); }
+                80% { transform: translate(-50%, -50%) scale(1.9) rotate(-5deg); }
+                100% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
             }
             .iv-badge-btn.iv-expanded .syringe-icon {
-                transform: translate(-50%, -50%) scale(1.35) rotate(0deg) !important;
+                transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
                 animation: iconPopWiggle 1.2s ease-in-out infinite 0.35s !important;
                 filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.5)) !important;
             }
@@ -468,10 +469,8 @@
                 background: linear-gradient(135deg, #165c3f, #0a3527) !important;
                 box-shadow: none !important; /* Tắt hoàn toàn shadow trên phần tử đang clip-path */
             }
-            /* Đã tắt filter nhưng vẫn giữ lại đầy đủ animation phóng to và lắc */
+            /* Giảm tải bộ lọc đổ bóng của Icon khi đang lắc, ĐÃ XÓA backface-visibility gây lỗi Safari */
             body.dark-mode .iv-badge-btn.iv-expanded .syringe-icon {
-                transform: translate(-50%, -50%) scale(1.35) rotate(0deg) !important;
-                animation: iconPopWiggle 1.2s ease-in-out infinite 0.35s !important;
                 filter: none !important; 
             }
         }
@@ -1193,38 +1192,261 @@
         body.dark-mode .chat-widget-container .disclaimer strong {
             color: #ffd166 !important;
         }
-        
-        /* Sao Thổ cực kỳ chân thực với vành đai cắt lớp */
-        body.dark-mode .planet-saturn {
-            width: 70px; height: 70px;
-            background: linear-gradient(160deg, #dcb589 10%, #c49a6c 30%, #a67c52 50%, #8b633b 70%, #6e4a27 90%);
-            box-shadow: inset -8px -8px 15px rgba(0,0,0,0.8);
-            border-radius: 50%;
-            position: relative;
-            transform-style: preserve-3d;
+        body.dark-mode .chat-close-btn {
+            background: rgba(255,255,255,0.08) !important;
+            color: rgba(80, 220, 180, 0.7) !important;
         }
-        body.dark-mode .planet-saturn::before {
+        body.dark-mode .chat-close-btn:hover {
+            background: rgba(80, 220, 180, 0.15) !important;
+            color: #50dcb4 !important;
+        }
+
+        /* === IMAGE ZOOM OVERLAY === */
+        body.dark-mode #image-zoom-overlay {
+            background: rgba(0, 3, 10, 0.92) !important;
+        }
+
+        /* === PILL ICON IN GROUP FILTER === */
+        body.dark-mode .group-filter-pill-icon rect[fill="white"] {
+            fill: rgba(255,255,255,0.08) !important;
+        }
+        body.dark-mode .group-filter-pill-icon rect[fill="#4caf50"],
+        body.dark-mode .group-filter-pill-icon rect[fill="#FFFFFF"] {
+            fill: rgba(80, 220, 180, 0.25) !important;
+        }
+
+        /* === SHIMMER CHO DARK MODE === */
+        body.dark-mode .skeleton-el {
+            background: linear-gradient(90deg,
+                rgba(80,220,180,0.04) 25%,
+                rgba(80,220,180,0.11) 50%,
+                rgba(80,220,180,0.04) 75%) !important;
+            background-size: 200% 100% !important;
+        }
+
+        /* === CARD HOVER GLOW EFFECT === */
+        body.dark-mode .glass-card::after {
             content: '';
             position: absolute;
-            top: 50%; left: 50%;
-            width: 150px; height: 40px;
-            border-radius: 50%;
-            border: 8px solid rgba(180, 160, 130, 0.8);
-            box-shadow: 0 0 0 2px rgba(100, 80, 60, 0.6), inset 0 0 0 2px rgba(100, 80, 60, 0.6);
-            transform: translate(-50%, -50%) rotate(-20deg);
-            z-index: -1;
+            inset: 0;
+            border-radius: var(--rad);
+            opacity: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(80, 220, 180, 0.08), transparent 70%);
+            transition: opacity 0.35s ease;
+            pointer-events: none;
         }
+        body.dark-mode .glass-card:hover::after {
+            opacity: 1;
+        }
+
+        /* === SMOOTH TRANSITION KHI BẬT/TẮT DARK MODE (MOBILE-SAFE) === */
+        /*
+         * KHÔNG dùng "body *" transition — gây jank nặng trên mobile do
+         * buộc browser repaint toàn bộ DOM tree mỗi khi toggle.
+         * Thay bằng: class .dm-transitioning chỉ kích hoạt trong ~400ms khi toggle,
+         * chỉ target các element thực sự cần animate, dùng will-change tiết kiệm.
+         */
+
+        /* Chỉ body + background gradient cần transition */
+        body {
+            transition: background-color 0.4s ease, color 0.25s ease;
+        }
+
+        /* Class tạm thời chỉ gắn khi đang toggle (JS thêm/xóa sau 400ms) */
+        body.dm-transitioning .glass-panel,
+        body.dm-transitioning .glass-card,
+        body.dm-transitioning .modal-content,
+        body.dm-transitioning .search-box,
+        body.dm-transitioning .abc-toggle-btn,
+        body.dm-transitioning .view-btn,
+        body.dm-transitioning .letter-btn,
+        body.dm-transitioning .group-filter-select,
+        body.dm-transitioning .count-badge,
+        body.dm-transitioning .hdsd-btn,
+        body.dm-transitioning .iv-badge-btn,
+        body.dm-transitioning .back-top,
+        body.dm-transitioning details,
+        body.dm-transitioning summary,
+        body.dm-transitioning .detail-content,
+        body.dm-transitioning .notion-btn,
+        body.dm-transitioning .footer-badge,
+        body.dm-transitioning #chat-widget-btn,
+        body.dm-transitioning #chat-widget-window,
+        body.dm-transitioning .chat-widget-container header,
+        body.dm-transitioning .chat-widget-container .chat-container,
+        body.dm-transitioning .chat-widget-container .ai-message .message-content {
+            transition: background-color 0.35s ease, border-color 0.3s ease, color 0.25s ease, box-shadow 0.35s ease !important;
+            will-change: background-color, border-color;
+        }
+
+        /* Card giữ nguyên transform transition của riêng nó */
+        body.dark-mode .glass-card {
+            transition: transform 0.35s cubic-bezier(.4,0,.2,1), background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.35s ease !important;
+        }
+
+        /* Tắt backdrop-filter trên thiết bị yếu (prefers-reduced-motion) */
+        @media (prefers-reduced-motion: reduce) {
+            body.dm-transitioning * {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+
+        /* Mobile: giảm backdrop-filter blur để tránh GPU overload */
+        @media (max-width: 600px) {
+            body.dark-mode .glass-panel,
+            body.dark-mode .search-box,
+            body.dark-mode .abc-toggle-btn,
+            body.dark-mode .view-btn,
+            body.dark-mode .letter-btn,
+            body.dark-mode .group-filter-select {
+                backdrop-filter: blur(10px) !important;
+                -webkit-backdrop-filter: blur(10px) !important;
+            }
+            /* Tắt hẳn blur trên card mobile dark mode để cuộn 60fps */
+            body.dark-mode .glass-card {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                background: rgba(10, 22, 45, 0.95) !important;
+                transform: translateZ(0);
+                will-change: transform;
+            }
+            body.dark-mode #chat-widget-window {
+                backdrop-filter: blur(14px) !important;
+                -webkit-backdrop-filter: blur(14px) !important;
+            }
+            /* GPU layer promotion: browser tạo composite layer sẵn
+                → iv-btn-text expand animation mượt ngay lần đầu bấm dark mode */
+            body.dark-mode .iv-badge-btn {
+                transform: translateZ(0);
+                -webkit-transform: translateZ(0);
+            }
+            body.dark-mode .iv-btn-text {
+                transform: translateZ(0);
+                -webkit-transform: translateZ(0);
+            }
+            /* Tắt ::before aurora trên mobile để tiết kiệm GPU */
+            body.dark-mode::before {
+                display: none !important;
+            }
+            /* Giảm glow shadow trên card mobile */
+            body.dark-mode .glass-card:hover {
+                box-shadow: 0 8px 25px rgba(0,0,0,0.4), 0 0 12px rgba(80,220,180,0.1) !important;
+            }
+            /* Tắt ::after glow effect trên card mobile */
+            body.dark-mode .glass-card::after {
+                display: none !important;
+            }
+            
+            /* Bỏ box-shadow động trên điện thoại, chỉ giữ opacity và scale */
+            @keyframes twinkle {
+                0% { opacity: 0.1; transform: scale(0.8); }
+                50% { opacity: 1; transform: scale(1.2); }
+                100% { opacity: 0.1; transform: scale(0.8); }
+            }
+        }
+
+        /* Touch: thay :hover bằng :active cho mobile */
+        @media (hover: none) and (pointer: coarse) {
+            body.dark-mode .glass-card:active {
+                background: rgba(15, 35, 65, 0.8) !important;
+                border-color: rgba(80, 220, 180, 0.35) !important;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.35) !important;
+                transform: scale(0.97) !important;
+            }
+            body.dark-mode .hdsd-btn:active {
+                background: linear-gradient(135deg, #165c3f, #0a3527) !important;
+                transform: scale(0.97) !important;
+            }
+            body.dark-mode .iv-badge-btn:active {
+                box-shadow: 0 4px 15px rgba(0,0,0,0.35), 0 0 14px rgba(80,220,180,0.3) !important;
+            }
+        }
+
+        /* Bầu trời đêm (Ngôi sao lấp lánh & Sao băng lướt chậm đan chéo) */
+        .night-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden; contain: strict; }
+        .nature-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; contain: strict; }
+        .star { position: absolute; background: white; border-radius: 50%; animation: twinkle infinite ease-in-out; }
+        @keyframes twinkle {
+            0% { opacity: 0.1; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 8px #fff; }
+            100% { opacity: 0.1; transform: scale(0.8); }
+        }
+        
+        .shooting-star {
+            position: absolute;
+            width: 150px;
+            height: 2px;
+            border-radius: 50%;
+            filter: drop-shadow(0 0 6px white);
+        }
+        .shooting-star.right-to-left {
+            background: linear-gradient(to left, rgba(255,255,255,0), rgba(255,255,255,1));
+            animation: shootRL linear infinite;
+        }
+        .shooting-star.left-to-right {
+            background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));
+            animation: shootLR linear infinite;
+        }
+        @keyframes shootRL {
+            0% { transform: translate(0, 0) rotate(-45deg); opacity: 1; }
+            100% { transform: translate(-120vw, 120vh) rotate(-45deg); opacity: 0; }
+        }
+        @keyframes shootLR {
+            0% { transform: translate(0, 0) rotate(45deg); opacity: 1; }
+            100% { transform: translate(120vw, 120vh) rotate(45deg); opacity: 0; }
+        }
+        
+        /* Các hành tinh cho Dark Mode PC */
+        .planet { position: absolute; left: 0; border-radius: 50%; pointer-events: none; z-index: 5; contain: strict; }
+        .planet-mars { background: radial-gradient(circle at 30% 30%, #ffb74d, #f57c00, #bf360c); width: 28px; height: 28px; box-shadow: inset -4px -4px 8px rgba(0,0,0,0.6); }
+        .planet-jupiter { background: linear-gradient(170deg, #d7ccc8 0%, #a1887f 20%, #d7ccc8 40%, #8d6e63 60%, #d7ccc8 80%, #795548 100%); width: 65px; height: 65px; box-shadow: inset -8px -8px 16px rgba(0,0,0,0.7); }
+        .planet-moon { background: radial-gradient(circle at 30% 30%, #ffffff, #e0e0e0, #9e9e9e); width: 40px; height: 40px; box-shadow: inset -5px -5px 10px rgba(0,0,0,0.6); }
+        .planet-pluto { background: radial-gradient(circle at 30% 30%, #cfd8dc, #90a4ae, #546e7a); width: 16px; height: 16px; box-shadow: inset -3px -3px 6px rgba(0,0,0,0.6); }
+        .planet-neptune { background: radial-gradient(circle at 30% 30%, #64b5f6, #2196f3, #0d47a1); width: 35px; height: 35px; box-shadow: inset -5px -5px 10px rgba(0,0,0,0.6); }
+        
+        /* CẬP NHẬT LẠI SAO THỔ VỚI VÀNH ĐAI CHUẨN XÁC */
+        body.dark-mode .planet-saturn {
+            width: 80px; height: 80px;
+            background: linear-gradient(160deg, #f2e3c6 0%, #dcb589 20%, #c49a6c 35%, #e6cca4 50%, #a67c52 65%, #8b633b 80%, #5c4026 100%);
+            box-shadow: inset -12px -12px 20px rgba(0,0,0,0.8), inset 4px 4px 10px rgba(255,255,255,0.2);
+            border-radius: 50%;
+            position: relative;
+            z-index: 5;
+        }
+
+        body.dark-mode .planet-saturn::before,
         body.dark-mode .planet-saturn::after {
             content: '';
             position: absolute;
             top: 50%; left: 50%;
-            width: 150px; height: 40px;
+            width: 170px; height: 45px;
             border-radius: 50%;
-            border: 8px solid rgba(180, 160, 130, 0.9);
-            box-shadow: 0 2px 0 1px rgba(100, 80, 60, 0.6), inset 0 -2px 0 1px rgba(100, 80, 60, 0.6);
-            border-top-color: transparent;
+            border: 10px solid rgba(224, 209, 186, 0.85); 
+            box-shadow: 0 0 0 2px rgba(30, 20, 10, 0.8), 0 0 0 6px rgba(190, 175, 150, 0.6), inset 0 0 0 2px rgba(140, 110, 90, 0.5);
+            box-sizing: border-box;
+        }
+
+        /* Vành đai phía sau bị hành tinh che (z-index -1) */
+        body.dark-mode .planet-saturn::before {
+            transform: translate(-50%, -50%) rotate(-20deg);
+            z-index: -1;
+        }
+
+        /* Vành đai phía trước đè lên hành tinh (z-index 2 + clip-path) */
+        body.dark-mode .planet-saturn::after {
             transform: translate(-50%, -50%) rotate(-20deg);
             z-index: 2;
+            /* Cắt lấy nửa dưới của vành đai đè lên hành tinh bằng clip-path rộng */
+            clip-path: polygon(-50% 50%, 150% 50%, 150% 150%, -50% 150%);
+            -webkit-clip-path: polygon(-50% 50%, 150% 50%, 150% 150%, -50% 150%);
+        }
+
+        @keyframes planetMoveRight { from { transform: translateX(-15vw) rotate(0deg); } to { transform: translateX(115vw) rotate(20deg); } }
+        @keyframes planetMoveLeft { from { transform: translateX(115vw) rotate(0deg); } to { transform: translateX(-15vw) rotate(-20deg); } }
+
+        @media (max-width: 600px) {
+            .planet { display: none !important; animation: none !important; }
         }
     </style>
 </head>
