@@ -356,7 +356,7 @@
                 box-shadow: 0 6px 20px rgba(46,125,50,0.5) !important;
             }
             
-            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU CO MƯỢT MÀ */
+            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ */
             .group-filter-wrapper{
                 grid-column: 1 / 4;
                 grid-row: 3;
@@ -469,9 +469,12 @@
                 background: linear-gradient(135deg, #165c3f, #0a3527) !important;
                 box-shadow: none !important; /* Tắt hoàn toàn shadow trên phần tử đang clip-path */
             }
-            /* Giảm tải bộ lọc đổ bóng của Icon khi đang lắc, ĐÃ XÓA backface-visibility gây lỗi Safari */
+            
+            /* ĐÃ FIX: TRẢ LẠI HOẠT ẢNH CHO ICON Ở CHẾ ĐỘ DARK MODE BỊ GHI ĐÈ BỞI filter:none TRƯỚC ĐÓ */
             body.dark-mode .iv-badge-btn.iv-expanded .syringe-icon {
-                filter: none !important; 
+                filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.5)) !important;
+                transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
+                animation: iconPopWiggle 1.2s ease-in-out infinite 0.35s !important;
             }
         }
 
@@ -1294,8 +1297,8 @@
 
         /* Mobile: giảm backdrop-filter blur để tránh GPU overload */
         @media (max-width: 600px) {
+            /* CẬP NHẬT: BỎ .search-box khỏi danh sách này để fix lỗi bàn phím trên iOS/Safari */
             body.dark-mode .glass-panel,
-            body.dark-mode .search-box,
             body.dark-mode .abc-toggle-btn,
             body.dark-mode .view-btn,
             body.dark-mode .letter-btn,
@@ -1405,7 +1408,7 @@
         .planet-pluto { background: radial-gradient(circle at 30% 30%, #cfd8dc, #90a4ae, #546e7a); width: 16px; height: 16px; box-shadow: inset -3px -3px 6px rgba(0,0,0,0.6); }
         .planet-neptune { background: radial-gradient(circle at 30% 30%, #64b5f6, #2196f3, #0d47a1); width: 35px; height: 35px; box-shadow: inset -5px -5px 10px rgba(0,0,0,0.6); }
         
-        /* CẬP NHẬT LẠI SAO THỔ VỚI VÀNH ĐAI CHUẨN XÁC - ĐÃ FIX LỖI CHÈN MẶT PHẲNG */
+        /* CẬP NHẬT LẠI SAO THỔ VỚI VÀNH ĐAI CHUẨN XÁC 100% 3D */
         body.dark-mode .planet-saturn {
             width: 80px; height: 80px;
             background: linear-gradient(160deg, #f2e3c6 0%, #dcb589 20%, #c49a6c 35%, #e6cca4 50%, #a67c52 65%, #8b633b 80%, #5c4026 100%);
@@ -1428,21 +1431,20 @@
             box-sizing: border-box;
         }
 
-        /* Vành đai phía sau (nửa trên) */
+        /* Vành đai phía sau (nằm dưới hành tinh, không bị che mất chóp ngoài) */
         body.dark-mode .planet-saturn::before {
             transform: translate(-50%, -50%) rotate(-20deg);
-            z-index: 1;
-            clip-path: polygon(-20% -20%, 120% -20%, 120% 50%, -20% 50%);
-            -webkit-clip-path: polygon(-20% -20%, 120% -20%, 120% 50%, -20% 50%);
-            /* Mask-image đục 1 lỗ tròn tàng hình ở giữa vành đai, vừa khít che đi phần chèn lên hành tinh */
-            -webkit-mask-image: radial-gradient(circle at center, transparent 39px, black 39.5px);
+            z-index: -1; /* Ép nó nằm dưới Background của cha */
+            /* Đục lủng 1 lỗ ngay tâm bằng kích thước hành tinh để tránh viền trong xuyên thấu */
             mask-image: radial-gradient(circle at center, transparent 39px, black 39.5px);
+            -webkit-mask-image: radial-gradient(circle at center, transparent 39px, black 39.5px);
         }
 
-        /* Vành đai phía trước đè lên hành tinh (nửa dưới) */
+        /* Vành đai phía trước (chỉ vẽ đúng nửa dưới) */
         body.dark-mode .planet-saturn::after {
             transform: translate(-50%, -50%) rotate(-20deg);
-            z-index: 2;
+            z-index: 1; /* Nằm trên bề mặt hành tinh */
+            /* Chỉ cắt phần thừa phía trên, chừa lại hoàn toàn toàn bộ viền vòng */
             clip-path: polygon(-20% 50%, 120% 50%, 120% 120%, -20% 120%);
             -webkit-clip-path: polygon(-20% 50%, 120% 50%, 120% 120%, -20% 120%);
         }
