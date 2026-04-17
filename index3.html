@@ -490,7 +490,7 @@
         .footer{text-align:center;margin:40px 0}
         .footer-badge{display:inline-block;background:linear-gradient(135deg,#fff9c4,#ffeb3b);border:1px solid var(--gold);padding:8px 20px;border-radius:12px;color:var(--green-d);font-weight:600;font-size:12px;box-shadow:0 4px 15px rgba(0,0,0,0.08)}
 
-        .nature-background{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+        .nature-background{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;contain:strict;}
         .leaf{position:absolute;width:18px;height:18px;background:rgba(76,175,80,0.4);border:.2px solid rgba(255,255,255,0.4);border-radius:0 100% 0 100%;animation:fall linear infinite}
         @keyframes fall{0%{transform:translateY(-5vh) rotate(0);opacity:0}10%{opacity:1}100%{transform:translateY(105vh) rotate(360deg);opacity:0}}
 
@@ -1242,6 +1242,13 @@
             body.dark-mode .glass-card::after {
                 display: none !important;
             }
+            
+            /* Bỏ box-shadow động trên điện thoại, chỉ giữ opacity và scale */
+            @keyframes twinkle {
+                0% { opacity: 0.1; transform: scale(0.8); }
+                50% { opacity: 1; transform: scale(1.2); }
+                100% { opacity: 0.1; transform: scale(0.8); }
+            }
         }
 
         /* Touch: thay :hover bằng :active cho mobile */
@@ -1261,8 +1268,9 @@
             }
         }
 
-/* Bầu trời đêm (Ngôi sao lấp lánh & Sao băng lướt chậm đan chéo) */
-        .night-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden; }
+        /* Bầu trời đêm (Ngôi sao lấp lánh & Sao băng lướt chậm đan chéo) */
+        .night-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden; contain: strict; }
+        .nature-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; contain: strict; }
         .star { position: absolute; background: white; border-radius: 50%; animation: twinkle infinite ease-in-out; }
         @keyframes twinkle {
             0% { opacity: 0.1; transform: scale(0.8); }
@@ -1541,7 +1549,7 @@
     <script>
         // =========================================================================
         // PRE-WARM: Khởi tạo sao trước khi user toggle, kết hợp ÉP BIÊN DỊCH CSS
-        // Đã tối ưu giảm số lượng sao trên Mobile xuống 100 để mượt hơn
+        // Đã tối ưu giảm số lượng sao trên Mobile xuống 60 để mượt hơn
         // =========================================================================
         function initNightBackground() {
             const nightContainer = document.getElementById('night-container');
@@ -1549,8 +1557,8 @@
 
             const frag = document.createDocumentFragment();
 
-            // Nếu màn hình <= 600px (Mobile) thì tạo 100 sao, ngược lại 160 sao
-            const starCount = window.innerWidth <= 600 ? 100 : 160;
+            // Nếu màn hình <= 600px (Mobile) thì tạo 60 sao, ngược lại 160 sao
+            const starCount = window.innerWidth <= 600 ? 60 : 160;
 
             for (let i = 0; i < starCount; i++) {
                 const s = document.createElement('div');
