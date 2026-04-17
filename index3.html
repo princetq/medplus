@@ -1541,6 +1541,7 @@
     <script>
         // =========================================================================
         // PRE-WARM: Khởi tạo sao trước khi user toggle, kết hợp ÉP BIÊN DỊCH CSS
+        // Đã tối ưu giảm số lượng sao trên Mobile xuống 100 để mượt hơn
         // =========================================================================
         function initNightBackground() {
             const nightContainer = document.getElementById('night-container');
@@ -1548,7 +1549,10 @@
 
             const frag = document.createDocumentFragment();
 
-            for (let i = 0; i < 160; i++) {
+            // Nếu màn hình <= 600px (Mobile) thì tạo 100 sao, ngược lại 160 sao
+            const starCount = window.innerWidth <= 600 ? 100 : 160;
+
+            for (let i = 0; i < starCount; i++) {
                 const s = document.createElement('div');
                 s.className = 'star';
                 const size = (Math.random() * 2 + 1).toFixed(2) + 'px';
@@ -1583,15 +1587,13 @@
 
             // MẸO 1: THOÁT BẪY LAYOUT THRASING
             // Kích hoạt display: block từ sớm, nhưng dùng visibility: hidden để giấu đi.
-            // Việc này ép trình duyệt vẽ sẵn 160 ngôi sao vào khung hình ẩn.
+            // Việc này ép trình duyệt vẽ sẵn các ngôi sao vào khung hình ẩn.
             nightContainer.style.display = 'block';
             nightContainer.style.opacity = '0';
             nightContainer.style.visibility = 'hidden';
 
             // MẸO 2: CSS PRE-WARMING (TUYỆT KỸ CHỐNG JANK)
             // Thêm class dark-mode, ép CPU tính toán Layout, rồi xóa ngay lập tức!
-            // Toàn bộ diễn ra trong 1 mili-giây, mắt người không thể thấy màn hình nháy, 
-            // nhưng trình duyệt đã kịp lưu cache toàn bộ cấu trúc CSS của Dark Mode.
             document.body.classList.add('dark-mode');
             void document.body.offsetHeight; 
             document.body.classList.remove('dark-mode');
