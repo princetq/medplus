@@ -237,14 +237,10 @@
             z-index: 100;    
             background: transparent; 
           }  
-          /* Đảm bảo ô input không vướng viền/transform lạ gây lỗi bàn phím */
           .search-box input {
-            transform: translateZ(0);
-          }
-          /* GỠ BỎ HOÀN TOÀN backdrop-filter cho các thẻ con trong search-wrapper trên Mobile để chống bug iOS Caret */
-          .search-wrapper * {
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
+            transform: translateZ(0); /* Neo bám UI cho iOS Safari */
+            -webkit-appearance: none;
+            border-radius: 0;
           }
           body:has(#q:focus) {   
             overscroll-behavior: none;  
@@ -315,16 +311,6 @@
                 filter:drop-shadow(-1px 2px 2px rgba(0,0,0,0.25)) !important;
                 transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); 
                 z-index: 30 !important; /* Đè lên khối chữ */
-            }
-            
-            /* ANIMATION KHI CLICK: ICON TO VỪA VẶN VÀ LẮC LIÊN TỤC */
-            @keyframes iconPopWiggle {
-                0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-                20% { transform: translate(-50%, -50%) scale(1.9) rotate(12deg); }
-                40% { transform: translate(-50%, -50%) scale(1.9) rotate(-8deg); }
-                60% { transform: translate(-50%, -50%) scale(1.9) rotate(10deg); }
-                80% { transform: translate(-50%, -50%) scale(1.9) rotate(-5deg); }
-                100% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
             }
             
             /* THỦ THUẬT: KHỐI CHỮ TRÙM KÍN HOÀN TOÀN NÚT TRÒN ĐỂ KHÔNG BỊ CHẮP VÁ */
@@ -427,6 +413,16 @@
            Áp dụng cả light mode lẫn dark mode
            ================================================================ */
         @media (max-width: 600px) {
+            /* ANIMATION KHI CLICK: ICON TO VỪA VẶN VÀ LẮC LIÊN TỤC CHUẨN XÁC */
+            @keyframes iconPopWiggle {
+                0%, 100% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
+                15% { transform: translate(-50%, -50%) scale(1.9) rotate(12deg); }
+                30% { transform: translate(-50%, -50%) scale(1.9) rotate(-10deg); }
+                45% { transform: translate(-50%, -50%) scale(1.9) rotate(8deg); }
+                60% { transform: translate(-50%, -50%) scale(1.9) rotate(-5deg); }
+                75% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
+            }
+
             /* Hidden state: width tự co theo nội dung, clip từ bên phải */
             .iv-badge-btn .iv-btn-text {
                 max-width: none !important;
@@ -455,15 +451,16 @@
             .iv-badge-btn:not(.iv-expanded) .iv-btn-text {
                 will-change: auto !important;
             }
-            
+
             /* ĐÃ FIX: TRẢ LẠI HOẠT ẢNH CHO ICON Ở CHẾ ĐỘ LIGHT MODE */
             .iv-badge-btn.iv-expanded .syringe-icon {
                 transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
                 -webkit-transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
-                animation: iconPopWiggle 0.6s ease-in-out infinite !important;
-                filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.5)) !important;
+                animation: iconPopWiggle 1s ease-in-out infinite !important;
+                filter: drop-shadow(-2px 4px 5px rgba(0,0,0,0.4)) !important;
+                will-change: transform;
             }
-
+            
             /* Vẫn giữ dark mode colors NHƯNG BỎ HIỆU ỨNG GLOW VÀ SHADOW ĐỂ KHÔNG BỊ LAG GPU */
             body.dark-mode .iv-badge-btn {
                 box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
@@ -485,8 +482,9 @@
             body.dark-mode .iv-badge-btn.iv-expanded .syringe-icon {
                 transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
                 -webkit-transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
-                animation: iconPopWiggle 0.6s ease-in-out infinite !important;
-                filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.5)) !important;
+                animation: iconPopWiggle 1s ease-in-out infinite !important;
+                filter: drop-shadow(-2px 4px 5px rgba(0,0,0,0.6)) !important;
+                will-change: transform;
             }
         }
 
@@ -1230,7 +1228,7 @@
             fill: rgba(80, 220, 180, 0.25) !important;
         }
 
-        /* === SHIMMER CHO DARK MODE === */
+        /* === SHIM CHO DARK MODE === */
         body.dark-mode .skeleton-el {
             background: linear-gradient(90deg,
                 rgba(80,220,180,0.04) 25%,
@@ -1309,6 +1307,23 @@
 
         /* Mobile: giảm backdrop-filter blur để tránh GPU overload */
         @media (max-width: 600px) {
+            /* CẬP NHẬT: Gỡ bỏ hoàn toàn .search-box và .search-wrapper khỏi danh sách backdrop-filter 
+               để iOS Safari không nhảy dấu nháy lên trời khi focus bàn phím */
+            body.dark-mode .glass-panel,
+            body.dark-mode .abc-toggle-btn,
+            body.dark-mode .view-btn,
+            body.dark-mode .letter-btn,
+            body.dark-mode .group-filter-select {
+                backdrop-filter: blur(10px) !important;
+                -webkit-backdrop-filter: blur(10px) !important;
+            }
+            body.dark-mode .search-box {
+                /* Đổ màu nền tĩnh, hoàn toàn không dính filter */
+                background: #0b1a30 !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            
             /* Tắt hẳn blur trên card mobile dark mode để cuộn 60fps */
             body.dark-mode .glass-card {
                 backdrop-filter: none !important;
@@ -1411,7 +1426,7 @@
         .planet-pluto { background: radial-gradient(circle at 30% 30%, #cfd8dc, #90a4ae, #546e7a); width: 16px; height: 16px; box-shadow: inset -3px -3px 6px rgba(0,0,0,0.6); }
         .planet-neptune { background: radial-gradient(circle at 30% 30%, #64b5f6, #2196f3, #0d47a1); width: 35px; height: 35px; box-shadow: inset -5px -5px 10px rgba(0,0,0,0.6); }
         
-        /* CẬP NHẬT LẠI SAO THỔ VỚI VÀNH ĐAI CHUẨN XÁC 100% 3D */
+        /* CẬP NHẬT: SAO THỔ KHÔNG GIAN 3D HOÀN HẢO */
         body.dark-mode .planet-saturn {
             width: 80px; height: 80px;
             background: linear-gradient(160deg, #f2e3c6 0%, #dcb589 20%, #c49a6c 35%, #e6cca4 50%, #a67c52 65%, #8b633b 80%, #5c4026 100%);
@@ -1420,6 +1435,8 @@
             position: relative;
             z-index: 5;
             contain: none !important;
+            /* CRITICAL: Thiết lập không gian 3D để vành đai lùi ra sau mà không cần z-index âm lỗi */
+            transform-style: preserve-3d; 
         }
 
         body.dark-mode .planet-saturn::before,
@@ -1434,16 +1451,14 @@
             box-sizing: border-box;
         }
 
-        /* Vành đai phía sau (nằm dưới hành tinh, để bóng phủ vòng ra xa tự nhiên) */
+        /* Vành đai phía sau bị hành tinh che: Đẩy thụt lùi trục Z */
         body.dark-mode .planet-saturn::before {
-            transform: translate(-50%, -50%) rotate(-20deg);
-            z-index: -1;
+            transform: translate(-50%, -50%) rotate(-20deg) translateZ(-5px);
         }
 
-        /* Vành đai phía trước (chỉ giữ đúng nửa dưới để đè lên bề mặt hành tinh) */
+        /* Vành đai phía trước đè lên hành tinh: Kéo lồi ra trước trục Z và cắt nửa dưới */
         body.dark-mode .planet-saturn::after {
-            transform: translate(-50%, -50%) rotate(-20deg);
-            z-index: 1;
+            transform: translate(-50%, -50%) rotate(-20deg) translateZ(5px);
             clip-path: polygon(-20% 50%, 120% 50%, 120% 150%, -20% 150%);
             -webkit-clip-path: polygon(-20% 50%, 120% 50%, 120% 150%, -20% 150%);
         }
@@ -1746,7 +1761,7 @@
 
             // Thêm các hành tinh vào PC (Sao thổ random độ cao)
             if (window.innerWidth > 600) {
-                let saturnTop = (Math.random() * 25 + 15).toFixed(1) + '%'; // Chiều cao ngẫu nhiên từ 15% đến 40%
+                let saturnTop = Math.floor(Math.random() * 50 + 15) + '%'; // Chiều cao ngẫu nhiên từ 15% đến 65%
                 const planets = [
                     { className: 'planet planet-mars', top: '12%', anim: 'planetMoveRight 180s linear infinite' },
                     { className: 'planet planet-jupiter', top: '65%', anim: 'planetMoveLeft 240s linear infinite' },
