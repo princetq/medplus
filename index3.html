@@ -294,15 +294,15 @@
             
             /* ANIMATION KHI CLICK: ICON TO TRÀN RA NGOÀI VÀ ĐỘNG ĐẬY LIÊN TỤC */
             @keyframes iconPopWiggle {
-                0% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
+                0%, 100% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
                 20% { transform: translate(-50%, -50%) scale(1.9) rotate(12deg); }
                 40% { transform: translate(-50%, -50%) scale(1.9) rotate(-8deg); }
                 60% { transform: translate(-50%, -50%) scale(1.9) rotate(10deg); }
                 80% { transform: translate(-50%, -50%) scale(1.9) rotate(-5deg); }
-                100% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
             }
             .iv-badge-btn.iv-expanded .syringe-icon {
-                animation: iconPopWiggle 1.2s ease-in-out infinite !important;
+                transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
+                animation: iconPopWiggle 1.2s ease-in-out infinite 0.35s !important;
                 filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.5)) !important;
             }
             
@@ -395,7 +395,7 @@
             
             .chat-widget-container .disclaimer{font-size:14px;padding:3px 10px}
             
-            /* Sửa nút Close Button để vòng tròn luôn tròn và dấu X nằm giữa */
+            /* Căn chỉnh X Modal trên Mobile */
             .close-btn{position:absolute;top:4px;right:14px;font-size:30px;cursor:pointer;color:#d32f2f;font-weight:bold;transition:.2s;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;z-index:20;background:rgba(255,255,255,0.85);box-shadow:0 2px 8px rgba(0,0,0,0.1);flex-shrink:0;box-sizing:border-box;line-height:0;padding-bottom:2px;}
         }
 
@@ -1350,6 +1350,22 @@
             0% { transform: translate(0, 0) rotate(45deg); opacity: 1; }
             100% { transform: translate(120vw, 120vh) rotate(45deg); opacity: 0; }
         }
+        
+        /* Các hành tinh cho Dark Mode PC */
+        .planet { position: absolute; left: 0; border-radius: 50%; pointer-events: none; z-index: 1; contain: strict; }
+        .planet-mars { background: radial-gradient(circle at 30% 30%, #ffb74d, #f57c00, #bf360c); width: 28px; height: 28px; box-shadow: inset -4px -4px 8px rgba(0,0,0,0.6); }
+        .planet-jupiter { background: linear-gradient(170deg, #d7ccc8 0%, #a1887f 20%, #d7ccc8 40%, #8d6e63 60%, #d7ccc8 80%, #795548 100%); width: 65px; height: 65px; box-shadow: inset -8px -8px 16px rgba(0,0,0,0.7); }
+        .planet-moon { background: radial-gradient(circle at 30% 30%, #ffffff, #e0e0e0, #9e9e9e); width: 40px; height: 40px; box-shadow: inset -5px -5px 10px rgba(0,0,0,0.6); }
+        .planet-pluto { background: radial-gradient(circle at 30% 30%, #cfd8dc, #90a4ae, #546e7a); width: 16px; height: 16px; box-shadow: inset -3px -3px 6px rgba(0,0,0,0.6); }
+        .planet-saturn { width: 55px; height: 55px; background: radial-gradient(circle at 30% 30%, #ffe082, #ffca28, #ff8f00); box-shadow: inset -6px -6px 12px rgba(0,0,0,0.6); }
+        .planet-saturn::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(20deg); width: 100px; height: 22px; border-radius: 50%; border: 5px solid rgba(210, 180, 140, 0.65); box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+        
+        @keyframes planetMoveRight { from { transform: translateX(-15vw) rotate(0deg); } to { transform: translateX(115vw) rotate(20deg); } }
+        @keyframes planetMoveLeft { from { transform: translateX(115vw) rotate(0deg); } to { transform: translateX(-15vw) rotate(-20deg); } }
+
+        @media (max-width: 600px) {
+            .planet { display: none !important; animation: none !important; }
+        }
     </style>
 </head>
 <body>
@@ -1638,6 +1654,26 @@
                     'animation-delay:' + (Math.random() * 5).toFixed(2) + 's'
                 ].join(';');
                 frag.appendChild(ss);
+            }
+
+            // Thêm các hành tinh vào PC
+            if (window.innerWidth > 600) {
+                const planets = [
+                    { className: 'planet planet-mars', top: '12%', anim: 'planetMoveRight 180s linear infinite' },
+                    { className: 'planet planet-jupiter', top: '65%', anim: 'planetMoveLeft 240s linear infinite' },
+                    { className: 'planet planet-saturn', top: '30%', anim: 'planetMoveRight 300s linear infinite' },
+                    { className: 'planet planet-moon', top: '80%', anim: 'planetMoveRight 150s linear infinite' },
+                    { className: 'planet planet-pluto', top: '22%', anim: 'planetMoveLeft 280s linear infinite' }
+                ];
+
+                planets.forEach(p => {
+                    const el = document.createElement('div');
+                    el.className = p.className;
+                    el.style.top = p.top;
+                    el.style.animation = p.anim;
+                    el.style.animationDelay = `-${Math.random() * 150}s`; // Khởi tạo vị trí ngẫu nhiên trên quỹ đạo
+                    frag.appendChild(el);
+                });
             }
 
             nightContainer.appendChild(frag);
