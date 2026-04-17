@@ -356,7 +356,7 @@
                 box-shadow: 0 6px 20px rgba(46,125,50,0.5) !important;
             }
             
-            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ */
+            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU CO MƯỢT MÀ */
             .group-filter-wrapper{
                 grid-column: 1 / 4;
                 grid-row: 3;
@@ -1405,7 +1405,7 @@
         .planet-pluto { background: radial-gradient(circle at 30% 30%, #cfd8dc, #90a4ae, #546e7a); width: 16px; height: 16px; box-shadow: inset -3px -3px 6px rgba(0,0,0,0.6); }
         .planet-neptune { background: radial-gradient(circle at 30% 30%, #64b5f6, #2196f3, #0d47a1); width: 35px; height: 35px; box-shadow: inset -5px -5px 10px rgba(0,0,0,0.6); }
         
-        /* CẬP NHẬT LẠI SAO THỔ VỚI VÀNH ĐAI CHUẨN XÁC - ĐÃ FIX LỖI ẨN VÀNH */
+        /* CẬP NHẬT LẠI SAO THỔ VỚI VÀNH ĐAI CHUẨN XÁC - ĐÃ FIX LỖI CHÈN MẶT PHẲNG */
         body.dark-mode .planet-saturn {
             width: 80px; height: 80px;
             background: linear-gradient(160deg, #f2e3c6 0%, #dcb589 20%, #c49a6c 35%, #e6cca4 50%, #a67c52 65%, #8b633b 80%, #5c4026 100%);
@@ -1413,7 +1413,7 @@
             border-radius: 50%;
             position: relative;
             z-index: 5;
-            contain: none !important; /* QUAN TRỌNG: Tắt contain: strict từ class .planet để vành đai không bị xén mất */
+            contain: none !important;
         }
 
         body.dark-mode .planet-saturn::before,
@@ -1428,18 +1428,23 @@
             box-sizing: border-box;
         }
 
-        /* Vành đai phía sau bị hành tinh che */
+        /* Vành đai phía sau (nửa trên) */
         body.dark-mode .planet-saturn::before {
             transform: translate(-50%, -50%) rotate(-20deg);
-            z-index: -1;
+            z-index: 1;
+            clip-path: polygon(-20% -20%, 120% -20%, 120% 50%, -20% 50%);
+            -webkit-clip-path: polygon(-20% -20%, 120% -20%, 120% 50%, -20% 50%);
+            /* Mask-image đục 1 lỗ tròn tàng hình ở giữa vành đai, vừa khít che đi phần chèn lên hành tinh */
+            -webkit-mask-image: radial-gradient(circle at center, transparent 39px, black 39.5px);
+            mask-image: radial-gradient(circle at center, transparent 39px, black 39.5px);
         }
 
-        /* Vành đai phía trước đè lên hành tinh */
+        /* Vành đai phía trước đè lên hành tinh (nửa dưới) */
         body.dark-mode .planet-saturn::after {
             transform: translate(-50%, -50%) rotate(-20deg);
             z-index: 2;
-            clip-path: polygon(-50% 50%, 150% 50%, 150% 150%, -50% 150%);
-            -webkit-clip-path: polygon(-50% 50%, 150% 50%, 150% 150%, -50% 150%);
+            clip-path: polygon(-20% 50%, 120% 50%, 120% 120%, -20% 120%);
+            -webkit-clip-path: polygon(-20% 50%, 120% 50%, 120% 120%, -20% 120%);
         }
 
         @keyframes planetMoveRight { from { transform: translateX(-15vw) rotate(0deg); } to { transform: translateX(115vw) rotate(20deg); } }
