@@ -1366,6 +1366,79 @@
         @media (max-width: 600px) {
             .planet { display: none !important; animation: none !important; }
         }
+
+        /* === BẢN VÁ LỖI HÌNH ẢNH HÀNH TINH & GHI ĐÈ HEADER (DÀNH CHO PC DARKMODE) === */
+        
+        /* 1. Sửa màu Sao Thổ thực tế hơn, vành đai nghiêng rõ ràng */
+        body.dark-mode .planet-saturn {
+            width: 70px; height: 70px;
+            background: radial-gradient(circle at 30% 30%, #f7e1a0, #f7d26c, #e8b923);
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.6);
+            transform: rotate(-15deg);
+            position: relative;
+        }
+        body.dark-mode .planet-saturn::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px; height: 35px;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 50% 50%, rgba(247, 225, 160, 0.45) 30%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(247, 210, 108, 0.5) 50%, transparent 60%),
+                radial-gradient(circle at 50% 50%, rgba(232, 185, 35, 0.55) 70%, transparent 80%),
+                rgba(210, 180, 140, 0.3);
+            border: 1px solid rgba(210, 180, 140, 0.5);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            z-index: -1;
+        }
+
+        /* 2. Thêm Sao Hải Vương */
+        body.dark-mode .planet-neptune {
+            background: radial-gradient(circle at 30% 30%, #64b5f6, #2196f3, #0d47a1);
+            width: 35px; height: 35px;
+            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.6);
+        }
+
+        /* 3. TUYỆT ĐỐI GHI ĐÈ Z-INDEX ĐỂ SAO BAY QUA HEADER NHƯNG KHÔNG CHE MẤT CHỮ */
+        
+        /* Tăng z-index của nền sao lên 1, giảm z-index của container xuống 2 */
+        body.dark-mode #night-container { z-index: 1 !important; }
+        body.dark-mode .container { z-index: 2 !important; }
+        
+        /* Chỉnh lại header để tách nền và chữ */
+        body.dark-mode .header-main {
+            position: relative;
+            z-index: 0 !important;
+            background: none !important; /* Xóa nền tĩnh trên phần tử chính */
+        }
+        
+        /* Tạo pseudo-element cho nền header, đặt dưới sao ở z-index -1 */
+        body.dark-mode .header-main::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 22, 40, 0.35) !important; /* Khôi phục nền gốc vào đây */
+            border-radius: inherit;
+            z-index: -1 !important; /* Đặt nền dưới các ngôi sao ở z-index 1 */
+        }
+        
+        /* Đặt các ngôi sao nền ở z-index thấp nhất bên trong night-container */
+        body.dark-mode #night-container .star { z-index: 0 !important; }
+        
+        /* Đặt các hành tinh ở z-index thấp bên trong night-container */
+        body.dark-mode #night-container .planet { z-index: 1 !important; }
+        
+        /* Đặt các phần tử văn bản header ở z-index cao để không bị sao che mất */
+        body.dark-mode .header-main .zen-logo,
+        body.dark-mode .header-main .header-content,
+        body.dark-mode .header-main .header-title,
+        body.dark-mode .header-main .header-subtitle,
+        body.dark-mode .header-main .medplus-badge {
+            position: relative;
+            z-index: 2 !important; /* Đặt chữ trên các ngôi sao ở z-index 1 */
+        }
     </style>
 </head>
 <body>
@@ -1663,7 +1736,8 @@
                     { className: 'planet planet-jupiter', top: '65%', anim: 'planetMoveLeft 240s linear infinite' },
                     { className: 'planet planet-saturn', top: '30%', anim: 'planetMoveRight 300s linear infinite' },
                     { className: 'planet planet-moon', top: '80%', anim: 'planetMoveRight 150s linear infinite' },
-                    { className: 'planet planet-pluto', top: '22%', anim: 'planetMoveLeft 280s linear infinite' }
+                    { className: 'planet planet-pluto', top: '22%', anim: 'planetMoveLeft 280s linear infinite' },
+                    { className: 'planet planet-neptune', top: '50%', anim: 'planetMoveLeft 200s linear infinite' }
                 ];
 
                 planets.forEach(p => {
