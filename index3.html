@@ -239,7 +239,7 @@
           }  
           /* Đảm bảo ô input không vướng viền/transform lạ gây lỗi bàn phím */
           .search-box input {
-            transform: translateZ(0);
+            transform: translateZ(0); /* Neo bám UI cho iOS Safari */
             -webkit-appearance: none;
             border-radius: 0;
           }
@@ -367,8 +367,8 @@
                 justify-self: start;
                 height: 36px !important;
                 overflow: hidden; 
-                clip-path: inset(0 0% 0 0 round 18px);
-                -webkit-clip-path: inset(0 0% 0 0 round 18px);
+                clip-path: inset(0 0% 0 0 round 12px);
+                -webkit-clip-path: inset(0 0% 0 0 round 12px);
                 /* Chuyển động thuần túy bằng gia tốc deceleration */
                 transition: clip-path .38s cubic-bezier(0.2, 0, 0, 1), -webkit-clip-path .38s cubic-bezier(0.2, 0, 0, 1) !important;
                 will-change: clip-path;
@@ -377,8 +377,8 @@
             .group-filter-wrapper.temp-hide{
                 max-width: 205px !important; /* Cố định chiều rộng để chống giật grid layout */
                 min-width: unset !important; 
-                clip-path: inset(0 calc(100% - 44px) 0 0 round 18px) !important;
-                -webkit-clip-path: inset(0 calc(100% - 44px) 0 0 round 18px) !important;
+                clip-path: inset(0 calc(100% - 44px) 0 0 round 12px) !important;
+                -webkit-clip-path: inset(0 calc(100% - 44px) 0 0 round 12px) !important;
                 pointer-events: none;
             }
             .group-filter-wrapper.temp-hide .group-filter-select{
