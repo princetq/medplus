@@ -389,6 +389,17 @@
                 transition: opacity 0.2s ease !important;
             }
 
+            /* FIX: Ôm vừa khít chữ + icon mũi tên trên Mobile */
+            .group-filter-wrapper .group-filter-select{
+                width:-webkit-fit-content;
+                width:fit-content;
+                max-width:185px;
+                min-width:0;
+                height:34px;
+                font-size:12px;
+                padding:0 28px 0 34px;
+            }
+
             .letter-btn{flex-shrink:0}
             .header-main{gap:8px;padding:15px 12px}
             .zen-logo img{width:48px;height:48px}
@@ -1321,11 +1332,15 @@
             body.dark-mode .glass-panel,
             body.dark-mode .abc-toggle-btn,
             body.dark-mode .view-btn,
-            body.dark-mode .letter-btn,
-            body.dark-mode .group-filter-select {
+            body.dark-mode .letter-btn {
                 backdrop-filter: none !important;
                 -webkit-backdrop-filter: none !important;
                 background: #0d1f3c !important; /* Đổ nền rắn tĩnh thay vì nền kính mờ */
+            }
+            body.dark-mode .group-filter-select {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                background-color: #0d1f3c !important; /* TÁCH RIÊNG: Chỉ đổi màu nền, giữ lại background-image mũi tên! */
             }
             body.dark-mode .search-box {
                 background: #0b1a30 !important;
@@ -1444,6 +1459,7 @@
             position: relative;
             z-index: 5;
             contain: none !important;
+            /* CRITICAL: Thiết lập không gian 3D để vành đai lùi ra sau mà không cần z-index âm lỗi */
             transform-style: preserve-3d; 
         }
 
@@ -1459,14 +1475,14 @@
             box-sizing: border-box;
         }
 
-        /* ĐÃ FIX: Vành đai phía sau tự nhiên lùi ra sau mặt phẳng bằng Không gian Z (không bị cắt xén shadow) */
+        /* Vành đai phía sau bị hành tinh che: Đẩy thụt lùi trục Z */
         body.dark-mode .planet-saturn::before {
-            transform: translate(-50%, -50%) rotate(-20deg) translateZ(-10px);
+            transform: translate(-50%, -50%) rotate(-20deg) translateZ(-5px);
         }
 
-        /* Vành đai phía trước đè lên hành tinh bằng không gian Z */
+        /* Vành đai phía trước đè lên hành tinh: Kéo lồi ra trước trục Z và cắt nửa dưới */
         body.dark-mode .planet-saturn::after {
-            transform: translate(-50%, -50%) rotate(-20deg) translateZ(10px);
+            transform: translate(-50%, -50%) rotate(-20deg) translateZ(5px);
             clip-path: polygon(-20% 50%, 120% 50%, 120% 150%, -20% 150%);
             -webkit-clip-path: polygon(-20% 50%, 120% 50%, 120% 150%, -20% 150%);
         }
@@ -1769,7 +1785,7 @@
 
             // Thêm các hành tinh vào PC (Sao thổ random độ cao)
             if (window.innerWidth > 600) {
-                let saturnTop = Math.floor(Math.random() * 50 + 15) + '%'; // Chiều cao ngẫu nhiên từ 15% đến 65%
+                let saturnTop = Math.floor(Math.random() * 35 + 15) + '%'; // Chiều cao ngẫu nhiên từ 15% đến 50%
                 const planets = [
                     { className: 'planet planet-mars', top: '12%', anim: 'planetMoveRight 180s linear infinite' },
                     { className: 'planet planet-jupiter', top: '65%', anim: 'planetMoveLeft 240s linear infinite' },
