@@ -14,7 +14,7 @@
         .glass-panel{background:var(--g-bg);backdrop-filter:var(--g-blur);-webkit-backdrop-filter:var(--g-blur);border:1px solid var(--g-border);box-shadow:var(--shadow);border-radius:var(--rad)}
         .container{max-width:1300px;margin:0 auto;padding:0 20px;position:relative;z-index:10}
 
-        .header-main{display:flex;align-items:center;justify-content:center;gap:15px;margin-bottom:30px;padding:22px 25px;border:1px solid rgba(76,175,80,0.6);box-shadow:0 8px 32px rgba(0,0,0,0.1), 0 0 20px rgba(76,175,80,0.3), inset 0 0 12px rgba(76,175,80,0.1)}
+        .header-main{display:flex;align-items:center;justify-content:center;gap:15px;margin-bottom:30px;padding:22px 25px}
         .zen-logo img{width:62px;height:62px;animation:zenBreath 4s ease-in-out infinite;border-radius:50%;flex-shrink:0;box-shadow:0 4px 15px rgba(0,0,0,0.15)}
         @keyframes zenBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
         .header-content{text-align:center}
@@ -236,7 +236,6 @@
             .view-toggle{grid-column: 2;grid-row: 1; order: unset;}
             
             .search-box{grid-column: 3 / 5;grid-row: 1;width: 100%;max-width: none;min-width: 0;padding: 8px 10px; order: unset;}
-            /* Căn chuẩn con trỏ chuột trong ô tìm kiếm Mobile */
             .search-box input {font-size: 16px; min-width: 0; line-height: 24px; padding: 0; height: 100%;}
             .search-box svg {flex-shrink: 0;}
             
@@ -294,15 +293,15 @@
             
             /* ANIMATION KHI CLICK: ICON TO TRÀN RA NGOÀI VÀ ĐỘNG ĐẬY LIÊN TỤC */
             @keyframes iconPopWiggle {
-                0% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
-                20% { transform: translate(-50%, -50%) scale(1.9) rotate(12deg); }
-                40% { transform: translate(-50%, -50%) scale(1.9) rotate(-8deg); }
-                60% { transform: translate(-50%, -50%) scale(1.9) rotate(10deg); }
-                80% { transform: translate(-50%, -50%) scale(1.9) rotate(-5deg); }
-                100% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
+                0%, 100% { transform: translate(-50%, -50%) scale(1.35) rotate(0deg); }
+                20% { transform: translate(-50%, -50%) scale(1.35) rotate(12deg); }
+                40% { transform: translate(-50%, -50%) scale(1.35) rotate(-8deg); }
+                60% { transform: translate(-50%, -50%) scale(1.35) rotate(10deg); }
+                80% { transform: translate(-50%, -50%) scale(1.35) rotate(-5deg); }
             }
             .iv-badge-btn.iv-expanded .syringe-icon {
-                animation: iconPopWiggle 1.2s ease-in-out infinite !important;
+                transform: translate(-50%, -50%) scale(1.35) rotate(0deg) !important;
+                animation: iconPopWiggle 1.2s ease-in-out infinite 0.35s !important;
                 filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.5)) !important;
             }
             
@@ -394,9 +393,6 @@
             .chat-widget-container .send-button{width:38px;height:38px;right:3px;border:1px solid rgba(255,255,255,0.4)}
             
             .chat-widget-container .disclaimer{font-size:14px;padding:3px 10px}
-            
-            /* Sửa nút Close Button để vòng tròn luôn tròn và dấu X nằm giữa */
-            .close-btn{position:absolute;top:4px;right:14px;font-size:30px;cursor:pointer;color:#d32f2f;font-weight:bold;transition:.2s;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;z-index:20;background:rgba(255,255,255,0.85);box-shadow:0 2px 8px rgba(0,0,0,0.1);flex-shrink:0;box-sizing:border-box;line-height:0;padding-bottom:2px;}
         }
 
         /* ================================================================
@@ -733,13 +729,17 @@
 
         /* === GLASS PANEL / HEADER === */
         body.dark-mode .glass-panel {
-            background: rgba(13, 25, 50, 0.6) !important;
+            background: rgba(13, 25, 50, 0.4) !important;
             border: 1px solid rgba(80, 220, 180, 0.15) !important;
             box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(80,220,180,0.08) !important;
         }
+
         body.dark-mode .header-main {
-            border-color: rgba(80, 220, 180, 0.6) !important;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 25px rgba(80, 220, 180, 0.35), inset 0 0 15px rgba(80, 220, 180, 0.15) !important;
+            background: rgba(10, 22, 40, 0.35) !important; /* Glass xuyên thấu */
+            backdrop-filter: blur(14px) !important;
+            -webkit-backdrop-filter: blur(14px) !important;
+            border: 1px solid rgba(80, 220, 180, 0.15) !important; /* Viền mỏng, mờ */
+            box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 0 12px rgba(80, 220, 180, 0.15), inset 0 0 8px rgba(80, 220, 180, 0.08) !important;
         }
 
         /* === HEADER TEXT === */
@@ -860,13 +860,15 @@
 
         /* === PRODUCT CARDS === */
         body.dark-mode .glass-card {
-            background: rgba(10, 22, 45, 0.95) !important; 
-            border: 1px solid rgba(80, 220, 180, 0.12) !important;
+            background: rgba(10, 22, 45, 0.35) !important; /* Glass xuyên thấu */
+            backdrop-filter: blur(14px) !important;
+            -webkit-backdrop-filter: blur(14px) !important;
+            border: 1px solid rgba(80, 220, 180, 0.15) !important; /* Viền mỏng, mờ */
             box-shadow: 0 4px 20px rgba(0,0,0,0.35) !important;
         }
         body.dark-mode .glass-card:hover {
-            background: rgba(15, 35, 65, 0.98) !important;
-            border-color: rgba(80, 220, 180, 0.35) !important;
+            background: rgba(15, 35, 65, 0.55) !important;
+            border-color: rgba(80, 220, 180, 0.3) !important;
             box-shadow: 0 16px 50px rgba(0,0,0,0.5), 0 0 25px rgba(80, 220, 180, 0.12), 0 0 0 1px rgba(80, 220, 180, 0.2) !important;
             transform: translateY(-8px) !important;
         }
@@ -1252,11 +1254,12 @@
                 backdrop-filter: blur(10px) !important;
                 -webkit-backdrop-filter: blur(10px) !important;
             }
-            /* Tắt hẳn blur trên card mobile dark mode để cuộn 60fps */
+            /* Khôi phục hiệu ứng glass xuyên thấu cho thẻ thuốc trên mobile */
             body.dark-mode .glass-card {
-                backdrop-filter: none !important;
-                -webkit-backdrop-filter: none !important;
-                background: rgba(10, 22, 45, 0.95) !important;
+                backdrop-filter: blur(10px) !important;
+                -webkit-backdrop-filter: blur(10px) !important;
+                background: rgba(10, 22, 45, 0.35) !important; /* Xuyên thấu */
+                border: 1px solid rgba(80, 220, 180, 0.15) !important; /* Viền mỏng, mờ */
                 transform: translateZ(0);
                 will-change: transform;
             }
