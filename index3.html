@@ -794,6 +794,8 @@
             position: fixed;
             inset: 0;
             background:
+                /* radial-gradient mới tạo vùng sáng trung tâm dải ngân hà phía xa */
+                radial-gradient(ellipse at 50% 40%, rgba(255, 250, 220, 0.15) 0%, rgba(255, 220, 150, 0.06) 15%, transparent 65%),
                 radial-gradient(ellipse at 20% 50%, rgba(0, 255, 170, 0.04) 0%, transparent 50%),
                 radial-gradient(ellipse at 80% 20%, rgba(0, 100, 255, 0.05) 0%, transparent 50%),
                 radial-gradient(ellipse at 50% 80%, rgba(80, 0, 200, 0.04) 0%, transparent 50%);
@@ -2259,7 +2261,7 @@
                     drawRow('HOẠT CHẤT', item.active) +
                     drawRow('NHÓM DƯỢC LÝ', item.group) +
                     drawRow('DẠNG BÀO CHẾ', item.form) +
-                    drawRow('HÀM LƯỢNG', item.strength) +
+                    drawRow('HÀM LƯỢ量', item.strength) +
                     drawRow('ĐÓNG GÓI', item.pack) +
                 "</div>" +
                 (item.link ? "<button class=\"notion-btn\" onclick=\"openNotionPopup('" + item.link + "')\">📄 XEM TỜ HƯỚNG DẪN SỬ DỤNG</button>" : "") +
