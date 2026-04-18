@@ -60,6 +60,19 @@
         }
         .ks-text-mobile { display: none; }
         
+        /* HOẠT ẢNH TRƯỢT VÀ LẮC MỜI GỌI CHO CÁC NÚT CÔNG CỤ */
+        @keyframes slideInRightBtn {
+            0% { opacity: 0; transform: translateX(40px) translateZ(0); }
+            100% { opacity: 1; transform: translateX(0) translateZ(0); }
+        }
+        @keyframes btnInviteWiggle {
+            0%, 90%, 100% { transform: translateY(0) rotate(0) translateZ(0); }
+            92% { transform: translateY(-3px) rotate(-2deg) translateZ(0); }
+            94% { transform: translateY(1px) rotate(2deg) translateZ(0); }
+            96% { transform: translateY(-1px) rotate(-1deg) translateZ(0); }
+            98% { transform: translateY(0) rotate(0) translateZ(0); }
+        }
+
         .iv-badge-btn {
             position: relative;
             background: linear-gradient(135deg, #4caf50, #2e7d32);
@@ -76,12 +89,25 @@
             box-shadow: 0 4px 15px rgba(46,125,50,0.3);
             transition: .3s;
             overflow: visible !important; 
+            
+            /* Tích hợp hoạt ảnh trượt và lắc */
+            opacity: 0; 
+            animation: slideInRightBtn 0.7s cubic-bezier(0.2, 0, 0, 1) forwards, btnInviteWiggle 7s ease-in-out infinite;
         }
+        
+        /* Hiệu ứng trễ để trượt lần lượt từng nút ra */
+        .iv-badge-btn:nth-child(1) { animation-delay: 0s, 3s; }
+        .iv-badge-btn:nth-child(2) { animation-delay: 0.1s, 3.15s; }
+        .iv-badge-btn:nth-child(3) { animation-delay: 0.2s, 3.3s; }
+        .iv-badge-btn:nth-child(4) { animation-delay: 0.3s, 3.45s; }
+
         .iv-badge-btn:hover {
-            transform: translateY(-2px);
+            transform: translateY(-2px) translateZ(0) !important; /* Ưu tiên tuyệt đối khi hover */
+            animation-play-state: paused, paused !important; /* Dừng hiệu ứng nhảy khi chuột chỉ vào */
             box-shadow: 0 6px 20px rgba(46,125,50,0.5);
             background: linear-gradient(135deg, #43a047, #1b5e20);
         }
+        
         .iv-badge-btn .syringe-icon {
             position: absolute;
             left: -8px; 
@@ -304,6 +330,8 @@
             .iv-badge-btn.iv-expanded {
                 z-index: 100 !important;
                 background: linear-gradient(135deg, #43a047, #1b5e20) !important;
+                animation-play-state: paused, paused !important; /* Dừng hiệu ứng nhảy khi mở rộng */
+                transform: translateY(0) translateZ(0) !important; /* Khóa cứng vị trí không cho nhúc nhích */
             }
             
             /* ĐƯA ICON VÀO CHÍNH GIỮA NÚT TRÒN */
