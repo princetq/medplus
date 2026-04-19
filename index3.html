@@ -345,25 +345,25 @@
                 
                 /* THÊM HOẠT ẢNH LẮC CHO TOÀN BỘ KHỐI NÚT VÀ BẢO TOÀN TRƯỢT VÀO */
                 animation-name: slideInRightBtn, mobileBtnInviteWiggle !important;
-                animation-duration: 0.7s, 7s !important;
+                animation-duration: 0.7s, 8s !important;
                 animation-timing-function: cubic-bezier(0.2, 0, 0, 1), ease-in-out !important;
                 animation-fill-mode: forwards, normal !important;
                 animation-iteration-count: 1, infinite !important;
                 will-change: transform;
             }
             
-            /* Đặt delay khéo léo để trượt vào trước (lệch 0.1s), lắc sau (bắt đầu sau 3s) */
-            .iv-badge-btn:nth-child(1) { animation-delay: 0s, 3s !important; }
-            .iv-badge-btn:nth-child(2) { animation-delay: 0.1s, 3.15s !important; }
-            .iv-badge-btn:nth-child(3) { animation-delay: 0.2s, 3.3s !important; }
-            .iv-badge-btn:nth-child(4) { animation-delay: 0.3s, 3.45s !important; }
+            /* Đặt delay khéo léo để trượt vào trước (lệch 0.1s), lắc sau ngẫu nhiên (chu kỳ 8s) */
+            .iv-badge-btn:nth-child(1) { animation-delay: 0s, 4s !important; }
+            .iv-badge-btn:nth-child(2) { animation-delay: 0.1s, 1.5s !important; }
+            .iv-badge-btn:nth-child(3) { animation-delay: 0.2s, 6.5s !important; }
+            .iv-badge-btn:nth-child(4) { animation-delay: 0.3s, 2.5s !important; }
 
             /* Kéo nút lên ưu tiên hiển thị khi được bấm và dừng lắc */
             .iv-badge-btn.iv-expanded {
                 z-index: 100 !important;
                 background: linear-gradient(135deg, #43a047, #1b5e20) !important;
-                animation-play-state: paused, paused !important; 
-                transform: translateY(0) translateZ(0) !important; /* Cố định vị trí không cho nhúc nhích */
+                animation-play-state: paused, paused !important; /* Dừng hiệu ứng nhảy khi mở rộng */
+                transform: translateY(0) translateZ(0) !important; /* Khóa cứng vị trí không cho nhúc nhích */
             }
             
             /* ĐƯA ICON VÀO CHÍNH GIỮA NÚT TRÒN (KHÔNG LẮC RIÊNG LẺ NỮA DO NÚT ĐÃ LẮC) */
@@ -416,7 +416,7 @@
                 box-shadow: 0 6px 20px rgba(46,125,50,0.5) !important;
             }
             
-            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ BẰNG CLIP-PATH */
+            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ BẰNG MAX-WIDTH (ĐỂ KHÔNG CẮT MẤT VIỀN) */
             .group-filter-wrapper{
                 grid-column: 1 / 4;
                 grid-row: 3;
@@ -428,18 +428,14 @@
                 justify-self: start;
                 height: 36px !important;
                 overflow: hidden; 
-                clip-path: inset(0 0% 0 0 round 12px);
-                -webkit-clip-path: inset(0 0% 0 0 round 12px);
-                /* Chuyển động thuần túy bằng gia tốc deceleration */
-                transition: clip-path .38s cubic-bezier(0.2, 0, 0, 1), -webkit-clip-path .38s cubic-bezier(0.2, 0, 0, 1) !important;
-                will-change: clip-path;
+                /* Trở lại dùng max-width, bỏ clip-path vì clip-path cắt luôn cả border */
+                transition: max-width .38s cubic-bezier(0.2, 0, 0, 1) !important;
+                will-change: max-width;
                 transform: translateZ(0);
             }
             .group-filter-wrapper.temp-hide{
-                max-width: 205px !important; /* Cố định chiều rộng để chống giật grid layout */
-                min-width: unset !important; 
-                clip-path: inset(0 calc(100% - 44px) 0 0 round 12px) !important;
-                -webkit-clip-path: inset(0 calc(100% - 44px) 0 0 round 12px) !important;
+                max-width: 44px !important; /* Thu gọn wrapper */
+                min-width: 44px !important; 
                 pointer-events: none;
             }
             .group-filter-wrapper.temp-hide .group-filter-select{
@@ -539,18 +535,11 @@
                 will-change: auto !important;
             }
 
-            /* ĐÃ FIX LẠI: BẬT HOẠT ẢNH CHO ICON Ở CHẾ ĐỘ LIGHT MODE KHI EXPAND */
+            /* ĐÃ FIX LẠI: BẬT HOẠT ẢNH CHO ICON Ở CHẾ ĐỘ LIGHT MODE KHI EXPAND CÓ DELAY 0.35s ĐỂ TRẢ LẠI HIỆU ỨNG PHÓNG TO */
             .iv-badge-btn.iv-expanded .syringe-icon {
                 transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
                 -webkit-transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
-                
-                /* Kích hoạt animation lắc liên tục */
-                animation-name: iconPopWiggle !important;
-                animation-duration: 1s !important;
-                animation-timing-function: ease-in-out !important;
-                animation-iteration-count: infinite !important;
-                animation-delay: 0s !important; 
-                
+                animation: iconPopWiggle 1.2s ease-in-out infinite 0.35s !important;
                 filter: drop-shadow(-2px 4px 5px rgba(0,0,0,0.4)) !important;
                 will-change: transform;
             }
@@ -572,18 +561,11 @@
                 background: linear-gradient(135deg, #165c3f, #0a3527) !important;
                 box-shadow: none !important; /* Tắt hoàn toàn shadow trên phần tử đang clip-path */
             }
-            /* ĐÃ FIX LẠI: BẬT HOẠT ẢNH CHO ICON Ở CHẾ ĐỘ DARK MODE KHI EXPAND */
+            /* ĐÃ FIX LẠI: BẬT HOẠT ẢNH CHO ICON Ở CHẾ ĐỘ DARK MODE KHI EXPAND CÓ DELAY 0.35s */
             body.dark-mode .iv-badge-btn.iv-expanded .syringe-icon {
                 transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
                 -webkit-transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
-                
-                /* Kích hoạt animation lắc liên tục */
-                animation-name: iconPopWiggle !important;
-                animation-duration: 1s !important;
-                animation-timing-function: ease-in-out !important;
-                animation-iteration-count: infinite !important;
-                animation-delay: 0s !important; 
-                
+                animation: iconPopWiggle 1.2s ease-in-out infinite 0.35s !important;
                 filter: drop-shadow(-2px 4px 5px rgba(0,0,0,0.6)) !important;
                 will-change: transform;
             }
