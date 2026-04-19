@@ -343,6 +343,25 @@
                 transform: translateY(0) translateZ(0) !important; /* Khóa cứng vị trí không cho nhúc nhích */
             }
             
+            /* ANIMATION KHI CLICK: ICON TO VỪA VẶN VÀ LẮC LIÊN TỤC CHUẨN XÁC */
+            @keyframes iconPopWiggle {
+                0%, 100% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
+                15% { transform: translate(-50%, -50%) scale(1.9) rotate(12deg); }
+                30% { transform: translate(-50%, -50%) scale(1.9) rotate(-10deg); }
+                45% { transform: translate(-50%, -50%) scale(1.9) rotate(8deg); }
+                60% { transform: translate(-50%, -50%) scale(1.9) rotate(-5deg); }
+                75% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
+            }
+            
+            /* HOẠT ẢNH LẮC MỜI GỌI TRÊN MOBILE (BẢO TOÀN TRỤC TÂM) */
+            @keyframes mobileIconInviteWiggle {
+                0%, 90%, 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+                92% { transform: translate(-50%, -54%) scale(1.05) rotate(-6deg); }
+                94% { transform: translate(-50%, -46%) scale(1.05) rotate(6deg); }
+                96% { transform: translate(-50%, -52%) scale(1.05) rotate(-4deg); }
+                98% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+            }
+
             /* ĐƯA ICON VÀO CHÍNH GIỮA NÚT TRÒN VÀ THÊM HIỆU ỨNG LẮC MỜI GỌI */
             .iv-badge-btn .syringe-icon{
                 position:absolute !important;
@@ -355,26 +374,12 @@
                 transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); 
                 z-index: 30 !important; /* Đè lên khối chữ */
                 
-                /* Icon Mobile lắc gọi người dùng */
-                animation: mobileIconInviteWiggle 7s ease-in-out infinite !important;
+                /* Tách riêng thuộc tính animation để KHÔNG ghi đè animation-delay */
+                animation-name: mobileIconInviteWiggle !important;
+                animation-duration: 7s !important;
+                animation-timing-function: ease-in-out !important;
+                animation-iteration-count: infinite !important;
                 will-change: transform;
-            }
-            
-            /* ANIMATION KHI CLICK: ICON TO VỪA VẶN VÀ LẮC LIÊN TỤC CHUẨN XÁC */
-            @keyframes iconPopWiggle {
-                0%, 100% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
-                15% { transform: translate(-50%, -50%) scale(1.9) rotate(12deg); }
-                30% { transform: translate(-50%, -50%) scale(1.9) rotate(-10deg); }
-                45% { transform: translate(-50%, -50%) scale(1.9) rotate(8deg); }
-                60% { transform: translate(-50%, -50%) scale(1.9) rotate(-5deg); }
-                75% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
-            }
-            @keyframes mobileIconInviteWiggle {
-                0%, 90%, 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-                92% { transform: translate(-50%, -54%) scale(1.05) rotate(-6deg); }
-                94% { transform: translate(-50%, -46%) scale(1.05) rotate(6deg); }
-                96% { transform: translate(-50%, -52%) scale(1.05) rotate(-4deg); }
-                98% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
             }
             
             /* THỦ THUẬT: KHỐI CHỮ TRÙM KÍN HOÀN TOÀN NÚT TRÒN ĐỂ KHÔNG BỊ CHẮP VÁ */
@@ -403,7 +408,7 @@
                 box-shadow: 0 6px 20px rgba(46,125,50,0.5) !important;
             }
             
-            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ BẰNG MAX-WIDTH (ĐỂ KHÔNG CẮT MẤT VIỀN) */
+            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ BẰNG CLIP-PATH */
             .group-filter-wrapper{
                 grid-column: 1 / 4;
                 grid-row: 3;
@@ -415,14 +420,18 @@
                 justify-self: start;
                 height: 36px !important;
                 overflow: hidden; 
-                /* Trở lại dùng max-width, bỏ clip-path vì clip-path cắt luôn cả border */
-                transition: max-width .38s cubic-bezier(0.2, 0, 0, 1) !important;
-                will-change: max-width;
+                clip-path: inset(0 0% 0 0 round 12px);
+                -webkit-clip-path: inset(0 0% 0 0 round 12px);
+                /* Chuyển động thuần túy bằng gia tốc deceleration */
+                transition: clip-path .38s cubic-bezier(0.2, 0, 0, 1), -webkit-clip-path .38s cubic-bezier(0.2, 0, 0, 1) !important;
+                will-change: clip-path;
                 transform: translateZ(0);
             }
             .group-filter-wrapper.temp-hide{
-                max-width: 44px !important; /* Thu gọn wrapper */
-                min-width: 44px !important; 
+                max-width: 205px !important; /* Cố định chiều rộng để chống giật grid layout */
+                min-width: unset !important; 
+                clip-path: inset(0 calc(100% - 44px) 0 0 round 12px) !important;
+                -webkit-clip-path: inset(0 calc(100% - 44px) 0 0 round 12px) !important;
                 pointer-events: none;
             }
             .group-filter-wrapper.temp-hide .group-filter-select{
@@ -522,11 +531,18 @@
                 will-change: auto !important;
             }
 
-            /* ĐÃ FIX LẠI: TRẢ LẠI HOẠT ẢNH CHO ICON Ở CHẾ ĐỘ LIGHT MODE */
+            /* ĐÃ FIX LẠI: TRẢ LẠI HOẠT ẢNH CHO ICON Ở CHẾ ĐỘ LIGHT MODE KHI EXPAND */
             .iv-badge-btn.iv-expanded .syringe-icon {
                 transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
                 -webkit-transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
-                animation: iconPopWiggle 0.6s ease-in-out infinite !important;
+                
+                /* Reset lại animation cho trạng thái mở rộng */
+                animation-name: iconPopWiggle !important;
+                animation-duration: 1s !important;
+                animation-timing-function: ease-in-out !important;
+                animation-iteration-count: infinite !important;
+                animation-delay: 0s !important; /* Phải đè lại delay về 0 để lắc ngay lập tức */
+                
                 filter: drop-shadow(-2px 4px 5px rgba(0,0,0,0.4)) !important;
                 will-change: transform;
             }
@@ -548,11 +564,18 @@
                 background: linear-gradient(135deg, #165c3f, #0a3527) !important;
                 box-shadow: none !important; /* Tắt hoàn toàn shadow trên phần tử đang clip-path */
             }
-            /* ĐÃ FIX LẠI: TRẢ LẠI HOẠT ẢNH CHO ICON Ở CHẾ ĐỘ DARK MODE BỊ GHI ĐÈ BỞI filter:none TRƯỚC ĐÓ */
+            /* ĐÃ FIX LẠI: TRẢ LẠI HOẠT ẢNH CHO ICON Ở CHẾ ĐỘ DARK MODE KHI EXPAND */
             body.dark-mode .iv-badge-btn.iv-expanded .syringe-icon {
                 transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
                 -webkit-transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
-                animation: iconPopWiggle 0.6s ease-in-out infinite !important;
+                
+                /* Reset lại animation cho trạng thái mở rộng */
+                animation-name: iconPopWiggle !important;
+                animation-duration: 1s !important;
+                animation-timing-function: ease-in-out !important;
+                animation-iteration-count: infinite !important;
+                animation-delay: 0s !important; /* Phải đè lại delay về 0 để lắc ngay lập tức */
+                
                 filter: drop-shadow(-2px 4px 5px rgba(0,0,0,0.6)) !important;
                 will-change: transform;
             }
