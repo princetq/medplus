@@ -22,8 +22,17 @@
         .zen-logo{position:relative;z-index:10;} /* Logo nằm trên lá */
         .header-content{text-align:center;position:relative;z-index:10;} /* Chữ nằm trên lá */
 
-        .zen-logo img{width:62px;height:62px;animation:zenBreath 4s ease-in-out infinite;border-radius:50%;flex-shrink:0;box-shadow:0 4px 15px rgba(0,0,0,0.15)}
-        @keyframes zenBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+        /* KẾT HỢP HIỆU ỨNG THỞ VÀ LẮC CHUNG CHO CẢ PC VÀ MOBILE */
+        .zen-logo img{width:62px;height:62px;animation:zenBreathWiggle 8s ease-in-out infinite;border-radius:50%;flex-shrink:0;box-shadow:0 4px 15px rgba(0,0,0,0.15)}
+        @keyframes zenBreathWiggle{
+            0%, 50%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.06) rotate(0deg); } /* Nhịp thở đầu: Nhẹ nhàng */
+            62% { transform: scale(1.04) rotate(0deg); } 
+            68% { transform: scale(1.09) rotate(-8deg); } /* Nhịp thở sau: Kết hợp lắc và phóng to */
+            75% { transform: scale(1.12) rotate(8deg); }
+            82% { transform: scale(1.09) rotate(-5deg); }
+            88% { transform: scale(1.04) rotate(0deg); }
+        }
         
         .header-title{color:var(--green);font-size:clamp(20px,4.5vw,28px);font-weight:900;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:10px}
         
@@ -876,14 +885,19 @@
             opacity: 1;
         }
 
-        /* === LOGO NEON GLOW === */
+        /* === LOGO NEON GLOW KẾT HỢP LẮC CHUNG CHO CẢ PC VÀ MOBILE === */
         body.dark-mode .zen-logo img {
-            animation: neonBreath 4s ease-in-out infinite;
+            animation: neonBreathWiggle 8s ease-in-out infinite;
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.5), 0 0 40px rgba(255, 190, 0, 0.3);
         }
-        @keyframes neonBreath {
-            0%,100% { transform: scale(1); box-shadow: 0 0 15px rgba(255,215,0,0.5), 0 0 30px rgba(255,190,0,0.3); }
-            50% { transform: scale(1.06); box-shadow: 0 0 30px rgba(255,235,0,0.7), 0 0 60px rgba(255,200,0,0.4); }
+        @keyframes neonBreathWiggle {
+            0%, 50%, 100% { transform: scale(1) rotate(0deg); box-shadow: 0 0 15px rgba(255,215,0,0.5), 0 0 30px rgba(255,190,0,0.3); }
+            25% { transform: scale(1.06) rotate(0deg); box-shadow: 0 0 30px rgba(255,235,0,0.7), 0 0 60px rgba(255,200,0,0.4); }
+            62% { transform: scale(1.04) rotate(0deg); box-shadow: 0 0 25px rgba(255,225,0,0.6), 0 0 50px rgba(255,195,0,0.35); }
+            68% { transform: scale(1.09) rotate(-8deg); box-shadow: 0 0 35px rgba(255,235,0,0.8), 0 0 70px rgba(255,200,0,0.5); }
+            75% { transform: scale(1.12) rotate(8deg); box-shadow: 0 0 40px rgba(255,240,0,0.9), 0 0 80px rgba(255,200,0,0.6); }
+            82% { transform: scale(1.09) rotate(-5deg); box-shadow: 0 0 35px rgba(255,235,0,0.8), 0 0 70px rgba(255,200,0,0.5); }
+            88% { transform: scale(1.04) rotate(0deg); box-shadow: 0 0 25px rgba(255,225,0,0.6), 0 0 50px rgba(255,195,0,0.35); }
         }
 
         /* === MEDPLUS BADGE === */
@@ -1540,14 +1554,6 @@
            2. PC Dark Mode: Bầu trời rực rỡ Dải Ngân Hà (Milky Way)
            ========================================================= */
         @media (min-width: 601px) {
-            /* Thay thế animation cũ bằng chuyển động ngẫu nhiên thỉnh thoảng xuất hiện */
-            .zen-logo img {
-                animation: pcOccasionalWiggle 10s ease-in-out infinite !important;
-            }
-            body.dark-mode .zen-logo img {
-                animation: pcNeonOccasionalWiggle 10s ease-in-out infinite !important;
-            }
-            
             /* Dải Ngân Hà (Milky Way) cho riêng Dark Mode phiên bản PC */
             body.dark-mode .night-background::before {
                 content: '';
@@ -1565,20 +1571,40 @@
                     linear-gradient(to bottom, transparent 48%, rgba(2, 6, 12, 0.7) 50%, transparent 52%);
                 filter: blur(12px); /* Làm mờ ảo diệu */
             }
+
+            /* NÂNG CẤP MỚI NHẤT: CHỈ RUNG ICON CÔNG CỤ, DẢI CHỮ ĐỨNG YÊN TÙY Ý */
+            /* 1. Tắt lắc toàn bộ nút (dải chữ đứng yên) */
+            .iv-badge-btn {
+                animation: slideInRightBtn 0.7s cubic-bezier(0.2, 0, 0, 1) forwards !important;
+            }
+            .iv-badge-btn:nth-child(1) { animation-delay: 0s !important; }
+            .iv-badge-btn:nth-child(2) { animation-delay: 0.1s !important; }
+            .iv-badge-btn:nth-child(3) { animation-delay: 0.2s !important; }
+            .iv-badge-btn:nth-child(4) { animation-delay: 0.3s !important; }
+
+            /* 2. Chỉ cho phép icon lắc ngẫu nhiên, không theo thứ tự (sử dụng thời gian và delay đan chéo) */
+            .iv-badge-btn:nth-child(1) .syringe-icon { animation: randomIconWiggle 6.3s ease-in-out infinite !important; animation-delay: 1s !important; }
+            .iv-badge-btn:nth-child(2) .syringe-icon { animation: randomIconWiggle 8.1s ease-in-out infinite !important; animation-delay: 3s !important; }
+            .iv-badge-btn:nth-child(3) .syringe-icon { animation: randomIconWiggle 5.7s ease-in-out infinite !important; animation-delay: 0.5s !important; }
+            .iv-badge-btn:nth-child(4) .syringe-icon { animation: randomIconWiggle 7.4s ease-in-out infinite !important; animation-delay: 4.2s !important; }
+            
+            /* Dừng lắc khi hover */
+            .iv-badge-btn:hover .syringe-icon {
+                animation: none !important;
+                transform: translate(2px, 2px) scale(1.1) !important;
+            }
+            .iv-badge-btn:hover .tk-icon,
+            .iv-badge-btn.iv-expanded .tk-icon {
+                animation: flaskShake 0.45s ease-in-out forwards !important;
+            }
         }
 
-        /* Animation rung lắc ngẫu nhiên dành riêng cho Icon (Trạng thái tĩnh chiếm 85% thời gian) */
-        @keyframes pcOccasionalWiggle {
-            0%, 85%, 100% { transform: scale(1) rotate(0deg); }
-            88% { transform: scale(1.12) rotate(-8deg); }
-            92% { transform: scale(1.12) rotate(8deg); }
-            96% { transform: scale(1.12) rotate(-5deg); }
-        }
-        @keyframes pcNeonOccasionalWiggle {
-            0%, 85%, 100% { transform: scale(1) rotate(0deg); box-shadow: 0 0 15px rgba(255,215,0,0.5), 0 0 30px rgba(255,190,0,0.3); }
-            88% { transform: scale(1.12) rotate(-8deg); box-shadow: 0 0 30px rgba(255,235,0,0.7), 0 0 60px rgba(255,200,0,0.4); }
-            92% { transform: scale(1.12) rotate(8deg); box-shadow: 0 0 30px rgba(255,235,0,0.7), 0 0 60px rgba(255,200,0,0.4); }
-            96% { transform: scale(1.12) rotate(-5deg); box-shadow: 0 0 30px rgba(255,235,0,0.7), 0 0 60px rgba(255,200,0,0.4); }
+        /* Khung keyframe rung lắc ngẫu nhiên độc lập cho Icon Các Công Cụ */
+        @keyframes randomIconWiggle {
+            0%, 90%, 100% { transform: translateY(0) rotate(0) scale(1); filter: drop-shadow(-2px 4px 4px rgba(0,0,0,0.3)); }
+            92% { transform: translateY(-4px) rotate(-12deg) scale(1.1); filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.4)); }
+            94% { transform: translateY(3px) rotate(10deg) scale(1.1); filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.4)); }
+            97% { transform: translateY(-1px) rotate(-6deg) scale(1.1); filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.4)); }
         }
     </style>
 </head>
