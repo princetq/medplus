@@ -366,7 +366,7 @@
                 transform: translateY(0) translateZ(0) !important; /* Khóa cứng vị trí không cho nhúc nhích */
             }
             
-            /* ĐƯA ICON VÀO CHÍNH GIỮA NÚT TRÒN (KHÔNG LẮC RIÊNG LẺ NỮA DO NÚT ĐÃ LẮC) */
+            /* ĐƯA ICON VÀO CHÍNH GIỮA NÚT TRÒN */
             .iv-badge-btn .syringe-icon{
                 position:absolute !important;
                 width:22px !important;
@@ -416,7 +416,7 @@
                 box-shadow: 0 6px 20px rgba(46,125,50,0.5) !important;
             }
             
-            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ BẰNG MAX-WIDTH (ĐỂ KHÔNG CẮT MẤT VIỀN) */
+            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ BẰNG CLIP-PATH */
             .group-filter-wrapper{
                 grid-column: 1 / 4;
                 grid-row: 3;
@@ -428,14 +428,18 @@
                 justify-self: start;
                 height: 36px !important;
                 overflow: hidden; 
-                /* Trở lại dùng max-width, bỏ clip-path vì clip-path cắt luôn cả border */
-                transition: max-width .38s cubic-bezier(0.2, 0, 0, 1) !important;
-                will-change: max-width;
+                clip-path: inset(0 0% 0 0 round 12px);
+                -webkit-clip-path: inset(0 0% 0 0 round 12px);
+                /* Chuyển động thuần túy bằng gia tốc deceleration */
+                transition: clip-path .38s cubic-bezier(0.2, 0, 0, 1), -webkit-clip-path .38s cubic-bezier(0.2, 0, 0, 1) !important;
+                will-change: clip-path;
                 transform: translateZ(0);
             }
             .group-filter-wrapper.temp-hide{
-                max-width: 44px !important; /* Thu gọn wrapper */
-                min-width: 44px !important; 
+                max-width: 205px !important; /* Cố định chiều rộng để chống giật grid layout */
+                min-width: unset !important; 
+                clip-path: inset(0 calc(100% - 44px) 0 0 round 12px) !important;
+                -webkit-clip-path: inset(0 calc(100% - 44px) 0 0 round 12px) !important;
                 pointer-events: none;
             }
             .group-filter-wrapper.temp-hide .group-filter-select{
@@ -535,10 +539,10 @@
                 will-change: auto !important;
             }
 
-            /* ĐÃ FIX LẠI: BẬT HOẠT ẢNH CHO ICON Ở CHẾ ĐỘ LIGHT MODE KHI EXPAND CÓ DELAY 0.35s ĐỂ TRẢ LẠI HIỆU ỨNG PHÓNG TO */
+            /* ĐÃ FIX: TRẢ LẠI HIỆU ỨNG PHÓNG TO RỒI MỚI LẮC Ở LIGHT MODE (BỎ !IMPORTANT TRÊN TRANSFORM & THÊM DELAY) */
             .iv-badge-btn.iv-expanded .syringe-icon {
-                transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
-                -webkit-transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
+                transform: translate(-50%, -50%) scale(1.9) rotate(0deg);
+                -webkit-transform: translate(-50%, -50%) scale(1.9) rotate(0deg);
                 animation: iconPopWiggle 1.2s ease-in-out infinite 0.35s !important;
                 filter: drop-shadow(-2px 4px 5px rgba(0,0,0,0.4)) !important;
                 will-change: transform;
@@ -561,10 +565,11 @@
                 background: linear-gradient(135deg, #165c3f, #0a3527) !important;
                 box-shadow: none !important; /* Tắt hoàn toàn shadow trên phần tử đang clip-path */
             }
-            /* ĐÃ FIX LẠI: BẬT HOẠT ẢNH CHO ICON Ở CHẾ ĐỘ DARK MODE KHI EXPAND CÓ DELAY 0.35s */
+            
+            /* ĐÃ FIX: TRẢ LẠI HIỆU ỨNG PHÓNG TO RỒI MỚI LẮC Ở DARK MODE */
             body.dark-mode .iv-badge-btn.iv-expanded .syringe-icon {
-                transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
-                -webkit-transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
+                transform: translate(-50%, -50%) scale(1.9) rotate(0deg);
+                -webkit-transform: translate(-50%, -50%) scale(1.9) rotate(0deg);
                 animation: iconPopWiggle 1.2s ease-in-out infinite 0.35s !important;
                 filter: drop-shadow(-2px 4px 5px rgba(0,0,0,0.6)) !important;
                 will-change: transform;
