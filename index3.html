@@ -60,7 +60,7 @@
         }
         .ks-text-mobile { display: none; }
         
-        /* HOẠT ẢNH TRƯỢT VÀ LẮC MỜI GỌI CHO CÁC NÚT CÔNG CỤ */
+        /* HOẠT ẢNH TRƯỢT VÀ LẮC MỜI GỌI CHO CÁC NÚT CÔNG CỤ (PC) */
         @keyframes slideInRightBtn {
             0% { opacity: 0; transform: translateX(40px) translateZ(0); }
             100% { opacity: 1; transform: translateX(0) translateZ(0); }
@@ -90,7 +90,7 @@
             transition: .3s;
             overflow: visible !important; 
             
-            /* Tích hợp hoạt ảnh trượt từ phải vào (không dính vào animation lắc nữa) */
+            /* Tích hợp hoạt ảnh trượt từ phải vào */
             opacity: 0; 
             animation: slideInRightBtn 0.7s cubic-bezier(0.2, 0, 0, 1) forwards;
         }
@@ -101,7 +101,7 @@
         .iv-badge-btn:nth-child(3) { animation-delay: 0.2s; }
         .iv-badge-btn:nth-child(4) { animation-delay: 0.3s; }
         
-        /* Phân bổ trễ cho các Icon để chúng lắc nối đuôi nhau không bị đều như robot */
+        /* Phân bổ trễ cho các Icon để chúng lắc nối đuôi nhau */
         .iv-badge-btn:nth-child(1) .syringe-icon { animation-delay: 3s; }
         .iv-badge-btn:nth-child(2) .syringe-icon { animation-delay: 3.15s; }
         .iv-badge-btn:nth-child(3) .syringe-icon { animation-delay: 3.3s; }
@@ -123,14 +123,13 @@
             transition: .4s cubic-bezier(0.34, 1.56, 0.64, 1);
             pointer-events: none;
             transform-origin: center center;
-            /* Đã chuyển hoạt ảnh lắc nhè nhẹ trực tiếp vào đây */
             animation: pcIconInviteWiggle 7s ease-in-out infinite;
             will-change: transform;
         }
         .iv-badge-btn:hover .syringe-icon {
             transform: translate(2px, 2px) scale(1.1); 
             filter: drop-shadow(-3px 5px 5px rgba(0,0,0,0.4));
-            animation-play-state: paused !important; /* Dừng hiệu ứng nhảy mời gọi khi hover vào nút */
+            animation-play-state: paused !important; 
         }
 
         /* --- HIỆU ỨNG LẮC BÌNH (TƯƠNG KỴ) PC --- */
@@ -344,7 +343,7 @@
                 transform: translateY(0) translateZ(0) !important; /* Khóa cứng vị trí không cho nhúc nhích */
             }
             
-            /* ĐƯA ICON VÀO CHÍNH GIỮA NÚT TRÒN */
+            /* ĐƯA ICON VÀO CHÍNH GIỮA NÚT TRÒN VÀ THÊM HIỆU ỨNG LẮC MỜI GỌI */
             .iv-badge-btn .syringe-icon{
                 position:absolute !important;
                 width:22px !important;
@@ -404,7 +403,7 @@
                 box-shadow: 0 6px 20px rgba(46,125,50,0.5) !important;
             }
             
-            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ BẰNG CLIP-PATH */
+            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ BẰNG MAX-WIDTH (ĐỂ KHÔNG CẮT MẤT VIỀN) */
             .group-filter-wrapper{
                 grid-column: 1 / 4;
                 grid-row: 3;
@@ -416,18 +415,14 @@
                 justify-self: start;
                 height: 36px !important;
                 overflow: hidden; 
-                clip-path: inset(0 0% 0 0 round 12px);
-                -webkit-clip-path: inset(0 0% 0 0 round 12px);
-                /* Chuyển động thuần túy bằng gia tốc deceleration */
-                transition: clip-path .38s cubic-bezier(0.2, 0, 0, 1), -webkit-clip-path .38s cubic-bezier(0.2, 0, 0, 1) !important;
-                will-change: clip-path;
+                /* Trở lại dùng max-width, bỏ clip-path vì clip-path cắt luôn cả border */
+                transition: max-width .38s cubic-bezier(0.2, 0, 0, 1) !important;
+                will-change: max-width;
                 transform: translateZ(0);
             }
             .group-filter-wrapper.temp-hide{
-                max-width: 205px !important; /* Cố định chiều rộng để chống giật grid layout */
-                min-width: unset !important; 
-                clip-path: inset(0 calc(100% - 44px) 0 0 round 12px) !important;
-                -webkit-clip-path: inset(0 calc(100% - 44px) 0 0 round 12px) !important;
+                max-width: 44px !important; /* Thu gọn wrapper */
+                min-width: 44px !important; 
                 pointer-events: none;
             }
             .group-filter-wrapper.temp-hide .group-filter-select{
@@ -786,6 +781,45 @@
         .modal-content, .chat-messages, .iv-iframe-container {
             overscroll-behavior: contain !important; /* Ép lực cuộn chỉ giới hạn bên trong modal */
             -webkit-overflow-scrolling: touch !important; /* Hỗ trợ cuộn cực mượt trên iOS */
+        }
+
+        /* ==============================================================
+           HIỆU ỨNG LÁ RƠI XUYÊN QUA KÍNH HEADER (LIGHT MODE)
+           ============================================================== */
+        body:not(.dark-mode) .container { z-index: auto !important; } 
+        body:not(.dark-mode) #leaf-container { z-index: 5 !important; } 
+        
+        body:not(.dark-mode) .header-main {
+            background: transparent !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            position: relative;
+        }
+        
+        body:not(.dark-mode) .header-main::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--g-bg);
+            backdrop-filter: var(--g-blur);
+            -webkit-backdrop-filter: var(--g-blur);
+            border: 1px solid rgba(76,175,80,0.6);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 0 20px rgba(76,175,80,0.3), inset 0 0 12px rgba(76,175,80,0.1);
+            border-radius: inherit;
+            z-index: 2 !important;
+            transition: background-color 0.35s ease, border-color 0.3s ease, box-shadow 0.35s ease;
+        }
+        
+        body:not(.dark-mode) .header-main .zen-logo,
+        body:not(.dark-mode) .header-main .header-content,
+        body:not(.dark-mode) .search-wrapper,
+        body:not(.dark-mode) .product-grid,
+        body:not(.dark-mode) .skeleton-grid,
+        body:not(.dark-mode) .footer {
+            position: relative;
+            z-index: 10 !important; 
         }
 
         /* ==============================================================
@@ -1370,6 +1404,10 @@
         body.dm-transitioning .chat-widget-container .ai-message .message-content {
             transition: background-color 0.35s ease, border-color 0.3s ease, color 0.25s ease, box-shadow 0.35s ease !important;
             will-change: background-color, border-color;
+        }
+
+        body.dm-transitioning .header-main::before {
+            transition: background 0.35s ease, background-color 0.35s ease, border 0.3s ease, box-shadow 0.35s ease !important;
         }
 
         /* Card giữ nguyên transform transition của riêng nó */
