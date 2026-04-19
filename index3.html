@@ -12,12 +12,19 @@
         body{padding:40px 0;background:linear-gradient(135deg,#a5d6a7 0%,#81c784 50%,#4caf50 100%);background-attachment:fixed;color:#333;min-height:100vh;overflow-x:hidden}
         :root{--g-bg:rgba(255,255,255,0.22);--g-bg-h:rgba(255,255,255,0.48);--g-border:rgba(255,255,255,0.4);--g-blur:blur(18px);--green:#2e7d32;--green-d:#1b5e20;--green-l:#4caf50;--gold:#fbc02d;--rad:16px;--shadow:0 8px 32px rgba(0,0,0,0.1)}
         .glass-panel{background:var(--g-bg);backdrop-filter:var(--g-blur);-webkit-backdrop-filter:var(--g-blur);border:1px solid var(--g-border);box-shadow:var(--shadow);border-radius:var(--rad)}
-        .container{max-width:1300px;margin:0 auto;padding:0 20px;position:relative;z-index:10}
+        
+        /* ĐÃ CHỈNH SỬA Z-INDEX THÀNH AUTO ĐỂ HỖ TRỢ HIỆU ỨNG LÁ RƠI */
+        .container{max-width:1300px;margin:0 auto;padding:0 20px;position:relative;z-index:auto}
 
-        .header-main{display:flex;align-items:center;justify-content:center;gap:15px;margin-bottom:30px;padding:22px 25px;border:1px solid rgba(76,175,80,0.6);box-shadow:0 8px 32px rgba(0,0,0,0.1), 0 0 20px rgba(76,175,80,0.3), inset 0 0 12px rgba(76,175,80,0.1)}
+        /* THIẾT LẬP KẸP LỚP (SANDWICH LAYER) CHO HEADER */
+        .header-main{display:flex;align-items:center;justify-content:center;gap:15px;margin-bottom:30px;padding:22px 25px;position:relative;background:transparent;border:none;box-shadow:none;}
+        .header-main::before{content:'';position:absolute;inset:0;background:var(--g-bg);backdrop-filter:var(--g-blur);-webkit-backdrop-filter:var(--g-blur);border:1px solid rgba(76,175,80,0.6);box-shadow:0 8px 32px rgba(0,0,0,0.1), 0 0 20px rgba(76,175,80,0.3), inset 0 0 12px rgba(76,175,80,0.1);border-radius:var(--rad);z-index:2;} /* Mặt kính nằm dưới lá */
+        .zen-logo{position:relative;z-index:10;} /* Logo nằm trên lá */
+        .header-content{text-align:center;position:relative;z-index:10;} /* Chữ nằm trên lá */
+
         .zen-logo img{width:62px;height:62px;animation:zenBreath 4s ease-in-out infinite;border-radius:50%;flex-shrink:0;box-shadow:0 4px 15px rgba(0,0,0,0.15)}
         @keyframes zenBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-        .header-content{text-align:center}
+        
         .header-title{color:var(--green);font-size:clamp(20px,4.5vw,28px);font-weight:900;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:10px}
         
         .medplus-badge{background:linear-gradient(135deg,#43a047,#2e7d32);color:#fff;padding:5px 14px;border-radius:10px;font-weight:900;font-size:18px;display:inline-block;box-shadow:0 3px 10px rgba(46,125,50,0.3);position:relative;overflow:hidden}
@@ -25,7 +32,10 @@
         @keyframes badgeSweepDiagonal{0%{ top: -150%; left: -150%; }30%, 100%{ top: 100%; left: 100%; }}
         .header-subtitle{color:var(--green);font-size:13px;margin-top:4px;opacity:0.85;font-weight:600;letter-spacing:0.5px}
 
-        .search-wrapper{display:flex;justify-content:flex-end;align-items:center;width:100%;margin-bottom:65px;gap:10px;flex-wrap:nowrap;position:relative}
+        /* NÂNG Z-INDEX ĐỂ LÁ KHÔNG CHE KHUẤT KHU VỰC TÌM KIẾM VÀ HIỂN THỊ */
+        .search-wrapper, .skeleton-grid, .product-grid, .footer { position:relative; z-index:10; }
+        
+        .search-wrapper{display:flex;justify-content:flex-end;align-items:center;width:100%;margin-bottom:65px;gap:10px;flex-wrap:nowrap;}
         
         .count-badge{background:var(--green-d);color:#fff;padding:6px 14px;border-radius:10px;font-weight:900;font-size:15px;display:inline-flex;align-items:center;box-shadow:0 4px 12px rgba(0,0,0,0.15);order:0;margin-right:auto}
         .abc-toggle-btn{background:var(--g-bg);border:1px solid var(--g-border);border-radius:12px;padding:0 12px;height:42px;cursor:pointer;display:flex;align-items:center;color:var(--green);font-weight:900;transition:.2s;order:2}
@@ -60,16 +70,16 @@
         }
         .ks-text-mobile { display: none; }
         
-        /* HOẠT ẢNH TRƯỢT VÀ LẮC MỜI GỌI CHO CÁC NÚT CÔNG CỤ (PC) */
+        /* HOẠT ẢNH TRƯỢT VÀ LẮC MỜI GỌI CHO CÁC NÚT CÔNG CỤ */
         @keyframes slideInRightBtn {
             0% { opacity: 0; transform: translateX(40px) translateZ(0); }
             100% { opacity: 1; transform: translateX(0) translateZ(0); }
         }
-        @keyframes pcIconInviteWiggle {
+        @keyframes btnInviteWiggle {
             0%, 90%, 100% { transform: translateY(0) rotate(0) translateZ(0); }
-            92% { transform: translateY(-4px) rotate(-6deg) translateZ(0); }
-            94% { transform: translateY(2px) rotate(6deg) translateZ(0); }
-            96% { transform: translateY(-2px) rotate(-4deg) translateZ(0); }
+            92% { transform: translateY(-3px) rotate(-2deg) translateZ(0); }
+            94% { transform: translateY(1px) rotate(2deg) translateZ(0); }
+            96% { transform: translateY(-1px) rotate(-1deg) translateZ(0); }
             98% { transform: translateY(0) rotate(0) translateZ(0); }
         }
 
@@ -90,25 +100,20 @@
             transition: .3s;
             overflow: visible !important; 
             
-            /* Tích hợp hoạt ảnh trượt từ phải vào */
+            /* Tích hợp hoạt ảnh trượt và lắc */
             opacity: 0; 
-            animation: slideInRightBtn 0.7s cubic-bezier(0.2, 0, 0, 1) forwards;
+            animation: slideInRightBtn 0.7s cubic-bezier(0.2, 0, 0, 1) forwards, btnInviteWiggle 7s ease-in-out infinite;
         }
         
         /* Hiệu ứng trễ để trượt lần lượt từng nút ra */
-        .iv-badge-btn:nth-child(1) { animation-delay: 0s; }
-        .iv-badge-btn:nth-child(2) { animation-delay: 0.1s; }
-        .iv-badge-btn:nth-child(3) { animation-delay: 0.2s; }
-        .iv-badge-btn:nth-child(4) { animation-delay: 0.3s; }
-        
-        /* Phân bổ trễ cho các Icon để chúng lắc nối đuôi nhau */
-        .iv-badge-btn:nth-child(1) .syringe-icon { animation-delay: 3s; }
-        .iv-badge-btn:nth-child(2) .syringe-icon { animation-delay: 3.15s; }
-        .iv-badge-btn:nth-child(3) .syringe-icon { animation-delay: 3.3s; }
-        .iv-badge-btn:nth-child(4) .syringe-icon { animation-delay: 3.45s; }
+        .iv-badge-btn:nth-child(1) { animation-delay: 0s, 3s; }
+        .iv-badge-btn:nth-child(2) { animation-delay: 0.1s, 3.15s; }
+        .iv-badge-btn:nth-child(3) { animation-delay: 0.2s, 3.3s; }
+        .iv-badge-btn:nth-child(4) { animation-delay: 0.3s, 3.45s; }
 
         .iv-badge-btn:hover {
-            transform: translateY(-2px);
+            transform: translateY(-2px) translateZ(0) !important; /* Ưu tiên tuyệt đối khi hover */
+            animation-play-state: paused, paused !important; /* Dừng hiệu ứng nhảy khi chuột chỉ vào */
             box-shadow: 0 6px 20px rgba(46,125,50,0.5);
             background: linear-gradient(135deg, #43a047, #1b5e20);
         }
@@ -122,14 +127,10 @@
             filter: drop-shadow(-2px 4px 4px rgba(0,0,0,0.3));
             transition: .4s cubic-bezier(0.34, 1.56, 0.64, 1);
             pointer-events: none;
-            transform-origin: center center;
-            animation: pcIconInviteWiggle 7s ease-in-out infinite;
-            will-change: transform;
         }
         .iv-badge-btn:hover .syringe-icon {
             transform: translate(2px, 2px) scale(1.1); 
             filter: drop-shadow(-3px 5px 5px rgba(0,0,0,0.4));
-            animation-play-state: paused !important; 
         }
 
         /* --- HIỆU ỨNG LẮC BÌNH (TƯƠNG KỴ) PC --- */
@@ -323,15 +324,6 @@
             
             .count-badge{grid-column: 1 / -1;grid-row: 4 !important;justify-self: flex-start;font-size: 13px;padding: 4px 10px;margin: 4px 0 0 0; order: unset;}
             
-            /* HOẠT ẢNH LẮC MỜI GỌI TRÊN MOBILE DÀNH CHO TOÀN BỘ NÚT BẤM */
-            @keyframes mobileBtnInviteWiggle {
-                0%, 90%, 100% { transform: translateY(0) rotate(0) translateZ(0); }
-                92% { transform: translateY(-4px) rotate(-6deg) translateZ(0); }
-                94% { transform: translateY(2px) rotate(6deg) translateZ(0); }
-                96% { transform: translateY(-2px) rotate(-4deg) translateZ(0); }
-                98% { transform: translateY(0) rotate(0) translateZ(0); }
-            }
-
             /* NÚT TRÒN CỐ ĐỊNH, KHÔNG BAO GIỜ THAY ĐỔI KÍCH THƯỚC TRÊN GRID */
             .iv-badge-btn{
                 width:36px !important;
@@ -342,23 +334,9 @@
                 position: relative !important;
                 z-index: 10 !important;
                 border: 1.5px solid rgba(255,255,255,0.5) !important;
-                
-                /* THÊM HOẠT ẢNH LẮC CHO TOÀN BỘ KHỐI NÚT VÀ BẢO TOÀN TRƯỢT VÀO */
-                animation-name: slideInRightBtn, mobileBtnInviteWiggle !important;
-                animation-duration: 0.7s, 8s !important;
-                animation-timing-function: cubic-bezier(0.2, 0, 0, 1), ease-in-out !important;
-                animation-fill-mode: forwards, normal !important;
-                animation-iteration-count: 1, infinite !important;
-                will-change: transform;
             }
             
-            /* Đặt delay khéo léo để trượt vào trước (lệch 0.1s), lắc sau ngẫu nhiên (chu kỳ 8s) */
-            .iv-badge-btn:nth-child(1) { animation-delay: 0s, 4s !important; }
-            .iv-badge-btn:nth-child(2) { animation-delay: 0.1s, 1.5s !important; }
-            .iv-badge-btn:nth-child(3) { animation-delay: 0.2s, 6.5s !important; }
-            .iv-badge-btn:nth-child(4) { animation-delay: 0.3s, 2.5s !important; }
-
-            /* Kéo nút lên ưu tiên hiển thị khi được bấm và dừng lắc */
+            /* Kéo nút lên ưu tiên hiển thị khi được bấm */
             .iv-badge-btn.iv-expanded {
                 z-index: 100 !important;
                 background: linear-gradient(135deg, #43a047, #1b5e20) !important;
@@ -377,10 +355,9 @@
                 filter:drop-shadow(-1px 2px 2px rgba(0,0,0,0.25)) !important;
                 transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); 
                 z-index: 30 !important; /* Đè lên khối chữ */
-                animation: none !important; 
             }
             
-            /* ANIMATION KHI CLICK EXPAND: CHỈ CÓ ICON TO LÊN VÀ LẮC LIÊN TỤC CHUẨN XÁC */
+            /* ANIMATION KHI CLICK: ICON TO VỪA VẶN VÀ LẮC LIÊN TỤC CHUẨN XÁC */
             @keyframes iconPopWiggle {
                 0%, 100% { transform: translate(-50%, -50%) scale(1.9) rotate(0deg); }
                 15% { transform: translate(-50%, -50%) scale(1.9) rotate(12deg); }
@@ -416,7 +393,7 @@
                 box-shadow: 0 6px 20px rgba(46,125,50,0.5) !important;
             }
             
-            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ BẰNG CLIP-PATH */
+            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ BẰNG MAX-WIDTH (ĐỂ KHÔNG CẮT MẤT VIỀN) */
             .group-filter-wrapper{
                 grid-column: 1 / 4;
                 grid-row: 3;
@@ -428,18 +405,14 @@
                 justify-self: start;
                 height: 36px !important;
                 overflow: hidden; 
-                clip-path: inset(0 0% 0 0 round 12px);
-                -webkit-clip-path: inset(0 0% 0 0 round 12px);
-                /* Chuyển động thuần túy bằng gia tốc deceleration */
-                transition: clip-path .38s cubic-bezier(0.2, 0, 0, 1), -webkit-clip-path .38s cubic-bezier(0.2, 0, 0, 1) !important;
-                will-change: clip-path;
+                /* Trở lại dùng max-width, bỏ clip-path vì clip-path cắt luôn cả border */
+                transition: max-width .38s cubic-bezier(0.2, 0, 0, 1) !important;
+                will-change: max-width;
                 transform: translateZ(0);
             }
             .group-filter-wrapper.temp-hide{
-                max-width: 205px !important; /* Cố định chiều rộng để chống giật grid layout */
-                min-width: unset !important; 
-                clip-path: inset(0 calc(100% - 44px) 0 0 round 12px) !important;
-                -webkit-clip-path: inset(0 calc(100% - 44px) 0 0 round 12px) !important;
+                max-width: 44px !important; /* Thu gọn wrapper */
+                min-width: 44px !important; 
                 pointer-events: none;
             }
             .group-filter-wrapper.temp-hide .group-filter-select{
@@ -539,11 +512,11 @@
                 will-change: auto !important;
             }
 
-            /* ĐÃ FIX: TRẢ LẠI HIỆU ỨNG PHÓNG TO RỒI MỚI LẮC Ở LIGHT MODE (BỎ !IMPORTANT TRÊN TRANSFORM & THÊM DELAY) */
+            /* ĐÃ FIX LẠI: TRẢ LẠI HOẠT ẢNH CHO ICON Ở CHẾ ĐỘ LIGHT MODE */
             .iv-badge-btn.iv-expanded .syringe-icon {
-                transform: translate(-50%, -50%) scale(1.9) rotate(0deg);
-                -webkit-transform: translate(-50%, -50%) scale(1.9) rotate(0deg);
-                animation: iconPopWiggle 1.2s ease-in-out infinite 0.35s !important;
+                transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
+                -webkit-transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
+                animation: iconPopWiggle 0.6s ease-in-out infinite !important;
                 filter: drop-shadow(-2px 4px 5px rgba(0,0,0,0.4)) !important;
                 will-change: transform;
             }
@@ -565,12 +538,11 @@
                 background: linear-gradient(135deg, #165c3f, #0a3527) !important;
                 box-shadow: none !important; /* Tắt hoàn toàn shadow trên phần tử đang clip-path */
             }
-            
-            /* ĐÃ FIX: TRẢ LẠI HIỆU ỨNG PHÓNG TO RỒI MỚI LẮC Ở DARK MODE */
+            /* ĐÃ FIX LẠI: TRẢ LẠI HOẠT ẢNH CHO ICON Ở CHẾ ĐỘ DARK MODE BỊ GHI ĐÈ BỞI filter:none TRƯỚC ĐÓ */
             body.dark-mode .iv-badge-btn.iv-expanded .syringe-icon {
-                transform: translate(-50%, -50%) scale(1.9) rotate(0deg);
-                -webkit-transform: translate(-50%, -50%) scale(1.9) rotate(0deg);
-                animation: iconPopWiggle 1.2s ease-in-out infinite 0.35s !important;
+                transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
+                -webkit-transform: translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
+                animation: iconPopWiggle 0.6s ease-in-out infinite !important;
                 filter: drop-shadow(-2px 4px 5px rgba(0,0,0,0.6)) !important;
                 will-change: transform;
             }
@@ -634,7 +606,9 @@
         .footer{text-align:center;margin:40px 0}
         .footer-badge{display:inline-block;background:linear-gradient(135deg,#fff9c4,#ffeb3b);border:1px solid var(--gold);padding:8px 20px;border-radius:12px;color:var(--green-d);font-weight:600;font-size:12px;box-shadow:0 4px 15px rgba(0,0,0,0.08)}
 
-        .nature-background{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;contain:strict;}
+        /* NÂNG Z-INDEX LÊN 5 ĐỂ LÁ BAY TRÊN NỀN VÀ TRÊN MẶT KÍNH HEADER */
+        .nature-background{position:fixed;top:0;left:0;width:100%;height:100%;z-index:5;pointer-events:none;contain:strict;}
+        
         .leaf{position:absolute;width:18px;height:18px;background:rgba(76,175,80,0.4);border:.2px solid rgba(255,255,255,0.4);border-radius:0 100% 0 100%;animation:fall linear infinite}
         @keyframes fall{0%{transform:translateY(-5vh) rotate(0);opacity:0}10%{opacity:1}100%{transform:translateY(105vh) rotate(360deg);opacity:0}}
 
@@ -802,45 +776,6 @@
         }
 
         /* ==============================================================
-           HIỆU ỨNG LÁ RƠI XUYÊN QUA KÍNH HEADER (LIGHT MODE)
-           ============================================================== */
-        body:not(.dark-mode) .container { z-index: auto !important; } 
-        body:not(.dark-mode) #leaf-container { z-index: 5 !important; } 
-        
-        body:not(.dark-mode) .header-main {
-            background: transparent !important;
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-            border: none !important;
-            box-shadow: none !important;
-            position: relative;
-        }
-        
-        body:not(.dark-mode) .header-main::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--g-bg);
-            backdrop-filter: var(--g-blur);
-            -webkit-backdrop-filter: var(--g-blur);
-            border: 1px solid rgba(76,175,80,0.6);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 0 20px rgba(76,175,80,0.3), inset 0 0 12px rgba(76,175,80,0.1);
-            border-radius: inherit;
-            z-index: 2 !important;
-            transition: background-color 0.35s ease, border-color 0.3s ease, box-shadow 0.35s ease;
-        }
-        
-        body:not(.dark-mode) .header-main .zen-logo,
-        body:not(.dark-mode) .header-main .header-content,
-        body:not(.dark-mode) .search-wrapper,
-        body:not(.dark-mode) .product-grid,
-        body:not(.dark-mode) .skeleton-grid,
-        body:not(.dark-mode) .footer {
-            position: relative;
-            z-index: 10 !important; 
-        }
-
-        /* ==============================================================
            🌙 DARK MODE PRO — NÂNG CẤP TOÀN DIỆN
            Palette: Deep Space Navy + Emerald Neon + Gold Accent
            ============================================================== */
@@ -871,14 +806,9 @@
             position: fixed;
             inset: 0;
             background:
-                /* Lõi sáng trung tâm (Bulge) theo dải ngân hà chéo */
-                radial-gradient(ellipse 70% 40% at 50% 50%, rgba(255, 240, 200, 0.15) 0%, rgba(255, 210, 150, 0.08) 30%, transparent 60%),
-                /* Dải tinh vân chéo (Disk) mô phỏng ảnh Milky Way */
-                linear-gradient(35deg, transparent 35%, rgba(255, 220, 180, 0.06) 43%, rgba(255, 240, 220, 0.12) 50%, rgba(180, 210, 255, 0.05) 57%, transparent 65%),
-                /* Các đám mây vũ trụ điểm xuyết */
-                radial-gradient(ellipse at 15% 75%, rgba(0, 255, 170, 0.04) 0%, transparent 50%),
-                radial-gradient(ellipse at 85% 20%, rgba(0, 100, 255, 0.05) 0%, transparent 50%),
-                radial-gradient(ellipse at 40% 15%, rgba(80, 0, 200, 0.04) 0%, transparent 50%);
+                radial-gradient(ellipse at 20% 50%, rgba(0, 255, 170, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(0, 100, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(80, 0, 200, 0.04) 0%, transparent 50%);
             pointer-events: none;
             z-index: 0;
         }
@@ -946,7 +876,7 @@
             opacity: 1;
         }
 
-        /* === LOGO NEON GLOW (GIỮ ANIMATION NÀY) === */
+        /* === LOGO NEON GLOW === */
         body.dark-mode .zen-logo img {
             animation: neonBreath 4s ease-in-out infinite;
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.5), 0 0 40px rgba(255, 190, 0, 0.3);
@@ -1104,7 +1034,7 @@
             transform: translateY(-2px) !important;
         }
 
-        /* === NEW BADGE (GIỮ NGUYÊN GOLD) === */
+        /* === NEW BADGE === */
         body.dark-mode .new-badge {
             box-shadow: 0 3px 12px rgba(255, 185, 0, 0.45), 0 0 20px rgba(255, 185, 0, 0.2) !important;
         }
@@ -1424,10 +1354,6 @@
             will-change: background-color, border-color;
         }
 
-        body.dm-transitioning .header-main::before {
-            transition: background 0.35s ease, background-color 0.35s ease, border 0.3s ease, box-shadow 0.35s ease !important;
-        }
-
         /* Card giữ nguyên transform transition của riêng nó */
         body.dark-mode .glass-card {
             transition: transform 0.35s cubic-bezier(.4,0,.2,1), background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.35s ease !important;
@@ -1525,7 +1451,6 @@
 
         /* Bầu trời đêm (Ngôi sao lấp lánh & Sao băng lướt chậm đan chéo) */
         .night-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden; contain: strict; }
-        .nature-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; contain: strict; }
         .star { position: absolute; background: white; border-radius: 50%; animation: twinkle infinite ease-in-out; }
         @keyframes twinkle {
             0% { opacity: 0.1; transform: scale(0.8); }
@@ -1608,6 +1533,53 @@
         @media (max-width: 600px) {
             .planet { display: none !important; animation: none !important; }
         }
+        
+        /* =========================================================
+           NÂNG CẤP THEO YÊU CẦU MỚI:
+           1. PC: Logo thỉnh thoảng động đậy, chữ đứng yên
+           2. PC Dark Mode: Bầu trời rực rỡ Dải Ngân Hà (Milky Way)
+           ========================================================= */
+        @media (min-width: 601px) {
+            /* Thay thế animation cũ bằng chuyển động ngẫu nhiên thỉnh thoảng xuất hiện */
+            .zen-logo img {
+                animation: pcOccasionalWiggle 10s ease-in-out infinite !important;
+            }
+            body.dark-mode .zen-logo img {
+                animation: pcNeonOccasionalWiggle 10s ease-in-out infinite !important;
+            }
+            
+            /* Dải Ngân Hà (Milky Way) cho riêng Dark Mode phiên bản PC */
+            body.dark-mode .night-background::before {
+                content: '';
+                position: absolute;
+                top: -50%; left: -50%; width: 200%; height: 200%;
+                transform: rotate(-35deg); /* Vắt chéo góc vũ trụ */
+                pointer-events: none;
+                z-index: -1; /* Nằm dưới các vì sao và hành tinh */
+                background:
+                    /* Lõi sáng rực trung tâm (Core) */
+                    radial-gradient(ellipse 40% 15% at 50% 50%, rgba(180, 220, 255, 0.18) 0%, rgba(100, 160, 255, 0.08) 40%, transparent 70%),
+                    /* Dải sáng bao quanh lõi (Bright Band) */
+                    linear-gradient(to bottom, transparent 40%, rgba(80, 150, 255, 0.05) 45%, rgba(200, 230, 255, 0.12) 50%, rgba(80, 150, 255, 0.05) 55%, transparent 60%),
+                    /* Rãnh bụi không gian (Dark Dust Lane / Great Rift) đục vắt ngang chia cắt dải sáng */
+                    linear-gradient(to bottom, transparent 48%, rgba(2, 6, 12, 0.7) 50%, transparent 52%);
+                filter: blur(12px); /* Làm mờ ảo diệu */
+            }
+        }
+
+        /* Animation rung lắc ngẫu nhiên dành riêng cho Icon (Trạng thái tĩnh chiếm 85% thời gian) */
+        @keyframes pcOccasionalWiggle {
+            0%, 85%, 100% { transform: scale(1) rotate(0deg); }
+            88% { transform: scale(1.12) rotate(-8deg); }
+            92% { transform: scale(1.12) rotate(8deg); }
+            96% { transform: scale(1.12) rotate(-5deg); }
+        }
+        @keyframes pcNeonOccasionalWiggle {
+            0%, 85%, 100% { transform: scale(1) rotate(0deg); box-shadow: 0 0 15px rgba(255,215,0,0.5), 0 0 30px rgba(255,190,0,0.3); }
+            88% { transform: scale(1.12) rotate(-8deg); box-shadow: 0 0 30px rgba(255,235,0,0.7), 0 0 60px rgba(255,200,0,0.4); }
+            92% { transform: scale(1.12) rotate(8deg); box-shadow: 0 0 30px rgba(255,235,0,0.7), 0 0 60px rgba(255,200,0,0.4); }
+            96% { transform: scale(1.12) rotate(-5deg); box-shadow: 0 0 30px rgba(255,235,0,0.7), 0 0 60px rgba(255,200,0,0.4); }
+        }
     </style>
 </head>
 <body>
@@ -1664,7 +1636,7 @@
             </div>
 
             <div class="iv-btn-wrapper">
-                <button class="iv-badge-btn" onclick="handleIVClick()" title="Mở công cụ tra cứu tiêm truyền">
+                <button class="iv-badge-btn" onclick="handleIVClick()" title="M mở công cụ tra cứu tiêm truyền">
                     <svg class="syringe-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g transform="rotate(45 50 50)">
                             <line x1="50" y1="12" x2="50" y2="28" stroke="#E0E0E0" stroke-width="4" stroke-linecap="round"/>
