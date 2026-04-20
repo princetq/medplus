@@ -225,6 +225,18 @@
         }
         /* ------------------------------------------------ */
 
+        /* === TÙY CHỈNH FONT CHỮ CÁC NÚT CÔNG CỤ TRÊN PC CHO RÕ DẤU === */
+        @media (min-width: 601px) {
+            .iv-badge-btn, 
+            .iv-badge-btn .iv-btn-text,
+            .iv-badge-btn .ks-text-pc {
+                /* Sử dụng Segoe UI, Roboto để dấu tiếng Việt hiển thị tách bạch rõ ràng nhất */
+                font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+                letter-spacing: 0.3px !important; /* Tăng khoảng cách chữ nhẹ để thoáng mắt */
+                font-weight: 700 !important; /* Giảm độ đậm từ 800 -> 700 để dấu không dính vào thân chữ */
+            }
+        }
+
         .product-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
         .product-grid.list-view{grid-template-columns:1fr;gap:10px}
         .glass-card{padding:14px;display:flex;flex-direction:column;transition:.35s cubic-bezier(.4,0,.2,1);cursor:pointer;position:relative;overflow:hidden;animation:cardIn .45s ease-out both; contain: content;}
@@ -232,15 +244,16 @@
         .glass-card:hover{transform:translateY(-8px);background:var(--g-bg-h);box-shadow:0 20px 45px rgba(0,0,0,0.13),0 0 0 1px rgba(255,255,255,0.5)}
         .glass-card:active{transform:scale(.96)!important;transition:.1s}
         
-        /* ĐÃ THU GỌN CHIỀU CAO VÀ CHIỀU RỘNG BADGE MỚI */
+        /* GIỮ NGUYÊN KÍCH THƯỚC BADGE ĐÃ THU GỌN */
         .new-badge{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,#ffeb3b,#fbc02d,#ff9800);color:var(--green-d);padding: 2px 8px;font-size: 10px;font-weight:900;border-radius:20px;z-index:5;box-shadow:0 3px 12px rgba(251,192,45,0.5);text-transform:uppercase;animation:newPulse 2s ease-in-out infinite;letter-spacing:0.5px;overflow:hidden}
         
-        /* CHIẾC LÁ CHUYỂN ĐỘNG TO LÊN TRÀN RA KHỎI VIỀN BADGE BẰNG CÁCH SỬA transform:scale và translateY */
+        /* QUAY LẠI HIỆU ỨNG LÁ CÂY TRƯỚC (NẰM TRONG VIỀN) */
         .new-badge::before{content:'🌿';margin-right: 2px;display:inline-block;transform-origin:bottom center;animation:leafWave 2s ease-in-out infinite;animation-delay:calc(var(--sweep-delay, 0s) * -1)}
         .new-badge::after{content:'';position:absolute;top:0;left:-100%;width:70%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent);animation:newSweep 3s ease-in-out infinite;animation-delay:var(--sweep-delay, 0s)}
         
         @keyframes newPulse{0%,100%{box-shadow:0 3px 12px rgba(251,192,45,0.4)}50%{box-shadow:0 4px 20px rgba(255,152,0,0.6)}}
-        @keyframes leafWave{0%,100%{transform:rotate(0deg) scale(1) translateY(0)}50%{transform:rotate(10deg) scale(1.6) translateY(-5px)}}
+        /* KEYFRAME GỐC: scale nhẹ, không có translateY */
+        @keyframes leafWave{0%,100%{transform:rotate(0deg) scale(1)}50%{transform:rotate(12deg) scale(1.15)}}
         @keyframes newSweep{0%{left:-100%}60%{left:150%}100%{left:150%}}
         
         .img-wrap{width:100%;height:150px;background:#fff;border-radius:12px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:.3s;position:relative;flex-shrink:0}
@@ -536,7 +549,7 @@
                 will-change: transform;
             }
             
-            /* Vẫn giữ dark mode colors NHƯNG BỎ HIỆU ỞNG GLOW VÀ SHADOW ĐỂ KHÔNG BỊ LAG GPU */
+            /* Vẫn giữ dark mode colors NHƯNG BỎ HIỆU ỨNG GLOW VÀ SHADOW ĐỂ KHÔNG BỊ LAG GPU */
             body.dark-mode .iv-badge-btn {
                 box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
             }
@@ -547,7 +560,7 @@
                 background: linear-gradient(135deg, #0d4a32, #062a1c) !important;
                 border-color: rgba(80, 220, 180, 0.4) !important;
                 color: #4df5c0 !important;
-                box-shadow: none !important; /* Tắt hoàn hoàn shadow trên phần tử đang clip-path */
+                box-shadow: none !important; /* Tắt hoàn toàn shadow trên phần tử đang clip-path */
             }
             body.dark-mode .iv-badge-btn.iv-expanded .iv-btn-text {
                 background: linear-gradient(135deg, #165c3f, #0a3527) !important;
@@ -1060,7 +1073,7 @@
             color: #020810 !important;
         }
         
-        /* NGÔI SAO LẤP LÁNH TO LÊN TRÀN RA KHỎI VIỀN BADGE BẰNG CÁCH SỬA transform:scale và translateY */
+        /* QUAY LẠI HIỆU ỨNG NGÔI SAO TRƯỚC (NẰM TRONG VIỀN) */
         body.dark-mode .new-badge::before {
             content: '✦';
             display: inline-block;
@@ -1069,9 +1082,10 @@
             animation-delay: calc(var(--sweep-delay, 0s) * -1);
         }
         
+        /* KEYFRAME GỐC: scale nhẹ, không có translateY */
         @keyframes starSpinGlow {
-            0%, 100% { transform: rotate(0deg) scale(0.9) translateY(0); opacity: 0.8; text-shadow: none; }
-            50% { transform: rotate(180deg) scale(1.5) translateY(-6px); opacity: 1; text-shadow: 0 0 10px rgba(255, 255, 255, 0.9); }
+            0%, 100% { transform: rotate(0deg) scale(0.9); opacity: 0.8; text-shadow: none; }
+            50% { transform: rotate(180deg) scale(1.25); opacity: 1; text-shadow: 0 0 10px rgba(255, 255, 255, 0.9); }
         }
 
         /* === SKELETON LOADER === */
