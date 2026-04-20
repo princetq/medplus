@@ -232,15 +232,15 @@
         .glass-card:hover{transform:translateY(-8px);background:var(--g-bg-h);box-shadow:0 20px 45px rgba(0,0,0,0.13),0 0 0 1px rgba(255,255,255,0.5)}
         .glass-card:active{transform:scale(.96)!important;transition:.1s}
         
-        /* ĐÃ BỎ transform: scale KHỎI newPulse, CHỈ GIỮ HIỆU ỨNG NHÁY BÓNG (GLOW) */
-        .new-badge{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,#ffeb3b,#fbc02d,#ff9800);color:var(--green-d);padding:5px 14px;font-size:11px;font-weight:900;border-radius:20px;z-index:5;box-shadow:0 3px 12px rgba(251,192,45,0.5);text-transform:uppercase;animation:newPulse 2s ease-in-out infinite;letter-spacing:0.5px;overflow:hidden}
+        /* ĐÃ THU GỌN CHIỀU CAO VÀ CHIỀU RỘNG BADGE MỚI */
+        .new-badge{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,#ffeb3b,#fbc02d,#ff9800);color:var(--green-d);padding: 2px 8px;font-size: 10px;font-weight:900;border-radius:20px;z-index:5;box-shadow:0 3px 12px rgba(251,192,45,0.5);text-transform:uppercase;animation:newPulse 2s ease-in-out infinite;letter-spacing:0.5px;overflow:hidden}
         
-        /* CHIẾC LÁ CHUYỂN ĐỘNG ĐU ĐƯA LỆCH NHỊP NGẪU NHIÊN BẰNG calc(delay * -1) */
-        .new-badge::before{content:'🌿';margin-right:4px;display:inline-block;transform-origin:bottom center;animation:leafWave 2s ease-in-out infinite;animation-delay:calc(var(--sweep-delay, 0s) * -1)}
+        /* CHIẾC LÁ CHUYỂN ĐỘNG TO LÊN TRÀN RA KHỎI VIỀN BADGE BẰNG CÁCH SỬA transform:scale và translateY */
+        .new-badge::before{content:'🌿';margin-right: 2px;display:inline-block;transform-origin:bottom center;animation:leafWave 2s ease-in-out infinite;animation-delay:calc(var(--sweep-delay, 0s) * -1)}
         .new-badge::after{content:'';position:absolute;top:0;left:-100%;width:70%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent);animation:newSweep 3s ease-in-out infinite;animation-delay:var(--sweep-delay, 0s)}
         
         @keyframes newPulse{0%,100%{box-shadow:0 3px 12px rgba(251,192,45,0.4)}50%{box-shadow:0 4px 20px rgba(255,152,0,0.6)}}
-        @keyframes leafWave{0%,100%{transform:rotate(0deg) scale(1)}50%{transform:rotate(12deg) scale(1.15)}}
+        @keyframes leafWave{0%,100%{transform:rotate(0deg) scale(1) translateY(0)}50%{transform:rotate(10deg) scale(1.6) translateY(-5px)}}
         @keyframes newSweep{0%{left:-100%}60%{left:150%}100%{left:150%}}
         
         .img-wrap{width:100%;height:150px;background:#fff;border-radius:12px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:.3s;position:relative;flex-shrink:0}
@@ -547,7 +547,7 @@
                 background: linear-gradient(135deg, #0d4a32, #062a1c) !important;
                 border-color: rgba(80, 220, 180, 0.4) !important;
                 color: #4df5c0 !important;
-                box-shadow: none !important; /* Tắt hoàn toàn shadow trên phần tử đang clip-path */
+                box-shadow: none !important; /* Tắt hoàn hoàn shadow trên phần tử đang clip-path */
             }
             body.dark-mode .iv-badge-btn.iv-expanded .iv-btn-text {
                 background: linear-gradient(135deg, #165c3f, #0a3527) !important;
@@ -1060,7 +1060,7 @@
             color: #020810 !important;
         }
         
-        /* NGÔI SAO LẤP LÁNH LỆCH NHỊP NGẪU NHIÊN BẰNG calc(delay * -1) */
+        /* NGÔI SAO LẤP LÁNH TO LÊN TRÀN RA KHỎI VIỀN BADGE BẰNG CÁCH SỬA transform:scale và translateY */
         body.dark-mode .new-badge::before {
             content: '✦';
             display: inline-block;
@@ -1070,8 +1070,8 @@
         }
         
         @keyframes starSpinGlow {
-            0%, 100% { transform: rotate(0deg) scale(0.9); opacity: 0.8; text-shadow: none; }
-            50% { transform: rotate(180deg) scale(1.25); opacity: 1; text-shadow: 0 0 10px rgba(255, 255, 255, 0.9); }
+            0%, 100% { transform: rotate(0deg) scale(0.9) translateY(0); opacity: 0.8; text-shadow: none; }
+            50% { transform: rotate(180deg) scale(1.5) translateY(-6px); opacity: 1; text-shadow: 0 0 10px rgba(255, 255, 255, 0.9); }
         }
 
         /* === SKELETON LOADER === */
@@ -1480,7 +1480,7 @@
                 transform: scale(0.97) !important;
             }
             body.dark-mode .iv-badge-btn:active {
-                box-shadow: 0 4px 15px rgba(0,0,0,0.35), 0 0 14px rgba(80,220,180,0.3) !important;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.35), 0 0 14px rgba(80, 220, 180, 0.3) !important;
             }
         }
 
@@ -1626,6 +1626,16 @@
             92% { transform: translateY(-4px) rotate(-12deg) scale(1.1); filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.4)); }
             94% { transform: translateY(3px) rotate(10deg) scale(1.1); filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.4)); }
             97% { transform: translateY(-1px) rotate(-6deg) scale(1.1); filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.4)); }
+        }
+
+        /* --- TỐI ƯU HIỆU NĂNG: TẠM DỪNG ANIMATION NỀN KHI CUỘN TRANG --- */
+        body.is-scrolling .leaf,
+        body.is-scrolling .star,
+        body.is-scrolling .shooting-star,
+        body.is-scrolling .planet,
+        body.is-scrolling .zen-logo img,
+        body.is-scrolling .medplus-badge::after {
+            animation-play-state: paused !important;
         }
     </style>
 </head>
@@ -2097,6 +2107,8 @@
                 }
             });
 
+            // Script Scroll Optimization
+            let isScrollingTimer;
             window.addEventListener('scroll', function() {
                 const btn = document.getElementById('backToTop');
                 if (window.scrollY > 300) btn.classList.add('visible');
@@ -2107,7 +2119,16 @@
                         renderBatch();
                     }
                 }
-            });
+
+                // TỐI ƯU HIỆU NĂNG: Đóng băng animation background khi cuộn
+                if (!document.body.classList.contains('is-scrolling')) {
+                    document.body.classList.add('is-scrolling');
+                }
+                clearTimeout(isScrollingTimer);
+                isScrollingTimer = setTimeout(function() {
+                    document.body.classList.remove('is-scrolling');
+                }, 150);
+            }, { passive: true });
 
             loadMedicalData();
         }
