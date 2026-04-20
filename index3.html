@@ -231,7 +231,7 @@
         @keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
         .glass-card:hover{transform:translateY(-8px);background:var(--g-bg-h);box-shadow:0 20px 45px rgba(0,0,0,0.13),0 0 0 1px rgba(255,255,255,0.5)}
         .glass-card:active{transform:scale(.96)!important;transition:.1s}
-        .new-badge{position:absolute;top:10px;right:10px;background:var(--g-bg);backdrop-filter:var(--g-blur);-webkit-backdrop-filter:var(--g-blur);border:1px solid var(--g-border);color:var(--green);padding:5px 14px;font-size:11px;font-weight:900;border-radius:20px;z-index:5;box-shadow:0 4px 15px rgba(0,0,0,0.08), 0 0 10px rgba(76,175,80,0.2);text-transform:uppercase;animation:glassPulse 2.5s ease-in-out infinite;letter-spacing:0.5px;overflow:hidden}
+        .new-badge{position:absolute;top:10px;right:10px;background:linear-gradient(135deg, rgba(255,255,255,0.95), rgba(230,250,235,0.85));backdrop-filter:var(--g-blur);-webkit-backdrop-filter:var(--g-blur);border:1px solid rgba(76,175,80,0.6);color:var(--green-d);padding:5px 14px;font-size:11px;font-weight:900;border-radius:20px;z-index:5;box-shadow:0 6px 16px rgba(0,0,0,0.12), 0 0 15px rgba(76,175,80,0.35), inset 0 0 8px rgba(255,255,255,0.8);text-transform:uppercase;animation:glassPulse 2.5s ease-in-out infinite;letter-spacing:0.5px;overflow:hidden}
         
         /* Ngôi sao xoay tròn phát sáng */
         .new-badge::before{content:'✦';margin-right:4px;display:inline-block;animation:starSpin 2s linear infinite}
@@ -1053,12 +1053,13 @@
             transform: translateY(-2px) !important;
         }
 
-        /* === NEW BADGE KÍNH MỜ (DARK MODE) === */
+        /* === NEW BADGE KÍNH MỜ NỔI BẬT HƠN (DARK MODE) === */
         body.dark-mode .new-badge {
-            background: rgba(13, 25, 50, 0.65) !important;
-            border: 1px solid rgba(80, 220, 180, 0.5) !important;
-            color: #50dcb4 !important; /* Màu xanh Neon đồng bộ với Header */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4), 0 0 15px rgba(80, 220, 180, 0.25) !important;
+            background: linear-gradient(135deg, rgba(13, 74, 50, 0.85), rgba(6, 42, 28, 0.75)) !important;
+            border: 1.5px solid rgba(80, 220, 180, 0.7) !important;
+            color: #50dcb4 !important;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 20px rgba(80, 220, 180, 0.4), inset 0 0 10px rgba(80,220,180,0.2) !important;
+            text-shadow: 0 0 12px rgba(80, 220, 180, 0.8) !important;
         }
 
         /* Quét Laser Neon chớp nhoáng (Cyber-Scan) */
