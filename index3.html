@@ -231,17 +231,12 @@
         @keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
         .glass-card:hover{transform:translateY(-8px);background:var(--g-bg-h);box-shadow:0 20px 45px rgba(0,0,0,0.13),0 0 0 1px rgba(255,255,255,0.5)}
         .glass-card:active{transform:scale(.96)!important;transition:.1s}
-        .new-badge{position:absolute;top:10px;right:10px;background:linear-gradient(135deg, rgba(255,255,255,0.95), rgba(230,250,235,0.85));backdrop-filter:var(--g-blur);-webkit-backdrop-filter:var(--g-blur);border:1px solid rgba(76,175,80,0.6);color:var(--green-d);padding:5px 14px;font-size:11px;font-weight:900;border-radius:20px;z-index:5;box-shadow:0 6px 16px rgba(0,0,0,0.12), 0 0 15px rgba(76,175,80,0.35), inset 0 0 8px rgba(255,255,255,0.8);text-transform:uppercase;animation:glassPulse 2.5s ease-in-out infinite;letter-spacing:0.5px;overflow:hidden}
-        
-        /* Ngôi sao xoay tròn phát sáng */
-        .new-badge::before{content:'✦';margin-right:4px;display:inline-block;animation:starSpin 2s linear infinite}
-        
-        /* Hiệu ứng lướt vát lăng kính (Hologram pha lê) */
-        .new-badge::after{content:'';position:absolute;top:0;left:-150%;width:150%;height:100%;background:linear-gradient(105deg,transparent,rgba(255,255,255,0.2) 42%,rgba(255,255,255,0.9) 48%,rgba(251,192,45,0.6) 50%,rgba(76,175,80,0.6) 52%,rgba(255,255,255,0.9) 55%,transparent);animation:glassSweep 5s cubic-bezier(0.4, 0, 0.2, 1) infinite var(--sweep-delay, 0s)}
-        
-        @keyframes glassPulse{0%,100%{transform:scale(1);box-shadow:0 4px 15px rgba(0,0,0,0.08),0 0 10px rgba(76,175,80,0.2)}50%{transform:scale(1.05);box-shadow:0 6px 20px rgba(0,0,0,0.12),0 0 18px rgba(76,175,80,0.4)}}
-        @keyframes glassSweep{0%,15%{left:-150%}85%,100%{left:150%}}
-        @keyframes starSpin{0%{transform:rotate(0deg) scale(0.8);opacity:0.7}50%{transform:rotate(180deg) scale(1.2);opacity:1;text-shadow:0 0 8px currentColor}100%{transform:rotate(360deg) scale(0.8);opacity:0.7}}
+        .new-badge{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,#ffeb3b,#fbc02d,#ff9800);color:var(--green-d);padding:5px 14px;font-size:11px;font-weight:900;border-radius:20px;z-index:5;box-shadow:0 3px 12px rgba(251,192,45,0.5);text-transform:uppercase;animation:newPulse 2s ease-in-out infinite;letter-spacing:0.5px;overflow:hidden}
+        .new-badge::before{content:'🌿';margin-right:4px;animation:sparkle 1.5s ease-in-out infinite alternate}
+        .new-badge::after{content:'';position:absolute;top:0;left:-100%;width:70%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent);animation:newSweep 3s ease-in-out infinite;animation-delay:var(--sweep-delay, 0s)}
+        @keyframes newPulse{0%,100%{transform:scale(1);box-shadow:0 3px 12px rgba(251,192,45,0.4)}50%{transform:scale(1.05);box-shadow:0 4px 20px rgba(255,152,0,0.6)}}
+        @keyframes sparkle{0%{opacity:0.5;transform:scale(0.8)}100%{opacity:1;transform:scale(1.2)}}
+        @keyframes newSweep{0%{left:-100%}60%{left:150%}100%{left:150%}}
         .img-wrap{width:100%;height:150px;background:#fff;border-radius:12px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:.3s;position:relative;flex-shrink:0}
         .glass-card:hover .img-wrap{box-shadow:0 4px 15px rgba(0,0,0,0.08)}
         .img-wrap img{max-width:95%;max-height:95%;object-fit:contain;transition:.3s}
@@ -1053,18 +1048,10 @@
             transform: translateY(-2px) !important;
         }
 
-        /* === NEW BADGE KÍNH MỜ NỔI BẬT HƠN (DARK MODE) === */
+        /* === NEW BADGE === */
         body.dark-mode .new-badge {
-            background: linear-gradient(135deg, rgba(13, 74, 50, 0.85), rgba(6, 42, 28, 0.75)) !important;
-            border: 1.5px solid rgba(80, 220, 180, 0.7) !important;
-            color: #50dcb4 !important;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 20px rgba(80, 220, 180, 0.4), inset 0 0 10px rgba(80,220,180,0.2) !important;
-            text-shadow: 0 0 12px rgba(80, 220, 180, 0.8) !important;
-        }
-
-        /* Quét Laser Neon chớp nhoáng (Cyber-Scan) */
-        body.dark-mode .new-badge::after {
-            background: linear-gradient(105deg, transparent, rgba(80,220,180,0.05) 43%, rgba(80,220,180,0.8) 49%, rgba(0,255,255,0.9) 51%, rgba(80,220,180,0.8) 53%, rgba(80,220,180,0.05) 58%, transparent) !important;
+            box-shadow: 0 3px 12px rgba(255, 185, 0, 0.45), 0 0 20px rgba(255, 185, 0, 0.2) !important;
+            color: #020810 !important;
         }
 
         /* === SKELETON LOADER === */
@@ -1430,7 +1417,7 @@
                 -webkit-backdrop-filter: blur(14px) !important;
             }
             /* GPU layer promotion: browser tạo composite layer sẵn
-                → iv-btn-text expand animation mượt ngay lần đầu bấm dark mode */
+               → iv-btn-text expand animation mượt ngay lần đầu bấm dark mode */
             body.dark-mode .iv-badge-btn {
                 transform: translateZ(0);
                 -webkit-transform: translateZ(0);
@@ -2038,7 +2025,7 @@
             for(let i = 0; i < 8; i++) {
                 let l = document.createElement('div'); l.className = 'leaf';
                 l.style.left = Math.random()*100+'%';
-                l.style.animationDuration = (Math.random()*8+10)+'s';
+                l.style.animationDuration = (Math.random()*15+15)+'s';
                 document.getElementById('leaf-container').appendChild(l);
             }
             
@@ -2302,8 +2289,8 @@
                 const originalIdx = rawData.indexOf(item);
                 const hdsdBtn = item.link ? "<button class=\"hdsd-btn\" onclick=\"event.stopPropagation();openNotionPopup('" + item.link + "')\">📄 Xem tờ HDSD</button>" : "";
                 const delay = Math.min(i * 0.03, 0.6) + "s";
-                const randomDelay = (Math.random() * 4).toFixed(2) + "s";
-                const badgeHtml = item.isNew ? "<div class=\"new-badge\" style=\"--sweep-delay: " + randomDelay + "\">MỚI</div>" : "";
+                const sweepDelay = (Math.random() * 4).toFixed(2) + "s";
+                const badgeHtml = item.isNew ? "<div class=\"new-badge\" style=\"--sweep-delay: " + sweepDelay + "\">MỚI</div>" : "";
                 
                 htmlContent += "<div class=\"glass-panel glass-card\" onclick=\"openModal(" + originalIdx + ")\" style=\"animation-delay: " + delay + "\">" +
                     badgeHtml +
