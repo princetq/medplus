@@ -197,6 +197,7 @@
             position: absolute;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
             font-weight: 700; color: var(--green); z-index: 1;
+            white-space: nowrap; /* BẮT BUỘC 1 DÒNG DÙ MÀN HÌNH NHỎ */
         }
         
         /* Căn chỉnh X Modal trên PC (Bao gồm Modal Chi Tiết và HDSD Light Mode) */
@@ -491,6 +492,9 @@
             .chat-widget-container .send-button{width:38px;height:38px;right:3px;border:1px solid rgba(255,255,255,0.4)}
             
             .chat-widget-container .disclaimer{font-size:14px;padding:3px 10px}
+            
+            /* Căn chỉnh X Modal trên Mobile (Đã bỏ nền tròn) */
+            .close-btn{position:absolute;top:4px;right:14px;font-size:30px;cursor:pointer;color:#d32f2f;font-weight:bold;transition:.2s;width:36px;height:36px;display:flex;align-items:center;justify-content:center;z-index:20;background:transparent!important;box-shadow:none!important;border:none!important;flex-shrink:0;box-sizing:border-box;line-height:0;padding-bottom:2px;}
         }
 
         /* ================================================================
@@ -1751,7 +1755,7 @@
                     <span class="iv-btn-text">TƯƠNG TÁC THUỐC</span>
                 </button>
                 
-                <button class="iv-badge-btn ks-badge-btn" onclick="handleKSClick()" title="Mở công cụ chỉnh liều kháng sinh">
+                <button class="iv-badge-btn ks-badge-btn" onclick="handleKSClick()" title="M mở công cụ chỉnh liều kháng sinh">
                     <svg class="syringe-icon ks-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g filter="drop-shadow(-2px 4px 4px rgba(0,0,0,0.3))">
                             <rect x="18" y="15" width="28" height="58" rx="14" fill="#FFFFFF"/>
@@ -1847,7 +1851,7 @@
             <span class="close-btn" onclick="closeHDSDModal()">&times;</span>
 
             <div class="iv-iframe-container">
-                <div class="iv-iframe-loader" id="hdsd-loader">Đang tải tờ hướng dẫn...</div>
+                <div class="iv-iframe-loader" id="hdsd-loader" style="white-space: nowrap;">Đang tải tờ HDSD...</div>
                 <iframe id="hdsd-iframe"></iframe>
             </div>
         </div>
@@ -2173,6 +2177,16 @@
                     document.body.classList.remove('is-scrolling');
                 }, 150);
             }, { passive: true });
+            
+            // XỬ LÝ AUTO-HIDE SCROLLBAR CỦA TẤT CẢ MODAL (Bao gồm Chi tiết thuốc và HDSD)
+            document.addEventListener('scroll', function(e) {
+                if (e.target.classList && e.target.classList.contains('modal-content')) {
+                    const m = e.target;
+                    m.classList.add('sb-visible');
+                    if (m._sbTimer) clearTimeout(m._sbTimer);
+                    m._sbTimer = setTimeout(() => m.classList.remove('sb-visible'), 500); // Tự động ẩn sau 0.5s
+                }
+            }, true);
 
             loadMedicalData();
         }
@@ -2541,18 +2555,17 @@
                         tText = tText.replace(/:\s*((<\/[a-zA-Z0-9]+>\s*)*)$/, '$1').trim();
                         if (!tText) tText = 'CHI TIẾT';
                         
-                        // Nếu là Toggle giả (THÔNG TIN THÊM) hoặc đã có sẵn children thì nhúng luôn
+                        // XÓA BỎ CHỮ ▸ TRONG SUMMARY (VÌ ĐÃ DÙNG ::BEFORE BẰNG CSS ĐỂ XOAY)
                         if (block.id === 'fake-extra-info' || block._children) {
                             let chHtml = renderBlocks(block._children || []);
                             html += '<details style="margin:6px 0;border:1px solid #c8e6c9;border-radius:8px;overflow:hidden">'
-                                  + '<summary style="text-transform:uppercase;padding:10px 14px;font-weight:700;color:var(--green);cursor:pointer;background:rgba(76,175,80,0.07);user-select:none;list-style:none">▸ '+tText+'</summary>'
-                                  + '<div style="padding:10px 16px 10px 20px;background:#fafafa">'+chHtml+'</div>'
+                                  + '<summary style="text-transform:uppercase;padding:10px 14px;font-weight:700;color:var(--green);cursor:pointer;background:rgba(76,175,80,0.07);user-select:none;list-style:none;display:flex;align-items:center;gap:8px;transition:0.2s;"><span>'+tText+'</span></summary>'
+                                  + '<div style="padding:10px 16px 10px 20px;background:#fafafa;border-top:1px solid #eee;">'+chHtml+'</div>'
                                   + '</details>';
                         } else {
-                            // Tự động thêm lazy load gọi lên Parent window (Cửa sổ mẹ)
                             html += '<details id="details-'+block.id+'" ontoggle="if(this.open && !this.dataset.loaded) window.parent.loadNotionToggle(\''+block.id+'\', this.id);" style="margin:6px 0;border:1px solid #c8e6c9;border-radius:8px;overflow:hidden">'
-                                  + '<summary style="text-transform:uppercase;padding:10px 14px;font-weight:700;color:var(--green);cursor:pointer;background:rgba(76,175,80,0.07);user-select:none;list-style:none">▸ '+tText+'</summary>'
-                                  + '<div class="content" style="padding:10px 16px 10px 20px;background:#fafafa"><div style="color:#666;font-style:italic">⏳ Đang tải nội dung...</div></div>'
+                                  + '<summary style="text-transform:uppercase;padding:10px 14px;font-weight:700;color:var(--green);cursor:pointer;background:rgba(76,175,80,0.07);user-select:none;list-style:none;display:flex;align-items:center;gap:8px;transition:0.2s;"><span>'+tText+'</span></summary>'
+                                  + '<div class="content" style="padding:10px 16px 10px 20px;background:#fafafa;border-top:1px solid #eee;"><div style="color:#666;font-style:italic">⏳ Đang tải nội dung...</div></div>'
                                   + '</details>';
                         }
                         break;
@@ -2821,6 +2834,11 @@
                     + 'details{border-color:var(--green-border)!important}'
                     + 'details>summary{background:var(--toggle-bg)!important;color:var(--green)!important;list-style:none}'
                     + 'details>summary::-webkit-details-marker{display:none}'
+                    
+                    /* CSS ĐỂ XOAY MŨI TÊN BÊN TRONG IFRAME */
+                    + 'details>summary::before{content:"▸";font-size:14px;color:var(--green);transition:transform 0.2s ease-in-out}'
+                    + 'details[open]>summary::before{transform:rotate(90deg)}'
+                    
                     + 'details[open]>summary{background:var(--toggle-open)!important}'
                     + 'details .toggle-children, details>div{background:var(--bg)!important}'
                     + 'code{background:var(--code-bg)!important;color:var(--text)!important;border:1px solid var(--code-border)}'
