@@ -2785,10 +2785,15 @@
                         let textContent = '';
                         let richTextArr = block[block.type]?.rich_text || [];
                         
+                        // 1. Quét text và định dạng (In đậm, in nghiêng, gạch chân, link text)
                         richTextArr.forEach(t => {
                             let txt = t.plain_text;
                             if (t.annotations.bold) txt = '<strong>' + txt + '</strong>';
                             if (t.annotations.italic) txt = '<em>' + txt + '</em>';
+                            if (t.annotations.underline) txt = '<u>' + txt + '</u>';
+                            if (t.annotations.color && t.annotations.color !== 'default') {
+                                txt = '<span style="color:' + t.annotations.color + '">' + txt + '</span>';
+                            }
                             if (t.href) {
                                 txt = '<a href="' + t.href + '" target="_blank">' + txt + '</a>';
                                 if (t.href.includes('drive.google.com')) driveLink = t.href;
@@ -2796,19 +2801,51 @@
                             textContent += txt;
                         });
 
+                        // 2. Trích xuất URL cho các block dạng Media/File
+                        let blockUrl = "";
+                        if (block[block.type] && typeof block[block.type] === 'object') {
+                            blockUrl = block[block.type].url || 
+                                       (block[block.type].external && block[block.type].external.url) || 
+                                       (block[block.type].file && block[block.type].file.url) || "";
+                        }
+
+                        // 3. Mapping UI cho đa dạng loại Block của Notion
                         switch(block.type) {
                             case 'paragraph':
                                 if(textContent.trim() !== '') htmlContent += '<p>' + textContent + '</p>';
+                                else htmlContent += '<br>'; // Xử lý dòng trống (khoảng trắng)
                                 break;
                             case 'heading_1': htmlContent += '<h1>' + textContent + '</h1>'; break;
                             case 'heading_2': htmlContent += '<h2>' + textContent + '</h2>'; break;
                             case 'heading_3': htmlContent += '<h3>' + textContent + '</h3>'; break;
                             case 'bulleted_list_item': htmlContent += '<li>• ' + textContent + '</li>'; break;
                             case 'numbered_list_item': htmlContent += '<li style="list-style-type: decimal; margin-left: 20px;">' + textContent + '</li>'; break;
+                            
+                            // Thêm hỗ trợ Khung trích dẫn (Quote) và Chú ý (Callout)
+                            case 'quote': 
+                                htmlContent += '<blockquote style="border-left: 4px solid var(--green); padding-left: 14px; font-style: italic; color: #555; margin: 10px 0;">' + textContent + '</blockquote>'; 
+                                break;
+                            case 'callout': 
+                                htmlContent += '<div style="padding: 12px; background: rgba(76,175,80,0.1); border-left: 4px solid var(--green); border-radius: 8px; margin: 10px 0;">' + textContent + '</div>'; 
+                                break;
+                            
+                            // Thêm hỗ trợ hiển thị Hình ảnh trực tiếp
+                            case 'image':
+                                if (blockUrl) htmlContent += '<img src="' + blockUrl + '" style="max-width:100%; border-radius:8px; margin: 10px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">';
+                                break;
+                            
+                            // Càn quét MỌI LOẠI link chứa Google Drive (PDF, File, Embed, Bookmark)
                             case 'bookmark':
                             case 'embed':
-                                let url = block[block.type].url;
-                                if (url && url.includes('drive.google.com')) driveLink = url;
+                            case 'pdf':
+                            case 'file':
+                            case 'link_preview':
+                                if (blockUrl && blockUrl.includes('drive.google.com')) {
+                                    driveLink = blockUrl;
+                                } else if (blockUrl) {
+                                    // Nếu là file khác không phải GDrive, hiện nút tải xuống nhỏ
+                                    htmlContent += '<p><a href="' + blockUrl + '" target="_blank" style="display:inline-block; padding:8px 12px; background:rgba(0,0,0,0.05); border-radius:8px; text-decoration:none; color:#333; font-weight:600;">📎 Tệp đính kèm (' + block.type + ')</a></p>';
+                                }
                                 break;
                         }
                     });
