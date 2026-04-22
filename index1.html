@@ -199,30 +199,24 @@
             font-weight: 700; color: var(--green); z-index: 1;
         }
         
-        .iv-modal-content .close-btn {
-            top: 4px; 
-            right: 14px; 
-            background: transparent !important; 
-            color: #fff !important;
-            box-shadow: none !important; 
-            z-index: 9999;
-            font-size: 28px; 
-            width: 36px;
-            height: 36px;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: absolute;
-            flex-shrink: 0;
-            box-sizing: border-box;
-            line-height: 0;
-            padding-bottom: 2px;
+        /* Căn chỉnh X Modal trên PC (Bao gồm Modal Chi Tiết và HDSD Light Mode) */
+        .close-btn {
+            position:absolute;top:4px;right:14px;font-size:30px;cursor:pointer;color:#d32f2f;
+            font-weight:bold;transition:.2s;width:36px;height:36px;display:flex;align-items:center;
+            justify-content:center;z-index:20;background:transparent!important;box-shadow:none!important;
+            border:none!important;flex-shrink:0;box-sizing:border-box;line-height:0;padding-bottom:2px;
         }
-        .iv-modal-content .close-btn:hover { 
-            background: transparent !important; 
-            transform: scale(1.15); 
+        .close-btn:hover { transform:scale(1.15); }
+        
+        /* FIX: Loại bỏ viền tròn nền trắng của nút X trên modal công cụ ở Light mode
+           CHỈ ÁP DỤNG MÀU TRẮNG CHO 4 MODAL CÔNG CỤ (LOẠI TRỪ HDSD) */
+        #iv-modal .close-btn, 
+        #ks-modal .close-btn, 
+        #tt-modal .close-btn, 
+        #tk-modal .close-btn {
+            color: #ffffff !important; /* MÀU TRẮNG ĐÚNG YÊU CẦU Ở LIGHT MODE */
         }
+        /* Nút X của riêng Modal HDSD giữ màu đỏ ở Lightmode đã được set ở .close-btn chung phía trên */
         /* ------------------------------------------------ */
 
         /* === TÙY CHỈNH FONT CHỮ CÁC NÚT CÔNG CỤ TRÊN PC CHO RÕ DẤU === */
@@ -421,7 +415,7 @@
                 box-shadow: 0 6px 20px rgba(46,125,50,0.5) !important;
             }
             
-            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU ỨNG CO MƯỢT MÀ BẰNG MAX-WIDTH (ĐỂ KHÔNG CẮT MẤT VIỀN) */
+            /* KHOÁ CHẶT KHÔNG GIAN CỦA NHÓM DƯỢC LÝ, HIỆU TRỨNG CO MƯỢT MÀ BẰNG MAX-WIDTH (ĐỂ KHÔNG CẮT MẤT VIỀN) */
             .group-filter-wrapper{
                 grid-column: 1 / 4;
                 grid-row: 3;
@@ -497,17 +491,14 @@
             .chat-widget-container .send-button{width:38px;height:38px;right:3px;border:1px solid rgba(255,255,255,0.4)}
             
             .chat-widget-container .disclaimer{font-size:14px;padding:3px 10px}
-            
-            /* Căn chỉnh X Modal trên Mobile */
-            .close-btn{position:absolute;top:4px;right:14px;font-size:30px;cursor:pointer;color:#d32f2f;font-weight:bold;transition:.2s;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;z-index:20;background:rgba(255,255,255,0.85);box-shadow:0 2px 8px rgba(0,0,0,0.1);flex-shrink:0;box-sizing:border-box;line-height:0;padding-bottom:2px;}
         }
 
         /* ================================================================
-           FIX GIẬT NÚT CÔNG CỤ MOBILE — THAY max-width BẰNG clip-path
-           max-width trigger LAYOUT mỗi frame → giật
-           clip-path chạy trên GPU compositor → 60fps mượt mà
-           Áp dụng cả light mode lẫn dark mode
-           ================================================================ */
+            FIX GIẬT NÚT CÔNG CỤ MOBILE — THAY max-width BẰNG clip-path
+            max-width trigger LAYOUT mỗi frame → giật
+            clip-path chạy trên GPU compositor → 60fps mượt mà
+            Áp dụng cả light mode lẫn dark mode
+            ================================================================ */
         @media (max-width: 600px) {
             /* Hidden state: width tự co theo nội dung, clip từ bên phải */
             .iv-badge-btn .iv-btn-text {
@@ -594,16 +585,16 @@
         .modal-content{width:100%;max-width:820px;max-height:90vh;overflow-y:auto;padding:28px;position:relative;background:rgba(255,255,255,0.96)!important;border:1px solid #fff;border-radius:20px;box-shadow:0 25px 60px rgba(0,0,0,0.2);animation:modalIn .45s cubic-bezier(.25,1,.5,1) forwards}
         @keyframes modalIn{0%{opacity:0;transform:translateY(40px) scale(.95);filter:blur(8px)}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
         
-        /* Căn chỉnh X Modal trên PC */
-        .close-btn{position:absolute;top:4px;right:14px;font-size:30px;cursor:pointer;color:#d32f2f;font-weight:bold;transition:.2s;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;z-index:20;background:rgba(255,255,255,0.85);box-shadow:0 2px 8px rgba(0,0,0,0.1);flex-shrink:0;box-sizing:border-box;line-height:0;padding-bottom:2px;}
-        .close-btn:hover{background:rgba(211,47,47,0.1)}
-        
         .modal-drug-header{display:flex;gap:20px;align-items:center;margin-bottom:20px;padding:18px 22px;border-radius:16px;background:linear-gradient(135deg,rgba(76,175,80,0.15),rgba(46,125,50,0.1));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(76,175,80,0.25);box-shadow:0 4px 20px rgba(46,125,50,0.1)}
         
         .modal-drug-img{width:100px;height:100px;object-fit:contain;background:#fff;border-radius:14px;padding:8px;flex-shrink:0;border:1px solid rgba(76,175,80,0.2);box-shadow:0 4px 15px rgba(0,0,0,0.06);cursor:zoom-in;transition:.2s}
         .modal-drug-img:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(0,0,0,0.1)}
         .modal-drug-title{color:var(--green-d);font-size:22px;font-weight:900;margin:0}
         .google-search-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#fff!important;background:linear-gradient(135deg,#4285F4,#0d47a1);padding:6px 14px;border-radius:20px;text-decoration:none;transition:.2s;box-shadow:0 3px 10px rgba(66,133,244,0.3);width:fit-content;margin-top:2px}
+        .drive-orig-btn{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#fff!important;background:linear-gradient(135deg,#00897b,#004d40);padding:8px 20px;border-radius:24px;text-decoration:none;transition:.2s;box-shadow:0 3px 12px rgba(0,137,123,0.35);margin-top:8px;width:fit-content}
+        .drive-orig-btn:hover{transform:translateY(-1px);box-shadow:0 5px 15px rgba(0,137,123,0.45)}
+        body.dark-mode .drive-orig-btn{background:linear-gradient(135deg,#00bfa5,#00695c);box-shadow:0 3px 10px rgba(0,191,165,0.35)}
+
         .google-search-btn:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(66,133,244,0.4)}
         .google-search-btn svg{width:14px;height:14px}
         
@@ -640,10 +631,21 @@
         .leaf{position:absolute;width:18px;height:18px;background:rgba(76,175,80,0.4);border:.2px solid rgba(255,255,255,0.4);border-radius:0 100% 0 100%;animation:fall linear infinite}
         @keyframes fall{0%{transform:translateY(-5vh) rotate(0);opacity:0}10%{opacity:1}100%{transform:translateY(105vh) rotate(360deg);opacity:0}}
 
+        /* KHÔI PHỤC SCROLLBAR CHÍNH NHƯ CŨ MÀ KHÔNG ẨN ĐỘNG (HOÀN TÁC TRỞ LẠI YÊU CẦU GỐC) */
         ::-webkit-scrollbar{width:7px;height:7px}
         ::-webkit-scrollbar-track{background:transparent}
-        ::-webkit-scrollbar-thumb{background:rgba(0,0,0,0);border-radius:10px}
+        ::-webkit-scrollbar-thumb{background:rgba(0,0,0,0);border-radius:10px;transition:background 0.3s}
         ::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,0.35)}
+        
+        /* TỰ ĐỘNG ẨN SCROLLBAR CHO MODAL CHI TIẾT THUỐC (VÀ CÁC MODAL HTML) TRONG 0.5s */
+        .modal-content::-webkit-scrollbar { width: 7px; height: 7px; }
+        .modal-content::-webkit-scrollbar-track { background: transparent; }
+        .modal-content::-webkit-scrollbar-thumb { background: transparent; border-radius: 10px; transition: background 0.3s; }
+        .modal-content.sb-visible::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.35); }
+        .modal-content.sb-visible::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.5); }
+        body.dark-mode .modal-content.sb-visible::-webkit-scrollbar-thumb { background: rgba(80, 220, 180, 0.25) !important; }
+        body.dark-mode .modal-content.sb-visible::-webkit-scrollbar-thumb:hover { background: rgba(80, 220, 180, 0.5) !important; }
+
         /* --- NHÓM DƯỢC LÝ FILTER --- */
         .group-filter-wrapper{position:relative;display:flex;align-items:center;order:1;transition:opacity .2s,transform .2s}
         .group-filter-wrapper.hidden{display:none}
@@ -751,8 +753,8 @@
             }
         }
         /* ==============================================================
-           BẢN VÁ LỖI HIỂN THỊ NATIVE TRÊN SAFARI / MOBILE (GITHUB PAGES)
-           ============================================================== */
+            BẢN VÁ LỖI HIỂN THỊ NATIVE TRÊN SAFARI / MOBILE (GITHUB PAGES)
+            ============================================================== */
         
         /* 1. Khóa chiều rộng, chống tràn viền ngang (Dùng tốt cho cả PC và Mobile) */
         html, body {
@@ -792,8 +794,7 @@
         
         /* --- CHỐT CHẶN 1 (PHIÊN BẢN CỰC MẠNH): ÉP CỨNG NỀN --- */
         body[style*="overflow: hidden"] {
-            height: 100dvh !important; /* Khóa chết chiều cao body khi mở modal */
-            overscroll-behavior: none !important;
+            overscroll-behavior: none !important; /* ĐÃ XÓA height: 100dvh để không bị giật lên top */
         }
         .modal-overlay, #image-zoom-overlay {
             overscroll-behavior: none !important;
@@ -804,9 +805,9 @@
         }
 
         /* ==============================================================
-           🌙 DARK MODE PRO — NÂNG CẤP TOÀN DIỆN
-           Palette: Deep Space Navy + Emerald Neon + Gold Accent
-           ============================================================== */
+            🌙 DARK MODE PRO — NÂNG CẤP TOÀN DIỆN
+            Palette: Deep Space Navy + Emerald Neon + Gold Accent
+            ============================================================== */
 
         /* === BIẾN CSS CHO DARK MODE === */
         body.dark-mode {
@@ -1128,6 +1129,11 @@
             border: 1px solid rgba(80, 220, 180, 0.3) !important;
             box-shadow: 0 25px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(80,220,180,0.15) !important;
         }
+        
+        /* THÊM VÀO ĐỂ SỬA LỖI NỀN TRẮNG SCROLLBAR IFRAME Ở DARK MODE */
+        body.dark-mode .iv-iframe-container iframe {
+            background: transparent !important;
+        }
 
         /* === MODAL === */
         body.dark-mode .modal-overlay {
@@ -1152,20 +1158,17 @@
             background: rgba(255,255,255,0.07) !important;
             border-color: rgba(80, 220, 180, 0.2) !important;
         }
+        
+        /* Xóa sạch nền tròn, viền, bóng của nút X trên TẤT CẢ Modal (Kể cả HDSD) khi bật Darkmode */
         body.dark-mode .close-btn {
-            background: rgba(8, 20, 42, 0.85) !important;
-            color: #50dcb4 !important;
-            border: 1px solid rgba(80, 220, 180, 0.25) !important;
-        }
-        body.dark-mode .close-btn:hover {
-            background: rgba(13, 74, 50, 0.5) !important;
-            box-shadow: 0 0 12px rgba(80, 220, 180, 0.3) !important;
-        }
-        /* Loại bỏ vòng tròn nút X ở Tool Darkmode */
-        body.dark-mode .iv-modal-content .close-btn {
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
+            color: #50dcb4 !important; /* Đồng bộ màu xanh neon của Header */
+        }
+        body.dark-mode .close-btn:hover {
+            background: transparent !important;
+            transform: scale(1.15);
         }
 
         /* === BASIC INFO BOX === */
@@ -1451,7 +1454,7 @@
                 -webkit-backdrop-filter: blur(14px) !important;
             }
             /* GPU layer promotion: browser tạo composite layer sẵn
-               → iv-btn-text expand animation mượt ngay lần đầu bấm dark mode */
+                → iv-btn-text expand animation mượt ngay lần đầu bấm dark mode */
             body.dark-mode .iv-badge-btn {
                 transform: translateZ(0);
                 -webkit-transform: translateZ(0);
@@ -1584,10 +1587,10 @@
         }
         
         /* =========================================================
-           NÂNG CẤP THEO YÊU CẦU MỚI:
-           1. PC: Logo thỉnh thoảng động đậy, chữ đứng yên
-           2. PC Dark Mode: Bầu trời rực rỡ Dải Ngân Hà (Milky Way)
-           ========================================================= */
+            NÂNG CẤP THEO YÊU CẦU MỚI:
+            1. PC: Logo thỉnh thoảng động đậy, chữ đứng yên
+            2. PC Dark Mode: Bầu trời rực rỡ Dải Ngân Hà (Milky Way)
+            ========================================================= */
         @media (min-width: 601px) {
             /* Dải Ngân Hà (Milky Way) cho riêng Dark Mode phiên bản PC */
             body.dark-mode .night-background::before {
@@ -1642,46 +1645,24 @@
             97% { transform: translateY(-1px) rotate(-6deg) scale(1.1); filter: drop-shadow(-3px 5px 6px rgba(0,0,0,0.4)); }
         }
 
-        /* --- TỐI ƯU HIỆU NĂNG: TẠM DỪNG ANIMATION NỀN KHI CUỘN TRANG --- */
-        body.is-scrolling .leaf,
-        body.is-scrolling .star,
-        body.is-scrolling .shooting-star,
-        body.is-scrolling .planet,
-        body.is-scrolling .zen-logo img,
-        body.is-scrolling .medplus-badge::after {
-            animation-play-state: paused !important;
+        /* --- TỐI ƯU HIỆU NĂNG: TẠM DỪNG ANIMATION NỀN KHI CUỘN TRANG (CHỈ ÁP DỤNG MOBILE) --- */
+        @media (max-width: 600px) {
+            body.is-scrolling .leaf,
+            body.is-scrolling .star,
+            body.is-scrolling .shooting-star,
+            body.is-scrolling .planet,
+            body.is-scrolling .zen-logo img,
+            body.is-scrolling .medplus-badge::after,
+            body.is-scrolling .new-badge::before,
+            body.is-scrolling .new-badge::after,
+            body.is-scrolling .syringe-icon,
+            body.is-scrolling .tk-icon,
+            body.is-scrolling #chat-widget-btn,
+            body.is-scrolling #chat-widget-btn::before,
+            body.is-scrolling .marquee-track {
+                animation-play-state: paused !important;
+            }
         }
-        
-        /* --- NOTION HDSD MODAL CSS --- */
-        #hdsd-modal .modal-content { max-width: 800px; }
-        .notion-content {
-            font-size: 15px; line-height: 1.6; color: #333; margin-bottom: 20px;
-        }
-        body.dark-mode .notion-content { color: #c8d8f0; }
-        .notion-content p { margin-bottom: 12px; }
-        .notion-content h1, .notion-content h2, .notion-content h3 {
-            color: var(--green-d); margin: 20px 0 10px; font-weight: 800;
-        }
-        body.dark-mode .notion-content h1, body.dark-mode .notion-content h2, body.dark-mode .notion-content h3 { color: #50dcb4; }
-        .notion-content ul, .notion-content ol { margin-bottom: 12px; padding-left: 20px; }
-        .notion-content li { margin-bottom: 6px; }
-        .notion-content img { max-width: 100%; border-radius: 8px; margin: 10px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .notion-content a { color: #2e7d32; font-weight: 600; text-decoration: none; }
-        body.dark-mode .notion-content a { color: #4df5c0; }
-
-        .drive-btn {
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            background: linear-gradient(135deg, #4285F4, #0d47a1); color: #fff !important;
-            padding: 12px 24px; border-radius: 12px; font-weight: 800; font-size: 15px;
-            text-decoration: none; box-shadow: 0 4px 15px rgba(66,133,244,0.3); transition: .25s;
-            width: 100%; text-align: center; border: none; cursor: pointer;
-        }
-        .drive-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(66,133,244,0.4); }
-        .drive-btn svg { width: 20px; height: 20px; fill: currentColor; }
-
-        .hdsd-loader-container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 0; }
-        .hdsd-spinner { width: 40px; height: 40px; border: 4px solid rgba(76,175,80,0.2); border-top-color: var(--green); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -1860,15 +1841,15 @@
             </div>
         </div>
     </div>
-    
+
     <div class="modal-overlay" id="hdsd-modal" onclick="if(event.target==this) closeHDSDModal()">
-        <div class="modal-content">
+        <div class="modal-content iv-modal-content">
             <span class="close-btn" onclick="closeHDSDModal()">&times;</span>
-            <div class="modal-drug-header" style="margin-bottom: 15px;">
-                <h2 class="modal-drug-title" style="font-size: 20px;">📄 TỜ HƯỚNG DẪN SỬ DỤNG</h2>
+
+            <div class="iv-iframe-container">
+                <div class="iv-iframe-loader" id="hdsd-loader">Đang tải tờ hướng dẫn...</div>
+                <iframe id="hdsd-iframe"></iframe>
             </div>
-            <div id="hdsd-modal-body">
-                </div>
         </div>
     </div>
 
@@ -2075,6 +2056,10 @@
         // =========================================================================
         const MEDPLUS_API_URL = "https://princetq.github.io/medplus/medplus.json?t=" + new Date().getTime();
         
+        // === BỘ NHỚ ĐỆM TỐI ƯU HÓA (MEMORY CACHE) ===
+        // Giúp tăng tốc độ tải lên mức tối đa (Mở lại tức thì, không bị delay mạng)
+        const notionCache = { blocks: {}, pages: {} };
+
         let rawData = [];
         let filteredData = [];
         let selectedLetter = '';
@@ -2120,8 +2105,11 @@
                     throw new Error("Bạn chưa dán Link Web App API vào biến MEDPLUS_API_URL ở đầu code Javascript.");
                 }
 
-                const response = await fetch(MEDPLUS_API_URL);
-                if (!response.ok) throw new Error("Lỗi kết nối HTTP: " + response.status);
+                const ctrl = new AbortController();
+                const tid = setTimeout(() => ctrl.abort(), 15000);
+                const response = await fetch(MEDPLUS_API_URL, { signal: ctrl.signal });
+                clearTimeout(tid);
+                if (!response.ok) throw new Error("Lỗi HTTP: " + response.status);
                 
                 const data = await response.json();
 
@@ -2151,7 +2139,7 @@
             } catch (error) {
                 console.error("Lỗi Fetch:", error);
                 document.getElementById('medCount').innerText = "Lỗi tải dữ liệu";
-                document.getElementById('skeletonLoader').innerHTML = "<p style='text-align:center; grid-column:1/-1; color:#d32f2f; font-weight:bold; background: rgba(255,255,255,0.8); padding: 20px; border-radius: 12px;'>" + error.message + "</p>";
+                document.getElementById('skeletonLoader').innerHTML = "<p style='text-align:center; grid-column:1/-1; color:#d32f2f; font-weight:bold; background: rgba(255,255,255,0.8); padding: 20px; border-radius: 12px;'>❌ " + (error.name==='AbortError'?'Timeout: không tải được dữ liệu. Kiểm tra kết nối hoặc tải lại trang.':error.message) + "</p>";
             }
 
             document.addEventListener('click', function(event) {
@@ -2384,8 +2372,7 @@
 
             batch.forEach(function(item, i) {
                 const originalIdx = rawData.indexOf(item);
-                // ĐÃ THAY ĐỔI ĐỂ GỌI MODAL MỚI CỦA NOTION
-                const hdsdBtn = item.link ? `<button class="hdsd-btn" onclick="event.stopPropagation(); openHDSDModal('${item.link}')">📄 Xem tờ HDSD</button>` : "";
+                const hdsdBtn = item.link ? "<button class=\"hdsd-btn\" onclick=\"event.stopPropagation();openNotionPopup('" + item.link + "')\">📄 Xem tờ HDSD</button>" : "";
                 const delay = Math.min(i * 0.03, 0.6) + "s";
                 const sweepDelay = (Math.random() * 4).toFixed(2) + "s";
                 const badgeHtml = item.isNew ? "<div class=\"new-badge\" style=\"--sweep-delay: " + sweepDelay + "\">MỚI</div>" : "";
@@ -2414,11 +2401,469 @@
             isRendering = false;
         }
 
-        function openNotionPopup(url) {
-            const w = 900, h = 700;
-            const left = (window.innerWidth / 2) - (w / 2);
-            const top = (window.innerHeight / 2) - (h / 2);
-            window.open(url, 'NotionGuide', "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=" + w + ",height=" + h + ",top=" + top + ",left=" + left);
+        const NOTION_WORKER = 'https://ngocanh.princetq.workers.dev';
+
+        function extractPageId(url) {
+            if (!url) return null;
+            
+            // Bước 1: Cắt bỏ hoàn toàn phần đuôi bắt đầu từ dấu ? hoặc # (loại bỏ ?pvs=25)
+            let cleanUrl = url.split('?')[0].split('#')[0];
+            
+            // Bước 2: Xóa dấu gạch chéo "/" ở cuối cùng nếu có dính vào
+            cleanUrl = cleanUrl.replace(/\/+$/, '');
+            
+            // Bước 3: Xóa tất cả các dấu gạch ngang "-"
+            cleanUrl = cleanUrl.replace(/-/g, '');
+            
+            // Bước 4: Lấy đúng 32 ký tự cuối cùng của chuỗi
+            const possibleId = cleanUrl.slice(-32);
+            
+            // Bước 5: Kiểm tra an toàn xem 32 ký tự này có đúng chuẩn mã Notion (chỉ chứa a-f và 0-9) không
+            if (/^[a-f0-9]{32}$/i.test(possibleId)) {
+                return possibleId;
+            }
+            return null;
+        }
+
+        // Fetch 1 tầng blocks (Đã được nâng cấp cache và tối ưu HTTP Request)
+        async function fetchBlocks(blockId, cursor) {
+            const cacheKey = blockId + (cursor || '');
+            if (notionCache.blocks[cacheKey]) return notionCache.blocks[cacheKey];
+
+            let u = NOTION_WORKER + '/v1/blocks/' + blockId + '/children?page_size=100';
+            if (cursor) u += '&start_cursor=' + cursor;
+            
+            const res = await fetch(u, { 
+                headers: { 'Notion-Version': '2022-06-28' },
+                cache: 'force-cache' // Bật Cache HTTP của trình duyệt
+            });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const data = await res.json();
+            
+            notionCache.blocks[cacheKey] = data; // Nhớ kết quả vào Memory
+            return data;
+        }
+
+        // Fetch tất cả blocks 1 tầng (auto phân trang)
+        async function fetchAllBlocks(blockId) {
+            let blocks = [], cursor = null, n = 0;
+            do {
+                const d = await fetchBlocks(blockId, cursor);
+                if (d.results) blocks = blocks.concat(d.results);
+                cursor = d.has_more ? d.next_cursor : null;
+                n++;
+            } while (cursor && n < 10);
+            return blocks;
+        }
+
+        // --- CƠ CHẾ LAZY LOAD: fetchDeep nay sẽ dừng lại không lấy con của Toggle ---
+        async function fetchDeep(blockId, stopAtToggle = false) {
+            const blocks = await fetchAllBlocks(blockId);
+            await Promise.all(
+                blocks.filter(b => b.has_children && (!stopAtToggle || b.type !== 'toggle')).map(async b => {
+                    b._children = await fetchDeep(b.id, stopAtToggle);
+                })
+            );
+            return blocks;
+        }
+
+        // Tìm link Drive trong cây blocks
+        function findDriveLink(blocks) {
+            for (const block of blocks) {
+                const type = block.type;
+                const b = block[type] || {};
+                // bookmark / embed / link_preview
+                if (b.url && b.url.includes('drive.google.com')) return b.url;
+                // rich_text href
+                for (const r of (b.rich_text || [])) {
+                    if (r.href && r.href.includes('drive.google.com')) return r.href;
+                    if (r.plain_text && r.plain_text.trim().startsWith('http') && r.plain_text.includes('drive.google.com')) return r.plain_text.trim();
+                }
+                // file block
+                if (b.external && b.external.url && b.external.url.includes('drive.google.com')) return b.external.url;
+                // đệ quy children
+                if (block._children) {
+                    const found = findDriveLink(block._children);
+                    if (found) return found;
+                }
+            }
+            return null;
+        }
+
+        function rt(arr) {
+            return (arr||[]).map(r => {
+                let t = (r.plain_text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                if (r.annotations) {
+                    if (r.annotations.bold)          t = '<strong>'+t+'</strong>';
+                    if (r.annotations.italic)        t = '<em>'+t+'</em>';
+                    if (r.annotations.underline)     t = '<u>'+t+'</u>';
+                    if (r.annotations.strikethrough) t = '<s>'+t+'</s>';
+                    if (r.annotations.code)          t = '<code style="background:#f0f0f0;padding:1px 5px;border-radius:4px;font-family:monospace">'+t+'</code>';
+                    if (r.annotations.color && r.annotations.color !== 'default')
+                        t = '<span style="color:'+r.annotations.color.replace('_background','')+'">'+t+'</span>';
+                }
+                if (r.href) t = '<a href="'+r.href+'" target="_blank" style="color:#2e7d32;text-decoration:underline">'+t+'</a>';
+                return t;
+            }).join('');
+        }
+
+        function renderBlocks(blocks) {
+            let html = '';
+            for (const block of blocks) {
+                const type = block.type;
+                const b = block[type] || {};
+                const text = rt(b.rich_text);
+                const hs = 'color:var(--green);font-weight:900;margin:18px 0 8px;line-height:1.3';
+                const ch = block._children ? renderBlocks(block._children) : '';
+
+                switch(type) {
+                    case 'heading_1':
+                        html += '<h1 style="'+hs+';font-size:26px;border-bottom:2px solid #c8e6c9;padding-bottom:8px">'+text+'</h1>';
+                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
+                        break;
+                    case 'heading_2':
+                        html += '<h2 style="'+hs+';font-size:22px">'+text+'</h2>';
+                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
+                        break;
+                    case 'heading_3':
+                        html += '<h3 style="'+hs+';font-size:16px;color:var(--green)">'+text+'</h3>';
+                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
+                        break;
+                    case 'toggle': {
+                        // Loại bỏ triệt để dấu : ở phần tử rich_text cuối cùng
+                        if (b.rich_text && b.rich_text.length > 0) {
+                            let last = b.rich_text[b.rich_text.length - 1];
+                            last.plain_text = last.plain_text.replace(/:\s*$/, '');
+                            if(last.text) last.text.content = last.text.content.replace(/:\s*$/, '');
+                        }
+                        let tText = rt(b.rich_text);
+                        // Bổ sung: Dọn sạch mọi dấu : lọt lưới ở tận cùng chuỗi HTML (ngay cả khi bị bọc thẻ </strong>)
+                        tText = tText.replace(/:\s*((<\/[a-zA-Z0-9]+>\s*)*)$/, '$1').trim();
+                        if (!tText) tText = 'CHI TIẾT';
+                        
+                        // Nếu là Toggle giả (THÔNG TIN THÊM) hoặc đã có sẵn children thì nhúng luôn
+                        if (block.id === 'fake-extra-info' || block._children) {
+                            let chHtml = renderBlocks(block._children || []);
+                            html += '<details style="margin:6px 0;border:1px solid #c8e6c9;border-radius:8px;overflow:hidden">'
+                                  + '<summary style="text-transform:uppercase;padding:10px 14px;font-weight:700;color:var(--green);cursor:pointer;background:rgba(76,175,80,0.07);user-select:none;list-style:none">▸ '+tText+'</summary>'
+                                  + '<div style="padding:10px 16px 10px 20px;background:#fafafa">'+chHtml+'</div>'
+                                  + '</details>';
+                        } else {
+                            // Tự động thêm lazy load gọi lên Parent window (Cửa sổ mẹ)
+                            html += '<details id="details-'+block.id+'" ontoggle="if(this.open && !this.dataset.loaded) window.parent.loadNotionToggle(\''+block.id+'\', this.id);" style="margin:6px 0;border:1px solid #c8e6c9;border-radius:8px;overflow:hidden">'
+                                  + '<summary style="text-transform:uppercase;padding:10px 14px;font-weight:700;color:var(--green);cursor:pointer;background:rgba(76,175,80,0.07);user-select:none;list-style:none">▸ '+tText+'</summary>'
+                                  + '<div class="content" style="padding:10px 16px 10px 20px;background:#fafafa"><div style="color:#666;font-style:italic">⏳ Đang tải nội dung...</div></div>'
+                                  + '</details>';
+                        }
+                        break;
+                    }
+                    case 'paragraph':
+                        html += text ? '<p style="margin:6px 0;line-height:1.75;font-size:15px;color:var(--text)">'+text+'</p>' : '<div style="height:8px"></div>';
+                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
+                        break;
+                    case 'bulleted_list_item':
+                        html += '<li style="margin:4px 0;line-height:1.7;font-size:15px;color:var(--text)">'+text+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</li>';
+                        break;
+                    case 'numbered_list_item':
+                        html += '<li style="margin:4px 0;line-height:1.7;font-size:15px;color:var(--text)">'+text+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</li>';
+                        break;
+                    case 'to_do':
+                        html += '<div style="display:flex;gap:8px;margin:4px 0;align-items:flex-start">'
+                              + '<span style="font-size:16px;margin-top:2px">'+(b.checked?'☑':'☐')+'</span>'
+                              + '<div><span style="font-size:15px;line-height:1.7;color:var(--text);'+(b.checked?'text-decoration:line-through;color:var(--subtext)':'')+'">'+text+'</span>'+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</div>'
+                              + '</div>';
+                        break;
+                    case 'quote':
+                        html += '<blockquote style="border-left:4px solid #4caf50;margin:10px 0;padding:8px 14px;background:rgba(76,175,80,0.07);border-radius:0 8px 8px 0;font-style:italic;color:var(--subtext);font-size:15px">'+text+(ch?'<div style="margin-top:6px">'+ch+'</div>':'')+'</blockquote>';
+                        break;
+                    case 'callout':
+                        html += '<div style="display:flex;gap:10px;background:rgba(76,175,80,0.09);border:1px solid rgba(76,175,80,0.25);border-radius:10px;padding:12px 14px;margin:10px 0">'
+                              + '<span style="font-size:20px;flex-shrink:0">'+(b.icon&&b.icon.emoji?b.icon.emoji:'ℹ️')+'</span>'
+                              + '<div style="font-size:15px;line-height:1.7;color:var(--text)">'+text+(ch?'<div style="margin-top:6px">'+ch+'</div>':'')+'</div>'
+                              + '</div>';
+                        break;
+                    case 'divider':
+                        html += '<hr style="border:none;border-top:1.5px solid #c8e6c9;margin:14px 0">';
+                        break;
+                    case 'code':
+                        html += '<pre style="background:#f5f5f5;border:1px solid #e0e0e0;border-radius:8px;padding:12px 14px;overflow-x:auto;font-size:13px;line-height:1.6;margin:10px 0"><code>'+(b.rich_text||[]).map(r=>r.plain_text).join('')+'</code></pre>';
+                        break;
+                    case 'image': {
+                        const src = (b.file&&b.file.url)||(b.external&&b.external.url)||'';
+                        const cap = rt(b.caption);
+                        html += '<div style="text-align:center;margin:14px 0"><img src="'+src+'" style="max-width:100%;border-radius:10px;box-shadow:0 4px 15px rgba(0,0,0,0.1)">'+(cap?'<br><small style="color:var(--subtext);font-size:13px">'+cap+'</small>':'')+'</div>';
+                        break;
+                    }
+                    case 'bookmark':
+                    case 'link_preview':
+                    case 'embed': {
+                        const url = b.url || '';
+                        const cap = rt(b.caption);
+                        if (url) html += '<a href="'+url+'" target="_blank" style="display:block;padding:10px 14px;border:1px solid #c8e6c9;border-radius:8px;margin:8px 0;color:var(--green);text-decoration:none;font-weight:600;font-size:14px;background:rgba(76,175,80,0.05)">🔗 '+(cap||url)+'</a>';
+                        break;
+                    }
+                    case 'table': {
+                        const rows = block._children || [];
+                        if (rows.length) {
+                            html += '<div style="overflow-x:auto;margin:12px 0"><table style="width:100%;border-collapse:collapse;font-size:14px">';
+                            rows.forEach((row, ri) => {
+                                const cells = (row.table_row&&row.table_row.cells)||[];
+                                html += '<tr style="background:'+(ri===0?'rgba(76,175,80,0.12)':'white')+'">';
+                                cells.forEach(cell => {
+                                    const tag = ri===0?'th':'td';
+                                    html += '<'+tag+' style="border:1px solid #c8e6c9;padding:8px 12px;text-align:left;font-weight:'+(ri===0?'700':'400')+'">'+rt(cell)+'</'+tag+'>';
+                                });
+                                html += '</tr>';
+                            });
+                            html += '</table></div>';
+                        }
+                        break;
+                    }
+                    case 'column_list':
+                        html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:10px 0">'+ch+'</div>';
+                        break;
+                    case 'column':
+                        html += '<div>'+ch+'</div>';
+                        break;
+                    default:
+                        if (text) html += '<p style="margin:6px 0;line-height:1.75;font-size:15px;color:var(--text)">'+text+'</p>';
+                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
+                        break;
+                }
+            }
+            // Wrap list items liền kề
+            html = html.replace(/(<li[^>]*>[\s\S]*?<\/li>\s*)+/g, m => '<ul style="padding-left:22px;margin:8px 0">'+m+'</ul>');
+            return html;
+        }
+
+        // HÀM LAZY LOAD ĐƯỢC GỌI TỪ BÊN TRONG IFRAME
+        window.loadNotionToggle = async function(blockId, detailsId) {
+            const iframe = document.getElementById('hdsd-iframe');
+            if (!iframe) return;
+            const doc = iframe.contentDocument || iframe.contentWindow.document;
+            const details = doc.getElementById(detailsId);
+            if (!details) return;
+            
+            details.dataset.loaded = 'true';
+            const contentDiv = details.querySelector('.content');
+            
+            try {
+                // Fetch cành con (đệ quy sâu) - Do đã thiết lập Cache nên thao tác rất nhanh
+                const childrenBlocks = await fetchDeep(blockId, true);
+                const html = renderBlocks(childrenBlocks);
+                contentDiv.innerHTML = html || '<div style="color:#999;font-style:italic;padding:10px;">Không có nội dung.</div>';
+            } catch (err) {
+                contentDiv.innerHTML = '<div style="color:red;padding:10px;">❌ Lỗi tải dữ liệu. Vui lòng tắt/bật lại nhãn.</div>';
+                details.dataset.loaded = ''; // Cho phép tải lại
+            }
+        };
+
+        async function openNotionPopup(notionUrl) {
+            const modal    = document.getElementById('hdsd-modal');
+            const loader   = document.getElementById('hdsd-loader');
+            const iframe   = document.getElementById('hdsd-iframe');
+            const driveBtn = document.getElementById('hdsd-drive-btn');
+            if (driveBtn) driveBtn.style.display = 'none';
+
+            iframe.style.display = 'none';
+            loader.style.display = 'block';
+            loader.innerHTML = '⏳ Đang tải tờ hướng dẫn...';
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+
+            // KIỂM TRA LINK ĐẦU VÀO
+            if (!notionUrl || typeof notionUrl !== 'string') {
+                 loader.innerHTML = '❌ Dữ liệu link Notion bị trống. Vui lòng kiểm tra lại Data.';
+                 return;
+            }
+
+            const pageId = extractPageId(notionUrl);
+            console.log("Link gốc:", notionUrl);
+            console.log("Mã ID trích xuất được:", pageId);
+            if (!pageId) { 
+                loader.innerHTML = `❌ Link Notion không hợp lệ.<br><small style="color:#666;word-break:break-all;">Link hiện tại trong Data: ${notionUrl}</small>`; 
+                return; 
+            }
+
+            try {
+                // Tối ưu hóa: Lấy Metadata có sử dụng Cache
+                const fetchPageData = async () => {
+                    if (notionCache.pages[pageId]) return notionCache.pages[pageId];
+                    const r = await fetch(NOTION_WORKER + '/v1/pages/' + pageId, {
+                        headers: { 'Notion-Version': '2022-06-28' },
+                        cache: 'force-cache'
+                    });
+                    if (!r.ok) {
+                        const errData = await r.text();
+                        throw new Error(`Mã lỗi: ${r.status}. Chi tiết: ${errData}`);
+                    }
+                    const data = await r.json();
+                    notionCache.pages[pageId] = data; // Nhớ vào Memory
+                    return data;
+                };
+
+                // Tối ưu hóa: Chạy song song cả Page API và Blocks API
+                const [pageRes, blocks] = await Promise.all([
+                    fetchPageData(),
+                    fetchDeep(pageId, true) 
+                ]);
+
+                // TỰ ĐỘNG GOM NHÓM CÁC KHỐI "LẺ LOI" VÀO TOGGLE "THÔNG TIN THÊM"
+                let lastToggleIdx = -1;
+                for (let i = 0; i < blocks.length; i++) {
+                    if (blocks[i].type === 'toggle') lastToggleIdx = i;
+                }
+                if (lastToggleIdx !== -1 && lastToggleIdx < blocks.length - 1) {
+                    let remaining = blocks.slice(lastToggleIdx + 1);
+                    // Kiểm tra xem đoạn mẩu thừa có rỗng không
+                    let hasContent = remaining.some(bk => {
+                        if (bk.type === 'paragraph') {
+                            let txt = '';
+                            if(bk.paragraph.rich_text) {
+                                txt = bk.paragraph.rich_text.map(r=>r.plain_text).join('').trim();
+                            }
+                            return txt.length > 0;
+                        }
+                        if (bk.type === 'divider') return false; // Không đếm dải phân cách là nội dung
+                        return true;
+                    });
+                    
+                    if (hasContent) {
+                        blocks.splice(lastToggleIdx + 1); // Xóa chúng khỏi luồng chính
+                        // Thêm vào một Toggle giả vờ
+                        blocks.push({
+                            id: 'fake-extra-info',
+                            type: 'toggle',
+                            has_children: true,
+                            toggle: {
+                                rich_text: [{ plain_text: 'THÔNG TIN THÊM', text: {content: 'THÔNG TIN THÊM'} }]
+                            },
+                            _children: remaining // Nhúng đè nội dung thừa vào children
+                        });
+                    }
+                }
+
+                // Lấy link Drive từ property tên "hdsd"
+                let driveLink = null;
+                if (pageRes && pageRes.properties) {
+                    const prop = pageRes.properties['hdsd'] || pageRes.properties['HDSD']
+                              || pageRes.properties['Hdsd'] || pageRes.properties['drive']
+                              || pageRes.properties['Drive'];
+                    if (prop) {
+                        if (prop.type === 'url' && prop.url) {
+                            driveLink = prop.url;
+                        } else if (prop.type === 'rich_text' && prop.rich_text && prop.rich_text[0]) {
+                            driveLink = prop.rich_text[0].href || prop.rich_text[0].plain_text;
+                        } else if (prop.type === 'files' && prop.files && prop.files[0]) {
+                            driveLink = (prop.files[0].external && prop.files[0].external.url)
+                                     || (prop.files[0].file && prop.files[0].file.url);
+                        }
+                    }
+                }
+                // Fallback: tìm trong blocks
+                if (!driveLink) driveLink = findDriveLink(blocks);
+
+                const html = renderBlocks(blocks);
+
+                // Tạo nút XEM HDSD GỐC nếu có driveLink, đặt sau ảnh đầu trang
+                const driveBtnHtml = driveLink
+                    ? '<a href="'+driveLink+'" target="_blank" style="'
+                      + 'display:inline-flex;align-items:center;gap:8px;'
+                      + 'background:linear-gradient(135deg,#00897b,#004d40);'
+                      + 'color:#fff;font-family:Inter,Segoe UI,sans-serif;'
+                      + 'font-size:13px;font-weight:700;padding:9px 20px;'
+                      + 'border-radius:24px;text-decoration:none;'
+                      + 'box-shadow:0 3px 12px rgba(0,137,123,0.4);'
+                      + 'margin:12px 0 4px;'
+                      + '">📋 XEM HDSD GỐC</a><hr style="border:none;border-top:1.5px solid #e0e0e0;margin:14px 0">'
+                    : '';
+
+                // Chèn nút sau block ảnh đầu tiên, hoặc đầu trang nếu không có ảnh
+                let finalHtml = html;
+                const firstImgEnd = html.indexOf('</div>', html.indexOf('<img '));
+                if (firstImgEnd !== -1) {
+                    finalHtml = html.slice(0, firstImgEnd+6) + driveBtnHtml + html.slice(firstImgEnd+6);
+                } else {
+                    finalHtml = driveBtnHtml + html;
+                }
+
+                // Truyền trạng thái dark mode từ trang cha vào iframe
+                const isDark = document.body.classList.contains('dark-mode');
+
+                const doc = '<!DOCTYPE html><html class="'+(isDark?'dark':'')+'" style="color-scheme:'+(isDark?'dark':'light')+'"><head>'
+                    + '<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+                    + '<link rel="preconnect" href="https://fonts.googleapis.com">'
+                    + '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">'
+                    + '<style>'
+                    + ':root{--sb-opacity:0;--bg:#fff;--text:#333;--subtext:#555;--border:#e0e0e0;--green:#2e7d32;--green-light:rgba(76,175,80,0.07);--green-border:#c8e6c9;--toggle-bg:rgba(76,175,80,0.07);--toggle-open:rgba(76,175,80,0.15);--code-bg:#f5f5f5;--code-border:#e0e0e0;--pre-bg:#f5f5f5;--quote-bg:rgba(76,175,80,0.07);--callout-bg:rgba(76,175,80,0.09);--callout-border:rgba(76,175,80,0.25);--table-head:rgba(76,175,80,0.12);--shadow:rgba(0,0,0,0.1)}'
+                    + 'html.dark{--bg:#1a1a1a;--text:#e8e8e8;--subtext:#b0b0b0;--border:#2e2e2e;--green:#81c784;--green-light:rgba(76,175,80,0.1);--green-border:#2e4d2e;--toggle-bg:rgba(76,175,80,0.1);--toggle-open:rgba(76,175,80,0.18);--code-bg:#242424;--code-border:#333;--pre-bg:#1e1e1e;--quote-bg:rgba(76,175,80,0.08);--callout-bg:rgba(76,175,80,0.07);--callout-border:rgba(76,175,80,0.2);--table-head:rgba(76,175,80,0.15);--shadow:rgba(0,0,0,0.5)}'
+                    + 'body{font-family:"Inter","Segoe UI",Roboto,sans-serif;font-size:15px;font-weight:400;letter-spacing:-0.01em;padding:20px 24px;max-width:860px;margin:0 auto;background:var(--bg);color:var(--text);line-height:1.75;transition:background .3s,color .3s;-webkit-font-smoothing:antialiased}'
+                    + '::-webkit-scrollbar{width:7px;height:7px}'
+                    + '::-webkit-scrollbar-track{background:transparent}'
+                    + '::-webkit-scrollbar-thumb{background:transparent;border-radius:10px;border: 2px solid transparent;background-clip: padding-box;transition:background 0.3s}'
+                    + 'html.sb-visible ::-webkit-scrollbar-thumb{background:rgba(128,128,128,0.35);border: 2px solid transparent;background-clip: padding-box;}'
+                    + 'html.dark.sb-visible ::-webkit-scrollbar-thumb{background:rgba(80,220,180,0.25);border: 2px solid transparent;background-clip: padding-box;}'
+                    + 'html.sb-visible ::-webkit-scrollbar-thumb:hover{background:rgba(128,128,128,0.5);border: 1px solid transparent;background-clip: padding-box;}'
+                    + 'html.dark.sb-visible ::-webkit-scrollbar-thumb:hover{background:rgba(80,220,180,0.5);border: 1px solid transparent;background-clip: padding-box;}'
+                    + 'html{scrollbar-width:thin;scrollbar-color:transparent transparent}'
+                    + 'html.sb-visible{scrollbar-color:rgba(128,128,128,0.4) transparent}'
+                    + 'html.dark.sb-visible{scrollbar-color:rgba(180,180,180,0.3) transparent}'
+                    + 'a{color:var(--green)}img{max-width:100%}*{box-sizing:border-box}'
+                    + 'h1,h2,h3{color:var(--green)!important}'
+                    + 'p{margin:6px 0;line-height:1.75;font-size:15px;color:inherit}'
+                    + 'li{line-height:1.75;font-size:15px;color:inherit}'
+                    + 'strong{font-weight:700;color:inherit}'
+                    + 'em{font-style:italic;color:inherit}'
+                    + 'span,div,td,th,blockquote{color:inherit}'
+                    + 'h1{font-size:26px;font-weight:800;letter-spacing:-0.02em;line-height:1.3;color:var(--green)!important}'
+                    + 'h2{font-size:22px;font-weight:700;letter-spacing:-0.01em;line-height:1.35;color:var(--green)!important}'
+                    + 'h3{font-size:16px;font-weight:700;color:var(--green)!important}'
+                    + 'details{border-color:var(--green-border)!important}'
+                    + 'details>summary{background:var(--toggle-bg)!important;color:var(--green)!important;list-style:none}'
+                    + 'details>summary::-webkit-details-marker{display:none}'
+                    + 'details[open]>summary{background:var(--toggle-open)!important}'
+                    + 'details .toggle-children, details>div{background:var(--bg)!important}'
+                    + 'code{background:var(--code-bg)!important;color:var(--text)!important;border:1px solid var(--code-border)}'
+                    + 'pre{background:var(--pre-bg)!important;border-color:var(--code-border)!important;color:var(--text)!important}'
+                    + 'blockquote{background:var(--quote-bg)!important;border-color:var(--green)!important;color:var(--subtext)!important}'
+                    + 'table td,table th{border-color:var(--green-border)!important;color:var(--text)}'
+                    + 'table tr:first-child{background:var(--table-head)!important}'
+                    + 'hr{border-color:var(--border)!important}'
+                    + 'li{color:var(--text)}'
+                    + 'img{box-shadow:0 4px 15px var(--shadow)}'
+                    + 'html.dark details>div{background:#1a1a1a!important}'
+                    + '</style>'
+                    + '<script>'
+                    + 'let _st;'
+                    + 'const _h=document.documentElement;'
+                    + 'function wake(){_h.classList.add("sb-visible");clearTimeout(_st);_st=setTimeout(function(){_h.classList.remove("sb-visible");},500);}'
+                    + 'window.addEventListener("scroll",wake,{passive:true});'
+                    + 'window.addEventListener("mousemove",wake,{passive:true});'
+                    + 'window.addEventListener("touchstart",wake,{passive:true});'
+                    + 'wake();'
+                    + '<\/script>'
+                    + '</head><body>'+finalHtml+'</body></html>';
+                iframe.srcdoc = doc;
+                iframe.style.display = 'block';
+                loader.style.display = 'none';
+            } catch(e) {
+                // XỬ LÝ LỖI TRỰC QUAN CHO NGƯỜI DÙNG
+                if (e.message.includes('400')) {
+                    loader.innerHTML = `❌ Lỗi kết nối (400 Bad Request).<br><br><small style="color:#d32f2f"><b>Gợi ý sửa lỗi:</b><br>- Link Notion của thuốc này bị sai định dạng.<br>- Hoặc bạn chưa thêm quyền cho Bot (Add connections) ở trang Notion của thuốc này.</small>`;
+                } else if (e.message.includes('404')) {
+                    loader.innerHTML = `❌ Không tìm thấy trang (404 Not Found).<br><small>Trang Notion đã bị xóa hoặc link bị sai.</small>`;
+                } else {
+                    loader.innerHTML = `❌ Không thể tải dữ liệu.<br><small style="color:#d32f2f">${e.message}</small>`;
+                }
+            }
+        }
+
+        function closeHDSDModal() {
+            document.getElementById('hdsd-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            const f = document.getElementById('hdsd-iframe');
+            f.removeAttribute('srcdoc');
+            f.style.display = 'none';
         }
 
         function openImageZoom(src) {
@@ -2433,6 +2878,7 @@
                     "<img class=\"modal-drug-img\" src=\"" + item.image + "\" onerror=\"this.style.display='none'\" onclick=\"openImageZoom('" + item.image + "')\" title=\"Nhấn để xem ảnh lớn\">" +
                     "<div style=\"display:flex;align-items:center;gap:10px;flex:1;flex-wrap:wrap\">" +
                         "<h2 class=\"modal-drug-title\">" + item.brand + "</h2>" +
+                        
                         "<a href=\"https://www.google.com/search?q=" + encodeURIComponent(item.brand + ' ' + (item.active || '')) + "\" target=\"_blank\" class=\"google-search-btn\" style=\"margin-top:0\">" +
                             "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z\"/></svg>" +
                             " Tra cứu Google" +
@@ -2446,7 +2892,8 @@
                     drawRow('HÀM LƯỢNG', item.strength) +
                     drawRow('ĐÓNG GÓI', item.pack) +
                 "</div>" +
-                (item.link ? `<button class="notion-btn" onclick="openHDSDModal('${item.link}')">📄 XEM TỜ HƯỚNG DẪN SỬ DỤNG</button>` : "") +
+                (item.link ? "<button class=\"notion-btn\" onclick=\"openNotionPopup('" + item.link + "')\">📄 XEM TỜ HƯỚNG DẪN SỬ DỤNG</button>" : "") +
+                
                 "<div class=\"details-group\">" +
                     drawAccordion('CHỈ ĐỊNH', item.indication) +
                     drawAccordion('LIỀU DÙNG', item.dosage) +
@@ -2729,141 +3176,6 @@
                     displayMessage("Hệ thống đang quá tải. Vui lòng thử lại sau.", 'ai'); 
                     sendButton.disabled = false; 
                 }
-            }
-        }
-
-        // =========================================================================
-        // CODE NOTION: HÀM MỚI BÓC TÁCH DATA NOTION QUA CLOUDFLARE WORKER
-        // =========================================================================
-        
-        // THAY BẰNG URL WORKER THỰC TẾ CỦA BẠN
-        const WORKER_NOTION_URL = "https://ngocanh.princetq.workers.dev";        
-
-        function extractNotionPageId(url) {
-            const matches = url.match(/([a-f0-9]{32})$/i);
-            if (matches) return matches[1];
-            const parts = url.split('/');
-            const lastPart = parts[parts.length - 1];
-            const idMatch = lastPart.match(/([a-f0-9]{32})/i);
-            return idMatch ? idMatch[1] : lastPart.replace(/-/g, '');
-        }
-
-        function closeHDSDModal() {
-            document.getElementById('hdsd-modal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        async function openHDSDModal(notionUrl) {
-            document.getElementById('hdsd-modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            
-            const bodyEl = document.getElementById('hdsd-modal-body');
-            bodyEl.innerHTML = '<div class="hdsd-loader-container"><div class="hdsd-spinner"></div><p style="color:var(--green); font-weight:600;">Đang kết nối dữ liệu máy chủ...</p></div>';
-
-            const pageId = extractNotionPageId(notionUrl);
-
-            try {
-                // Đảm bảo Worker của bạn trỏ tới /v1/blocks/{block_id}/children của Notion API
-                const targetUrl = WORKER_NOTION_URL + "/v1/blocks/" + pageId + "/children";
-
-                const response = await fetch(targetUrl, {
-                    method: 'GET',
-                    headers: {
-                        'Notion-Version': '2022-06-28',
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!response.ok) throw new Error("Không thể tải tờ rơi từ Notion");
-                const data = await response.json();
-
-                let htmlContent = '<div class="notion-content">';
-                let driveLink = null;
-
-                if (data.results && data.results.length > 0) {
-                    data.results.forEach(block => {
-                        let textContent = '';
-                        let richTextArr = block[block.type]?.rich_text || [];
-                        
-                        // 1. Quét text và định dạng (In đậm, in nghiêng, gạch chân, link text)
-                        richTextArr.forEach(t => {
-                            let txt = t.plain_text;
-                            if (t.annotations.bold) txt = '<strong>' + txt + '</strong>';
-                            if (t.annotations.italic) txt = '<em>' + txt + '</em>';
-                            if (t.annotations.underline) txt = '<u>' + txt + '</u>';
-                            if (t.annotations.color && t.annotations.color !== 'default') {
-                                txt = '<span style="color:' + t.annotations.color + '">' + txt + '</span>';
-                            }
-                            if (t.href) {
-                                txt = '<a href="' + t.href + '" target="_blank">' + txt + '</a>';
-                                if (t.href.includes('drive.google.com')) driveLink = t.href;
-                            }
-                            textContent += txt;
-                        });
-
-                        // 2. Trích xuất URL cho các block dạng Media/File
-                        let blockUrl = "";
-                        if (block[block.type] && typeof block[block.type] === 'object') {
-                            blockUrl = block[block.type].url || 
-                                       (block[block.type].external && block[block.type].external.url) || 
-                                       (block[block.type].file && block[block.type].file.url) || "";
-                        }
-
-                        // 3. Mapping UI cho đa dạng loại Block của Notion
-                        switch(block.type) {
-                            case 'paragraph':
-                                if(textContent.trim() !== '') htmlContent += '<p>' + textContent + '</p>';
-                                else htmlContent += '<br>'; // Xử lý dòng trống (khoảng trắng)
-                                break;
-                            case 'heading_1': htmlContent += '<h1>' + textContent + '</h1>'; break;
-                            case 'heading_2': htmlContent += '<h2>' + textContent + '</h2>'; break;
-                            case 'heading_3': htmlContent += '<h3>' + textContent + '</h3>'; break;
-                            case 'bulleted_list_item': htmlContent += '<li>• ' + textContent + '</li>'; break;
-                            case 'numbered_list_item': htmlContent += '<li style="list-style-type: decimal; margin-left: 20px;">' + textContent + '</li>'; break;
-                            
-                            // Thêm hỗ trợ Khung trích dẫn (Quote) và Chú ý (Callout)
-                            case 'quote': 
-                                htmlContent += '<blockquote style="border-left: 4px solid var(--green); padding-left: 14px; font-style: italic; color: #555; margin: 10px 0;">' + textContent + '</blockquote>'; 
-                                break;
-                            case 'callout': 
-                                htmlContent += '<div style="padding: 12px; background: rgba(76,175,80,0.1); border-left: 4px solid var(--green); border-radius: 8px; margin: 10px 0;">' + textContent + '</div>'; 
-                                break;
-                            
-                            // Thêm hỗ trợ hiển thị Hình ảnh trực tiếp
-                            case 'image':
-                                if (blockUrl) htmlContent += '<img src="' + blockUrl + '" style="max-width:100%; border-radius:8px; margin: 10px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">';
-                                break;
-                            
-                            // Càn quét MỌI LOẠI link chứa Google Drive (PDF, File, Embed, Bookmark)
-                            case 'bookmark':
-                            case 'embed':
-                            case 'pdf':
-                            case 'file':
-                            case 'link_preview':
-                                if (blockUrl && blockUrl.includes('drive.google.com')) {
-                                    driveLink = blockUrl;
-                                } else if (blockUrl) {
-                                    // Nếu là file khác không phải GDrive, hiện nút tải xuống nhỏ
-                                    htmlContent += '<p><a href="' + blockUrl + '" target="_blank" style="display:inline-block; padding:8px 12px; background:rgba(0,0,0,0.05); border-radius:8px; text-decoration:none; color:#333; font-weight:600;">📎 Tệp đính kèm (' + block.type + ')</a></p>';
-                                }
-                                break;
-                        }
-                    });
-                } else {
-                    htmlContent += "<p>Tờ rơi đang được cập nhật dữ liệu.</p>";
-                }
-                htmlContent += '</div>';
-
-                if (driveLink) {
-                    htmlContent += '<a href="' + driveLink + '" target="_blank" class="drive-btn"><svg viewBox="0 0 24 24"><path d="M12 2L4 16H20L12 2ZM12 6L16.5 14H7.5L12 6ZM12 10.5L10 14H14L12 10.5Z"/></svg>XEM BẢN QUÉT GỐC TRÊN GOOGLE DRIVE</a>';
-                } else {
-                    htmlContent += '<a href="' + notionUrl + '" target="_blank" class="drive-btn" style="background: linear-gradient(135deg, #444, #222);">MỞ TÀI LIỆU GỐC TRÊN NOTION</a>';
-                }
-
-                bodyEl.innerHTML = htmlContent;
-
-            } catch (error) {
-                bodyEl.innerHTML = '<div style="text-align:center; padding: 20px; color: #d32f2f;"><p><b>Lỗi:</b> ' + error.message + '</p><button class="notion-btn" onclick="window.open(\'' + notionUrl + '\', \'_blank\')" style="margin-top: 15px;">MỞ TRỰC TIẾP TRANG NOTION</button></div>';
             }
         }
 
