@@ -23,7 +23,7 @@ async function fetchDeep(blockId) {
     } while (cursor);
 
     // Fetch đệ quy block con, tối đa 3 request song song
-    const LIMIT = 3;
+    const LIMIT = 2;
     const toFetch = blocks.filter(b => b.has_children);
     for (let i = 0; i < toFetch.length; i += LIMIT) {
         await Promise.all(
@@ -98,7 +98,7 @@ async function main() {
 
         // Nghỉ nhẹ giữa các tờ để tránh rate limit Notion (3 req/s)
         if (i < allPages.length - 1) {
-            await new Promise(r => setTimeout(r, 350));
+            await new Promise(r => setTimeout(r, 500));
         }
     }
 
