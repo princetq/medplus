@@ -1667,7 +1667,34 @@
                 animation-play-state: paused !important;
             }
         }
-    </style>
+    
+        /* ============================================================
+           FIX CUỘN NỀN KHI MODAL MỞ — position:fixed method (iOS safe)
+           ============================================================ */
+        body.modal-open {
+            position: fixed;
+            width: 100%;
+            overflow-y: scroll;
+        }
+        .modal-overlay {
+            touch-action: none !important;
+            overscroll-behavior: none !important;
+        }
+        .modal-content {
+            touch-action: pan-y;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+        }
+        .iv-modal-content {
+            touch-action: none !important;
+            overflow: hidden !important;
+        }
+        .iv-iframe-container {
+            touch-action: pan-y;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+        }
+</style>
 </head>
 <body>
 
@@ -2062,7 +2089,24 @@
         
         // === BỘ NHỚ ĐỆM TỐI ƯU HÓA (MEMORY CACHE) ===
         // Giúp tăng tốc độ tải lên mức tối đa (Mở lại tức thì, không bị delay mạng)
-        const notionCache = { blocks: {}, pages: {} };
+        
+        // ============================================================
+        // FIX CUỘN NỀN: lockBodyScroll / unlockBodyScroll
+        // ============================================================
+        let _scrollY = 0;
+        function lockBodyScroll() {
+            _scrollY = window.scrollY;
+            document.body.style.top = '-' + _scrollY + 'px';
+            document.body.classList.add('modal-open');
+        }
+        function unlockBodyScroll() {
+            document.body.classList.remove('modal-open');
+            document.body.style.top = '';
+            window.scrollTo(0, _scrollY);
+        }
+
+        const _hdsdCache = {};
+const notionCache = { blocks: {}, pages: {} };
 
         let rawData = [];
         let filteredData = [];
@@ -2683,7 +2727,16 @@
             loader.style.display = 'block';
             loader.innerHTML = '⏳ Đang tải tờ hướng dẫn...';
             modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+            lockBodyScroll();
+
+            // CACHE: Nếu đã tải cùng URL → không fetch lại
+            if (_hdsdCache[notionUrl]) {
+                iframe.srcdoc = _hdsdCache[notionUrl];
+                iframe._currentUrl = notionUrl;
+                loader.style.display = 'none';
+                iframe.style.display = 'block';
+                return;
+            }
 
             // KIỂM TRA LINK ĐẦU VÀO
             if (!notionUrl || typeof notionUrl !== 'string') {
@@ -2781,15 +2834,22 @@
 
                 // Tạo nút XEM HDSD GỐC nếu có driveLink, đặt sau ảnh đầu trang
                 const driveBtnHtml = driveLink
-                    ? '<a href="'+driveLink+'" target="_blank" style="'
-                      + 'display:inline-flex;align-items:center;gap:8px;'
-                      + 'background:linear-gradient(135deg,#00897b,#004d40);'
-                      + 'color:#fff;font-family:Inter,Segoe UI,sans-serif;'
-                      + 'font-size:13px;font-weight:700;padding:9px 20px;'
-                      + 'border-radius:24px;text-decoration:none;'
-                      + 'box-shadow:0 3px 12px rgba(0,137,123,0.4);'
-                      + 'margin:12px 0 4px;'
-                      + '">📋 XEM HDSD GỐC</a><hr style="border:none;border-top:1.5px solid #e0e0e0;margin:14px 0">'
+                    ? '<style>'
+                      + '.hdsd-orig-btn{display:inline-flex;align-items:center;gap:8px;'
+                      + 'background:transparent;color:#2e7d32;border:1.5px solid #2e7d32;'
+                      + 'font-family:Inter,Segoe UI,sans-serif;font-size:13px;font-weight:600;'
+                      + 'padding:7px 16px;border-radius:8px;text-decoration:none;'
+                      + 'margin:12px 0 4px;transition:.2s;}'
+                      + '.hdsd-orig-btn:hover{background:rgba(46,125,50,0.07);}'
+                      + 'html.dark .hdsd-orig-btn{color:#00897b;border-color:#00897b;}'
+                      + 'html.dark .hdsd-orig-btn:hover{background:rgba(0,137,123,0.1);}'
+                      + '</style>'
+                      + '<a href="'+driveLink+'" target="_blank" class="hdsd-orig-btn">'
+                      + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+                      + '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>'
+                      + '<polyline points="14 2 14 8 20 8"/>'
+                      + '</svg>'
+                      + ' XEM HDSD GỐC</a><hr style="border:none;border-top:1.5px solid #e0e0e0;margin:14px 0">'
                     : '';
 
                 // Chèn nút sau block ảnh đầu tiên, hoặc đầu trang nếu không có ảnh
@@ -2862,6 +2922,8 @@
                     + 'wake();'
                     + '<\/script>'
                     + '</head><body>'+finalHtml+'</body></html>';
+                _hdsdCache[notionUrl] = doc;
+                iframe._currentUrl = notionUrl;
                 iframe.srcdoc = doc;
                 iframe.style.display = 'block';
                 loader.style.display = 'none';
@@ -2879,11 +2941,38 @@
 
         function closeHDSDModal() {
             document.getElementById('hdsd-modal').style.display = 'none';
-            document.body.style.overflow = 'auto';
+            unlockBodyScroll();
             const f = document.getElementById('hdsd-iframe');
             f.removeAttribute('srcdoc');
             f.style.display = 'none';
         }
+
+        async function loadNotionToggle(blockId, elementId) {
+            try {
+                const children = await fetchDeep(blockId, true);
+                const html = renderBlocks(children);
+                const iframe = document.getElementById('hdsd-iframe');
+                if (!iframe || !iframe.contentDocument) return;
+                const el = iframe.contentDocument.getElementById(elementId);
+                if (!el) return;
+                let container = el.querySelector('.toggle-children');
+                if (!container) {
+                    container = document.createElement('div');
+                    container.className = 'toggle-children';
+                    el.appendChild(container);
+                }
+                container.innerHTML = html;
+                container.querySelectorAll('details[data-block-id]').forEach(function(d) {
+                    d.addEventListener('toggle', function() {
+                        if (d.open && !d.dataset.loaded) {
+                            d.dataset.loaded = '1';
+                            loadNotionToggle(d.dataset.blockId, d.id);
+                        }
+                    });
+                });
+            } catch(e) { console.error('loadNotionToggle error:', e); }
+        }
+
 
         function openImageZoom(src) {
             if (!src || src.includes('No+Image')) return;
@@ -2926,56 +3015,56 @@
                 "</div>";
             document.getElementById('modal-body').innerHTML = html;
             document.getElementById('modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+            lockBodyScroll();
         }
 
         function drawRow(label, val) { if(!val || val === '') return ''; return "<div class=\"info-row\"><span class=\"info-label\">" + label + ":</span><span style=\"white-space: pre-line;\">" + val + "</span></div>"; }
         function drawAccordion(label, val) { if(!val || val === '') return ''; return "<details><summary>" + label + "</summary><div class=\"detail-content\">" + val + "</div></details>"; }
-        function closeModal() { document.getElementById('modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
+        function closeModal() { document.getElementById('modal').style.display = 'none'; unlockBodyScroll(); }
 
         function openIVModal() {
             document.getElementById('iv-modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+            lockBodyScroll();
             const iframe = document.getElementById('iv-iframe');
             if (!iframe.getAttribute('src')) {
                 document.getElementById('iv-loader').style.display = 'block';
                 iframe.setAttribute('src', "https://princetq.github.io/tiemtruyen/");
             }
         }
-        function closeIVModal() { document.getElementById('iv-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
+        function closeIVModal() { document.getElementById('iv-modal').style.display = 'none'; unlockBodyScroll(); }
 
         function openKSModal() {
             document.getElementById('ks-modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+            lockBodyScroll();
             const iframe = document.getElementById('ks-iframe');
             if (!iframe.getAttribute('src')) {
                 document.getElementById('ks-loader').style.display = 'block';
                 iframe.setAttribute('src', "https://ks.duoctuyenquang.com");
             }
         }
-        function closeKSModal() { document.getElementById('ks-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
+        function closeKSModal() { document.getElementById('ks-modal').style.display = 'none'; unlockBodyScroll(); }
 
         function openTTModal() {
             document.getElementById('tt-modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+            lockBodyScroll();
             const iframe = document.getElementById('tt-iframe');
             if (!iframe.getAttribute('src')) {
                 document.getElementById('tt-loader').style.display = 'block';
                 iframe.setAttribute('src', "https://princetq.github.io/ttthuoc/");
             }
         }
-        function closeTTModal() { document.getElementById('tt-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
+        function closeTTModal() { document.getElementById('tt-modal').style.display = 'none'; unlockBodyScroll(); }
 
         function openTKModal() {
             document.getElementById('tk-modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+            lockBodyScroll();
             const iframe = document.getElementById('tk-iframe');
             if (!iframe.getAttribute('src')) {
                 document.getElementById('tk-loader').style.display = 'block';
                 iframe.setAttribute('src', "https://princetq.github.io/tuongki/");
             }
         }
-        function closeTKModal() { document.getElementById('tk-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
+        function closeTKModal() { document.getElementById('tk-modal').style.display = 'none'; unlockBodyScroll(); }
 
         function toggleChatWidget() {
             const widget = document.getElementById('chat-widget-window');
@@ -2994,6 +3083,23 @@
         }
 
         document.addEventListener("DOMContentLoaded", function() {
+            // FIX: Chặn touchmove lan sang nền khi modal mở
+            document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
+                overlay.addEventListener('touchmove', function(e) {
+                    let el = e.target;
+                    let canScroll = false;
+                    while (el && el !== overlay) {
+                        const st = getComputedStyle(el);
+                        if (el.scrollHeight > el.clientHeight &&
+                            (st.overflowY === 'auto' || st.overflowY === 'scroll')) {
+                            canScroll = true; break;
+                        }
+                        el = el.parentElement;
+                    }
+                    if (!canScroll) e.preventDefault();
+                }, { passive: false });
+            });
+
             const chatInput = document.getElementById('chat-input');
             const sendButton = document.getElementById('send-button');
             const imageUploadBtn = document.getElementById('image-upload-btn');
