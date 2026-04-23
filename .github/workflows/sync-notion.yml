@@ -27,7 +27,7 @@ jobs:
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
-        run: node sync-notion.js
+        run: node sync-notion-fullsafe.js
 
       - name: 💾 Commit và push dữ liệu mới
         run: |
