@@ -2091,7 +2091,7 @@
         // =========================================================================
         // 1. DÁN LINK CỦA BẠN VÀO ĐÂY 
         // =========================================================================
-        const MEDPLUS_API_URL = "https://ngocanh.princetq.workers.dev/proxy-json?url=" + encodeURIComponent("https://princetq.github.io/medplus/medplus.json") + "&t=" + new Date().getTime();
+        const MEDPLUS_API_URL = "/medplus.json?t=" + new Date().getTime();
         
         // === BỘ NHỚ ĐỆM TỐI ƯU HÓA (MEMORY CACHE) ===
         // Giúp tăng tốc độ tải lên mức tối đa (Mở lại tức thì, không bị delay mạng)
@@ -2171,7 +2171,7 @@ const notionCache = { blocks: {}, pages: {} };
         let isRendering = false;
         let medicalContext = "";
 
-        const DATA_JSON_URL = "https://ngocanh.princetq.workers.dev/proxy-json?url=" + encodeURIComponent("https://gist.githubusercontent.com/princetq/ff31fa8d9ea0a6f7ed485ed5c67cd0e5/raw/data.json");
+        const DATA_JSON_URL = "https://gist.githubusercontent.com/princetq/ff31fa8d9ea0a6f7ed485ed5c67cd0e5/raw/data.json";
         const AI_ICON = "<svg class=\"message-icon-svg\" viewBox=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"12\" fill=\"#E63946\"/><path d=\"M12 6V18M6 12H18\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg>";
         const USER_ICON = "<svg class=\"message-icon-svg\" viewBox=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"12\" fill=\"#FFD54F\"/><path d=\"M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z\" fill=\"#333\"/></svg>";
 
@@ -2914,7 +2914,7 @@ const notionCache = { blocks: {}, pages: {} };
                       + '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>'
                       + '<polyline points="14 2 14 8 20 8"/>'
                       + '</svg>'
-                      + ' XEM HDSD GỐC</a><hr style="border:none;border-top:1.5px solid #e0e0e0;margin:14px 0">'
+                      + ' Xem tờ HDSD gốc</a><hr style="border:none;border-top:1.5px solid #e0e0e0;margin:14px 0">'
                     : '';
 
                 // Chèn nút sau block ảnh đầu tiên, hoặc đầu trang nếu không có ảnh
