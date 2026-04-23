@@ -174,14 +174,14 @@
             height: 100%;
             position: absolute; 
             top: 0; left: 0;
-            background: linear-gradient(135deg, rgba(76, 175, 80, 0.3), rgba(46, 125, 50, 0.15));
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            padding: 8px; /* Độ dày của khung viền */
-            border-radius: 24px; /* Bo viền ngoài lớn hơn */
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.17), rgba(46, 125, 50, 0.10));
+            /* backdrop-filter REMOVED: gây nóng GPU khi iframe đang hiển thị */
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 3px;
+            border-radius: 24px;
             overflow: hidden;
             box-shadow: 0 25px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.3);
+            transform: translateZ(0);
         }
         .iv-iframe-container iframe {
             width: 100%; 
@@ -1884,7 +1884,7 @@
 
             <div class="iv-iframe-container">
                 <div class="iv-iframe-loader" id="hdsd-loader" style="white-space: nowrap;">Đang tải tờ HDSD...</div>
-                <iframe id="hdsd-iframe"></iframe>
+                <iframe id="hdsd-iframe" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer"></iframe>
             </div>
         </div>
     </div>
@@ -2143,7 +2143,12 @@
             document.body.classList.remove('modal-open');
             document.documentElement.classList.remove('modal-open');
             document.body.style.top = '';
-            window.scrollTo(0, _scrollY);
+            // rAF: đợi browser reflow xong position:fixed rồi mới scrollTo
+            // tránh iOS Safari confused → reload trang
+            const sy = _scrollY;
+            requestAnimationFrame(function() {
+                window.scrollTo(0, sy);
+            });
 
             if (_touchBlocker) {
                 document.removeEventListener('touchmove', _touchBlocker, { passive: false });
@@ -2564,11 +2569,15 @@ const notionCache = { blocks: {}, pages: {} };
         // --- CƠ CHẾ LAZY LOAD: fetchDeep nay sẽ dừng lại không lấy con của Toggle ---
         async function fetchDeep(blockId, stopAtToggle = false) {
             const blocks = await fetchAllBlocks(blockId);
-            await Promise.all(
-                blocks.filter(b => b.has_children && (!stopAtToggle || b.type !== 'toggle')).map(async b => {
+            // Giới hạn concurrency: max 3 request song song để tránh spike CPU/WiFi
+            const toFetch = blocks.filter(b => b.has_children && (!stopAtToggle || b.type !== 'toggle'));
+            const LIMIT = 3;
+            for (let i = 0; i < toFetch.length; i += LIMIT) {
+                const batch = toFetch.slice(i, i + LIMIT);
+                await Promise.all(batch.map(async b => {
                     b._children = await fetchDeep(b.id, stopAtToggle);
-                })
-            );
+                }));
+            }
             return blocks;
         }
 
@@ -2776,10 +2785,18 @@ const notionCache = { blocks: {}, pages: {} };
             modal.style.display = 'flex';
             lockBodyScroll();
 
-            // CACHE: Nếu đã tải cùng URL → không fetch lại
+            // CACHE: Nếu đã tải cùng URL → dùng lại Blob URL cũ, 0 request
             if (_hdsdCache[notionUrl]) {
-                iframe.srcdoc = _hdsdCache[notionUrl];
-                iframe._currentUrl = notionUrl;
+                if (iframe._blobUrl && iframe._currentUrl === notionUrl) {
+                    // Blob URL vẫn còn → không cần tạo lại
+                } else {
+                    const _blob = new Blob([_hdsdCache[notionUrl]], { type: 'text/html' });
+                    const _blobUrl = URL.createObjectURL(_blob);
+                    if (iframe._blobUrl) URL.revokeObjectURL(iframe._blobUrl);
+                    iframe._blobUrl = _blobUrl;
+                    iframe.src = _blobUrl;
+                    iframe._currentUrl = notionUrl;
+                }
                 loader.style.display = 'none';
                 iframe.style.display = 'block';
                 return;
@@ -2896,7 +2913,7 @@ const notionCache = { blocks: {}, pages: {} };
                       + '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>'
                       + '<polyline points="14 2 14 8 20 8"/>'
                       + '</svg>'
-                      + ' XEM HDSD GỐC</a><hr style="border:none;border-top:1.5px solid #e0e0e0;margin:14px 0">'
+                      + ' <b>XEM HDSD GỐC</b></a><hr style="border:none;border-top:1.5px solid #e0e0e0;margin:14px 0">'
                     : '';
 
                 // Chèn nút sau block ảnh đầu tiên, hoặc đầu trang nếu không có ảnh
@@ -2971,7 +2988,13 @@ const notionCache = { blocks: {}, pages: {} };
                     + '</head><body>'+finalHtml+'</body></html>';
                 _hdsdCache[notionUrl] = doc;
                 iframe._currentUrl = notionUrl;
-                iframe.srcdoc = doc;
+                // Dùng Blob URL thay srcdoc → browser load như file riêng, nhẹ hơn
+                const _blob = new Blob([doc], { type: 'text/html' });
+                const _blobUrl = URL.createObjectURL(_blob);
+                // Revoke URL cũ nếu có để tránh memory leak
+                if (iframe._blobUrl) URL.revokeObjectURL(iframe._blobUrl);
+                iframe._blobUrl = _blobUrl;
+                iframe.src = _blobUrl;
                 iframe.style.display = 'block';
                 loader.style.display = 'none';
             } catch(e) {
@@ -2988,11 +3011,9 @@ const notionCache = { blocks: {}, pages: {} };
 
         function closeHDSDModal() {
             const modal = document.getElementById('hdsd-modal');
-            const f = document.getElementById('hdsd-iframe');
             modal.style.display = 'none';
             unlockBodyScroll();
-            // KHÔNG xóa srcdoc → giữ cache, tránh spike CPU khi destroy iframe
-            // Chỉ ẩn modal, iframe vẫn tồn tại trong DOM
+            // iframe giữ nguyên trong DOM → Blob URL vẫn valid → mở lại tức thì
         }
 
         async function loadNotionToggle(blockId, elementId) {
