@@ -1672,27 +1672,32 @@
            FIX CUỘN NỀN KHI MODAL MỞ — position:fixed method (iOS safe)
            ============================================================ */
         body.modal-open {
-            position: fixed;
-            width: 100%;
-            overflow-y: scroll;
+            position: fixed !important;
+            width: 100% !important;
+            overflow: hidden !important;
+            overscroll-behavior: none !important;
+            touch-action: none !important;
+        }
+        html.modal-open {
+            overflow: hidden !important;
+            overscroll-behavior: none !important;
         }
         .modal-overlay {
             touch-action: none !important;
             overscroll-behavior: none !important;
         }
         .modal-content {
-            touch-action: pan-y;
-            overscroll-behavior: contain;
-            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y !important;
+            overscroll-behavior: contain !important;
+            -webkit-overflow-scrolling: touch !important;
         }
         .iv-modal-content {
             touch-action: none !important;
-            overflow: hidden !important;
         }
         .iv-iframe-container {
-            touch-action: pan-y;
-            overscroll-behavior: contain;
-            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y !important;
+            overscroll-behavior: contain !important;
+            -webkit-overflow-scrolling: touch !important;
         }
 </style>
 </head>
@@ -2094,15 +2099,57 @@
         // FIX CUỘN NỀN: lockBodyScroll / unlockBodyScroll
         // ============================================================
         let _scrollY = 0;
+        let _touchBlocker = null;
+
         function lockBodyScroll() {
             _scrollY = window.scrollY;
             document.body.style.top = '-' + _scrollY + 'px';
             document.body.classList.add('modal-open');
+            document.documentElement.classList.add('modal-open');
+
+            // Chặn mọi touchmove ở document level (mạnh nhất, bắt tất cả)
+            _touchBlocker = function(e) {
+                // Cho phép scroll bên trong .modal-content và .iv-iframe-container
+                let el = e.target;
+                while (el) {
+                    if (el.classList && (
+                        el.classList.contains('modal-content') ||
+                        el.classList.contains('iv-iframe-container') ||
+                        el.id === 'hdsd-iframe'
+                    )) return; // cho phép scroll trong vùng này
+                    el = el.parentElement;
+                }
+                e.preventDefault();
+            };
+            document.addEventListener('touchmove', _touchBlocker, { passive: false });
+
+            // Chặn wheel scroll trên desktop
+            document.addEventListener('wheel', _wheelBlocker, { passive: false });
         }
+
+        function _wheelBlocker(e) {
+            let el = e.target;
+            while (el) {
+                if (el.classList && (
+                    el.classList.contains('modal-content') ||
+                    el.classList.contains('iv-iframe-container')
+                )) return;
+                el = el.parentElement;
+            }
+            e.preventDefault();
+        }
+
         function unlockBodyScroll() {
             document.body.classList.remove('modal-open');
+            document.documentElement.classList.remove('modal-open');
             document.body.style.top = '';
             window.scrollTo(0, _scrollY);
+
+            if (_touchBlocker) {
+                document.removeEventListener('touchmove', _touchBlocker, { passive: false });
+                _touchBlocker = null;
+            }
+            document.removeEventListener('wheel', _wheelBlocker, { passive: false });
         }
 
         const _hdsdCache = {};
@@ -3083,22 +3130,6 @@ const notionCache = { blocks: {}, pages: {} };
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-            // FIX: Chặn touchmove lan sang nền khi modal mở
-            document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
-                overlay.addEventListener('touchmove', function(e) {
-                    let el = e.target;
-                    let canScroll = false;
-                    while (el && el !== overlay) {
-                        const st = getComputedStyle(el);
-                        if (el.scrollHeight > el.clientHeight &&
-                            (st.overflowY === 'auto' || st.overflowY === 'scroll')) {
-                            canScroll = true; break;
-                        }
-                        el = el.parentElement;
-                    }
-                    if (!canScroll) e.preventDefault();
-                }, { passive: false });
-            });
 
             const chatInput = document.getElementById('chat-input');
             const sendButton = document.getElementById('send-button');
