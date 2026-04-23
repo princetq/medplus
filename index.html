@@ -192,6 +192,8 @@
             z-index: 2;
             background: #fff;
             border-radius: 16px; /* Bo góc iframe bên trong khớp với viền */
+            contain: strict; /* FIX: Cô lập render iframe, không ảnh hưởng layout trang cha */
+            content-visibility: auto; /* FIX: Skip render khi ẩn */
         }
         .iv-iframe-loader {
             position: absolute;
@@ -1885,7 +1887,7 @@
 
             <div class="iv-iframe-container">
                 <div class="iv-iframe-loader" id="hdsd-loader" style="white-space: nowrap;">Đang tải tờ HDSD...</div>
-                <iframe id="hdsd-iframe" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer"></iframe>
+                <iframe id="hdsd-iframe" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer" loading="lazy"></iframe>
             </div>
         </div>
     </div>
@@ -2570,7 +2572,7 @@ const notionCache = { blocks: {}, pages: {} };
         // --- CƠ CHẾ LAZY LOAD: fetchDeep nay sẽ dừng lại không lấy con của Toggle ---
         async function fetchDeep(blockId, stopAtToggle = false) {
             const blocks = await fetchAllBlocks(blockId);
-            // Giới hạn concurrency: max 3 request song song để tránh spike CPU/WiFi
+            // FIX: Giữ LIMIT=3 cho tốc độ, chỉ delay 50ms khi tờ HDSD phức tạp (từ batch thứ 3)
             const toFetch = blocks.filter(b => b.has_children && (!stopAtToggle || b.type !== 'toggle'));
             const LIMIT = 3;
             for (let i = 0; i < toFetch.length; i += LIMIT) {
@@ -2578,6 +2580,10 @@ const notionCache = { blocks: {}, pages: {} };
                 await Promise.all(batch.map(async b => {
                     b._children = await fetchDeep(b.id, stopAtToggle);
                 }));
+                // Chỉ delay khi tờ HDSD có cấu trúc phức tạp (từ batch thứ 3 trở đi)
+                if (i + LIMIT < toFetch.length && i >= LIMIT * 2) {
+                    await new Promise(r => setTimeout(r, 50));
+                }
             }
             return blocks;
         }
@@ -3014,7 +3020,15 @@ const notionCache = { blocks: {}, pages: {} };
             const modal = document.getElementById('hdsd-modal');
             modal.style.display = 'none';
             unlockBodyScroll();
-            // iframe giữ nguyên trong DOM → Blob URL vẫn valid → mở lại tức thì
+            // FIX: Giải phóng Blob URL ngay khi đóng để tránh memory leak gây nóng máy
+            const iframe = document.getElementById('hdsd-iframe');
+            if (iframe && iframe._blobUrl) {
+                URL.revokeObjectURL(iframe._blobUrl);
+                iframe._blobUrl = null;
+                iframe._currentUrl = null;
+                iframe.src = 'about:blank';
+                iframe.style.display = 'none';
+            }
         }
 
         async function loadNotionToggle(blockId, elementId) {
