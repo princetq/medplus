@@ -1862,11 +1862,11 @@
         <img id="image-zoom-img" src="" alt="Zoomed Image">
     </div>
 
-    <div class="modal-overlay" id="modal" onclick="if(event.target==this) closeModal()">
+    <div class="modal-overlay" id="modal">
         <div class="modal-content"><span class="close-btn" onclick="closeModal()">&times;</span><div id="modal-body"></div></div>
     </div>
 
-    <div class="modal-overlay" id="iv-modal" onclick="if(event.target==this) closeIVModal()">
+    <div class="modal-overlay" id="iv-modal">
         <div class="modal-content iv-modal-content">
             <span class="close-btn" onclick="closeIVModal()">&times;</span>
             <div class="iv-iframe-container">
@@ -1876,7 +1876,7 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="ks-modal" onclick="if(event.target==this) closeKSModal()">
+    <div class="modal-overlay" id="ks-modal">
         <div class="modal-content iv-modal-content">
             <span class="close-btn" onclick="closeKSModal()">&times;</span>
             <div class="iv-iframe-container">
@@ -1886,7 +1886,7 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="tt-modal" onclick="if(event.target==this) closeTTModal()">
+    <div class="modal-overlay" id="tt-modal">
         <div class="modal-content iv-modal-content">
             <span class="close-btn" onclick="closeTTModal()">&times;</span>
             <div class="iv-iframe-container">
@@ -1896,7 +1896,7 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="tk-modal" onclick="if(event.target==this) closeTKModal()">
+    <div class="modal-overlay" id="tk-modal">
         <div class="modal-content iv-modal-content">
             <span class="close-btn" onclick="closeTKModal()">&times;</span>
             <div class="iv-iframe-container">
@@ -1906,7 +1906,7 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="hdsd-modal" onclick="if(event.target==this) closeHDSDModal()">
+    <div class="modal-overlay" id="hdsd-modal">
         <div class="modal-content iv-modal-content" style="background: var(--bg); padding: 0;">
             <span class="close-btn" onclick="closeHDSDModal()" style="z-index: 50;">&times;</span>
             <div class="iv-iframe-container" style="background: transparent; border: none; box-shadow: none; padding: 0;">
@@ -2233,6 +2233,62 @@
             loadMedicalData();
         }
 
+        let _scrollY = 0;
+        let _touchBlocker = null;
+
+        function lockBodyScroll() {
+            _scrollY = window.scrollY;
+            document.body.style.top = '-' + _scrollY + 'px';
+            document.body.classList.add('modal-open');
+            document.body.classList.add('modal-open-freeze');
+            document.documentElement.classList.add('modal-open');
+
+            _touchBlocker = function(e) {
+                let el = e.target;
+                while (el) {
+                    if (el.classList && (
+                        el.classList.contains('modal-content') ||
+                        el.classList.contains('iv-iframe-container') ||
+                        el.id === 'hdsd-content'
+                    )) return; 
+                    el = el.parentElement;
+                }
+                e.preventDefault();
+            };
+            document.addEventListener('touchmove', _touchBlocker, { passive: false });
+            document.addEventListener('wheel', _wheelBlocker, { passive: false });
+        }
+
+        function _wheelBlocker(e) {
+            let el = e.target;
+            while (el) {
+                if (el.classList && (
+                    el.classList.contains('modal-content') ||
+                    el.classList.contains('iv-iframe-container') ||
+                    el.id === 'hdsd-content'
+                )) return;
+                el = el.parentElement;
+            }
+            e.preventDefault();
+        }
+
+        function unlockBodyScroll() {
+            document.body.classList.remove('modal-open');
+            document.body.classList.remove('modal-open-freeze');
+            document.documentElement.classList.remove('modal-open');
+            document.body.style.top = '';
+            const sy = _scrollY;
+            requestAnimationFrame(function() {
+                window.scrollTo(0, sy);
+            });
+
+            if (_touchBlocker) {
+                document.removeEventListener('touchmove', _touchBlocker, { passive: false });
+                _touchBlocker = null;
+            }
+            document.removeEventListener('wheel', _wheelBlocker, { passive: false });
+        }
+
         // =========================================================================
         // CÁC HÀM XỬ LÝ LOGIC UI & AI (GIỮ NGUYÊN HOÀN TOÀN)
         // =========================================================================
@@ -2439,536 +2495,7 @@
                         "<img src=\"" + item.image + "\" loading=\"lazy\" onerror=\"this.src='https://via.placeholder.com/150?text=No+Image'\">" +
                     "</div>" +
                     "<div class=\"card-content\">" +
-                        "<h3 class=\"p-title\"><span class=\"marquee-track\">" + item.brand + "</span></h3>" +
-                        "<div class=\"card-info\">" +
-                            "<span class=\"marquee-track\">" +
-                                "<p class=\"p-info\"><b>Hoạt chất:</b> " + (item.active || "...") + "</p>" +
-                                "<p class=\"p-info\"><b>Hàm lượng:</b> " + (item.strength || "...") + "</p>" +
-                                "<p class=\"p-info\"><b>Dạng:</b> " + (item.form || "...") + "</p>" +
-                            "</span>" +
-                        "</div>" +
-                        hdsdBtn +
-                    "</div>" +
-                "</div>";
-            });
-
-            grid.insertAdjacentHTML('beforeend', htmlContent);
-            displayedCount += batch.length;
-            isRendering = false;
-        }
-
-        // =========================================================================
-        // HÀM XỬ LÝ HDSD RENDER HTML + FALLBACK NEW TAB
-        // =========================================================================
-        const NOTION_WORKER = 'https://ngocanh.princetq.workers.dev';
-
-        function extractPageId(url) {
-            if (!url) return null;
-            let cleanUrl = url.split('?')[0].split('#')[0];
-            cleanUrl = cleanUrl.replace(/\/+$/, '');
-            cleanUrl = cleanUrl.replace(/-/g, '');
-            const possibleId = cleanUrl.slice(-32);
-            if (/^[a-f0-9]{32}$/i.test(possibleId)) {
-                return possibleId;
-            }
-            return null;
-        }
-
-        function findDriveLink(blocks) {
-            for (const block of blocks) {
-                const type = block.type;
-                const b = block[type] || {};
-                if (b.url && b.url.includes('drive.google.com')) return b.url;
-                for (const r of (b.rich_text || [])) {
-                    if (r.href && r.href.includes('drive.google.com')) return r.href;
-                    if (r.plain_text && r.plain_text.trim().startsWith('http') && r.plain_text.includes('drive.google.com')) return r.plain_text.trim();
-                }
-                if (b.external && b.external.url && b.external.url.includes('drive.google.com')) return b.external.url;
-                if (block._children) {
-                    const found = findDriveLink(block._children);
-                    if (found) return found;
-                }
-            }
-            return null;
-        }
-
-        function rt(arr) {
-            return (arr||[]).map(r => {
-                let t = (r.plain_text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g, '<br>');
-                if (r.annotations) {
-                    if (r.annotations.bold)          t = '<strong>'+t+'</strong>';
-                    if (r.annotations.italic)        t = '<em>'+t+'</em>';
-                    if (r.annotations.underline)     t = '<u>'+t+'</u>';
-                    if (r.annotations.strikethrough) t = '<s>'+t+'</s>';
-                    if (r.annotations.code)          t = '<code>'+t+'</code>';
-                    if (r.annotations.color && r.annotations.color !== 'default')
-                        t = '<span style="color:'+r.annotations.color.replace('_background','')+'">'+t+'</span>';
-                }
-                if (r.href) t = '<a href="'+r.href+'" target="_blank">'+t+'</a>';
-                return t;
-            }).join('');
-        }
-
-        function renderBlocks(blocks) {
-            let html = '';
-            for (const block of blocks) {
-                const type = block.type;
-                const b = block[type] || {};
-                const text = rt(b.rich_text);
-                const ch = block._children ? renderBlocks(block._children) : '';
-
-                switch(type) {
-                    case 'heading_1':
-                        html += '<h1>'+text+'</h1>';
-                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
-                        break;
-                    case 'heading_2':
-                        html += '<h2>'+text+'</h2>';
-                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
-                        break;
-                    case 'heading_3':
-                        html += '<h3>'+text+'</h3>';
-                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
-                        break;
-                    case 'toggle': {
-                        if (b.rich_text && b.rich_text.length > 0) {
-                            let last = b.rich_text[b.rich_text.length - 1];
-                            last.plain_text = last.plain_text.replace(/:\s*$/, '');
-                            if(last.text) last.text.content = last.text.content.replace(/:\s*$/, '');
-                        }
-                        let tText = rt(b.rich_text);
-                        tText = tText.replace(/:\s*((<\/[a-zA-Z0-9]+>\s*)*)$/, '$1').trim();
-                        if (!tText) tText = 'CHI TIẾT';
-                        
-                        if (block.id === 'fake-extra-info' || block._children) {
-                            let chHtml = renderBlocks(block._children || []);
-                            html += '<details>'
-                                  + '<summary><span>'+tText+'</span></summary>'
-                                  + '<div class="content">'+chHtml+'</div>'
-                                  + '</details>';
-                        } else {
-                            html += '<details id="details-'+block.id+'" data-block-id="'+block.id+'">'
-                                  + '<summary><span>'+tText+'</span></summary>'
-                                  + '<div class="content"><div style="color:#666;font-style:italic">⏳ Nội dung chưa được tải...</div></div>'
-                                  + '</details>';
-                        }
-                        break;
-                    }
-                    case 'paragraph':
-                        html += text ? '<p>'+text+'</p>' : '<div style="height:8px"></div>';
-                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
-                        break;
-                    case 'bulleted_list_item':
-                        html += '<li>'+text+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</li>';
-                        break;
-                    case 'numbered_list_item':
-                        html += '<li>'+text+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</li>';
-                        break;
-                    case 'to_do':
-                        html += '<div style="display:flex;gap:8px;margin:4px 0;align-items:flex-start">'
-                              + '<span style="font-size:16px;margin-top:2px">'+(b.checked?'☑':'☐')+'</span>'
-                              + '<div><span style="font-size:15px;line-height:1.7;'+(b.checked?'text-decoration:line-through;color:var(--subtext)':'')+'">'+text+'</span>'+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</div>'
-                              + '</div>';
-                        break;
-                    case 'quote':
-                        html += '<blockquote>'+text+(ch?'<div style="margin-top:6px">'+ch+'</div>':'')+'</blockquote>';
-                        break;
-                    case 'callout':
-                        html += '<div style="display:flex;gap:10px;background:rgba(76,175,80,0.09);border:1px solid rgba(76,175,80,0.25);border-radius:10px;padding:12px 14px;margin:10px 0">'
-                              + '<span style="font-size:20px;flex-shrink:0">'+(b.icon&&b.icon.emoji?b.icon.emoji:'ℹ️')+'</span>'
-                              + '<div style="font-size:15px;line-height:1.7;">'+text+(ch?'<div style="margin-top:6px">'+ch+'</div>':'')+'</div>'
-                              + '</div>';
-                        break;
-                    case 'divider':
-                        html += '<hr>';
-                        break;
-                    case 'code':
-                        html += '<pre><code>'+(b.rich_text||[]).map(r=>r.plain_text).join('')+'</code></pre>';
-                        break;
-                    case 'image': {
-                        let src = '';
-                        if (b._proxy && b._blockId) {
-                            src = NOTION_WORKER + '/image-proxy/' + b._blockId;
-                        } else {
-                            src = (b.file && b.file.url) || (b.external && b.external.url) || '';
-                        }
-                        const cap = rt(b.caption);
-                        html += '<div style="text-align:center;margin:14px 0"><img src="'+src+'" loading="lazy">'+(cap?'<br><small style="color:var(--subtext);font-size:13px">'+cap+'</small>':'')+'</div>';
-                        break;
-                    }
-                    case 'bookmark':
-                    case 'link_preview':
-                    case 'embed': {
-                        const url = b.url || '';
-                        const cap = rt(b.caption);
-                        if (url) html += '<a href="'+url+'" target="_blank" style="display:block;padding:10px 14px;border:1px solid rgba(76,175,80,0.3);border-radius:8px;margin:8px 0;background:rgba(76,175,80,0.05)">🔗 '+(cap||url)+'</a>';
-                        break;
-                    }
-                    case 'table': {
-                        const rows = block._children || [];
-                        if (rows.length) {
-                            html += '<div style="overflow-x:auto;margin:12px 0"><table>';
-                            rows.forEach((row, ri) => {
-                                const cells = (row.table_row&&row.table_row.cells)||[];
-                                html += '<tr>';
-                                cells.forEach(cell => {
-                                    const tag = ri===0?'th':'td';
-                                    html += '<'+tag+'>'+rt(cell)+'</'+tag+'>';
-                                });
-                                html += '</tr>';
-                            });
-                            html += '</table></div>';
-                        }
-                        break;
-                    }
-                    case 'column_list':
-                        html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:10px 0">'+ch+'</div>';
-                        break;
-                    case 'column':
-                        html += '<div>'+ch+'</div>';
-                        break;
-                    default:
-                        if (text) html += '<p>'+text+'</p>';
-                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
-                        break;
-                }
-            }
-            html = html.replace(/(<li[^>]*>[\s\S]*?<\/li>\s*)+/g, m => '<ul>'+m+'</ul>');
-            return html;
-        }
-
-        async function openNotionPopup(notionUrl) {
-            if (window._hdsdAbortCtrl) window._hdsdAbortCtrl.abort();
-            window._hdsdAbortCtrl = new AbortController();
-            const hdsdSignal = window._hdsdAbortCtrl.signal;
-
-            const modal   = document.getElementById('hdsd-modal');
-            const loader  = document.getElementById('hdsd-loader');
-            const content = document.getElementById('hdsd-content');
-
-            content.style.display = 'none';
-            content.style.overflow = 'auto'; // Đảm bảo thanh cuộn kích hoạt
-            loader.style.display = 'block';
-            loader.innerHTML = '⏳ Đang tải tờ hướng dẫn...';
-            modal.style.display = 'flex';
-            lockBodyScroll();
-
-            if (!notionUrl || typeof notionUrl !== 'string') {
-                 loader.innerHTML = '❌ Dữ liệu link bị trống. Vui lòng kiểm tra lại Data.';
-                 return;
-            }
-
-            const pageId = extractPageId(notionUrl) || notionUrl; 
-
-            try {
-                if (hdsdSignal.aborted) return;
-                const jsonUrl = './hdsd-data/' + pageId + '.json';
-                const jsonRes = await fetch(jsonUrl, { signal: hdsdSignal });
-
-                if (!jsonRes.ok) {
-                    // FALLBACK: ĐÓNG MODAL VÀ MỞ LINK TRỰC TIẾP QUA TAB MỚI
-                    closeHDSDModal();
-                    window.open(notionUrl, '_blank');
-                    return;
-                }
-                
-                const jsonData = await jsonRes.json();
-                
-                const pageRes = jsonData.page;
-                const blocks = jsonData.blocks;
-                
-                if (!blocks) {
-                    // FALLBACK: ĐÓNG MODAL VÀ MỞ LINK TRỰC TIẾP QUA TAB MỚI
-                    closeHDSDModal();
-                    window.open(notionUrl, '_blank');
-                    return;
-                }
-
-                let lastToggleIdx = -1;
-                for (let i = 0; i < blocks.length; i++) {
-                    if (blocks[i].type === 'toggle') lastToggleIdx = i;
-                }
-                if (lastToggleIdx !== -1 && lastToggleIdx < blocks.length - 1) {
-                    let remaining = blocks.slice(lastToggleIdx + 1);
-                    let hasContent = remaining.some(bk => {
-                        if (bk.type === 'paragraph') {
-                            let txt = '';
-                            if(bk.paragraph.rich_text) {
-                                txt = bk.paragraph.rich_text.map(r=>r.plain_text).join('').trim();
-                            }
-                            return txt.length > 0;
-                        }
-                        if (bk.type === 'divider') return false; 
-                        return true;
-                    });
-                    
-                    if (hasContent) {
-                        blocks.splice(lastToggleIdx + 1); 
-                        blocks.push({
-                            id: 'fake-extra-info',
-                            type: 'toggle',
-                            has_children: true,
-                            toggle: { rich_text: [{ plain_text: 'THÔNG TIN THÊM', text: {content: 'THÔNG TIN THÊM'} }] },
-                            _children: remaining
-                        });
-                    }
-                }
-
-                let driveLink = null;
-                if (pageRes && pageRes.properties) {
-                    const prop = pageRes.properties['hdsd'] || pageRes.properties['HDSD']
-                              || pageRes.properties['Hdsd'] || pageRes.properties['drive']
-                              || pageRes.properties['Drive'];
-                    if (prop) {
-                        if (prop.type === 'url' && prop.url) {
-                            driveLink = prop.url;
-                        } else if (prop.type === 'rich_text' && prop.rich_text && prop.rich_text[0]) {
-                            driveLink = prop.rich_text[0].href || prop.rich_text[0].plain_text;
-                        } else if (prop.type === 'files' && prop.files && prop.files[0]) {
-                            driveLink = (prop.files[0].external && prop.files[0].external.url)
-                                     || (prop.files[0].file && prop.files[0].file.url);
-                        }
-                    }
-                }
-                if (!driveLink) driveLink = findDriveLink(blocks);
-
-                const html = renderBlocks(blocks);
-
-                const driveBtnHtml = driveLink
-                    ? '<style>'
-                      + '.hdsd-orig-btn{display:inline-flex;align-items:center;gap:8px;'
-                      + 'background:transparent;color:#2e7d32;border:1.5px solid #2e7d32;'
-                      + 'font-family:Inter,Segoe UI,sans-serif;font-size:13px;font-weight:600;'
-                      + 'padding:7px 16px;border-radius:8px;text-decoration:none;'
-                      + 'margin:12px 0 4px;transition:.2s;}'
-                      + '.hdsd-orig-btn:hover{background:rgba(46,125,50,0.07);}'
-                      + 'body.dark-mode .hdsd-orig-btn{color:#50dcb4;border-color:#50dcb4;}'
-                      + 'body.dark-mode .hdsd-orig-btn:hover{background:rgba(80,220,180,0.1);}'
-                      + '</style>'
-                      + '<a href="'+driveLink+'" target="_blank" class="hdsd-orig-btn">'
-                      + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
-                      + '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>'
-                      + '<polyline points="14 2 14 8 20 8"/>'
-                      + '</svg>'
-                      + ' XEM HDSD GỐC</a><hr>'
-                    : '';
-
-                let finalHtml = html;
-                const firstImgEnd = html.indexOf('</div>', html.indexOf('<img '));
-                if (firstImgEnd !== -1) {
-                    finalHtml = html.slice(0, firstImgEnd+6) + driveBtnHtml + html.slice(firstImgEnd+6);
-                } else {
-                    finalHtml = driveBtnHtml + html;
-                }
-
-                content.innerHTML = finalHtml;
-                content.style.display = 'block';
-                loader.style.display = 'none';
-
-            } catch(e) {
-                if (e.name !== 'AbortError') {
-                    // FALLBACK: ĐÓNG MODAL VÀ MỞ LINK TRỰC TIẾP QUA TAB MỚI NẾU CÓ LỖI
-                    closeHDSDModal();
-                    window.open(notionUrl, '_blank');
-                }
-            }
-        }
-
-        let _clearHdsdTimer;
-        function closeHDSDModal() {
-            const modal = document.getElementById('hdsd-modal');
-            const content = document.getElementById('hdsd-content');
-            
-            if (content) content.style.overflow = 'hidden'; 
-            
-            modal.style.display = 'none';
-            unlockBodyScroll();
-            
-            if (window._hdsdAbortCtrl) {
-                window._hdsdAbortCtrl.abort();
-                window._hdsdAbortCtrl = null;
-            }
-            
-            clearTimeout(_clearHdsdTimer);
-            _clearHdsdTimer = setTimeout(() => {
-                if (modal.style.display === 'none' && content) {
-                    content.innerHTML = '';
-                    content.style.overflow = 'auto'; 
-                }
-            }, 300); 
-        }
-
-        function openImageZoom(src) {
-            if (!src || src.includes('No+Image')) return;
-            document.getElementById('image-zoom-img').src = src;
-            document.getElementById('image-zoom-overlay').style.display = 'flex';
-        }
-
-        function openModal(idx) {
-            const item = rawData[idx];
-            let html = "<div class=\"modal-drug-header\">" +
-                    "<img class=\"modal-drug-img\" src=\"" + item.image + "\" onerror=\"this.style.display='none'\" onclick=\"openImageZoom('" + item.image + "')\" title=\"Nhấn để xem ảnh lớn\">" +
-                    "<div style=\"display:flex;align-items:center;gap:10px;flex:1;flex-wrap:wrap\">" +
-                        "<h2 class=\"modal-drug-title\">" + item.brand + "</h2>" +
-                        
-                        "<a href=\"https://www.google.com/search?q=" + encodeURIComponent(item.brand + ' ' + (item.active || '')) + "\" target=\"_blank\" class=\"google-search-btn\" style=\"margin-top:0\">" +
-                            "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z\"/></svg>" +
-                            " Tra cứu Google" +
-                        "</a>" +
-                    "</div>" +
-                "</div>" +
-                "<div class=\"basic-info-box\">" +
-                    drawRow('HOẠT CHẤT', item.active) +
-                    drawRow('NHÓM DƯỢC LÝ', item.group) +
-                    drawRow('DẠNG BÀO CHẾ', item.form) +
-                    drawRow('HÀM LƯỢNG', item.strength) +
-                    drawRow('ĐÓNG GÓI', item.pack) +
-                "</div>" +
-                (item.link ? "<button class=\"notion-btn\" onclick=\"openNotionPopup('" + item.link + "')\">📄 XEM TỜ HƯỚNG DẪN SỬ DỤNG</button>" : "") +
-                
-                "<div class=\"details-group\">" +
-                    drawAccordion('CHỈ ĐỊNH', item.indication) +
-                    drawAccordion('LIỀU DÙNG', item.dosage) +
-                    drawAccordion('CÁCH DÙNG', item.usage) +
-                    drawAccordion('CHỐNG CHỈ ĐỊNH - THẬN TRỌNG', item.sideEffects) +
-                    drawAccordion('TƯƠNG TÁC THUỐC', item.interaction) +
-                    drawAccordion('TÁC DỤNG KHÔNG MONG MUỐN', item.adr) +
-                    drawAccordion('DƯỢC ĐỘNG HỌC - DƯỢC LỰC HỌC', item.pkpd) +
-                    drawAccordion('LƯU Ý', item.notes) +
-                    drawAccordion('TÀI LIỆU THAM KHẢO', item.reference) +
-                "</div>";
-            document.getElementById('modal-body').innerHTML = html;
-            
-            const modal = document.getElementById('modal');
-            const content = modal.querySelector('.modal-content');
-            if (content) content.style.overflow = 'auto'; 
-            
-            modal.style.display = 'flex';
-            lockBodyScroll();
-        }
-
-        function drawRow(label, val) { if(!val || val === '') return ''; return "<div class=\"info-row\"><span class=\"info-label\">" + label + ":</span><span style=\"white-space: pre-line;\">" + val + "</span></div>"; }
-        function drawAccordion(label, val) { if(!val || val === '') return ''; return "<details><summary>" + label + "</summary><div class=\"detail-content\">" + val + "</div></details>"; }
-        
-        let _clearModalTimer;
-        function closeModal() { 
-            const modal = document.getElementById('modal');
-            const content = modal.querySelector('.modal-content');
-            if (content) content.style.overflow = 'hidden'; 
-            
-            modal.style.display = 'none'; 
-            unlockBodyScroll(); 
-            
-            clearTimeout(_clearModalTimer);
-            _clearModalTimer = setTimeout(() => {
-                if (modal.style.display === 'none') {
-                    document.getElementById('modal-body').innerHTML = '';
-                    if (content) content.style.overflow = 'auto';
-                }
-            }, 300);
-        }
-
-        function openIVModal() {
-            document.getElementById('iv-modal').style.display = 'flex';
-            lockBodyScroll();
-            const iframe = document.getElementById('iv-iframe');
-            if (!iframe.getAttribute('src')) {
-                document.getElementById('iv-loader').style.display = 'block';
-                iframe.setAttribute('src', "https://princetq.github.io/tiemtruyen/");
-            }
-        }
-        function closeIVModal() { document.getElementById('iv-modal').style.display = 'none'; unlockBodyScroll(); }
-
-        function openKSModal() {
-            document.getElementById('ks-modal').style.display = 'flex';
-            lockBodyScroll();
-            const iframe = document.getElementById('ks-iframe');
-            if (!iframe.getAttribute('src')) {
-                document.getElementById('ks-loader').style.display = 'block';
-                iframe.setAttribute('src', "https://ks.duoctuyenquang.com");
-            }
-        }
-        function closeKSModal() { document.getElementById('ks-modal').style.display = 'none'; unlockBodyScroll(); }
-
-        function openTTModal() {
-            document.getElementById('tt-modal').style.display = 'flex';
-            lockBodyScroll();
-            const iframe = document.getElementById('tt-iframe');
-            if (!iframe.getAttribute('src')) {
-                document.getElementById('tt-loader').style.display = 'block';
-                iframe.setAttribute('src', "https://princetq.github.io/ttthuoc/");
-            }
-        }
-        function closeTTModal() { document.getElementById('tt-modal').style.display = 'none'; unlockBodyScroll(); }
-
-        function openTKModal() {
-            document.getElementById('tk-modal').style.display = 'flex';
-            lockBodyScroll();
-            const iframe = document.getElementById('tk-iframe');
-            if (!iframe.getAttribute('src')) {
-                document.getElementById('tk-loader').style.display = 'block';
-                iframe.setAttribute('src', "https://princetq.github.io/tuongki/");
-            }
-        }
-        function closeTKModal() { document.getElementById('tk-modal').style.display = 'none'; unlockBodyScroll(); }
-
-        function toggleChatWidget() {
-            const widget = document.getElementById('chat-widget-window');
-            const btn = document.getElementById('chat-widget-btn');
-            if (btn.classList.contains('tracing')) return;
-            if (widget.style.display === 'none' || widget.style.display === '') {
-                btn.classList.add('tracing');
-                btn.style.animationPlayState = 'paused';
-                setTimeout(function() {
-                    btn.classList.remove('tracing');
-                    btn.style.animationPlayState = 'running';
-                    widget.style.display = 'flex';
-                    document.getElementById('chat-input').focus();
-                }, 600);
-            } else { widget.style.display = 'none'; }
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            const chatInput = document.getElementById('chat-input');
-            const sendButton = document.getElementById('send-button');
-            const imageUploadBtn = document.getElementById('image-upload-btn');
-            const imageUploadInput = document.getElementById('image-upload');
-            const typingIndicator = document.getElementById('typing-indicator');
-            
-            if (chatInput) {
-                chatInput.addEventListener('focus', function () {
-                    setTimeout(() => {
-                        this.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 300);
-                });
-            }
-            
-            if(imageUploadBtn && imageUploadInput) {
-                imageUploadBtn.addEventListener('click', function() { imageUploadInput.click(); });
-                imageUploadInput.addEventListener('change', handleImageUpload);
-            }
-            sendButton.addEventListener('click', function() { sendMessage(false); });
-            chatInput.addEventListener('keydown', function(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(false); } });
-            
-            if(typingIndicator) {
-                typingIndicator.addEventListener('click', function() { 
-                    const t = document.getElementById('typing-text'); 
-                    t.innerText = t.innerText.includes(activeModelName) ? "MedPlus AI đang trả lời" : "MedPlus AI (" + activeModelName + ") đang trả lời"; 
-                });
-            }
-        });
-
-        async function loadMedicalData() {
-            try {
-                const r = await fetch(DATA_JSON_URL);
-                if (!r.ok) throw new Error("Lỗi mạng");
-                const d = await r.json();
-                if (d.medicalContext) medicalContext = d.medicalContext;
-            } catch (e) { console.error("Không thể tải dữ liệu y khoa:", e); }
-        }
-
-        function formatResponse(text) {
-            text = text.replace(/biệt dược (\d+)/gi, function(m, n) { const c = ['#e91e63','#2196f3','#ff9800','#9c27b0','#4caf50','#795548']; return "<span style=\"color:" + c[(parseInt(n)-1)%c.length] + ";font-weight:bold\">" + m + "</span>"; });
+                        "<h3 class=\"p-title\</span>"; });
             text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "<a href=\"$2\" target=\"_blank\">$1</a>");
             text = text.replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>");
             text = text.replace(/(?<!href="|">)(https?:\/\/[^\s<]+)/g, function(u) { return "<a href=\"" + u + "\" target=\"_blank\">" + u + "</a>"; });
