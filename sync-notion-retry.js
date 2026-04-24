@@ -77,7 +77,7 @@ async function queryDatabaseIncremental() {
   do {
     const filters = [];
     if (lastSync) {
-      filters.push({ property: 'Last edited time', last_edited_time: { after: lastSync } });
+      filters.push({ timestamp: "last_edited_time", last_edited_time: { after: lastSync } });
     }
     const payload = { database_id: DATABASE_ID, page_size: 100 };
     if (cursor) payload.start_cursor = cursor;
