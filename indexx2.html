@@ -10,13 +10,13 @@
         /* GIỮ NGUYÊN CSS GỐC CỦA BẠN */
         *{font-family:'Inter','Segoe UI',sans-serif!important;box-sizing:border-box;margin:0;padding:0}
         body{padding:40px 0;background:linear-gradient(135deg,#a5d6a7 0%,#81c784 50%,#4caf50 100%);background-attachment:fixed;color:#333;min-height:100vh;overflow-x:hidden}
-        :root{--g-bg:rgba(255,255,255,0.22);--g-bg-h:rgba(255,255,255,0.48);--g-border:rgba(255,255,255,0.4);--g-blur:blur(18px);--green:#2e7d32;--green-d:#1b5e20;--green-l:#4caf50;--gold:#fbc02d;--rad:16px;--shadow:0 8px 32px rgba(0,0,0,0.1)}
-        .glass-panel{background:var(--g-bg);backdrop-filter:var(--g-blur);-webkit-backdrop-filter:var(--g-blur);border:1px solid var(--g-border);box-shadow:var(--shadow);border-radius:var(--rad)}
+        :root{--g-bg:rgba(255,255,255,0.22);--g-bg-h:rgba(255,255,255,0.48);--g-border:rgba(255,255,255,0.4);--green:#2e7d32;--green-d:#1b5e20;--green-l:#4caf50;--gold:#fbc02d;--rad:16px;--shadow:0 8px 32px rgba(0,0,0,0.1)}
+        .glass-panel{background:var(--g-bg);border:1px solid var(--g-border);box-shadow:var(--shadow);border-radius:var(--rad)}
         
         .container{max-width:1300px;margin:0 auto;padding:0 20px;position:relative;z-index:auto}
 
         .header-main{display:flex;align-items:center;justify-content:center;gap:15px;margin-bottom:30px;padding:22px 25px;position:relative;background:transparent;border:none;box-shadow:none;}
-        .header-main::before{content:'';position:absolute;inset:0;background:var(--g-bg);backdrop-filter:var(--g-blur);-webkit-backdrop-filter:var(--g-blur);border:1px solid rgba(76,175,80,0.6);box-shadow:0 8px 32px rgba(0,0,0,0.1), 0 0 20px rgba(76,175,80,0.3), inset 0 0 12px rgba(76,175,80,0.1);border-radius:var(--rad);z-index:2;}
+        .header-main::before{content:'';position:absolute;inset:0;background:var(--g-bg);border:1px solid rgba(76,175,80,0.6);box-shadow:0 8px 32px rgba(0,0,0,0.1), 0 0 20px rgba(76,175,80,0.3), inset 0 0 12px rgba(76,175,80,0.1);border-radius:var(--rad);z-index:2;}
         .zen-logo{position:relative;z-index:10;}
         .header-content{text-align:center;position:relative;z-index:10;}
 
@@ -300,24 +300,30 @@
         .sk-t2{width:55%;height:13px;margin-bottom:5px}
         .sk-t3{width:40%;height:13px}
 
-        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;z-index:10005;align-items:center;justify-content:center;padding:15px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);will-change:transform;transform:translateZ(0); touch-action: none;}
+        /* ĐÃ CHỈNH SỬA MODAL OVERLAY: Xóa bỏ Blur khi mở, làm nền tối lại chút */
+        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:none;z-index:10005;align-items:center;justify-content:center;padding:15px;backdrop-filter:none !important;-webkit-backdrop-filter:none !important;will-change:transform;transform:translateZ(0); touch-action: none;}
+        body.dark-mode .modal-overlay{background:rgba(0, 5, 15, 0.9) !important;}
+        
         .modal-content{width:100%;max-width:820px;max-height:90vh;overflow-y:auto;padding:28px;position:relative;background:rgba(255,255,255,0.96)!important;border:1px solid #fff;border-radius:20px;box-shadow:0 25px 60px rgba(0,0,0,0.2);animation:modalIn .45s cubic-bezier(.25,1,.5,1) forwards;transform:translateZ(0);will-change:transform; touch-action: auto;}
         @keyframes modalIn{0%{opacity:0;transform:translateY(40px) scale(.95);filter:blur(8px)}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
         
-        .modal-drug-header{display:flex;gap:20px;align-items:center;margin-bottom:20px;padding:18px 22px;border-radius:16px;background:linear-gradient(135deg,rgba(76,175,80,0.15),rgba(46,125,50,0.1));backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(76,175,80,0.25);box-shadow:0 4px 20px rgba(46,125,50,0.1)}
+        .modal-drug-header{display:flex;gap:20px;align-items:center;margin-bottom:20px;padding:18px 22px;border-radius:16px;background:linear-gradient(135deg,rgba(76,175,80,0.15),rgba(46,125,50,0.1));border:1px solid rgba(76,175,80,0.25);box-shadow:0 4px 20px rgba(46,125,50,0.1)}
         
         .modal-drug-img{width:100px;height:100px;object-fit:contain;background:#fff;border-radius:14px;padding:8px;flex-shrink:0;border:1px solid rgba(76,175,80,0.2);box-shadow:0 4px 15px rgba(0,0,0,0.06);cursor:zoom-in;transition:.2s}
         .modal-drug-img:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(0,0,0,0.1)}
         .modal-drug-title{color:var(--green-d);font-size:22px;font-weight:900;margin:0}
+        
+        /* ĐÃ CHỈNH SỬA NÚT GOOGLE SEARCH: Tránh bị cắt xén chữ G */
         .google-search-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#fff!important;background:linear-gradient(135deg,#4285F4,#0d47a1);padding:6px 14px;border-radius:20px;text-decoration:none;transition:.2s;box-shadow:0 3px 10px rgba(66,133,244,0.3);width:fit-content;margin-top:2px}
+        .google-search-btn svg{width:16px;height:16px;flex-shrink:0;overflow:visible;}
+        
         .drive-orig-btn{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#fff!important;background:linear-gradient(135deg,#00897b,#004d40);padding:8px 20px;border-radius:24px;text-decoration:none;transition:.2s;box-shadow:0 3px 12px rgba(0,137,123,0.35);margin-top:8px;width:fit-content}
         .drive-orig-btn:hover{transform:translateY(-1px);box-shadow:0 5px 15px rgba(0,137,123,0.45)}
         body.dark-mode .drive-orig-btn{background:linear-gradient(135deg,#00bfa5,#00695c);box-shadow:0 3px 10px rgba(0,191,165,0.35)}
 
         .google-search-btn:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(66,133,244,0.4)}
-        .google-search-btn svg{width:14px;height:14px}
         
-        #image-zoom-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:10010;display:none;align-items:center;justify-content:center;cursor:zoom-out;backdrop-filter:blur(5px); touch-action: none;}
+        #image-zoom-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:10010;display:none;align-items:center;justify-content:center;cursor:zoom-out;backdrop-filter:none !important;-webkit-backdrop-filter:none !important; touch-action: none;}
         #image-zoom-img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.5);animation:zoomIn .3s cubic-bezier(.25,1,.5,1)}
         @keyframes zoomIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
 
@@ -363,7 +369,7 @@
         .group-filter-wrapper{position:relative;display:flex;align-items:center;order:1;transition:opacity .2s,transform .2s}
         .group-filter-wrapper.hidden{display:none}
         .group-filter-pill-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none;z-index:2;flex-shrink:0}
-        .group-filter-select{background:var(--g-bg);backdrop-filter:var(--g-blur);-webkit-backdrop-filter:var(--g-blur);border:1px solid var(--g-border);border-radius:12px;padding:0 34px 0 38px;height:42px;color:var(--green);font-weight:700;font-size:13px;cursor:pointer;outline:none;transition:.2s;max-width:230px;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%232e7d32' stroke-width='3' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;font-family:'Inter','Segoe UI',sans-serif!important}
+        .group-filter-select{background:var(--g-bg);border:1px solid var(--g-border);border-radius:12px;padding:0 34px 0 38px;height:42px;color:var(--green);font-weight:700;font-size:13px;cursor:pointer;outline:none;transition:.2s;max-width:230px;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%232e7d32' stroke-width='3' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;font-family:'Inter','Segoe UI',sans-serif!important}
         .group-filter-select:focus{border-color:var(--green-l);background-color:rgba(255,255,255,0.55);box-shadow:0 0 0 3px rgba(76,175,80,0.15)}
         .group-filter-select:hover{background-color:var(--g-bg-h)}
         .group-filter-select option{background:#fff;color:#333;font-weight:600}
@@ -387,10 +393,10 @@
         #chat-widget-btn::before{content:'';position:absolute;top:50%;left:50%;width:250%;height:350%;background:conic-gradient(transparent 75%,#ffeb3b 100%);transform-origin:center;transform:translate(-50%,-50%) rotate(0);z-index:1;opacity:0}
         #chat-widget-btn.tracing::before{opacity:1;animation:spinTrace .6s linear forwards}
         @keyframes spinTrace{0%{transform:translate(-50%,-50%) rotate(0)}100%{transform:translate(-50%,-50%) rotate(360deg)}}
-        #chat-widget-window{position:fixed;top:50%;left:50%;width:460px;height:700px;max-height:calc(100vh - 40px);background:linear-gradient(160deg,rgba(27,94,32,0.92) 0%,rgba(46,125,50,0.88) 30%,rgba(56,142,60,0.85) 60%,rgba(76,175,80,0.82) 100%);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,0.45),0 0 0 1px rgba(255,255,255,0.15),inset 0 1px 0 rgba(255,255,255,0.2);z-index:10000;display:none;flex-direction:column;overflow:hidden;border:1px solid rgba(255,255,255,0.25);transform-origin:center;animation:chatPop .4s cubic-bezier(.175,.885,.32,1.275) forwards}
+        #chat-widget-window{position:fixed;top:50%;left:50%;width:460px;height:700px;max-height:calc(100vh - 40px);background:linear-gradient(160deg,rgba(27,94,32,0.92) 0%,rgba(46,125,50,0.88) 30%,rgba(56,142,60,0.85) 60%,rgba(76,175,80,0.82) 100%);border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,0.45),0 0 0 1px rgba(255,255,255,0.15),inset 0 1px 0 rgba(255,255,255,0.2);z-index:10000;display:none;flex-direction:column;overflow:hidden;border:1px solid rgba(255,255,255,0.25);transform-origin:center;animation:chatPop .4s cubic-bezier(.175,.885,.32,1.275) forwards}
         @keyframes chatPop{from{opacity:0;transform:translate(-50%,-50%) scale(.5)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
         .chat-widget-container{width:100%;height:100%;display:flex;flex-direction:column;padding:12px}
-        .chat-widget-container header{position:relative;text-align:center;margin-bottom:10px;color:#fff;padding:16px 14px;background:linear-gradient(135deg,rgba(27,94,32,0.9),rgba(46,125,50,0.85));backdrop-filter:blur(12px);border-radius:16px;border:1px solid rgba(255,255,255,0.15);box-shadow:0 6px 25px rgba(0,0,0,0.15),inset 0 1px 0 rgba(255,255,255,0.1);flex-shrink:0}
+        .chat-widget-container header{position:relative;text-align:center;margin-bottom:10px;color:#fff;padding:16px 14px;background:linear-gradient(135deg,rgba(27,94,32,0.9),rgba(46,125,50,0.85));border-radius:16px;border:1px solid rgba(255,255,255,0.15);box-shadow:0 6px 25px rgba(0,0,0,0.15),inset 0 1px 0 rgba(255,255,255,0.1);flex-shrink:0}
         
         .chat-close-btn{position:absolute;top:12px;right:14px;color:rgba(255,255,255,0.7);cursor:pointer;transition:.25s;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,255,255,0.1);flex-shrink:0;box-sizing:border-box;line-height:0;padding-bottom:2px;}
         .chat-close-btn svg { width: 18px; height: 18px; }
@@ -398,7 +404,7 @@
         
         .chat-widget-container h1{font-size:1.4rem;margin:0 0 4px;text-transform:uppercase;font-weight:900;text-shadow:0 2px 8px rgba(0,0,0,0.3);letter-spacing:1.5px}
         .chat-widget-container .subtitle{font-size:.88rem;opacity:.8;margin:0;font-weight:500;letter-spacing:0.3px}
-        .chat-widget-container .chat-container{flex:1;display:flex;flex-direction:column;overflow:hidden;background:rgba(255,255,255,0.12);backdrop-filter:blur(16px);border-radius:20px;border:1px solid rgba(255,255,255,0.18);box-shadow:inset 0 2px 10px rgba(0,0,0,0.06)}
+        .chat-widget-container .chat-container{flex:1;display:flex;flex-direction:column;overflow:hidden;background:rgba(255,255,255,0.12);border-radius:20px;border:1px solid rgba(255,255,255,0.18);box-shadow:inset 0 2px 10px rgba(0,0,0,0.06)}
         .chat-widget-container .chat-header{background:linear-gradient(135deg,rgba(27,94,32,0.95),rgba(46,125,50,0.9));color:#fff;padding:12px 16px;text-align:center;display:flex;align-items:center;justify-content:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.12);flex-shrink:0;border-radius:20px 20px 0 0}
         .chat-widget-container .chat-header h3{font-size:1rem;margin:0;font-weight:700;letter-spacing:0.5px;text-shadow:0 1px 3px rgba(0,0,0,0.2)}
         .chat-widget-container .chat-messages{padding:16px;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:14px;flex:1;scroll-behavior:smooth}
@@ -422,7 +428,7 @@
         .chat-widget-container .message-content a{color:#2E7D32;text-decoration:underline;font-weight:bold}
         .chat-widget-container .user-message .message-content a{color:#fff}
         .chat-widget-container .chat-input-container{width:100%;display:flex;gap:10px;padding:10px 0;background:transparent;border:none;flex-shrink:0;align-items:center;position:relative}
-        .chat-widget-container .chat-input{flex:1;height:48px;padding:12px 55px 12px 45px;border:1px solid rgba(255,255,255,0.35);background:rgba(255,255,255,0.18);backdrop-filter:blur(10px);border-radius:25px;outline:none;font-size:1rem;color:#fff;transition:.3s;box-shadow:inset 0 2px 6px rgba(0,0,0,0.05);resize:none;overflow:hidden;font-family:inherit}
+        .chat-widget-container .chat-input{flex:1;height:48px;padding:12px 55px 12px 45px;border:1px solid rgba(255,255,255,0.35);background:rgba(255,255,255,0.18);border-radius:25px;outline:none;font-size:1rem;color:#fff;transition:.3s;box-shadow:inset 0 2px 6px rgba(0,0,0,0.05);resize:none;overflow:hidden;font-family:inherit}
         .chat-widget-container .chat-input::placeholder{color:rgba(255,255,255,0.6)}
         .chat-widget-container .chat-input:focus{background:rgba(255,255,255,0.85);border-color:var(--green-l);color:#333;box-shadow:0 0 0 3px rgba(76,175,80,0.2)}
         .chat-widget-container .chat-input:focus::placeholder{color:rgba(0,0,0,0.4)}
@@ -455,6 +461,31 @@
             .back-top { bottom: calc(60px + env(safe-area-inset-bottom)) !important; }
             #chat-widget-window { height: 85dvh !important; max-height: 85dvh !important; }
             .modal-content:not(.iv-modal-content) { align-self: flex-start !important; margin-top: 20px !important; max-height: 85dvh !important; }
+            
+            /* CSS BẮT BUỘC CHO TỜ HDSD TRÊN MOBILE ĐỂ FULL MÀN HÌNH */
+            #hdsd-modal { padding: 0 !important; }
+            #hdsd-modal .modal-content {
+                width: 100vw !important;
+                height: 100dvh !important;
+                max-width: 100vw !important;
+                max-height: 100dvh !important;
+                border-radius: 0 !important;
+                border: none !important;
+                margin: 0 !important;
+                top: 0 !important;
+                left: 0 !important;
+                position: fixed !important;
+            }
+            #hdsd-modal .iv-iframe-container { border-radius: 0 !important; }
+            #hdsd-modal .close-btn {
+                top: 15px !important;
+                right: 15px !important;
+                background: rgba(0,0,0,0.5) !important;
+                border-radius: 50% !important;
+                width: 36px !important;
+                height: 36px !important;
+                color: white !important;
+            }
         }
         
         body[style*="overflow: hidden"] { overscroll-behavior: none !important; }
@@ -465,7 +496,7 @@
             background: linear-gradient(135deg, #020810 0%, #0a1628 40%, #0d1f3c 70%, #030d1a 100%);
             background-attachment: fixed; color: #c8d8f0;
             --g-bg: rgba(13, 31, 60, 0.55); --g-bg-h: rgba(20, 45, 85, 0.75); --g-border: rgba(80, 220, 180, 0.18);
-            --g-blur: blur(22px); --green: #50dcb4; --green-d: #2ecc8f; --green-l: #4df5c0; --gold: #ffd166;
+            --green: #50dcb4; --green-d: #2ecc8f; --green-l: #4df5c0; --gold: #ffd166;
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.45); color-scheme: dark;
         }
 
@@ -485,7 +516,7 @@
         body.dark-mode #night-container { z-index: 5 !important; }
         
         body.dark-mode .header-main { background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border: none !important; box-shadow: none !important; position: relative; }
-        body.dark-mode .header-main::before { content: ''; position: absolute; inset: 0; background: rgba(10, 22, 40, 0.35) !important; backdrop-filter: blur(14px) !important; -webkit-backdrop-filter: blur(14px) !important; border: 1px solid rgba(80, 220, 180, 0.15) !important; box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 0 12px rgba(80, 220, 180, 0.15), inset 0 0 8px rgba(80, 220, 180, 0.08) !important; border-radius: inherit; z-index: 2 !important; }
+        body.dark-mode .header-main::before { content: ''; position: absolute; inset: 0; background: rgba(10, 22, 40, 0.35) !important; border: 1px solid rgba(80, 220, 180, 0.15) !important; box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 0 12px rgba(80, 220, 180, 0.15), inset 0 0 8px rgba(80, 220, 180, 0.08) !important; border-radius: inherit; z-index: 2 !important; }
         
         body.dark-mode .header-main .zen-logo, body.dark-mode .header-main .header-content, body.dark-mode .search-wrapper, body.dark-mode .product-grid, body.dark-mode .skeleton-grid, body.dark-mode .footer { position: relative; z-index: 10 !important; }
 
@@ -525,7 +556,7 @@
         body.dark-mode .group-filter-select.active-filter { background-color: rgba(13, 74, 50, 0.5) !important; border-color: #50dcb4 !important; box-shadow: 0 0 10px rgba(80, 220, 180, 0.25) !important; }
         body.dark-mode .group-filter-select.active-filter + .group-text-overlay #groupSelectedText { color: #4df5c0 !important; }
 
-        body.dark-mode .glass-card { background: rgba(10, 22, 45, 0.35) !important; backdrop-filter: blur(14px) !important; -webkit-backdrop-filter: blur(14px) !important; border: 1px solid rgba(80, 220, 180, 0.15) !important; box-shadow: 0 4px 20px rgba(0,0,0,0.35) !important; }
+        body.dark-mode .glass-card { background: rgba(10, 22, 45, 0.35) !important; border: 1px solid rgba(80, 220, 180, 0.15) !important; box-shadow: 0 4px 20px rgba(0,0,0,0.35) !important; }
         body.dark-mode .glass-card:hover { background: rgba(15, 35, 65, 0.55) !important; border-color: rgba(80, 220, 180, 0.3) !important; box-shadow: 0 16px 50px rgba(0,0,0,0.5), 0 0 25px rgba(80, 220, 180, 0.12), 0 0 0 1px rgba(80, 220, 180, 0.2) !important; transform: translateY(-8px) !important; }
 
         body.dark-mode .img-wrap { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(80, 220, 180, 0.08) !important; }
@@ -554,7 +585,6 @@
         body.dark-mode .iv-iframe-container { background: linear-gradient(135deg, rgba(13, 74, 50, 0.12), rgba(6, 30, 20, 0.07)) !important; border: 1px solid rgba(80, 220, 180, 0.2) !important; box-shadow: 0 25px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(80,220,180,0.1) !important; padding: 3px !important; }
         body.dark-mode .iv-iframe-container iframe { background: transparent !important; }
 
-        body.dark-mode .modal-overlay { background: rgba(0, 5, 15, 0.75) !important; }
         body.dark-mode .modal-content { background: linear-gradient(160deg, rgba(8, 20, 42, 0.98), rgba(5, 15, 32, 0.99)) !important; color: #c8d8f0 !important; border: 1px solid rgba(80, 220, 180, 0.2) !important; box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(80,220,180,0.1), inset 0 1px 0 rgba(80,220,180,0.08) !important; }
         body.dark-mode .modal-drug-header { background: linear-gradient(135deg, rgba(13, 74, 50, 0.3), rgba(6, 42, 28, 0.2)) !important; border-color: rgba(80, 220, 180, 0.25) !important; box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important; }
         body.dark-mode .modal-drug-title { color: #4df5c0 !important; text-shadow: 0 0 15px rgba(80, 220, 180, 0.3); }
@@ -621,11 +651,10 @@
         @media (prefers-reduced-motion: reduce) { body.dm-transitioning * { transition: none !important; animation: none !important; } }
 
         @media (max-width: 600px) {
-            body.dark-mode .glass-panel, body.dark-mode .abc-toggle-btn, body.dark-mode .view-btn, body.dark-mode .letter-btn { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background: #0d1f3c !important; }
-            body.dark-mode .group-filter-select { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background-color: #0d1f3c !important; }
-            body.dark-mode .search-box { background: #0b1a30 !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
-            body.dark-mode .glass-card { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background: rgba(10, 22, 45, 0.95) !important; transform: translateZ(0); will-change: transform; }
-            body.dark-mode #chat-widget-window { backdrop-filter: blur(14px) !important; -webkit-backdrop-filter: blur(14px) !important; }
+            body.dark-mode .glass-panel, body.dark-mode .abc-toggle-btn, body.dark-mode .view-btn, body.dark-mode .letter-btn { background: #0d1f3c !important; }
+            body.dark-mode .group-filter-select { background-color: #0d1f3c !important; }
+            body.dark-mode .search-box { background: #0b1a30 !important; }
+            body.dark-mode .glass-card { background: rgba(10, 22, 45, 0.95) !important; transform: translateZ(0); will-change: transform; }
             body.dark-mode .iv-badge-btn { transform: translateZ(0); -webkit-transform: translateZ(0); }
             body.dark-mode .iv-btn-text { transform: translateZ(0); -webkit-transform: translateZ(0); }
             body.dark-mode::before { display: none !important; }
@@ -694,28 +723,21 @@
         .iv-modal-content { touch-action: none !important; }
         .iv-iframe-container { touch-action: pan-y !important; overscroll-behavior: contain !important; -webkit-overflow-scrolling: touch !important; }
         
-        /* CSS DỪNG TOÀN BỘ HIỆU ỨNG VÀ BLUR KHI MỞ MODAL */
-        body.modal-open .container *, body.modal-open .nature-background *, body.modal-open .night-background *, body.modal-open #chat-widget-btn * { animation-play-state: paused !important; will-change: auto !important; }
-        body.modal-open .glass-panel, body.modal-open .header-main::before, body.modal-open .glass-card, body.modal-open .group-filter-select, body.modal-open #chat-widget-window, body.modal-open .chat-widget-container header, body.modal-open .chat-widget-container .chat-container, body.modal-open .chat-input { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
-        
+        /* CSS KHÓA HIỆU ỨNG TRANG CHỦ KHI MODAL MỞ */
+        body.modal-open-freeze * { animation-play-state: paused !important; pointer-events: none !important; }
+        body.modal-open-freeze .modal-overlay, body.modal-open-freeze .modal-overlay * { animation-play-state: running !important; pointer-events: auto !important; }
+        body.modal-open-freeze .leaf, body.modal-open-freeze .star, body.modal-open-freeze .shooting-star, body.modal-open-freeze .planet { display: none !important; }
+
         /* =========================================================================
-           CSS BỔ SUNG CHO TỜ HDSD KHÔNG DÙNG IFRAME MÀ VẪN GIỮ NGUYÊN GIAO DIỆN Y HỆT 
+           CSS BỔ SUNG CHO TỜ HDSD
            ========================================================================= */
         #hdsd-content {
             padding: 20px 24px; max-width: 860px; margin: 0 auto;
             width: 100%; height: 100%; overflow-y: auto; color: var(--text, #333); font-size: 15px;
             -webkit-overflow-scrolling: touch; background: var(--bg, #fff); transition: background .3s, color .3s;
-            
-            /* ĐỒNG BỘ CHÍNH XÁC FONT CHỮ BẢN GỐC IFRAME */
             font-family: 'Inter', 'Segoe UI', Roboto, sans-serif !important;
-            font-weight: 400;
-            letter-spacing: -0.01em;
-            -webkit-font-smoothing: antialiased;
-            
-            /* THANH CUỘN TỰ ĐỘNG ẨN */
-            scrollbar-width: thin;
-            scrollbar-color: transparent transparent;
-            transition: scrollbar-color 0.3s;
+            font-weight: 400; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased;
+            scrollbar-width: thin; scrollbar-color: transparent transparent; transition: scrollbar-color 0.3s;
         }
         
         #hdsd-content.sb-visible { scrollbar-color: rgba(128,128,128,0.4) transparent; }
@@ -755,6 +777,8 @@
         #hdsd-content img { max-width: 100%; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: block; margin: 14px auto; }
         #hdsd-content a { color: var(--green); text-decoration: none; font-weight: 600; }
         #hdsd-content ul { padding-left: 22px; margin: 8px 0; }
+        
+        body.modal-open .leaf, body.modal-open .star, body.modal-open .shooting-star, body.modal-open .planet, body.modal-open .zen-logo img, body.modal-open .new-badge::before, body.modal-open .new-badge::after, body.modal-open .syringe-icon, body.modal-open .tk-icon { animation-play-state: paused !important; will-change: auto !important; }
 
         /* Chế độ Dark Mode cho tờ HDSD */
         body.dark-mode #hdsd-content { background: #1a1a1a !important; color: #e8e8e8 !important; }
@@ -979,7 +1003,7 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </span>
                 <h1>MedPlus AI</h1>
-                <p class="subtitle">Hỗ trợ thông quyết &amp; Quy trình khám chữa bệnh</p>
+                <p class="subtitle">Hỗ trợ thông tin thuốc &amp; Quy trình khám chữa bệnh</p>
             </header>
             <div class="chat-container">
                 <div class="chat-header">
@@ -1140,22 +1164,60 @@
         const MEDPLUS_API_URL = "/medplus.json?t=" + new Date().getTime();
         
         let _scrollY = 0;
+        let _touchBlocker = null;
 
         function lockBodyScroll() {
             _scrollY = window.scrollY;
-            document.body.classList.add('modal-open');
-            document.documentElement.classList.add('modal-open');
             document.body.style.top = '-' + _scrollY + 'px';
+            document.body.classList.add('modal-open');
+            document.body.classList.add('modal-open-freeze'); /* MỚI THÊM ĐỂ FREEZE HIỆU ỨNG TRANG CHỦ */
+            document.documentElement.classList.add('modal-open');
+
+            _touchBlocker = function(e) {
+                let el = e.target;
+                while (el) {
+                    if (el.classList && (
+                        el.classList.contains('modal-content') ||
+                        el.classList.contains('iv-iframe-container') ||
+                        el.id === 'hdsd-content'
+                    )) return; 
+                    el = el.parentElement;
+                }
+                e.preventDefault();
+            };
+            document.addEventListener('touchmove', _touchBlocker, { passive: false });
+            document.addEventListener('wheel', _wheelBlocker, { passive: false });
+        }
+
+        function _wheelBlocker(e) {
+            let el = e.target;
+            while (el) {
+                if (el.classList && (
+                    el.classList.contains('modal-content') ||
+                    el.classList.contains('iv-iframe-container') ||
+                    el.id === 'hdsd-content'
+                )) return;
+                el = el.parentElement;
+            }
+            e.preventDefault();
         }
 
         function unlockBodyScroll() {
             document.body.classList.remove('modal-open');
+            document.body.classList.remove('modal-open-freeze'); /* BỎ FREEZE KHI ĐÓNG MODAL */
             document.documentElement.classList.remove('modal-open');
             document.body.style.top = '';
-            window.scrollTo(0, _scrollY);
-        }
+            const sy = _scrollY;
+            requestAnimationFrame(function() {
+                window.scrollTo(0, sy);
+            });
 
-        const notionCache = { blocks: {}, pages: {} };
+            if (_touchBlocker) {
+                document.removeEventListener('touchmove', _touchBlocker, { passive: false });
+                _touchBlocker = null;
+            }
+            document.removeEventListener('wheel', _wheelBlocker, { passive: false });
+        }
 
         let rawData = [];
         let filteredData = [];
@@ -1513,8 +1575,6 @@
             isRendering = false;
         }
 
-        const NOTION_WORKER = 'https://ngocanh.princetq.workers.dev';
-
         function extractPageId(url) {
             if (!url) return null;
             let cleanUrl = url.split('?')[0].split('#')[0];
@@ -1527,253 +1587,10 @@
             return null;
         }
 
-        async function fetchBlocks(blockId, cursor, signal) {
-            const cacheKey = blockId + (cursor || '');
-            if (notionCache.blocks[cacheKey]) return notionCache.blocks[cacheKey];
-
-            const cacheKeys = Object.keys(notionCache.blocks);
-            if (cacheKeys.length > 30) {
-                delete notionCache.blocks[cacheKeys[0]];
-            }
-
-            let u = NOTION_WORKER + '/v1/blocks/' + blockId + '/children?page_size=100';
-            if (cursor) u += '&start_cursor=' + cursor;
-
-            const res = await fetch(u, { 
-                headers: { 'Notion-Version': '2022-06-28' },
-                cache: 'force-cache',
-                signal: signal
-            });
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            const data = await res.json();
-
-            notionCache.blocks[cacheKey] = data;
-            return data;
-        }
-
-        async function fetchAllBlocks(blockId, signal) {
-            let blocks = [], cursor = null, n = 0;
-            do {
-                if (signal && signal.aborted) throw new DOMException('Aborted', 'AbortError');
-                const d = await fetchBlocks(blockId, cursor, signal);
-                if (d.results) blocks = blocks.concat(d.results);
-                cursor = d.has_more ? d.next_cursor : null;
-                n++;
-            } while (cursor && n < 10);
-            return blocks;
-        }
-
-        async function fetchDeep(blockId, stopAtToggle = false, signal) {
-            if (signal && signal.aborted) throw new DOMException('Aborted', 'AbortError');
-            const blocks = await fetchAllBlocks(blockId, signal);
-            const toFetch = blocks.filter(b => b.has_children && (!stopAtToggle || b.type !== 'toggle'));
-            const LIMIT = 3;
-            for (let i = 0; i < toFetch.length; i += LIMIT) {
-                if (signal && signal.aborted) throw new DOMException('Aborted', 'AbortError');
-                const batch = toFetch.slice(i, i + LIMIT);
-                await Promise.all(batch.map(async b => {
-                    b._children = await fetchDeep(b.id, stopAtToggle, signal);
-                }));
-                if (i + LIMIT < toFetch.length && i >= LIMIT * 2) {
-                    await new Promise(r => setTimeout(r, 50));
-                }
-            }
-            return blocks;
-        }
-
-        function findDriveLink(blocks) {
-            for (const block of blocks) {
-                const type = block.type;
-                const b = block[type] || {};
-                if (b.url && b.url.includes('drive.google.com')) return b.url;
-                for (const r of (b.rich_text || [])) {
-                    if (r.href && r.href.includes('drive.google.com')) return r.href;
-                    if (r.plain_text && r.plain_text.trim().startsWith('http') && r.plain_text.includes('drive.google.com')) return r.plain_text.trim();
-                }
-                if (b.external && b.external.url && b.external.url.includes('drive.google.com')) return b.external.url;
-                if (block._children) {
-                    const found = findDriveLink(block._children);
-                    if (found) return found;
-                }
-            }
-            return null;
-        }
-
-        function rt(arr) {
-            return (arr||[]).map(r => {
-                let t = (r.plain_text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g, '<br>');
-                if (r.annotations) {
-                    if (r.annotations.bold)          t = '<strong>'+t+'</strong>';
-                    if (r.annotations.italic)        t = '<em>'+t+'</em>';
-                    if (r.annotations.underline)     t = '<u>'+t+'</u>';
-                    if (r.annotations.strikethrough) t = '<s>'+t+'</s>';
-                    if (r.annotations.code)          t = '<code>'+t+'</code>';
-                    if (r.annotations.color && r.annotations.color !== 'default')
-                        t = '<span style="color:'+r.annotations.color.replace('_background','')+'">'+t+'</span>';
-                }
-                if (r.href) t = '<a href="'+r.href+'" target="_blank">'+t+'</a>';
-                return t;
-            }).join('');
-        }
-
-        function renderBlocks(blocks) {
-            let html = '';
-            for (const block of blocks) {
-                const type = block.type;
-                const b = block[type] || {};
-                const text = rt(b.rich_text);
-                const ch = block._children ? renderBlocks(block._children) : '';
-
-                switch(type) {
-                    case 'heading_1':
-                        html += '<h1>'+text+'</h1>';
-                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
-                        break;
-                    case 'heading_2':
-                        html += '<h2>'+text+'</h2>';
-                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
-                        break;
-                    case 'heading_3':
-                        html += '<h3>'+text+'</h3>';
-                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
-                        break;
-                    case 'toggle': {
-                        if (b.rich_text && b.rich_text.length > 0) {
-                            let last = b.rich_text[b.rich_text.length - 1];
-                            last.plain_text = last.plain_text.replace(/:\s*$/, '');
-                            if(last.text) last.text.content = last.text.content.replace(/:\s*$/, '');
-                        }
-                        let tText = rt(b.rich_text);
-                        tText = tText.replace(/:\s*((<\/[a-zA-Z0-9]+>\s*)*)$/, '$1').trim();
-                        if (!tText) tText = 'CHI TIẾT';
-                        
-                        if (block.id === 'fake-extra-info' || block._children) {
-                            let chHtml = renderBlocks(block._children || []);
-                            html += '<details>'
-                                  + '<summary><span>'+tText+'</span></summary>'
-                                  + '<div class="content">'+chHtml+'</div>'
-                                  + '</details>';
-                        } else {
-                            html += '<details id="details-'+block.id+'" ontoggle="if(this.open && !this.dataset.loaded) loadNotionToggle(\''+block.id+'\', this.id);" data-block-id="'+block.id+'">'
-                                  + '<summary><span>'+tText+'</span></summary>'
-                                  + '<div class="content"><div style="color:#666;font-style:italic">⏳ Đang tải nội dung...</div></div>'
-                                  + '</details>';
-                        }
-                        break;
-                    }
-                    case 'paragraph':
-                        html += text ? '<p>'+text+'</p>' : '<div style="height:8px"></div>';
-                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
-                        break;
-                    case 'bulleted_list_item':
-                        html += '<li>'+text+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</li>';
-                        break;
-                    case 'numbered_list_item':
-                        html += '<li>'+text+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</li>';
-                        break;
-                    case 'to_do':
-                        html += '<div style="display:flex;gap:8px;margin:4px 0;align-items:flex-start">'
-                              + '<span style="font-size:16px;margin-top:2px">'+(b.checked?'☑':'☐')+'</span>'
-                              + '<div><span style="font-size:15px;line-height:1.7;'+(b.checked?'text-decoration:line-through;color:var(--subtext)':'')+'">'+text+'</span>'+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</div>'
-                              + '</div>';
-                        break;
-                    case 'quote':
-                        html += 'blockquote'+text+(ch?'<div style="margin-top:6px">'+ch+'</div>':'')+'</blockquote>';
-                        break;
-                    case 'callout':
-                        html += '<div style="display:flex;gap:10px;background:rgba(76,175,80,0.09);border:1px solid rgba(76,175,80,0.25);border-radius:10px;padding:12px 14px;margin:10px 0">'
-                              + '<span style="font-size:20px;flex-shrink:0">'+(b.icon&&b.icon.emoji?b.icon.emoji:'ℹ️')+'</span>'
-                              + '<div style="font-size:15px;line-height:1.7;">'+text+(ch?'<div style="margin-top:6px">'+ch+'</div>':'')+'</div>'
-                              + '</div>';
-                        break;
-                    case 'divider':
-                        html += '<hr>';
-                        break;
-                    case 'code':
-                        html += '<pre><code>'+(b.rich_text||[]).map(r=>r.plain_text).join('')+'</code></pre>';
-                        break;
-                    case 'image': {
-                        let src = '';
-                        if (b._proxy && b._blockId) {
-                            src = NOTION_WORKER + '/image-proxy/' + b._blockId;
-                        } else {
-                            src = (b.file && b.file.url) || (b.external && b.external.url) || '';
-                        }
-                        const cap = rt(b.caption);
-                        html += '<div style="text-align:center;margin:14px 0"><img src="'+src+'" loading="lazy">'+(cap?'<br><small style="color:var(--subtext);font-size:13px">'+cap+'</small>':'')+'</div>';
-                        break;
-                    }
-                    case 'bookmark':
-                    case 'link_preview':
-                    case 'embed': {
-                        const url = b.url || '';
-                        const cap = rt(b.caption);
-                        if (url) html += '<a href="'+url+'" target="_blank" style="display:block;padding:10px 14px;border:1px solid rgba(76,175,80,0.3);border-radius:8px;margin:8px 0;background:rgba(76,175,80,0.05)">🔗 '+(cap||url)+'</a>';
-                        break;
-                    }
-                    case 'table': {
-                        const rows = block._children || [];
-                        if (rows.length) {
-                            html += '<div style="overflow-x:auto;margin:12px 0"><table>';
-                            rows.forEach((row, ri) => {
-                                const cells = (row.table_row&&row.table_row.cells)||[];
-                                html += '<tr>';
-                                cells.forEach(cell => {
-                                    const tag = ri===0?'th':'td';
-                                    html += '<'+tag+'>'+rt(cell)+'</'+tag+'>';
-                                });
-                                html += '</tr>';
-                            });
-                            html += '</table></div>';
-                        }
-                        break;
-                    }
-                    case 'column_list':
-                        html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:10px 0">'+ch+'</div>';
-                        break;
-                    case 'column':
-                        html += '<div>'+ch+'</div>';
-                        break;
-                    default:
-                        if (text) html += '<p>'+text+'</p>';
-                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
-                        break;
-                }
-            }
-            html = html.replace(/(<li[^>]*>[\s\S]*?<\/li>\s*)+/g, m => '<ul>'+m+'</ul>');
-            return html;
-        }
-
-        async function loadNotionToggle(blockId, elementId) {
-            try {
-                const children = await fetchDeep(blockId, true);
-                const html = renderBlocks(children);
-                const el = document.getElementById(elementId);
-                if (!el) return;
-                
-                let container = el.querySelector('.content') || el.querySelector('div');
-                if (!container) {
-                    container = document.createElement('div');
-                    container.className = 'content';
-                    el.appendChild(container);
-                }
-                container.innerHTML = html;
-                
-                container.querySelectorAll('details[data-block-id]').forEach(function(d) {
-                    d.addEventListener('toggle', function() {
-                        if (d.open && !d.dataset.loaded) {
-                            d.dataset.loaded = '1';
-                            loadNotionToggle(d.dataset.blockId, d.id);
-                        }
-                    });
-                });
-            } catch(e) { console.error('loadNotionToggle error:', e); }
-        }
+        // ĐÃ XÓA TOÀN BỘ CÁC HÀM XỬ LÝ NOTION BÊN DƯỚI ĐÂY (fetchBlocks, rt, renderBlocks...) DO ĐÃ DÙNG FILE JSON TRỰC TIẾP
 
         async function openNotionPopup(notionUrl) {
-            if (window._hdsdAbortCtrl) {
-                window._hdsdAbortCtrl.abort();
-            }
+            if (window._hdsdAbortCtrl) window._hdsdAbortCtrl.abort();
             window._hdsdAbortCtrl = new AbortController();
             const hdsdSignal = window._hdsdAbortCtrl.signal;
 
@@ -1789,142 +1606,37 @@
             lockBodyScroll();
 
             if (!notionUrl || typeof notionUrl !== 'string') {
-                 loader.innerHTML = '❌ Dữ liệu link Notion bị trống. Vui lòng kiểm tra lại Data.';
+                 loader.innerHTML = '❌ Dữ liệu link bị trống. Vui lòng kiểm tra lại Data.';
                  return;
             }
 
-            const pageId = extractPageId(notionUrl);
-            if (!pageId) { 
-                loader.innerHTML = `❌ Link Notion không hợp lệ.<br><small style="color:#666;word-break:break-all;">Link hiện tại trong Data: ${notionUrl}</small>`; 
-                return; 
-            }
+            // Dùng hàm extractPageId để lấy ID từ link cũ hoặc tên file
+            const pageId = extractPageId(notionUrl) || notionUrl; 
 
             try {
                 if (hdsdSignal.aborted) return;
+                // Gọi thẳng tới file JSON chứa toàn bộ nội dung HTML
                 const jsonUrl = './hdsd-data/' + pageId + '.json';
                 const jsonRes = await fetch(jsonUrl, { signal: hdsdSignal });
 
-                let pageRes, blocks;
-                if (jsonRes.ok) {
-                    const jsonData = await jsonRes.json();
-                    pageRes = jsonData.page;
-                    blocks = jsonData.blocks;
-                } else {
-                    loader.innerHTML = '⏳ Đang tải từ Notion API (fallback)...';
-                    const fetchPageData = async () => {
-                        if (notionCache.pages[pageId]) return notionCache.pages[pageId];
-                        const r = await fetch(NOTION_WORKER + '/v1/pages/' + pageId, {
-                            headers: { 'Notion-Version': '2022-06-28' },
-                            cache: 'force-cache',
-                            signal: hdsdSignal
-                        });
-                        if (!r.ok) {
-                            const errData = await r.text();
-                            throw new Error(`Mã lỗi: ${r.status}. Chi tiết: ${errData}`);
-                        }
-                        const data = await r.json();
-                        notionCache.pages[pageId] = data;
-                        return data;
-                    };
-                    if (hdsdSignal.aborted) return;
-                    [pageRes, blocks] = await Promise.all([
-                        fetchPageData(),
-                        fetchDeep(pageId, true, hdsdSignal)
-                    ]);
+                if (!jsonRes.ok) throw new Error('Không tìm thấy tệp JSON (' + jsonRes.status + ')');
+                
+                const data = await jsonRes.json();
+                
+                // Trích xuất HTML từ JSON (tùy thuộc cấu trúc bạn lưu như thế nào, ở đây hỗ trợ các dạng phổ biến nhất)
+                let htmlContent = data.html || data.content || data.body || data;
+                
+                if (typeof htmlContent !== 'string') {
+                    htmlContent = JSON.stringify(htmlContent); // Fallback an toàn nếu json bị lỗi định dạng
                 }
 
-                let lastToggleIdx = -1;
-                for (let i = 0; i < blocks.length; i++) {
-                    if (blocks[i].type === 'toggle') lastToggleIdx = i;
-                }
-                if (lastToggleIdx !== -1 && lastToggleIdx < blocks.length - 1) {
-                    let remaining = blocks.slice(lastToggleIdx + 1);
-                    let hasContent = remaining.some(bk => {
-                        if (bk.type === 'paragraph') {
-                            let txt = '';
-                            if(bk.paragraph.rich_text) {
-                                txt = bk.paragraph.rich_text.map(r=>r.plain_text).join('').trim();
-                            }
-                            return txt.length > 0;
-                        }
-                        if (bk.type === 'divider') return false; 
-                        return true;
-                    });
-                    
-                    if (hasContent) {
-                        blocks.splice(lastToggleIdx + 1); 
-                        blocks.push({
-                            id: 'fake-extra-info',
-                            type: 'toggle',
-                            has_children: true,
-                            toggle: { rich_text: [{ plain_text: 'THÔNG TIN THÊM', text: {content: 'THÔNG TIN THÊM'} }] },
-                            _children: remaining
-                        });
-                    }
-                }
-
-                let driveLink = null;
-                if (pageRes && pageRes.properties) {
-                    const prop = pageRes.properties['hdsd'] || pageRes.properties['HDSD']
-                              || pageRes.properties['Hdsd'] || pageRes.properties['drive']
-                              || pageRes.properties['Drive'];
-                    if (prop) {
-                        if (prop.type === 'url' && prop.url) {
-                            driveLink = prop.url;
-                        } else if (prop.type === 'rich_text' && prop.rich_text && prop.rich_text[0]) {
-                            driveLink = prop.rich_text[0].href || prop.rich_text[0].plain_text;
-                        } else if (prop.type === 'files' && prop.files && prop.files[0]) {
-                            driveLink = (prop.files[0].external && prop.files[0].external.url)
-                                      || (prop.files[0].file && prop.files[0].file.url);
-                        }
-                    }
-                }
-                if (!driveLink) driveLink = findDriveLink(blocks);
-
-                const html = renderBlocks(blocks);
-
-                const driveBtnHtml = driveLink
-                    ? '<style>'
-                      + '.hdsd-orig-btn{display:inline-flex;align-items:center;gap:8px;'
-                      + 'background:transparent;color:#2e7d32;border:1.5px solid #2e7d32;'
-                      + 'font-family:Inter,Segoe UI,sans-serif;font-size:13px;font-weight:600;'
-                      + 'padding:7px 16px;border-radius:8px;text-decoration:none;'
-                      + 'margin:12px 0 4px;transition:.2s;}'
-                      + '.hdsd-orig-btn:hover{background:rgba(46,125,50,0.07);}'
-                      + 'body.dark-mode .hdsd-orig-btn{color:#50dcb4;border-color:#50dcb4;}'
-                      + 'body.dark-mode .hdsd-orig-btn:hover{background:rgba(80,220,180,0.1);}'
-                      + '</style>'
-                      + '<a href="'+driveLink+'" target="_blank" class="hdsd-orig-btn">'
-                      + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
-                      + '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>'
-                      + '<polyline points="14 2 14 8 20 8"/>'
-                      + '</svg>'
-                      + ' XEM HDSD GỐC</a><hr>'
-                    : '';
-
-                let finalHtml = html;
-                const firstImgEnd = html.indexOf('</div>', html.indexOf('<img '));
-                if (firstImgEnd !== -1) {
-                    finalHtml = html.slice(0, firstImgEnd+6) + driveBtnHtml + html.slice(firstImgEnd+6);
-                } else {
-                    finalHtml = driveBtnHtml + html;
-                }
-
-                content.innerHTML = finalHtml;
+                content.innerHTML = htmlContent;
                 content.style.display = 'block';
                 loader.style.display = 'none';
 
-                // GIẢI PHÓNG HOÀN TOÀN BỘ NHỚ JSON TẠM ĐỂ CHỐNG TRÀN RAM SAFARI
-                notionCache.blocks = {};
-                notionCache.pages = {};
-
             } catch(e) {
-                if (e.message.includes('400')) {
-                    loader.innerHTML = `❌ Lỗi kết nối (400).<br><br><small style="color:#d32f2f">Gợi ý: Link Notion bị sai định dạng hoặc chưa Add connection bot.</small>`;
-                } else if (e.message.includes('404')) {
-                    loader.innerHTML = `❌ Không tìm thấy trang (404).<br><small>Trang Notion đã bị xóa hoặc link sai.</small>`;
-                } else {
-                    loader.innerHTML = `❌ Không thể tải dữ liệu.<br><small style="color:#d32f2f">${e.message}</small>`;
+                if (e.name !== 'AbortError') {
+                    loader.innerHTML = `❌ Không thể tải dữ liệu tờ HDSD.<br><small style="color:#d32f2f">${e.message}</small>`;
                 }
             }
         }
@@ -1953,7 +1665,6 @@
             }, 300); // 300ms an toàn chờ Safari kết thúc reflow
         }
 
-
         function openImageZoom(src) {
             if (!src || src.includes('No+Image')) return;
             document.getElementById('image-zoom-img').src = src;
@@ -1968,7 +1679,7 @@
                         "<h2 class=\"modal-drug-title\">" + item.brand + "</h2>" +
                         
                         "<a href=\"https://www.google.com/search?q=" + encodeURIComponent(item.brand + ' ' + (item.active || '')) + "\" target=\"_blank\" class=\"google-search-btn\" style=\"margin-top:0\">" +
-                            "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0 5.611 0 0 5.373 0 12s5.611 12 12.24 12c7.069 0 11.76-4.965 11.76-11.977 0-.85-.11-1.493-.242-1.738H12.24z\"/></svg>" +
+                            "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z\"/></svg>" +
                             " Tra cứu Google" +
                         "</a>" +
                     "</div>" +
@@ -1997,7 +1708,7 @@
             
             const modal = document.getElementById('modal');
             const content = modal.querySelector('.modal-content');
-            if (content) content.style.overflow = 'auto'; // Đảm bảo cuộn bình thường
+            if (content) content.style.overflow = 'auto'; 
             
             modal.style.display = 'flex';
             lockBodyScroll();
@@ -2010,7 +1721,7 @@
         function closeModal() { 
             const modal = document.getElementById('modal');
             const content = modal.querySelector('.modal-content');
-            if (content) content.style.overflow = 'hidden'; // Khóa cuộn
+            if (content) content.style.overflow = 'hidden'; 
             
             modal.style.display = 'none'; 
             unlockBodyScroll(); 
@@ -2019,7 +1730,7 @@
             _clearModalTimer = setTimeout(() => {
                 if (modal.style.display === 'none') {
                     document.getElementById('modal-body').innerHTML = '';
-                    if (content) content.style.overflow = 'auto'; // Khôi phục
+                    if (content) content.style.overflow = 'auto';
                 }
             }, 300);
         }
@@ -2085,7 +1796,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-
             const chatInput = document.getElementById('chat-input');
             const sendButton = document.getElementById('send-button');
             const imageUploadBtn = document.getElementById('image-upload-btn');
@@ -2293,7 +2003,7 @@
         var isUnscrollable = false;
 
         document.addEventListener('touchstart', function(e) {
-            if (document.body.style.overflow === 'hidden' || document.body.classList.contains('modal-open')) {
+            if (document.body.style.overflow === 'hidden') {
                 activeScrollArea = e.target.closest('.modal-content, .chat-messages');
                 if (activeScrollArea) {
                     isUnscrollable = activeScrollArea.scrollHeight <= activeScrollArea.clientHeight;
@@ -2302,7 +2012,7 @@
         }, { passive: true });
 
         document.addEventListener('touchmove', function(e) {
-            if (document.body.style.overflow === 'hidden' || document.body.classList.contains('modal-open')) {
+            if (document.body.style.overflow === 'hidden') {
                 if (!activeScrollArea || isUnscrollable) {
                     if (e.cancelable) e.preventDefault();
                 }
