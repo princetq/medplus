@@ -698,15 +698,19 @@
            CSS BỔ SUNG CHO TỜ HDSD KHÔNG DÙNG IFRAME MÀ VẪN GIỮ NGUYÊN GIAO DIỆN Y HỆT 
            ========================================================================= */
         #hdsd-content {
-            padding: 20px 24px; max-width: 860px; margin: 0 auto;
-            width: 100%; height: 100%; overflow-y: auto; color: var(--text, #333); font-size: 15px;
-            -webkit-overflow-scrolling: touch; background: var(--bg, #fff); transition: background .3s, color .3s;
+            padding: 22px 26px; max-width: 860px; margin: 0 auto;
+            width: 100%; height: 100%; overflow-y: auto; color: #2d2d2d; font-size: 15.5px;
+            -webkit-overflow-scrolling: touch; background: #fff; transition: background .3s, color .3s;
             
-            /* ĐỒNG BỘ CHÍNH XÁC FONT CHỮ BẢN GỐC IFRAME */
-            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif !important;
+            /* FONT CHỮ RÕ NÉT, ĐẸP */
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif !important;
             font-weight: 400;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.012em;
+            line-height: 1.72;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
             
             /* THANH CUỘN TỰ ĐỘNG ẨN */
             scrollbar-width: thin;
@@ -728,47 +732,74 @@
         #hdsd-content.sb-visible::-webkit-scrollbar-thumb:hover { background: rgba(128,128,128,0.5); border: 1px solid transparent; }
         body.dark-mode #hdsd-content.sb-visible::-webkit-scrollbar-thumb:hover { background: rgba(80, 220, 180, 0.5) !important; border: 1px solid transparent; }
         
-        #hdsd-content h1, #hdsd-content h2, #hdsd-content h3 { color: var(--green) !important; font-weight: bold; margin-top: 15px; margin-bottom: 10px; }
-        #hdsd-content h1 { font-size: 26px; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; }
-        #hdsd-content h2 { font-size: 22px; }
-        #hdsd-content h3 { font-size: 16px; }
-        #hdsd-content p, #hdsd-content li { color: inherit; line-height: 1.75; margin: 6px 0; font-size: 15px; }
-        #hdsd-content details { border: 1px solid rgba(76,175,80,0.3) !important; border-radius: 8px; margin: 6px 0; overflow: hidden; }
+        /* HEADING ĐẸP, RÕ NÉT */
+        #hdsd-content h1 {
+            font-size: 1.55rem; font-weight: 800; color: var(--green) !important;
+            border-bottom: 2px solid rgba(76,175,80,0.25); padding-bottom: 10px;
+            margin: 18px 0 12px; letter-spacing: -0.02em; line-height: 1.3;
+        }
+        #hdsd-content h2 {
+            font-size: 1.22rem; font-weight: 700; color: var(--green) !important;
+            margin: 16px 0 8px; letter-spacing: -0.015em; line-height: 1.35;
+        }
+        #hdsd-content h3 {
+            font-size: 1.02rem; font-weight: 700; color: var(--green) !important;
+            margin: 12px 0 6px; letter-spacing: -0.01em;
+        }
+        #hdsd-content p { color: inherit; line-height: 1.78; margin: 7px 0; font-size: 15.5px; font-weight: 400; }
+        #hdsd-content li { color: inherit; line-height: 1.72; margin: 4px 0; font-size: 15px; }
+        #hdsd-content strong, #hdsd-content b { font-weight: 700; color: #1b5e20; }
+        body.dark-mode #hdsd-content strong, body.dark-mode #hdsd-content b { color: #4df5c0; }
+        #hdsd-content details { border: 1px solid rgba(76,175,80,0.28) !important; border-radius: 10px; margin: 7px 0; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
         
-        /* CẬP NHẬT: FONT CHỮ TIÊU ĐỀ TOGGLE MẢNH VÀ RÕ NÉT HƠN */
+        /* TOGGLE HEADER ĐẸP, RÕ NÉT */
         #hdsd-content details > summary { 
-            background: rgba(76,175,80,0.07) !important; 
+            background: linear-gradient(to right, rgba(76,175,80,0.09), rgba(76,175,80,0.04)) !important; 
             color: var(--green) !important; 
-            padding: 10px 14px; 
-            font-weight: 600; /* Mảnh hơn 700 */
-            letter-spacing: 0.01em; /* Giãn chữ nhẹ để rõ nét */
+            padding: 11px 16px; 
+            font-weight: 700;
+            font-size: 13.5px;
+            letter-spacing: 0.04em;
             cursor: pointer; 
             list-style: none; 
             display: flex; 
             align-items: center; 
             gap: 8px; 
-            text-transform: uppercase; 
+            text-transform: uppercase;
+            border-left: 3px solid rgba(76,175,80,0.5);
         }
         
         #hdsd-content details > summary::-webkit-details-marker { display: none; }
-        #hdsd-content details > summary::before { content: "▸"; font-size: 14px; transition: transform 0.2s ease-in-out; }
+        #hdsd-content details > summary::before { content: "▸"; font-size: 13px; transition: transform 0.22s ease; flex-shrink: 0; }
         #hdsd-content details[open] > summary::before { transform: rotate(90deg); }
-        #hdsd-content details[open] > summary { background: rgba(76,175,80,0.15) !important; }
-        #hdsd-content details .content, #hdsd-content details > div:not(summary) { background: #fafafa !important; color: inherit !important; padding: 10px 16px 10px 20px; border-top: 1px solid #eee; }
-        #hdsd-content code { background: rgba(128,128,128,0.1) !important; color: inherit !important; border: 1px solid rgba(128,128,128,0.2); padding: 2px 4px; border-radius: 4px; font-family: monospace; }
-        #hdsd-content pre { background: rgba(128,128,128,0.05) !important; border: 1px solid rgba(128,128,128,0.2) !important; border-radius: 8px; padding: 12px; overflow-x: auto; margin: 10px 0; }
-        #hdsd-content pre code { background: transparent !important; border: none; padding: 0; }
-        #hdsd-content blockquote { background: rgba(76,175,80,0.07) !important; border-left: 4px solid var(--green) !important; color: #555 !important; margin: 10px 0; padding: 8px 14px; font-style: italic; border-radius: 0 8px 8px 0; }
-        #hdsd-content table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
-        #hdsd-content table td, #hdsd-content table th { border: 1px solid rgba(76,175,80,0.3) !important; padding: 8px 12px; text-align: left; }
-        #hdsd-content table tr:first-child { background: rgba(76,175,80,0.12) !important; font-weight: bold; }
-        #hdsd-content hr { border: none; border-top: 1.5px solid rgba(128,128,128,0.2) !important; margin: 14px 0; }
-        #hdsd-content img { max-width: 100%; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: block; margin: 14px auto; }
-        #hdsd-content a { color: var(--green); text-decoration: none; font-weight: 600; }
+        #hdsd-content details[open] > summary { background: linear-gradient(to right, rgba(76,175,80,0.16), rgba(76,175,80,0.07)) !important; border-left-color: var(--green); }
+        #hdsd-content details .content, #hdsd-content details > div:not(summary) { background: #f8fdf8 !important; color: inherit !important; padding: 12px 18px 12px 20px; border-top: 1px solid rgba(76,175,80,0.15); }
+        #hdsd-content code { background: rgba(46,125,50,0.07) !important; color: #2e7d32 !important; border: 1px solid rgba(76,175,80,0.2); padding: 2px 6px; border-radius: 5px; font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 13px; }
+        #hdsd-content pre { background: #f4faf4 !important; border: 1px solid rgba(76,175,80,0.2) !important; border-radius: 10px; padding: 14px; overflow-x: auto; margin: 10px 0; }
+        #hdsd-content pre code { background: transparent !important; border: none; padding: 0; color: #1b5e20 !important; }
+        #hdsd-content blockquote { background: rgba(76,175,80,0.06) !important; border-left: 4px solid var(--green) !important; color: #4a6060 !important; margin: 12px 0; padding: 10px 16px; font-style: italic; border-radius: 0 10px 10px 0; }
+        #hdsd-content table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14.5px; border-radius: 8px; overflow: hidden; }
+        #hdsd-content table td, #hdsd-content table th { border: 1px solid rgba(76,175,80,0.25) !important; padding: 9px 13px; text-align: left; }
+        #hdsd-content table tr:first-child th, #hdsd-content table tr:first-child td { background: rgba(76,175,80,0.12) !important; font-weight: 700; color: var(--green); }
+        #hdsd-content table tr:not(:first-child):nth-child(even) { background: rgba(76,175,80,0.03); }
+        #hdsd-content hr { border: none; border-top: 1.5px solid rgba(76,175,80,0.18) !important; margin: 16px 0; }
+        #hdsd-content img { max-width: 100%; border-radius: 12px; box-shadow: 0 4px 18px rgba(0,0,0,0.1); display: block; margin: 16px auto; }
+        #hdsd-content a { color: var(--green); text-decoration: none; font-weight: 600; border-bottom: 1px dashed rgba(46,125,50,0.35); padding-bottom: 1px; }
+        #hdsd-content a:hover { border-bottom-style: solid; }
         #hdsd-content ul { padding-left: 22px; margin: 8px 0; }
+        #hdsd-content ul li::marker { color: var(--green); }
         
         /* Đóng băng hoạt ảnh nền để giảm tải GPU khi mở bất kỳ modal nào */
-        body.modal-open .leaf, body.modal-open .star, body.modal-open .shooting-star, body.modal-open .planet, body.modal-open .zen-logo img, body.modal-open .new-badge::before, body.modal-open .new-badge::after, body.modal-open .syringe-icon, body.modal-open .tk-icon { animation-play-state: paused !important; will-change: auto !important; }
+        body.modal-open .leaf, body.modal-open .star, body.modal-open .shooting-star, body.modal-open .planet,
+        body.modal-open .zen-logo img, body.modal-open .new-badge::before, body.modal-open .new-badge::after,
+        body.modal-open .syringe-icon, body.modal-open .tk-icon, body.modal-open .medplus-badge::after,
+        body.modal-open #chat-widget-btn { animation-play-state: paused !important; will-change: auto !important; }
+        /* TẮT backdrop-filter trên MOBILE cho glass-card (giảm 80% GPU load) */
+        @media (max-width: 600px) {
+            .glass-card { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+            .glass-panel.header-main { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+            .modal-overlay { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background: rgba(0,0,0,0.6) !important; }
+        }
 
         /* Chế độ Dark Mode cho tờ HDSD nhúng vào Div */
         body.dark-mode #hdsd-content { background: #1a1a1a !important; color: #e8e8e8 !important; }
@@ -1824,9 +1855,11 @@
         }
 
         async function openNotionPopup(notionUrl) {
-            if (window._hdsdAbortCtrl) {
-                window._hdsdAbortCtrl.abort();
-            }
+            // Hủy fetch cũ nếu đang chạy
+            if (window._hdsdAbortCtrl) window._hdsdAbortCtrl.abort();
+            // HỦY timer xóa DOM cũ (nếu đang pending) → tránh xóa nhầm nội dung mới
+            clearTimeout(_clearHdsdTimer);
+
             window._hdsdAbortCtrl = new AbortController();
             const hdsdSignal = window._hdsdAbortCtrl.signal;
 
@@ -1834,11 +1867,14 @@
             const loader  = document.getElementById('hdsd-loader');
             const content = document.getElementById('hdsd-content');
 
+            // XÓA DOM + ẢNH CŨ NGAY LẬP TỨC (không đợi 300ms)
             const oldImgs = content.getElementsByTagName('img');
-            for (let i = 0; i < oldImgs.length; i++) {
+            for (let i = oldImgs.length - 1; i >= 0; i--) {
                 oldImgs[i].src = '';
             }
             content.innerHTML = '';
+            notionCache.blocks = {};
+            notionCache.pages = {};
 
             content.style.display = 'none';
             content.style.overflow = 'auto';
@@ -1942,23 +1978,26 @@
 
                 const html = renderBlocks(blocks);
 
-                /* SỬA LỖI LOGO G TRONG NÚT GOOGLE */
                 const driveBtnHtml = driveLink
                     ? '<style>'
                       + '.hdsd-orig-btn{display:inline-flex;align-items:center;gap:8px;'
-                      + 'background:transparent;color:#2e7d32;border:1.5px solid #2e7d32;'
-                      + 'font-family:Inter,Segoe UI,sans-serif;font-size:13px;font-weight:600;'
-                      + 'padding:7px 16px;border-radius:8px;text-decoration:none;'
-                      + 'margin:12px 0 4px;transition:.2s;}'
-                      + '.hdsd-orig-btn:hover{background:rgba(46,125,50,0.07);}'
-                      + 'body.dark-mode .hdsd-orig-btn{color:#50dcb4;border-color:#50dcb4;}'
-                      + 'body.dark-mode .hdsd-orig-btn:hover{background:rgba(80,220,180,0.1);}'
+                      + 'background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;border:none;'
+                      + 'font-family:Inter,Segoe UI,sans-serif;font-size:13px;font-weight:700;'
+                      + 'padding:8px 18px;border-radius:20px;text-decoration:none;'
+                      + 'margin:12px 0 4px;transition:.2s;box-shadow:0 3px 10px rgba(46,125,50,0.3);}'
+                      + '.hdsd-orig-btn:hover{transform:translateY(-1px);box-shadow:0 5px 15px rgba(46,125,50,0.4);background:linear-gradient(135deg,#1b5e20,#2e7d32);}'
+                      + 'body.dark-mode .hdsd-orig-btn{background:linear-gradient(135deg,#0d4a32,#062a1c);border:1px solid rgba(80,220,180,0.4);color:#4df5c0;box-shadow:0 3px 10px rgba(0,0,0,0.3);}'
+                      + 'body.dark-mode .hdsd-orig-btn:hover{background:linear-gradient(135deg,#165c3f,#0a3527);}'
                       + '</style>'
                       + '<a href="'+driveLink+'" target="_blank" class="hdsd-orig-btn">'
-                      + '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">'
-                      + '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c5.52 0 10-4.48 10-10 0-.55-.05-1.1-.14-1.64H12v3.1h6.64c-.29 1.57-1.18 2.9-2.5 3.76v3.13h4.05c2.37-2.18 3.73-5.39 3.73-9.17 0-.7-.06-1.38-.18-2.04H12V2z"/>'
+                      + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+                      + '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>'
+                      + '<polyline points="14 2 14 8 20 8"/>'
+                      + '<line x1="16" y1="13" x2="8" y2="13"/>'
+                      + '<line x1="16" y1="17" x2="8" y2="17"/>'
+                      + '<polyline points="10 9 9 9 8 9"/>'
                       + '</svg>'
-                      + ' TRA CỨU GOOGLE</a><hr style="border:none;border-top:1.5px solid #c8e6c9;margin:14px 0">'
+                      + ' XEM HDSD GỐC</a><hr style="border:none;border-top:1.5px solid #c8e6c9;margin:14px 0">'
                     : '';
 
                 let finalHtml = html;
@@ -1972,9 +2011,6 @@
                 content.innerHTML = finalHtml;
                 content.style.display = 'block';
                 loader.style.display = 'none';
-
-                notionCache.blocks = {};
-                notionCache.pages = {};
 
             } catch(e) {
                 if (e.message.includes('400')) {
