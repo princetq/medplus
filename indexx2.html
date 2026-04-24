@@ -300,7 +300,6 @@
         .sk-t2{width:55%;height:13px;margin-bottom:5px}
         .sk-t3{width:40%;height:13px}
 
-        /* ĐÃ CHỈNH SỬA MODAL OVERLAY: Xóa bỏ Blur khi mở, làm nền tối lại chút */
         .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:none;z-index:10005;align-items:center;justify-content:center;padding:15px;backdrop-filter:none !important;-webkit-backdrop-filter:none !important;will-change:transform;transform:translateZ(0); touch-action: none;}
         body.dark-mode .modal-overlay{background:rgba(0, 5, 15, 0.9) !important;}
         
@@ -313,7 +312,6 @@
         .modal-drug-img:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(0,0,0,0.1)}
         .modal-drug-title{color:var(--green-d);font-size:22px;font-weight:900;margin:0}
         
-        /* ĐÃ CHỈNH SỬA NÚT GOOGLE SEARCH: Tránh bị cắt xén chữ G */
         .google-search-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#fff!important;background:linear-gradient(135deg,#4285F4,#0d47a1);padding:6px 14px;border-radius:20px;text-decoration:none;transition:.2s;box-shadow:0 3px 10px rgba(66,133,244,0.3);width:fit-content;margin-top:2px}
         .google-search-btn svg{width:16px;height:16px;flex-shrink:0;overflow:visible;}
         
@@ -462,7 +460,6 @@
             #chat-widget-window { height: 85dvh !important; max-height: 85dvh !important; }
             .modal-content:not(.iv-modal-content) { align-self: flex-start !important; margin-top: 20px !important; max-height: 85dvh !important; }
             
-            /* CSS BẮT BUỘC CHO TỜ HDSD TRÊN MOBILE ĐỂ FULL MÀN HÌNH */
             #hdsd-modal { padding: 0 !important; }
             #hdsd-modal .modal-content {
                 width: 100vw !important;
@@ -1170,7 +1167,7 @@
             _scrollY = window.scrollY;
             document.body.style.top = '-' + _scrollY + 'px';
             document.body.classList.add('modal-open');
-            document.body.classList.add('modal-open-freeze'); /* MỚI THÊM ĐỂ FREEZE HIỆU ỨNG TRANG CHỦ */
+            document.body.classList.add('modal-open-freeze');
             document.documentElement.classList.add('modal-open');
 
             _touchBlocker = function(e) {
@@ -1204,7 +1201,7 @@
 
         function unlockBodyScroll() {
             document.body.classList.remove('modal-open');
-            document.body.classList.remove('modal-open-freeze'); /* BỎ FREEZE KHI ĐÓNG MODAL */
+            document.body.classList.remove('modal-open-freeze');
             document.documentElement.classList.remove('modal-open');
             document.body.style.top = '';
             const sy = _scrollY;
@@ -1575,6 +1572,8 @@
             isRendering = false;
         }
 
+        const NOTION_WORKER = 'https://ngocanh.princetq.workers.dev';
+
         function extractPageId(url) {
             if (!url) return null;
             let cleanUrl = url.split('?')[0].split('#')[0];
@@ -1587,7 +1586,168 @@
             return null;
         }
 
-        // ĐÃ XÓA TOÀN BỘ CÁC HÀM XỬ LÝ NOTION BÊN DƯỚI ĐÂY (fetchBlocks, rt, renderBlocks...) DO ĐÃ DÙNG FILE JSON TRỰC TIẾP
+        function findDriveLink(blocks) {
+            for (const block of blocks) {
+                const type = block.type;
+                const b = block[type] || {};
+                if (b.url && b.url.includes('drive.google.com')) return b.url;
+                for (const r of (b.rich_text || [])) {
+                    if (r.href && r.href.includes('drive.google.com')) return r.href;
+                    if (r.plain_text && r.plain_text.trim().startsWith('http') && r.plain_text.includes('drive.google.com')) return r.plain_text.trim();
+                }
+                if (b.external && b.external.url && b.external.url.includes('drive.google.com')) return b.external.url;
+                if (block._children) {
+                    const found = findDriveLink(block._children);
+                    if (found) return found;
+                }
+            }
+            return null;
+        }
+
+        function rt(arr) {
+            return (arr||[]).map(r => {
+                let t = (r.plain_text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g, '<br>');
+                if (r.annotations) {
+                    if (r.annotations.bold)          t = '<strong>'+t+'</strong>';
+                    if (r.annotations.italic)        t = '<em>'+t+'</em>';
+                    if (r.annotations.underline)     t = '<u>'+t+'</u>';
+                    if (r.annotations.strikethrough) t = '<s>'+t+'</s>';
+                    if (r.annotations.code)          t = '<code>'+t+'</code>';
+                    if (r.annotations.color && r.annotations.color !== 'default')
+                        t = '<span style="color:'+r.annotations.color.replace('_background','')+'">'+t+'</span>';
+                }
+                if (r.href) t = '<a href="'+r.href+'" target="_blank">'+t+'</a>';
+                return t;
+            }).join('');
+        }
+
+        function renderBlocks(blocks) {
+            let html = '';
+            for (const block of blocks) {
+                const type = block.type;
+                const b = block[type] || {};
+                const text = rt(b.rich_text);
+                const ch = block._children ? renderBlocks(block._children) : '';
+
+                switch(type) {
+                    case 'heading_1':
+                        html += '<h1>'+text+'</h1>';
+                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
+                        break;
+                    case 'heading_2':
+                        html += '<h2>'+text+'</h2>';
+                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
+                        break;
+                    case 'heading_3':
+                        html += '<h3>'+text+'</h3>';
+                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
+                        break;
+                    case 'toggle': {
+                        if (b.rich_text && b.rich_text.length > 0) {
+                            let last = b.rich_text[b.rich_text.length - 1];
+                            last.plain_text = last.plain_text.replace(/:\s*$/, '');
+                            if(last.text) last.text.content = last.text.content.replace(/:\s*$/, '');
+                        }
+                        let tText = rt(b.rich_text);
+                        tText = tText.replace(/:\s*((<\/[a-zA-Z0-9]+>\s*)*)$/, '$1').trim();
+                        if (!tText) tText = 'CHI TIẾT';
+                        
+                        if (block.id === 'fake-extra-info' || block._children) {
+                            let chHtml = renderBlocks(block._children || []);
+                            html += '<details>'
+                                  + '<summary><span>'+tText+'</span></summary>'
+                                  + '<div class="content">'+chHtml+'</div>'
+                                  + '</details>';
+                        } else {
+                            html += '<details id="details-'+block.id+'" data-block-id="'+block.id+'">'
+                                  + '<summary><span>'+tText+'</span></summary>'
+                                  + '<div class="content"><div style="color:#666;font-style:italic">⏳ Nội dung chưa được tải...</div></div>'
+                                  + '</details>';
+                        }
+                        break;
+                    }
+                    case 'paragraph':
+                        html += text ? '<p>'+text+'</p>' : '<div style="height:8px"></div>';
+                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
+                        break;
+                    case 'bulleted_list_item':
+                        html += '<li>'+text+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</li>';
+                        break;
+                    case 'numbered_list_item':
+                        html += '<li>'+text+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</li>';
+                        break;
+                    case 'to_do':
+                        html += '<div style="display:flex;gap:8px;margin:4px 0;align-items:flex-start">'
+                              + '<span style="font-size:16px;margin-top:2px">'+(b.checked?'☑':'☐')+'</span>'
+                              + '<div><span style="font-size:15px;line-height:1.7;'+(b.checked?'text-decoration:line-through;color:var(--subtext)':'')+'">'+text+'</span>'+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</div>'
+                              + '</div>';
+                        break;
+                    case 'quote':
+                        html += '<blockquote>'+text+(ch?'<div style="margin-top:6px">'+ch+'</div>':'')+'</blockquote>';
+                        break;
+                    case 'callout':
+                        html += '<div style="display:flex;gap:10px;background:rgba(76,175,80,0.09);border:1px solid rgba(76,175,80,0.25);border-radius:10px;padding:12px 14px;margin:10px 0">'
+                              + '<span style="font-size:20px;flex-shrink:0">'+(b.icon&&b.icon.emoji?b.icon.emoji:'ℹ️')+'</span>'
+                              + '<div style="font-size:15px;line-height:1.7;">'+text+(ch?'<div style="margin-top:6px">'+ch+'</div>':'')+'</div>'
+                              + '</div>';
+                        break;
+                    case 'divider':
+                        html += '<hr>';
+                        break;
+                    case 'code':
+                        html += '<pre><code>'+(b.rich_text||[]).map(r=>r.plain_text).join('')+'</code></pre>';
+                        break;
+                    case 'image': {
+                        let src = '';
+                        if (b._proxy && b._blockId) {
+                            src = NOTION_WORKER + '/image-proxy/' + b._blockId;
+                        } else {
+                            src = (b.file && b.file.url) || (b.external && b.external.url) || '';
+                        }
+                        const cap = rt(b.caption);
+                        html += '<div style="text-align:center;margin:14px 0"><img src="'+src+'" loading="lazy">'+(cap?'<br><small style="color:var(--subtext);font-size:13px">'+cap+'</small>':'')+'</div>';
+                        break;
+                    }
+                    case 'bookmark':
+                    case 'link_preview':
+                    case 'embed': {
+                        const url = b.url || '';
+                        const cap = rt(b.caption);
+                        if (url) html += '<a href="'+url+'" target="_blank" style="display:block;padding:10px 14px;border:1px solid rgba(76,175,80,0.3);border-radius:8px;margin:8px 0;background:rgba(76,175,80,0.05)">🔗 '+(cap||url)+'</a>';
+                        break;
+                    }
+                    case 'table': {
+                        const rows = block._children || [];
+                        if (rows.length) {
+                            html += '<div style="overflow-x:auto;margin:12px 0"><table>';
+                            rows.forEach((row, ri) => {
+                                const cells = (row.table_row&&row.table_row.cells)||[];
+                                html += '<tr>';
+                                cells.forEach(cell => {
+                                    const tag = ri===0?'th':'td';
+                                    html += '<'+tag+'>'+rt(cell)+'</'+tag+'>';
+                                });
+                                html += '</tr>';
+                            });
+                            html += '</table></div>';
+                        }
+                        break;
+                    }
+                    case 'column_list':
+                        html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:10px 0">'+ch+'</div>';
+                        break;
+                    case 'column':
+                        html += '<div>'+ch+'</div>';
+                        break;
+                    default:
+                        if (text) html += '<p>'+text+'</p>';
+                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
+                        break;
+                }
+            }
+            html = html.replace(/(<li[^>]*>[\s\S]*?<\/li>\s*)+/g, m => '<ul>'+m+'</ul>');
+            return html;
+        }
 
         async function openNotionPopup(notionUrl) {
             if (window._hdsdAbortCtrl) window._hdsdAbortCtrl.abort();
@@ -1610,27 +1770,102 @@
                  return;
             }
 
-            // Dùng hàm extractPageId để lấy ID từ link cũ hoặc tên file
             const pageId = extractPageId(notionUrl) || notionUrl; 
 
             try {
                 if (hdsdSignal.aborted) return;
-                // Gọi thẳng tới file JSON chứa toàn bộ nội dung HTML
                 const jsonUrl = './hdsd-data/' + pageId + '.json';
                 const jsonRes = await fetch(jsonUrl, { signal: hdsdSignal });
 
                 if (!jsonRes.ok) throw new Error('Không tìm thấy tệp JSON (' + jsonRes.status + ')');
                 
-                const data = await jsonRes.json();
+                const jsonData = await jsonRes.json();
                 
-                // Trích xuất HTML từ JSON (tùy thuộc cấu trúc bạn lưu như thế nào, ở đây hỗ trợ các dạng phổ biến nhất)
-                let htmlContent = data.html || data.content || data.body || data;
+                const pageRes = jsonData.page;
+                const blocks = jsonData.blocks;
                 
-                if (typeof htmlContent !== 'string') {
-                    htmlContent = JSON.stringify(htmlContent); // Fallback an toàn nếu json bị lỗi định dạng
+                if (!blocks) {
+                    throw new Error("Dữ liệu JSON không đúng định dạng Notion (thiếu blocks).");
                 }
 
-                content.innerHTML = htmlContent;
+                let lastToggleIdx = -1;
+                for (let i = 0; i < blocks.length; i++) {
+                    if (blocks[i].type === 'toggle') lastToggleIdx = i;
+                }
+                if (lastToggleIdx !== -1 && lastToggleIdx < blocks.length - 1) {
+                    let remaining = blocks.slice(lastToggleIdx + 1);
+                    let hasContent = remaining.some(bk => {
+                        if (bk.type === 'paragraph') {
+                            let txt = '';
+                            if(bk.paragraph.rich_text) {
+                                txt = bk.paragraph.rich_text.map(r=>r.plain_text).join('').trim();
+                            }
+                            return txt.length > 0;
+                        }
+                        if (bk.type === 'divider') return false; 
+                        return true;
+                    });
+                    
+                    if (hasContent) {
+                        blocks.splice(lastToggleIdx + 1); 
+                        blocks.push({
+                            id: 'fake-extra-info',
+                            type: 'toggle',
+                            has_children: true,
+                            toggle: { rich_text: [{ plain_text: 'THÔNG TIN THÊM', text: {content: 'THÔNG TIN THÊM'} }] },
+                            _children: remaining
+                        });
+                    }
+                }
+
+                let driveLink = null;
+                if (pageRes && pageRes.properties) {
+                    const prop = pageRes.properties['hdsd'] || pageRes.properties['HDSD']
+                              || pageRes.properties['Hdsd'] || pageRes.properties['drive']
+                              || pageRes.properties['Drive'];
+                    if (prop) {
+                        if (prop.type === 'url' && prop.url) {
+                            driveLink = prop.url;
+                        } else if (prop.type === 'rich_text' && prop.rich_text && prop.rich_text[0]) {
+                            driveLink = prop.rich_text[0].href || prop.rich_text[0].plain_text;
+                        } else if (prop.type === 'files' && prop.files && prop.files[0]) {
+                            driveLink = (prop.files[0].external && prop.files[0].external.url)
+                                     || (prop.files[0].file && prop.files[0].file.url);
+                        }
+                    }
+                }
+                if (!driveLink) driveLink = findDriveLink(blocks);
+
+                const html = renderBlocks(blocks);
+
+                const driveBtnHtml = driveLink
+                    ? '<style>'
+                      + '.hdsd-orig-btn{display:inline-flex;align-items:center;gap:8px;'
+                      + 'background:transparent;color:#2e7d32;border:1.5px solid #2e7d32;'
+                      + 'font-family:Inter,Segoe UI,sans-serif;font-size:13px;font-weight:600;'
+                      + 'padding:7px 16px;border-radius:8px;text-decoration:none;'
+                      + 'margin:12px 0 4px;transition:.2s;}'
+                      + '.hdsd-orig-btn:hover{background:rgba(46,125,50,0.07);}'
+                      + 'body.dark-mode .hdsd-orig-btn{color:#50dcb4;border-color:#50dcb4;}'
+                      + 'body.dark-mode .hdsd-orig-btn:hover{background:rgba(80,220,180,0.1);}'
+                      + '</style>'
+                      + '<a href="'+driveLink+'" target="_blank" class="hdsd-orig-btn">'
+                      + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+                      + '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>'
+                      + '<polyline points="14 2 14 8 20 8"/>'
+                      + '</svg>'
+                      + ' XEM HDSD GỐC</a><hr>'
+                    : '';
+
+                let finalHtml = html;
+                const firstImgEnd = html.indexOf('</div>', html.indexOf('<img '));
+                if (firstImgEnd !== -1) {
+                    finalHtml = html.slice(0, firstImgEnd+6) + driveBtnHtml + html.slice(firstImgEnd+6);
+                } else {
+                    finalHtml = driveBtnHtml + html;
+                }
+
+                content.innerHTML = finalHtml;
                 content.style.display = 'block';
                 loader.style.display = 'none';
 
@@ -1646,7 +1881,7 @@
             const modal = document.getElementById('hdsd-modal');
             const content = document.getElementById('hdsd-content');
             
-            if (content) content.style.overflow = 'hidden'; // Khóa cuộn để chặn lỗi Safari Momentum
+            if (content) content.style.overflow = 'hidden'; 
             
             modal.style.display = 'none';
             unlockBodyScroll();
@@ -1660,9 +1895,9 @@
             _clearHdsdTimer = setTimeout(() => {
                 if (modal.style.display === 'none' && content) {
                     content.innerHTML = '';
-                    content.style.overflow = 'auto'; // Khôi phục cuộn
+                    content.style.overflow = 'auto'; 
                 }
-            }, 300); // 300ms an toàn chờ Safari kết thúc reflow
+            }, 300); 
         }
 
         function openImageZoom(src) {
@@ -1890,136 +2125,4 @@
             startTime = Date.now(); 
             document.getElementById('timer-display').innerText = "(0.0s)";
             clearInterval(timerInterval);
-            timerInterval = setInterval(function() { document.getElementById('timer-display').innerText = "(" + ((Date.now()-startTime)/1000).toFixed(1) + "s)"; }, 100);
-
-            setTimeout(function() { chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' }); }, 100);
-
-            const promptText = "Đây là hình ảnh do người dùng tải lên. \n" +
-            "NẾU LÀ ĐƠN THUỐC: Tuyệt đối không liệt kê các bước của quy trình đăng ký khám. Hãy trích xuất thông tự Họ và tên (tên bệnh nhân), Tên bác sỹ (ở mục ký số bởi), Nội dung chẩn đoán và các thuốc trên đơn. Sau đó trả lời CHÍNH XÁC theo mẫu sau:\n" +
-            "'Xin chào **[Họ và tên]** bạn đang cầm trên tay đơn thuốc của **<span style=\"color:red\">Bệnh viện Đa khoa tỉnh Tuyên Quang</span>** được kê bởi bác sĩ **[tên bác sĩ]** với chẩn đoán: [nội dung chẩn đoán]. **Chú ý: uống thuốc đúng thời gian và liều dùng trong mục \"Cách dùng\" ở trên đơn**. Đơn thuốc của bạn có những thuốc sau (với đơn có từ 2 thuốc trở lên nếu chỉ có 1 thuốc thì bỏ từ \"những\" đi): [liệt kê tên thuốc, hoạt chất, hàm lượng, dạng và tờ HDSD (hướng dẫn sử dụng) dựa trên dữ liệu y khoa bên dưới]. Nếu không đúng tên biệt dược trong dữ liệu, hãy gợi ý thuốc chứa cùng hoạt chất trên đơn có trong dữ liệu với đầy đủ tên, hoạt chất, hàm lượng, dạng và hướng dẫn sử dụng. Chúc bạn thật nhiều niềm vui và sức khỏe!'\n" +
-            "NẾU KHÔNG PHẢI ĐƠN THUỐC: Hãy phân tích bình thường (quét và trích xuất TÊN THUỐC hoặc HOẠT CHẤT. Sau đó đưa ra thông tin chi tiết về: Biệt dược, Hàm lượng, Dạng thuốc, và Hướng dẫn sử dụng. Lưu ý: Nếu có nhiều biệt dược chứa hoạt chất đó, hãy liệt kê rõ ràng).\n\n" +
-            (medicalContext ? "Dữ liệu tham khảo (Medical Context):\n" + medicalContext : "");
-
-            try {
-                if (keyIdx >= API_KEYS.length) throw new Error("ALL_KEYS_EXHAUSTED");
-                const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/" + AI_MODELS[modelIdx] + ":generateContent?key=" + API_KEYS[keyIdx];
-                
-                const payload = {
-                    contents: [{
-                        role: "user",
-                        parts: [
-                            { text: promptText },
-                            { inlineData: { mimeType: mimeType, data: base64Data } }
-                        ]
-                    }]
-                };
-
-                const res = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                if (!res.ok) throw new Error("HTTP_ERROR_" + res.status);
-                const data = await res.json();
-                
-                clearInterval(timerInterval);
-                typingIndicator.style.display = 'none';
-                const replyText = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text) ? data.candidates[0].content.parts[0].text : "Xin lỗi, không thể nhận diện được thông tin từ ảnh này.";
-                displayMessage(replyText, 'ai');
-                sendButton.disabled = false; 
-                currentKeyIndex = keyIdx;
-            } catch (error) {
-                if (modelIdx < AI_MODELS.length - 1) {
-                    await sendImageToAI(base64Data, mimeType, keyIdx, modelIdx + 1);
-                } else if (keyIdx < API_KEYS.length - 1) {
-                    await sendImageToAI(base64Data, mimeType, keyIdx + 1, 0);
-                } else { 
-                    clearInterval(timerInterval);
-                    typingIndicator.style.display = 'none'; 
-                    displayMessage("Hệ thống đang quá tải hoặc lỗi xử lý ảnh. Vui lòng thử lại sau.", 'ai'); 
-                    sendButton.disabled = false; 
-                }
-            }
-        }
-
-        async function sendMessage(isRetry, keyIdx, modelIdx) {
-            if (isRetry === undefined) isRetry = false;
-            if (keyIdx === undefined) keyIdx = currentKeyIndex;
-            if (modelIdx === undefined) modelIdx = 0;
-
-            const chatInput = document.getElementById('chat-input');
-            const sendButton = document.getElementById('send-button');
-            const typingIndicator = document.getElementById('typing-indicator');
-            const chatMessages = document.getElementById('chat-messages');
-            
-            let userMessage = chatInput.value.trim();
-            if (isRetry) { 
-                const msgs = document.querySelectorAll('.user-message .text-wrapper'); 
-                if (msgs.length > 0) userMessage = msgs[msgs.length - 1].innerText; 
-            } else { 
-                if (!userMessage) return; 
-                displayMessage(userMessage, 'user'); 
-                chatInput.value = ''; 
-                sendButton.disabled = true; 
-                typingIndicator.style.display = 'block'; 
-                setTimeout(function() { chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' }); }, 100); 
-            }
-            
-            activeModelName = AI_MODELS[modelIdx];
-            document.getElementById('typing-text').innerText = "MedPlus AI đang suy nghĩ...";
-            
-            startTime = Date.now(); 
-            document.getElementById('timer-display').innerText = "(0.0s)";
-            clearInterval(timerInterval);
-            timerInterval = setInterval(function() { document.getElementById('timer-display').innerText = "(" + ((Date.now()-startTime)/1000).toFixed(1) + "s)"; }, 100);
-            
-            try {
-                if (keyIdx >= API_KEYS.length) throw new Error("ALL_KEYS_EXHAUSTED");
-                const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/" + AI_MODELS[modelIdx] + ":generateContent?key=" + API_KEYS[keyIdx];
-                
-                const promptContent = medicalContext ? (medicalContext + "\n\n### YÊU CẦU QUAN TRỌNG:\n- Trả lời ngắn gọn, nhưng phải thật đầy đủ và đi thẳng vào câu hỏi.\n- NẾU KHÁCH HỎI VỀ HOẠT CHẤT: Nếu bệnh viện có nhiều hơn 1 biệt dược cho hoạt chất đó, phải ghi rõ: biệt dược 1, biệt dược 2...\n- NẾU KHÁCH HỎI VỀ THUỐC: Chỉ cung cấp thông tin thuốc. TUYỆT ĐỐI KHÔNG tự ý liệt kê Quy trình khám hay Thông tin liên hệ nếu khách không hỏi.\n\nCâu hỏi của người dùng: " + userMessage) : userMessage;
-
-                const res = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: promptContent }] }] }) });
-                if (!res.ok) throw new Error("HTTP_ERROR_" + res.status);
-                const data = await res.json();
-                
-                clearInterval(timerInterval);
-                typingIndicator.style.display = 'none';
-                const replyText = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text) ? data.candidates[0].content.parts[0].text : "Xin lỗi, hệ thống không có phản hồi.";
-                displayMessage(replyText, 'ai');
-                sendButton.disabled = false; 
-                currentKeyIndex = keyIdx;
-            } catch (error) {
-                if (modelIdx < AI_MODELS.length - 1) {
-                    await sendMessage(true, keyIdx, modelIdx + 1);
-                } else if (keyIdx < API_KEYS.length - 1) {
-                    await sendMessage(true, keyIdx + 1, 0);
-                } else { 
-                    clearInterval(timerInterval);
-                    typingIndicator.style.display = 'none'; 
-                    displayMessage("Hệ thống đang quá tải. Vui lòng thử lại sau.", 'ai'); 
-                    sendButton.disabled = false; 
-                }
-            }
-        }
-
-        var activeScrollArea = null;
-        var isUnscrollable = false;
-
-        document.addEventListener('touchstart', function(e) {
-            if (document.body.style.overflow === 'hidden') {
-                activeScrollArea = e.target.closest('.modal-content, .chat-messages');
-                if (activeScrollArea) {
-                    isUnscrollable = activeScrollArea.scrollHeight <= activeScrollArea.clientHeight;
-                }
-            }
-        }, { passive: true });
-
-        document.addEventListener('touchmove', function(e) {
-            if (document.body.style.overflow === 'hidden') {
-                if (!activeScrollArea || isUnscrollable) {
-                    if (e.cancelable) e.preventDefault();
-                }
-            }
-        }, { passive: false });
-
-        window.onload = init;
-    </script>
-</body>
-</html>
+            timerInterval = setInterval(function() { document.getElementById('timer-display').innerText = "(" + ((Date.now()-startTime)/1000).toFixed(1) + "s
