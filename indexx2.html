@@ -1191,7 +1191,6 @@
             document.removeEventListener('wheel', _wheelBlocker, { passive: false });
         }
 
-        // ĐÃ XÓA HOÀN TOÀN BIẾN LƯU TRỮ _hdsdCache
         const notionCache = { blocks: {}, pages: {} };
 
         let rawData = [];
@@ -1818,14 +1817,19 @@
             const loader  = document.getElementById('hdsd-loader');
             const content = document.getElementById('hdsd-content');
 
+            // Đảm bảo dọn sạch hoàn toàn rác DOM/Hình ảnh từ tờ HDSD cũ trước khi render cái mới
+            const oldImgs = content.getElementsByTagName('img');
+            for (let i = 0; i < oldImgs.length; i++) {
+                oldImgs[i].src = '';
+            }
+            content.innerHTML = '';
+
             content.style.display = 'none';
-            content.style.overflow = 'auto'; // Đảm bảo thanh cuộn kích hoạt
+            content.style.overflow = 'auto';
             loader.style.display = 'block';
             loader.innerHTML = '⏳ Đang tải tờ hướng dẫn...';
             modal.style.display = 'flex';
             lockBodyScroll();
-
-            // XÓA PHẦN KIỂM TRA _hdsdCache VÌ ĐÃ GỠ BỎ TÍNH NĂNG LƯU ĐỆM
 
             if (!notionUrl || typeof notionUrl !== 'string') {
                  loader.innerHTML = '❌ Dữ liệu link Notion bị trống. Vui lòng kiểm tra lại Data.';
@@ -1949,13 +1953,11 @@
                     finalHtml = driveBtnHtml + html;
                 }
 
-                // XÓA PHẦN LƯU VÀO CACHE Ở ĐÂY
-
                 content.innerHTML = finalHtml;
                 content.style.display = 'block';
                 loader.style.display = 'none';
 
-                // GIẢI PHÓNG HOÀN TOÀN BỘ NHỚ JSON TẠM ĐỂ CHỐNG TRÀN RAM SAFARI
+                // Giải phóng JSON Khổng lồ tránh rò rỉ RAM (Nguyên nhân số 2)
                 notionCache.blocks = {};
                 notionCache.pages = {};
 
@@ -1975,7 +1977,10 @@
             const modal = document.getElementById('hdsd-modal');
             const content = document.getElementById('hdsd-content');
             
-            if (content) content.style.overflow = 'hidden'; // Khóa cuộn để chặn lỗi Safari Momentum
+            if (content) {
+                content.style.overflow = 'hidden'; 
+                content.style.opacity = '0'; // Ẩn ngay lập tức để ngừng render GPU (Chống Crash 1)
+            }
             
             modal.style.display = 'none';
             unlockBodyScroll();
@@ -1985,15 +1990,24 @@
                 window._hdsdAbortCtrl = null;
             }
             
+            // Xóa rác JSON khi bấm đóng nhanh lúc đang Load dở (Chống Crash 2)
+            notionCache.blocks = {};
+            notionCache.pages = {};
+            
             clearTimeout(_clearHdsdTimer);
             _clearHdsdTimer = setTimeout(() => {
                 if (modal.style.display === 'none' && content) {
+                    // Ép Safari xả Memory ảnh lập tức trước khi chém DOM (Chống Crash 3)
+                    const imgs = content.getElementsByTagName('img');
+                    for (let i = 0; i < imgs.length; i++) {
+                        imgs[i].src = '';
+                    }
                     content.innerHTML = '';
-                    content.style.overflow = 'auto'; // Khôi phục cuộn
+                    content.style.opacity = '1';
+                    content.style.overflow = 'auto'; 
                 }
-            }, 300); // 300ms an toàn chờ Safari kết thúc reflow
+            }, 600); // 600ms an toàn chờ Safari kết thúc reflow giao diện ngoài
         }
-
 
         function openImageZoom(src) {
             if (!src || src.includes('No+Image')) return;
@@ -2038,7 +2052,7 @@
             
             const modal = document.getElementById('modal');
             const content = modal.querySelector('.modal-content');
-            if (content) content.style.overflow = 'auto'; // Đảm bảo cuộn bình thường
+            if (content) content.style.overflow = 'auto'; 
             
             modal.style.display = 'flex';
             lockBodyScroll();
@@ -2051,7 +2065,7 @@
         function closeModal() { 
             const modal = document.getElementById('modal');
             const content = modal.querySelector('.modal-content');
-            if (content) content.style.overflow = 'hidden'; // Khóa cuộn
+            if (content) content.style.overflow = 'hidden'; 
             
             modal.style.display = 'none'; 
             unlockBodyScroll(); 
@@ -2060,7 +2074,7 @@
             _clearModalTimer = setTimeout(() => {
                 if (modal.style.display === 'none') {
                     document.getElementById('modal-body').innerHTML = '';
-                    if (content) content.style.overflow = 'auto'; // Khôi phục
+                    if (content) content.style.overflow = 'auto'; 
                 }
             }, 300);
         }
@@ -2263,94 +2277,4 @@
                 } else { 
                     clearInterval(timerInterval);
                     typingIndicator.style.display = 'none'; 
-                    displayMessage("Hệ thống đang quá tải hoặc lỗi xử lý ảnh. Vui lòng thử lại sau.", 'ai'); 
-                    sendButton.disabled = false; 
-                }
-            }
-        }
-
-        async function sendMessage(isRetry, keyIdx, modelIdx) {
-            if (isRetry === undefined) isRetry = false;
-            if (keyIdx === undefined) keyIdx = currentKeyIndex;
-            if (modelIdx === undefined) modelIdx = 0;
-
-            const chatInput = document.getElementById('chat-input');
-            const sendButton = document.getElementById('send-button');
-            const typingIndicator = document.getElementById('typing-indicator');
-            const chatMessages = document.getElementById('chat-messages');
-            
-            let userMessage = chatInput.value.trim();
-            if (isRetry) { 
-                const msgs = document.querySelectorAll('.user-message .text-wrapper'); 
-                if (msgs.length > 0) userMessage = msgs[msgs.length - 1].innerText; 
-            } else { 
-                if (!userMessage) return; 
-                displayMessage(userMessage, 'user'); 
-                chatInput.value = ''; 
-                sendButton.disabled = true; 
-                typingIndicator.style.display = 'block'; 
-                setTimeout(function() { chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' }); }, 100); 
-            }
-            
-            activeModelName = AI_MODELS[modelIdx];
-            document.getElementById('typing-text').innerText = "MedPlus AI đang suy nghĩ...";
-            
-            startTime = Date.now(); 
-            document.getElementById('timer-display').innerText = "(0.0s)";
-            clearInterval(timerInterval);
-            timerInterval = setInterval(function() { document.getElementById('timer-display').innerText = "(" + ((Date.now()-startTime)/1000).toFixed(1) + "s)"; }, 100);
-            
-            try {
-                if (keyIdx >= API_KEYS.length) throw new Error("ALL_KEYS_EXHAUSTED");
-                const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/" + AI_MODELS[modelIdx] + ":generateContent?key=" + API_KEYS[keyIdx];
-                
-                const promptContent = medicalContext ? (medicalContext + "\n\n### YÊU CẦU QUAN TRỌNG:\n- Trả lời ngắn gọn, nhưng phải thật đầy đủ và đi thẳng vào câu hỏi.\n- NẾU KHÁCH HỎI VỀ HOẠT CHẤT: Nếu bệnh viện có nhiều hơn 1 biệt dược cho hoạt chất đó, phải ghi rõ: biệt dược 1, biệt dược 2...\n- NẾU KHÁCH HỎI VỀ THUỐC: Chỉ cung cấp thông tin thuốc. TUYỆT ĐỐI KHÔNG tự ý liệt kê Quy trình khám hay Thông tin liên hệ nếu khách không hỏi.\n\nCâu hỏi của người dùng: " + userMessage) : userMessage;
-
-                const res = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: promptContent }] }] }) });
-                if (!res.ok) throw new Error("HTTP_ERROR_" + res.status);
-                const data = await res.json();
-                
-                clearInterval(timerInterval);
-                typingIndicator.style.display = 'none';
-                const replyText = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text) ? data.candidates[0].content.parts[0].text : "Xin lỗi, hệ thống không có phản hồi.";
-                displayMessage(replyText, 'ai');
-                sendButton.disabled = false; 
-                currentKeyIndex = keyIdx;
-            } catch (error) {
-                if (modelIdx < AI_MODELS.length - 1) {
-                    await sendMessage(true, keyIdx, modelIdx + 1);
-                } else if (keyIdx < API_KEYS.length - 1) {
-                    await sendMessage(true, keyIdx + 1, 0);
-                } else { 
-                    clearInterval(timerInterval);
-                    typingIndicator.style.display = 'none'; 
-                    displayMessage("Hệ thống đang quá tải. Vui lòng thử lại sau.", 'ai'); 
-                    sendButton.disabled = false; 
-                }
-            }
-        }
-
-        var activeScrollArea = null;
-        var isUnscrollable = false;
-
-        document.addEventListener('touchstart', function(e) {
-            if (document.body.style.overflow === 'hidden') {
-                activeScrollArea = e.target.closest('.modal-content, .chat-messages');
-                if (activeScrollArea) {
-                    isUnscrollable = activeScrollArea.scrollHeight <= activeScrollArea.clientHeight;
-                }
-            }
-        }, { passive: true });
-
-        document.addEventListener('touchmove', function(e) {
-            if (document.body.style.overflow === 'hidden') {
-                if (!activeScrollArea || isUnscrollable) {
-                    if (e.cancelable) e.preventDefault();
-                }
-            }
-        }, { passive: false });
-
-        window.onload = init;
-    </script>
-</body>
-</html>
+                    displayMessage("Hệ thống đang quá tải hoặc lỗi xử lý ảnh. Vui lòng thử lại
