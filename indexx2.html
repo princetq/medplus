@@ -309,13 +309,13 @@
         .modal-drug-img{width:100px;height:100px;object-fit:contain;background:#fff;border-radius:14px;padding:8px;flex-shrink:0;border:1px solid rgba(76,175,80,0.2);box-shadow:0 4px 15px rgba(0,0,0,0.06);cursor:zoom-in;transition:.2s}
         .modal-drug-img:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(0,0,0,0.1)}
         .modal-drug-title{color:var(--green-d);font-size:22px;font-weight:900;margin:0}
-        .google-search-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#fff!important;background:linear-gradient(135deg,#4285F4,#0d47a1);padding:6px 14px;border-radius:20px;text-decoration:none;transition:.2s;box-shadow:0 3px 10px rgba(66,133,244,0.3);width:fit-content;margin-top:2px}
+        .google-search-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#1a73e8!important;background:#fff;border:1.5px solid #dadce0;padding:5px 13px;border-radius:20px;text-decoration:none;transition:.2s;box-shadow:0 1px 4px rgba(0,0,0,0.12);width:fit-content;margin-top:2px}
         .drive-orig-btn{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#fff!important;background:linear-gradient(135deg,#00897b,#004d40);padding:8px 20px;border-radius:24px;text-decoration:none;transition:.2s;box-shadow:0 3px 12px rgba(0,137,123,0.35);margin-top:8px;width:fit-content}
         .drive-orig-btn:hover{transform:translateY(-1px);box-shadow:0 5px 15px rgba(0,137,123,0.45)}
         body.dark-mode .drive-orig-btn{background:linear-gradient(135deg,#00bfa5,#00695c);box-shadow:0 3px 10px rgba(0,191,165,0.35)}
 
-        .google-search-btn:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(66,133,244,0.4)}
-        .google-search-btn svg{width:14px;height:14px}
+        .google-search-btn:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,0.18);border-color:#bec3c9}
+        .google-search-btn svg{width:14px;height:14px;flex-shrink:0}
         
         #image-zoom-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:10010;display:none;align-items:center;justify-content:center;cursor:zoom-out;backdrop-filter:blur(5px); touch-action: none;}
         #image-zoom-img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.5);animation:zoomIn .3s cubic-bezier(.25,1,.5,1)}
@@ -1981,16 +1981,16 @@
                 const driveBtnHtml = driveLink
                     ? '<style>'
                       + '.hdsd-orig-btn{display:inline-flex;align-items:center;gap:8px;'
-                      + 'background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;border:none;'
-                      + 'font-family:Inter,Segoe UI,sans-serif;font-size:13px;font-weight:700;'
-                      + 'padding:8px 18px;border-radius:20px;text-decoration:none;'
-                      + 'margin:12px 0 4px;transition:.2s;box-shadow:0 3px 10px rgba(46,125,50,0.3);}'
-                      + '.hdsd-orig-btn:hover{transform:translateY(-1px);box-shadow:0 5px 15px rgba(46,125,50,0.4);background:linear-gradient(135deg,#1b5e20,#2e7d32);}'
-                      + 'body.dark-mode .hdsd-orig-btn{background:linear-gradient(135deg,#0d4a32,#062a1c);border:1px solid rgba(80,220,180,0.4);color:#4df5c0;box-shadow:0 3px 10px rgba(0,0,0,0.3);}'
-                      + 'body.dark-mode .hdsd-orig-btn:hover{background:linear-gradient(135deg,#165c3f,#0a3527);}'
+                      + 'background:transparent;color:#2e7d32;border:1.5px solid #2e7d32;'
+                      + 'font-family:Inter,Segoe UI,sans-serif;font-size:13px;font-weight:600;'
+                      + 'padding:7px 16px;border-radius:8px;text-decoration:none;'
+                      + 'margin:12px 0 4px;transition:.2s;}'
+                      + '.hdsd-orig-btn:hover{background:rgba(46,125,50,0.07);}'
+                      + 'body.dark-mode .hdsd-orig-btn{color:#50dcb4;border-color:#50dcb4;}'
+                      + 'body.dark-mode .hdsd-orig-btn:hover{background:rgba(80,220,180,0.1);}'
                       + '</style>'
                       + '<a href="'+driveLink+'" target="_blank" class="hdsd-orig-btn">'
-                      + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+                      + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
                       + '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>'
                       + '<polyline points="14 2 14 8 20 8"/>'
                       + '<line x1="16" y1="13" x2="8" y2="13"/>'
@@ -2072,7 +2072,7 @@
                         "<h2 class=\"modal-drug-title\">" + item.brand + "</h2>" +
                         
                         "<a href=\"https://www.google.com/search?q=" + encodeURIComponent(item.brand + ' ' + (item.active || '')) + "\" target=\"_blank\" class=\"google-search-btn\" style=\"margin-top:0\">" +
-                            "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c5.52 0 10-4.48 10-10 0-.55-.05-1.1-.14-1.64H12v3.1h6.64c-.29 1.57-1.18 2.9-2.5 3.76v3.13h4.05c2.37-2.18 3.73-5.39 3.73-9.17 0-.7-.06-1.38-.18-2.04H12V2z\"/></svg>" +
+                            "<svg viewBox=\"0 0 24 24\" width=\"14\" height=\"14\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z\" fill=\"#4285F4\"/><path d=\"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z\" fill=\"#34A853\"/><path d=\"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z\" fill=\"#FBBC05\"/><path d=\"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z\" fill=\"#EA4335\"/></svg>" +
                             " Tra cứu Google" +
                         "</a>" +
                     "</div>" +
