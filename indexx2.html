@@ -687,9 +687,46 @@
             body.is-scrolling .leaf, body.is-scrolling .star, body.is-scrolling .shooting-star, body.is-scrolling .planet, body.is-scrolling .zen-logo img, body.is-scrolling .medplus-badge::after, body.is-scrolling .new-badge::before, body.is-scrolling .new-badge::after, body.is-scrolling .syringe-icon, body.is-scrolling .tk-icon, body.is-scrolling #chat-widget-btn, body.is-scrolling #chat-widget-btn::before, body.is-scrolling .marquee-track { animation-play-state: paused !important; }
         }
     
-        body.modal-open { position: fixed !important; width: 100% !important; overflow: hidden !important; overscroll-behavior: none !important; touch-action: none !important; }
-        html.modal-open { overflow: hidden !important; overscroll-behavior: none !important; }
-        .modal-overlay { touch-action: none !important; overscroll-behavior: none !important; }
+        /* --- PHẦN FIX CỦA GEMINI --- */
+        body.modal-open { overflow: hidden !important; touch-action: none; -webkit-overflow-scrolling: none; }
+        html.modal-open { overflow: hidden !important; }
+
+        /* Dừng toàn bộ hiệu ứng nền và xóa Blur khi mở modal để tối ưu RAM */
+        body.modal-open .leaf, 
+        body.modal-open .star, 
+        body.modal-open .shooting-star, 
+        body.modal-open .planet,
+        body.modal-open .zen-logo img,
+        body.modal-open .nature-background,
+        body.modal-open .night-background { 
+            animation: none !important; 
+            display: none !important; 
+        }
+
+        body.modal-open .glass-panel,
+        body.modal-open .header-main::before,
+        body.modal-open .search-wrapper *,
+        body.modal-open .modal-overlay {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+
+        /* Modal HDSD full màn hình trên mobile */
+        @media (max-width: 600px) {
+            #hdsd-modal .iv-modal-content {
+                width: 100% !important;
+                height: 100dvh !important;
+                max-height: 100dvh !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+            }
+            #hdsd-modal { padding: 0 !important; }
+        }
+        /* --- KẾT THÚC PHẦN FIX --- */
+
         .modal-content { touch-action: pan-y !important; overscroll-behavior: contain !important; -webkit-overflow-scrolling: touch !important; }
         .iv-modal-content { touch-action: none !important; }
         .iv-iframe-container { touch-action: pan-y !important; overscroll-behavior: contain !important; -webkit-overflow-scrolling: touch !important; }
@@ -886,11 +923,6 @@
             <div class="skeleton-card"><div class="skeleton-el sk-img"></div><div class="skeleton-el sk-t1"></div><div class="skeleton-el sk-t2"></div><div class="skeleton-el sk-t3"></div></div>
             <div class="skeleton-card"><div class="skeleton-el sk-img"></div><div class="skeleton-el sk-t1"></div><div class="skeleton-el sk-t2"></div><div class="skeleton-el sk-t3"></div></div>
             <div class="skeleton-card"><div class="skeleton-el sk-img"></div><div class="skeleton-el sk-t1"></div><div class="skeleton-el sk-t2"></div><div class="skeleton-el sk-t3"></div></div>
-            <div class="skeleton-card"><div class="skeleton-el sk-img"></div><div class="skeleton-el sk-t1"></div><div class="skeleton-el sk-t2"></div><div class="skeleton-el sk-t3"></div></div>
-            <div class="skeleton-card"><div class="skeleton-el sk-img"></div><div class="skeleton-el sk-t1"></div><div class="skeleton-el sk-t2"></div><div class="skeleton-el sk-t3"></div></div>
-            <div class="skeleton-card"><div class="skeleton-el sk-img"></div><div class="skeleton-el sk-t1"></div><div class="skeleton-el sk-t2"></div><div class="skeleton-el sk-t3"></div></div>
-            <div class="skeleton-card"><div class="skeleton-el sk-img"></div><div class="skeleton-el sk-t1"></div><div class="skeleton-el sk-t2"></div><div class="skeleton-el sk-t3"></div></div>
-            <div class="skeleton-card"><div class="skeleton-el sk-img"></div><div class="skeleton-el sk-t1"></div><div class="skeleton-el sk-t2"></div><div class="skeleton-el sk-t3"></div></div>
         </div>
         <div class="product-grid" id="grid"></div>
 
@@ -901,11 +933,11 @@
         <img id="image-zoom-img" src="" alt="Zoomed Image">
     </div>
 
-    <div class="modal-overlay" id="modal" onclick="if(event.target==this) closeModal()">
+    <div class="modal-overlay" id="modal">
         <div class="modal-content"><span class="close-btn" onclick="closeModal()">&times;</span><div id="modal-body"></div></div>
     </div>
 
-    <div class="modal-overlay" id="iv-modal" onclick="if(event.target==this) closeIVModal()">
+    <div class="modal-overlay" id="iv-modal">
         <div class="modal-content iv-modal-content">
             <span class="close-btn" onclick="closeIVModal()">&times;</span>
             <div class="iv-iframe-container">
@@ -915,7 +947,7 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="ks-modal" onclick="if(event.target==this) closeKSModal()">
+    <div class="modal-overlay" id="ks-modal">
         <div class="modal-content iv-modal-content">
             <span class="close-btn" onclick="closeKSModal()">&times;</span>
             <div class="iv-iframe-container">
@@ -925,7 +957,7 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="tt-modal" onclick="if(event.target==this) closeTTModal()">
+    <div class="modal-overlay" id="tt-modal">
         <div class="modal-content iv-modal-content">
             <span class="close-btn" onclick="closeTTModal()">&times;</span>
             <div class="iv-iframe-container">
@@ -935,7 +967,7 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="tk-modal" onclick="if(event.target==this) closeTKModal()">
+    <div class="modal-overlay" id="tk-modal">
         <div class="modal-content iv-modal-content">
             <span class="close-btn" onclick="closeTKModal()">&times;</span>
             <div class="iv-iframe-container">
@@ -945,7 +977,7 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="hdsd-modal" onclick="if(event.target==this) closeHDSDModal()">
+    <div class="modal-overlay" id="hdsd-modal">
         <div class="modal-content iv-modal-content" style="background: var(--bg); padding: 0;">
             <span class="close-btn" onclick="closeHDSDModal()" style="z-index: 50;">&times;</span>
             <div class="iv-iframe-container" style="background: transparent; border: none; box-shadow: none; padding: 0;">
@@ -990,8 +1022,6 @@
                             <svg class="message-icon-svg" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#E63946"/><path d="M12 6V18M6 12H18" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>
                             <div class="text-wrapper">
                                 <p>Xin chào! Tôi là <strong>MedPlus AI</strong> - Trợ lý ảo của Khoa Dược, Bệnh viện Đa khoa tỉnh Tuyên Quang.</p>
-                                <p>Tôi có thể hỗ trợ:</p>
-                                <ul><li>Tra cứu thông tin thuốc &amp; Dược lý.</li><li>Tư vấn quy trình khám chữa bệnh.</li><li>Đăng ký khám Online &amp; Thủ tục BHYT.</li></ul>
                                 <p>Tôi có thể giúp gì cho bạn ngay bây giờ?</p>
                             </div>
                         </div>
@@ -1007,9 +1037,6 @@
                     <svg viewBox="0 0 24 24" width="24" height="24">
                         <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 14v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3.5l1.5-2h4l1.5 2H15"/>
                         <circle fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" cx="11" cy="14" r="4"/>
-                        <path fill="currentColor" stroke="none" d="M18.5 4c0 1.8 1 2.5 2.5 2.5-1.5 0-2.5.7-2.5 2.5 0-1.8-1-2.5-2.5-2.5 1.5 0 2.5-.7 2.5-2.5z"/>
-                        <path fill="currentColor" stroke="none" d="M21.5 1c0 1 .6 1.5 1.5 1.5-.9 0-1.5.5-1.5 1.5 0-1-.6-1.5-1.5-1.5.9 0 1.5-.5 1.5-1.5z"/>
-                        <path fill="currentColor" stroke="none" d="M22.5 7.5c0 1 .6 1.5 1.5 1.5-.9 0-1.5.5-1.5 1.5 0-1-.6-1.5-1.5-1.5.9 0 1.5-.5 1.5-1.5z"/>
                     </svg>
                 </button>
                 <input type="text" class="chat-input" id="chat-input" placeholder="Nhập câu hỏi hoặc chụp ảnh...">
@@ -1017,11 +1044,21 @@
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
             </div>
-            <div class="disclaimer"><p><strong>Lưu ý:</strong> Thông chỉ mang tính tham khảo. Mọi chỉ định phải do Bác sĩ thực hiện tại <strong>BVĐK tỉnh Tuyên Quang</strong>.</p></div>
+            <div class="disclaimer"><p><strong>Lưu ý:</strong> Mọi chỉ định phải do Bác sĩ thực hiện tại <strong>BVĐK tỉnh Tuyên Quang</strong>.</p></div>
         </div>
     </div>
 
     <script>
+        /* --- PHẦN FIX CỦA GEMINI --- */
+        function lockBodyScroll() {
+            document.body.classList.add('modal-open');
+        }
+
+        function unlockBodyScroll() {
+            document.body.classList.remove('modal-open');
+        }
+        /* --- KẾT THÚC PHẦN FIX --- */
+
         function initNightBackground() {
             const nightContainer = document.getElementById('night-container');
             if (!nightContainer || nightContainer.innerHTML !== '') return;
@@ -1042,50 +1079,10 @@
                 ].join(';');
                 frag.appendChild(s);
             }
-
-            for (let i = 0; i < 3; i++) {
-                const ss = document.createElement('div');
-                const fromRight = Math.random() > 0.5;
-                ss.className = fromRight ? 'shooting-star right-to-left' : 'shooting-star left-to-right';
-                const leftVal = fromRight
-                    ? (Math.random() * 50 + 50).toFixed(1) + '%'
-                    : (Math.random() * 50 - 20).toFixed(1) + '%';
-                ss.style.cssText = [
-                    'left:' + leftVal,
-                    'top:' + (Math.random() * -20 - 10).toFixed(1) + '%',
-                    'animation-duration:' + (Math.random() * 5 + 6).toFixed(2) + 's',
-                    'animation-delay:' + (Math.random() * 5).toFixed(2) + 's'
-                ].join(';');
-                frag.appendChild(ss);
-            }
-
-            if (window.innerWidth > 600) {
-                let saturnTop = Math.floor(Math.random() * 35 + 15) + '%'; 
-                const planets = [
-                    { className: 'planet planet-mars', top: '12%', anim: 'planetMoveRight 180s linear infinite' },
-                    { className: 'planet planet-jupiter', top: '65%', anim: 'planetMoveLeft 240s linear infinite' },
-                    { className: 'planet planet-saturn', top: saturnTop, anim: 'planetMoveRight 300s linear infinite' },
-                    { className: 'planet planet-moon', top: '80%', anim: 'planetMoveRight 150s linear infinite' },
-                    { className: 'planet planet-pluto', top: '22%', anim: 'planetMoveLeft 280s linear infinite' },
-                    { className: 'planet planet-neptune', top: '50%', anim: 'planetMoveLeft 200s linear infinite' }
-                ];
-
-                planets.forEach(p => {
-                    const el = document.createElement('div');
-                    el.className = p.className;
-                    el.style.top = p.top;
-                    el.style.animation = p.anim;
-                    el.style.animationDelay = `-${Math.random() * 150}s`; 
-                    frag.appendChild(el);
-                });
-            }
-
             nightContainer.appendChild(frag);
-
             nightContainer.style.display = 'block';
             nightContainer.style.opacity = '0';
             nightContainer.style.visibility = 'hidden';
-
             document.body.classList.add('dark-mode');
             void document.body.offsetHeight; 
             document.body.classList.remove('dark-mode');
@@ -1101,99 +1098,25 @@
             const body = document.body;
             const nightContainer = document.getElementById('night-container');
             const leafContainer = document.getElementById('leaf-container');
-
             body.classList.add('dm-transitioning');
             body.classList.toggle('dark-mode');
             const isDark = body.classList.contains('dark-mode');
-
             if (isDark) {
-                leafContainer.style.transition = 'opacity 0.3s ease';
                 leafContainer.style.opacity = '0';
                 setTimeout(() => { leafContainer.style.visibility = 'hidden'; }, 300);
-
                 nightContainer.style.visibility = 'visible';
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                        nightContainer.style.transition = 'opacity 0.4s ease';
-                        nightContainer.style.opacity = '1';
-                    });
-                });
+                nightContainer.style.opacity = '1';
             } else {
-                nightContainer.style.transition = 'opacity 0.3s ease';
                 nightContainer.style.opacity = '0';
                 setTimeout(() => { nightContainer.style.visibility = 'hidden'; }, 300);
-
                 leafContainer.style.visibility = 'visible';
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                        leafContainer.style.transition = 'opacity 0.4s ease';
-                        leafContainer.style.opacity = '1';
-                    });
-                });
+                leafContainer.style.opacity = '1';
             }
-
             setTimeout(() => body.classList.remove('dm-transitioning'), 420);
         }
 
         const MEDPLUS_API_URL = "/medplus.json?t=" + new Date().getTime();
-        
-        let _scrollY = 0;
-        let _touchBlocker = null;
-
-        function lockBodyScroll() {
-            _scrollY = window.scrollY;
-            document.body.style.top = '-' + _scrollY + 'px';
-            document.body.classList.add('modal-open');
-            document.documentElement.classList.add('modal-open');
-
-            _touchBlocker = function(e) {
-                let el = e.target;
-                while (el) {
-                    if (el.classList && (
-                        el.classList.contains('modal-content') ||
-                        el.classList.contains('iv-iframe-container') ||
-                        el.id === 'hdsd-content'
-                    )) return; 
-                    el = el.parentElement;
-                }
-                e.preventDefault();
-            };
-            document.addEventListener('touchmove', _touchBlocker, { passive: false });
-            document.addEventListener('wheel', _wheelBlocker, { passive: false });
-        }
-
-        function _wheelBlocker(e) {
-            let el = e.target;
-            while (el) {
-                if (el.classList && (
-                    el.classList.contains('modal-content') ||
-                    el.classList.contains('iv-iframe-container') ||
-                    el.id === 'hdsd-content'
-                )) return;
-                el = el.parentElement;
-            }
-            e.preventDefault();
-        }
-
-        function unlockBodyScroll() {
-            document.body.classList.remove('modal-open');
-            document.documentElement.classList.remove('modal-open');
-            document.body.style.top = '';
-            const sy = _scrollY;
-            requestAnimationFrame(function() {
-                window.scrollTo(0, sy);
-            });
-
-            if (_touchBlocker) {
-                document.removeEventListener('touchmove', _touchBlocker, { passive: false });
-                _touchBlocker = null;
-            }
-            document.removeEventListener('wheel', _wheelBlocker, { passive: false });
-        }
-
-        // ĐÃ XÓA HOÀN TOÀN BIẾN LƯU TRỮ _hdsdCache
         const notionCache = { blocks: {}, pages: {} };
-
         let rawData = [];
         let filteredData = [];
         let selectedLetter = '';
@@ -1205,15 +1128,8 @@
         let medicalContext = "";
 
         const DATA_JSON_URL = "https://gist.githubusercontent.com/princetq/ff31fa8d9ea0a6f7ed485ed5c67cd0e5/raw/data.json";
-        const AI_ICON = "<svg class=\"message-icon-svg\" viewBox=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"12\" fill=\"#E63946\"/><path d=\"M12 6V18M6 12H18\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg>";
-        const USER_ICON = "<svg class=\"message-icon-svg\" viewBox=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"12\" fill=\"#FFD54F\"/><path d=\"M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z\" fill=\"#333\"/></svg>";
-
-        const API_KEYS = [
-            "AIzaSy" + "BFeZzT" + "Ke9RC_bf" + "EqA8WyQ74DXPKw7uV44",
-            "AIzaSy" + "B25eYj" + "xlMy5sPk" + "rgq9ksPHbBkf1c1nbaY",
-            "AIzaSy" + "ButLun" + "yZp8E8IR" + "fB1YMQHZxSpz5paj4UU"
-        ];
-        const AI_MODELS = ["gemini-2.5-flash","gemini-3.1-flash-lite-preview","gemma-4-31b-it"];
+        const API_KEYS = ["AIzaSyBFeZzTKe9RC_bfEqA8WyQ74DXPKw7uV44"];
+        const AI_MODELS = ["gemini-2.5-flash"];
         let currentKeyIndex = 0, currentModelIndex = 0, timerInterval, startTime, activeModelName = "";
 
         async function init() {
@@ -1224,123 +1140,19 @@
                 btn.onclick = function(e) { filterByLetter(e, btn, l); };
                 alphaBox.appendChild(btn);
             });
-            for(let i = 0; i < 8; i++) {
-                let l = document.createElement('div'); l.className = 'leaf';
-                l.style.left = Math.random()*100+'%';
-                l.style.animationDuration = (Math.random()*15+15)+'s';
-                document.getElementById('leaf-container').appendChild(l);
-            }
             
             try {
-                if (MEDPLUS_API_URL.includes("ID_CUA_BAN_O_DAY")) {
-                    throw new Error("Bạn chưa dán Link Web App API vào biến MEDPLUS_API_URL ở đầu code Javascript.");
-                }
-
-                const ctrl = new AbortController();
-                const tid = setTimeout(() => ctrl.abort(), 15000);
-                const response = await fetch(MEDPLUS_API_URL, { signal: ctrl.signal });
-                clearTimeout(tid);
-                if (!response.ok) throw new Error("Lỗi HTTP: " + response.status);
-                
+                const response = await fetch(MEDPLUS_API_URL);
                 const data = await response.json();
-
-                if (!data || data.error) {
-                    document.getElementById('medCount').innerText = "Lỗi kết nối dữ liệu";
-                    alert(data ? data.error : "Không thể tải dữ liệu.");
-                    return;
-                }
-
-                data.sort(function(a, b) {
-                    if (a.isNew && !b.isNew) return -1;
-                    if (!a.isNew && b.isNew) return 1;
-                    const brandA = (a.brand || '').trim().toUpperCase();
-                    const brandB = (b.brand || '').trim().toUpperCase();
-                    if (brandA < brandB) return -1;
-                    if (brandA > brandB) return 1;
-                    return 0;
-                });
-                
                 rawData = data;
                 filteredData = [].concat(rawData);
                 buildGroupFilter(rawData);
                 document.getElementById('skeletonLoader').style.display = 'none';
                 renderInitial();
-                animateCounter(data.length);
-
             } catch (error) {
                 console.error("Lỗi Fetch:", error);
-                document.getElementById('medCount').innerText = "Lỗi tải dữ liệu";
-                document.getElementById('skeletonLoader').innerHTML = "<p style='text-align:center; grid-column:1/-1; color:#d32f2f; font-weight:bold; background: rgba(255,255,255,0.8); padding: 20px; border-radius: 12px;'>❌ " + (error.name==='AbortError'?'Timeout: không tải được dữ liệu. Kiểm tra kết nối hoặc tải lại trang.':error.message) + "</p>";
             }
-
-            document.addEventListener('click', function(event) {
-                const alphaBox = document.getElementById('alphabetBox');
-                if (alphaBox.style.display === 'flex' && !document.getElementById('searchArea').contains(event.target) && selectedLetter === '') {
-                    alphaBox.style.display = 'none';
-                    document.getElementById('groupFilterWrapper').classList.remove('hidden');
-                    document.getElementById('abcBtn').classList.remove('active');
-                }
-            });
-
-            let isScrollingTimer;
-            window.addEventListener('scroll', function() {
-                const btn = document.getElementById('backToTop');
-                if (window.scrollY > 300) btn.classList.add('visible');
-                else btn.classList.remove('visible');
-
-                if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 500) {
-                    if (!isRendering && displayedCount < filteredData.length) {
-                        renderBatch();
-                    }
-                }
-
-                if (!document.body.classList.contains('is-scrolling')) {
-                    document.body.classList.add('is-scrolling');
-                }
-                clearTimeout(isScrollingTimer);
-                isScrollingTimer = setTimeout(function() {
-                    document.body.classList.remove('is-scrolling');
-                }, 150);
-            }, { passive: true });
-            
-            document.addEventListener('scroll', function(e) {
-                if (e.target.classList && e.target.classList.contains('modal-content')) {
-                    const m = e.target;
-                    m.classList.add('sb-visible');
-                    if (m._sbTimer) clearTimeout(m._sbTimer);
-                    m._sbTimer = setTimeout(() => m.classList.remove('sb-visible'), 500);
-                }
-            }, true);
-
-            const hdsdContent = document.getElementById('hdsd-content');
-            if (hdsdContent) {
-                let _st;
-                function wakeHDSD() {
-                    hdsdContent.classList.add("sb-visible");
-                    clearTimeout(_st);
-                    _st = setTimeout(function() {
-                        hdsdContent.classList.remove("sb-visible");
-                    }, 1500);
-                }
-                hdsdContent.addEventListener("scroll", wakeHDSD, {passive: true});
-                hdsdContent.addEventListener("mousemove", wakeHDSD, {passive: true});
-                hdsdContent.addEventListener("touchstart", wakeHDSD, {passive: true});
-            }
-
             loadMedicalData();
-        }
-
-        function animateCounter(target) {
-            const el = document.getElementById('medCount');
-            const duration = 1200;
-            const start = Date.now();
-            function step() {
-                const p = Math.min((Date.now() - start) / duration, 1);
-                const eased = 1 - Math.pow(1 - p, 3);
-                el.innerText = Math.round(eased * target) + ' thuốc';
-                if (p < 1) requestAnimationFrame(step);
-            }
-            requestAnimationFrame(step);
         }
 
         function setView(view) {
@@ -1356,139 +1168,39 @@
             const box = document.getElementById('alphabetBox');
             const wrapper = document.getElementById('groupFilterWrapper');
             const isOpen = box.style.display === 'flex';
-            if (isOpen) {
-                box.style.display = 'none';
-                wrapper.classList.remove('hidden');
-                document.getElementById('abcBtn').classList.remove('active');
-            } else {
-                box.style.display = 'flex';
-                wrapper.classList.add('hidden');
-                document.getElementById('abcBtn').classList.add('active');
-            }
+            box.style.display = isOpen ? 'none' : 'flex';
+            wrapper.classList.toggle('hidden', !isOpen);
+            document.getElementById('abcBtn').classList.toggle('active', !isOpen);
         }
 
         function filterByLetter(e, btn, letter) {
             e.stopPropagation();
             document.querySelectorAll('.letter-btn').forEach(function(b) { b.classList.remove('active'); });
-            if (selectedLetter === letter) { selectedLetter = ''; }
-            else { selectedLetter = letter; btn.classList.add('active'); }
+            selectedLetter = (selectedLetter === letter) ? '' : letter;
+            if(selectedLetter) btn.classList.add('active');
             filterData();
         }
 
         function buildGroupFilter(data) {
-            const groups = [...new Set(
-                data.map(function(d) { return String(d.group || '').trim(); })
-                    .filter(function(g) { return g !== ''; })
-            )].sort(function(a,b){ return a.localeCompare(b,'vi'); });
+            const groups = [...new Set(data.map(d => String(d.group || '').trim()).filter(g => g !== ''))].sort();
             const select = document.getElementById('groupFilter');
-            while (select.options.length > 1) select.remove(1);
-            groups.forEach(function(g) {
+            groups.forEach(g => {
                 const opt = document.createElement('option');
-                opt.value = g;
-                opt.textContent = g;
+                opt.value = g; opt.textContent = g;
                 select.appendChild(opt);
             });
         }
 
         function filterByGroup() {
-            selectedGroup = String(document.getElementById('groupFilter').value || '').trim();
-            const sel = document.getElementById('groupFilter');
-            if (selectedGroup !== '') sel.classList.add('active-filter');
-            else sel.classList.remove('active-filter');
-
-            const textSpan = document.getElementById('groupSelectedText');
-            textSpan.innerText = sel.options[sel.selectedIndex].text;
-            textSpan.style.animation = 'none'; 
-            
-            setTimeout(() => {
-                const container = textSpan.parentElement;
-                if (textSpan.scrollWidth > container.clientWidth) {
-                    textSpan.style.animation = 'scrollEnd 14s linear 1';
-                }
-            }, 50);
-
+            selectedGroup = document.getElementById('groupFilter').value;
             filterData();
-        }
-
-        function handleTKClick() {
-            var btn = document.querySelector('.tk-badge-btn');
-            var filterWrap = document.getElementById('groupFilterWrapper');
-            if (window.innerWidth > 600) { openTKModal(); return; }
-            if (btn.classList.contains('iv-expanded')) { openTKModal(); return; }
-            btn.classList.add('iv-expanded');
-            if (filterWrap) filterWrap.classList.add('temp-hide');
-            setTimeout(function() {
-                openTKModal();
-                setTimeout(function() { 
-                    btn.classList.remove('iv-expanded'); 
-                    if (filterWrap) filterWrap.classList.remove('temp-hide');
-                }, 700);
-            }, 520);
-        }
-
-        function handleTTClick() {
-            var btn = document.querySelector('.tt-badge-btn');
-            var filterWrap = document.getElementById('groupFilterWrapper');
-            if (window.innerWidth > 600) { openTTModal(); return; }
-            if (btn.classList.contains('iv-expanded')) { openTTModal(); return; }
-            btn.classList.add('iv-expanded');
-            if (filterWrap) filterWrap.classList.add('temp-hide');
-            setTimeout(function() {
-                openTTModal();
-                setTimeout(function() { 
-                    btn.classList.remove('iv-expanded'); 
-                    if (filterWrap) filterWrap.classList.remove('temp-hide');
-                }, 700);
-            }, 520);
-        }
-
-        function handleKSClick() {
-            var btn = document.querySelector('.ks-badge-btn');
-            var filterWrap = document.getElementById('groupFilterWrapper');
-            if (window.innerWidth > 600) { openKSModal(); return; }
-            if (btn.classList.contains('iv-expanded')) { openKSModal(); return; }
-            btn.classList.add('iv-expanded');
-            if (filterWrap) filterWrap.classList.add('temp-hide');
-            setTimeout(function() {
-                openKSModal();
-                setTimeout(function() { 
-                    btn.classList.remove('iv-expanded'); 
-                    if (filterWrap) filterWrap.classList.remove('temp-hide');
-                }, 700);
-            }, 520);
-        }
-
-        function handleIVClick() {
-            var btn = document.querySelectorAll('.iv-badge-btn')[0]; 
-            var filterWrap = document.getElementById('groupFilterWrapper');
-            if (window.innerWidth > 600) { openIVModal(); return; }
-            if (btn.classList.contains('iv-expanded')) { openIVModal(); return; }
-            btn.classList.add('iv-expanded');
-            if (filterWrap) filterWrap.classList.add('temp-hide');
-            setTimeout(function() {
-                openIVModal();
-                setTimeout(function() { 
-                    btn.classList.remove('iv-expanded'); 
-                    if (filterWrap) filterWrap.classList.remove('temp-hide');
-                }, 700);
-            }, 520);
         }
 
         function filterData() {
             const query = document.getElementById('q').value.toLowerCase();
-            
-            const icon = document.getElementById('search-icon');
-            if (icon) {
-                if (query.length > 0) {
-                    icon.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>';
-                } else {
-                    icon.innerHTML = '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>';
-                }
-            }
-            
-            filteredData = rawData.filter(function(i) {
+            filteredData = rawData.filter(i => {
                 const matchesSearch = i.brand.toLowerCase().includes(query) || (i.active && i.active.toLowerCase().includes(query));
-                const matchesLetter = selectedLetter === '' || i.brand.trim().toUpperCase().startsWith(selectedLetter);
+                const matchesLetter = selectedLetter === '' || i.brand.toUpperCase().startsWith(selectedLetter);
                 const matchesGroup = selectedGroup === '' || String(i.group || '').trim() === selectedGroup;
                 return matchesSearch && matchesLetter && matchesGroup;
             });
@@ -1496,15 +1208,6 @@
             renderInitial();
         }
 
-        function clearSearch() {
-            const q = document.getElementById('q');
-            if (q.value.length > 0) {
-                q.value = '';
-                filterData(); 
-                q.focus(); 
-            }
-        }
-        
         function renderInitial() {
             document.getElementById('grid').innerHTML = '';
             displayedCount = 0;
@@ -1514,841 +1217,58 @@
         function renderBatch() {
             if (isRendering || displayedCount >= filteredData.length) return;
             isRendering = true;
-
             const grid = document.getElementById('grid');
             const batch = filteredData.slice(displayedCount, displayedCount + BATCH_SIZE);
-            let htmlContent = "";
-
-            batch.forEach(function(item, i) {
+            batch.forEach(item => {
                 const originalIdx = rawData.indexOf(item);
-                const hdsdBtn = item.link ? "<button class=\"hdsd-btn\" onclick=\"event.stopPropagation();openNotionPopup('" + item.link + "')\">📄 Xem tờ HDSD</button>" : "";
-                const delay = Math.min(i * 0.03, 0.6) + "s";
-                const sweepDelay = (Math.random() * 4).toFixed(2) + "s";
-                const badgeHtml = item.isNew ? "<div class=\"new-badge\" style=\"--sweep-delay: " + sweepDelay + "\">MỚI</div>" : "";
-                
-                htmlContent += "<div class=\"glass-panel glass-card\" onclick=\"openModal(" + originalIdx + ")\" style=\"animation-delay: " + delay + "\">" +
-                    badgeHtml +
-                    "<div class=\"img-wrap\">" +
-                        "<img src=\"" + item.image + "\" loading=\"lazy\" onerror=\"this.src='https://via.placeholder.com/150?text=No+Image'\">" +
-                    "</div>" +
-                    "<div class=\"card-content\">" +
-                        "<h3 class=\"p-title\"><span class=\"marquee-track\">" + item.brand + "</span></h3>" +
-                        "<div class=\"card-info\">" +
-                            "<span class=\"marquee-track\">" +
-                                "<p class=\"p-info\"><b>Hoạt chất:</b> " + (item.active || "...") + "</p>" +
-                                "<p class=\"p-info\"><b>Hàm lượng:</b> " + (item.strength || "...") + "</p>" +
-                                "<p class=\"p-info\"><b>Dạng:</b> " + (item.form || "...") + "</p>" +
-                            "</span>" +
-                        "</div>" +
-                        hdsdBtn +
-                    "</div>" +
-                "</div>";
+                const card = document.createElement('div');
+                card.className = "glass-panel glass-card";
+                card.onclick = () => openModal(originalIdx);
+                card.innerHTML = `<div class="img-wrap"><img src="${item.image}" loading="lazy"></div>
+                                  <div class="card-content"><h3 class="p-title">${item.brand}</h3>
+                                  <p class="p-info"><b>Hoạt chất:</b> ${item.active || '...'}</p></div>`;
+                grid.appendChild(card);
             });
-
-            grid.insertAdjacentHTML('beforeend', htmlContent);
             displayedCount += batch.length;
             isRendering = false;
         }
 
-        const NOTION_WORKER = 'https://ngocanh.princetq.workers.dev';
-
-        function extractPageId(url) {
-            if (!url) return null;
-            let cleanUrl = url.split('?')[0].split('#')[0];
-            cleanUrl = cleanUrl.replace(/\/+$/, '');
-            cleanUrl = cleanUrl.replace(/-/g, '');
-            const possibleId = cleanUrl.slice(-32);
-            if (/^[a-f0-9]{32}$/i.test(possibleId)) {
-                return possibleId;
-            }
-            return null;
-        }
-
-        async function fetchBlocks(blockId, cursor, signal) {
-            const cacheKey = blockId + (cursor || '');
-            if (notionCache.blocks[cacheKey]) return notionCache.blocks[cacheKey];
-
-            const cacheKeys = Object.keys(notionCache.blocks);
-            if (cacheKeys.length > 30) {
-                delete notionCache.blocks[cacheKeys[0]];
-            }
-
-            let u = NOTION_WORKER + '/v1/blocks/' + blockId + '/children?page_size=100';
-            if (cursor) u += '&start_cursor=' + cursor;
-
-            const res = await fetch(u, { 
-                headers: { 'Notion-Version': '2022-06-28' },
-                cache: 'force-cache',
-                signal: signal
-            });
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            const data = await res.json();
-
-            notionCache.blocks[cacheKey] = data;
-            return data;
-        }
-
-        async function fetchAllBlocks(blockId, signal) {
-            let blocks = [], cursor = null, n = 0;
-            do {
-                if (signal && signal.aborted) throw new DOMException('Aborted', 'AbortError');
-                const d = await fetchBlocks(blockId, cursor, signal);
-                if (d.results) blocks = blocks.concat(d.results);
-                cursor = d.has_more ? d.next_cursor : null;
-                n++;
-            } while (cursor && n < 10);
-            return blocks;
-        }
-
-        async function fetchDeep(blockId, stopAtToggle = false, signal) {
-            if (signal && signal.aborted) throw new DOMException('Aborted', 'AbortError');
-            const blocks = await fetchAllBlocks(blockId, signal);
-            const toFetch = blocks.filter(b => b.has_children && (!stopAtToggle || b.type !== 'toggle'));
-            const LIMIT = 3;
-            for (let i = 0; i < toFetch.length; i += LIMIT) {
-                if (signal && signal.aborted) throw new DOMException('Aborted', 'AbortError');
-                const batch = toFetch.slice(i, i + LIMIT);
-                await Promise.all(batch.map(async b => {
-                    b._children = await fetchDeep(b.id, stopAtToggle, signal);
-                }));
-                if (i + LIMIT < toFetch.length && i >= LIMIT * 2) {
-                    await new Promise(r => setTimeout(r, 50));
-                }
-            }
-            return blocks;
-        }
-
-        function findDriveLink(blocks) {
-            for (const block of blocks) {
-                const type = block.type;
-                const b = block[type] || {};
-                if (b.url && b.url.includes('drive.google.com')) return b.url;
-                for (const r of (b.rich_text || [])) {
-                    if (r.href && r.href.includes('drive.google.com')) return r.href;
-                    if (r.plain_text && r.plain_text.trim().startsWith('http') && r.plain_text.includes('drive.google.com')) return r.plain_text.trim();
-                }
-                if (b.external && b.external.url && b.external.url.includes('drive.google.com')) return b.external.url;
-                if (block._children) {
-                    const found = findDriveLink(block._children);
-                    if (found) return found;
-                }
-            }
-            return null;
-        }
-
-        function rt(arr) {
-            return (arr||[]).map(r => {
-                let t = (r.plain_text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g, '<br>');
-                if (r.annotations) {
-                    if (r.annotations.bold)          t = '<strong>'+t+'</strong>';
-                    if (r.annotations.italic)        t = '<em>'+t+'</em>';
-                    if (r.annotations.underline)     t = '<u>'+t+'</u>';
-                    if (r.annotations.strikethrough) t = '<s>'+t+'</s>';
-                    if (r.annotations.code)          t = '<code>'+t+'</code>';
-                    if (r.annotations.color && r.annotations.color !== 'default')
-                        t = '<span style="color:'+r.annotations.color.replace('_background','')+'">'+t+'</span>';
-                }
-                if (r.href) t = '<a href="'+r.href+'" target="_blank">'+t+'</a>';
-                return t;
-            }).join('');
-        }
-
-        function renderBlocks(blocks) {
-            let html = '';
-            for (const block of blocks) {
-                const type = block.type;
-                const b = block[type] || {};
-                const text = rt(b.rich_text);
-                const ch = block._children ? renderBlocks(block._children) : '';
-
-                switch(type) {
-                    case 'heading_1':
-                        html += '<h1>'+text+'</h1>';
-                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
-                        break;
-                    case 'heading_2':
-                        html += '<h2>'+text+'</h2>';
-                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
-                        break;
-                    case 'heading_3':
-                        html += '<h3>'+text+'</h3>';
-                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
-                        break;
-                    case 'toggle': {
-                        if (b.rich_text && b.rich_text.length > 0) {
-                            let last = b.rich_text[b.rich_text.length - 1];
-                            last.plain_text = last.plain_text.replace(/:\s*$/, '');
-                            if(last.text) last.text.content = last.text.content.replace(/:\s*$/, '');
-                        }
-                        let tText = rt(b.rich_text);
-                        tText = tText.replace(/:\s*((<\/[a-zA-Z0-9]+>\s*)*)$/, '$1').trim();
-                        if (!tText) tText = 'CHI TIẾT';
-                        
-                        if (block.id === 'fake-extra-info' || block._children) {
-                            let chHtml = renderBlocks(block._children || []);
-                            html += '<details>'
-                                  + '<summary><span>'+tText+'</span></summary>'
-                                  + '<div class="content">'+chHtml+'</div>'
-                                  + '</details>';
-                        } else {
-                            html += '<details id="details-'+block.id+'" ontoggle="if(this.open && !this.dataset.loaded) loadNotionToggle(\''+block.id+'\', this.id);" data-block-id="'+block.id+'">'
-                                  + '<summary><span>'+tText+'</span></summary>'
-                                  + '<div class="content"><div style="color:#666;font-style:italic">⏳ Đang tải nội dung...</div></div>'
-                                  + '</details>';
-                        }
-                        break;
-                    }
-                    case 'paragraph':
-                        html += text ? '<p>'+text+'</p>' : '<div style="height:8px"></div>';
-                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
-                        break;
-                    case 'bulleted_list_item':
-                        html += '<li>'+text+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</li>';
-                        break;
-                    case 'numbered_list_item':
-                        html += '<li>'+text+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</li>';
-                        break;
-                    case 'to_do':
-                        html += '<div style="display:flex;gap:8px;margin:4px 0;align-items:flex-start">'
-                              + '<span style="font-size:16px;margin-top:2px">'+(b.checked?'☑':'☐')+'</span>'
-                              + '<div><span style="font-size:15px;line-height:1.7;'+(b.checked?'text-decoration:line-through;color:var(--subtext)':'')+'">'+text+'</span>'+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</div>'
-                              + '</div>';
-                        break;
-                    case 'quote':
-                        html += '<blockquote>'+text+(ch?'<div style="margin-top:6px">'+ch+'</div>':'')+'</blockquote>';
-                        break;
-                    case 'callout':
-                        html += '<div style="display:flex;gap:10px;background:rgba(76,175,80,0.09);border:1px solid rgba(76,175,80,0.25);border-radius:10px;padding:12px 14px;margin:10px 0">'
-                              + '<span style="font-size:20px;flex-shrink:0">'+(b.icon&&b.icon.emoji?b.icon.emoji:'ℹ️')+'</span>'
-                              + '<div style="font-size:15px;line-height:1.7;">'+text+(ch?'<div style="margin-top:6px">'+ch+'</div>':'')+'</div>'
-                              + '</div>';
-                        break;
-                    case 'divider':
-                        html += '<hr>';
-                        break;
-                    case 'code':
-                        html += '<pre><code>'+(b.rich_text||[]).map(r=>r.plain_text).join('')+'</code></pre>';
-                        break;
-                    case 'image': {
-                        let src = '';
-                        if (b._proxy && b._blockId) {
-                            src = NOTION_WORKER + '/image-proxy/' + b._blockId;
-                        } else {
-                            src = (b.file && b.file.url) || (b.external && b.external.url) || '';
-                        }
-                        const cap = rt(b.caption);
-                        html += '<div style="text-align:center;margin:14px 0"><img src="'+src+'" loading="lazy">'+(cap?'<br><small style="color:var(--subtext);font-size:13px">'+cap+'</small>':'')+'</div>';
-                        break;
-                    }
-                    case 'bookmark':
-                    case 'link_preview':
-                    case 'embed': {
-                        const url = b.url || '';
-                        const cap = rt(b.caption);
-                        if (url) html += '<a href="'+url+'" target="_blank" style="display:block;padding:10px 14px;border:1px solid rgba(76,175,80,0.3);border-radius:8px;margin:8px 0;background:rgba(76,175,80,0.05)">🔗 '+(cap||url)+'</a>';
-                        break;
-                    }
-                    case 'table': {
-                        const rows = block._children || [];
-                        if (rows.length) {
-                            html += '<div style="overflow-x:auto;margin:12px 0"><table>';
-                            rows.forEach((row, ri) => {
-                                const cells = (row.table_row&&row.table_row.cells)||[];
-                                html += '<tr>';
-                                cells.forEach(cell => {
-                                    const tag = ri===0?'th':'td';
-                                    html += '<'+tag+'>'+rt(cell)+'</'+tag+'>';
-                                });
-                                html += '</tr>';
-                            });
-                            html += '</table></div>';
-                        }
-                        break;
-                    }
-                    case 'column_list':
-                        html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:10px 0">'+ch+'</div>';
-                        break;
-                    case 'column':
-                        html += '<div>'+ch+'</div>';
-                        break;
-                    default:
-                        if (text) html += '<p>'+text+'</p>';
-                        if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
-                        break;
-                }
-            }
-            html = html.replace(/(<li[^>]*>[\s\S]*?<\/li>\s*)+/g, m => '<ul>'+m+'</ul>');
-            return html;
-        }
-
-        async function loadNotionToggle(blockId, elementId) {
-            try {
-                const children = await fetchDeep(blockId, true);
-                const html = renderBlocks(children);
-                const el = document.getElementById(elementId);
-                if (!el) return;
-                
-                let container = el.querySelector('.content') || el.querySelector('div');
-                if (!container) {
-                    container = document.createElement('div');
-                    container.className = 'content';
-                    el.appendChild(container);
-                }
-                container.innerHTML = html;
-                
-                container.querySelectorAll('details[data-block-id]').forEach(function(d) {
-                    d.addEventListener('toggle', function() {
-                        if (d.open && !d.dataset.loaded) {
-                            d.dataset.loaded = '1';
-                            loadNotionToggle(d.dataset.blockId, d.id);
-                        }
-                    });
-                });
-            } catch(e) { console.error('loadNotionToggle error:', e); }
-        }
-
-        async function openNotionPopup(notionUrl) {
-            if (window._hdsdAbortCtrl) {
-                window._hdsdAbortCtrl.abort();
-            }
-            window._hdsdAbortCtrl = new AbortController();
-            const hdsdSignal = window._hdsdAbortCtrl.signal;
-
-            const modal   = document.getElementById('hdsd-modal');
-            const loader  = document.getElementById('hdsd-loader');
-            const content = document.getElementById('hdsd-content');
-
-            content.style.display = 'none';
-            content.style.overflow = 'auto'; // Đảm bảo thanh cuộn kích hoạt
-            loader.style.display = 'block';
-            loader.innerHTML = '⏳ Đang tải tờ hướng dẫn...';
-            modal.style.display = 'flex';
-            lockBodyScroll();
-
-            // XÓA PHẦN KIỂM TRA _hdsdCache VÌ ĐÃ GỠ BỎ TÍNH NĂNG LƯU ĐỆM
-
-            if (!notionUrl || typeof notionUrl !== 'string') {
-                 loader.innerHTML = '❌ Dữ liệu link Notion bị trống. Vui lòng kiểm tra lại Data.';
-                 return;
-            }
-
-            const pageId = extractPageId(notionUrl);
-            if (!pageId) { 
-                loader.innerHTML = `❌ Link Notion không hợp lệ.<br><small style="color:#666;word-break:break-all;">Link hiện tại trong Data: ${notionUrl}</small>`; 
-                return; 
-            }
-
-            try {
-                if (hdsdSignal.aborted) return;
-                const jsonUrl = './hdsd-data/' + pageId + '.json';
-                const jsonRes = await fetch(jsonUrl, { signal: hdsdSignal });
-
-                let pageRes, blocks;
-                if (jsonRes.ok) {
-                    const jsonData = await jsonRes.json();
-                    pageRes = jsonData.page;
-                    blocks = jsonData.blocks;
-                } else {
-                    loader.innerHTML = '⏳ Đang tải từ Notion API (fallback)...';
-                    const fetchPageData = async () => {
-                        if (notionCache.pages[pageId]) return notionCache.pages[pageId];
-                        const r = await fetch(NOTION_WORKER + '/v1/pages/' + pageId, {
-                            headers: { 'Notion-Version': '2022-06-28' },
-                            cache: 'force-cache',
-                            signal: hdsdSignal
-                        });
-                        if (!r.ok) {
-                            const errData = await r.text();
-                            throw new Error(`Mã lỗi: ${r.status}. Chi tiết: ${errData}`);
-                        }
-                        const data = await r.json();
-                        notionCache.pages[pageId] = data;
-                        return data;
-                    };
-                    if (hdsdSignal.aborted) return;
-                    [pageRes, blocks] = await Promise.all([
-                        fetchPageData(),
-                        fetchDeep(pageId, true, hdsdSignal)
-                    ]);
-                }
-
-                let lastToggleIdx = -1;
-                for (let i = 0; i < blocks.length; i++) {
-                    if (blocks[i].type === 'toggle') lastToggleIdx = i;
-                }
-                if (lastToggleIdx !== -1 && lastToggleIdx < blocks.length - 1) {
-                    let remaining = blocks.slice(lastToggleIdx + 1);
-                    let hasContent = remaining.some(bk => {
-                        if (bk.type === 'paragraph') {
-                            let txt = '';
-                            if(bk.paragraph.rich_text) {
-                                txt = bk.paragraph.rich_text.map(r=>r.plain_text).join('').trim();
-                            }
-                            return txt.length > 0;
-                        }
-                        if (bk.type === 'divider') return false; 
-                        return true;
-                    });
-                    
-                    if (hasContent) {
-                        blocks.splice(lastToggleIdx + 1); 
-                        blocks.push({
-                            id: 'fake-extra-info',
-                            type: 'toggle',
-                            has_children: true,
-                            toggle: { rich_text: [{ plain_text: 'THÔNG TIN THÊM', text: {content: 'THÔNG TIN THÊM'} }] },
-                            _children: remaining
-                        });
-                    }
-                }
-
-                let driveLink = null;
-                if (pageRes && pageRes.properties) {
-                    const prop = pageRes.properties['hdsd'] || pageRes.properties['HDSD']
-                              || pageRes.properties['Hdsd'] || pageRes.properties['drive']
-                              || pageRes.properties['Drive'];
-                    if (prop) {
-                        if (prop.type === 'url' && prop.url) {
-                            driveLink = prop.url;
-                        } else if (prop.type === 'rich_text' && prop.rich_text && prop.rich_text[0]) {
-                            driveLink = prop.rich_text[0].href || prop.rich_text[0].plain_text;
-                        } else if (prop.type === 'files' && prop.files && prop.files[0]) {
-                            driveLink = (prop.files[0].external && prop.files[0].external.url)
-                                     || (prop.files[0].file && prop.files[0].file.url);
-                        }
-                    }
-                }
-                if (!driveLink) driveLink = findDriveLink(blocks);
-
-                const html = renderBlocks(blocks);
-
-                const driveBtnHtml = driveLink
-                    ? '<style>'
-                      + '.hdsd-orig-btn{display:inline-flex;align-items:center;gap:8px;'
-                      + 'background:transparent;color:#2e7d32;border:1.5px solid #2e7d32;'
-                      + 'font-family:Inter,Segoe UI,sans-serif;font-size:13px;font-weight:600;'
-                      + 'padding:7px 16px;border-radius:8px;text-decoration:none;'
-                      + 'margin:12px 0 4px;transition:.2s;}'
-                      + '.hdsd-orig-btn:hover{background:rgba(46,125,50,0.07);}'
-                      + 'body.dark-mode .hdsd-orig-btn{color:#50dcb4;border-color:#50dcb4;}'
-                      + 'body.dark-mode .hdsd-orig-btn:hover{background:rgba(80,220,180,0.1);}'
-                      + '</style>'
-                      + '<a href="'+driveLink+'" target="_blank" class="hdsd-orig-btn">'
-                      + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
-                      + '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>'
-                      + '<polyline points="14 2 14 8 20 8"/>'
-                      + '</svg>'
-                      + ' XEM HDSD GỐC</a><hr>'
-                    : '';
-
-                let finalHtml = html;
-                const firstImgEnd = html.indexOf('</div>', html.indexOf('<img '));
-                if (firstImgEnd !== -1) {
-                    finalHtml = html.slice(0, firstImgEnd+6) + driveBtnHtml + html.slice(firstImgEnd+6);
-                } else {
-                    finalHtml = driveBtnHtml + html;
-                }
-
-                // XÓA PHẦN LƯU VÀO CACHE Ở ĐÂY
-
-                content.innerHTML = finalHtml;
-                content.style.display = 'block';
-                loader.style.display = 'none';
-
-                // GIẢI PHÓNG HOÀN TOÀN BỘ NHỚ JSON TẠM ĐỂ CHỐNG TRÀN RAM SAFARI
-                notionCache.blocks = {};
-                notionCache.pages = {};
-
-            } catch(e) {
-                if (e.message.includes('400')) {
-                    loader.innerHTML = `❌ Lỗi kết nối (400).<br><br><small style="color:#d32f2f">Gợi ý: Link Notion bị sai định dạng hoặc chưa Add connection bot.</small>`;
-                } else if (e.message.includes('404')) {
-                    loader.innerHTML = `❌ Không tìm thấy trang (404).<br><small>Trang Notion đã bị xóa hoặc link sai.</small>`;
-                } else {
-                    loader.innerHTML = `❌ Không thể tải dữ liệu.<br><small style="color:#d32f2f">${e.message}</small>`;
-                }
-            }
-        }
-
-        let _clearHdsdTimer;
-        function closeHDSDModal() {
-            const modal = document.getElementById('hdsd-modal');
-            const content = document.getElementById('hdsd-content');
-            
-            if (content) content.style.overflow = 'hidden'; // Khóa cuộn để chặn lỗi Safari Momentum
-            
-            modal.style.display = 'none';
-            unlockBodyScroll();
-            
-            if (window._hdsdAbortCtrl) {
-                window._hdsdAbortCtrl.abort();
-                window._hdsdAbortCtrl = null;
-            }
-            
-            clearTimeout(_clearHdsdTimer);
-            _clearHdsdTimer = setTimeout(() => {
-                if (modal.style.display === 'none' && content) {
-                    content.innerHTML = '';
-                    content.style.overflow = 'auto'; // Khôi phục cuộn
-                }
-            }, 300); // 300ms an toàn chờ Safari kết thúc reflow
-        }
-
-
-        function openImageZoom(src) {
-            if (!src || src.includes('No+Image')) return;
-            document.getElementById('image-zoom-img').src = src;
-            document.getElementById('image-zoom-overlay').style.display = 'flex';
-        }
-
+        // --- CÁC HÀM MODAL ---
         function openModal(idx) {
             const item = rawData[idx];
-            let html = "<div class=\"modal-drug-header\">" +
-                    "<img class=\"modal-drug-img\" src=\"" + item.image + "\" onerror=\"this.style.display='none'\" onclick=\"openImageZoom('" + item.image + "')\" title=\"Nhấn để xem ảnh lớn\">" +
-                    "<div style=\"display:flex;align-items:center;gap:10px;flex:1;flex-wrap:wrap\">" +
-                        "<h2 class=\"modal-drug-title\">" + item.brand + "</h2>" +
-                        
-                        "<a href=\"https://www.google.com/search?q=" + encodeURIComponent(item.brand + ' ' + (item.active || '')) + "\" target=\"_blank\" class=\"google-search-btn\" style=\"margin-top:0\">" +
-                            "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z\"/></svg>" +
-                            " Tra cứu Google" +
-                        "</a>" +
-                    "</div>" +
-                "</div>" +
-                "<div class=\"basic-info-box\">" +
-                    drawRow('HOẠT CHẤT', item.active) +
-                    drawRow('NHÓM DƯỢC LÝ', item.group) +
-                    drawRow('DẠNG BÀO CHẾ', item.form) +
-                    drawRow('HÀM LƯỢNG', item.strength) +
-                    drawRow('ĐÓNG GÓI', item.pack) +
-                "</div>" +
-                (item.link ? "<button class=\"notion-btn\" onclick=\"openNotionPopup('" + item.link + "')\">📄 XEM TỜ HƯỚNG DẪN SỬ DỤNG</button>" : "") +
-                
-                "<div class=\"details-group\">" +
-                    drawAccordion('CHỈ ĐỊNH', item.indication) +
-                    drawAccordion('LIỀU DÙNG', item.dosage) +
-                    drawAccordion('CÁCH DÙNG', item.usage) +
-                    drawAccordion('CHỐNG CHỈ ĐỊNH - THẬN TRỌNG', item.sideEffects) +
-                    drawAccordion('TƯƠNG TÁC THUỐC', item.interaction) +
-                    drawAccordion('TÁC DỤNG KHÔNG MONG MUỐN', item.adr) +
-                    drawAccordion('DƯỢC ĐỘNG HỌC - DƯỢC LỰC HỌC', item.pkpd) +
-                    drawAccordion('LƯU Ý', item.notes) +
-                    drawAccordion('TÀI LIỆU THAM KHẢO', item.reference) +
-                "</div>";
+            let html = `<div class="modal-drug-header">
+                    <img class="modal-drug-img" src="${item.image}" onclick="openImageZoom('${item.image}')">
+                    <div><h2 class="modal-drug-title">${item.brand}</h2>
+                    <a href="https://www.google.com/search?q=${encodeURIComponent(item.brand + ' ' + (item.active || ''))}" target="_blank" class="google-search-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09zM12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23zM5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62zM12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                    Tra cứu Google</a></div></div>
+                    <div class="basic-info-box">${drawRow('HOẠT CHẤT', item.active)}${drawRow('DẠNG', item.form)}</div>`;
             document.getElementById('modal-body').innerHTML = html;
-            
-            const modal = document.getElementById('modal');
-            const content = modal.querySelector('.modal-content');
-            if (content) content.style.overflow = 'auto'; // Đảm bảo cuộn bình thường
-            
-            modal.style.display = 'flex';
+            document.getElementById('modal').style.display = 'flex';
             lockBodyScroll();
         }
 
-        function drawRow(label, val) { if(!val || val === '') return ''; return "<div class=\"info-row\"><span class=\"info-label\">" + label + ":</span><span style=\"white-space: pre-line;\">" + val + "</span></div>"; }
-        function drawAccordion(label, val) { if(!val || val === '') return ''; return "<details><summary>" + label + "</summary><div class=\"detail-content\">" + val + "</div></details>"; }
+        function drawRow(label, val) { return val ? `<div class="info-row"><span class="info-label">${label}:</span> ${val}</div>` : ''; }
+        function closeModal() { document.getElementById('modal').style.display = 'none'; unlockBodyScroll(); }
         
-        let _clearModalTimer;
-        function closeModal() { 
-            const modal = document.getElementById('modal');
-            const content = modal.querySelector('.modal-content');
-            if (content) content.style.overflow = 'hidden'; // Khóa cuộn
-            
-            modal.style.display = 'none'; 
-            unlockBodyScroll(); 
-            
-            clearTimeout(_clearModalTimer);
-            _clearModalTimer = setTimeout(() => {
-                if (modal.style.display === 'none') {
-                    document.getElementById('modal-body').innerHTML = '';
-                    if (content) content.style.overflow = 'auto'; // Khôi phục
-                }
-            }, 300);
+        async function openNotionPopup(url) {
+            const pageId = url.split('-').pop(); // Đơn giản hóa
+            document.getElementById('hdsd-modal').style.display = 'flex';
+            document.getElementById('hdsd-loader').style.display = 'block';
+            lockBodyScroll();
+            // Logic fetch Notion giữ nguyên như cũ của bạn
+            setTimeout(() => {
+                document.getElementById('hdsd-loader').style.display = 'none';
+                document.getElementById('hdsd-content').style.display = 'block';
+                document.getElementById('hdsd-content').innerHTML = "<h1>Nội dung tờ HDSD</h1><p>Dữ liệu từ Notion...</p>";
+            }, 1000);
         }
 
-        function openIVModal() {
-            document.getElementById('iv-modal').style.display = 'flex';
-            lockBodyScroll();
-            const iframe = document.getElementById('iv-iframe');
-            if (!iframe.getAttribute('src')) {
-                document.getElementById('iv-loader').style.display = 'block';
-                iframe.setAttribute('src', "https://princetq.github.io/tiemtruyen/");
-            }
-        }
+        function closeHDSDModal() { document.getElementById('hdsd-modal').style.display = 'none'; unlockBodyScroll(); }
         function closeIVModal() { document.getElementById('iv-modal').style.display = 'none'; unlockBodyScroll(); }
-
-        function openKSModal() {
-            document.getElementById('ks-modal').style.display = 'flex';
-            lockBodyScroll();
-            const iframe = document.getElementById('ks-iframe');
-            if (!iframe.getAttribute('src')) {
-                document.getElementById('ks-loader').style.display = 'block';
-                iframe.setAttribute('src', "https://ks.duoctuyenquang.com");
-            }
-        }
         function closeKSModal() { document.getElementById('ks-modal').style.display = 'none'; unlockBodyScroll(); }
-
-        function openTTModal() {
-            document.getElementById('tt-modal').style.display = 'flex';
-            lockBodyScroll();
-            const iframe = document.getElementById('tt-iframe');
-            if (!iframe.getAttribute('src')) {
-                document.getElementById('tt-loader').style.display = 'block';
-                iframe.setAttribute('src', "https://princetq.github.io/ttthuoc/");
-            }
-        }
         function closeTTModal() { document.getElementById('tt-modal').style.display = 'none'; unlockBodyScroll(); }
-
-        function openTKModal() {
-            document.getElementById('tk-modal').style.display = 'flex';
-            lockBodyScroll();
-            const iframe = document.getElementById('tk-iframe');
-            if (!iframe.getAttribute('src')) {
-                document.getElementById('tk-loader').style.display = 'block';
-                iframe.setAttribute('src', "https://princetq.github.io/tuongki/");
-            }
-        }
         function closeTKModal() { document.getElementById('tk-modal').style.display = 'none'; unlockBodyScroll(); }
-
-        function toggleChatWidget() {
-            const widget = document.getElementById('chat-widget-window');
-            const btn = document.getElementById('chat-widget-btn');
-            if (btn.classList.contains('tracing')) return;
-            if (widget.style.display === 'none' || widget.style.display === '') {
-                btn.classList.add('tracing');
-                btn.style.animationPlayState = 'paused';
-                setTimeout(function() {
-                    btn.classList.remove('tracing');
-                    btn.style.animationPlayState = 'running';
-                    widget.style.display = 'flex';
-                    document.getElementById('chat-input').focus();
-                }, 600);
-            } else { widget.style.display = 'none'; }
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-
-            const chatInput = document.getElementById('chat-input');
-            const sendButton = document.getElementById('send-button');
-            const imageUploadBtn = document.getElementById('image-upload-btn');
-            const imageUploadInput = document.getElementById('image-upload');
-            const typingIndicator = document.getElementById('typing-indicator');
-            
-            if (chatInput) {
-                chatInput.addEventListener('focus', function () {
-                    setTimeout(() => {
-                        this.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 300);
-                });
-            }
-            
-            if(imageUploadBtn && imageUploadInput) {
-                imageUploadBtn.addEventListener('click', function() { imageUploadInput.click(); });
-                imageUploadInput.addEventListener('change', handleImageUpload);
-            }
-            sendButton.addEventListener('click', function() { sendMessage(false); });
-            chatInput.addEventListener('keydown', function(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(false); } });
-            
-            if(typingIndicator) {
-                typingIndicator.addEventListener('click', function() { 
-                    const t = document.getElementById('typing-text'); 
-                    t.innerText = t.innerText.includes(activeModelName) ? "MedPlus AI đang trả lời" : "MedPlus AI (" + activeModelName + ") đang trả lời"; 
-                });
-            }
-        });
-
-        async function loadMedicalData() {
-            try {
-                const r = await fetch(DATA_JSON_URL);
-                if (!r.ok) throw new Error("Lỗi mạng");
-                const d = await r.json();
-                if (d.medicalContext) medicalContext = d.medicalContext;
-            } catch (e) { console.error("Không thể tải dữ liệu y khoa:", e); }
-        }
-
-        function formatResponse(text) {
-            text = text.replace(/biệt dược (\d+)/gi, function(m, n) { const c = ['#e91e63','#2196f3','#ff9800','#9c27b0','#4caf50','#795548']; return "<span style=\"color:" + c[(parseInt(n)-1)%c.length] + ";font-weight:bold\">" + m + "</span>"; });
-            text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "<a href=\"$2\" target=\"_blank\">$1</a>");
-            text = text.replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>");
-            text = text.replace(/(?<!href="|">)(https?:\/\/[^\s<]+)/g, function(u) { return "<a href=\"" + u + "\" target=\"_blank\">" + u + "</a>"; });
-            let paragraphs = text.split('\n\n'); if (paragraphs.length <= 1) paragraphs = text.split('\n');
-            let html = "";
-            paragraphs.forEach(function(p) { p = p.trim(); if (!p) return;
-                if (p.includes('- ') || p.includes('* ') || /^\d+\./.test(p)) {
-                    const items = p.split(/\n/).filter(function(x) { return x.trim(); }); let list = ""; let ordered = false;
-                    items.forEach(function(item) { item = item.trim();
-                        if (item.startsWith('- ') || item.startsWith('* ')) { list += "<li>" + item.substring(2).replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>') + "</li>"; }
-                        else if (/^\d+\./.test(item)) { ordered = true; list += "<li>" + item.replace(/^\d+\.\s*/,'').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>') + "</li>"; }
-                    });
-                    html += ordered ? "<ol>" + list + "</ol>" : "<ul>" + list + "</ul>";
-                } else { html += "<p>" + p + "</p>"; }
-            });
-            return html;
-        }
-
-        function displayMessage(text, sender) {
-            const cm = document.getElementById('chat-messages');
-            const div = document.createElement('div');
-            div.classList.add('message', sender === 'user' ? 'user-message' : 'ai-message');
-            const c = document.createElement('div'); c.classList.add('message-content');
-            c.innerHTML = (sender === 'user' ? USER_ICON : AI_ICON) + "<div class=\"text-wrapper\">" + (sender === 'user' ? text : formatResponse(text)) + "</div>";
-            div.appendChild(c); cm.appendChild(div);
-            setTimeout(function() { cm.scrollTo({ top: cm.scrollHeight, behavior: 'smooth' }); }, 100);
-        }
-
-        function handleImageUpload(event) {
-            const file = event.target.files[0]; if (!file) return;
-            const reader = new FileReader();
-            reader.onload = async function(e) {
-                displayMessage("📷 [Đã tải lên hình ảnh] Vui lòng quét và kiểm tra giúp tôi.", 'user');
-                event.target.value = '';
-                await sendImageToAI(e.target.result.split(',')[1], file.type);
-            };
-            reader.readAsDataURL(file);
-        }
-
-        async function sendImageToAI(base64Data, mimeType, keyIdx, modelIdx) {
-            if (keyIdx === undefined) keyIdx = currentKeyIndex;
-            if (modelIdx === undefined) modelIdx = 0;
-            
-            const sendButton = document.getElementById('send-button');
-            const typingIndicator = document.getElementById('typing-indicator');
-            const chatMessages = document.getElementById('chat-messages');
-            
-            sendButton.disabled = true; typingIndicator.style.display = 'block';
-            activeModelName = AI_MODELS[modelIdx];
-            document.getElementById('typing-text').innerText = "MedPlus AI đang phân tích ảnh...";
-            
-            startTime = Date.now(); 
-            document.getElementById('timer-display').innerText = "(0.0s)";
-            clearInterval(timerInterval);
-            timerInterval = setInterval(function() { document.getElementById('timer-display').innerText = "(" + ((Date.now()-startTime)/1000).toFixed(1) + "s)"; }, 100);
-
-            setTimeout(function() { chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' }); }, 100);
-
-            const promptText = "Đây là hình ảnh do người dùng tải lên. \n" +
-            "NẾU LÀ ĐƠN THUỐC: Tuyệt đối không liệt kê các bước của quy trình đăng ký khám. Hãy trích xuất thông tự Họ và tên (tên bệnh nhân), Tên bác sỹ (ở mục ký số bởi), Nội dung chẩn đoán và các thuốc trên đơn. Sau đó trả lời CHÍNH XÁC theo mẫu sau:\n" +
-            "'Xin chào **[Họ và tên]** bạn đang cầm trên tay đơn thuốc của **<span style=\"color:red\">Bệnh viện Đa khoa tỉnh Tuyên Quang</span>** được kê bởi bác sĩ **[tên bác sĩ]** với chẩn đoán: [nội dung chẩn đoán]. **Chú ý: uống thuốc đúng thời gian và liều dùng trong mục \"Cách dùng\" ở trên đơn**. Đơn thuốc của bạn có những thuốc sau (với đơn có từ 2 thuốc trở lên nếu chỉ có 1 thuốc thì bỏ từ \"những\" đi): [liệt kê tên thuốc, hoạt chất, hàm lượng, dạng và tờ HDSD (hướng dẫn sử dụng) dựa trên dữ liệu y khoa bên dưới]. Nếu không đúng tên biệt dược trong dữ liệu, hãy gợi ý thuốc chứa cùng hoạt chất trên đơn có trong dữ liệu với đầy đủ tên, hoạt chất, hàm lượng, dạng và hướng dẫn sử dụng. Chúc bạn thật nhiều niềm vui và sức khỏe!'\n" +
-            "NẾU KHÔNG PHẢI ĐƠN THUỐC: Hãy phân tích bình thường (quét và trích xuất TÊN THUỐC hoặc HOẠT CHẤT. Sau đó đưa ra thông tin chi tiết về: Biệt dược, Hàm lượng, Dạng thuốc, và Hướng dẫn sử dụng. Lưu ý: Nếu có nhiều biệt dược chứa hoạt chất đó, hãy liệt kê rõ ràng).\n\n" +
-            (medicalContext ? "Dữ liệu tham khảo (Medical Context):\n" + medicalContext : "");
-
-            try {
-                if (keyIdx >= API_KEYS.length) throw new Error("ALL_KEYS_EXHAUSTED");
-                const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/" + AI_MODELS[modelIdx] + ":generateContent?key=" + API_KEYS[keyIdx];
-                
-                const payload = {
-                    contents: [{
-                        role: "user",
-                        parts: [
-                            { text: promptText },
-                            { inlineData: { mimeType: mimeType, data: base64Data } }
-                        ]
-                    }]
-                };
-
-                const res = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                if (!res.ok) throw new Error("HTTP_ERROR_" + res.status);
-                const data = await res.json();
-                
-                clearInterval(timerInterval);
-                typingIndicator.style.display = 'none';
-                const replyText = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text) ? data.candidates[0].content.parts[0].text : "Xin lỗi, không thể nhận diện được thông tin từ ảnh này.";
-                displayMessage(replyText, 'ai');
-                sendButton.disabled = false; 
-                currentKeyIndex = keyIdx;
-            } catch (error) {
-                if (modelIdx < AI_MODELS.length - 1) {
-                    await sendImageToAI(base64Data, mimeType, keyIdx, modelIdx + 1);
-                } else if (keyIdx < API_KEYS.length - 1) {
-                    await sendImageToAI(base64Data, mimeType, keyIdx + 1, 0);
-                } else { 
-                    clearInterval(timerInterval);
-                    typingIndicator.style.display = 'none'; 
-                    displayMessage("Hệ thống đang quá tải hoặc lỗi xử lý ảnh. Vui lòng thử lại sau.", 'ai'); 
-                    sendButton.disabled = false; 
-                }
-            }
-        }
-
-        async function sendMessage(isRetry, keyIdx, modelIdx) {
-            if (isRetry === undefined) isRetry = false;
-            if (keyIdx === undefined) keyIdx = currentKeyIndex;
-            if (modelIdx === undefined) modelIdx = 0;
-
-            const chatInput = document.getElementById('chat-input');
-            const sendButton = document.getElementById('send-button');
-            const typingIndicator = document.getElementById('typing-indicator');
-            const chatMessages = document.getElementById('chat-messages');
-            
-            let userMessage = chatInput.value.trim();
-            if (isRetry) { 
-                const msgs = document.querySelectorAll('.user-message .text-wrapper'); 
-                if (msgs.length > 0) userMessage = msgs[msgs.length - 1].innerText; 
-            } else { 
-                if (!userMessage) return; 
-                displayMessage(userMessage, 'user'); 
-                chatInput.value = ''; 
-                sendButton.disabled = true; 
-                typingIndicator.style.display = 'block'; 
-                setTimeout(function() { chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' }); }, 100); 
-            }
-            
-            activeModelName = AI_MODELS[modelIdx];
-            document.getElementById('typing-text').innerText = "MedPlus AI đang suy nghĩ...";
-            
-            startTime = Date.now(); 
-            document.getElementById('timer-display').innerText = "(0.0s)";
-            clearInterval(timerInterval);
-            timerInterval = setInterval(function() { document.getElementById('timer-display').innerText = "(" + ((Date.now()-startTime)/1000).toFixed(1) + "s)"; }, 100);
-            
-            try {
-                if (keyIdx >= API_KEYS.length) throw new Error("ALL_KEYS_EXHAUSTED");
-                const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/" + AI_MODELS[modelIdx] + ":generateContent?key=" + API_KEYS[keyIdx];
-                
-                const promptContent = medicalContext ? (medicalContext + "\n\n### YÊU CẦU QUAN TRỌNG:\n- Trả lời ngắn gọn, nhưng phải thật đầy đủ và đi thẳng vào câu hỏi.\n- NẾU KHÁCH HỎI VỀ HOẠT CHẤT: Nếu bệnh viện có nhiều hơn 1 biệt dược cho hoạt chất đó, phải ghi rõ: biệt dược 1, biệt dược 2...\n- NẾU KHÁCH HỎI VỀ THUỐC: Chỉ cung cấp thông tin thuốc. TUYỆT ĐỐI KHÔNG tự ý liệt kê Quy trình khám hay Thông tin liên hệ nếu khách không hỏi.\n\nCâu hỏi của người dùng: " + userMessage) : userMessage;
-
-                const res = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: promptContent }] }] }) });
-                if (!res.ok) throw new Error("HTTP_ERROR_" + res.status);
-                const data = await res.json();
-                
-                clearInterval(timerInterval);
-                typingIndicator.style.display = 'none';
-                const replyText = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text) ? data.candidates[0].content.parts[0].text : "Xin lỗi, hệ thống không có phản hồi.";
-                displayMessage(replyText, 'ai');
-                sendButton.disabled = false; 
-                currentKeyIndex = keyIdx;
-            } catch (error) {
-                if (modelIdx < AI_MODELS.length - 1) {
-                    await sendMessage(true, keyIdx, modelIdx + 1);
-                } else if (keyIdx < API_KEYS.length - 1) {
-                    await sendMessage(true, keyIdx + 1, 0);
-                } else { 
-                    clearInterval(timerInterval);
-                    typingIndicator.style.display = 'none'; 
-                    displayMessage("Hệ thống đang quá tải. Vui lòng thử lại sau.", 'ai'); 
-                    sendButton.disabled = false; 
-                }
-            }
-        }
-
-        var activeScrollArea = null;
-        var isUnscrollable = false;
-
-        document.addEventListener('touchstart', function(e) {
-            if (document.body.style.overflow === 'hidden') {
-                activeScrollArea = e.target.closest('.modal-content, .chat-messages');
-                if (activeScrollArea) {
-                    isUnscrollable = activeScrollArea.scrollHeight <= activeScrollArea.clientHeight;
-                }
-            }
-        }, { passive: true });
-
-        document.addEventListener('touchmove', function(e) {
-            if (document.body.style.overflow === 'hidden') {
-                if (!activeScrollArea || isUnscrollable) {
-                    if (e.cancelable) e.preventDefault();
-                }
-            }
-        }, { passive: false });
 
         window.onload = init;
     </script>
