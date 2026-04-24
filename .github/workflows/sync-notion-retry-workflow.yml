@@ -1,0 +1,46 @@
+name: Sync Notion HDSD
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+  repository_dispatch:
+    types: [notion-sync]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 📦 Cài đặt thư viện
+        run: npm install @notionhq/client@2.2.15
+
+      - name: 🔄 Chạy script sync retry
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+        run: node sync-notion-retry.js
+
+      - name: 💾 Commit và push dữ liệu mới
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add hdsd-data/
+          if git diff --staged --quiet; then
+            echo "⏭️ Không có dữ liệu mới"
+          else
+            git commit -m "🔄 Sync HDSD từ Notion - $(date '+%Y-%m-%d %H:%M UTC')"
+            for i in 1 2 3; do
+              git pull --rebase origin main && git push && break || sleep $((i * 5))
+            done
+          fi
