@@ -699,12 +699,11 @@
            ========================================================================= */
         #hdsd-content {
             padding: 20px 24px; max-width: 860px; margin: 0 auto;
-            width: 100%; height: 100%; overflow-y: auto; color: var(--text, #333); font-size: 15px;
+            width: 100%; height: 100%; overflow-y: auto; color: var(--text, #333); font-size: 15px; font-weight: 400;
             -webkit-overflow-scrolling: touch; background: var(--bg, #fff); transition: background .3s, color .3s;
             
             /* ĐỒNG BỘ CHÍNH XÁC FONT CHỮ BẢN GỐC IFRAME */
             font-family: 'Inter', 'Segoe UI', Roboto, sans-serif !important;
-            font-weight: 400;
             letter-spacing: -0.01em;
             -webkit-font-smoothing: antialiased;
             
@@ -729,17 +728,20 @@
         body.dark-mode #hdsd-content.sb-visible::-webkit-scrollbar-thumb:hover { background: rgba(80, 220, 180, 0.5) !important; border: 1px solid transparent; }
         
         #hdsd-content h1, #hdsd-content h2, #hdsd-content h3 { color: var(--green) !important; font-weight: bold; margin-top: 15px; margin-bottom: 10px; }
-        #hdsd-content h1 { font-size: 26px; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; }
-        #hdsd-content h2 { font-size: 22px; }
-        #hdsd-content h3 { font-size: 16px; }
-        #hdsd-content p, #hdsd-content li { color: inherit; line-height: 1.75; margin: 6px 0; font-size: 15px; }
+        #hdsd-content h1 { font-size: 26px; font-weight: 800; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; line-height: 1.3; }
+        #hdsd-content h2 { font-size: 22px; font-weight: 700; line-height: 1.35; }
+        #hdsd-content h3 { font-size: 16px; font-weight: 700; }
+        #hdsd-content p, #hdsd-content li { color: inherit; line-height: 1.75; margin: 6px 0; font-size: 15px; white-space: pre-wrap; word-break: break-word; }
+        #hdsd-content div.callout-text { white-space: pre-wrap; word-break: break-word; }
+        
         #hdsd-content details { border: 1px solid rgba(76,175,80,0.3) !important; border-radius: 8px; margin: 6px 0; overflow: hidden; }
-        #hdsd-content details > summary { background: rgba(76,175,80,0.07) !important; color: var(--green) !important; padding: 10px 14px; font-weight: 700; cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+        #hdsd-content details > summary { background: rgba(76,175,80,0.07) !important; color: var(--green) !important; padding: 10px 14px; font-weight: 700; cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; }
         #hdsd-content details > summary::-webkit-details-marker { display: none; }
         #hdsd-content details > summary::before { content: "▸"; font-size: 14px; transition: transform 0.2s ease-in-out; }
         #hdsd-content details[open] > summary::before { transform: rotate(90deg); }
         #hdsd-content details[open] > summary { background: rgba(76,175,80,0.15) !important; }
         #hdsd-content details .content, #hdsd-content details > div:not(summary) { background: #fafafa !important; color: inherit !important; padding: 10px 16px 10px 20px; border-top: 1px solid #eee; }
+        
         #hdsd-content code { background: rgba(128,128,128,0.1) !important; color: inherit !important; border: 1px solid rgba(128,128,128,0.2); padding: 2px 4px; border-radius: 4px; font-family: monospace; }
         #hdsd-content pre { background: rgba(128,128,128,0.05) !important; border: 1px solid rgba(128,128,128,0.2) !important; border-radius: 8px; padding: 12px; overflow-x: auto; margin: 10px 0; }
         #hdsd-content pre code { background: transparent !important; border: none; padding: 0; }
@@ -1312,7 +1314,6 @@
                 }
             }, true);
 
-            // BẬT TÍNH NĂNG TỰ ĐỘNG ẨN THANH CUỘN CHO BẢN DIV HDSD (TIMEOUT ĐÃ ĐƯỢC CHỈNH THÀNH 500MS)
             const hdsdContent = document.getElementById('hdsd-content');
             if (hdsdContent) {
                 let _st;
@@ -1321,7 +1322,7 @@
                     clearTimeout(_st);
                     _st = setTimeout(function() {
                         hdsdContent.classList.remove("sb-visible");
-                    }, 500); // THỜI GIAN CHUẨN XÁC 500MS
+                    }, 500); // THỜI GIAN ẨN SCROLLBAR: 0.5s
                 }
                 hdsdContent.addEventListener("scroll", wakeHDSD, {passive: true});
                 hdsdContent.addEventListener("mousemove", wakeHDSD, {passive: true});
@@ -1639,6 +1640,7 @@
 
         function rt(arr) {
             return (arr||[]).map(r => {
+                // FIX TỰ ĐỘNG XUỐNG DÒNG (\n -> <br>)
                 let t = (r.plain_text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g, '<br>');
                 if (r.annotations) {
                     if (r.annotations.bold)          t = '<strong>'+t+'</strong>';
@@ -1721,7 +1723,7 @@
                     case 'callout':
                         html += '<div style="display:flex;gap:10px;background:rgba(76,175,80,0.09);border:1px solid rgba(76,175,80,0.25);border-radius:10px;padding:12px 14px;margin:10px 0">'
                               + '<span style="font-size:20px;flex-shrink:0">'+(b.icon&&b.icon.emoji?b.icon.emoji:'ℹ️')+'</span>'
-                              + '<div style="font-size:15px;line-height:1.7;">'+text+(ch?'<div style="margin-top:6px">'+ch+'</div>':'')+'</div>'
+                              + '<div class="callout-text" style="font-size:15px;line-height:1.7;">'+text+(ch?'<div style="margin-top:6px">'+ch+'</div>':'')+'</div>'
                               + '</div>';
                         break;
                     case 'divider':
@@ -1927,7 +1929,6 @@
 
                 const html = renderBlocks(blocks);
 
-                // CẬP NHẬT SVG LOGO CHỮ G CHUẨN XÁC
                 const driveBtnHtml = driveLink
                     ? '<style>'
                       + '.hdsd-orig-btn{display:inline-flex;align-items:center;gap:8px;'
@@ -2004,7 +2005,7 @@
                     content.style.opacity = '1';
                     content.style.overflow = 'auto'; 
                 }
-            }, 300); // 300ms an toàn cho HDSD
+            }, 300); 
         }
 
         function openImageZoom(src) {
@@ -2021,7 +2022,7 @@
                         "<h2 class=\"modal-drug-title\">" + item.brand + "</h2>" +
                         
                         "<a href=\"https://www.google.com/search?q=" + encodeURIComponent(item.brand + ' ' + (item.active || '')) + "\" target=\"_blank\" class=\"google-search-btn\" style=\"margin-top:0\">" +
-                            "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z\"/></svg>" +
+                            "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z\"/></svg>" +
                             " Tra cứu Google" +
                         "</a>" +
                     "</div>" +
@@ -2068,7 +2069,7 @@
             const content = modal.querySelector('.modal-content');
             if (content) {
                 content.style.overflow = 'hidden'; 
-                content.style.opacity = '0'; // Chống Crash Modal Thông Tin
+                content.style.opacity = '0'; 
             }
             
             modal.style.display = 'none'; 
@@ -2079,7 +2080,7 @@
                 if (modal.style.display === 'none') {
                     const imgs = document.getElementById('modal-body').getElementsByTagName('img');
                     for (let i = 0; i < imgs.length; i++) {
-                        imgs[i].src = ''; // Ép xả Memory Ảnh Modal Thông Tin
+                        imgs[i].src = ''; 
                     }
                     document.getElementById('modal-body').innerHTML = '';
                     if (content) {
@@ -2087,7 +2088,7 @@
                         content.style.overflow = 'auto'; 
                     }
                 }
-            }, 300); // 300ms an toàn cho Modal Thông Tin
+            }, 300); 
         }
 
         function openIVModal() {
@@ -2130,8 +2131,7 @@
             if (!iframe.getAttribute('src')) {
                 document.getElementById('tk-loader').style.display = 'block';
                 iframe.setAttribute('src', "https://princetq.github.io/tuongki/");
-            }
-        }
+            }}
         function closeTKModal() { document.getElementById('tk-modal').style.display = 'none'; unlockBodyScroll(); }
 
         function toggleChatWidget() {
@@ -2151,7 +2151,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-
             const chatInput = document.getElementById('chat-input');
             const sendButton = document.getElementById('send-button');
             const imageUploadBtn = document.getElementById('image-upload-btn');
