@@ -123,7 +123,6 @@
             overflow: visible !important; position: relative;
         }
         
-        /* CSS dùng chung cho container của Iframe VÀ container của div HDSD */
         .iv-iframe-container {
             width: 100%; height: 100%; position: absolute; top: 0; left: 0;
             background: linear-gradient(135deg, rgba(76, 175, 80, 0.17), rgba(46, 125, 50, 0.10));
@@ -542,7 +541,6 @@
 
         body.dark-mode .new-badge { box-shadow: 0 3px 12px rgba(255, 185, 0, 0.45), 0 0 20px rgba(255, 185, 0, 0.2) !important; color: #020810 !important; }
         body.dark-mode .new-badge::before { content: '✦'; display: inline-block; transform-origin: center center; animation: starSpinGlow 2s ease-in-out infinite; animation-delay: calc(var(--sweep-delay, 0s) * -1); }
-        @keyframes starSpinGlow { 0%, 100% { transform: rotate(0deg) scale(0.9); opacity: 0.8; text-shadow: none; } 50% { transform: rotate(180deg) scale(1.25); opacity: 1; text-shadow: 0 0 10px rgba(255, 255, 255, 0.9); } }
 
         body.dark-mode .skeleton-card { background: rgba(10, 22, 45, 0.6) !important; border-color: rgba(80, 220, 180, 0.1) !important; }
         body.dark-mode .skeleton-el { background: linear-gradient(90deg, rgba(80,220,180,0.05) 25%, rgba(80,220,180,0.12) 50%, rgba(80,220,180,0.05) 75%) !important; }
@@ -644,7 +642,6 @@
 
         .night-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden; contain: strict; }
         .star { position: absolute; background: white; border-radius: 50%; animation: twinkle infinite ease-in-out; }
-        @keyframes twinkle { 0% { opacity: 0.1; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 8px #fff; } 100% { opacity: 0.1; transform: scale(0.8); } }
         
         .shooting-star { position: absolute; width: 150px; height: 2px; border-radius: 50%; filter: drop-shadow(0 0 6px white); }
         .shooting-star.right-to-left { background: linear-gradient(to left, rgba(255,255,255,0), rgba(255,255,255,1)); animation: shootRL linear infinite; }
@@ -701,13 +698,36 @@
            CSS BỔ SUNG CHO TỜ HDSD KHÔNG DÙNG IFRAME MÀ VẪN GIỮ NGUYÊN GIAO DIỆN Y HỆT 
            ========================================================================= */
         #hdsd-content {
-            scrollbar-width: thin; padding: 20px 24px; max-width: 860px; margin: 0 auto;
+            padding: 20px 24px; max-width: 860px; margin: 0 auto;
             width: 100%; height: 100%; overflow-y: auto; color: var(--text, #333); font-size: 15px;
             -webkit-overflow-scrolling: touch; background: var(--bg, #fff); transition: background .3s, color .3s;
+            
+            /* ĐỒNG BỘ CHÍNH XÁC FONT CHỮ BẢN GỐC IFRAME */
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif !important;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            -webkit-font-smoothing: antialiased;
+            
+            /* THANH CUỘN TỰ ĐỘNG ẨN */
+            scrollbar-width: thin;
+            scrollbar-color: transparent transparent;
+            transition: scrollbar-color 0.3s;
         }
+        
+        #hdsd-content.sb-visible { scrollbar-color: rgba(128,128,128,0.4) transparent; }
+        body.dark-mode #hdsd-content.sb-visible { scrollbar-color: rgba(180,180,180,0.3) transparent; }
+
         #hdsd-content::-webkit-scrollbar { width: 7px; height: 7px; }
         #hdsd-content::-webkit-scrollbar-track { background: transparent; }
-        #hdsd-content::-webkit-scrollbar-thumb { background: rgba(128,128,128,0.4); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
+        #hdsd-content::-webkit-scrollbar-thumb { 
+            background: transparent; border-radius: 10px; border: 2px solid transparent; 
+            background-clip: padding-box; transition: background 0.3s; 
+        }
+        #hdsd-content.sb-visible::-webkit-scrollbar-thumb { background: rgba(128,128,128,0.35); }
+        body.dark-mode #hdsd-content.sb-visible::-webkit-scrollbar-thumb { background: rgba(80, 220, 180, 0.25) !important; }
+        #hdsd-content.sb-visible::-webkit-scrollbar-thumb:hover { background: rgba(128,128,128,0.5); border: 1px solid transparent; }
+        body.dark-mode #hdsd-content.sb-visible::-webkit-scrollbar-thumb:hover { background: rgba(80, 220, 180, 0.5) !important; border: 1px solid transparent; }
+        
         #hdsd-content h1, #hdsd-content h2, #hdsd-content h3 { color: var(--green) !important; font-weight: bold; margin-top: 15px; margin-bottom: 10px; }
         #hdsd-content h1 { font-size: 26px; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; }
         #hdsd-content h2 { font-size: 22px; }
@@ -732,10 +752,9 @@
         #hdsd-content a { color: var(--green); text-decoration: none; font-weight: 600; }
         #hdsd-content ul { padding-left: 22px; margin: 8px 0; }
         
-        /* Đóng băng hoạt ảnh nền để giảm tải GPU khi mở bất kỳ modal nào */
         body.modal-open .leaf, body.modal-open .star, body.modal-open .shooting-star, body.modal-open .planet, body.modal-open .zen-logo img, body.modal-open .new-badge::before, body.modal-open .new-badge::after, body.modal-open .syringe-icon, body.modal-open .tk-icon { animation-play-state: paused !important; will-change: auto !important; }
 
-        /* Chế độ Dark Mode cho tờ HDSD nhúng vào Div */
+        /* Chế độ Dark Mode cho tờ HDSD */
         body.dark-mode #hdsd-content { background: #1a1a1a !important; color: #e8e8e8 !important; }
         body.dark-mode #hdsd-content h1 { border-bottom-color: #2e4d2e; }
         body.dark-mode #hdsd-content details { border-color: rgba(76,175,80,0.4) !important; }
@@ -1172,7 +1191,7 @@
             document.removeEventListener('wheel', _wheelBlocker, { passive: false });
         }
 
-        const _hdsdCache = {}; // CHỈ GIỮ LẠI TỐI ĐA 1 TỜ HDSD
+        // ĐÃ XÓA HOÀN TOÀN BIẾN LƯU TRỮ _hdsdCache
         const notionCache = { blocks: {}, pages: {} };
 
         let rawData = [];
@@ -1292,6 +1311,21 @@
                     m._sbTimer = setTimeout(() => m.classList.remove('sb-visible'), 500);
                 }
             }, true);
+
+            const hdsdContent = document.getElementById('hdsd-content');
+            if (hdsdContent) {
+                let _st;
+                function wakeHDSD() {
+                    hdsdContent.classList.add("sb-visible");
+                    clearTimeout(_st);
+                    _st = setTimeout(function() {
+                        hdsdContent.classList.remove("sb-visible");
+                    }, 1500);
+                }
+                hdsdContent.addEventListener("scroll", wakeHDSD, {passive: true});
+                hdsdContent.addEventListener("mousemove", wakeHDSD, {passive: true});
+                hdsdContent.addEventListener("touchstart", wakeHDSD, {passive: true});
+            }
 
             loadMedicalData();
         }
@@ -1535,7 +1569,7 @@
             if (notionCache.blocks[cacheKey]) return notionCache.blocks[cacheKey];
 
             const cacheKeys = Object.keys(notionCache.blocks);
-            if (cacheKeys.length > 200) {
+            if (cacheKeys.length > 30) {
                 delete notionCache.blocks[cacheKeys[0]];
             }
 
@@ -1604,7 +1638,7 @@
 
         function rt(arr) {
             return (arr||[]).map(r => {
-                let t = (r.plain_text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                let t = (r.plain_text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g, '<br>');
                 if (r.annotations) {
                     if (r.annotations.bold)          t = '<strong>'+t+'</strong>';
                     if (r.annotations.italic)        t = '<em>'+t+'</em>';
@@ -1747,7 +1781,6 @@
             return html;
         }
 
-        // HÀM LAZY LOAD (Sửa đổi cho việc dùng DOM thay vì Iframe)
         async function loadNotionToggle(blockId, elementId) {
             try {
                 const children = await fetchDeep(blockId, true);
@@ -1786,18 +1819,13 @@
             const content = document.getElementById('hdsd-content');
 
             content.style.display = 'none';
+            content.style.overflow = 'auto'; // Đảm bảo thanh cuộn kích hoạt
             loader.style.display = 'block';
             loader.innerHTML = '⏳ Đang tải tờ hướng dẫn...';
             modal.style.display = 'flex';
             lockBodyScroll();
 
-            // CHỈ SỬ DỤNG CACHE HTML CHO 1 TỜ HDSD DUY NHẤT
-            if (_hdsdCache[notionUrl]) {
-                content.innerHTML = _hdsdCache[notionUrl];
-                loader.style.display = 'none';
-                content.style.display = 'block';
-                return;
-            }
+            // XÓA PHẦN KIỂM TRA _hdsdCache VÌ ĐÃ GỠ BỎ TÍNH NĂNG LƯU ĐỆM
 
             if (!notionUrl || typeof notionUrl !== 'string') {
                  loader.innerHTML = '❌ Dữ liệu link Notion bị trống. Vui lòng kiểm tra lại Data.';
@@ -1921,14 +1949,15 @@
                     finalHtml = driveBtnHtml + html;
                 }
 
-                // XÓA SẠCH CACHE CŨ VÀ CHỈ LƯU TỜ HIỆN TẠI (TỐI ƯU BỘ NHỚ)
-                Object.keys(_hdsdCache).forEach(k => delete _hdsdCache[k]);
-                _hdsdCache[notionUrl] = finalHtml;
+                // XÓA PHẦN LƯU VÀO CACHE Ở ĐÂY
 
-                // BOM THẲNG HTML VÀO THẺ DIV (SIÊU NHẸ)
                 content.innerHTML = finalHtml;
                 content.style.display = 'block';
                 loader.style.display = 'none';
+
+                // GIẢI PHÓNG HOÀN TOÀN BỘ NHỚ JSON TẠM ĐỂ CHỐNG TRÀN RAM SAFARI
+                notionCache.blocks = {};
+                notionCache.pages = {};
 
             } catch(e) {
                 if (e.message.includes('400')) {
@@ -1941,9 +1970,13 @@
             }
         }
 
-        // HÀM ĐÓNG MODAL HDSD MỚI (Dọn dẹp Div cực kỳ nhanh gọn)
+        let _clearHdsdTimer;
         function closeHDSDModal() {
             const modal = document.getElementById('hdsd-modal');
+            const content = document.getElementById('hdsd-content');
+            
+            if (content) content.style.overflow = 'hidden'; // Khóa cuộn để chặn lỗi Safari Momentum
+            
             modal.style.display = 'none';
             unlockBodyScroll();
             
@@ -1952,10 +1985,13 @@
                 window._hdsdAbortCtrl = null;
             }
             
-            const content = document.getElementById('hdsd-content');
-            if (content) {
-                content.innerHTML = ''; // TRẢ LẠI 100% RAM CHO TRÌNH DUYỆT
-            }
+            clearTimeout(_clearHdsdTimer);
+            _clearHdsdTimer = setTimeout(() => {
+                if (modal.style.display === 'none' && content) {
+                    content.innerHTML = '';
+                    content.style.overflow = 'auto'; // Khôi phục cuộn
+                }
+            }, 300); // 300ms an toàn chờ Safari kết thúc reflow
         }
 
 
@@ -1999,13 +2035,35 @@
                     drawAccordion('TÀI LIỆU THAM KHẢO', item.reference) +
                 "</div>";
             document.getElementById('modal-body').innerHTML = html;
-            document.getElementById('modal').style.display = 'flex';
+            
+            const modal = document.getElementById('modal');
+            const content = modal.querySelector('.modal-content');
+            if (content) content.style.overflow = 'auto'; // Đảm bảo cuộn bình thường
+            
+            modal.style.display = 'flex';
             lockBodyScroll();
         }
 
         function drawRow(label, val) { if(!val || val === '') return ''; return "<div class=\"info-row\"><span class=\"info-label\">" + label + ":</span><span style=\"white-space: pre-line;\">" + val + "</span></div>"; }
         function drawAccordion(label, val) { if(!val || val === '') return ''; return "<details><summary>" + label + "</summary><div class=\"detail-content\">" + val + "</div></details>"; }
-        function closeModal() { document.getElementById('modal').style.display = 'none'; unlockBodyScroll(); }
+        
+        let _clearModalTimer;
+        function closeModal() { 
+            const modal = document.getElementById('modal');
+            const content = modal.querySelector('.modal-content');
+            if (content) content.style.overflow = 'hidden'; // Khóa cuộn
+            
+            modal.style.display = 'none'; 
+            unlockBodyScroll(); 
+            
+            clearTimeout(_clearModalTimer);
+            _clearModalTimer = setTimeout(() => {
+                if (modal.style.display === 'none') {
+                    document.getElementById('modal-body').innerHTML = '';
+                    if (content) content.style.overflow = 'auto'; // Khôi phục
+                }
+            }, 300);
+        }
 
         function openIVModal() {
             document.getElementById('iv-modal').style.display = 'flex';
