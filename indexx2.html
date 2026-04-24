@@ -752,9 +752,10 @@
         #hdsd-content a { color: var(--green); text-decoration: none; font-weight: 600; }
         #hdsd-content ul { padding-left: 22px; margin: 8px 0; }
         
+        /* Đóng băng hoạt ảnh nền để giảm tải GPU khi mở bất kỳ modal nào */
         body.modal-open .leaf, body.modal-open .star, body.modal-open .shooting-star, body.modal-open .planet, body.modal-open .zen-logo img, body.modal-open .new-badge::before, body.modal-open .new-badge::after, body.modal-open .syringe-icon, body.modal-open .tk-icon { animation-play-state: paused !important; will-change: auto !important; }
 
-        /* Chế độ Dark Mode cho tờ HDSD */
+        /* Chế độ Dark Mode cho tờ HDSD nhúng vào Div */
         body.dark-mode #hdsd-content { background: #1a1a1a !important; color: #e8e8e8 !important; }
         body.dark-mode #hdsd-content h1 { border-bottom-color: #2e4d2e; }
         body.dark-mode #hdsd-content details { border-color: rgba(76,175,80,0.4) !important; }
@@ -1311,6 +1312,7 @@
                 }
             }, true);
 
+            // BẬT TÍNH NĂNG TỰ ĐỘNG ẨN THANH CUỘN CHO BẢN DIV HDSD (TIMEOUT ĐÃ ĐƯỢC CHỈNH THÀNH 500MS)
             const hdsdContent = document.getElementById('hdsd-content');
             if (hdsdContent) {
                 let _st;
@@ -1319,7 +1321,7 @@
                     clearTimeout(_st);
                     _st = setTimeout(function() {
                         hdsdContent.classList.remove("sb-visible");
-                    }, 1500);
+                    }, 500); // THỜI GIAN CHUẨN XÁC 500MS
                 }
                 hdsdContent.addEventListener("scroll", wakeHDSD, {passive: true});
                 hdsdContent.addEventListener("mousemove", wakeHDSD, {passive: true});
@@ -1817,7 +1819,6 @@
             const loader  = document.getElementById('hdsd-loader');
             const content = document.getElementById('hdsd-content');
 
-            // Đảm bảo dọn sạch hoàn toàn rác DOM/Hình ảnh từ tờ HDSD cũ trước khi render cái mới
             const oldImgs = content.getElementsByTagName('img');
             for (let i = 0; i < oldImgs.length; i++) {
                 oldImgs[i].src = '';
@@ -1926,6 +1927,7 @@
 
                 const html = renderBlocks(blocks);
 
+                // CẬP NHẬT SVG LOGO CHỮ G CHUẨN XÁC
                 const driveBtnHtml = driveLink
                     ? '<style>'
                       + '.hdsd-orig-btn{display:inline-flex;align-items:center;gap:8px;'
@@ -1938,11 +1940,10 @@
                       + 'body.dark-mode .hdsd-orig-btn:hover{background:rgba(80,220,180,0.1);}'
                       + '</style>'
                       + '<a href="'+driveLink+'" target="_blank" class="hdsd-orig-btn">'
-                      + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
-                      + '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>'
-                      + '<polyline points="14 2 14 8 20 8"/>'
+                      + '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">'
+                      + '<path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z"/>'
                       + '</svg>'
-                      + ' XEM HDSD GỐC</a><hr>'
+                      + ' TRA CỨU GOOGLE</a><hr style="border:none;border-top:1.5px solid #c8e6c9;margin:14px 0">'
                     : '';
 
                 let finalHtml = html;
@@ -1957,7 +1958,6 @@
                 content.style.display = 'block';
                 loader.style.display = 'none';
 
-                // Giải phóng JSON Khổng lồ tránh rò rỉ RAM (Nguyên nhân số 2)
                 notionCache.blocks = {};
                 notionCache.pages = {};
 
@@ -1979,7 +1979,7 @@
             
             if (content) {
                 content.style.overflow = 'hidden'; 
-                content.style.opacity = '0'; // Ẩn ngay lập tức để ngừng render GPU (Chống Crash 1)
+                content.style.opacity = '0'; 
             }
             
             modal.style.display = 'none';
@@ -1990,14 +1990,12 @@
                 window._hdsdAbortCtrl = null;
             }
             
-            // Xóa rác JSON khi bấm đóng nhanh lúc đang Load dở (Chống Crash 2)
             notionCache.blocks = {};
             notionCache.pages = {};
             
             clearTimeout(_clearHdsdTimer);
             _clearHdsdTimer = setTimeout(() => {
                 if (modal.style.display === 'none' && content) {
-                    // Ép Safari xả Memory ảnh lập tức trước khi chém DOM (Chống Crash 3)
                     const imgs = content.getElementsByTagName('img');
                     for (let i = 0; i < imgs.length; i++) {
                         imgs[i].src = '';
@@ -2006,7 +2004,7 @@
                     content.style.opacity = '1';
                     content.style.overflow = 'auto'; 
                 }
-            }, 600); // 600ms an toàn chờ Safari kết thúc reflow giao diện ngoài
+            }, 300); // 300ms an toàn cho HDSD
         }
 
         function openImageZoom(src) {
@@ -2052,7 +2050,10 @@
             
             const modal = document.getElementById('modal');
             const content = modal.querySelector('.modal-content');
-            if (content) content.style.overflow = 'auto'; 
+            if (content) {
+                content.style.opacity = '1';
+                content.style.overflow = 'auto'; 
+            }
             
             modal.style.display = 'flex';
             lockBodyScroll();
@@ -2065,7 +2066,10 @@
         function closeModal() { 
             const modal = document.getElementById('modal');
             const content = modal.querySelector('.modal-content');
-            if (content) content.style.overflow = 'hidden'; 
+            if (content) {
+                content.style.overflow = 'hidden'; 
+                content.style.opacity = '0'; // Chống Crash Modal Thông Tin
+            }
             
             modal.style.display = 'none'; 
             unlockBodyScroll(); 
@@ -2073,10 +2077,17 @@
             clearTimeout(_clearModalTimer);
             _clearModalTimer = setTimeout(() => {
                 if (modal.style.display === 'none') {
+                    const imgs = document.getElementById('modal-body').getElementsByTagName('img');
+                    for (let i = 0; i < imgs.length; i++) {
+                        imgs[i].src = ''; // Ép xả Memory Ảnh Modal Thông Tin
+                    }
                     document.getElementById('modal-body').innerHTML = '';
-                    if (content) content.style.overflow = 'auto'; 
+                    if (content) {
+                        content.style.opacity = '1';
+                        content.style.overflow = 'auto'; 
+                    }
                 }
-            }, 300);
+            }, 300); // 300ms an toàn cho Modal Thông Tin
         }
 
         function openIVModal() {
