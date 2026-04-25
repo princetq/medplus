@@ -328,7 +328,7 @@
         .info-label{width:160px;font-weight:800;color:var(--green);flex-shrink:0;font-size:15px}
         details{margin-bottom:8px;border-radius:10px;border:1px solid #e0e0e0;background:#fff;overflow:hidden;transition:.2s}
         details[open]{box-shadow:0 2px 8px rgba(0,0,0,0.04)}
-        summary{padding:13px 16px;font-weight:800;color:var(--green-d);cursor:pointer;outline:none;font-size:15px;list-style:none;display:flex;align-items:center;gap:8px;transition:.2s;font-family:'Inter','Segoe UI',sans-serif!important;}
+        summary{padding:13px 16px;font-weight:600;font-size:14px;letter-spacing:0.5px;color:var(--green-d);cursor:pointer;outline:none;list-style:none;display:flex;align-items:center;gap:8px;transition:.2s;font-family:'Inter','Segoe UI',sans-serif!important;}
         summary::-webkit-details-marker{display:none}
         summary::before{content:'▸';font-size:14px;transition:.2s;color:var(--green-l)}
         details[open] summary::before{transform:rotate(90deg)}
@@ -547,7 +547,7 @@
         
         /* --- CHỐT CHẶN 1 (PHIÊN BẢN CỰC MẠNH): ÉP CỨNG NỀN --- */
         body[style*="overflow: hidden"] {
-            height: 100dvh !important; /* Khóa chết chiều cao body khi mở modal */
+            height: 100dvh !important;
             overscroll-behavior: none !important;
             position: fixed !important;
             width: 100% !important;
@@ -1441,7 +1441,7 @@
         #hdsd-content h3 { font-size: 16px; }
         #hdsd-content p, #hdsd-content li { color: inherit; line-height: 1.75; margin: 6px 0; font-size: 15px; }
         #hdsd-content details { border: 1px solid rgba(76,175,80,0.3) !important; border-radius: 8px; margin: 6px 0; overflow: hidden; }
-        #hdsd-content details > summary { background: rgba(76,175,80,0.07) !important; color: var(--green) !important; padding: 10px 14px; font-weight: 700; cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+        #hdsd-content details > summary { background: rgba(76,175,80,0.07) !important; color: var(--green) !important; padding: 10px 14px; font-weight: 600; font-size: 14px; letter-spacing: 0.5px; cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; text-transform: uppercase; font-family: 'Inter','Segoe UI',sans-serif !important; }
         #hdsd-content details > summary::-webkit-details-marker { display: none; }
         #hdsd-content details > summary::before { content: "▸"; font-size: 14px; transition: transform 0.2s ease-in-out; }
         #hdsd-content details[open] > summary::before { transform: rotate(90deg); }
@@ -2344,8 +2344,9 @@
                         tText = tText.replace(/:\s*((<\/[a-zA-Z0-9]+>\s*)*)$/, '$1').trim();
                         if (!tText) tText = 'CHI TIẾT';
                         
-                        if (block.id === 'fake-extra-info' || block._children) {
+                        if (block.id === 'fake-extra-info' || block.id === 'fake-trailing' || block._children) {
                             let chHtml = renderBlocks(block._children || []);
+                            if ((block.id === 'fake-extra-info' || block.id === 'fake-trailing') && !chHtml.trim()) break;
                             html += '<details>'
                                   + '<summary><span>'+tText+'</span></summary>'
                                   + '<div class="content">'+chHtml+'</div>'
