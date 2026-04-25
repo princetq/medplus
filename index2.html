@@ -2264,7 +2264,7 @@
 
             batch.forEach(function(item, i) {
                 const originalIdx = rawData.indexOf(item);
-                const hdsdBtn = item.link ? "<button class=\"hdsd-btn\" onclick=\"event.stopPropagation();openNotionPopup(\'\" + item.link + \"\',\'\" + (item.image||'') + \"\')\\\\">📄 Xem tờ HDSD</button>" : "";
+                const hdsdBtn = item.link ? "<button class=\"hdsd-btn\" onclick=\"event.stopPropagation();openNotionPopup('" + item.link + "','" + (item.image||'') + "')\">📄 Xem tờ HDSD</button>" : "";
                 const delay = Math.min(i * 0.03, 0.6) + "s";
                 const sweepDelay = (Math.random() * 4).toFixed(2) + "s";
                 const badgeHtml = item.isNew ? "<div class=\"new-badge\" style=\"--sweep-delay: " + sweepDelay + "\">MỚI</div>" : "";
@@ -2606,15 +2606,15 @@
                       + ' XEM HDSD GỐC</a><hr>'
                     : '';
 
-               // Thay ảnh đầu (ảnh bìa thuốc) bằng item.image từ hosting — không tốn Worker
-let processedHtml = html;
-if (itemImage && itemImage.trim()) {
-    processedHtml = html.replace(
-        /<img\s[^>]*src="https:\/\/ngocanh\.princetq\.workers\.dev\/image-proxy\/[^"]*"[^>]*>/,
-        '<img src="' + itemImage + '" style="max-width:100%;border-radius:10px;display:block;margin:14px auto">'
-    );
-}
-let finalHtml = processedHtml;
+                // Thay ảnh đầu (ảnh bìa thuốc) bằng item.image từ hosting — không tốn Worker
+                let processedHtml = html;
+                if (itemImage && itemImage.trim()) {
+                    processedHtml = html.replace(
+                        /<img\s[^>]*src="https:\/\/ngocanh\.princetq\.workers\.dev\/image-proxy\/[^"]*"[^>]*>/,
+                        '<img src="' + itemImage + '" style="max-width:100%;border-radius:10px;display:block;margin:14px auto">'
+                    );
+                }
+                let finalHtml = processedHtml;
                 const firstImgEnd = processedHtml.indexOf('</div>', processedHtml.indexOf('<img '));
                 if (firstImgEnd !== -1) {
                     finalHtml = processedHtml.slice(0, firstImgEnd+6) + driveBtnHtml + processedHtml.slice(firstImgEnd+6);
@@ -2709,7 +2709,7 @@ let finalHtml = processedHtml;
                     drawRow('HÀM LƯỢNG', item.strength) +
                     drawRow('ĐÓNG GÓI', item.pack) +
                 "</div>" +
-                (item.link ? "<button class=\"notion-btn\" onclick=\"openNotionPopup(\'\" + item.link + \"\',\'\" + (item.image||'') + \"\')\\\\">📄 XEM TỜ HƯỚNG DẪN SỬ DỤNG</button>" : "") +
+                (item.link ? "<button class=\"notion-btn\" onclick=\"openNotionPopup('" + item.link + "','" + (item.image||'') + "')\">📄 XEM TỜ HƯỚNG DẪN SỬ DỤNG</button>" : "") +
                 
                 "<div class=\"details-group\">" +
                     drawAccordion('CHỈ ĐỊNH', item.indication) +
