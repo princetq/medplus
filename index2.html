@@ -272,7 +272,6 @@
             .chat-widget-container .chat-input::placeholder{color:rgba(0,0,0,0.4)!important}
             .chat-widget-container .send-button{width:38px;height:38px;right:3px;border:1px solid rgba(255,255,255,0.4)}
             .chat-widget-container .disclaimer{font-size:14px;padding:3px 10px}
-            .close-btn{position:absolute;top:4px;right:14px;font-size:30px;cursor:pointer;color:#d32f2f;font-weight:bold;transition:.2s;width:36px;height:36px;display:flex;align-items:center;justify-content:center;z-index:20;background:rgba(255,255,255,0.85);box-shadow:0 2px 8px rgba(0,0,0,0.1);flex-shrink:0;box-sizing:border-box;line-height:0;padding-bottom:2px;}
         }
 
         @media (max-width: 600px) {
@@ -522,30 +521,19 @@
                 background: transparent !important;
             }
 
-            /* CSS KHÓA HIỆU ỨNG VÀ HOÀN TOÀN ĐÓNG BĂNG TRANG CHỦ KHI MODAL MỞ TRÊN MOBILE */
-            body.modal-open-freeze {
-                position: fixed !important;
-                width: 100% !important;
-                height: 100dvh !important;
-                overflow: hidden !important;
-            }
-            body.modal-open-freeze * { animation-play-state: paused !important; pointer-events: none !important; }
-            body.modal-open-freeze .modal-overlay, body.modal-open-freeze .modal-overlay * { animation-play-state: running !important; pointer-events: auto !important; }
+            /* CSS KHÓA HIỆU ỨNG THÔNG MINH, KHÔNG DÙNG POSITION FIXED BỪA BÃI ĐỂ CHỐNG CRASH */
+            /* Thay vì ép * (tất cả thẻ HTML) gây sập Safari, ta chỉ khóa chuột container và ẩn sao băng */
+            body.modal-open-freeze .container { pointer-events: none !important; filter: grayscale(20%); }
             body.modal-open-freeze .leaf, body.modal-open-freeze .star, body.modal-open-freeze .shooting-star, body.modal-open-freeze .planet { display: none !important; }
-            body.modal-open-freeze .zen-logo img { animation: none !important; }
+            body.modal-open-freeze .zen-logo img, body.modal-open-freeze .syringe-icon, body.modal-open-freeze .tk-icon, body.modal-open-freeze .marquee-track, body.modal-open-freeze .new-badge::before, body.modal-open-freeze .new-badge::after { animation-play-state: paused !important; }
         }
         
-        /* ÉP LỰC CUỘN */
-        body[style*="overflow: hidden"] {
-            overscroll-behavior: none !important;
-        }
-        .modal-overlay, #image-zoom-overlay {
-            overscroll-behavior: none !important;
-        }
-        .modal-content, .chat-messages, .iv-iframe-container {
-            overscroll-behavior: contain !important;
-            -webkit-overflow-scrolling: touch !important;
-        }
+        /* CHỐT CHẶN BẢO VỆ CUỘN NATIVE (KHÔNG POSITION FIXED TRÊN BODY NỮA) */
+        body.modal-open { overflow: hidden !important; overscroll-behavior: none !important; touch-action: none !important; }
+        html.modal-open { overflow: hidden !important; overscroll-behavior: none !important; }
+        
+        .modal-overlay, #image-zoom-overlay { overscroll-behavior: none !important; }
+        .modal-content, .chat-messages, .iv-iframe-container { overscroll-behavior: contain !important; -webkit-overflow-scrolling: touch !important; }
 
         /* ==============================================================
            🌙 DARK MODE PRO
@@ -675,12 +663,14 @@
 
         body.dark-mode .notion-btn { background: linear-gradient(135deg, #0d4a32, #062a1c) !important; border: 1px solid rgba(80, 220, 180, 0.35) !important; color: #4df5c0 !important; box-shadow: 0 4px 15px rgba(0,0,0,0.3), 0 0 12px rgba(80, 220, 180, 0.2) !important; }
         body.dark-mode .notion-btn:hover { background: linear-gradient(135deg, #165c3f, #0a3527) !important; box-shadow: 0 6px 20px rgba(0,0,0,0.4), 0 0 20px rgba(80, 220, 180, 0.35) !important; }
+
         body.dark-mode .google-search-btn { box-shadow: 0 3px 12px rgba(66,133,244,0.25), 0 0 15px rgba(66,133,244,0.1) !important; }
 
         body.dark-mode .back-top { background: linear-gradient(135deg, #0d4a32, #062a1c) !important; border-color: rgba(80, 220, 180, 0.4) !important; box-shadow: 0 4px 18px rgba(0,0,0,0.4), 0 0 12px rgba(80, 220, 180, 0.2) !important; color: #4df5c0 !important; }
         body.dark-mode .back-top:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.5), 0 0 22px rgba(80, 220, 180, 0.4) !important; }
 
         body.dark-mode .footer-badge { background: transparent !important; border: 1px solid rgba(255, 209, 102, 0.4) !important; color: #ffd166 !important; box-shadow: 0 0 12px rgba(255, 209, 102, 0.15), 0 4px 15px rgba(0,0,0,0.3) !important; }
+
         body.dark-mode #chat-widget-btn { background: rgba(6, 18, 38, 0.9) !important; box-shadow: 0 6px 25px rgba(0,0,0,0.5), 0 0 15px rgba(80, 220, 180, 0.2) !important; }
         body.dark-mode .btn-inner { background: linear-gradient(135deg, #0d4a32, #062a1c) !important; border: none !important; }
 
@@ -1106,15 +1096,12 @@
     <script>
         // =========================================================================
         // PRE-WARM: Khởi tạo sao trước khi user toggle, kết hợp ÉP BIÊN DỊCH CSS
-        // Đã tối ưu số lượng sao trên Mobile là 88
         // =========================================================================
         function initNightBackground() {
             const nightContainer = document.getElementById('night-container');
             if (!nightContainer || nightContainer.innerHTML !== '') return;
 
             const frag = document.createDocumentFragment();
-
-            // Nếu màn hình <= 600px (Mobile) thì tạo 88 sao, ngược lại 160 sao
             const starCount = window.innerWidth <= 600 ? 88 : 160;
 
             for (let i = 0; i < starCount; i++) {
@@ -1148,9 +1135,8 @@
                 frag.appendChild(ss);
             }
 
-            // Thêm các hành tinh vào PC (Sao thổ random độ cao)
             if (window.innerWidth > 600) {
-                let saturnTop = Math.floor(Math.random() * 35 + 15) + '%'; // Chiều cao ngẫu nhiên từ 15% đến 50%
+                let saturnTop = Math.floor(Math.random() * 35 + 15) + '%'; 
                 const planets = [
                     { className: 'planet planet-mars', top: '12%', anim: 'planetMoveRight 180s linear infinite' },
                     { className: 'planet planet-jupiter', top: '65%', anim: 'planetMoveLeft 240s linear infinite' },
@@ -1165,22 +1151,17 @@
                     el.className = p.className;
                     el.style.top = p.top;
                     el.style.animation = p.anim;
-                    el.style.animationDelay = `-${Math.random() * 150}s`; // Khởi tạo vị trí ngẫu nhiên trên quỹ đạo
+                    el.style.animationDelay = `-${Math.random() * 150}s`; 
                     frag.appendChild(el);
                 });
             }
 
             nightContainer.appendChild(frag);
 
-            // MẸO 1: THOÁT BẪY LAYOUT THRASING
-            // Kích hoạt display: block từ sớm, nhưng dùng visibility: hidden để giấu đi.
-            // Việc này ép trình duyệt vẽ sẵn các ngôi sao vào khung hình ẩn.
             nightContainer.style.display = 'block';
             nightContainer.style.opacity = '0';
             nightContainer.style.visibility = 'hidden';
 
-            // MẸO 2: CSS PRE-WARMING (TUYỆT KỸ CHỐNG JANK)
-            // Thêm class dark-mode, ép CPU tính toán Layout, rồi xóa ngay lập tức!
             document.body.classList.add('dark-mode');
             void document.body.offsetHeight; 
             document.body.classList.remove('dark-mode');
@@ -1193,7 +1174,7 @@
         }
 
         // =========================================================================
-        // TOGGLE THEME — Mượt mà ngay từ cú chạm đầu tiên
+        // TOGGLE THEME
         // =========================================================================
         function toggleTheme() {
             const body = document.body;
@@ -1205,7 +1186,6 @@
             const isDark = body.classList.contains('dark-mode');
 
             if (isDark) {
-                // Thay vì dùng display: none (gây giật), ta dùng visibility
                 leafContainer.style.transition = 'opacity 0.3s ease';
                 leafContainer.style.opacity = '0';
                 setTimeout(() => { leafContainer.style.visibility = 'hidden'; }, 300);
@@ -1233,7 +1213,6 @@
 
             setTimeout(() => body.classList.remove('dm-transitioning'), 420);
         }
-
 
         // =========================================================================
         // KHAI BÁO BIẾN TOÀN CỤC
@@ -1328,6 +1307,7 @@
                 }
             });
 
+            // Tối ưu hóa sự kiện cuộn
             let isScrollingTimer;
             window.addEventListener('scroll', function() {
                 const btn = document.getElementById('backToTop');
@@ -1352,14 +1332,14 @@
             loadMedicalData();
         }
 
-        let _scrollY = 0;
+        // =========================================================================
+        // KHÓA CUỘN NỀN TỐI ƯU HÓA (KHÔNG DÙNG POSITION FIXED GÂY CRASH)
+        // =========================================================================
         let _touchBlocker = null;
 
         function lockBodyScroll() {
-            _scrollY = window.scrollY;
-            document.body.style.top = '-' + _scrollY + 'px';
             document.body.classList.add('modal-open');
-            document.body.classList.add('modal-open-freeze'); // Khoá toàn bộ animation background, position fixed trên Mobile
+            document.body.classList.add('modal-open-freeze'); 
             document.documentElement.classList.add('modal-open');
 
             _touchBlocker = function(e) {
@@ -1368,44 +1348,26 @@
                     if (el.classList && (
                         el.classList.contains('modal-content') ||
                         el.classList.contains('iv-iframe-container') ||
-                        el.id === 'hdsd-content'
+                        el.id === 'hdsd-content' ||
+                        el.classList.contains('chat-messages')
                     )) return; 
                     el = el.parentElement;
                 }
-                e.preventDefault();
+                if (e.cancelable) e.preventDefault();
             };
+            
             document.addEventListener('touchmove', _touchBlocker, { passive: false });
-            document.addEventListener('wheel', _wheelBlocker, { passive: false });
-        }
-
-        function _wheelBlocker(e) {
-            let el = e.target;
-            while (el) {
-                if (el.classList && (
-                    el.classList.contains('modal-content') ||
-                    el.classList.contains('iv-iframe-container') ||
-                    el.id === 'hdsd-content'
-                )) return;
-                el = el.parentElement;
-            }
-            e.preventDefault();
         }
 
         function unlockBodyScroll() {
             document.body.classList.remove('modal-open');
             document.body.classList.remove('modal-open-freeze');
             document.documentElement.classList.remove('modal-open');
-            document.body.style.top = '';
-            const sy = _scrollY;
-            requestAnimationFrame(function() {
-                window.scrollTo(0, sy);
-            });
 
             if (_touchBlocker) {
                 document.removeEventListener('touchmove', _touchBlocker, { passive: false });
                 _touchBlocker = null;
             }
-            document.removeEventListener('wheel', _wheelBlocker, { passive: false });
         }
 
         function animateCounter(target) {
@@ -1488,7 +1450,6 @@
             filterData();
         }
 
-        /* --- XỬ LÝ CLICK CHO 4 NÚT CÔNG CỤ --- */
         function handleTKClick() {
             var btn = document.querySelector('.tk-badge-btn');
             var filterWrap = document.getElementById('groupFilterWrapper');
@@ -1838,7 +1799,6 @@
                 const jsonRes = await fetch(jsonUrl, { signal: hdsdSignal });
 
                 if (!jsonRes.ok) {
-                    // FALLBACK: NẾU LỖI HOẶC 404, HIỂN THỊ NÚT BẤM ĐỂ USER TỰ MỞ LINK NOTION
                     loader.innerHTML = `
                         <div style="text-align:center; padding: 20px;">
                             <p style="color:var(--green); font-weight:bold; margin-bottom: 15px; font-size: 16px;">Không tìm thấy dữ liệu nội bộ.<br>Vui lòng xem trên Notion gốc:</p>
@@ -1951,7 +1911,6 @@
 
             } catch(e) {
                 if (e.name !== 'AbortError') {
-                    // FALLBACK: NẾU CÓ LỖI TẢI (MẠNG HOẶC NGOẠI LỆ MÃ HOÁ), HIỆN NÚT CHO USER TỰ MỞ
                     loader.innerHTML = `
                         <div style="text-align:center; padding: 20px;">
                             <p style="color:var(--green); font-weight:bold; margin-bottom: 15px; font-size: 16px;">Gặp lỗi khi tải dữ liệu HDSD.<br>Vui lòng xem trên Notion gốc:</p>
@@ -2322,22 +2281,18 @@
             }
         }
 
-        // --- CHỐT CHẶN 2 (PHIÊN BẢN TỐI ƯU HIỆU NĂNG CHỐNG LAG) ---
         var activeScrollArea = null;
         var isUnscrollable = false;
 
-        // Bắt sự kiện khi ngón tay VỪA CHẠM vào màn hình (Chỉ tính toán 1 lần)
         document.addEventListener('touchstart', function(e) {
             if (document.body.style.overflow === 'hidden' || document.body.classList.contains('modal-open-freeze')) {
                 activeScrollArea = e.target.closest('.modal-content, .chat-messages');
                 if (activeScrollArea) {
-                    // Đo đạc xem vùng này có bị ngắn quá không
                     isUnscrollable = activeScrollArea.scrollHeight <= activeScrollArea.clientHeight;
                 }
             }
         }, { passive: true });
 
-        // Sự kiện khi ngón tay VUỐT (Không tính toán gì cả, chỉ chặn nếu cần)
         document.addEventListener('touchmove', function(e) {
             if (document.body.style.overflow === 'hidden' || document.body.classList.contains('modal-open-freeze')) {
                 if (!activeScrollArea || isUnscrollable) {
@@ -2348,5 +2303,5 @@
 
         window.onload = init;
     </script>
-    </body>
+</body>
 </html>
