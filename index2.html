@@ -1442,6 +1442,7 @@
         #hdsd-content p, #hdsd-content li { color: inherit; line-height: 1.75; margin: 6px 0; font-size: 15px; }
         #hdsd-content details { border: 1px solid rgba(76,175,80,0.3) !important; border-radius: 8px; margin: 6px 0; overflow: hidden; }
         #hdsd-content details > summary { background: rgba(76,175,80,0.07) !important; color: var(--green) !important; padding: 10px 14px; font-weight: 600; font-size: 14px; letter-spacing: 0.5px; cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; text-transform: uppercase; font-family: 'Inter','Segoe UI',sans-serif !important; }
+        #hdsd-content details > summary span { font-weight: 600 !important; font-size: 14px !important; letter-spacing: 0.5px !important; font-family: 'Inter','Segoe UI',sans-serif !important; color: inherit !important; }
         #hdsd-content details > summary::-webkit-details-marker { display: none; }
         #hdsd-content details > summary::before { content: "▸"; font-size: 14px; transition: transform 0.2s ease-in-out; }
         #hdsd-content details[open] > summary::before { transform: rotate(90deg); }
@@ -2344,9 +2345,9 @@
                         tText = tText.replace(/:\s*((<\/[a-zA-Z0-9]+>\s*)*)$/, '$1').trim();
                         if (!tText) tText = 'CHI TIẾT';
                         
-                        if (block.id === 'fake-extra-info' || block.id === 'fake-trailing' || block._children) {
+                        if (block.id === 'fake-extra-info' || block._children) {
                             let chHtml = renderBlocks(block._children || []);
-                            if ((block.id === 'fake-extra-info' || block.id === 'fake-trailing') && !chHtml.trim()) break;
+                            if (block.id === 'fake-extra-info' && !chHtml.trim()) break;
                             html += '<details>'
                                   + '<summary><span>'+tText+'</span></summary>'
                                   + '<div class="content">'+chHtml+'</div>'
@@ -2548,24 +2549,6 @@
                 }
                 if (!driveLink) driveLink = findDriveLink(blocks);
 
-                // Gom block cuối không nằm trong toggle vào "THÔNG TIN THÊM"
-                (function wrapTrailing(blks) {
-                    let lastTIdx = -1;
-                    for (let i = 0; i < blks.length; i++) {
-                        if (blks[i].type === 'toggle') lastTIdx = i;
-                    }
-                    if (lastTIdx >= 0 && lastTIdx < blks.length - 1) {
-                        const trailing = blks.splice(lastTIdx + 1);
-                        if (trailing.length > 0) {
-                            blks.push({
-                                id: 'fake-trailing',
-                                type: 'toggle',
-                                toggle: { rich_text: [{ plain_text: 'THÔNG TIN THÊM', text: { content: 'THÔNG TIN THÊM' }, annotations: {} }] },
-                                _children: trailing
-                            });
-                        }
-                    }
-                })(blocks);
                 const html = renderBlocks(blocks);
 
                 const driveBtnHtml = driveLink
