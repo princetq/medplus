@@ -509,8 +509,8 @@
             
             /* NÚT X TRÊN HDSD: MÀU ĐỎ, KHÔNG VÒNG TRÒN DƯỚI NỀN LIGHTMODE */
             #hdsd-modal .close-btn {
-                top: 15px !important;
-                right: 15px !important;
+                top: 5px !important;
+                right: 5px !important;
                 background: transparent !important;
                 border-radius: 0 !important;
                 box-shadow: none !important;
@@ -965,25 +965,43 @@
         @media (max-width: 600px) {
             #hdsd-content {
                 padding: 12px 14px !important;
-                font-size: 14px !important;
+                font-size: 16px !important; /* Đã tăng từ 14px lên 16px */
                 line-height: 1.65 !important;
             }
-            #hdsd-content h1 { font-size: 18px !important; padding-bottom: 6px !important; }
-            #hdsd-content h2 { font-size: 15px !important; }
-            #hdsd-content h3 { font-size: 14px !important; }
-            #hdsd-content p, #hdsd-content li { font-size: 14px !important; line-height: 1.65 !important; }
-            #hdsd-content details > summary { padding: 9px 11px !important; font-size: 13px !important; letter-spacing: 0.3px !important; }
+            #hdsd-content h1 { font-size: 20px !important; padding-bottom: 6px !important; }
+            #hdsd-content h2 { font-size: 18px !important; }
+            #hdsd-content h3 { font-size: 16px !important; }
+            
+            /* Tăng 2px cho đoạn văn và danh sách */
+            #hdsd-content p, #hdsd-content li { font-size: 16px !important; line-height: 1.65 !important; }
+            
+            /* TĂNG ĐỘ ĐẬM CHO TOGGLE (SUMMARY) */
+            #hdsd-content details > summary { 
+                padding: 11px 11px !important; 
+                font-size: 15px !important; 
+                font-weight: 800 !important; /* Làm tiêu đề đậm rõ rệt */
+                letter-spacing: 0.3px !important; 
+            }
             #hdsd-content details > summary span,
             #hdsd-content details > summary strong,
-            #hdsd-content details > summary b { font-size: 13px !important; }
+            #hdsd-content details > summary b { 
+                font-size: 15px !important; 
+                font-weight: 800 !important; /* Ép đậm cho tất cả các thẻ con bên trong tiêu đề */
+            }
+            
+            /* Tăng 2px cho phần nội dung khi mở Toggle */
             #hdsd-content details .content,
-            #hdsd-content details > div:not(summary) { padding: 10px 12px !important; font-size: 14px !important; }
+            #hdsd-content details > div:not(summary) { 
+                padding: 10px 12px !important; 
+                font-size: 16px !important; 
+            }
+            
             #hdsd-content .basic-info-box { padding: 10px 12px !important; }
-            #hdsd-content .info-label { width: 110px !important; font-size: 13px !important; min-width: 90px !important; }
-            #hdsd-content .info-row { font-size: 13px !important; flex-wrap: wrap !important; }
-            #hdsd-content table { font-size: 13px !important; }
+            #hdsd-content .info-label { width: 110px !important; font-size: 15px !important; min-width: 90px !important; }
+            #hdsd-content .info-row { font-size: 15px !important; flex-wrap: wrap !important; }
+            #hdsd-content table { font-size: 15px !important; }
             #hdsd-content table th, #hdsd-content table td { padding: 6px 8px !important; }
-            #hdsd-content blockquote { padding: 8px 12px !important; font-size: 14px !important; }
+            #hdsd-content blockquote { padding: 8px 12px !important; font-size: 16px !important; }
             #hdsd-content [style*="grid-template-columns"] { grid-template-columns: 1fr !important; gap: 10px !important; }
             #hdsd-content img { margin: 10px auto !important; }
         }
@@ -1466,14 +1484,14 @@
         #hdsd-content h1 { font-size: 26px; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; }
         #hdsd-content h2 { font-size: 22px; }
         #hdsd-content h3 { font-size: 16px; }
-        #hdsd-content p, #hdsd-content li { color: inherit; line-height: 1.75; margin: 6px 0; font-size: 15px; }
+        #hdsd-content p, #hdsd-content li { color: inherit; line-height: 1.75; margin: 6px 0; font-size: 16px; }
         #hdsd-content details { border: 1px solid rgba(76,175,80,0.3) !important; border-radius: 8px; margin: 6px 0; overflow: hidden; }
         #hdsd-content details > summary { background: rgba(76,175,80,0.07) !important; color: var(--green) !important; padding: 10px 14px; font-weight: 600; font-size: 14px; letter-spacing: 0.5px; cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; text-transform: uppercase; font-family: 'Inter','Segoe UI',sans-serif !important; }
         #hdsd-content details > summary span,
         #hdsd-content details > summary span strong,
         #hdsd-content details > summary span b,
         #hdsd-content details > summary strong,
-        #hdsd-content details > summary b { font-weight: 600 !important; font-size: 14px !important; letter-spacing: 0.5px !important; font-family: 'Inter','Segoe UI',sans-serif !important; color: var(--green) !important; }
+        #hdsd-content details > summary b { font-weight: 700 !important; font-size: 14px !important; letter-spacing: 0.5px !important; font-family: 'Inter','Segoe UI',sans-serif !important; color: var(--green) !important; }
         #hdsd-content details > summary::-webkit-details-marker { display: none; }
         #hdsd-content details > summary::before { content: "▸"; font-size: 14px; transition: transform 0.2s ease-in-out; }
         #hdsd-content details[open] > summary::before { transform: rotate(90deg); }
@@ -1912,7 +1930,7 @@
         const USER_ICON = "<svg class=\"message-icon-svg\" viewBox=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"12\" fill=\"#FFD54F\"/><path d=\"M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z\" fill=\"#333\"/></svg>";
 
         const API_KEYS = [
-            "AIzaSy" + "BFeZzT" + "Ke9RC_bf" + "EqA8WyQ74DXPKw7uV44",
+            "AIzaSy" + "D5gGmm" + "lcxxQs8T" + "lL6FczIOouKEo_NO8Pg",
             "AIzaSy" + "B25eYj" + "xlMy5sPk" + "rgq9ksPHbBkf1c1nbaY",
             "AIzaSy" + "ButLun" + "yZp8E8IR" + "fB1YMQHZxSpz5paj4UU"
         ];
