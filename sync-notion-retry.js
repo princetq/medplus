@@ -11,6 +11,7 @@ if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
+// Hàm retry để xử lý lỗi mạng hoặc Rate Limit của Notion
 async function withRetry(fn, retries = 4, baseDelay = 1000) {
   let lastErr;
   for (let i = 0; i <= retries; i++) {
@@ -29,6 +30,7 @@ async function withRetry(fn, retries = 4, baseDelay = 1000) {
   throw lastErr;
 }
 
+// Tải chi tiết nội dung (blocks) của một trang
 async function fetchDeep(blockId) {
   const blocks = [];
   let cursor = null;
@@ -56,39 +58,22 @@ async function fetchDeep(blockId) {
       delete block.image.file.url;
     }
   }
-
   return blocks;
 }
 
-async function queryDatabaseIncremental() {
-  const indexPath = path.join(OUTPUT_DIR, 'index.json');
-  let lastSync = null;
-  if (fs.existsSync(indexPath)) {
-    try {
-      const idx = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
-      if (Array.isArray(idx) && idx.length && idx[0].synced_at) {
-        lastSync = idx.reduce((m, x) => !x.synced_at ? m : (!m || x.synced_at > m ? x.synced_at : m), null);
-      }
-    } catch {}
-  }
-
+// Lấy toàn bộ danh sách trang hiện có trong Database
+async function queryAllPages() {
   const pages = [];
   let cursor = null;
   do {
-    const filters = [];
-    if (lastSync) {
-      filters.push({ timestamp: "last_edited_time", last_edited_time: { after: lastSync } });
-    }
     const payload = { database_id: DATABASE_ID, page_size: 100 };
     if (cursor) payload.start_cursor = cursor;
-    if (filters.length) payload.filter = filters[0];
 
     const res = await withRetry(() => notion.databases.query(payload), 4, 1200);
     pages.push(...res.results);
     cursor = res.has_more ? res.next_cursor : null;
-    if (cursor) await sleep(700);
+    if (cursor) await sleep(500);
   } while (cursor);
-
   return pages;
 }
 
@@ -98,46 +83,89 @@ function getTitle(page) {
 }
 
 async function main() {
-  console.log('🔄 Bắt đầu sync Notion HDSD...');
-  const pages = await queryDatabaseIncremental();
-  console.log(`📄 Tìm thấy ${pages.length} tờ cần sync`);
+  console.log('🔄 Bắt đầu Full Sync Notion HDSD...');
+  
+  // 1. Lấy tất cả trang từ Notion
+  const pages = await queryAllPages();
+  console.log(`📄 Notion hiện có ${pages.length} tờ`);
 
-  const indexPath = path.join(OUTPUT_DIR, 'index.json');
-  let index = [];
-  if (fs.existsSync(indexPath)) {
-    try {
-      index = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
-      if (!Array.isArray(index)) index = [];
-    } catch { index = []; }
+  const notionIds = new Set(pages.map(p => p.id.replace(/-/g, '')));
+  const indexMap = new Map();
+  let success = 0, skipped = 0, failed = 0, deleted = 0;
+
+  // 2. Dọn dẹp: Xóa file local nếu không còn trên Notion
+  if (fs.existsSync(OUTPUT_DIR)) {
+    const localFiles = fs.readdirSync(OUTPUT_DIR).filter(f => f.endsWith('.json') && f !== 'index.json');
+    for (const file of localFiles) {
+      const fileId = file.replace('.json', '');
+      if (!notionIds.has(fileId)) {
+        console.log(`🗑️ Đang xóa file cũ (đã xóa trên Notion): ${file}`);
+        fs.unlinkSync(path.join(OUTPUT_DIR, file));
+        deleted++;
+      }
+    }
   }
 
-  const indexMap = new Map(index.map(x => [x.id, x]));
-  let success = 0, failed = 0;
-
+  // 3. Cập nhật hoặc thêm mới trang
   for (let i = 0; i < pages.length; i++) {
     const page = pages[i];
     const pageId = page.id.replace(/-/g, '');
-    process.stdout.write(` [${i + 1}/${pages.length}] ${pageId}... `);
+    const lastEditedTime = page.last_edited_time;
+    const filePath = path.join(OUTPUT_DIR, `${pageId}.json`);
+    
+    // Kiểm tra xem trang có thay đổi gì so với file local không
+    let needUpdate = true;
+    if (fs.existsSync(filePath)) {
+      try {
+        const localData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        // Nếu thời gian sửa đổi giống hệt nhau, không cần tải lại nội dung block
+        if (localData.page && localData.page.last_edited_time === lastEditedTime) {
+          needUpdate = false;
+        }
+      } catch (e) {
+        needUpdate = true; 
+      }
+    }
+
+    if (!needUpdate) {
+      process.stdout.write(` [${i + 1}/${pages.length}] ${pageId}... ⏩ Giữ nguyên\n`);
+      indexMap.set(pageId, { id: pageId, title: getTitle(page), last_edited_time: lastEditedTime });
+      skipped++;
+      continue;
+    }
+
     try {
+      process.stdout.write(` [${i + 1}/${pages.length}] ${pageId}... 📥 Tải nội dung... `);
       const blocks = await withRetry(() => fetchDeep(page.id), 3, 1500);
       const synced_at = new Date().toISOString();
-      fs.writeFileSync(path.join(OUTPUT_DIR, `${pageId}.json`), JSON.stringify({ page, blocks, synced_at }, null, 2), 'utf-8');
-      indexMap.set(pageId, { id: pageId, title: getTitle(page), synced_at });
+      
+      fs.writeFileSync(filePath, JSON.stringify({ page, blocks, synced_at }, null, 2), 'utf-8');
+      indexMap.set(pageId, { id: pageId, title: getTitle(page), last_edited_time: lastEditedTime });
       console.log('✅');
       success++;
+      
+      // Nghỉ ngắn để tránh bị Notion giới hạn tốc độ
+      await sleep(400);
     } catch (err) {
-      console.log(`❌ ${err.message}`);
+      console.log(`❌ Lỗi: ${err.message}`);
       failed++;
     }
-    if (i + 1 < pages.length) await sleep(1000);
   }
 
-  index = Array.from(indexMap.values()).sort((a, b) => (b.synced_at || '').localeCompare(a.synced_at || ''));
-  fs.writeFileSync(indexPath, JSON.stringify(index, null, 2), 'utf-8');
-  console.log(`\n✅ Xong. Thành công: ${success}, Lỗi: ${failed}`);
+  // 4. Lưu index.json (chỉ chứa các trang hiện đang tồn tại)
+  const finalIndex = Array.from(indexMap.values()).sort((a, b) => 
+    (b.last_edited_time || '').localeCompare(a.last_edited_time || '')
+  );
+  fs.writeFileSync(path.join(OUTPUT_DIR, 'index.json'), JSON.stringify(finalIndex, null, 2), 'utf-8');
+  
+  console.log(`\n✨ HOÀN THÀNH TỔNG KẾT:`);
+  console.log(`- Cập nhật/Mới: ${success}`);
+  console.log(`- Không thay đổi: ${skipped}`);
+  console.log(`- Đã xóa: ${deleted}`);
+  console.log(`- Thất bại: ${failed}`);
 }
 
 main().catch(err => {
-  console.error('❌ Sync thất bại:', err.message);
+  console.error('❌ Sync thất bại nghiêm trọng:', err.message);
   process.exit(1);
 });
