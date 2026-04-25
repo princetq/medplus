@@ -196,7 +196,7 @@
 
         .iv-btn-text{display:inline-block;overflow:hidden;white-space:nowrap;max-width:200px;opacity:1;vertical-align:middle;transition:max-width .4s cubic-bezier(.4,0,.2,1),opacity .35s ease,padding .3s ease}
         
-        @media (max-width: 600px) {  
+        @media (max-width: 600px) { 
           .search-box:focus-within { transform: none !important; max-width: none !important; }  
           .search-wrapper { position: sticky; top: 0; z-index: 100; background: transparent; }  
           .search-box input { transform: translateZ(0); -webkit-appearance: none; border-radius: 0; }
@@ -561,8 +561,8 @@
         }
 
         /* ==============================================================
-           🌙 DARK MODE PRO — NÂNG CẤP TOÀN DIỆN
-           Palette: Deep Space Navy + Emerald Neon + Gold Accent
+            🌙 DARK MODE PRO — NÂNG CẤP TOÀN DIỆN
+            Palette: Deep Space Navy + Emerald Neon + Gold Accent
            ============================================================== */
 
         /* === BIẾN CSS CHO DARK MODE === */
@@ -1368,9 +1368,9 @@
         }
         
         /* =========================================================
-           NÂNG CẤP THEO YÊU CẦU MỚI:
-           1. PC: Logo thỉnh thoảng động đậy, chữ đứng yên
-           2. PC Dark Mode: Bầu trời rực rỡ Dải Ngân Hà (Milky Way)
+            NÂNG CẤP THEO YÊU CẦU MỚI:
+            1. PC: Logo thỉnh thoảng động đậy, chữ đứng yên
+            2. PC Dark Mode: Bầu trời rực rỡ Dải Ngân Hà (Milky Way)
            ========================================================= */
         @media (min-width: 601px) {
             /* Dải Ngân Hà (Milky Way) cho riêng Dark Mode phiên bản PC */
@@ -2396,10 +2396,10 @@
                         if (ch) html += '<div style="margin-left:16px">'+ch+'</div>';
                         break;
                     case 'bulleted_list_item':
-                        html += '<li>'+text+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</li>';
+                        html += '<ul><li>'+text+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</li></ul>';
                         break;
                     case 'numbered_list_item':
-                        html += '<li>'+text+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</li>';
+                        html += '<ol><li>'+text+(ch?'<div style="margin-left:4px">'+ch+'</div>':'')+'</li></ol>';
                         break;
                     case 'to_do':
                         html += '<div style="display:flex;gap:8px;margin:4px 0;align-items:flex-start">'
@@ -2470,8 +2470,7 @@
                         break;
                 }
             }
-            html = html.replace(/(<li[^>]*>[\s\S]*?<\/li>\s*)+/g, m => '<ul>'+m+'</ul>');
-            return html;
+            return html.replace(/<\/ul>\s*<ul>/g, '').replace(/<\/ol>\s*<ol>/g, '');
         }
 
         if (!window._hdsdJsonCache) window._hdsdJsonCache = new Map();
@@ -2606,7 +2605,6 @@
                       + ' XEM HDSD GỐC</a><hr>'
                     : '';
 
-                // Thay ảnh đầu (ảnh bìa thuốc) bằng item.image từ hosting — không tốn Worker
                 let processedHtml = html;
                 if (itemImage && itemImage.trim()) {
                     processedHtml = html.replace(
@@ -2626,28 +2624,12 @@
                 content.style.display = 'block';
                 loader.style.display = 'none';
 
-                // Lazy-load: chỉ render _children khi bấm mở toggle
                 content.querySelectorAll('details[data-block-id]').forEach(det => {
-                    
-det.addEventListener('toggle', function onToggleOpen() {
+                    det.addEventListener('toggle', function onToggleOpen() {
                         if (!det.open) return;
                         det.removeEventListener('toggle', onToggleOpen);
                         const blockId = det.dataset.blockId;
-                        let block = (jsonData.blocks || []).find(b => b.id === blockId);
-                        if (!block) {
-                            // Tìm recursive trong toàn bộ blocks tree
-                            function findBlockInTree(blocks) {
-                                for (let b of blocks) {
-                                    if (b.id === blockId) return b;
-                                    if (b._children && b._children.length) {
-                                        let found = findBlockInTree(b._children);
-                                        if (found) return found;
-                                    }
-                                }
-                                return null;
-                            }
-                            block = findBlockInTree(jsonData.blocks || []);
-                        }
+                        const block = (jsonData.blocks || []).find(b => b.id === blockId);
                         if (!block) return;
                         const contentDiv = det.querySelector('.content');
                         if (!contentDiv) return;
@@ -2657,12 +2639,10 @@ det.addEventListener('toggle', function onToggleOpen() {
                             contentDiv.innerHTML = '<div style="color:#999;font-style:italic;padding:8px">Không có nội dung.</div>';
                         }
                     }, { once: true });
-
                 });
 
             } catch(e) {
                 if (e.name !== 'AbortError') {
-                    // FALLBACK: NẾU CÓ LỖI TẢI (MẠNG HOẶC NGOẠI LỆ MÃ HOÁ), HIỆN NÚT CHO USER TỰ MỞ
                     loader.innerHTML = `
                         <div style="text-align:center; padding: 20px;">
                             <p style="color:var(--green); font-weight:bold; margin-bottom: 15px; font-size: 16px;">Gặp lỗi khi tải dữ liệu HDSD.<br>Vui lòng xem trên Notion gốc:</p>
@@ -2679,17 +2659,13 @@ det.addEventListener('toggle', function onToggleOpen() {
         function closeHDSDModal() {
             const modal = document.getElementById('hdsd-modal');
             const content = document.getElementById('hdsd-content');
-            
             if (content) content.style.overflow = 'hidden'; 
-            
             modal.style.display = 'none';
             unlockBodyScroll();
-            
             if (window._hdsdAbortCtrl) {
                 window._hdsdAbortCtrl.abort();
                 window._hdsdAbortCtrl = null;
             }
-            
             clearTimeout(_clearHdsdTimer);
             _clearHdsdTimer = setTimeout(() => {
                 if (modal.style.display === 'none' && content) {
@@ -2708,42 +2684,38 @@ det.addEventListener('toggle', function onToggleOpen() {
         function openModal(idx) {
             const item = rawData[idx];
             let html = "<div class=\"modal-drug-header\">" +
-                    "<img class=\"modal-drug-img\" src=\"" + item.image + "\" onerror=\"this.style.display='none'\" onclick=\"openImageZoom('" + item.image + "')\" title=\"Nhấn để xem ảnh lớn\">" +
-                    "<div style=\"display:flex;align-items:center;gap:10px;flex:1;flex-wrap:wrap\">" +
-                        "<h2 class=\"modal-drug-title\">" + item.brand + "</h2>" +
-                        
-                        "<a href=\"https://www.google.com/search?q=" + encodeURIComponent(item.brand + ' ' + (item.active || '')) + "\" target=\"_blank\" class=\"google-search-btn\" style=\"margin-top:0\">" +
-                            "<svg viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z\" fill=\"#4285F4\"/><path d=\"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z\" fill=\"#34A853\"/><path d=\"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z\" fill=\"#FBBC05\"/><path d=\"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z\" fill=\"#EA4335\"/></svg>" +
-                            " Tra cứu Google" +
-                        "</a>" +
-                    "</div>" +
+                "<img class=\"modal-drug-img\" src=\"" + item.image + "\" onerror=\"this.style.display='none'\" onclick=\"openImageZoom('" + item.image + "')\" title=\"Nhấn để xem ảnh lớn\">" +
+                "<div style=\"display:flex;align-items:center;gap:10px;flex:1;flex-wrap:wrap\">" +
+                    "<h2 class=\"modal-drug-title\">" + item.brand + "</h2>" +
+                    "<a href=\"https://www.google.com/search?q=" + encodeURIComponent(item.brand + ' ' + (item.active || '')) + "\" target=\"_blank\" class=\"google-search-btn\" style=\"margin-top:0\">" +
+                        "<svg viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z\" fill=\"#4285F4\"/><path d=\"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z\" fill=\"#34A853\"/><path d=\"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z\" fill=\"#FBBC05\"/><path d=\"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z\" fill=\"#EA4335\"/></svg>" +
+                        " Tra cứu Google" +
+                    "</a>" +
                 "</div>" +
-                "<div class=\"basic-info-box\">" +
-                    drawRow('HOẠT CHẤT', item.active) +
-                    drawRow('NHÓM DƯỢC LÝ', item.group) +
-                    drawRow('DẠNG BÀO CHẾ', item.form) +
-                    drawRow('HÀM LƯỢNG', item.strength) +
-                    drawRow('ĐÓNG GÓI', item.pack) +
-                "</div>" +
-                (item.link ? "<button class=\"notion-btn\" onclick=\"openNotionPopup('" + item.link + "','" + (item.image||'') + "')\">📄 XEM TỜ HƯỚNG DẪN SỬ DỤNG</button>" : "") +
-                
-                "<div class=\"details-group\">" +
-                    drawAccordion('CHỈ ĐỊNH', item.indication) +
-                    drawAccordion('LIỀU DÙNG', item.dosage) +
-                    drawAccordion('CÁCH DÙNG', item.usage) +
-                    drawAccordion('CHỐNG CHỈ ĐỊNH - THẬN TRỌNG', item.sideEffects) +
-                    drawAccordion('TƯƠNG TÁC THUỐC', item.interaction) +
-                    drawAccordion('TÁC DỤNG KHÔNG MONG MUỐN', item.adr) +
-                    drawAccordion('DƯỢC ĐỘNG HỌC - DƯỢC LỰC HỌC', item.pkpd) +
-                    drawAccordion('LƯU Ý', item.notes) +
-                    drawAccordion('TÀI LIỆU THAM KHẢO', item.reference) +
-                "</div>";
+            "</div>" +
+            "<div class=\"basic-info-box\">" +
+                drawRow('HOẠT CHẤT', item.active) +
+                drawRow('NHÓM DƯỢC LÝ', item.group) +
+                drawRow('DẠNG BÀO CHẾ', item.form) +
+                drawRow('HÀM LƯỢNG', item.strength) +
+                drawRow('ĐÓNG GÓI', item.pack) +
+            "</div>" +
+            (item.link ? "<button class=\"notion-btn\" onclick=\"openNotionPopup('" + item.link + "','" + (item.image||'') + "')\">📄 XEM TỜ HƯỚNG DẪN SỬ DỤNG</button>" : "") +
+            "<div class=\"details-group\">" +
+                drawAccordion('CHỈ ĐỊNH', item.indication) +
+                drawAccordion('LIỀU DÙNG', item.dosage) +
+                drawAccordion('CÁCH DÙNG', item.usage) +
+                drawAccordion('CHỐNG CHỈ ĐỊNH - THẬN TRỌNG', item.sideEffects) +
+                drawAccordion('TƯƠNG TÁC THUỐC', item.interaction) +
+                drawAccordion('TÁC DỤNG KHÔNG MONG MUỐN', item.adr) +
+                drawAccordion('DƯỢC ĐỘNG HỌC - DƯỢC LỰC HỌC', item.pkpd) +
+                drawAccordion('LƯU Ý', item.notes) +
+                drawAccordion('TÀI LIỆU THAM KHẢO', item.reference) +
+            "</div>";
             document.getElementById('modal-body').innerHTML = html;
-            
             const modal = document.getElementById('modal');
             const content = modal.querySelector('.modal-content');
             if (content) content.style.overflow = 'auto'; 
-            
             modal.style.display = 'flex';
             lockBodyScroll();
         }
@@ -2756,10 +2728,8 @@ det.addEventListener('toggle', function onToggleOpen() {
             const modal = document.getElementById('modal');
             const content = modal.querySelector('.modal-content');
             if (content) content.style.overflow = 'hidden'; 
-            
             modal.style.display = 'none'; 
             unlockBodyScroll(); 
-            
             clearTimeout(_clearModalTimer);
             _clearModalTimer = setTimeout(() => {
                 if (modal.style.display === 'none') {
@@ -2835,22 +2805,17 @@ det.addEventListener('toggle', function onToggleOpen() {
             const imageUploadBtn = document.getElementById('image-upload-btn');
             const imageUploadInput = document.getElementById('image-upload');
             const typingIndicator = document.getElementById('typing-indicator');
-            
             if (chatInput) {
                 chatInput.addEventListener('focus', function () {
-                    setTimeout(() => {
-                        this.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 300);
+                    setTimeout(() => { this.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300);
                 });
             }
-            
             if(imageUploadBtn && imageUploadInput) {
                 imageUploadBtn.addEventListener('click', function() { imageUploadInput.click(); });
                 imageUploadInput.addEventListener('change', handleImageUpload);
             }
             sendButton.addEventListener('click', function() { sendMessage(false); });
             chatInput.addEventListener('keydown', function(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(false); } });
-            
             if(typingIndicator) {
                 typingIndicator.addEventListener('click', function() { 
                     const t = document.getElementById('typing-text'); 
@@ -2880,7 +2845,7 @@ det.addEventListener('toggle', function onToggleOpen() {
                     const items = p.split(/\n/).filter(function(x) { return x.trim(); }); let list = ""; let ordered = false;
                     items.forEach(function(item) { item = item.trim();
                         if (item.startsWith('- ') || item.startsWith('* ')) { list += "<li>" + item.substring(2).replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>') + "</li>"; }
-                        else if (/^\d+\./.test(item)) { ordered = true; list += "<li>" + item.replace(/^\d+\.\s*/,'').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>') + "</li>"; }
+                        else if (/^\d+\.\s*/.test(item)) { ordered = true; list += "<li>" + item.replace(/^\d+\.\s*/,'').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>') + "</li>"; }
                     });
                     html += ordered ? "<ol>" + list + "</ol>" : "<ul>" + list + "</ul>";
                 } else { html += "<p>" + p + "</p>"; }
@@ -2912,46 +2877,29 @@ det.addEventListener('toggle', function onToggleOpen() {
         async function sendImageToAI(base64Data, mimeType, keyIdx, modelIdx) {
             if (keyIdx === undefined) keyIdx = currentKeyIndex;
             if (modelIdx === undefined) modelIdx = 0;
-            
             const sendButton = document.getElementById('send-button');
             const typingIndicator = document.getElementById('typing-indicator');
             const chatMessages = document.getElementById('chat-messages');
-            
             sendButton.disabled = true; typingIndicator.style.display = 'block';
             activeModelName = AI_MODELS[modelIdx];
             document.getElementById('typing-text').innerText = "MedPlus AI đang phân tích ảnh...";
-            
             startTime = Date.now(); 
             document.getElementById('timer-display').innerText = "(0.0s)";
             clearInterval(timerInterval);
             timerInterval = setInterval(function() { document.getElementById('timer-display').innerText = "(" + ((Date.now()-startTime)/1000).toFixed(1) + "s)"; }, 100);
-
             setTimeout(function() { chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' }); }, 100);
-
             const promptText = "Đây là hình ảnh do người dùng tải lên. \n" +
             "NẾU LÀ ĐƠN THUỐC: Tuyệt đối không liệt kê các bước của quy trình đăng ký khám. Hãy trích xuất thông tự Họ và tên (tên bệnh nhân), Tên bác sỹ (ở mục ký số bởi), Nội dung chẩn đoán và các thuốc trên đơn. Sau đó trả lời CHÍNH XÁC theo mẫu sau:\n" +
             "'Xin chào **[Họ và tên]** bạn đang cầm trên tay đơn thuốc của **<span style=\"color:red\">Bệnh viện Đa khoa tỉnh Tuyên Quang</span>** được kê bởi bác sĩ **[tên bác sĩ]** với chẩn đoán: [nội dung chẩn đoán]. **Chú ý: uống thuốc đúng thời gian và liều dùng trong mục \"Cách dùng\" ở trên đơn**. Đơn thuốc của bạn có những thuốc sau (với đơn có từ 2 thuốc trở lên nếu chỉ có 1 thuốc thì bỏ từ \"những\" đi): [liệt kê tên thuốc, hoạt chất, hàm lượng, dạng và tờ HDSD (hướng dẫn sử dụng) dựa trên dữ liệu y khoa bên dưới]. Nếu không đúng tên biệt dược trong dữ liệu, hãy gợi ý thuốc chứa cùng hoạt chất trên đơn có trong dữ liệu với đầy đủ tên, hoạt chất, hàm lượng, dạng và hướng dẫn sử dụng. Chúc bạn thật nhiều niềm vui và sức khỏe!'\n" +
             "NẾU KHÔNG PHẢI ĐƠN THUỐC: Hãy phân tích bình thường (quét và trích xuất TÊN THUỐC hoặc HOẠT CHẤT. Sau đó đưa ra thông tin chi tiết về: Biệt dược, Hàm lượng, Dạng thuốc, và Hướng dẫn sử dụng. Lưu ý: Nếu có nhiều biệt dược chứa hoạt chất đó, hãy liệt kê rõ ràng).\n\n" +
             (medicalContext ? "Dữ liệu tham khảo (Medical Context):\n" + medicalContext : "");
-
             try {
                 if (keyIdx >= API_KEYS.length) throw new Error("ALL_KEYS_EXHAUSTED");
                 const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/" + AI_MODELS[modelIdx] + ":generateContent?key=" + API_KEYS[keyIdx];
-                
-                const payload = {
-                    contents: [{
-                        role: "user",
-                        parts: [
-                            { text: promptText },
-                            { inlineData: { mimeType: mimeType, data: base64Data } }
-                        ]
-                    }]
-                };
-
+                const payload = { contents: [{ role: "user", parts: [{ text: promptText }, { inlineData: { mimeType: mimeType, data: base64Data } }] }] };
                 const res = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 if (!res.ok) throw new Error("HTTP_ERROR_" + res.status);
                 const data = await res.json();
-                
                 clearInterval(timerInterval);
                 typingIndicator.style.display = 'none';
                 const replyText = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text) ? data.candidates[0].content.parts[0].text : "Xin lỗi, không thể nhận diện được thông tin từ ảnh này.";
@@ -2959,13 +2907,10 @@ det.addEventListener('toggle', function onToggleOpen() {
                 sendButton.disabled = false; 
                 currentKeyIndex = keyIdx;
             } catch (error) {
-                if (modelIdx < AI_MODELS.length - 1) {
-                    await sendImageToAI(base64Data, mimeType, keyIdx, modelIdx + 1);
-                } else if (keyIdx < API_KEYS.length - 1) {
-                    await sendImageToAI(base64Data, mimeType, keyIdx + 1, 0);
-                } else { 
-                    clearInterval(timerInterval);
-                    typingIndicator.style.display = 'none'; 
+                if (modelIdx < AI_MODELS.length - 1) { await sendImageToAI(base64Data, mimeType, keyIdx, modelIdx + 1); } 
+                else if (keyIdx < API_KEYS.length - 1) { await sendImageToAI(base64Data, mimeType, keyIdx + 1, 0); } 
+                else { 
+                    clearInterval(timerInterval); typingIndicator.style.display = 'none'; 
                     displayMessage("Hệ thống đang quá tải hoặc lỗi xử lý ảnh. Vui lòng thử lại sau.", 'ai'); 
                     sendButton.disabled = false; 
                 }
@@ -2976,12 +2921,10 @@ det.addEventListener('toggle', function onToggleOpen() {
             if (isRetry === undefined) isRetry = false;
             if (keyIdx === undefined) keyIdx = currentKeyIndex;
             if (modelIdx === undefined) modelIdx = 0;
-
             const chatInput = document.getElementById('chat-input');
             const sendButton = document.getElementById('send-button');
             const typingIndicator = document.getElementById('typing-indicator');
             const chatMessages = document.getElementById('chat-messages');
-            
             let userMessage = chatInput.value.trim();
             if (isRetry) { 
                 const msgs = document.querySelectorAll('.user-message .text-wrapper'); 
@@ -2989,71 +2932,47 @@ det.addEventListener('toggle', function onToggleOpen() {
             } else { 
                 if (!userMessage) return; 
                 displayMessage(userMessage, 'user'); 
-                chatInput.value = ''; 
-                sendButton.disabled = true; 
-                typingIndicator.style.display = 'block'; 
+                chatInput.value = ''; sendButton.disabled = true; typingIndicator.style.display = 'block'; 
                 setTimeout(function() { chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' }); }, 100); 
             }
-            
             activeModelName = AI_MODELS[modelIdx];
             document.getElementById('typing-text').innerText = "MedPlus AI đang suy nghĩ...";
-            
             startTime = Date.now(); 
             document.getElementById('timer-display').innerText = "(0.0s)";
             clearInterval(timerInterval);
             timerInterval = setInterval(function() { document.getElementById('timer-display').innerText = "(" + ((Date.now()-startTime)/1000).toFixed(1) + "s)"; }, 100);
-            
             try {
                 if (keyIdx >= API_KEYS.length) throw new Error("ALL_KEYS_EXHAUSTED");
                 const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/" + AI_MODELS[modelIdx] + ":generateContent?key=" + API_KEYS[keyIdx];
-                
                 const promptContent = medicalContext ? (medicalContext + "\n\n### YÊU CẦU QUAN TRỌNG:\n- Trả lời ngắn gọn, nhưng phải thật đầy đủ và đi thẳng vào câu hỏi.\n- NẾU KHÁCH HỎI VỀ HOẠT CHẤT: Nếu bệnh viện có nhiều hơn 1 biệt dược cho hoạt chất đó, phải ghi rõ: biệt dược 1, biệt dược 2...\n- NẾU KHÁCH HỎI VỀ THUỐC: Chỉ cung cấp thông tin thuốc. TUYỆT ĐỐI KHÔNG tự ý liệt kê Quy trình khám hay Thông tin liên hệ nếu khách không hỏi.\n\nCâu hỏi của người dùng: " + userMessage) : userMessage;
-
                 const res = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: promptContent }] }] }) });
                 if (!res.ok) throw new Error("HTTP_ERROR_" + res.status);
                 const data = await res.json();
-                
-                clearInterval(timerInterval);
-                typingIndicator.style.display = 'none';
+                clearInterval(timerInterval); typingIndicator.style.display = 'none';
                 const replyText = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text) ? data.candidates[0].content.parts[0].text : "Xin lỗi, hệ thống không có phản hồi.";
-                displayMessage(replyText, 'ai');
-                sendButton.disabled = false; 
-                currentKeyIndex = keyIdx;
+                displayMessage(replyText, 'ai'); sendButton.disabled = false; currentKeyIndex = keyIdx;
             } catch (error) {
-                if (modelIdx < AI_MODELS.length - 1) {
-                    await sendMessage(true, keyIdx, modelIdx + 1);
-                } else if (keyIdx < API_KEYS.length - 1) {
-                    await sendMessage(true, keyIdx + 1, 0);
-                } else { 
-                    clearInterval(timerInterval);
-                    typingIndicator.style.display = 'none'; 
-                    displayMessage("Hệ thống đang quá tải. Vui lòng thử lại sau.", 'ai'); 
-                    sendButton.disabled = false; 
+                if (modelIdx < AI_MODELS.length - 1) { await sendMessage(true, keyIdx, modelIdx + 1); } 
+                else if (keyIdx < API_KEYS.length - 1) { await sendMessage(true, keyIdx + 1, 0); } 
+                else { 
+                    clearInterval(timerInterval); typingIndicator.style.display = 'none'; 
+                    displayMessage("Hệ thống đang quá tải. Vui lòng thử lại sau.", 'ai'); sendButton.disabled = false; 
                 }
             }
         }
 
-        // --- CHỐT CHẶN 2 (PHIÊN BẢN TỐI ƯU HIỆU NĂNG CHỐNG LAG) ---
         var activeScrollArea = null;
         var isUnscrollable = false;
-
-        // Bắt sự kiện khi ngón tay VỪA CHẠM vào màn hình (Chỉ tính toán 1 lần)
         document.addEventListener('touchstart', function(e) {
             if (document.body.style.overflow === 'hidden') {
                 activeScrollArea = e.target.closest('.modal-content, .chat-messages');
-                if (activeScrollArea) {
-                    // Đo đạc xem vùng này có bị ngắn quá không
-                    isUnscrollable = activeScrollArea.scrollHeight <= activeScrollArea.clientHeight;
-                }
+                if (activeScrollArea) { isUnscrollable = activeScrollArea.scrollHeight <= activeScrollArea.clientHeight; }
             }
         }, { passive: true });
 
-        // Sự kiện khi ngón tay VUỐT (Không tính toán gì cả, chỉ chặn nếu cần)
         document.addEventListener('touchmove', function(e) {
             if (document.body.style.overflow === 'hidden') {
-                if (!activeScrollArea || isUnscrollable) {
-                    if (e.cancelable) e.preventDefault();
-                }
+                if (!activeScrollArea || isUnscrollable) { if (e.cancelable) e.preventDefault(); }
             }
         }, { passive: false });
 
