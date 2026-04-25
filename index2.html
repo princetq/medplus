@@ -2264,7 +2264,7 @@
 
             batch.forEach(function(item, i) {
                 const originalIdx = rawData.indexOf(item);
-                const hdsdBtn = item.link ? "<button class=\"hdsd-btn\" onclick=\"event.stopPropagation();openNotionPopup('" + item.link + "')\">📄 Xem tờ HDSD</button>" : "";
+                const hdsdBtn = item.link ? "<button class=\"hdsd-btn\" onclick=\"event.stopPropagation();openNotionPopup(\'\" + item.link + \"\',\'\" + (item.image||'') + \"\')\\">📄 Xem tờ HDSD</button>" : "";
                 const delay = Math.min(i * 0.03, 0.6) + "s";
                 const sweepDelay = (Math.random() * 4).toFixed(2) + "s";
                 const badgeHtml = item.isNew ? "<div class=\"new-badge\" style=\"--sweep-delay: " + sweepDelay + "\">MỚI</div>" : "";
@@ -2476,7 +2476,7 @@
 
         if (!window._hdsdJsonCache) window._hdsdJsonCache = new Map();
 
-        async function openNotionPopup(notionUrl) {
+        async function openNotionPopup(notionUrl, itemImage) {
             if (window._hdsdAbortCtrl) window._hdsdAbortCtrl.abort();
             window._hdsdAbortCtrl = new AbortController();
             const hdsdSignal = window._hdsdAbortCtrl.signal;
@@ -2606,12 +2606,20 @@
                       + ' XEM HDSD GỐC</a><hr>'
                     : '';
 
-                let finalHtml = html;
-                const firstImgEnd = html.indexOf('</div>', html.indexOf('<img '));
+                // Thay ảnh đầu tiên trong JSON bằng item.image từ hosting (tránh tốn Worker)
+let processedHtml = html;
+if (itemImage && itemImage.trim()) {
+    processedHtml = html.replace(
+        /<img\s+src="https:\/\/ngocanh\.princetq\.workers\.dev\/image-proxy\/[^"]*"/,
+        '<img src="' + itemImage + '"'
+    );
+}
+let finalHtml = processedHtml;
+                const firstImgEnd = processedHtml.indexOf('</div>', processedHtml.indexOf('<img '));
                 if (firstImgEnd !== -1) {
-                    finalHtml = html.slice(0, firstImgEnd+6) + driveBtnHtml + html.slice(firstImgEnd+6);
+                    finalHtml = processedHtml.slice(0, firstImgEnd+6) + driveBtnHtml + processedHtml.slice(firstImgEnd+6);
                 } else {
-                    finalHtml = driveBtnHtml + html;
+                    finalHtml = driveBtnHtml + processedHtml;
                 }
 
                 content.innerHTML = finalHtml;
@@ -2701,7 +2709,7 @@
                     drawRow('HÀM LƯỢNG', item.strength) +
                     drawRow('ĐÓNG GÓI', item.pack) +
                 "</div>" +
-                (item.link ? "<button class=\"notion-btn\" onclick=\"openNotionPopup('" + item.link + "')\">📄 XEM TỜ HƯỚNG DẪN SỬ DỤNG</button>" : "") +
+                (item.link ? "<button class=\"notion-btn\" onclick=\"openNotionPopup(\'\" + item.link + \"\',\'\" + (item.image||'') + \"\')\\">📄 XEM TỜ HƯỚNG DẪN SỬ DỤNG</button>" : "") +
                 
                 "<div class=\"details-group\">" +
                     drawAccordion('CHỈ ĐỊNH', item.indication) +
