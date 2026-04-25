@@ -317,7 +317,7 @@
         .modal-drug-title{color:var(--green-d);font-size:22px;font-weight:900;margin:0}
         .google-search-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#fff!important;background:linear-gradient(135deg,#4285F4,#0d47a1);padding:6px 14px;border-radius:20px;text-decoration:none;transition:.2s;box-shadow:0 3px 10px rgba(66,133,244,0.3);width:fit-content;margin-top:2px}
         .google-search-btn:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(66,133,244,0.4)}
-        .google-search-btn svg{width:16px;height:16px;flex-shrink:0;overflow:visible;}
+        .google-search-btn svg{width:16px;height:16px;flex-shrink:0;overflow:visible;background:#fff;border-radius:50%;padding:2px;box-sizing:content-box;}
         
         #image-zoom-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:10010;display:none;align-items:center;justify-content:center;cursor:zoom-out;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px); touch-action: none;}
         #image-zoom-img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.5);animation:zoomIn .3s cubic-bezier(.25,1,.5,1)}
@@ -961,7 +961,34 @@
             color: #9dbfc8 !important;
         }
 
-        /* === NOTION BTN === */
+        /* === HDSD MOBILE OPTIMIZED === */
+        @media (max-width: 600px) {
+            #hdsd-content {
+                padding: 12px 14px !important;
+                font-size: 14px !important;
+                line-height: 1.65 !important;
+            }
+            #hdsd-content h1 { font-size: 18px !important; padding-bottom: 6px !important; }
+            #hdsd-content h2 { font-size: 15px !important; }
+            #hdsd-content h3 { font-size: 14px !important; }
+            #hdsd-content p, #hdsd-content li { font-size: 14px !important; line-height: 1.65 !important; }
+            #hdsd-content details > summary { padding: 9px 11px !important; font-size: 13px !important; letter-spacing: 0.3px !important; }
+            #hdsd-content details > summary span,
+            #hdsd-content details > summary strong,
+            #hdsd-content details > summary b { font-size: 13px !important; }
+            #hdsd-content details .content,
+            #hdsd-content details > div:not(summary) { padding: 10px 12px !important; font-size: 14px !important; }
+            #hdsd-content .basic-info-box { padding: 10px 12px !important; }
+            #hdsd-content .info-label { width: 110px !important; font-size: 13px !important; min-width: 90px !important; }
+            #hdsd-content .info-row { font-size: 13px !important; flex-wrap: wrap !important; }
+            #hdsd-content table { font-size: 13px !important; }
+            #hdsd-content table th, #hdsd-content table td { padding: 6px 8px !important; }
+            #hdsd-content blockquote { padding: 8px 12px !important; font-size: 14px !important; }
+            #hdsd-content [style*="grid-template-columns"] { grid-template-columns: 1fr !important; gap: 10px !important; }
+            #hdsd-content img { margin: 10px auto !important; }
+        }
+
+                /* === NOTION BTN === */
         body.dark-mode .notion-btn {
             background: linear-gradient(135deg, #0d4a32, #062a1c) !important;
             border: 1px solid rgba(80, 220, 180, 0.35) !important;
@@ -2447,6 +2474,8 @@
             return html;
         }
 
+        if (!window._hdsdJsonCache) window._hdsdJsonCache = new Map();
+
         async function openNotionPopup(notionUrl) {
             if (window._hdsdAbortCtrl) window._hdsdAbortCtrl.abort();
             window._hdsdAbortCtrl = new AbortController();
@@ -2473,22 +2502,25 @@
             try {
                 if (hdsdSignal.aborted) return;
                 const jsonUrl = './hdsd-data/' + pageId + '.json';
-                const jsonRes = await fetch(jsonUrl, { signal: hdsdSignal });
-
-                if (!jsonRes.ok) {
-                    // FALLBACK: NẾU LỖI HOẶC 404, HIỂN THỊ NÚT BẤM ĐỂ USER TỰ MỞ LINK NOTION
-                    loader.innerHTML = `
-                        <div style="text-align:center; padding: 20px;">
-                            <p style="color:var(--green); font-weight:bold; margin-bottom: 15px; font-size: 16px;">Không tìm thấy dữ liệu nội bộ.<br>Vui lòng xem trên Notion gốc:</p>
-                            <a href="${notionUrl}" target="_blank" style="display:inline-block; padding: 12px 24px; background: linear-gradient(135deg, #4caf50, #2e7d32); color: #fff; text-decoration: none; border-radius: 20px; font-weight: bold; box-shadow: 0 4px 15px rgba(46,125,50,0.3);">
-                                BẤM VÀO ĐÂY ĐỂ XEM HDSD
-                            </a>
-                        </div>
-                    `;
-                    return;
+                let jsonData;
+                if (window._hdsdJsonCache.has(pageId)) {
+                    jsonData = window._hdsdJsonCache.get(pageId);
+                } else {
+                    const jsonRes = await fetch(jsonUrl, { signal: hdsdSignal });
+                    if (!jsonRes.ok) {
+                        loader.innerHTML = `
+                            <div style="text-align:center; padding: 20px;">
+                                <p style="color:var(--green); font-weight:bold; margin-bottom: 15px; font-size: 16px;">Không tìm thấy dữ liệu nội bộ.<br>Vui lòng xem trên Notion gốc:</p>
+                                <a href="${notionUrl}" target="_blank" style="display:inline-block; padding: 12px 24px; background: linear-gradient(135deg, #4caf50, #2e7d32); color: #fff; text-decoration: none; border-radius: 20px; font-weight: bold; box-shadow: 0 4px 15px rgba(46,125,50,0.3);">
+                                    BẤM VÀO ĐÂY ĐỂ XEM HDSD
+                                </a>
+                            </div>
+                        `;
+                        return;
+                    }
+                    jsonData = await jsonRes.json();
+                    window._hdsdJsonCache.set(pageId, jsonData);
                 }
-                
-                const jsonData = await jsonRes.json();
                 
                 const pageRes = jsonData.page;
                 const blocks = jsonData.blocks;
@@ -2585,6 +2617,24 @@
                 content.innerHTML = finalHtml;
                 content.style.display = 'block';
                 loader.style.display = 'none';
+
+                // Lazy-load: chỉ render _children khi bấm mở toggle
+                content.querySelectorAll('details[data-block-id]').forEach(det => {
+                    det.addEventListener('toggle', function onToggleOpen() {
+                        if (!det.open) return;
+                        det.removeEventListener('toggle', onToggleOpen);
+                        const blockId = det.dataset.blockId;
+                        const block = (jsonData.blocks || []).find(b => b.id === blockId);
+                        if (!block) return;
+                        const contentDiv = det.querySelector('.content');
+                        if (!contentDiv) return;
+                        if (block._children && block._children.length > 0) {
+                            contentDiv.innerHTML = renderBlocks(block._children);
+                        } else {
+                            contentDiv.innerHTML = '<div style="color:#999;font-style:italic;padding:8px">Không có nội dung.</div>';
+                        }
+                    }, { once: true });
+                });
 
             } catch(e) {
                 if (e.name !== 'AbortError') {
