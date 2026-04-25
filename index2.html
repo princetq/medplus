@@ -2628,11 +2628,26 @@
 
                 // Lazy-load: chỉ render _children khi bấm mở toggle
                 content.querySelectorAll('details[data-block-id]').forEach(det => {
-                    det.addEventListener('toggle', function onToggleOpen() {
+                    
+det.addEventListener('toggle', function onToggleOpen() {
                         if (!det.open) return;
                         det.removeEventListener('toggle', onToggleOpen);
                         const blockId = det.dataset.blockId;
-                        const block = (jsonData.blocks || []).find(b => b.id === blockId);
+                        let block = (jsonData.blocks || []).find(b => b.id === blockId);
+                        if (!block) {
+                            // Tìm recursive trong toàn bộ blocks tree
+                            function findBlockInTree(blocks) {
+                                for (let b of blocks) {
+                                    if (b.id === blockId) return b;
+                                    if (b._children && b._children.length) {
+                                        let found = findBlockInTree(b._children);
+                                        if (found) return found;
+                                    }
+                                }
+                                return null;
+                            }
+                            block = findBlockInTree(jsonData.blocks || []);
+                        }
                         if (!block) return;
                         const contentDiv = det.querySelector('.content');
                         if (!contentDiv) return;
@@ -2642,6 +2657,7 @@
                             contentDiv.innerHTML = '<div style="color:#999;font-style:italic;padding:8px">Không có nội dung.</div>';
                         }
                     }, { once: true });
+
                 });
 
             } catch(e) {
