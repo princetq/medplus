@@ -2059,8 +2059,8 @@ body.dark-mode .iv-iframe-container iframe {
         let _scrollY = 0;
         let _touchStartY = 0;
         let _touchBlocker = null;
+        let _touchStartHandler = null;
 
-        // Kiểm tra element có thể cuộn theo hướng dy không
         function _canScrollEl(el, dy) {
             var s = window.getComputedStyle(el);
             if (!/(auto|scroll)/.test(s.overflowY)) return false;
@@ -2070,7 +2070,6 @@ body.dark-mode .iv-iframe-container iframe {
             return true;
         }
 
-        // Tìm ancestor scrollable phù hợp với hướng vuốt
         function _findScrollable(target, dy) {
             var el = target;
             while (el && el !== document.body) {
@@ -2086,23 +2085,35 @@ body.dark-mode .iv-iframe-container iframe {
         }
 
         function lockBodyScroll() {
+            // Gỡ listener cũ trước — tránh listener thừa khi mở modal lồng nhau
+            // (vd: modal chi tiết thuốc -> tờ HDSD bên trong)
+            if (_touchBlocker) {
+                document.removeEventListener('touchmove', _touchBlocker, { passive: false });
+                _touchBlocker = null;
+            }
+            if (_touchStartHandler) {
+                document.removeEventListener('touchstart', _touchStartHandler);
+                _touchStartHandler = null;
+            }
+            document.removeEventListener('wheel', _wheelBlocker, { passive: false });
+
             _scrollY = window.scrollY;
             document.body.style.top = '-' + _scrollY + 'px';
             document.body.classList.add('modal-open');
             document.documentElement.classList.add('modal-open');
-            // Chặn scroll body và documentElement để ngặn scroll chaining từ cross-origin iframe
             document.body.style.overflow = 'hidden';
             document.documentElement.style.overflow = 'hidden';
 
+            _touchStartHandler = function(e) {
+                if (e.touches && e.touches[0]) _touchStartY = e.touches[0].clientY;
+            };
             _touchBlocker = function(e) {
                 var dy = _touchStartY - (e.touches && e.touches[0] ? e.touches[0].clientY : _touchStartY);
-                if (_findScrollable(e.target, dy)) return; // cho phép cuộn trong modal
-                if (e.cancelable) e.preventDefault();      // chặn cuộn ra ngoài
+                if (_findScrollable(e.target, dy)) return;
+                if (e.cancelable) e.preventDefault();
             };
 
-            document.addEventListener('touchstart', function(e) {
-                if (e.touches && e.touches[0]) _touchStartY = e.touches[0].clientY;
-            }, { passive: true });
+            document.addEventListener('touchstart', _touchStartHandler, { passive: true });
             document.addEventListener('touchmove', _touchBlocker, { passive: false });
             document.addEventListener('wheel', _wheelBlocker, { passive: false });
         }
@@ -2137,6 +2148,10 @@ body.dark-mode .iv-iframe-container iframe {
             if (_touchBlocker) {
                 document.removeEventListener('touchmove', _touchBlocker, { passive: false });
                 _touchBlocker = null;
+            }
+            if (_touchStartHandler) {
+                document.removeEventListener('touchstart', _touchStartHandler);
+                _touchStartHandler = null;
             }
             document.removeEventListener('wheel', _wheelBlocker, { passive: false });
         }
