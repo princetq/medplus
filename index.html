@@ -536,17 +536,18 @@
                 background: transparent !important;
             }
 
-            /* Khi modal mở: chỉ dừng animation nền, KHÔNG khóa pointer-events */
+            /* Khi modal mở: dừng animation nền, KHÔNG dùng pointer-events/visibility */
             body.modal-open .leaf, body.modal-open .star,
             body.modal-open .shooting-star, body.modal-open .planet,
-            body.modal-open .zen-logo img {
+            body.modal-open .zen-logo img, body.modal-open .new-badge::before,
+            body.modal-open .new-badge::after, body.modal-open .syringe-icon,
+            body.modal-open .tk-icon {
                 animation-play-state: paused !important;
                 will-change: auto !important;
             }
         }
         
         /* --- CHỐT CHẶN 1 (PHIÊN BẢN CỰC MẠNH): ÉP CỨNG NỀN --- */
-        /* Scroll lock qua class thay vì inline style */
         html.modal-open, body.modal-open {
             overscroll-behavior: none;
         }
@@ -2055,93 +2056,85 @@ body.dark-mode .iv-iframe-container iframe {
             loadMedicalData();
         }
 
-        // ============================================================
-        // SCROLL LOCK — Phiên bản đã sửa: đếm số modal, chặn scroll thông minh
-        // Fixes: (1) scroll chaining xuống nền, (2) trang bị khoá sau khi đóng modal
-        // ============================================================
         let _scrollY = 0;
-        let _modalLockCount = 0;
         let _touchStartY = 0;
-        const _SCROLLABLE_SEL = '.modal-content, .iv-iframe-container, #hdsd-content, .chat-messages';
+        let _touchBlocker = null;
 
-        function _isScrollableY(el) {
+        // Kiểm tra element có thể cuộn theo hướng dy không
+        function _canScrollEl(el, dy) {
             var s = window.getComputedStyle(el);
-            return /(auto|scroll)/.test(s.overflowY) && el.scrollHeight > el.clientHeight + 1;
-        }
-
-        function _canConsumeScroll(el, dy) {
-            if (!_isScrollableY(el)) return false;
-            if (dy < 0) return el.scrollTop > 0;                             // kéo xuống (nội dung đi lên)
-            if (dy > 0) return el.scrollTop < (el.scrollHeight - el.clientHeight - 1); // kéo lên
+            if (!/(auto|scroll)/.test(s.overflowY)) return false;
+            if (el.scrollHeight <= el.clientHeight + 1) return false;
+            if (dy < 0) return el.scrollTop > 0;
+            if (dy > 0) return el.scrollTop < (el.scrollHeight - el.clientHeight - 1);
             return true;
         }
 
-        function _findScrollable(startEl, dy) {
-            var el = startEl;
+        // Tìm ancestor scrollable phù hợp với hướng vuốt
+        function _findScrollable(target, dy) {
+            var el = target;
             while (el && el !== document.body) {
-                if (el.matches && el.matches(_SCROLLABLE_SEL) && _canConsumeScroll(el, dy)) return el;
+                if (el.classList && (
+                    el.classList.contains('modal-content') ||
+                    el.classList.contains('iv-iframe-container') ||
+                    el.id === 'hdsd-content' ||
+                    el.classList.contains('chat-messages')
+                ) && _canScrollEl(el, dy)) return el;
                 el = el.parentElement;
             }
             return null;
         }
 
-        function _onTouchStart(e) {
-            if (e.touches && e.touches[0]) _touchStartY = e.touches[0].clientY;
-        }
-
-        function _onTouchMove(e) {
-            var curY = (e.touches && e.touches[0]) ? e.touches[0].clientY : _touchStartY;
-            var dy = _touchStartY - curY;
-            if (!_findScrollable(e.target, dy)) {
-                if (e.cancelable) e.preventDefault();
-            }
-        }
-
-        function _onWheel(e) {
-            if (!_findScrollable(e.target, e.deltaY)) e.preventDefault();
-        }
-
         function lockBodyScroll() {
-            _modalLockCount++;
-            if (_modalLockCount > 1) return; // đã khoá rồi, chỉ tăng đếm
-
             _scrollY = window.scrollY;
-            document.documentElement.classList.add('modal-open');
-            document.body.classList.add('modal-open');
-            document.body.style.position = 'fixed';
             document.body.style.top = '-' + _scrollY + 'px';
-            document.body.style.left = '0';
-            document.body.style.right = '0';
-            document.body.style.width = '100%';
-            document.body.style.overflow = 'hidden';
+            document.body.classList.add('modal-open');
+            // BỎ modal-open-freeze: class này gây khóa pointer-events toàn trang
+            document.documentElement.classList.add('modal-open');
 
-            document.addEventListener('touchstart', _onTouchStart, { passive: true });
-            document.addEventListener('touchmove', _onTouchMove, { passive: false });
-            document.addEventListener('wheel', _onWheel, { passive: false });
+            _touchBlocker = function(e) {
+                var dy = _touchStartY - (e.touches && e.touches[0] ? e.touches[0].clientY : _touchStartY);
+                if (_findScrollable(e.target, dy)) return; // cho phép cuộn trong modal
+                if (e.cancelable) e.preventDefault();      // chặn cuộn ra ngoài
+            };
+
+            document.addEventListener('touchstart', function(e) {
+                if (e.touches && e.touches[0]) _touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+            document.addEventListener('touchmove', _touchBlocker, { passive: false });
+            document.addEventListener('wheel', _wheelBlocker, { passive: false });
         }
 
-        function unlockBodyScroll(force) {
-            if (!force && _modalLockCount > 1) {
-                _modalLockCount--;
-                return; // còn modal khác đang mở
+        function _wheelBlocker(e) {
+            var el = e.target;
+            while (el && el !== document.body) {
+                if (el.classList && (
+                    el.classList.contains('modal-content') ||
+                    el.classList.contains('iv-iframe-container') ||
+                    el.id === 'hdsd-content' ||
+                    el.classList.contains('chat-messages')
+                ) && _canScrollEl(el, e.deltaY)) return;
+                el = el.parentElement;
             }
-            _modalLockCount = 0;
+            e.preventDefault();
+        }
 
-            document.removeEventListener('touchstart', _onTouchStart);
-            document.removeEventListener('touchmove', _onTouchMove);
-            document.removeEventListener('wheel', _onWheel);
-
-            document.documentElement.classList.remove('modal-open');
+        function unlockBodyScroll() {
             document.body.classList.remove('modal-open');
-            document.body.style.position = '';
+            document.documentElement.classList.remove('modal-open');
             document.body.style.top = '';
-            document.body.style.left = '';
-            document.body.style.right = '';
+            document.body.style.position = '';
             document.body.style.width = '';
-            document.body.style.overflow = '';
+            const sy = _scrollY;
+            requestAnimationFrame(function() {
+                window.scrollTo(0, sy);
+            });
 
-            var sy = _scrollY;
-            requestAnimationFrame(function() { window.scrollTo(0, sy); });
+            if (_touchBlocker) {
+                document.removeEventListener('touchmove', _touchBlocker, { passive: false });
+                _touchBlocker = null;
+            }
+            document.removeEventListener('wheel', _wheelBlocker, { passive: false });
         }
 
         // =========================================================================
@@ -3036,8 +3029,7 @@ body.dark-mode .iv-iframe-container iframe {
             }
         }
 
-                // [Removed: old conflicting touch listeners — replaced by lockBodyScroll]
-
+        
         window.onload = init;
     </script>
     </body>
