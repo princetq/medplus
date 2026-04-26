@@ -536,41 +536,27 @@
                 background: transparent !important;
             }
 
-            /* CSS KHÓA HIỆU ỨNG TRANG CHỦ KHI MODAL MỞ TRÊN MOBILE */
-            body.modal-open-freeze * { animation-play-state: paused !important; pointer-events: none !important; }
-            body.modal-open-freeze .modal-overlay, body.modal-open-freeze .modal-overlay * { animation-play-state: running !important; pointer-events: auto !important; }
-            body.modal-open-freeze .leaf, body.modal-open-freeze .star, body.modal-open-freeze .shooting-star, body.modal-open-freeze .planet { display: none !important; }
-            body.modal-open-freeze .zen-logo img { animation: none !important; }
-            body.modal-open-freeze .container,
-            body.modal-open-freeze .nature-background,
-            body.modal-open-freeze .night-background,
-            body.modal-open-freeze .footer {
-                content-visibility: hidden !important;
-                visibility: hidden !important;
-                pointer-events: none !important;
-                user-select: none !important;
-                -webkit-user-select: none !important;
+            /* Khi modal mở: chỉ dừng animation nền, KHÔNG khóa pointer-events */
+            body.modal-open .leaf, body.modal-open .star,
+            body.modal-open .shooting-star, body.modal-open .planet,
+            body.modal-open .zen-logo img {
+                animation-play-state: paused !important;
                 will-change: auto !important;
-            }
-            body.modal-open-freeze .modal-overlay {
-                content-visibility: visible !important;
-                visibility: visible !important;
             }
         }
         
         /* --- CHỐT CHẶN 1 (PHIÊN BẢN CỰC MẠNH): ÉP CỨNG NỀN --- */
-        body[style*="overflow: hidden"] {
-            height: 100dvh !important;
-            overscroll-behavior: none !important;
-            position: fixed !important;
-            width: 100% !important;
+        /* Scroll lock qua class thay vì inline style */
+        html.modal-open, body.modal-open {
+            overscroll-behavior: none;
         }
         .modal-overlay, #image-zoom-overlay {
             overscroll-behavior: none !important;
         }
-        .modal-content, .chat-messages, .iv-iframe-container {
-            overscroll-behavior: contain !important; /* Ép lực cuộn chỉ giới hạn bên trong modal */
-            -webkit-overflow-scrolling: touch !important; /* Hỗ trợ cuộn cực mượt trên iOS */
+        .modal-content, .chat-messages, .iv-iframe-container, #hdsd-content {
+            overscroll-behavior: contain !important;
+            -webkit-overflow-scrolling: touch !important;
+            touch-action: pan-y !important;
         }
 
         /* ==============================================================
@@ -2069,62 +2055,93 @@ body.dark-mode .iv-iframe-container iframe {
             loadMedicalData();
         }
 
+        // ============================================================
+        // SCROLL LOCK — Phiên bản đã sửa: đếm số modal, chặn scroll thông minh
+        // Fixes: (1) scroll chaining xuống nền, (2) trang bị khoá sau khi đóng modal
+        // ============================================================
         let _scrollY = 0;
-        let _touchBlocker = null;
+        let _modalLockCount = 0;
+        let _touchStartY = 0;
+        const _SCROLLABLE_SEL = '.modal-content, .iv-iframe-container, #hdsd-content, .chat-messages';
 
-        function lockBodyScroll() {
-            _scrollY = window.scrollY;
-            document.body.style.top = '-' + _scrollY + 'px';
-            document.body.classList.add('modal-open');
-            document.body.classList.add('modal-open-freeze'); // Khoá toàn bộ animation background trên Mobile
-            document.documentElement.classList.add('modal-open');
-
-            _touchBlocker = function(e) {
-                let el = e.target;
-                while (el) {
-                    if (el.classList && (
-                        el.classList.contains('modal-content') ||
-                        el.classList.contains('iv-iframe-container') ||
-                        el.id === 'hdsd-content'
-                    )) return; 
-                    el = el.parentElement;
-                }
-                e.preventDefault();
-            };
-            document.addEventListener('touchmove', _touchBlocker, { passive: false });
-            document.addEventListener('wheel', _wheelBlocker, { passive: false });
+        function _isScrollableY(el) {
+            var s = window.getComputedStyle(el);
+            return /(auto|scroll)/.test(s.overflowY) && el.scrollHeight > el.clientHeight + 1;
         }
 
-        function _wheelBlocker(e) {
-            let el = e.target;
-            while (el) {
-                if (el.classList && (
-                    el.classList.contains('modal-content') ||
-                    el.classList.contains('iv-iframe-container') ||
-                    el.id === 'hdsd-content'
-                )) return;
+        function _canConsumeScroll(el, dy) {
+            if (!_isScrollableY(el)) return false;
+            if (dy < 0) return el.scrollTop > 0;                             // kéo xuống (nội dung đi lên)
+            if (dy > 0) return el.scrollTop < (el.scrollHeight - el.clientHeight - 1); // kéo lên
+            return true;
+        }
+
+        function _findScrollable(startEl, dy) {
+            var el = startEl;
+            while (el && el !== document.body) {
+                if (el.matches && el.matches(_SCROLLABLE_SEL) && _canConsumeScroll(el, dy)) return el;
                 el = el.parentElement;
             }
-            e.preventDefault();
+            return null;
         }
 
-        function unlockBodyScroll() {
-            document.body.classList.remove('modal-open');
-            document.body.classList.remove('modal-open-freeze');
-            document.documentElement.classList.remove('modal-open');
-            document.body.style.top = '';
-            document.body.style.position = '';
-            document.body.style.width = '';
-            const sy = _scrollY;
-            requestAnimationFrame(function() {
-                window.scrollTo(0, sy);
-            });
+        function _onTouchStart(e) {
+            if (e.touches && e.touches[0]) _touchStartY = e.touches[0].clientY;
+        }
 
-            if (_touchBlocker) {
-                document.removeEventListener('touchmove', _touchBlocker, { passive: false });
-                _touchBlocker = null;
+        function _onTouchMove(e) {
+            var curY = (e.touches && e.touches[0]) ? e.touches[0].clientY : _touchStartY;
+            var dy = _touchStartY - curY;
+            if (!_findScrollable(e.target, dy)) {
+                if (e.cancelable) e.preventDefault();
             }
-            document.removeEventListener('wheel', _wheelBlocker, { passive: false });
+        }
+
+        function _onWheel(e) {
+            if (!_findScrollable(e.target, e.deltaY)) e.preventDefault();
+        }
+
+        function lockBodyScroll() {
+            _modalLockCount++;
+            if (_modalLockCount > 1) return; // đã khoá rồi, chỉ tăng đếm
+
+            _scrollY = window.scrollY;
+            document.documentElement.classList.add('modal-open');
+            document.body.classList.add('modal-open');
+            document.body.style.position = 'fixed';
+            document.body.style.top = '-' + _scrollY + 'px';
+            document.body.style.left = '0';
+            document.body.style.right = '0';
+            document.body.style.width = '100%';
+            document.body.style.overflow = 'hidden';
+
+            document.addEventListener('touchstart', _onTouchStart, { passive: true });
+            document.addEventListener('touchmove', _onTouchMove, { passive: false });
+            document.addEventListener('wheel', _onWheel, { passive: false });
+        }
+
+        function unlockBodyScroll(force) {
+            if (!force && _modalLockCount > 1) {
+                _modalLockCount--;
+                return; // còn modal khác đang mở
+            }
+            _modalLockCount = 0;
+
+            document.removeEventListener('touchstart', _onTouchStart);
+            document.removeEventListener('touchmove', _onTouchMove);
+            document.removeEventListener('wheel', _onWheel);
+
+            document.documentElement.classList.remove('modal-open');
+            document.body.classList.remove('modal-open');
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.left = '';
+            document.body.style.right = '';
+            document.body.style.width = '';
+            document.body.style.overflow = '';
+
+            var sy = _scrollY;
+            requestAnimationFrame(function() { window.scrollTo(0, sy); });
         }
 
         // =========================================================================
@@ -3019,20 +3036,7 @@ body.dark-mode .iv-iframe-container iframe {
             }
         }
 
-        var activeScrollArea = null;
-        var isUnscrollable = false;
-        document.addEventListener('touchstart', function(e) {
-            if (document.body.style.overflow === 'hidden') {
-                activeScrollArea = e.target.closest('.modal-content, .chat-messages');
-                if (activeScrollArea) { isUnscrollable = activeScrollArea.scrollHeight <= activeScrollArea.clientHeight; }
-            }
-        }, { passive: true });
-
-        document.addEventListener('touchmove', function(e) {
-            if (document.body.style.overflow === 'hidden') {
-                if (!activeScrollArea || isUnscrollable) { if (e.cancelable) e.preventDefault(); }
-            }
-        }, { passive: false });
+                // [Removed: old conflicting touch listeners — replaced by lockBodyScroll]
 
         window.onload = init;
     </script>
