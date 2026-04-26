@@ -2089,8 +2089,10 @@ body.dark-mode .iv-iframe-container iframe {
             _scrollY = window.scrollY;
             document.body.style.top = '-' + _scrollY + 'px';
             document.body.classList.add('modal-open');
-            // BỎ modal-open-freeze: class này gây khóa pointer-events toàn trang
             document.documentElement.classList.add('modal-open');
+            // Chặn scroll body và documentElement để ngặn scroll chaining từ cross-origin iframe
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
 
             _touchBlocker = function(e) {
                 var dy = _touchStartY - (e.touches && e.touches[0] ? e.touches[0].clientY : _touchStartY);
@@ -2122,6 +2124,8 @@ body.dark-mode .iv-iframe-container iframe {
         function unlockBodyScroll() {
             document.body.classList.remove('modal-open');
             document.documentElement.classList.remove('modal-open');
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
             document.body.style.top = '';
             document.body.style.position = '';
             document.body.style.width = '';
