@@ -988,6 +988,21 @@ body.dark-mode .iv-iframe-container iframe {
             color: #9dbfc8 !important;
         }
 
+        /* --- ĐOẠN SỬA MÀU KHỐI LƯU Ý (CALLOUT) CHO LIGHTMODE --- */
+        #hdsd-content div[style*="background:rgba(76,175,80,0.09)"] {
+            background: #FFF9E1 !important; /* Nền vàng kem nhạt */
+            border: 1px solid #FFD54F !important; /* Viền vàng cam mảnh */
+            color: #8B633B !important; /* Màu chữ nâu hổ phách */
+            font-style: italic; /* Chữ in nghiêng giống ảnh mẫu */
+            border-radius: 12px !important;
+            margin: 10px 0 !important;
+        }
+
+        /* Đổi màu cho tất cả chữ và icon bên trong khối này */
+        #hdsd-content div[style*="background:rgba(76,175,80,0.09)"] * {
+            color: #8B633B !important;
+        }
+
         /* === HDSD MOBILE OPTIMIZED === */
         @media (max-width: 600px) {
             #hdsd-content {
@@ -2062,8 +2077,14 @@ body.dark-mode .iv-iframe-container iframe {
         function lockBodyScroll() {
             _scrollY = window.scrollY;
             document.body.style.top = '-' + _scrollY + 'px';
+            
+            // Ép các thuộc tính để kích hoạt bản vá CSS phía trên
+            document.body.style.overflow = 'hidden'; 
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+
             document.body.classList.add('modal-open');
-            document.body.classList.add('modal-open-freeze'); // Khoá toàn bộ animation background trên Mobile
+            document.body.classList.add('modal-open-freeze');
             document.documentElement.classList.add('modal-open');
 
             _touchBlocker = function(e) {
@@ -2076,32 +2097,23 @@ body.dark-mode .iv-iframe-container iframe {
                     )) return; 
                     el = el.parentElement;
                 }
-                e.preventDefault();
+                if (e.cancelable) e.preventDefault();
             };
             document.addEventListener('touchmove', _touchBlocker, { passive: false });
-            document.addEventListener('wheel', _wheelBlocker, { passive: false });
         }
 
-        function _wheelBlocker(e) {
-            let el = e.target;
-            while (el) {
-                if (el.classList && (
-                    el.classList.contains('modal-content') ||
-                    el.classList.contains('iv-iframe-container') ||
-                    el.id === 'hdsd-content'
-                )) return;
-                el = el.parentElement;
-            }
-            e.preventDefault();
-        }
-
+        // --- HÀM MỞ LẠI CUỘN NỀN KHI ĐÓNG MODAL ---
         function unlockBodyScroll() {
+            // Xóa sạch các thuộc tính style đã thêm để trả lại trạng thái vuốt bình thường
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.width = '';
+            document.body.style.top = '';
+
             document.body.classList.remove('modal-open');
             document.body.classList.remove('modal-open-freeze');
             document.documentElement.classList.remove('modal-open');
-            document.body.style.top = '';
-            document.body.style.position = '';
-            document.body.style.width = '';
+
             const sy = _scrollY;
             requestAnimationFrame(function() {
                 window.scrollTo(0, sy);
@@ -2111,7 +2123,6 @@ body.dark-mode .iv-iframe-container iframe {
                 document.removeEventListener('touchmove', _touchBlocker, { passive: false });
                 _touchBlocker = null;
             }
-            document.removeEventListener('wheel', _wheelBlocker, { passive: false });
         }
 
         // =========================================================================
