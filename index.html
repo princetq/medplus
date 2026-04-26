@@ -562,6 +562,7 @@
         body[style*="overflow: hidden"] {
             height: 100dvh !important;
             overscroll-behavior: none !important;
+            position: fixed !important;
             width: 100% !important;
         }
         .modal-overlay, #image-zoom-overlay {
@@ -989,15 +990,13 @@ body.dark-mode .iv-iframe-container iframe {
 
         /* --- ĐOẠN SỬA MÀU KHỐI LƯU Ý (CALLOUT) CHO LIGHTMODE --- */
         #hdsd-content div[style*="background:rgba(76,175,80,0.09)"] {
-            background: #FFF9E1 !important; /* Nền vàng kem nhạt */
-            border: 1px solid #FFD54F !important; /* Viền vàng cam mảnh */
-            color: #8B633B !important; /* Màu chữ nâu hổ phách */
-            font-style: italic; /* Chữ in nghiêng giống ảnh mẫu */
+            background: #FFF9E1 !important;
+            border: 1px solid #FFD54F !important;
+            color: #8B633B !important;
+            font-style: italic;
             border-radius: 12px !important;
             margin: 10px 0 !important;
         }
-
-        /* Đổi màu cho tất cả chữ và icon bên trong khối này */
         #hdsd-content div[style*="background:rgba(76,175,80,0.09)"] * {
             color: #8B633B !important;
         }
@@ -2075,42 +2074,57 @@ body.dark-mode .iv-iframe-container iframe {
 
         function lockBodyScroll() {
             _scrollY = window.scrollY;
-            
-            // Chỉ dùng overflow để khóa, KHÔNG dùng position:fixed để tránh crash iOS
-            document.documentElement.style.overflow = 'hidden';
-            document.body.style.overflow = 'hidden';
-            document.body.style.height = '100dvh';
-
-            document.body.classList.add('modal-open', 'modal-open-freeze');
+            document.body.style.top = '-' + _scrollY + 'px';
+            document.body.classList.add('modal-open');
+            document.body.classList.add('modal-open-freeze'); // Khoá toàn bộ animation background trên Mobile
+            document.documentElement.classList.add('modal-open');
 
             _touchBlocker = function(e) {
-                // Kiểm tra nếu điểm chạm nằm TRONG các vùng được phép cuộn
-                const isScrollableArea = e.target.closest('.modal-content, .iv-iframe-container, #hdsd-content, .chat-messages');
-                
-                if (!isScrollableArea) {
-                    // Nếu chạm vào vùng overlay đen thì mới chặn
-                    if (e.cancelable) e.preventDefault();
+                let el = e.target;
+                while (el) {
+                    if (el.classList && (
+                        el.classList.contains('modal-content') ||
+                        el.classList.contains('iv-iframe-container') ||
+                        el.id === 'hdsd-content'
+                    )) return; 
+                    el = el.parentElement;
                 }
+                e.preventDefault();
             };
             document.addEventListener('touchmove', _touchBlocker, { passive: false });
+            document.addEventListener('wheel', _wheelBlocker, { passive: false });
         }
 
-        // --- HÀM MỞ KHÓA NỀN ---
+        function _wheelBlocker(e) {
+            let el = e.target;
+            while (el) {
+                if (el.classList && (
+                    el.classList.contains('modal-content') ||
+                    el.classList.contains('iv-iframe-container') ||
+                    el.id === 'hdsd-content'
+                )) return;
+                el = el.parentElement;
+            }
+            e.preventDefault();
+        }
+
         function unlockBodyScroll() {
-            // Trả lại trạng thái gốc
-            document.documentElement.style.overflow = '';
-            document.body.style.overflow = '';
-            document.body.style.height = '';
-
-            document.body.classList.remove('modal-open', 'modal-open-freeze');
-
-            // Giữ nguyên vị trí cuộn của trang chính
-            window.scrollTo(0, _scrollY);
+            document.body.classList.remove('modal-open');
+            document.body.classList.remove('modal-open-freeze');
+            document.documentElement.classList.remove('modal-open');
+            document.body.style.top = '';
+            document.body.style.position = '';
+            document.body.style.width = '';
+            const sy = _scrollY;
+            requestAnimationFrame(function() {
+                window.scrollTo(0, sy);
+            });
 
             if (_touchBlocker) {
                 document.removeEventListener('touchmove', _touchBlocker, { passive: false });
                 _touchBlocker = null;
             }
+            document.removeEventListener('wheel', _wheelBlocker, { passive: false });
         }
 
         // =========================================================================
