@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Thông Tin Thuốc - MedPlus</title>
+    <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1ZyertvO-WsXU5FYCcuqUHizfRUCSnRIb&sz=w128-h128">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -2351,7 +2354,7 @@ body.dark-mode .iv-iframe-container iframe {
 
             batch.forEach(function(item, i) {
                 const originalIdx = rawData.indexOf(item);
-                const hdsdBtn = item.link ? "<button class=\"hdsd-btn\" onclick=\"event.stopPropagation();openNotionPopup('" + item.link + "','" + (item.image||'') + "')\">📄 Xem tờ HDSD</button>" : "";
+                const hdsdBtn = item.link ? "<button class=\"hdsd-btn\" onclick=\"event.stopPropagation();openNotionPopup('" + item.link + "','" + (item.image||'') + "','" + (item.lastUpdated||'') + "')\">📄 Xem tờ HDSD</button>" : "";
                 const delay = Math.min(i * 0.03, 0.6) + "s";
                 const sweepDelay = (Math.random() * 4).toFixed(2) + "s";
                 const badgeHtml = item.isNew ? "<div class=\"new-badge\" style=\"--sweep-delay: " + sweepDelay + "\">MỚI</div>" : "";
@@ -2387,14 +2390,16 @@ body.dark-mode .iv-iframe-container iframe {
 
         function extractPageId(url) {
             if (!url) return null;
-            let cleanUrl = url.split('?')[0].split('#')[0];
-            cleanUrl = cleanUrl.replace(/\/+$/, '');
-            cleanUrl = cleanUrl.replace(/-/g, '');
-            const possibleId = cleanUrl.slice(-32);
-            if (/^[a-f0-9]{32}$/i.test(possibleId)) {
-                return possibleId;
-            }
-            return null;
+            // Xóa bỏ các tham số pvs, số thứ tự trang rác ở cuối link
+            let cleanUrl = url.split('?')[0].split('#')[0].replace(/\/+$/, '');
+
+            // Tìm chuỗi 32 ký tự (ID trang Notion) nằm sau dấu gạch ngang cuối cùng
+            const match = cleanUrl.match(/[a-f0-9]{32}$/i);
+            if (match) return match[0];
+
+            // Dự phòng trường hợp link không có dấu gạch ngang
+            const fallback = cleanUrl.replace(/-/g, '').slice(-32);
+            return /^[a-f0-9]{32}$/i.test(fallback) ? fallback : null;
         }
 
         function findDriveLink(blocks) {
@@ -2432,13 +2437,13 @@ body.dark-mode .iv-iframe-container iframe {
             }).join('');
         }
 
-        function renderBlocks(blocks) {
+        function renderBlocks(blocks, version) {
             let html = '';
             for (const block of blocks) {
                 const type = block.type;
                 const b = block[type] || {};
                 const text = rt(b.rich_text);
-                const ch = block._children ? renderBlocks(block._children) : '';
+                const ch = block._children ? renderBlocks(block._children, version) : '';
 
                 switch(type) {
                     case 'heading_1':
@@ -2512,12 +2517,17 @@ body.dark-mode .iv-iframe-container iframe {
                     case 'image': {
                         let src = '';
                         if (b._proxy && b._blockId) {
-                            src = NOTION_WORKER + '/image-proxy/' + b._blockId;
+                            const v = version || Date.now();
+                            src = NOTION_WORKER + '/image-proxy/' + b._blockId + '?v=' + v;
                         } else {
                             src = (b.file && b.file.url) || (b.external && b.external.url) || '';
                         }
                         const cap = rt(b.caption);
-                        html += '<div style="text-align:center;margin:14px 0"><img src="'+src+'" loading="lazy">'+(cap?'<br><small style="color:var(--subtext);font-size:13px">'+cap+'</small>':'')+'</div>';
+                        html += `<div class="hdsd-img-container" style="text-align:center;margin:14px 0">
+                <img src="${src}" loading="lazy" style="max-width:100%;border-radius:10px;"
+                     onerror="this.parentElement.style.display='none'">
+                ${cap ? `<br><small style="color:var(--subtext);font-size:13px">${cap}</small>` : ''}
+             </div>`;
                         break;
                     }
                     case 'bookmark':
@@ -2562,7 +2572,7 @@ body.dark-mode .iv-iframe-container iframe {
 
         if (!window._hdsdJsonCache) window._hdsdJsonCache = new Map();
 
-        async function openNotionPopup(notionUrl, itemImage) {
+        async function openNotionPopup(notionUrl, itemImage, itemVersion) {
             if (window._hdsdAbortCtrl) window._hdsdAbortCtrl.abort();
             window._hdsdAbortCtrl = new AbortController();
             const hdsdSignal = window._hdsdAbortCtrl.signal;
@@ -2671,7 +2681,7 @@ body.dark-mode .iv-iframe-container iframe {
                 }
                 if (!driveLink) driveLink = findDriveLink(blocks);
 
-                const html = renderBlocks(blocks);
+                const html = renderBlocks(blocks, itemVersion);
 
                 const driveBtnHtml = driveLink
                     ? '<style>'
