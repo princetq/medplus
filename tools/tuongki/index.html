@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tra cứu Tương hợp Y-Site - Glass Style</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="preload" as="image" href="tuongki.jpg">
+
+    <style>
+        /* --- BỘ MÀU CHỦ ĐẠO (GLASS THEME) --- */
+        :root {
+            /* ========================================================================= */
+            /* 1. KHAI BÁO BIẾN CHO LIGHT MODE (MẶC ĐỊNH)                                */
+            /* ========================================================================= */
+            --glass-bg: rgba(255, 255, 255, 0.45); 
+            --glass-card: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 4px 15px 0 rgba(31, 38, 135, 0.05);
+            --primary-text: #334155; 
+            
+            --accent-color: #16a34a; 
+            --accent-dark: #166534;  
+            --accent-bg: rgba(240, 253, 244, 0.85); 
+            --accent-gradient: linear-gradient(135deg, #4ade80 0%, #16a34a 100%);
+            
+            --danger-color: #dc2626;
+            --danger-gradient: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+            --warning-color: #d97706;
+            --neutral-color: #64748b;
+            --na-bg: #fef9c3; 
+
+            /* Biến hỗ trợ Theme */
+            --bg-color: #e8f5e9;
+            --bg-image: url('tuongki.jpg'); 
+            --bg-overlay: linear-gradient(135deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 100%);
+            
+            --header-bg: rgba(255, 255, 255, 0.65);
+            --search-bg: rgba(255, 255, 255, 0.55);
+            --input-bg: rgba(255, 255, 255, 0.85);
+            --input-border: rgba(255, 255, 255, 0.9);
+            --input-focus: #ffffff;
+            --sugg-bg: rgba(255, 255, 255, 0.95);
+            --sugg-border: rgba(255, 255, 255, 0.6);
+            --sugg-hover: rgba(240, 253, 244, 0.9);
+            
+            --panel-bg: rgba(255, 255, 255, 0.45);
+            --th-bg: var(--accent-color);
+            --th-text: white;
+            --td-bg: rgba(255, 255, 255, 0.55);
+            --td-border: rgba(255, 255, 255, 0.4);
+            --td-first-bg: rgba(255, 255, 255, 0.85);
+            
+            --m-card-bg: rgba(255, 255, 255, 0.65);
+            --m-card-border: rgba(255, 255, 255, 0.6);
+            --m-header-bg: var(--accent-color);
+            --m-header-text: white;
+            --m-row-border: rgba(0, 0, 0, 0.1);
+            
+            --legend-bg: rgba(255, 255, 255, 0.65);
+            
+            --footer-text: #ffffff;
+            --empty-text-color: #003366; 
+            
+            /* Trạng thái kết quả Light */
+            --st-c-bg: #dcfce7; --st-c-text: #166534; --st-c-border: #86efac;
+            --st-i-bg: #fee2e2; --st-i-text: #991b1b; --st-i-border: #fca5a5;
+            --st-n-bg: #fef9c3; --st-n-text: #854d0e; --st-n-border: #fde047;
+            --st-v-bg: #ffedd5; --st-v-text: #9a3412; --st-v-border: #fdba74;
+            --st-self-bg: rgba(0, 0, 0, 0.05); --st-self-text: #cbd5e1;
+
+            --icon-flask: var(--accent-dark);
+            --icon-flask-hover: #059669;
+
+            /* Ô tên thuốc trong bảng kết quả */
+            --td-drug-color: var(--accent-dark);
+            --td-drug-bg: var(--accent-bg);
+            /* Ô góc "THUỐC" */
+            --td-corner-bg: var(--accent-dark);
+            --td-corner-text: var(--th-text);
+        }
+
+        /* --- DARK MODE (RỪNG PHÉP THUẬT) --- */
+        body.dark-mode {
+            --glass-bg: rgba(5, 25, 15, 0.45);
+            --glass-card: rgba(10, 35, 20, 0.65);
+            --glass-border: rgba(100, 255, 150, 0.25);
+            --glass-shadow: 0 8px 32px 0 rgba(20, 255, 100, 0.15);
+            --primary-text: #e2f8e5; 
+            
+            --accent-color: #4ade80; 
+            --accent-dark: #22c55e;
+            --accent-bg: rgba(15, 50, 25, 0.85); 
+            --accent-gradient: linear-gradient(135deg, #4ade80 0%, #16a34a 100%);
+            
+            --danger-color: #ef4444;
+            --danger-gradient: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+            --warning-color: #fbbf24;
+            --neutral-color: #a7d3b0;
+
+            --bg-color: #05190f;
+            --bg-overlay: linear-gradient(135deg, rgba(2, 10, 5, 0.4) 0%, rgba(5, 20, 10, 0.7) 100%);
+            
+            --header-bg: rgba(10, 35, 20, 0.55);
+            --search-bg: rgba(5, 25, 15, 0.45);
+            --input-bg: rgba(10, 35, 20, 0.7);
+            --input-border: rgba(100, 255, 150, 0.25);
+            --input-focus: rgba(15, 45, 25, 0.9);
+            --sugg-bg: rgba(10, 35, 20, 0.95);
+            --sugg-border: rgba(100, 255, 150, 0.25);
+            --sugg-hover: rgba(15, 50, 25, 0.85);
+            
+            --panel-bg: rgba(5, 25, 15, 0.6);
+            --th-bg: var(--accent-dark);
+            --th-text: #05190f;
+            --td-bg: rgba(10, 35, 20, 0.5);
+            --td-border: rgba(100, 255, 150, 0.15);
+            --td-first-bg: rgba(15, 50, 25, 0.8);
+            
+            --m-card-bg: rgba(10, 35, 20, 0.65);
+            --m-card-border: rgba(100, 255, 150, 0.25);
+            --m-header-bg: var(--accent-dark);
+            --m-header-text: #05190f;
+            --m-row-border: rgba(255, 255, 255, 0.05);
+            
+            --legend-bg: rgba(10, 35, 20, 0.6);
+            
+            --footer-text: var(--accent-color);
+            --empty-text-color: #a7d3b0;
+
+            /* Trạng thái kết quả Dark */
+            --st-c-bg: rgba(22, 101, 52, 0.4); --st-c-text: #86efac; --st-c-border: #22c55e;
+            --st-i-bg: rgba(153, 27, 27, 0.4); --st-i-text: #fca5a5; --st-i-border: #ef4444;
+            --st-n-bg: rgba(133, 77, 14, 0.4); --st-n-text: #fde047; --st-n-border: #eab308;
+            --st-v-bg: rgba(154, 52, 18, 0.4); --st-v-text: #fdba74; --st-v-border: #f97316;
+            --st-self-bg: rgba(255, 255, 255, 0.05); --st-self-text: #64748b;
+
+            --icon-flask: var(--accent-color);
+            --icon-flask-hover: #ffffff;
+
+            /* Dark mode: ô tên thuốc - nền sáng hơn để tương phản với tiêu đề */
+            --td-drug-color: #bbf7d0;
+            --td-drug-bg: rgba(20, 83, 45, 0.65);
+            /* Ô góc "THUỐC": nền tối + chữ sáng, khác hẳn th xanh #22c55e */
+            --td-corner-bg: rgba(5, 25, 15, 0.90);
+            --td-corner-text: #4ade80;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--primary-text);
+            background: var(--bg-color);
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .ambient-light {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: var(--bg-overlay), var(--bg-image);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -1; pointer-events: none;
+            transition: background 0.5s ease;
+        }
+
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            width: 100%;
+            flex: 1; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Căn giữa dọc: spacer mượt, container không đổi kích thước ── */
+        .page-spacer {
+            flex-shrink: 0;
+            flex-grow: 0;
+            transition: flex-grow 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        body.page-centered .page-spacer {
+            flex-grow: 1;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background: var(--header-bg);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px; padding: 25px; margin-bottom: 25px;
+            box-shadow: var(--glass-shadow);
+            text-align: center;
+            transition: all 0.5s;
+        }
+
+        header h2 {
+            font-size: 26px; font-weight: 800; 
+            color: var(--accent-dark); 
+            margin: 0; display: flex; align-items: center; justify-content: center; gap: 15px;
+            text-transform: uppercase;
+            transition: color 0.5s;
+        }
+
+        .theme-toggle-icon {
+            color: var(--icon-flask);
+            cursor: pointer;
+            font-size: 42px; 
+            line-height: 1;
+            transition: transform 0.3s ease, color 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+        body.dark-mode .theme-toggle-icon {
+            filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.6));
+        }
+        .theme-toggle-icon:hover {
+            color: var(--icon-flask-hover);
+            transform: scale(1.15) rotate(10deg);
+        }
+
+        /* --- SEARCH BOX --- */
+        .search-container {
+            position: relative;
+            z-index: 50; 
+            background: var(--search-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 30px; padding: 25px;
+            box-shadow: var(--glass-shadow);
+            border: 1px solid var(--glass-border);
+            margin-bottom: 30px;
+            display: flex; gap: 10px; flex-wrap: wrap;
+            align-items: flex-start;
+            transition: all 0.5s;
+        }
+
+        .input-wrapper { position: relative; flex: 1; min-width: 250px; }
+
+        input {
+            width: 100%; padding: 15px 20px;
+            border-radius: 16px; 
+            background: var(--input-bg); 
+            border: 2px solid var(--input-border);
+            font-size: 16px; color: var(--accent-dark); font-weight: 600;
+            outline: none; transition: all 0.2s;
+        }
+        input:focus { background: var(--input-focus); border-color: var(--accent-color); box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.15); }
+        body.dark-mode input:focus { color: white; box-shadow: 0 0 15px rgba(74, 222, 128, 0.3); }
+
+        .btn-search {
+            padding: 15px 30px; font-size: 16px; font-weight: 700;
+            background: var(--accent-gradient); color: white;
+            border: none; border-radius: 16px; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+            transition: all 0.2s; white-space: nowrap;
+        }
+        body.dark-mode .btn-search { color: #05190f; box-shadow: 0 4px 15px rgba(74, 222, 128, 0.3); }
+        .btn-search:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(22, 163, 74, 0.4); }
+
+        .btn-reset {
+            background: var(--danger-gradient) !important;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3) !important;
+            color: white !important;
+        }
+        .btn-reset:hover {
+            box-shadow: 0 8px 20px rgba(220, 38, 38, 0.4) !important;
+        }
+
+        /* SUGGESTIONS */
+        .suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 5px; width: 100%;
+            background: var(--sugg-bg); 
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--sugg-border); border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            z-index: 100; 
+            max-height: 250px; overflow-y: auto; display: none;
+            transition: all 0.5s;
+        }
+        body.dark-mode .suggestions { box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .suggestions div {
+            padding: 12px 20px; cursor: pointer; border-bottom: 1px solid rgba(100, 100, 100, 0.1);
+            font-size: 15px; color: var(--primary-text); font-weight: 500;
+            transition: all 0.2s;
+        }
+        .suggestions div:hover { background: var(--sugg-hover); color: var(--accent-dark); }
+        body.dark-mode .suggestions div:hover { color: white; }
+
+        /* --- WARNING MESSAGE --- */
+        .rotate-warning {
+            display: none; 
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ffeeba;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+        }
+        body.dark-mode .rotate-warning { background: rgba(217, 119, 6, 0.2); color: #fcd34d; border-color: #d97706; }
+        .rotate-warning i { margin-right: 5px; color: var(--warning-color); }
+
+        /* --- TABLE SECTION --- */
+        .result-panel {
+            background: var(--panel-bg); 
+            backdrop-filter: blur(15px); border-radius: 24px; padding: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            transition: all 0.5s;
+        }
+
+        table {
+            width: 100%; border-collapse: separate; border-spacing: 4px;
+            margin-bottom: 20px;
+        }
+
+        th {
+            background: var(--th-bg); color: var(--th-text);
+            padding: 12px; border-radius: 8px;
+            font-size: 14px; font-weight: 700; text-transform: uppercase;
+            transition: all 0.5s;
+        }
+        
+        td {
+            padding: 10px; text-align: center;
+            background: var(--td-bg); 
+            border-radius: 8px;
+            font-size: 14px; color: var(--primary-text);
+            border: 1px solid var(--td-border);
+            transition: transform 0.2s, background 0.5s, color 0.5s, border-color 0.5s;
+        }
+
+        /* --- MEDIA QUERY GIAO DIỆN DESKTOP (Min Width: 500px) --- */
+        @media (min-width: 500px) {
+            th { font-size: 16px; padding: 15px; }
+            td { font-size: 16px; padding: 14px; }
+            td:first-child { font-size: 16px; }
+        }
+
+        td:first-child { 
+            text-align: center; 
+            font-weight: 700; color: var(--accent-dark);
+            background: var(--td-first-bg);
+            min-width: 120px;
+        }
+        body.dark-mode td:first-child { color: white; }
+
+        /* GIẢM CHIỀU CAO DANH SÁCH THUỐC ĐÃ CHỌN TRÊN PC */
+        .selected-drugs td { text-align: left; padding: 8px 15px; background: var(--td-bg); }
+        .selected-drugs tr:hover td { background: var(--td-first-bg); }
+
+        .compatible { background-color: var(--st-c-bg) !important; color: var(--st-c-text) !important; font-weight: bold; border: 1px solid var(--st-c-border) !important; }
+        .incompatible { background-color: var(--st-i-bg) !important; color: var(--st-i-text) !important; font-weight: bold; border: 1px solid var(--st-i-border) !important; }
+        .na { background-color: var(--st-n-bg) !important; color: var(--st-n-text) !important; font-weight: bold; border: 1px solid var(--st-n-border) !important; }
+        .controversial { background-color: var(--st-v-bg) !important; color: var(--st-v-text) !important; font-weight: bold; border: 1px solid var(--st-v-border) !important; }
+        .self-intersection { background-color: var(--st-self-bg) !important; color: var(--st-self-text) !important; }
+
+        /* ── Bảng kết quả: luôn cho phép scroll ngang nếu cần ── */
+        .result-table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        /* Khi ít thuốc (table-fit): thu nhỏ chữ, KHÔNG fixed layout */
+        .result-table-wrapper.table-fit th,
+        .result-table-wrapper.table-fit td {
+            font-size: var(--table-fit-fs, 13px);
+            padding: var(--table-fit-pad, 8px 6px);
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+        /* Khi nhiều thuốc (table-scroll): để bảng rộng tự nhiên */
+        .result-table-wrapper.table-scroll table {
+            min-width: max-content;
+        }
+
+                /* GIẢM SIZE NÚT XÓA KÈM VỚI VIỆC GIẢM CHIỀU CAO HÀNG */
+        .delete-btn {
+            background: var(--st-i-bg); color: var(--st-i-border); border: 1px solid var(--st-i-border);
+            width: 28px; height: 28px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 14px; transition: all 0.2s; float: right;
+        }
+        .delete-btn:hover { background: var(--danger-color); color: white; transform: rotate(90deg); border-color: var(--danger-color); }
+
+        .legend { 
+            margin-top: 15px; display: none; text-align: center; 
+            background: var(--legend-bg); padding: 15px; border-radius: 16px;
+            transition: all 0.5s;
+        }
+        .legend span { 
+            display: inline-flex; align-items: center; gap: 6px;
+            margin: 5px 10px; padding: 6px 12px; border-radius: 8px; 
+            font-size: 13px; font-weight: 700;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        body.dark-mode .legend span { box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        
+        .error-message { 
+            display: none; margin: 20px 0; padding: 15px; 
+            background: var(--st-i-bg); color: var(--st-i-text); border-radius: 12px;
+            border: 1px solid var(--st-i-border); text-align: center; font-weight: 600;
+        }
+
+        /* --- FOOTER: Badge Trong Mờ --- */
+        footer {
+            margin: 30px auto 10px auto; 
+            text-align: center;
+            color: var(--footer-text); 
+            font-weight: 700;
+            font-size: 13px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.25); 
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 8px 20px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: all 0.5s;
+            width: max-content;
+            max-width: 90%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        body.dark-mode footer { 
+            text-shadow: 0 1px 4px rgba(0,0,0,0.8); 
+            background: rgba(10, 35, 20, 0.6);
+            border-color: rgba(100, 255, 150, 0.2);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* ── SCROLLBAR: ẩn native, overlay custom xanh lá gradient glass ── */
+        @media (hover: hover) {
+            html { scrollbar-width: none; -ms-overflow-style: none; }
+            ::-webkit-scrollbar { display: none; width: 0; }
+        }
+        #csb { position:fixed; top:0; right:3px; width:4px; height:100vh; z-index:99999; pointer-events:none; opacity:0; transition:opacity 0.25s ease; }
+        #csb.show { opacity:1; }
+        #csb-thumb {
+            position:absolute; right:0; width:4px; border-radius:6px; min-height:30px;
+            transition: background 0.25s ease;
+            background: linear-gradient(180deg, rgba(74,222,128,0.65) 0%, rgba(22,163,74,0.45) 100%);
+            box-shadow: 0 0 6px rgba(22,163,74,0.3), inset 0 0 3px rgba(255,255,255,0.2);
+        }
+        body.dark-mode #csb-thumb {
+            background: linear-gradient(180deg, rgba(74,222,128,0.85) 0%, rgba(34,197,94,0.60) 100%);
+            box-shadow: 0 0 8px rgba(74,222,128,0.4), inset 0 0 3px rgba(255,255,255,0.1);
+        }
+
+        /* =================================================================
+           TỐI ƯU HÓA CAO CẤP CHO SMARTPHONE (Mobile Layout)
+           ĐIỂM NEO (BREAKPOINT): < 500px
+           ================================================================= */
+        
+        .mobile-results { display: none; }
+
+        @media only screen and (max-width: 499px) {
+            /* --- CẤU HÌNH INPUT CHO MOBILE --- */
+            input {
+                color: var(--primary-text) !important;
+                background: var(--mobile-input-bg) !important; 
+                transition: all 0.2s, background 0.5s, color 0.5s;
+            }
+            body:not(.dark-mode) input { text-shadow: 0 1px 3px rgba(0,0,0,0.5); color: #ffffff !important; background: rgba(255, 255, 255, 0.45) !important; }
+            
+            /* KHI BẤM VÀO (FOCUS) */
+            input:focus {
+                background: var(--input-focus) !important;
+                color: var(--input-text) !important;
+                text-shadow: none !important; 
+                box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.2);
+            }
+            body.dark-mode input:focus { color: white !important; box-shadow: 0 0 15px rgba(74, 222, 128, 0.3); }
+
+            input::placeholder { color: var(--input-placeholder) !important; }
+            body:not(.dark-mode) input::placeholder { color: rgba(255, 255, 255, 0.8) !important; }
+            input:focus::placeholder { color: #94a3b8 !important; }
+            body.dark-mode input:focus::placeholder { color: rgba(255,255,255,0.5) !important; }
+
+            body { padding: 5px; } 
+            
+            .container { 
+                width: 100%; 
+                max-width: 100%; 
+                margin: 0; 
+                padding: 0;
+            }
+
+            header { 
+                width: 100%;
+                padding: 12px; 
+                margin-bottom: 12px; 
+                border-radius: 16px; 
+            }
+            
+            .theme-toggle-icon { font-size: 32px; }
+            header h2 { font-size: 16px; flex-direction: row; gap: 8px; }
+
+            .search-container { 
+                width: 100%;
+                flex-direction: column; 
+                padding: 12px; 
+                gap: 8px; 
+                border-radius: 20px; 
+                margin-bottom: 15px; 
+            }
+            .input-wrapper { width: 100%; }
+            input { padding: 10px 15px; font-size: 16px !important; height: 42px; border-color: var(--glass-border); }
+            .btn-search { width: 100%; margin-top: 0; padding: 10px; font-size: 14px; height: 42px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+            .result-table-wrapper { display: none; }
+            
+            .result-panel {
+                padding: 12px; 
+                width: 100%; 
+                display: flex;
+                flex-direction: column;
+                align-items: stretch; 
+                box-sizing: border-box;
+            }
+
+            table { 
+                width: 100%; 
+                border-spacing: 0; 
+            }
+
+            .mobile-results { 
+                display: flex; 
+                flex-direction: column; 
+                gap: 8px; 
+                width: 100%; 
+            }
+
+            .m-card {
+                background: var(--m-card-bg);
+                backdrop-filter: blur(8px);
+                border: 1px solid var(--m-card-border);
+                border-radius: 10px; 
+                overflow: hidden;
+                width: 100%; 
+                box-sizing: border-box; 
+                transition: all 0.5s;
+            }
+            .m-card-header {
+                background: var(--m-header-bg);
+                color: var(--m-header-text);
+                padding: 6px 10px; 
+                font-weight: 700;
+                font-size: 10px; 
+                text-align: center; 
+                transition: all 0.5s;
+            }
+            .m-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 2px 8px;
+                border-bottom: 1px solid var(--m-row-border); 
+                font-size: 11px; 
+                flex-wrap: wrap; 
+                line-height: 1.2;
+                transition: border-color 0.5s;
+            }
+            .m-row:last-child { border-bottom: none; }
+            
+            .m-drug-name { 
+                font-weight: 500; 
+                color: var(--primary-text); 
+                word-break: break-word; 
+                max-width: 70%; 
+                transition: color 0.5s;
+            }
+            .m-badge {
+                padding: 1px 6px;
+                border-radius: 10px;
+                font-weight: 700;
+                font-size: 9px; 
+                min-width: 50px;
+                text-align: center;
+                flex-shrink: 0; 
+            }
+
+            .legend { text-align: left; padding: 8px; margin-top: 10px; }
+            .legend span { 
+                display: flex; width: 100%; margin: 2px 0; 
+                justify-content: flex-start; 
+                font-size: 11px; 
+                padding: 3px 6px;
+            }
+            
+            .selected-drugs tr {
+                display: flex; 
+                align-items: center; 
+                justify-content: space-between; 
+                padding: 6px 10px;
+                background: var(--m-card-bg);
+                border-radius: 10px; 
+                margin-bottom: 5px;
+                border: 1px solid var(--glass-border);
+                width: 100%; 
+                box-sizing: border-box;
+                transition: all 0.5s;
+            }
+            
+            .selected-drugs td { 
+                display: block; 
+                border: none; 
+                background: transparent !important; 
+                padding: 0;
+                font-size: 13px;
+                color: var(--primary-text);
+            }
+            
+            .selected-drugs td:first-child { 
+                text-align: left; 
+                font-weight: 600; 
+                flex: 1; 
+                color: var(--primary-text);
+            }
+            body:not(.dark-mode) .selected-drugs td:first-child { color: var(--accent-dark); }
+            
+            .selected-drugs td:last-child { width: auto; padding-left: 10px; }
+            .delete-btn { width: 24px; height: 24px; font-size: 12px; }
+            
+            footer { font-size: 11px; padding: 6px 14px; margin-top: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-light"></div>
+
+    <div class="container">
+        <div class="page-spacer" id="topSpacer"></div>
+        <header>
+            <h2>
+                <button onclick="toggleTheme()" title="Chuyển chế độ Sáng/Tối" style="background: transparent; border: none; padding: 0; margin: 0; outline: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent;">
+                    <i class="fas fa-flask theme-toggle-icon"></i>
+                </button>
+                Tra cứu tương hợp - tương kỵ
+            </h2>
+        </header>
+
+        <div class="search-container">
+            <div class="input-wrapper">
+                <input type="text" id="searchInput" placeholder="Nhập tên hoạt chất..." autocomplete="off">
+                <div class="suggestions" id="suggestions"></div>
+            </div>
+            <button id="actionBtn" class="btn-search" onclick="searchCompatibility()">
+                <i class="fas fa-search"></i> Tạo bảng kết quả
+            </button>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+        
+        <div id="rotateWarning" class="rotate-warning">
+            <i class="fas fa-sync-alt fa-spin"></i> Bạn đã chọn nhiều thuốc. Hãy xoay ngang điện thoại để hiển thị kết quả tốt nhất.
+        </div>
+
+        <div class="result-panel">
+            <div class="result-table-wrapper" id="desktopTableWrapper">
+                <table>
+                    <thead>
+                        <tr><th id="tableHeaderTitle" colspan="100">THÔNG TIN KẾT QUẢ</th></tr>
+                    </thead>
+                    <tbody id="tableBody" class="selected-drugs">
+                        <tr><td colspan="2" style="text-align: center; color: var(--empty-text-color); border: none; background: transparent;">Nhập ít nhất 2 hoạt chất rồi [Tạo bảng kết quả]</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mobile-results" id="mobileResults"></div>
+
+            <div id="legend" class="legend">
+                <span class="compatible"><i class="fas fa-check"></i> C: Tương hợp</span>
+                <span class="incompatible"><i class="fas fa-times"></i> I: Tương kỵ</span>
+                <span class="na"><i class="fas fa-question"></i> N: Không có thông tin</span>
+                <span class="controversial"><i class="fas fa-exclamation-triangle"></i> V: Mâu thuẫn giữa các tài liệu (Hỏi ý kiến dược sĩ)</span>
+            </div>
+        </div>
+        
+        <footer>Khoa Dược - BVĐK Tuyên Quang</footer>
+        <div class="page-spacer" id="bottomSpacer"></div>
+    </div>
+
+    <script>
+        // ── LOGIC CHUYỂN ĐỔI THEME ──
+        function initTheme() {
+            const savedTheme = localStorage.getItem('y_site_theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else if (savedTheme === 'light') {
+                document.body.classList.remove('dark-mode');
+            } else {
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.body.classList.add('dark-mode');
+                }
+            }
+        }
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                if (!localStorage.getItem('y_site_theme')) {
+                    e.matches ? document.body.classList.add('dark-mode')
+                              : document.body.classList.remove('dark-mode');
+                }
+            });
+        }
+        
+        initTheme();
+        setPageCentered();
+
+        function toggleTheme() {
+            if (document.body.classList.contains('dark-mode')) {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('y_site_theme', 'light');
+            } else {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('y_site_theme', 'dark');
+            }
+        }
+
+
+        function setPageCentered() { document.body.classList.add('page-centered'); }
+        function setPageTop() {
+            document.body.classList.remove('page-centered');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+                let jsonData = null;
+        let selectedDrugs = [];
+        let suggestionsList = [];
+        let isTableGenerated = false; 
+
+        function normalizeString(str) { return str.trim().toLowerCase().replace(/\s+/g,' '); }
+
+        async function fetchData() {
+            const tableBody = document.getElementById("tableBody");
+            const errorMessage = document.getElementById("errorMessage");
+            
+            document.getElementById("desktopTableWrapper").style.display = "block";
+            document.getElementById("mobileResults").style.display = "none";
+            
+            try {
+                const response = await fetch('tuong_ky_thuoc.json?t=' + new Date().getTime()); 
+                jsonData = await response.json();
+                suggestionsList = [...new Set(jsonData.incompatibilities.flatMap(item => [item.drug1, item.drug2]))].sort();
+                updateSelectedDrugsTable();
+            } catch (error) {
+                tableBody.innerHTML = `<tr><td colspan="2" style="text-align: center; border: none; background: transparent;">Lỗi khi tải dữ liệu</td></tr>`;
+                errorMessage.textContent = `LỖI: ${error.message}`;
+                errorMessage.style.display = "block";
+            }
+        }
+
+        function checkRotationWarning() {
+            const warning = document.getElementById('rotateWarning');
+            // Cập nhật giá trị kiểm tra giao diện mobile (dưới 500px thay vì 768px)
+            if (window.innerWidth <= 499 && selectedDrugs.length >= 3) {
+                warning.style.display = 'block'; 
+            } else {
+                warning.style.display = 'none'; 
+            }
+        }
+
+        function setButtonToUpdateMode() {
+            const btn = document.getElementById('actionBtn');
+            if (isTableGenerated) {
+                btn.innerHTML = '<i class="fas fa-sync-alt"></i> Cập nhật kết quả';
+                btn.className = 'btn-search'; 
+                btn.setAttribute('onclick', 'searchCompatibility()');
+            } else {
+                btn.innerHTML = '<i class="fas fa-search"></i> Tạo bảng kết quả';
+                btn.className = 'btn-search';
+                btn.setAttribute('onclick', 'searchCompatibility()');
+            }
+        }
+
+        function addDrugToTable(drug) {
+            if (!selectedDrugs.includes(drug)) { 
+                selectedDrugs.push(drug); 
+                checkRotationWarning(); 
+                
+                isTableGenerated = false; 
+                updateSelectedDrugsTable(); 
+                
+                const btn = document.getElementById('actionBtn');
+                btn.innerHTML = '<i class="fas fa-search"></i> Tạo bảng kết quả';
+                btn.className = 'btn-search';
+                btn.setAttribute('onclick', 'searchCompatibility()');
+            }
+        }
+
+        function removeDrug(drug) {
+            selectedDrugs = selectedDrugs.filter(d => d !== drug);
+            checkRotationWarning(); 
+            if (!isTableGenerated) {
+                updateSelectedDrugsTable();
+            } else {
+                setButtonToUpdateMode();
+            }
+        }
+
+        function updateSelectedDrugsTable() {
+            document.getElementById("desktopTableWrapper").style.display = "block";
+            document.getElementById("mobileResults").style.display = "none";
+            document.getElementById("mobileResults").innerHTML = ""; 
+            var _w = document.getElementById("desktopTableWrapper");
+            _w.classList.remove('table-fit','table-scroll');
+            _w.style.removeProperty('--table-fit-fs');
+            _w.style.removeProperty('--table-fit-pad');
+
+            const tableBody = document.getElementById("tableBody");
+            tableBody.classList.add("selected-drugs"); 
+            document.getElementById("legend").style.display = "none";
+            document.getElementById("tableHeaderTitle").textContent = "THÔNG TIN KẾT QUẢ";
+
+            tableBody.innerHTML = "";
+            if (selectedDrugs.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="2" style="text-align: center; color: var(--empty-text-color); border: none; background: transparent;">Nhập ít nhất 2 hoạt chất rồi [Tạo bảng kết quả]</td></tr>`;
+                return;
+            }
+            tableBody.innerHTML = selectedDrugs.map(drug => `
+                <tr>
+                    <td>${drug}</td>
+                    <td style="width: 50px;">
+                        <button type="button" class="delete-btn" onclick="removeDrug('${drug.replace(/'/g,"\\'")}')"><i class="fas fa-times"></i></button>
+                    </td>
+                </tr>`).join('');
+        }
+
+        function showSuggestions() {
+            const input = normalizeString(document.getElementById("searchInput").value);
+            const suggestionsBox = document.getElementById("suggestions");
+            if (!input) { suggestionsBox.style.display='none'; return; }
+            const filtered = suggestionsList.filter(item => normalizeString(item).includes(input));
+            if (filtered.length === 0) { suggestionsBox.style.display='none'; return; }
+            suggestionsBox.innerHTML = filtered.map(item => `<div onclick="selectSuggestion('${item.replace(/'/g,"\\'")}')">${item}</div>`).join('');
+            suggestionsBox.style.display='block';
+        }
+
+        function selectSuggestion(value) {
+            document.getElementById("searchInput").value = ""; 
+            document.getElementById("suggestions").style.display='none';
+            addDrugToTable(value);
+            document.getElementById("searchInput").focus();
+        }
+
+        function resetTable() {
+            selectedDrugs = [];
+            isTableGenerated = false; 
+            document.getElementById("errorMessage").style.display='none';
+            document.getElementById("rotateWarning").style.display='none'; 
+            updateSelectedDrugsTable();
+            
+            const btn = document.getElementById('actionBtn');
+            btn.innerHTML = '<i class="fas fa-search"></i> Tạo bảng kết quả';
+            btn.className = 'btn-search'; 
+            btn.setAttribute('onclick', 'searchCompatibility()');
+            setPageCentered();
+        }
+
+        function toggleCell(cell, symbol, text) {
+            if (cell.textContent.trim() === symbol) {
+                cell.textContent = text;
+                cell.style.fontSize = "12px"; 
+                cell.style.padding = "5px";
+            } 
+            else {
+                cell.textContent = symbol;
+                cell.style.fontSize = ""; 
+                cell.style.padding = "";
+            }
+        }
+
+        function searchCompatibility() {
+            const tableBody = document.getElementById("tableBody");
+            const errorMessage = document.getElementById("errorMessage");
+            
+            tableBody.classList.remove("selected-drugs");
+            tableBody.innerHTML="";
+            errorMessage.style.display='none';
+
+            if (selectedDrugs.length < 2) {
+                errorMessage.innerHTML = "<i class='fas fa-exclamation-circle'></i> VUI LÒNG CHỌN ÍT NHẤT HAI HOẠT CHẤT ĐỂ SO SÁNH";
+                errorMessage.style.display='block';
+                isTableGenerated = false;
+                updateSelectedDrugsTable();
+                return;
+            }
+
+            isTableGenerated = true;
+            document.getElementById("tableHeaderTitle").textContent = "THÔNG TIN KẾT QUẢ";
+
+            // --- 1. GENERATE DESKTOP TABLE (MATRIX) ---
+            let tableHtml = '<tr><td style="background:var(--td-corner-bg); color:var(--td-corner-text); font-weight:800; text-align:center; vertical-align:middle; border-radius:8px; border: none;">THUỐC</td>'; 
+            selectedDrugs.forEach(drug=>{tableHtml+=`<td style="font-weight:bold; background:var(--td-drug-bg); color:var(--td-drug-color); border-color: transparent;">${drug}</td>`});
+            tableHtml+='</tr>';
+
+            // --- 2. GENERATE MOBILE LIST (CARD VIEW) ---
+            let mobileHtml = '';
+
+            selectedDrugs.forEach((drug1,index1)=>{
+                tableHtml+=`<tr><td style="font-weight:bold; background:var(--td-drug-bg); color:var(--td-drug-color); text-align:center; border-color: transparent;">${drug1}</td>`;
+                
+                mobileHtml += `<div class="m-card"><div class="m-card-header">${drug1}</div>`;
+
+                selectedDrugs.forEach((drug2,index2)=>{
+                    let statusClass = "na";
+                    let statusText = "N";
+                    let statusLabel = "Không rõ";
+
+                    if(index1===index2){ 
+                        tableHtml+='<td class="self-intersection"><i class="fas fa-minus"></i></td>'; 
+                    } else {
+                        const pair = jsonData.incompatibilities.find(item=>
+                            (normalizeString(item.drug1)===normalizeString(drug1) && normalizeString(item.drug2)===normalizeString(drug2)) ||
+                            (normalizeString(item.drug1)===normalizeString(drug2) && normalizeString(item.drug2)===normalizeString(drug1))
+                        );
+                        if(pair){ 
+                            if(pair.status==="incompatible"){ statusClass="incompatible"; statusText="I"; statusLabel="Tương kỵ"; }
+                            else if(pair.status==="unknown"){ statusClass="na"; statusText="N"; statusLabel="Không rõ"; }
+                            else if(pair.status==="compatible"){ statusClass="compatible"; statusText="C"; statusLabel="Tương hợp"; }
+                            else if(pair.status==="controversial"){ statusClass="controversial"; statusText="V"; statusLabel="Mâu thuẫn"; }
+                        }
+                        
+                        // KẾT HỢP ONCLICK TOGGLE CELL
+                        tableHtml+=`<td class="${statusClass}" onclick="toggleCell(this, '${statusText}', '${statusLabel}')" style="cursor:pointer; user-select:none;">${statusText}</td>`;
+
+                        mobileHtml += `
+                            <div class="m-row">
+                                <span class="m-drug-name">vs ${drug2}</span>
+                                <span class="m-badge ${statusClass}">${statusLabel}</span>
+                            </div>
+                        `;
+                    }
+                });
+                
+                tableHtml+='</tr>';
+                mobileHtml += `</div>`; 
+            });
+
+            tableBody.innerHTML = tableHtml; 
+            document.getElementById("mobileResults").innerHTML = mobileHtml; 
+            
+            document.getElementById("legend").style.display="block";
+            setPageTop();
+
+            (function() {
+                var _w = document.getElementById("desktopTableWrapper");
+                var _mob = window.innerWidth <= 499;
+                var _max = _mob ? 2 : 3;
+                var _n = selectedDrugs.length;
+                _w.classList.remove('table-fit','table-scroll');
+                if (_n <= _max) {
+                    _w.classList.add('table-fit');
+                    var _fs, _pad;
+                    if (_mob) { _fs = '13px'; _pad = '6px 5px'; }
+                    else       { _fs = _n<=2?'15px':'13px'; _pad = _n<=2?'12px 10px':'10px 8px'; }
+                    _w.style.setProperty('--table-fit-fs',  _fs);
+                    _w.style.setProperty('--table-fit-pad', _pad);
+                } else {
+                    _w.classList.add('table-scroll');
+                    _w.style.removeProperty('--table-fit-fs');
+                    _w.style.removeProperty('--table-fit-pad');
+                }
+            })();
+
+            const btn = document.getElementById('actionBtn');
+            btn.innerHTML = '<i class="fas fa-redo"></i> Làm lại';
+            btn.className = 'btn-search btn-reset'; 
+            btn.setAttribute('onclick', 'resetTable()');
+        }
+
+        document.getElementById("searchInput").addEventListener("input", showSuggestions);
+        document.getElementById("searchInput").addEventListener("keypress", function(event){
+            if(event.key==="Enter"){
+                const suggestions=document.getElementById("suggestions");
+                if(suggestions.style.display==="block" && suggestions.children.length>0){
+                    selectSuggestion(suggestions.children[0].textContent);
+                }
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            const suggestions = document.getElementById('suggestions');
+            const searchInput = document.getElementById('searchInput');
+            if (!suggestions.contains(e.target) && e.target !== searchInput) {
+                suggestions.style.display = 'none';
+            }
+        });
+
+        window.addEventListener('resize', function(){
+            checkRotationWarning();
+        });
+
+        window.onload = fetchData;
+
+        // ── CUSTOM SCROLLBAR: overlay xanh lá gradient glass, PC only ──
+        (function() {
+            if (window.matchMedia('(hover: none)').matches) return;
+            if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+
+            var track = document.getElementById('csb');
+            var thumb = document.getElementById('csb-thumb');
+            if (!track || !thumb) return;
+
+            var hideTimer = null, isDragging = false;
+            var dragStartY = 0, dragStartScrollTop = 0;
+
+            function getScrollInfo() {
+                return {
+                    st: window.pageYOffset || document.documentElement.scrollTop,
+                    sh: document.documentElement.scrollHeight,
+                    ch: document.documentElement.clientHeight || window.innerHeight
+                };
+            }
+
+            function updateThumb() {
+                var s = getScrollInfo();
+                if (s.sh <= s.ch) { track.classList.remove('show'); return; }
+                var thumbH = Math.max(30, (s.ch / s.sh) * s.ch);
+                var maxTop  = s.ch - thumbH;
+                thumb.style.height = thumbH + 'px';
+                thumb.style.top    = ((s.st / (s.sh - s.ch)) * maxTop) + 'px';
+            }
+
+            function showBar() {
+                clearTimeout(hideTimer);
+                updateThumb();
+                var s = getScrollInfo();
+                if (s.sh > s.ch) track.classList.add('show');
+            }
+
+            function hideBar(delay) {
+                clearTimeout(hideTimer);
+                if (isDragging) return;
+                hideTimer = setTimeout(function() { track.classList.remove('show'); }, delay || 900);
+            }
+
+            window.addEventListener('scroll', function() { showBar(); hideBar(900); }, { passive: true });
+
+            document.addEventListener('mousemove', function(e) {
+                var fromRight = (document.documentElement.clientWidth || window.innerWidth) - e.clientX;
+                if (fromRight <= 20) { showBar(); clearTimeout(hideTimer); }
+                else if (track.classList.contains('show') && !isDragging) hideBar(900);
+            });
+            document.addEventListener('mouseleave', function() { hideBar(300); });
+
+            thumb.style.pointerEvents = 'auto';
+            thumb.style.cursor = 'pointer';
+            thumb.addEventListener('mousedown', function(e) {
+                e.preventDefault();
+                isDragging = true;
+                dragStartY = e.clientY;
+                dragStartScrollTop = window.pageYOffset;
+                document.body.style.userSelect = 'none';
+            });
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+                var s = getScrollInfo();
+                var thumbH = Math.max(30, (s.ch / s.sh) * s.ch);
+                var delta  = e.clientY - dragStartY;
+                window.scrollTo(0, dragStartScrollTop + (delta / (s.ch - thumbH)) * (s.sh - s.ch));
+                updateThumb();
+            });
+            document.addEventListener('mouseup', function() {
+                if (!isDragging) return;
+                isDragging = false;
+                document.body.style.userSelect = '';
+                hideBar(900);
+            });
+            window.addEventListener('resize', function() { if (track.classList.contains('show')) updateThumb(); });
+        })();
+
+    </script>
+    <div id="csb"><div id="csb-thumb"></div></div>
+
+</body>
+</html>
