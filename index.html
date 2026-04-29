@@ -143,10 +143,7 @@
     -webkit-transform: translateZ(0);
 }
 
-.iv-iframe-container iframe {
-    width: 100%; height: 100%; border: none; display: block;
-    border-radius: 0; /* Iframe khít hoàn toàn vào khung cha */
-}
+
         .iv-iframe-container iframe {
             width: 100%; height: 100%; border: none; display: block; position: relative;
             z-index: 2; background: #fff; border-radius: 16px; contain: strict; content-visibility: auto;
@@ -1602,7 +1599,7 @@ body.dark-mode .iv-iframe-container iframe {
             will-change: auto !important;
         }
         body.chat-open .nature-background {
-            visibility: hidden !important;
+            display: none !important;
         }
         body.chat-open .container,
         body.chat-open .search-wrapper,
@@ -3027,7 +3024,7 @@ body.dark-mode .iv-iframe-container iframe {
             const iframe = document.getElementById('tt-iframe');
             if (!iframe.getAttribute('src')) {
                 document.getElementById('tt-loader').style.display = 'block';
-                iframe.setAttribute('src', "./tools/ttthuoc/");
+                iframe.setAttribute('src', "./tools//ttthuoc/");
             }
         }
         function closeTTModal() {
