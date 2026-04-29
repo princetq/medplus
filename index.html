@@ -560,6 +560,7 @@
         }
         .modal-content, .chat-messages, .iv-iframe-container, #hdsd-content {
             overscroll-behavior: contain !important;
+            -webkit-overflow-scrolling: touch !important;
             touch-action: pan-y !important;
         }
 
@@ -2621,7 +2622,7 @@ body.dark-mode .iv-iframe-container iframe {
                         }
                         const cap = rt(b.caption);
                         html += `<div class="hdsd-img-container" style="text-align:center;margin:14px 0">
-                <img ${window.innerWidth <= 600 ? 'data-src' : 'src'}="${src}" loading="lazy" decoding="async" style="max-width:100%;border-radius:10px;background:rgba(0,0,0,0.04);"
+                <img src="${src}" loading="lazy" decoding="async" style="max-width:100%;border-radius:10px;"
                      onerror="this.parentElement.style.display='none'">
                 ${cap ? `<br><small style="color:var(--subtext);font-size:13px">${cap}</small>` : ''}
              </div>`;
@@ -2670,11 +2671,6 @@ body.dark-mode .iv-iframe-container iframe {
         if (!window._hdsdJsonCache) window._hdsdJsonCache = new Map();
 
         async function openNotionPopup(notionUrl, itemImage, itemVersion) {
-            // Cooldown 700ms — tránh mở liên tiếp quá nhanh, cho GC + GPU thở
-            const now = Date.now();
-            if (window._hdsdLastOpen && now - window._hdsdLastOpen < 700) return;
-            window._hdsdLastOpen = now;
-
             if (window._hdsdAbortCtrl) window._hdsdAbortCtrl.abort();
             window._hdsdAbortCtrl = new AbortController();
             const hdsdSignal = window._hdsdAbortCtrl.signal;
@@ -2830,23 +2826,6 @@ body.dark-mode .iv-iframe-container iframe {
                     content.innerHTML = finalHtml;
                     content.style.display = 'block';
                     loader.style.display = 'none';
-
-                    // Mobile: dùng IntersectionObserver để load ảnh khi vào viewport
-                    if (window.innerWidth <= 600) {
-                        const imgObserver = new IntersectionObserver((entries, obs) => {
-                            entries.forEach(entry => {
-                                if (entry.isIntersecting) {
-                                    const img = entry.target;
-                                    if (img.dataset.src) {
-                                        img.src = img.dataset.src;
-                                        delete img.dataset.src;
-                                    }
-                                    obs.unobserve(img);
-                                }
-                            });
-                        }, { rootMargin: '100px' });
-                        content.querySelectorAll('img[data-src]').forEach(img => imgObserver.observe(img));
-                    }
 
                     content.querySelectorAll('details[data-block-id]').forEach(det => {
                         det.addEventListener('toggle', function onToggleOpen() {
