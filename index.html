@@ -3387,57 +3387,80 @@ body.dark-mode .iv-iframe-container iframe {
             const bellBtn = document.getElementById('bell-btn');
             if (!bellBtn) return;
 
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            const isStandalone = window.navigator.standalone === true
+                              || window.matchMedia('(display-mode: standalone)').matches;
+            const hasNotifAPI = 'Notification' in window;
+
             function updateBellState(permission) {
-                bellBtn.classList.remove('pending', 'granted', 'denied');
+                bellBtn.classList.remove('pending', 'granted', 'denied', 'ios-web');
                 if (permission === 'granted') {
                     bellBtn.classList.add('granted');
                     bellBtn.title = '✅ Đã bật thông báo';
                 } else if (permission === 'denied') {
                     bellBtn.classList.add('denied');
-                    bellBtn.title = '🔕 Thông báo bị chặn — Vào cài đặt trình duyệt để mở lại';
+                    bellBtn.title = '🔕 Thông báo bị chặn';
                 } else {
                     bellBtn.classList.add('pending');
-                    bellBtn.title = '🔔 Nhấn để nhận thông báo thuốc mới';
+                    bellBtn.title = '🔔 Nhấn để nhận thông báo';
                 }
             }
 
-            // updateBellState được gọi trong handleBellClick init ở trên
+            function showBellToast(msg) {
+                let t = document.getElementById('bell-toast');
+                if (!t) {
+                    t = document.createElement('div');
+                    t.id = 'bell-toast';
+                    t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(20,20,20,0.92);color:#fff;padding:12px 18px;border-radius:14px;font-size:13px;font-weight:600;z-index:99999;max-width:300px;line-height:1.6;text-align:left;border:1px solid rgba(255,255,255,0.15);box-shadow:0 4px 20px rgba(0,0,0,0.4);pointer-events:none;opacity:0;transition:opacity 0.3s';
+                    document.body.appendChild(t);
+                }
+                t.innerHTML = msg;
+                t.style.opacity = '1';
+                clearTimeout(t._timer);
+                t._timer = setTimeout(() => t.style.opacity = '0', 5000);
+            }
 
-            // Phát hiện iOS (iPhone/iPad)
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-            // Phát hiện đang chạy dưới dạng PWA cài về màn hình chưa
-            const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
-
-            // Nếu iOS nhưng chưa cài PWA → hiện trạng thái đặc biệt
+            // Khởi tạo trạng thái ban đầu
             if (isIOS && !isStandalone) {
                 bellBtn.classList.add('ios-web');
                 bellBtn.title = '📲 Thêm vào màn hình chính để bật thông báo';
-            } else if ('Notification' in window) {
+            } else if (hasNotifAPI) {
                 updateBellState(Notification.permission);
             }
 
             window.handleBellClick = async function() {
-                // iOS chưa cài PWA → hướng dẫn cài
                 if (isIOS && !isStandalone) {
-                    alert('📲 Để nhận thông báo trên iPhone/iPad:\n\n1. Nhấn nút Chia sẻ ⬆️ ở Safari\n2. Chọn "Thêm vào màn hình chính"\n3. Mở app từ màn hình chính\n4. Nhấn nút chuông lại để bật thông báo');
+                    showBellToast('📲 <b>Để nhận thông báo trên iPhone:</b><br>1. Nhấn ⬆️ Chia sẻ trong Safari<br>2. Chọn "Thêm vào màn hình chính"<br>3. Mở app → nhấn chuông lại');
                     return;
                 }
-                if (!('Notification' in window)) { alert('Trình duyệt không hỗ trợ thông báo.'); return; }
-                if (Notification.permission === 'denied') {
-                    alert('⚠️ Thông báo đang bị chặn.\nVào Cài đặt trình duyệt → Thông báo → Cho phép trang này.'); return;
+                if (!hasNotifAPI) {
+                    showBellToast('⚠️ Trình duyệt không hỗ trợ thông báo');
+                    return;
                 }
-                if (Notification.permission === 'granted') { alert('✅ Bạn đã bật thông báo rồi!'); return; }
+                if (Notification.permission === 'denied') {
+                    showBellToast('🔕 Thông báo đang bị chặn.<br>Vào Cài đặt trình duyệt → Thông báo → Cho phép trang này.');
+                    return;
+                }
+                if (Notification.permission === 'granted') {
+                    showBellToast('✅ Bạn đã bật thông báo rồi!');
+                    return;
+                }
+                // Xin quyền — ưu tiên dùng trực tiếp Notification API (đáng tin cậy hơn)
                 try {
+                    const result = await Notification.requestPermission();
+                    updateBellState(result);
+                    if (result === 'granted') showBellToast('✅ Đã bật thông báo thành công!');
+                } catch(e) {
+                    // Fallback OneSignal nếu trực tiếp fail
                     if (window.OneSignalDeferred) {
                         OneSignalDeferred.push(async function(OneSignal) {
-                            await OneSignal.Notifications.requestPermission();
-                            updateBellState(Notification.permission);
+                            try {
+                                await OneSignal.Notifications.requestPermission();
+                                updateBellState(Notification.permission);
+                            } catch(e2) { console.warn('Bell error:', e2); }
                         });
-                    } else {
-                        const result = await Notification.requestPermission();
-                        updateBellState(result);
                     }
-                } catch(e) { console.warn('Bell error:', e); }
+                }
             };
         })();
 
