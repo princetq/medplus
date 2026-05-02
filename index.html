@@ -3427,12 +3427,14 @@ body.dark-mode .iv-iframe-container iframe {
                 // default = không class → xanh lá + dot đỏ
             }
 
-            // Khởi tạo trạng thái ban đầu
-            if (isIOS && !isStandalone) {
-                bellBtn.title = '📲 Thêm vào màn hình chính để bật thông báo';
-            } else if (hasNotifAPI) {
-                updateBellState(Notification.permission);
-            }
+            // Khởi tạo trạng thái ban đầu (delay 1s chờ browser/OneSignal init)
+            setTimeout(function() {
+                if (isIOS && !isStandalone) {
+                    bellBtn.title = '📲 Thêm vào màn hình chính để bật thông báo';
+                } else if (hasNotifAPI) {
+                    updateBellState(Notification.permission);
+                }
+            }, 1000);
 
             // Đóng modal khi click nền
             bellModal.addEventListener('click', function(e) {
@@ -3505,21 +3507,18 @@ body.dark-mode .iv-iframe-container iframe {
                                 }
                             }, 600);
                         }
-                        if (window.OneSignal && window.OneSignal.Notifications) {
-                            window.OneSignal.Notifications.requestPermission().then(function() {
-                                updateBellState(Notification.permission);
-                                if (Notification.permission === 'granted') {
-                                    showModal('✅', 'Đã bật thông báo!', 'Bạn sẽ nhận được thông báo khi có cập nhật mới từ Khoa Dược.', '', null, null);
-                                }
-                            }).catch(function(e) { pollPermission(15); });
-                        } else {
-                            Notification.requestPermission().then(function(r) {
-                                updateBellState(r);
-                                if (r === 'granted') {
-                                    showModal('✅', 'Đã bật thông báo!', 'Bạn sẽ nhận được thông báo khi có cập nhật mới từ Khoa Dược.', '', null, null);
-                                }
-                            }).catch(function() { pollPermission(15); });
-                        }
+                        // Luôn dùng Notification API native - đáng tin cậy nhất
+                        Notification.requestPermission().then(function(r) {
+                            updateBellState(r);
+                            if (r === 'granted') {
+                                showModal('✅', 'Đã bật thông báo!', 'Bạn sẽ nhận được thông báo khi có cập nhật mới từ Khoa Dược.', '', null, null);
+                            } else if (r === 'denied') {
+                                showModal('🔕', 'Đã từ chối', 'Bạn có thể bật lại trong Cài đặt trình duyệt → Thông báo.', '', null, null);
+                            } else {
+                                // iOS PWA: .then không chạy sau khi user tap → dùng polling
+                                pollPermission(20);
+                            }
+                        }).catch(function() { pollPermission(20); });
                     }
                 );
             };
