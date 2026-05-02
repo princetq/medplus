@@ -382,6 +382,8 @@
         #bell-btn svg{width:22px;height:22px;pointer-events:none}
         #bell-btn.granted{background:linear-gradient(135deg,#1565c0,#0d47a1)!important;border-color:rgba(100,180,255,0.5)!important;box-shadow:0 4px 15px rgba(21,101,192,0.4)!important}
         #bell-btn.denied{background:linear-gradient(135deg,#616161,#424242)!important;border-color:rgba(255,255,255,0.2)!important;opacity:0.7!important}
+        #bell-btn.ios-web{background:linear-gradient(135deg,#e65100,#bf360c)!important;border-color:rgba(255,200,100,0.5)!important}
+        #bell-btn.ios-web::after{display:block;background:#ffb300;animation:bellDot 2s ease-in-out infinite}
         #bell-btn::after{content:'';position:absolute;top:5px;right:5px;width:10px;height:10px;border-radius:50%;border:2px solid #fff;display:none}
         #bell-btn.pending::after{display:block;background:#fbc02d;animation:bellDot 1.5s ease-in-out infinite}
         #bell-btn.granted::after{display:block;background:#4caf50;animation:none}
@@ -3399,9 +3401,27 @@ body.dark-mode .iv-iframe-container iframe {
                 }
             }
 
-            if ('Notification' in window) updateBellState(Notification.permission);
+            // updateBellState được gọi trong handleBellClick init ở trên
+
+            // Phát hiện iOS (iPhone/iPad)
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            // Phát hiện đang chạy dưới dạng PWA cài về màn hình chưa
+            const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+
+            // Nếu iOS nhưng chưa cài PWA → hiện trạng thái đặc biệt
+            if (isIOS && !isStandalone) {
+                bellBtn.classList.add('ios-web');
+                bellBtn.title = '📲 Thêm vào màn hình chính để bật thông báo';
+            } else if ('Notification' in window) {
+                updateBellState(Notification.permission);
+            }
 
             window.handleBellClick = async function() {
+                // iOS chưa cài PWA → hướng dẫn cài
+                if (isIOS && !isStandalone) {
+                    alert('📲 Để nhận thông báo trên iPhone/iPad:\n\n1. Nhấn nút Chia sẻ ⬆️ ở Safari\n2. Chọn "Thêm vào màn hình chính"\n3. Mở app từ màn hình chính\n4. Nhấn nút chuông lại để bật thông báo');
+                    return;
+                }
                 if (!('Notification' in window)) { alert('Trình duyệt không hỗ trợ thông báo.'); return; }
                 if (Notification.permission === 'denied') {
                     alert('⚠️ Thông báo đang bị chặn.\nVào Cài đặt trình duyệt → Thông báo → Cho phép trang này.'); return;
