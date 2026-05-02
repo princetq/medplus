@@ -382,8 +382,7 @@
         #bell-btn svg{width:22px;height:22px;pointer-events:none}
         #bell-btn.granted{background:linear-gradient(135deg,#1565c0,#0d47a1)!important;border-color:rgba(100,180,255,0.5)!important;box-shadow:0 4px 15px rgba(21,101,192,0.4)!important}
         #bell-btn.denied{background:linear-gradient(135deg,#616161,#424242)!important;border-color:rgba(255,255,255,0.2)!important;opacity:0.7!important}
-        #bell-btn.ios-web{background:linear-gradient(135deg,#e65100,#bf360c)!important;border-color:rgba(255,200,100,0.5)!important}
-        #bell-btn.ios-web::after{display:block;background:#ffb300;animation:bellDot 2s ease-in-out infinite}
+        #bell-btn.ios-not-pwa::after{display:block;background:#e53935;animation:none}
         #bell-btn::after{content:'';position:absolute;top:5px;right:5px;width:10px;height:10px;border-radius:50%;border:2px solid #fff;display:none}
         #bell-btn.pending::after{display:block;background:#fbc02d;animation:bellDot 1.5s ease-in-out infinite}
         #bell-btn.granted::after{display:block;background:#4caf50;animation:none}
@@ -3422,13 +3421,14 @@ body.dark-mode .iv-iframe-container iframe {
 
             // Khởi tạo trạng thái ban đầu
             if (isIOS && !isStandalone) {
-                bellBtn.classList.add('ios-web');
+                // iOS Safari thường → chuông xanh lá bình thường + dot ĐỎ
+                bellBtn.classList.add('ios-not-pwa');
                 bellBtn.title = '📲 Thêm vào màn hình chính để bật thông báo';
             } else if (hasNotifAPI) {
                 updateBellState(Notification.permission);
             }
 
-            window.handleBellClick = async function() {
+            window.handleBellClick = function() {
                 if (isIOS && !isStandalone) {
                     showBellToast('📲 <b>Để nhận thông báo trên iPhone:</b><br>1. Nhấn ⬆️ Chia sẻ trong Safari<br>2. Chọn "Thêm vào màn hình chính"<br>3. Mở app → nhấn chuông lại');
                     return;
@@ -3438,33 +3438,30 @@ body.dark-mode .iv-iframe-container iframe {
                     return;
                 }
                 if (Notification.permission === 'denied') {
-                    showBellToast('🔕 Thông báo đang bị chặn.<br>Vào Cài đặt trình duyệt → Thông báo → Cho phép trang này.');
+                    showBellToast('🔕 Thông báo đang bị chặn.<br>Vào Cài đặt → Safari → Thông báo → Cho phép.');
                     return;
                 }
                 if (Notification.permission === 'granted') {
                     showBellToast('✅ Bạn đã bật thông báo rồi!');
                     return;
                 }
-                // Xin quyền — ưu tiên dùng trực tiếp Notification API (đáng tin cậy hơn)
-                try {
-                    const result = await Notification.requestPermission();
-                    updateBellState(result);
-                    if (result === 'granted') showBellToast('✅ Đã bật thông báo thành công!');
-                } catch(e) {
-                    // Fallback OneSignal nếu trực tiếp fail
-                    if (window.OneSignalDeferred) {
-                        OneSignalDeferred.push(async function(OneSignal) {
-                            try {
-                                await OneSignal.Notifications.requestPermission();
-                                updateBellState(Notification.permission);
-                            } catch(e2) { console.warn('Bell error:', e2); }
-                        });
-                    }
+                // Xin quyền qua OneSignal (gọi đồng bộ từ user gesture)
+                if (window.OneSignal && window.OneSignal.Notifications) {
+                    window.OneSignal.Notifications.requestPermission().then(function(result) {
+                        updateBellState(Notification.permission);
+                        if (Notification.permission === 'granted') showBellToast('✅ Đã bật thông báo thành công!');
+                    }).catch(function(e) { console.warn('Bell error:', e); });
+                } else {
+                    // Fallback: gọi trực tiếp
+                    Notification.requestPermission().then(function(result) {
+                        updateBellState(result);
+                        if (result === 'granted') showBellToast('✅ Đã bật thông báo thành công!');
+                    }).catch(function(e) { console.warn('Bell error:', e); });
                 }
             };
         })();
 
-        // ============================================================
+                // ============================================================
         // PERF MODE — Double tap/click header để tắt/bật hiệu ứng
         // ============================================================
         (function() {
