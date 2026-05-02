@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0056b3">
+<link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => console.log('Service Worker registered!', reg))
+        .catch(err => console.error('Service Worker registration failed', err));
+    });
+  }
+</script>
 <script defer src="/_vercel/insights/script.js"></script>
 <script defer src="/_vercel/speed-insights/script.js"></script>
     <meta charset="UTF-8">
@@ -9,6 +22,17 @@
     <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1ZyertvO-WsXU5FYCcuqUHizfRUCSnRIb&sz=w128-h128">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(async function(OneSignal) {
+            await OneSignal.init({
+                appId: "YOUR_ONESIGNAL_APP_ID",
+                notifyButton: { enable: false },
+                allowLocalhostAsSecureOrigin: true,
+            });
+        });
+    </script>
     <style>
         /* GIỮ NGUYÊN CSS GỐC CỦA BẠN */
         *{font-family:'Inter','Segoe UI',sans-serif!important;box-sizing:border-box;margin:0;padding:0}
@@ -276,6 +300,8 @@
             
             #chat-widget-window{width:calc(100vw - 32px) !important; max-width:100%; height:88vh;max-height:88vh;border-radius:20px;left:50%;transform:translate(-50%,-50%);}
             .back-top{bottom:8px !important;left:8px !important;width:38px !important;height:38px !important;}
+            #bell-btn{bottom:8px !important;left:8px !important;width:38px !important;height:38px !important;}
+            #bell-btn svg{width:18px !important;height:18px !important;}
             .back-top svg{width:18px !important;height:18px !important;}
             
             .chat-widget-container .chat-container{border-radius:18px;box-shadow:inset 0 2px 8px rgba(0,0,0,0.05)}
@@ -351,6 +377,19 @@
         .notion-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(46,125,50,0.4)}
 
         .back-top{position:fixed;bottom:25px;left:25px;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;border:2px solid rgba(255,255,255,0.4);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:999;opacity:0;transform:translateY(20px);transition:.3s;box-shadow:0 4px 15px rgba(0,0,0,0.2)}
+        #bell-btn{position:fixed;bottom:25px;left:25px;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;border:2px solid rgba(255,255,255,0.4);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:999;transition:.3s;box-shadow:0 4px 15px rgba(0,0,0,0.2)}
+        #bell-btn:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.3)}
+        #bell-btn svg{width:22px;height:22px;pointer-events:none}
+        #bell-btn.granted{background:linear-gradient(135deg,#1565c0,#0d47a1)!important;border-color:rgba(100,180,255,0.5)!important;box-shadow:0 4px 15px rgba(21,101,192,0.4)!important}
+        #bell-btn.denied{background:linear-gradient(135deg,#616161,#424242)!important;border-color:rgba(255,255,255,0.2)!important;opacity:0.7!important}
+        #bell-btn::after{content:'';position:absolute;top:5px;right:5px;width:10px;height:10px;border-radius:50%;border:2px solid #fff;display:none}
+        #bell-btn.pending::after{display:block;background:#fbc02d;animation:bellDot 1.5s ease-in-out infinite}
+        #bell-btn.granted::after{display:block;background:#4caf50;animation:none}
+        #bell-btn.denied::after{display:block;background:#e53935;animation:none}
+        @keyframes bellDot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.6}}
+        body.dark-mode #bell-btn{background:linear-gradient(135deg,#0d4a32,#062a1c)!important;border-color:rgba(80,220,180,0.4)!important;box-shadow:0 4px 18px rgba(0,0,0,0.4),0 0 12px rgba(80,220,180,0.2)!important;color:#4df5c0!important}
+        body.dark-mode #bell-btn:hover{box-shadow:0 6px 24px rgba(0,0,0,0.5),0 0 22px rgba(80,220,180,0.4)!important}
+        body.dark-mode #bell-btn.granted{background:linear-gradient(135deg,#0d2b4a,#062040)!important;border-color:rgba(80,160,255,0.4)!important}
         .back-top.visible{opacity:1;transform:translateY(0)}
         .back-top:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.3)}
         .back-top svg{width:20px;height:20px}
@@ -1614,7 +1653,6 @@ body.dark-mode .iv-iframe-container iframe {
             transition: none !important;
             will-change: auto !important;
         }
-        /* iv-badge-btn cần giữ opacity: 1 vì dùng animation để fade in từ opacity:0 */
         body.perf-mode .iv-badge-btn {
             animation: none !important;
             transition: none !important;
@@ -1625,8 +1663,6 @@ body.dark-mode .iv-iframe-container iframe {
         body.perf-mode .night-background {
             display: none !important;
         }
-
-        /* Toast thông báo perf-mode */
         #perf-toast {
             position: fixed;
             bottom: 80px;
@@ -1650,7 +1686,6 @@ body.dark-mode .iv-iframe-container iframe {
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
-        body.perf-mode #perf-toast-icon { content: '⚡'; }
 
         /* ============================================================
            CHAT OPEN — ĐÓNG BĂNG HOÀN TOÀN TRANG CHỦ
@@ -1733,10 +1768,7 @@ body.dark-mode .iv-iframe-container iframe {
 <body>
 
     <div class="nature-background" id="leaf-container"></div>
-    <!-- PERF MODE TOAST -->
-    <div id="perf-toast">
-        <span id="perf-toast-icon">⚡</span> <span id="perf-toast-msg">Đã tắt hiệu ứng — tiết kiệm pin</span>
-    </div>
+    <div id="perf-toast"><span id="perf-toast-icon">⚡</span> <span id="perf-toast-msg">Đã tắt hiệu ứng — tiết kiệm pin</span></div>
     <div class="night-background" id="night-container" style="display:none;"></div>
 
     <div class="container">
@@ -1921,6 +1953,12 @@ body.dark-mode .iv-iframe-container iframe {
         </div>
     </div>
 
+    <button id="bell-btn" title="Nhận thông báo thuốc mới" onclick="handleBellClick()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+    </button>
     <button class="back-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Lên đầu trang">
         <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
     </button>
@@ -2219,8 +2257,14 @@ body.dark-mode .iv-iframe-container iframe {
             let isScrollingTimer;
             window.addEventListener('scroll', function() {
                 const btn = document.getElementById('backToTop');
-                if (window.scrollY > 300) btn.classList.add('visible');
-                else btn.classList.remove('visible');
+                const bellBtn = document.getElementById('bell-btn');
+                if (window.scrollY > 300) {
+                    btn.classList.add('visible');
+                    if (bellBtn) { bellBtn.style.opacity = '0'; bellBtn.style.pointerEvents = 'none'; }
+                } else {
+                    btn.classList.remove('visible');
+                    if (bellBtn) { bellBtn.style.opacity = '1'; bellBtn.style.pointerEvents = ''; }
+                }
 
                 if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 500) {
                     if (!isRendering && displayedCount < filteredData.length) {
@@ -3334,22 +3378,61 @@ body.dark-mode .iv-iframe-container iframe {
             window.addEventListener('pageshow', function() { document.body.classList.remove('page-hidden'); });
 
         // ============================================================
-        // PERF MODE — Double tap/click header để tắt/bật toàn bộ hiệu ứng
+        // BELL BUTTON — Xin quyền thông báo OneSignal
+        // ============================================================
+        (function() {
+            const bellBtn = document.getElementById('bell-btn');
+            if (!bellBtn) return;
+
+            function updateBellState(permission) {
+                bellBtn.classList.remove('pending', 'granted', 'denied');
+                if (permission === 'granted') {
+                    bellBtn.classList.add('granted');
+                    bellBtn.title = '✅ Đã bật thông báo';
+                } else if (permission === 'denied') {
+                    bellBtn.classList.add('denied');
+                    bellBtn.title = '🔕 Thông báo bị chặn — Vào cài đặt trình duyệt để mở lại';
+                } else {
+                    bellBtn.classList.add('pending');
+                    bellBtn.title = '🔔 Nhấn để nhận thông báo thuốc mới';
+                }
+            }
+
+            if ('Notification' in window) updateBellState(Notification.permission);
+
+            window.handleBellClick = async function() {
+                if (!('Notification' in window)) { alert('Trình duyệt không hỗ trợ thông báo.'); return; }
+                if (Notification.permission === 'denied') {
+                    alert('⚠️ Thông báo đang bị chặn.\nVào Cài đặt trình duyệt → Thông báo → Cho phép trang này.'); return;
+                }
+                if (Notification.permission === 'granted') { alert('✅ Bạn đã bật thông báo rồi!'); return; }
+                try {
+                    if (window.OneSignalDeferred) {
+                        OneSignalDeferred.push(async function(OneSignal) {
+                            await OneSignal.Notifications.requestPermission();
+                            updateBellState(Notification.permission);
+                        });
+                    } else {
+                        const result = await Notification.requestPermission();
+                        updateBellState(result);
+                    }
+                } catch(e) { console.warn('Bell error:', e); }
+            };
+        })();
+
+        // ============================================================
+        // PERF MODE — Double tap/click header để tắt/bật hiệu ứng
         // ============================================================
         (function() {
             const header = document.querySelector('.header-main');
             if (!header) return;
-
-            let lastTap = 0;
-            let toastTimer = null;
+            let lastTap = 0, toastTimer = null;
 
             function showToast(msg, icon) {
                 const toast = document.getElementById('perf-toast');
-                const toastMsg = document.getElementById('perf-toast-msg');
-                const toastIcon = document.getElementById('perf-toast-icon');
                 if (!toast) return;
-                toastMsg.textContent = msg;
-                toastIcon.textContent = icon;
+                document.getElementById('perf-toast-msg').textContent = msg;
+                document.getElementById('perf-toast-icon').textContent = icon;
                 toast.classList.add('show');
                 clearTimeout(toastTimer);
                 toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
@@ -3358,39 +3441,30 @@ body.dark-mode .iv-iframe-container iframe {
             function togglePerfMode() {
                 const body = document.body;
                 const isPerfOn = body.classList.toggle('perf-mode');
+                const leafContainer = document.getElementById('leaf-container');
+                const nightContainer = document.getElementById('night-container');
                 if (isPerfOn) {
                     showToast('Đã tắt hiệu ứng — máy chạy mát hơn', '⚡');
-                    // Ẩn container lá/sao ngay lập tức
-                    const leafContainer = document.getElementById('leaf-container');
-                    const nightContainer = document.getElementById('night-container');
                     if (leafContainer) leafContainer.style.display = 'none';
                     if (nightContainer) nightContainer.style.display = 'none';
                 } else {
                     showToast('Đã bật lại hiệu ứng', '✨');
-                    // Hiện lại container nếu đang ở light mode
-                    const leafContainer = document.getElementById('leaf-container');
-                    const nightContainer = document.getElementById('night-container');
                     const isDark = body.classList.contains('dark-mode');
                     if (leafContainer) leafContainer.style.display = isDark ? 'none' : '';
                     if (nightContainer) nightContainer.style.display = isDark ? '' : 'none';
                 }
             }
 
-            // PC: dblclick — bỏ qua nếu vừa có touchend (tránh double trigger trên mobile)
             header.addEventListener('dblclick', function(e) {
                 if (Date.now() - lastTap < 600) return;
                 togglePerfMode();
             });
 
-            // Mobile: double tap (2 lần trong 300ms)
             header.addEventListener('touchend', function(e) {
                 const now = Date.now();
                 const gap = now - lastTap;
                 lastTap = now;
-                if (gap < 300 && gap > 30) {
-                    e.preventDefault();
-                    togglePerfMode();
-                }
+                if (gap < 300 && gap > 30) { e.preventDefault(); togglePerfMode(); }
             }, { passive: false });
         })();
 
