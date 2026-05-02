@@ -380,17 +380,29 @@
         #bell-btn{position:fixed;bottom:25px;left:25px;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;border:2px solid rgba(255,255,255,0.4);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:999;transition:.3s;box-shadow:0 4px 15px rgba(0,0,0,0.2)}
         #bell-btn:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.3)}
         #bell-btn svg{width:22px;height:22px;pointer-events:none}
-        #bell-btn.granted{background:linear-gradient(135deg,#1565c0,#0d47a1)!important;border-color:rgba(100,180,255,0.5)!important;box-shadow:0 4px 15px rgba(21,101,192,0.4)!important}
+        /* Mặc định: xanh lá + dot đỏ (chưa cấp quyền / iOS chưa add PWA) */
+        #bell-btn::after{content:'';position:absolute;top:5px;right:5px;width:10px;height:10px;border-radius:50%;border:2px solid #fff;display:block;background:#e53935}
+        /* Đã cấp quyền: xanh lá, không dot */
+        #bell-btn.granted::after{display:none}
+        /* Từ chối: xám, không dot */
         #bell-btn.denied{background:linear-gradient(135deg,#616161,#424242)!important;border-color:rgba(255,255,255,0.2)!important;opacity:0.7!important}
-        #bell-btn.ios-not-pwa::after{display:block;background:#e53935;animation:none}
-        #bell-btn::after{content:'';position:absolute;top:5px;right:5px;width:10px;height:10px;border-radius:50%;border:2px solid #fff;display:none}
-        #bell-btn.pending::after{display:block;background:#fbc02d;animation:bellDot 1.5s ease-in-out infinite}
-        #bell-btn.granted::after{display:block;background:#4caf50;animation:none}
-        #bell-btn.denied::after{display:block;background:#e53935;animation:none}
-        @keyframes bellDot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.6}}
+        #bell-btn.denied::after{display:none}
         body.dark-mode #bell-btn{background:linear-gradient(135deg,#0d4a32,#062a1c)!important;border-color:rgba(80,220,180,0.4)!important;box-shadow:0 4px 18px rgba(0,0,0,0.4),0 0 12px rgba(80,220,180,0.2)!important;color:#4df5c0!important}
         body.dark-mode #bell-btn:hover{box-shadow:0 6px 24px rgba(0,0,0,0.5),0 0 22px rgba(80,220,180,0.4)!important}
-        body.dark-mode #bell-btn.granted{background:linear-gradient(135deg,#0d2b4a,#062040)!important;border-color:rgba(80,160,255,0.4)!important}
+        /* Modal xin quyền thông báo */
+        #bell-modal{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:99998;display:none;align-items:center;justify-content:center;padding:20px}
+        #bell-modal.show{display:flex}
+        #bell-modal-box{background:#fff;border-radius:20px;padding:28px 24px;max-width:320px;width:100%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,0.25)}
+        body.dark-mode #bell-modal-box{background:#1e2a1e;color:#e8e8e8}
+        #bell-modal-box .bm-icon{font-size:48px;margin-bottom:10px}
+        #bell-modal-box .bm-title{font-size:17px;font-weight:800;color:#2e7d32;margin-bottom:8px}
+        body.dark-mode #bell-modal-box .bm-title{color:#4df5c0}
+        #bell-modal-box .bm-desc{font-size:13px;color:#555;line-height:1.6;margin-bottom:16px}
+        body.dark-mode #bell-modal-box .bm-desc{color:#aaa}
+        #bell-modal-box .bm-steps{text-align:left;font-size:13px;color:#444;line-height:1.9;margin-bottom:20px}
+        body.dark-mode #bell-modal-box .bm-steps{color:#bbb}
+        #bell-modal-box .bm-btn-allow{background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;border:none;padding:12px 0;border-radius:12px;font-weight:800;font-size:15px;width:100%;cursor:pointer;margin-bottom:8px;box-shadow:0 4px 12px rgba(46,125,50,0.3)}
+        #bell-modal-box .bm-btn-cancel{background:transparent;color:#888;border:none;padding:8px;font-size:13px;cursor:pointer;width:100%}
         .back-top.visible{opacity:1;transform:translateY(0)}
         .back-top:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.3)}
         .back-top svg{width:20px;height:20px}
@@ -1955,6 +1967,16 @@ body.dark-mode .iv-iframe-container iframe {
         </div>
     </div>
 
+    <div id="bell-modal">
+        <div id="bell-modal-box">
+            <div class="bm-icon" id="bm-icon">🔔</div>
+            <div class="bm-title" id="bm-title">Bật thông báo</div>
+            <div class="bm-desc" id="bm-desc">Nhận thông báo khi có thuốc mới hoặc cập nhật thông tin quan trọng.</div>
+            <div class="bm-steps" id="bm-steps"></div>
+            <button class="bm-btn-allow" id="bm-btn-allow">🔔 Bật thông báo</button>
+            <button class="bm-btn-cancel" onclick="document.getElementById('bell-modal').classList.remove('show')">Để sau</button>
+        </div>
+    </div>
     <button id="bell-btn" title="Nhận thông báo thuốc mới" onclick="handleBellClick()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
@@ -3384,7 +3406,8 @@ body.dark-mode .iv-iframe-container iframe {
         // ============================================================
         (function() {
             const bellBtn = document.getElementById('bell-btn');
-            if (!bellBtn) return;
+            const bellModal = document.getElementById('bell-modal');
+            if (!bellBtn || !bellModal) return;
 
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
             const isStandalone = window.navigator.standalone === true
@@ -3392,72 +3415,93 @@ body.dark-mode .iv-iframe-container iframe {
             const hasNotifAPI = 'Notification' in window;
 
             function updateBellState(permission) {
-                bellBtn.classList.remove('pending', 'granted', 'denied', 'ios-web');
+                bellBtn.classList.remove('pending', 'granted', 'denied', 'ios-not-pwa');
                 if (permission === 'granted') {
                     bellBtn.classList.add('granted');
                     bellBtn.title = '✅ Đã bật thông báo';
                 } else if (permission === 'denied') {
                     bellBtn.classList.add('denied');
                     bellBtn.title = '🔕 Thông báo bị chặn';
-                } else {
-                    bellBtn.classList.add('pending');
-                    bellBtn.title = '🔔 Nhấn để nhận thông báo';
                 }
-            }
-
-            function showBellToast(msg) {
-                let t = document.getElementById('bell-toast');
-                if (!t) {
-                    t = document.createElement('div');
-                    t.id = 'bell-toast';
-                    t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(20,20,20,0.92);color:#fff;padding:12px 18px;border-radius:14px;font-size:13px;font-weight:600;z-index:99999;max-width:300px;line-height:1.6;text-align:left;border:1px solid rgba(255,255,255,0.15);box-shadow:0 4px 20px rgba(0,0,0,0.4);pointer-events:none;opacity:0;transition:opacity 0.3s';
-                    document.body.appendChild(t);
-                }
-                t.innerHTML = msg;
-                t.style.opacity = '1';
-                clearTimeout(t._timer);
-                t._timer = setTimeout(() => t.style.opacity = '0', 5000);
+                // default = không class → xanh lá + dot đỏ
             }
 
             // Khởi tạo trạng thái ban đầu
             if (isIOS && !isStandalone) {
-                // iOS Safari thường → chuông xanh lá bình thường + dot ĐỎ
-                bellBtn.classList.add('ios-not-pwa');
                 bellBtn.title = '📲 Thêm vào màn hình chính để bật thông báo';
             } else if (hasNotifAPI) {
                 updateBellState(Notification.permission);
             }
 
+            // Đóng modal khi click nền
+            bellModal.addEventListener('click', function(e) {
+                if (e.target === bellModal) bellModal.classList.remove('show');
+            });
+
+            function showModal(icon, title, desc, steps, btnText, btnAction) {
+                document.getElementById('bm-icon').textContent = icon;
+                document.getElementById('bm-title').textContent = title;
+                document.getElementById('bm-desc').textContent = desc;
+                document.getElementById('bm-steps').innerHTML = steps;
+                const btnAllow = document.getElementById('bm-btn-allow');
+                if (btnText) {
+                    btnAllow.style.display = '';
+                    btnAllow.textContent = btnText;
+                    btnAllow.onclick = btnAction;
+                } else {
+                    btnAllow.style.display = 'none';
+                }
+                bellModal.classList.add('show');
+            }
+
             window.handleBellClick = function() {
+                // iOS chưa add PWA
                 if (isIOS && !isStandalone) {
-                    showBellToast('📲 <b>Để nhận thông báo trên iPhone:</b><br>1. Nhấn ⬆️ Chia sẻ trong Safari<br>2. Chọn "Thêm vào màn hình chính"<br>3. Mở app → nhấn chuông lại');
+                    showModal(
+                        '📲', 'Thêm vào màn hình chính',
+                        'Safari không hỗ trợ thông báo. Hãy thêm trang vào màn hình chính để dùng tính năng này.',
+                        '1️⃣ Nhấn ⬆️ Chia sẻ trong Safari<br>2️⃣ Chọn "Thêm vào màn hình chính"<br>3️⃣ Mở app → nhấn chuông lại',
+                        null, null
+                    );
                     return;
                 }
                 if (!hasNotifAPI) {
-                    showBellToast('⚠️ Trình duyệt không hỗ trợ thông báo');
+                    showModal('⚠️', 'Không hỗ trợ', 'Trình duyệt này không hỗ trợ thông báo.', '', null, null);
                     return;
                 }
                 if (Notification.permission === 'denied') {
-                    showBellToast('🔕 Thông báo đang bị chặn.<br>Vào Cài đặt → Safari → Thông báo → Cho phép.');
+                    showModal(
+                        '🔕', 'Thông báo bị chặn',
+                        'Bạn đã từ chối thông báo trước đó. Để bật lại:',
+                        '1️⃣ Vào Cài đặt trình duyệt<br>2️⃣ Tìm mục Thông báo / Notifications<br>3️⃣ Cho phép trang này',
+                        null, null
+                    );
                     return;
                 }
                 if (Notification.permission === 'granted') {
-                    showBellToast('✅ Bạn đã bật thông báo rồi!');
+                    showModal('✅', 'Đã bật thông báo', 'Bạn sẽ nhận được thông báo khi có thuốc mới hoặc cập nhật quan trọng.', '', null, null);
                     return;
                 }
-                // Xin quyền qua OneSignal (gọi đồng bộ từ user gesture)
-                if (window.OneSignal && window.OneSignal.Notifications) {
-                    window.OneSignal.Notifications.requestPermission().then(function(result) {
-                        updateBellState(Notification.permission);
-                        if (Notification.permission === 'granted') showBellToast('✅ Đã bật thông báo thành công!');
-                    }).catch(function(e) { console.warn('Bell error:', e); });
-                } else {
-                    // Fallback: gọi trực tiếp
-                    Notification.requestPermission().then(function(result) {
-                        updateBellState(result);
-                        if (result === 'granted') showBellToast('✅ Đã bật thông báo thành công!');
-                    }).catch(function(e) { console.warn('Bell error:', e); });
-                }
+                // Chưa cấp quyền → hiện modal xin quyền
+                showModal(
+                    '🔔', 'Bật thông báo',
+                    'Nhận thông báo khi có thuốc mới hoặc cập nhật thông tin quan trọng từ Khoa Dược.',
+                    '',
+                    '🔔 Bật thông báo ngay',
+                    function() {
+                        bellModal.classList.remove('show');
+                        // Dùng OneSignal nếu sẵn sàng, fallback trực tiếp
+                        if (window.OneSignal && window.OneSignal.Notifications) {
+                            window.OneSignal.Notifications.requestPermission().then(function() {
+                                updateBellState(Notification.permission);
+                            }).catch(function(e) { console.warn(e); });
+                        } else {
+                            Notification.requestPermission().then(function(r) {
+                                updateBellState(r);
+                            }).catch(function(e) { console.warn(e); });
+                        }
+                    }
+                );
             };
         })();
 
