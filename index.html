@@ -377,11 +377,12 @@
         .notion-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(46,125,50,0.4)}
 
         .back-top{position:fixed;bottom:25px;left:25px;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;border:2px solid rgba(255,255,255,0.4);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:999;opacity:0;transform:translateY(20px);transition:.3s;box-shadow:0 4px 15px rgba(0,0,0,0.2)}
-        #bell-btn{position:fixed;bottom:25px;left:25px;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;border:2px solid rgba(255,255,255,0.4);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:999;transition:.3s;box-shadow:0 4px 15px rgba(0,0,0,0.2)}
+        #bell-btn{position:fixed;bottom:25px;left:25px;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;border:2px solid rgba(255,255,255,0.4);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10000;transition:.3s;box-shadow:0 4px 15px rgba(0,0,0,0.2);-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+        #bell-btn::before{content:'';position:absolute;inset:-10px;border-radius:50%}
         #bell-btn:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.3)}
         #bell-btn svg{width:22px;height:22px;pointer-events:none}
         /* Mặc định: xanh lá + dot đỏ (chưa cấp quyền / iOS chưa add PWA) */
-        #bell-btn::after{content:'';position:absolute;top:5px;right:5px;width:10px;height:10px;border-radius:50%;border:2px solid #fff;display:block;background:#e53935}
+        #bell-btn::after{content:'';position:absolute;top:5px;right:5px;width:10px;height:10px;border-radius:50%;border:2px solid #fff;display:block;background:#e53935;z-index:1}
         /* Đã cấp quyền: xanh lá, không dot */
         #bell-btn.granted::after{display:none}
         /* Từ chối: xám, không dot */
@@ -3459,7 +3460,7 @@ body.dark-mode .iv-iframe-container iframe {
                 if (isIOS && !isStandalone) {
                     showModal(
                         '📲', 'Thêm vào màn hình chính',
-                        'Safari không hỗ trợ thông báo. Hãy thêm trang vào màn hình chính để dùng tính năng này.',
+                        'Trình duyệt thông thường trên iOS không hỗ trợ thông báo. Hãy thêm trang vào màn hình chính để dùng tính năng này.',
                         '1️⃣ Nhấn ⬆️ Chia sẻ trong Safari<br>2️⃣ Chọn "Thêm vào màn hình chính"<br>3️⃣ Mở app → nhấn chuông lại',
                         null, null
                     );
@@ -3490,15 +3491,34 @@ body.dark-mode .iv-iframe-container iframe {
                     '🔔 Bật thông báo ngay',
                     function() {
                         bellModal.classList.remove('show');
-                        // Dùng OneSignal nếu sẵn sàng, fallback trực tiếp
+                        function pollPermission(attempts) {
+                            if (attempts <= 0) return;
+                            setTimeout(function() {
+                                var p = Notification.permission;
+                                if (p === 'granted' || p === 'denied') {
+                                    updateBellState(p);
+                                    if (p === 'granted') {
+                                        showModal('✅', 'Đã bật thông báo!', 'Bạn sẽ nhận được thông báo khi có cập nhật mới từ Khoa Dược.', '', null, null);
+                                    }
+                                } else {
+                                    pollPermission(attempts - 1);
+                                }
+                            }, 600);
+                        }
                         if (window.OneSignal && window.OneSignal.Notifications) {
                             window.OneSignal.Notifications.requestPermission().then(function() {
                                 updateBellState(Notification.permission);
-                            }).catch(function(e) { console.warn(e); });
+                                if (Notification.permission === 'granted') {
+                                    showModal('✅', 'Đã bật thông báo!', 'Bạn sẽ nhận được thông báo khi có cập nhật mới từ Khoa Dược.', '', null, null);
+                                }
+                            }).catch(function(e) { pollPermission(15); });
                         } else {
                             Notification.requestPermission().then(function(r) {
                                 updateBellState(r);
-                            }).catch(function(e) { console.warn(e); });
+                                if (r === 'granted') {
+                                    showModal('✅', 'Đã bật thông báo!', 'Bạn sẽ nhận được thông báo khi có cập nhật mới từ Khoa Dược.', '', null, null);
+                                }
+                            }).catch(function() { pollPermission(15); });
                         }
                     }
                 );
