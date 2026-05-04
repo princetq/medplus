@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head><link rel="manifest" href="/manifest.json">
+<head>
+<link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#0056b3">
 <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
 
@@ -627,7 +628,7 @@
 
         /* === BIẾN CSS CHO DARK MODE === */
         body.dark-mode {
-            background: url(bg.webp) center top / cover no-repeat scroll, #020810;
+            background: #020810;
             color: #c8d8f0;
 
             --g-bg: rgba(13, 31, 60, 0.55);
@@ -646,7 +647,14 @@
 
         /* === NỀN VŨ TRỤ CHO BODY KHI DARK MODE === */
         body.dark-mode::before {
-            display: none; /* Dùng ảnh nền thật bg.webp thay thế */
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: url(bg.webp) center center / cover no-repeat;
+            z-index: -1;
+            pointer-events: none;
+            /* Không dùng background-attachment:fixed → dùng position:fixed trên pseudo element */
+            /* Kết quả: ảnh luôn cố định, không scroll, cắt giữa, hoạt động trên iOS */
         }
 
         /* === SCROLLBAR ĐẸP CHO DARK MODE === */
@@ -1475,12 +1483,7 @@ body.dark-mode .iv-iframe-container iframe {
 
         @media (max-width: 600px) {
             .planet { display: none !important; animation: none !important; }
-            /* Fix ảnh nền: background-attachment:fixed lỗi trên iOS Safari */
-            body.dark-mode {
-                background-attachment: scroll !important;
-                background-position: center top !important;
-                background-size: 100% auto !important;
-            }
+            /* Ảnh nền dùng ::before position:fixed — không cần override mobile */
         }
         
         /* =========================================================
