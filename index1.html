@@ -36,7 +36,7 @@
     <style>
         /* GIỮ NGUYÊN CSS GỐC CỦA BẠN */
         *{font-family:'Inter','Segoe UI',sans-serif!important;box-sizing:border-box;margin:0;padding:0}
-        body{padding:40px 0;background:linear-gradient(135deg,#a5d6a7 0%,#81c784 50%,#4caf50 100%);background-attachment:fixed;color:#333;min-height:100vh;overflow-x:hidden}
+        html.dark-html{background:#020810}body{padding:40px 0;background:linear-gradient(135deg,#a5d6a7 0%,#81c784 50%,#4caf50 100%);background-attachment:fixed;color:#333;min-height:100vh;overflow-x:hidden}
         :root{--g-bg:rgba(255,255,255,0.22);--g-bg-h:rgba(255,255,255,0.48);--g-border:rgba(255,255,255,0.4);--g-blur:blur(18px);--green:#2e7d32;--green-d:#1b5e20;--green-l:#4caf50;--gold:#fbc02d;--rad:16px;--shadow:0 8px 32px rgba(0,0,0,0.1)}
         .glass-panel{background:var(--g-bg);backdrop-filter:var(--g-blur);-webkit-backdrop-filter:var(--g-blur);border:1px solid var(--g-border);box-shadow:var(--shadow);border-radius:var(--rad)}
         
@@ -628,7 +628,7 @@
 
         /* === BIẾN CSS CHO DARK MODE === */
         body.dark-mode {
-            background: #020810;
+            background: transparent;
             color: #c8d8f0;
 
             --g-bg: rgba(13, 31, 60, 0.55);
@@ -2144,6 +2144,7 @@ body.dark-mode .iv-iframe-container iframe {
 
             body.classList.add('dm-transitioning');
             body.classList.toggle('dark-mode');
+            document.documentElement.classList.toggle('dark-html', body.classList.contains('dark-mode'));
             const isDark = body.classList.contains('dark-mode');
 
             if (isDark) {
