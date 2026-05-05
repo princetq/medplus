@@ -2400,7 +2400,7 @@ body.dark-mode .iv-iframe-container iframe {
             "AIzaSy" + "ButLun" + "yZp8E8IR" + "fB1YMQHZxSpz5paj4UU"
         ];
         // Thứ tự fallback: dùng hết 3 API key cho từng model Gemini trước, sau đó mới tới Gemma.
-        const AI_MODELS = ["gemini-2.5-flash", "gemini-3.1-flash-lite-preview", "gemma-4-26b-a4b-it", "gemma-4-31b-it"];
+        const AI_MODELS = ["gemini-2.5-flash", "gemini-3.1-flash-lite-preview", "gemini-3-flash", "gemma-4-26b-a4b-it", "gemma-4-31b-it"];
         let currentKeyIndex = 0, currentModelIndex = 0, timerInterval, startTime, activeModelName = "";
 
         // Tích hợp Mini-RAG
@@ -2702,6 +2702,7 @@ body.dark-mode .iv-iframe-container iframe {
         }
 
         let _scrollY = 0;
+        let _scrollLockCount = 0;
         let _touchStartY = 0;
         let _touchBlocker = null;
         let _touchStartHandler = null;
@@ -2722,7 +2723,9 @@ body.dark-mode .iv-iframe-container iframe {
                     el.classList.contains('modal-content') ||
                     el.classList.contains('iv-iframe-container') ||
                     el.id === 'hdsd-content' ||
-                    el.classList.contains('chat-messages')
+                    el.classList.contains('chat-messages') ||
+                    el.classList.contains('chat-container') ||
+                    el.id === 'chat-widget-window'
                 ) && _canScrollEl(el, dy)) return el;
                 el = el.parentElement;
             }
@@ -2730,18 +2733,19 @@ body.dark-mode .iv-iframe-container iframe {
         }
 
         function lockBodyScroll() {
-            // Nếu đã lock rồi (mở modal lồng nhau như HDSD liên tiếp)
-            // → chỉ cập nhật scrollY, KHÔNG re-register listener
-            if (document.body.classList.contains('modal-open')) {
-                _scrollY = window.scrollY;
-                document.body.style.top = '-' + _scrollY + 'px';
-                return;
-            }
+            // Scroll lock dạng đếm lớp: chat mở = 1, mở HDSD trong chat = 2.
+            // Đóng HDSD chỉ giảm còn 1 nên thao tác trong chatbot không truyền xuống trang chủ.
+            _scrollLockCount++;
+            if (_scrollLockCount > 1) return;
 
-            _scrollY = window.scrollY;
-            document.body.style.top = '-' + _scrollY + 'px';
+            _scrollY = window.scrollY || document.documentElement.scrollTop || 0;
             document.body.classList.add('modal-open');
             document.documentElement.classList.add('modal-open');
+            document.body.style.position = 'fixed';
+            document.body.style.top = '-' + _scrollY + 'px';
+            document.body.style.left = '0';
+            document.body.style.right = '0';
+            document.body.style.width = '100%';
             document.body.style.overflow = 'hidden';
             document.documentElement.style.overflow = 'hidden';
 
@@ -2766,20 +2770,33 @@ body.dark-mode .iv-iframe-container iframe {
                     el.classList.contains('modal-content') ||
                     el.classList.contains('iv-iframe-container') ||
                     el.id === 'hdsd-content' ||
-                    el.classList.contains('chat-messages')
+                    el.classList.contains('chat-messages') ||
+                    el.classList.contains('chat-container') ||
+                    el.id === 'chat-widget-window'
                 ) && _canScrollEl(el, e.deltaY)) return;
                 el = el.parentElement;
             }
             e.preventDefault();
         }
 
-        function unlockBodyScroll() {
+        function unlockBodyScroll(force) {
+            if (force === true) {
+                _scrollLockCount = 0;
+            } else if (_scrollLockCount > 0) {
+                _scrollLockCount--;
+            }
+
+            if (_scrollLockCount > 0) return;
+            _scrollLockCount = 0;
+
             document.body.classList.remove('modal-open');
             document.documentElement.classList.remove('modal-open');
             document.body.style.overflow = '';
             document.documentElement.style.overflow = '';
             document.body.style.top = '';
             document.body.style.position = '';
+            document.body.style.left = '';
+            document.body.style.right = '';
             document.body.style.width = '';
             const sy = _scrollY;
             requestAnimationFrame(function() {
