@@ -2414,6 +2414,24 @@ body.dark-mode .iv-iframe-container iframe {
                 || normalizedQuestion.includes('xu tri chay mau');
         }
 
+        function isDrugIdentityQuery(normalizedQuestion) {
+            return normalizedQuestion.includes('la thuoc gi')
+                || normalizedQuestion.includes('thuoc gi')
+                || normalizedQuestion.includes('la gi')
+                || normalizedQuestion.includes('cong dung')
+                || normalizedQuestion.includes('dung de lam gi');
+        }
+
+        function getQuestionSubject(userMessage) {
+            const original = String(userMessage || '').trim();
+            const cleaned = original
+                .replace(/\?/g, '')
+                .replace(/\b(là thuốc gì|la thuoc gi|là gì|la gi|thuốc gì|thuoc gi|công dụng|cong dung|dùng để làm gì|dung de lam gi)\b/gi, '')
+                .replace(/\b(cho tôi hỏi|cho toi hoi|xin hỏi|xin hoi|bạn cho biết|ban cho biet)\b/gi, '')
+                .trim();
+            return cleaned || original;
+        }
+
         function formatDrugLineForRag(d, index) {
             return `${index}. Biệt dược: ${d.brand || 'Đang cập nhật'} | Hoạt chất: ${d.active || 'Đang cập nhật'} | Nhóm: ${d.group || 'Đang cập nhật'} | Hàm lượng: ${d.strength || 'Đang cập nhật'} | Dạng: ${d.form || 'Đang cập nhật'} | HDSD: ${d.link || 'Đang cập nhật'}`;
         }
@@ -2426,6 +2444,8 @@ body.dark-mode .iv-iframe-container iframe {
             const broadQuery = isBroadDrugListQuery(normalizedQuestion);
             const ppiQuery = isPpiQuery(normalizedQuestion);
             const hemostaticQuery = isHemostaticQuery(normalizedQuestion);
+            const identityQuery = isDrugIdentityQuery(normalizedQuestion);
+            const questionSubject = getQuestionSubject(userMessage);
 
             const allDrugs = sourceList.map(normalizeDrugForRag);
             let matchedDrugs = [];
@@ -2473,12 +2493,22 @@ body.dark-mode .iv-iframe-container iframe {
                 return true;
             });
 
-            if (matchedDrugs.length === 0 && !broadQuery) return "";
+            const asksFullScan = normalizedQuestion.includes('toan bo')
+                || normalizedQuestion.includes('tat ca')
+                || normalizedQuestion.includes('day du')
+                || normalizedQuestion.includes('het cac');
+
+            // Fallback: hỏi 1 biệt dược/thuốc không có trong danh mục,
+            // nhưng có thể có thuốc khác cùng hoạt chất tại bệnh viện.
+            // Khi đó gửi thêm toàn bộ dữ liệu hoạt chất để AI đối chiếu.
+            const needsSameActiveFallback = identityQuery && matchedDrugs.length === 0;
+
+            if (matchedDrugs.length === 0 && !broadQuery && !needsSameActiveFallback) return "";
 
             let text = "\n<du_lieu_thuoc_lien_quan>\n";
 
             if (broadQuery) {
-                text += "Chế độ quét toàn bộ danh mục đã bật vì người dùng hỏi dạng danh sách/nhóm thuốc. Hãy rà soát TOÀN BỘ trường Hoạt chất và Nhóm thuốc trước khi trả lời; không chỉ dùng vài kết quả đầu.\n";
+                text += "Chế độ câu hỏi dạng danh sách/nhóm thuốc đã bật. HTML đã lọc trước trên toàn bộ danh mục medicines. Nếu có khối <ket_qua_loc_truoc>, hãy ưu tiên dùng khối đó; nếu có thêm <du_lieu_toan_bo_hoat_chat>, hãy rà soát khối toàn bộ đó trước khi trả lời. Không chỉ dùng vài kết quả đầu.\n";
             }
 
             if (matchedDrugs.length > 0) {
@@ -2489,15 +2519,34 @@ body.dark-mode .iv-iframe-container iframe {
                 text += "</ket_qua_loc_truoc>\n";
             }
 
-            if (broadQuery) {
+            // Tối ưu token: không gửi toàn bộ danh mục cho mọi câu hỏi.
+            // Chỉ gửi toàn bộ dữ liệu hoạt chất khi câu hỏi dạng nhóm chưa lọc được,
+            // người dùng yêu cầu rõ "toàn bộ/tất cả", hoặc cần fallback cùng hoạt chất.
+            if ((broadQuery && (matchedDrugs.length === 0 || asksFullScan)) || needsSameActiveFallback) {
                 const fullActiveText = activeIngredientsText || allDrugs.map((d, i) => formatDrugLineForRag(d, i + 1)).join("\n");
                 text += "\n<du_lieu_toan_bo_hoat_chat>\n";
-                text += "Dưới đây là TOÀN BỘ dữ liệu hoạt chất/thuốc hiện có để phân tích câu hỏi dạng nhóm thuốc:\n";
+                text += "Chỉ dùng khối này để rà soát khi kết quả lọc trực tiếp chưa đủ hoặc người dùng yêu cầu toàn bộ. Đây là dữ liệu hoạt chất/thuốc hiện có trong bệnh viện:\n";
                 text += fullActiveText + "\n";
                 text += "</du_lieu_toan_bo_hoat_chat>\n";
             }
 
-            text += "\nYêu cầu trả lời: nếu có thuốc trong dữ liệu, liệt kê từng thuốc bằng gạch đầu dòng, gồm Tên thuốc, Hoạt chất, Hàm lượng, Dạng bào chế và nút [XEM HDSD](URL) khi có link. Chỉ liệt kê thuốc có trong dữ liệu bệnh viện.\n";
+            text += "\n<huong_dan_cach_tra_loi>\n";
+            text += "Trước khi liệt kê dữ liệu thuốc tại bệnh viện, hãy giải thích ngắn 1-3 câu về đúng đối tượng người dùng hỏi. Không bỏ qua phần giải thích mở đầu.\n";
+            if (ppiQuery) {
+                text += "Vì người dùng hỏi PPI, hãy mở đầu theo ý: PPI là nhóm thuốc ức chế bơm proton, có tác dụng giảm tiết acid dạ dày, thường dùng trong các bệnh lý tăng tiết acid như trào ngược dạ dày-thực quản, loét dạ dày-tá tràng hoặc phối hợp diệt H. pylori khi có chỉ định. Sau đó viết đúng câu: 'Tại Bệnh viện Đa khoa tỉnh Tuyên Quang có các thuốc nhóm PPI sau:' rồi liệt kê thuốc.\n";
+            } else if (hemostaticQuery) {
+                text += "Vì người dùng hỏi thuốc cầm máu/đông máu, hãy mở đầu theo ý: thuốc cầm máu là các thuốc hỗ trợ hạn chế hoặc kiểm soát chảy máu qua những cơ chế khác nhau như ổn định cục máu đông, bổ sung yếu tố đông máu hoặc hỗ trợ quá trình đông máu. Sau đó viết: 'Tại Bệnh viện Đa khoa tỉnh Tuyên Quang có các thuốc cầm máu/đông máu sau:' rồi liệt kê thuốc.\n";
+            } else if (identityQuery) {
+                text += "Người dùng đang hỏi thuốc/hoạt chất cụ thể: '" + questionSubject + "'. Hãy mở đầu bằng 1-3 câu giải thích '" + questionSubject + "' là thuốc/biệt dược/hoạt chất gì, dựa trên hoạt chất, nhóm thuốc trong dữ liệu và kiến thức y khoa phù hợp. Sau đó viết: 'Tại Bệnh viện Đa khoa tỉnh Tuyên Quang, thông tin thuốc này như sau:' rồi liệt kê chi tiết thuốc khớp trong dữ liệu.\n";
+                if (needsSameActiveFallback) {
+                    text += "Nếu không tìm thấy đúng biệt dược người dùng hỏi trong dữ liệu bệnh viện, hãy dùng kiến thức y khoa để xác định hoạt chất thường gặp của biệt dược đó. Sau đó rà khối <du_lieu_toan_bo_hoat_chat> để tìm thuốc tại Bệnh viện Đa khoa tỉnh Tuyên Quang có cùng hoạt chất. Nếu có, hãy nói rõ: 'Chưa thấy biệt dược này trong dữ liệu bệnh viện, tuy nhiên bệnh viện có thuốc khác cùng hoạt chất...' rồi liệt kê đầy đủ Tên thuốc, Hoạt chất, Hàm lượng, Dạng bào chế và [XEM HDSD](URL). Nếu không xác định được hoạt chất hoặc không có thuốc cùng hoạt chất trong dữ liệu, phải nói rõ chưa tìm thấy.\n";
+                }
+            } else if (broadQuery) {
+                text += "Vì người dùng hỏi dạng danh sách/nhóm thuốc, hãy mở đầu bằng giải thích ngắn nhóm thuốc đó là gì, rồi mới viết: 'Tại Bệnh viện Đa khoa tỉnh Tuyên Quang có các thuốc sau:' và liệt kê thuốc.\n";
+            }
+            text += "Nếu có thuốc trong dữ liệu, liệt kê từng thuốc bằng gạch đầu dòng, gồm Tên thuốc, Hoạt chất, Hàm lượng, Dạng bào chế và nút [XEM HDSD](URL) khi có link. Chỉ liệt kê thuốc có trong dữ liệu bệnh viện.\n";
+            text += "Không trả lời ngay bằng danh sách thuốc nếu chưa có phần giải thích mở đầu. Không dùng danh sách đánh số.\n";
+            text += "</huong_dan_cach_tra_loi>\n";
             text += "</du_lieu_thuoc_lien_quan>";
 
             return text;
