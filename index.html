@@ -2362,20 +2362,28 @@ body.dark-mode .iv-iframe-container iframe {
 
         function getRelevantDrugsContext(userMessage, dataList) {
             if (!userMessage || !dataList || dataList.length === 0) return "";
-            const query = removeAccents(userMessage);
+            
+            // Tách câu hỏi thành các từ khóa dài hơn 3 ký tự (bỏ qua các từ như "là", "gì", "có", "thuốc")
+            const queryWords = removeAccents(userMessage).split(/\s+/).filter(w => w.length > 3);
+            if (queryWords.length === 0) return "";
+
             const matchedDrugs = dataList.filter(drug => {
                 const brand = removeAccents(drug.brand || "");
                 const active = removeAccents(drug.active || "");
-                return (brand && brand.length > 3 && query.includes(brand)) || 
-                       (active && active.length > 3 && query.includes(active));
+                
+                // Trùng khớp nếu BẤT KỲ từ khóa nào nằm trong Tên biệt dược hoặc Hoạt chất
+                return queryWords.some(word => brand.includes(word) || active.includes(word));
             });
+
             if (matchedDrugs.length === 0) return "";
-            const topMatches = matchedDrugs.slice(0, 5);
+            
+            const topMatches = matchedDrugs.slice(0, 5); // Giới hạn 5 thuốc để tối ưu tốc độ
             let text = "\n<danh_muc_thuoc_tham_khao>\nNgười dùng đang nhắc đến các thuốc sau, hãy sử dụng thông tin này để tư vấn:\n";
             topMatches.forEach((d, i) => {
-                text += `${i+1}. Biệt dược: ${d.brand} | Hoạt chất: ${d.active || 'Đang cập nhật'} | Hàm lượng: ${d.strength || 'Đang cập nhật'} | Dạng: ${d.form || 'Đang cập nhật'} | HDSD: ${d.link || 'Đang cập nhật'}\n`;
+                text += `${i+1}. Biệt dược: ${d.brand} | Hoạt chất: ${d.active || 'Đang cập nhật'} | Hàm lượng: ${d.strength || 'Đang cập nhật'} | Dạng: ${d.form || 'Đang cập nhật'} | Link HDSD: ${d.link || 'Đang cập nhật'}\n`;
             });
             text += "</danh_muc_thuoc_tham_khao>";
+            
             return text;
         }
 
