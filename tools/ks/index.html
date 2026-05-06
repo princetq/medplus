@@ -703,6 +703,46 @@ body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !import
   }
 }
 
+
+/* ── FIX MOBILE KÉO QUÁ ĐẦU/CUỐI KHÔNG LỘ NỀN TRẮNG ─────────────
+   Giữ lớp nền fixed thật trên mobile. Chặn overscroll khi trình duyệt hỗ trợ,
+   đồng thời đặt nền dự phòng cho html/body để Safari/Chrome mobile không lộ trắng. */
+@media (hover:none), (pointer:coarse), (max-width:768px){
+  html{
+    background-color:#065f46!important;
+    background-image:url('ks.webp')!important;
+    background-size:cover!important;
+    background-position:center center!important;
+    background-repeat:no-repeat!important;
+    overscroll-behavior-y:none;
+    overflow-x:hidden;
+  }
+  body{
+    background-color:transparent!important;
+    overscroll-behavior-y:none;
+    overflow-x:hidden;
+  }
+  body::before{
+    z-index:0!important;
+    top:0!important;
+    left:0!important;
+    width:100vw!important;
+    height:100vh!important;
+    min-height:100dvh;
+    transform:scale(1.015) translateZ(0)!important;
+    -webkit-transform:scale(1.015) translateZ(0)!important;
+    transform-origin:center center;
+    -webkit-transform-origin:center center;
+  }
+  body > :not(script):not(style){
+    position:relative;
+    z-index:1;
+  }
+  @supports (height:100lvh){
+    body::before{height:100lvh!important;min-height:100lvh!important;}
+  }
+}
+
 </style>
 </head>
 <body>
