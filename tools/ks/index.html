@@ -657,10 +657,11 @@ body.dark-mode [style*="background:#fff"] { background: rgba(0,28,14,0.85) !impo
 body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !important; }
 
 
-
-/* ── FIX HEADER NHẤP NHÁY DESKTOP + NỀN MOBILE FIXED THẬT ─────────────
-   Không sửa HTML/JS/logic. Desktop: ổn định header để giảm flicker.
-   Mobile/touch: dùng lớp nền fixed riêng để ảnh không co giãn khi thanh địa chỉ ẩn/hiện. */
+/* ── PATCH ỔN ĐỊNH: DESKTOP HEADER + MOBILE TRUE FIXED BG ─────────────
+   Không sửa JS/logic dữ liệu.
+   Desktop: bỏ background fixed và ổn định header để tránh flicker.
+   Mobile: dùng lớp nền fixed riêng không transform; header dùng glass tĩnh thay cho backdrop blur động
+   vì backdrop-filter trên nền fixed mobile dễ repaint/nhấp nháy. */
 @media (hover:hover) and (pointer:fine) and (min-width:769px){
   body{background-attachment:scroll!important}
   .hdr-card{
@@ -673,40 +674,8 @@ body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !import
     isolation:isolate;
   }
 }
-@media (hover:none), (pointer:coarse), (max-width:768px){
-  body{
-    background-image:none!important;
-    background-attachment:scroll!important;
-    background-size:auto!important;
-    background-position:center center!important;
-    position:relative;
-    isolation:isolate;
-  }
-  body::before{
-    content:"";
-    position:fixed;
-    left:0;
-    top:0;
-    width:100vw;
-    height:100vh;
-    background-image:url('ks.webp');
-    background-size:cover;
-    background-position:center center;
-    background-repeat:no-repeat;
-    pointer-events:none;
-    z-index:-1;
-    transform:translateZ(0);
-    -webkit-transform:translateZ(0);
-  }
-  @supports (height:100lvh){
-    body::before{height:100lvh}
-  }
-}
 
-
-/* ── FIX MOBILE KÉO QUÁ ĐẦU/CUỐI KHÔNG LỘ NỀN TRẮNG ─────────────
-   Giữ lớp nền fixed thật trên mobile. Chặn overscroll khi trình duyệt hỗ trợ,
-   đồng thời đặt nền dự phòng cho html/body để Safari/Chrome mobile không lộ trắng. */
+.mobile-fixed-bg{display:none}
 @media (hover:none), (pointer:coarse), (max-width:768px){
   html{
     background-color:#065f46!important;
@@ -718,34 +687,57 @@ body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !import
     overflow-x:hidden;
   }
   body{
+    background-image:none!important;
     background-color:transparent!important;
+    background-attachment:scroll!important;
+    background-size:auto!important;
+    background-position:center center!important;
     overscroll-behavior-y:none;
     overflow-x:hidden;
+    isolation:isolate;
   }
-  body::before{
-    z-index:0!important;
-    top:0!important;
-    left:0!important;
-    width:100vw!important;
-    height:100vh!important;
-    min-height:100dvh;
-    transform:scale(1.015) translateZ(0)!important;
-    -webkit-transform:scale(1.015) translateZ(0)!important;
-    transform-origin:center center;
-    -webkit-transform-origin:center center;
+  .mobile-fixed-bg{
+    display:block;
+    position:fixed;
+    inset:0;
+    width:100vw;
+    height:100vh;
+    background-image:url('ks.webp');
+    background-size:cover;
+    background-position:center center;
+    background-repeat:no-repeat;
+    pointer-events:none;
+    z-index:0;
   }
-  body > :not(script):not(style){
+  @supports (height:100lvh){
+    .mobile-fixed-bg{height:100lvh}
+  }
+  body > :not(.mobile-fixed-bg):not(script):not(style){
     position:relative;
     z-index:1;
   }
-  @supports (height:100lvh){
-    body::before{height:100lvh!important;min-height:100lvh!important;}
+  .hdr-card{
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+    background:rgba(255,255,255,.38)!important;
+    border:1px solid rgba(255,255,255,.7)!important;
+    box-shadow:0 8px 32px rgba(31,38,135,.1)!important;
+    transform:none!important;
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+    will-change:auto;
+  }
+  body.dark-mode .hdr-card{
+    background:rgba(0,22,11,.88)!important;
+    border:1px solid rgba(52,211,153,.3)!important;
+    box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 30px rgba(0,255,100,.06)!important;
   }
 }
 
 </style>
 </head>
 <body>
+<div class="mobile-fixed-bg" aria-hidden="true"></div>
 <div id="toast-box"></div>
 
 <div class="hdr-card">
