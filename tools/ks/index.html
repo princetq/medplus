@@ -18,7 +18,7 @@
 #csb-thumb { position:absolute; right:0; width:3px; background:rgba(255,255,255,0.45); border-radius:4px; transition:background 0.2s; min-height:28px; }
 #csb-thumb:hover { background:rgba(255,255,255,0.75); }
 
-body{font-family:'Montserrat',sans-serif;background-color:#065f46;background-image:url('ks.webp');background-size:cover;background-position:center center;background-attachment:fixed;background-repeat:no-repeat;color:#1e293b;padding:10px;line-height:1.5;font-size:16px;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center}body.has-result{justify-content:flex-start}
+body{font-family:'Montserrat',sans-serif;background-color:#065f46;background-image:url('ks.webp');background-size:cover;background-position:center center;background-attachment:scroll;background-repeat:no-repeat;color:#1e293b;padding:10px;line-height:1.5;font-size:16px;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center}body.has-result{justify-content:flex-start}
 /* ── TOAST ─────────────────────────────────────── */
 #toast-box{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:9999;width:92%;max-width:400px;pointer-events:none}
 .toast{background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-left:5px solid #16a34a;padding:12px 14px;border-radius:8px;margin-bottom:8px;box-shadow:0 4px 14px rgba(0,0,0,.15);display:flex;align-items:center;gap:10px;animation:tIn .3s ease;pointer-events:auto;font-size:17px;font-weight:600;color:#1e293b}
@@ -27,11 +27,10 @@ body{font-family:'Montserrat',sans-serif;background-color:#065f46;background-ima
 @keyframes tIn{from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1}}
 @keyframes tUp{from{opacity:1}to{opacity:0;transform:translateY(-10px)}}
 /* ── CARD ───────────────────────────────────────── */
-.hdr-card{background:transparent;border:1px solid rgba(255,255,255,.7);border-radius:20px;box-shadow:0 8px 32px rgba(31,38,135,.1);max-width:700px;width:100%;margin:0 auto 10px;padding:12px 16px;text-align:center;position:relative;isolation:isolate;transform:translateZ(0)}
-.hdr-card::before{content:"";position:absolute;inset:0;border-radius:20px;background:rgba(255,255,255,.22);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);z-index:-1;pointer-events:none}
-.card{background:rgba(255,255,255,.22);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);border-radius:20px;box-shadow:0 8px 32px rgba(31,38,135,.1);max-width:700px;width:100%;margin:0 auto;padding:18px 16px;overflow-anchor:none}
-.hdr h2{color:#fff;font-weight:800;font-size:24px;text-transform:uppercase;letter-spacing:-.5px;position:relative;z-index:1}
-.hdr p{font-size:16px;color:#fff;font-style:italic;opacity:.85;margin-top:2px;position:relative;z-index:1}
+.hdr-card{background:rgba(255,255,255,.22);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);border-radius:20px;box-shadow:0 8px 32px rgba(31,38,135,.1);max-width:700px;width:100%;margin:0 auto 10px;padding:12px 16px;text-align:center;position:relative;z-index:10;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:none}
+.card{background:rgba(255,255,255,.22);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);border-radius:20px;box-shadow:0 8px 32px rgba(31,38,135,.1);max-width:700px;width:100%;margin:0 auto;padding:18px 16px;overflow-anchor:none;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.hdr h2{color:#fff;font-weight:800;font-size:24px;text-transform:uppercase;letter-spacing:-.5px}
+.hdr p{font-size:16px;color:#fff;font-style:italic;opacity:.85;margin-top:2px}
 /* ── MODE SWITCH ──────────────────────────────── */
 .mode-switch{display:flex;gap:6px;margin-bottom:18px;background:rgba(0,0,0,.18);padding:5px;border-radius:14px;border:1px solid rgba(255,255,255,.25)}
 .mode-btn{flex:1;padding:10px 10px;border:2px solid rgba(255,255,255,.45);border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.18);color:#fff;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:6px;text-shadow:0 1px 3px rgba(0,0,0,.3)}
@@ -260,14 +259,7 @@ body.dark-mode {
 }
 
 /* Cards */
-body.dark-mode .hdr-card {
-  background: transparent;
-  border: 1px solid rgba(52,211,153,0.3);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 30px rgba(0,255,100,0.06);
-}
-body.dark-mode .hdr-card::before {
-  background: rgba(0,22,11,0.82);
-}
+body.dark-mode .hdr-card,
 body.dark-mode .card {
   background: rgba(0,22,11,0.82);
   border: 1px solid rgba(52,211,153,0.3);
@@ -663,6 +655,24 @@ body.dark-mode [style*="background:#fff7ed"] { background: rgba(50,12,0,0.6) !im
 body.dark-mode [style*="background:#faf5ff"] { background: rgba(35,0,60,0.45) !important; }
 body.dark-mode [style*="background:#fff"] { background: rgba(0,28,14,0.85) !important; }
 body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !important; }
+
+
+
+/* ── FIX HEADER NHẤP NHÁY TRÊN MOBILE ─────────────
+   Nguyên nhân thường gặp: background-attachment:fixed + backdrop-filter
+   khiến Chrome/Safari mobile repaint liên tục khi cuộn/chạm. */
+html,body{overscroll-behavior-y:none}
+.hdr-card{will-change:auto;isolation:isolate}
+@media (hover:none), (pointer:coarse), (max-width:768px){
+  body{background-attachment:scroll!important;background-position:center top!important}
+  .hdr-card{
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+    background:rgba(255,255,255,.30)!important;
+    transform:none!important;
+  }
+  body.dark-mode .hdr-card{background:rgba(0,22,11,.88)!important}
+}
 
 </style>
 </head>
