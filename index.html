@@ -622,8 +622,8 @@
         }
 
         /* ==============================================================
-           🌙 DARK MODE PRO — NÂNG CẤP TOÀN DIỆN
-           Palette: Deep Space Navy + Emerald Neon + Gold Accent
+            🌙 DARK MODE PRO — NÂNG CẤP TOÀN DIỆN
+            Palette: Deep Space Navy + Emerald Neon + Gold Accent
            ============================================================== */
 
         /* === BIẾN CSS CHO DARK MODE === */
@@ -1485,10 +1485,10 @@ body.dark-mode .iv-iframe-container iframe {
         }
         
         /* =========================================================
-             NÂNG CẤP THEO YÊU CẦU MỚI:
-             1. PC: Logo thỉnh thoảng động đậy, chữ đứng yên
-             2. PC Dark Mode: Bầu trời rực rỡ Dải Ngân Hà (Milky Way)
-             ========================================================= */
+            NÂNG CẤP THEO YÊU CẦU MỚI:
+            1. PC: Logo thỉnh thoảng động đậy, chữ đứng yên
+            2. PC Dark Mode: Bầu trời rực rỡ Dải Ngân Hà (Milky Way)
+           ========================================================= */
         @media (min-width: 601px) {
             /* Dải Ngân Hà (Milky Way) cho riêng Dark Mode phiên bản PC */
             body.dark-mode .night-background::before {
@@ -3483,9 +3483,20 @@ body.dark-mode .iv-iframe-container iframe {
         function closeHDSDModal() {
             const modal = document.getElementById('hdsd-modal');
             const content = document.getElementById('hdsd-content');
-            if (content) content.style.overflow = 'hidden'; 
+            const chatWidget = document.getElementById('chat-widget-window');
+            const chatStillOpen = !!(chatWidget && chatWidget.style.display !== 'none' && chatWidget.style.display !== '');
+
+            if (content) content.style.overflow = 'hidden';
             modal.style.display = 'none';
+
+            // HDSD luôn chỉ nhả đúng 1 lớp khóa cuộn. Nếu đang mở từ chatbot,
+            // chatbot là modal cha giống modal chi tiết thuốc, nên sau khi đóng HDSD
+            // vẫn phải giữ khóa cuộn cho chatbot thay vì trả cuộn về trang chính.
             unlockBodyScroll();
+            if (chatStillOpen && _scrollLockCount <= 0) {
+                lockBodyScroll();
+            }
+
             if (window._hdsdAbortCtrl) {
                 window._hdsdAbortCtrl.abort();
                 window._hdsdAbortCtrl = null;
@@ -3721,9 +3732,22 @@ body.dark-mode .iv-iframe-container iframe {
             return null;
         }
 
-        function openHDSDFromChat(encodedUrl) {
+        function openHDSDFromChat(encodedUrl, evt) {
+            if (evt && evt.stopPropagation) evt.stopPropagation();
+            if (evt && evt.preventDefault) evt.preventDefault();
+
             const url = decodeURIComponent(String(encodedUrl || ''));
             const item = findDrugByHDSDUrl_(url);
+            const chatWidget = document.getElementById('chat-widget-window');
+            const chatIsOpen = !!(chatWidget && chatWidget.style.display !== 'none' && chatWidget.style.display !== '');
+
+            // Áp dụng đúng cách mở HDSD từ modal chi tiết thuốc:
+            // chatbot đóng vai trò modal cha; HDSD mở thêm 1 lớp phía trên.
+            // Trường hợp trình duyệt/mobile làm mất lớp khóa của chatbot, khôi phục trước
+            // rồi mới gọi openNotionPopup để HDSD tự cộng thêm lớp khóa riêng.
+            if (chatIsOpen && _scrollLockCount <= 0) {
+                lockBodyScroll();
+            }
 
             if (item) {
                 openNotionPopup(item.link || url, item.image || '', item.lastUpdated || '');
@@ -3742,7 +3766,7 @@ body.dark-mode .iv-iframe-container iframe {
             // 2. [THÊM MỚI] Bắt cú pháp [XEM HDSD](URL) từ AI và biến thành Nút bấm (Tận dụng class hdsd-btn có sẵn của bạn)
             text = text.replace(/\[XEM HDSD\]\(([^)]+)\)/gi, function(match, url) {
                 const encodedUrl = encodeURIComponent(String(url || '').trim());
-                return `<button class="hdsd-btn" style="display: inline-flex; width: auto; padding: 6px 16px; margin-top: 8px; z-index: 2; position: relative;" onclick="openHDSDFromChat('${encodedUrl}')">📄 XEM HDSD</button>`;
+                return `<button class="hdsd-btn" style="display: inline-flex; width: auto; padding: 6px 16px; margin-top: 8px; z-index: 2; position: relative;" onclick="openHDSDFromChat('${encodedUrl}', event)">📄 XEM HDSD</button>`;
             });
 
             // 3. Xử lý các link Markdown thông thường (nếu có)
