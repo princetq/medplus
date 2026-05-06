@@ -2702,7 +2702,6 @@ body.dark-mode .iv-iframe-container iframe {
         }
 
         let _scrollY = 0;
-        let _scrollLockCount = 0;
         let _touchStartY = 0;
         let _touchBlocker = null;
         let _touchStartHandler = null;
@@ -2723,9 +2722,7 @@ body.dark-mode .iv-iframe-container iframe {
                     el.classList.contains('modal-content') ||
                     el.classList.contains('iv-iframe-container') ||
                     el.id === 'hdsd-content' ||
-                    el.classList.contains('chat-messages') ||
-                    el.classList.contains('chat-container') ||
-                    el.id === 'chat-widget-window'
+                    el.classList.contains('chat-messages')
                 ) && _canScrollEl(el, dy)) return el;
                 el = el.parentElement;
             }
@@ -2733,19 +2730,18 @@ body.dark-mode .iv-iframe-container iframe {
         }
 
         function lockBodyScroll() {
-            // Scroll lock dạng đếm lớp: chat mở = 1, mở HDSD trong chat = 2.
-            // Đóng HDSD chỉ giảm còn 1 nên thao tác trong chatbot không truyền xuống trang chủ.
-            _scrollLockCount++;
-            if (_scrollLockCount > 1) return;
+            // Nếu đã lock rồi (mở modal lồng nhau như HDSD liên tiếp)
+            // → chỉ cập nhật scrollY, KHÔNG re-register listener
+            if (document.body.classList.contains('modal-open')) {
+                _scrollY = window.scrollY;
+                document.body.style.top = '-' + _scrollY + 'px';
+                return;
+            }
 
-            _scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+            _scrollY = window.scrollY;
+            document.body.style.top = '-' + _scrollY + 'px';
             document.body.classList.add('modal-open');
             document.documentElement.classList.add('modal-open');
-            document.body.style.position = 'fixed';
-            document.body.style.top = '-' + _scrollY + 'px';
-            document.body.style.left = '0';
-            document.body.style.right = '0';
-            document.body.style.width = '100%';
             document.body.style.overflow = 'hidden';
             document.documentElement.style.overflow = 'hidden';
 
@@ -2770,33 +2766,20 @@ body.dark-mode .iv-iframe-container iframe {
                     el.classList.contains('modal-content') ||
                     el.classList.contains('iv-iframe-container') ||
                     el.id === 'hdsd-content' ||
-                    el.classList.contains('chat-messages') ||
-                    el.classList.contains('chat-container') ||
-                    el.id === 'chat-widget-window'
+                    el.classList.contains('chat-messages')
                 ) && _canScrollEl(el, e.deltaY)) return;
                 el = el.parentElement;
             }
             e.preventDefault();
         }
 
-        function unlockBodyScroll(force) {
-            if (force === true) {
-                _scrollLockCount = 0;
-            } else if (_scrollLockCount > 0) {
-                _scrollLockCount--;
-            }
-
-            if (_scrollLockCount > 0) return;
-            _scrollLockCount = 0;
-
+        function unlockBodyScroll() {
             document.body.classList.remove('modal-open');
             document.documentElement.classList.remove('modal-open');
             document.body.style.overflow = '';
             document.documentElement.style.overflow = '';
             document.body.style.top = '';
             document.body.style.position = '';
-            document.body.style.left = '';
-            document.body.style.right = '';
             document.body.style.width = '';
             const sy = _scrollY;
             requestAnimationFrame(function() {
@@ -3225,28 +3208,8 @@ body.dark-mode .iv-iframe-container iframe {
             return html.replace(/<\/ul>\s*<ul>/g, '').replace(/<\/ol>\s*<ol>/g, '');
         }
 
-        const HDSD_CACHE_LIMIT = 2;
         if (!window._hdsdJsonCache) window._hdsdJsonCache = new Map();
-        if (!window._hdsdHtmlCache || !(window._hdsdHtmlCache instanceof Map)) window._hdsdHtmlCache = new Map();
-        if (!window._hdsdCurrentPageId) window._hdsdCurrentPageId = null;
-
-        function touchHdsdCache_(cacheMap, key, value) {
-            if (!cacheMap || !key) return;
-            if (cacheMap.has(key)) cacheMap.delete(key);
-            cacheMap.set(key, value);
-            while (cacheMap.size > HDSD_CACHE_LIMIT) {
-                const oldestKey = cacheMap.keys().next().value;
-                cacheMap.delete(oldestKey);
-            }
-        }
-
-        function getHdsdCache_(cacheMap, key) {
-            if (!cacheMap || !cacheMap.has(key)) return null;
-            const value = cacheMap.get(key);
-            cacheMap.delete(key);
-            cacheMap.set(key, value);
-            return value;
-        }
+        if (!window._hdsdHtmlCache)  window._hdsdHtmlCache  = { pageId: null, html: null };
 
         async function openNotionPopup(notionUrl, itemImage, itemVersion) {
 
@@ -3267,26 +3230,23 @@ body.dark-mode .iv-iframe-container iframe {
             const content = document.getElementById('hdsd-content');
 
             // ── Fix 1: Cùng tờ, DOM còn nguyên → hiện ngay, 0 CPU ────────────
-            if (window._hdsdCurrentPageId === pageId && content.innerHTML.trim()) {
+            if (window._hdsdHtmlCache.pageId === pageId && content.innerHTML.trim()) {
                 modal.style.display   = 'flex';
                 content.style.display = 'block';
-                loader.style.display  = 'none';
                 lockBodyScroll();
                 return;
             }
 
-            // ── Fix 2: Tờ đã nằm trong cache 2 entry → restore nhanh ─────────
-            const cachedHtml = getHdsdCache_(window._hdsdHtmlCache, pageId);
-            if (cachedHtml) {
+            // ── Fix 2: Cùng tờ, DOM bị xóa nhưng HTML string còn → restore ───
+            if (window._hdsdHtmlCache.pageId === pageId && window._hdsdHtmlCache.html) {
                 if (window._hdsdAbortCtrl) { window._hdsdAbortCtrl.abort(); window._hdsdAbortCtrl = null; }
-                content.innerHTML     = cachedHtml;
-                window._hdsdCurrentPageId = pageId;
+                content.innerHTML     = window._hdsdHtmlCache.html;
                 content.style.display = 'block';
                 loader.style.display  = 'none';
                 modal.style.display   = 'flex';
                 lockBodyScroll();
                 // Gắn lại toggle lazy-load listeners từ JSON cache
-                const _cachedJson = getHdsdCache_(window._hdsdJsonCache, pageId);
+                const _cachedJson = window._hdsdJsonCache.get(pageId);
                 if (_cachedJson) {
                     content.querySelectorAll('details[data-block-id]').forEach(det => {
                         det.addEventListener('toggle', function _onToggle() {
@@ -3323,9 +3283,8 @@ body.dark-mode .iv-iframe-container iframe {
                 if (hdsdSignal.aborted) return;
                 const jsonUrl = './hdsd-data/' + pageId + '.json';
                 let jsonData;
-                const cachedJsonData = getHdsdCache_(window._hdsdJsonCache, pageId);
-                if (cachedJsonData) {
-                    jsonData = cachedJsonData;
+                if (window._hdsdJsonCache.has(pageId)) {
+                    jsonData = window._hdsdJsonCache.get(pageId);
                 } else {
                     const jsonRes = await fetch(jsonUrl, { signal: hdsdSignal });
                     if (!jsonRes.ok) {
@@ -3340,7 +3299,9 @@ body.dark-mode .iv-iframe-container iframe {
                         return;
                     }
                     jsonData = await jsonRes.json();
-                    touchHdsdCache_(window._hdsdJsonCache, pageId, jsonData);
+                    // Giới hạn cache 1 entry — xóa hết trước khi lưu mới
+                    window._hdsdJsonCache.clear();
+                    window._hdsdJsonCache.set(pageId, jsonData);
                 }
                 
                 const pageRes = jsonData.page;
@@ -3443,8 +3404,7 @@ body.dark-mode .iv-iframe-container iframe {
                 }
 
                 content.innerHTML    = finalHtml;
-                window._hdsdCurrentPageId = pageId;
-                touchHdsdCache_(window._hdsdHtmlCache, pageId, finalHtml); // Cache tối đa 2 tờ HDSD gần nhất
+                window._hdsdHtmlCache = { pageId, html: finalHtml }; // Fix 3: cache HTML string
                 content.style.display = 'block';
                 loader.style.display  = 'none';
 
@@ -3483,20 +3443,20 @@ body.dark-mode .iv-iframe-container iframe {
         function closeHDSDModal() {
             const modal = document.getElementById('hdsd-modal');
             const content = document.getElementById('hdsd-content');
+            if (content) content.style.overflow = 'hidden'; 
+            modal.style.display = 'none';
+            unlockBodyScroll();
+
+            // Nếu HDSD được mở từ chatbot, sau khi đóng HDSD vẫn giữ chatbot như modal cha.
+            // Cách này dùng lock ổn định của bản tham khảo, không cộng lớp lock và không position:fixed.
             const chatWidget = document.getElementById('chat-widget-window');
             const chatStillOpen = !!(chatWidget && chatWidget.style.display !== 'none' && chatWidget.style.display !== '');
-
-            if (content) content.style.overflow = 'hidden';
-            modal.style.display = 'none';
-
-            // HDSD luôn chỉ nhả đúng 1 lớp khóa cuộn. Nếu đang mở từ chatbot,
-            // chatbot là modal cha giống modal chi tiết thuốc, nên sau khi đóng HDSD
-            // vẫn phải giữ khóa cuộn cho chatbot thay vì trả cuộn về trang chính.
-            unlockBodyScroll();
-            if (chatStillOpen && _scrollLockCount <= 0) {
-                lockBodyScroll();
+            if (chatStillOpen && !document.body.classList.contains('modal-open')) {
+                requestAnimationFrame(function() {
+                    const cw = document.getElementById('chat-widget-window');
+                    if (cw && cw.style.display !== 'none' && cw.style.display !== '') lockBodyScroll();
+                });
             }
-
             if (window._hdsdAbortCtrl) {
                 window._hdsdAbortCtrl.abort();
                 window._hdsdAbortCtrl = null;
@@ -3504,9 +3464,9 @@ body.dark-mode .iv-iframe-container iframe {
             clearTimeout(_clearHdsdTimer);
             _clearHdsdTimer = setTimeout(() => {
                 if (modal.style.display === 'none' && content) {
+                    content.innerHTML     = '';
                     content.style.overflow = 'auto';
-                    // Giữ DOM + HTML cache để mở lại HDSD nhanh như khi bấm từ trang chủ.
-                    // Không xóa content.innerHTML; HTML/JSON cache tự giới hạn tối đa 2 tờ HDSD gần nhất.
+                    window._hdsdHtmlCache  = { pageId: null, html: null }; // Fix 4: reset cache
                 }
             }, 300);
         }
@@ -3741,11 +3701,10 @@ body.dark-mode .iv-iframe-container iframe {
             const chatWidget = document.getElementById('chat-widget-window');
             const chatIsOpen = !!(chatWidget && chatWidget.style.display !== 'none' && chatWidget.style.display !== '');
 
-            // Áp dụng đúng cách mở HDSD từ modal chi tiết thuốc:
-            // chatbot đóng vai trò modal cha; HDSD mở thêm 1 lớp phía trên.
-            // Trường hợp trình duyệt/mobile làm mất lớp khóa của chatbot, khôi phục trước
-            // rồi mới gọi openNotionPopup để HDSD tự cộng thêm lớp khóa riêng.
-            if (chatIsOpen && _scrollLockCount <= 0) {
+            // Dùng lại cơ chế khóa cuộn ổn định của bản tham khảo:
+            // không dùng _scrollLockCount và không ép body position:fixed.
+            // Nếu chatbot đang mở mà vì lý do nào đó lock bị mất, khôi phục nhẹ trước khi mở HDSD.
+            if (chatIsOpen && !document.body.classList.contains('modal-open')) {
                 lockBodyScroll();
             }
 
@@ -4732,6 +4691,8 @@ body.dark-mode .iv-iframe-container iframe {
         })();
 </script>
     <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"7939e04a4baf43c8b86a560f74aac60e","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"febbfaacdfbc4a51921583d5e93de024","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"7939e04a4baf43c8b86a560f74aac60e","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"febbfaacdfbc4a51921583d5e93de024","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"7939e04a4baf43c8b86a560f74aac60e","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"febbfaacdfbc4a51921583d5e93de024","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
