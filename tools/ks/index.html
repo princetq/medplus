@@ -18,7 +18,7 @@
 #csb-thumb { position:absolute; right:0; width:3px; background:rgba(255,255,255,0.45); border-radius:4px; transition:background 0.2s; min-height:28px; }
 #csb-thumb:hover { background:rgba(255,255,255,0.75); }
 
-body{font-family:'Montserrat',sans-serif;background-color:#065f46;background-image:url('ks.webp');background-size:cover;background-position:center center;background-attachment:fixed;background-repeat:no-repeat;color:#1e293b;padding:10px;line-height:1.5;font-size:16px;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center}body.has-result{justify-content:flex-start}
+body{font-family:'Montserrat',sans-serif;background-color:#065f46;background-image:url('ks.webp');background-size:cover;background-position:center center;background-attachment:scroll;background-repeat:no-repeat;color:#1e293b;padding:10px;line-height:1.5;font-size:16px;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center}body.has-result{justify-content:flex-start}
 /* ── TOAST ─────────────────────────────────────── */
 #toast-box{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:9999;width:92%;max-width:400px;pointer-events:none}
 .toast{background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-left:5px solid #16a34a;padding:12px 14px;border-radius:8px;margin-bottom:8px;box-shadow:0 4px 14px rgba(0,0,0,.15);display:flex;align-items:center;gap:10px;animation:tIn .3s ease;pointer-events:auto;font-size:17px;font-weight:600;color:#1e293b}
@@ -27,8 +27,8 @@ body{font-family:'Montserrat',sans-serif;background-color:#065f46;background-ima
 @keyframes tIn{from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1}}
 @keyframes tUp{from{opacity:1}to{opacity:0;transform:translateY(-10px)}}
 /* ── CARD ───────────────────────────────────────── */
-.hdr-card{background:rgba(255,255,255,.22);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);border-radius:20px;box-shadow:0 8px 32px rgba(31,38,135,.1);max-width:700px;width:100%;margin:0 auto 10px;padding:12px 16px;text-align:center;transform:translateZ(0)}
-.card{background:rgba(255,255,255,.22);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);border-radius:20px;box-shadow:0 8px 32px rgba(31,38,135,.1);max-width:700px;width:100%;margin:0 auto;padding:18px 16px;overflow-anchor:none}
+.hdr-card{background:rgba(255,255,255,.22);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);border-radius:20px;box-shadow:0 8px 32px rgba(31,38,135,.1);max-width:700px;width:100%;margin:0 auto 10px;padding:12px 16px;text-align:center;position:relative;z-index:10;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:none}
+.card{background:rgba(255,255,255,.22);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);border-radius:20px;box-shadow:0 8px 32px rgba(31,38,135,.1);max-width:700px;width:100%;margin:0 auto;padding:18px 16px;overflow-anchor:none;backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .hdr h2{color:#fff;font-weight:800;font-size:24px;text-transform:uppercase;letter-spacing:-.5px}
 .hdr p{font-size:16px;color:#fff;font-style:italic;opacity:.85;margin-top:2px}
 /* ── MODE SWITCH ──────────────────────────────── */
@@ -657,25 +657,12 @@ body.dark-mode [style*="background:#fff"] { background: rgba(0,28,14,0.85) !impo
 body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !important; }
 
 
-/* ── PATCH ỔN ĐỊNH: DESKTOP HEADER + MOBILE TRUE FIXED BG ─────────────
-   Không sửa JS/logic dữ liệu.
-   Desktop: bỏ background fixed và ổn định header để tránh flicker.
-   Mobile: dùng lớp nền fixed riêng không transform; header dùng glass tĩnh thay cho backdrop blur động
-   vì backdrop-filter trên nền fixed mobile dễ repaint/nhấp nháy. */
-@media (hover:hover) and (pointer:fine) and (min-width:769px){
-  body{background-attachment:scroll!important}
-  .hdr-card{
-    -webkit-backdrop-filter:blur(14px)!important;
-    backdrop-filter:blur(14px)!important;
-    backface-visibility:hidden;
-    -webkit-backface-visibility:hidden;
-    transform:none!important;
-    will-change:auto;
-    isolation:isolate;
-  }
-}
 
+/* ── FIX MOBILE BACKGROUND THẬT SỰ FIXED ──────────
+   Mục tiêu: nền mobile đứng yên, không co giãn khi thanh địa chỉ ẩn/hiện,
+   và không lộ trắng khi kéo quá đầu/cuối. Không sửa JS/logic xử lý dữ liệu. */
 .mobile-fixed-bg{display:none}
+.hdr-card{will-change:auto;isolation:isolate}
 @media (hover:none), (pointer:coarse), (max-width:768px){
   html{
     background-color:#065f46!important;
@@ -683,8 +670,8 @@ body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !import
     background-size:cover!important;
     background-position:center center!important;
     background-repeat:no-repeat!important;
+    overflow-x:hidden!important;
     overscroll-behavior-y:none;
-    overflow-x:hidden;
   }
   body{
     background-image:none!important;
@@ -692,16 +679,20 @@ body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !import
     background-attachment:scroll!important;
     background-size:auto!important;
     background-position:center center!important;
+    background-repeat:no-repeat!important;
+    overflow-x:hidden!important;
     overscroll-behavior-y:none;
-    overflow-x:hidden;
+    position:relative;
     isolation:isolate;
   }
   .mobile-fixed-bg{
     display:block;
     position:fixed;
-    inset:0;
+    left:0;
+    top:0;
     width:100vw;
     height:100vh;
+    min-height:100vh;
     background-image:url('ks.webp');
     background-size:cover;
     background-position:center center;
@@ -710,16 +701,16 @@ body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !import
     z-index:0;
   }
   @supports (height:100lvh){
-    .mobile-fixed-bg{height:100lvh}
+    .mobile-fixed-bg{height:100lvh;min-height:100lvh}
   }
   body > :not(.mobile-fixed-bg):not(script):not(style){
     position:relative;
     z-index:1;
   }
   .hdr-card{
+    background:rgba(255,255,255,.22)!important;
     -webkit-backdrop-filter:none!important;
     backdrop-filter:none!important;
-    background:rgba(255,255,255,.22)!important;
     border:1px solid rgba(255,255,255,.7)!important;
     box-shadow:0 8px 32px rgba(31,38,135,.1)!important;
     transform:none!important;
@@ -728,9 +719,9 @@ body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !import
     will-change:auto;
   }
   body.dark-mode .hdr-card{
-    background:rgba(0,22,11,.82)!important;
-    border:1px solid rgba(52,211,153,.3)!important;
-    box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 30px rgba(0,255,100,.06)!important;
+    background:rgba(0,22,11,0.82)!important;
+    border:1px solid rgba(52,211,153,0.3)!important;
+    box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 30px rgba(0,255,100,0.06)!important;
   }
 }
 
