@@ -657,9 +657,10 @@ body.dark-mode [style*="background:#fff"] { background: rgba(0,28,14,0.85) !impo
 body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !important; }
 
 
-/* ── FIX NHẤP NHÁY HEADER CHỈ TRÊN DESKTOP ────────
-   Không áp dụng cho điện thoại/touch. Giữ nguyên mobile như bản gốc.
-   Chỉ ổn định layer render của header và bỏ nền fixed trên desktop để tránh repaint. */
+
+/* ── FIX HEADER NHẤP NHÁY DESKTOP + NỀN MOBILE FIXED THẬT ─────────────
+   Không sửa HTML/JS/logic. Desktop: ổn định header để giảm flicker.
+   Mobile/touch: dùng lớp nền fixed riêng để ảnh không co giãn khi thanh địa chỉ ẩn/hiện. */
 @media (hover:hover) and (pointer:fine) and (min-width:769px){
   body{background-attachment:scroll!important}
   .hdr-card{
@@ -670,6 +671,35 @@ body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !import
     transform:none!important;
     will-change:auto;
     isolation:isolate;
+  }
+}
+@media (hover:none), (pointer:coarse), (max-width:768px){
+  body{
+    background-image:none!important;
+    background-attachment:scroll!important;
+    background-size:auto!important;
+    background-position:center center!important;
+    position:relative;
+    isolation:isolate;
+  }
+  body::before{
+    content:"";
+    position:fixed;
+    left:0;
+    top:0;
+    width:100vw;
+    height:100vh;
+    background-image:url('ks.webp');
+    background-size:cover;
+    background-position:center center;
+    background-repeat:no-repeat;
+    pointer-events:none;
+    z-index:-1;
+    transform:translateZ(0);
+    -webkit-transform:translateZ(0);
+  }
+  @supports (height:100lvh){
+    body::before{height:100lvh}
   }
 }
 
