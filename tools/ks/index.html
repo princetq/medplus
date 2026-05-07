@@ -658,12 +658,41 @@ body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !import
 
 
 
-/* ── FIX HEADER NHẤP NHÁY TRÊN MOBILE ─────────────
-   Giữ giao diện header như bản gốc, chỉ bỏ nền fixed gây repaint trên mobile. */
+/* ── FIX BACKGROUND MOBILE – ảnh nền cố định, không cuộn, không khoảng trắng ──
+   Kỹ thuật: pseudo-element body::before position:fixed thay thế background trực tiếp.
+   - iOS Safari không hỗ trợ background-attachment:fixed đúng cách → dùng ::before fixed.
+   - overscroll-behavior-y:none ngăn bounce/khoảng trắng khi cuộn quá đầu/cuối.
+   - Mọi style khác giữ nguyên 100%.
+*/
 html,body{overscroll-behavior-y:none}
 .hdr-card{will-change:auto;isolation:isolate}
+
+/* Xoá background trực tiếp trên body, chuyển sang ::before */
 @media (hover:none), (pointer:coarse), (max-width:768px){
-  body{background-attachment:scroll!important;background-position:center top!important}
+  body{
+    background-image:none!important;
+    background-color:#065f46!important;
+  }
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    background-image:url('ks.webp');
+    background-size:cover;
+    background-position:center center;
+    background-repeat:no-repeat;
+    background-color:#065f46;
+    /* Không dùng will-change hay transform để tránh tạo stacking context mới */
+  }
+  body.dark-mode::before{
+    /* Dark mode overlay: giữ ảnh nền nhưng phủ lớp tối lên trên */
+    background-image:url('ks.webp');
+    background-size:cover;
+    background-position:center center;
+    background-repeat:no-repeat;
+    background-color:#021a0a;
+  }
   .hdr-card{
     background:rgba(255,255,255,.22)!important;
     -webkit-backdrop-filter:blur(14px)!important;
