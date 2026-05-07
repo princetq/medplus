@@ -658,11 +658,12 @@ body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !import
 
 
 
-/* ── FIX MOBILE BACKGROUND THẬT SỰ FIXED ──────────
-   Mục tiêu: nền mobile đứng yên, không co giãn khi thanh địa chỉ ẩn/hiện,
-   và không lộ trắng khi kéo quá đầu/cuối. Không sửa JS/logic xử lý dữ liệu. */
-.mobile-fixed-bg{display:none}
+/* ── FIX NỀN MOBILE: FIXED THẬT, KHÔNG CO GIÃN, KHÔNG LỘ TRẮNG ──
+   Mobile không bị nhấp nháy, nên giữ nguyên header mobile như bản gốc:
+   rgba(.22) + backdrop-filter blur(14px). Chỉ chuyển ảnh nền sang lớp fixed riêng. */
+html,body{overscroll-behavior-y:none}
 .hdr-card{will-change:auto;isolation:isolate}
+.mobile-fixed-bg{display:none}
 @media (hover:none), (pointer:coarse), (max-width:768px){
   html{
     background-color:#065f46!important;
@@ -679,7 +680,6 @@ body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !import
     background-attachment:scroll!important;
     background-size:auto!important;
     background-position:center center!important;
-    background-repeat:no-repeat!important;
     overflow-x:hidden!important;
     overscroll-behavior-y:none;
     position:relative;
@@ -709,17 +709,16 @@ body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !import
   }
   .hdr-card{
     background:rgba(255,255,255,.22)!important;
-    -webkit-backdrop-filter:none!important;
-    backdrop-filter:none!important;
+    -webkit-backdrop-filter:blur(14px)!important;
+    backdrop-filter:blur(14px)!important;
     border:1px solid rgba(255,255,255,.7)!important;
     box-shadow:0 8px 32px rgba(31,38,135,.1)!important;
     transform:none!important;
-    backface-visibility:hidden;
-    -webkit-backface-visibility:hidden;
-    will-change:auto;
   }
   body.dark-mode .hdr-card{
     background:rgba(0,22,11,0.82)!important;
+    -webkit-backdrop-filter:blur(14px)!important;
+    backdrop-filter:blur(14px)!important;
     border:1px solid rgba(52,211,153,0.3)!important;
     box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 30px rgba(0,255,100,0.06)!important;
   }
