@@ -1842,6 +1842,26 @@ body.dark-mode .iv-iframe-container iframe {
                 background: rgba(0, 0, 0, 0.75);
             }
         }
+
+
+        /* LIGHT MODE PATCH: giảm thêm nhẹ độ đục thẻ thuốc + chỉ đổi màu viền ngoài nút công cụ sang trắng */
+        body:not(.dark-mode) .product-grid .glass-card{
+            background:rgba(248,255,247,0.78)!important;
+        }
+        body:not(.dark-mode) .product-grid .glass-card:hover{
+            background:rgba(255,255,255,0.88)!important;
+        }
+        body:not(.dark-mode) .iv-badge-btn{
+            border-color:rgba(255,255,255,0.92)!important;
+        }
+        @media(max-width:600px){
+            body:not(.dark-mode) .product-grid .glass-card{
+                background:rgba(248,255,247,0.82)!important;
+            }
+            body:not(.dark-mode) .iv-badge-btn{
+                border-color:rgba(255,255,255,0.92)!important;
+            }
+        }
 </style>
 </head>
 <body>
@@ -3765,7 +3785,13 @@ body.dark-mode .iv-iframe-container iframe {
                       + '.hdsd-orig-btn:hover{background:rgba(46,125,50,0.07);}'
                       + 'body.dark-mode .hdsd-orig-btn{color:#50dcb4;border-color:#50dcb4;}'
                       + 'body.dark-mode .hdsd-orig-btn:hover{background:rgba(80,220,180,0.1);}'
-                      + '</style>'
+                      + '
+
+        /* LIGHT MODE: giảm độ đậm chữ badge báo số lượng thuốc */
+        body:not(.dark-mode) .count-badge{
+            font-weight:700!important;
+        }
+</style>'
                       + '<a href="'+driveLink+'" target="_blank" class="hdsd-orig-btn">'
                       + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
                       + '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>'
