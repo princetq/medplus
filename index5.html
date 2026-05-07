@@ -43,11 +43,11 @@
         /* LIGHT MODE READABILITY PATCH — giữ tông xanh, giảm lẫn màu với ảnh nền */
         body:not(.dark-mode){--g-bg:rgba(242,252,239,0.88);--g-bg-h:rgba(252,255,251,0.97);--g-border:rgba(46,125,50,0.38);--g-blur:blur(10px);--shadow:0 8px 32px rgba(27,94,32,0.2)}
         body:not(.dark-mode)::before{background:url(bgl.webp) center center / cover no-repeat!important}
-        body:not(.dark-mode) .header-main::before{background:rgba(238,250,232,0.93)!important;border:1px solid rgba(46,125,50,0.46)!important;box-shadow:0 8px 30px rgba(27,94,32,0.24),0 0 16px rgba(76,175,80,0.2),inset 0 1px 0 rgba(255,255,255,0.55)!important}
+        body:not(.dark-mode) .header-main::before{background:rgba(238,250,232,0.86)!important;border:1px solid rgba(46,125,50,0.46)!important;box-shadow:0 8px 30px rgba(27,94,32,0.24),0 0 16px rgba(76,175,80,0.2),inset 0 1px 0 rgba(255,255,255,0.55)!important}
         body:not(.dark-mode) .header-title{color:#1b5e20!important;text-shadow:0 1px 0 rgba(255,255,255,0.85),0 3px 12px rgba(27,94,32,0.22)}
         body:not(.dark-mode) .header-subtitle{color:#2e7d32!important;opacity:0.98!important;text-shadow:0 1px 0 rgba(255,255,255,0.8)}
-        body:not(.dark-mode) .glass-card,body:not(.dark-mode) .skeleton-card{background:rgba(248,255,247,0.91)!important;border:1px solid rgba(46,125,50,0.28)!important;box-shadow:0 8px 28px rgba(27,94,32,0.18)!important}
-        body:not(.dark-mode) .glass-card:hover{background:rgba(255,255,255,0.98)!important;border-color:rgba(46,125,50,0.42)!important;box-shadow:0 18px 42px rgba(27,94,32,0.23),0 0 0 1px rgba(255,255,255,0.72)!important}
+        body:not(.dark-mode) .glass-card,body:not(.dark-mode) .skeleton-card{background:rgba(248,255,247,0.85)!important;border:1px solid rgba(46,125,50,0.28)!important;box-shadow:0 8px 28px rgba(27,94,32,0.18)!important}
+        body:not(.dark-mode) .glass-card:hover{background:rgba(255,255,255,0.93)!important;border-color:rgba(46,125,50,0.42)!important;box-shadow:0 18px 42px rgba(27,94,32,0.23),0 0 0 1px rgba(255,255,255,0.72)!important}
         body:not(.dark-mode) .search-box,body:not(.dark-mode) .abc-toggle-btn,body:not(.dark-mode) .view-btn,body:not(.dark-mode) .letter-btn,body:not(.dark-mode) .group-filter-select{background-color:rgba(247,255,245,0.94)!important;border-color:rgba(46,125,50,0.36)!important;box-shadow:0 4px 18px rgba(27,94,32,0.16)!important;color:#2e7d32!important}
         body:not(.dark-mode) .search-box:focus-within,body:not(.dark-mode) .group-filter-select:focus{background-color:rgba(255,255,255,0.99)!important;border-color:#4caf50!important;box-shadow:0 0 0 3px rgba(76,175,80,0.22),0 6px 20px rgba(27,94,32,0.18)!important}
         body:not(.dark-mode) .search-box input{color:#1b5e20!important}
@@ -57,11 +57,16 @@
         body:not(.dark-mode) .p-info b{color:#2e7d32!important}
         body:not(.dark-mode) .footer-badge{background:rgba(255,248,210,0.92)!important;border-color:rgba(251,192,45,0.85)!important;box-shadow:0 6px 18px rgba(27,94,32,0.12)!important}
         body:not(.dark-mode) .nature-background{opacity:0.72}
-        @media(max-width:600px){body:not(.dark-mode)::before{background:url("./bgl-mb.webp") center center / cover no-repeat!important}body:not(.dark-mode) .glass-card{background:rgba(248,255,247,0.94)!important}body:not(.dark-mode) .search-box,body:not(.dark-mode) .abc-toggle-btn,body:not(.dark-mode) .view-btn,body:not(.dark-mode) .letter-btn,body:not(.dark-mode) .group-filter-select{background-color:rgba(247,255,245,0.96)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+        @media(max-width:600px){body:not(.dark-mode)::before{background:url("./bgl-mb.webp") center center / cover no-repeat!important}body:not(.dark-mode) .glass-card{background:rgba(248,255,247,0.88)!important}body:not(.dark-mode) .search-box,body:not(.dark-mode) .abc-toggle-btn,body:not(.dark-mode) .view-btn,body:not(.dark-mode) .letter-btn,body:not(.dark-mode) .group-filter-select{background-color:rgba(247,255,245,0.96)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
 
         /* LIGHT MODE: viền xanh lá quanh ảnh thuốc trong các thẻ thuốc trang chủ */
         body:not(.dark-mode) .product-grid .img-wrap{border:1.5px solid rgba(46,125,50,0.55)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.7),0 3px 12px rgba(27,94,32,0.12)!important}
         body:not(.dark-mode) .product-grid .glass-card:hover .img-wrap{border-color:rgba(46,125,50,0.82)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.82),0 5px 18px rgba(27,94,32,0.18)!important}
+
+        /* LIGHT MODE: giảm độ đậm chữ trong ô chọn nhóm dược lý */
+        body:not(.dark-mode) .group-filter-select,
+        body:not(.dark-mode) #groupSelectedText{font-weight:500!important}
+        body:not(.dark-mode) .group-filter-select option{font-weight:500!important}
 
         .glass-panel{background:var(--g-bg);backdrop-filter:var(--g-blur);-webkit-backdrop-filter:var(--g-blur);border:1px solid var(--g-border);box-shadow:var(--shadow);border-radius:var(--rad)}
         
