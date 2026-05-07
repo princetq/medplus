@@ -658,40 +658,39 @@ body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !import
 
 
 
-/* ── FIX BACKGROUND MOBILE – ảnh nền cố định, không cuộn, không khoảng trắng ──
-   Kỹ thuật: pseudo-element body::before position:fixed thay thế background trực tiếp.
-   - iOS Safari không hỗ trợ background-attachment:fixed đúng cách → dùng ::before fixed.
-   - overscroll-behavior-y:none ngăn bounce/khoảng trắng khi cuộn quá đầu/cuối.
-   - Mọi style khác giữ nguyên 100%.
+/* ── FIX BACKGROUND MOBILE – ảnh nền đứng yên nhưng ưu tiên cuộn mượt ─────────
+   Giải pháp cân bằng hiệu năng:
+   - Không dùng background-attachment:fixed trên mobile vì dễ giật/lỗi trên iOS.
+   - Không dùng pseudo-element fixed vì có thể làm cuộn kém mượt trên máy yếu.
+   - Dùng nền gắn với viewport qua html, còn body trong suốt; giữ overscroll không lộ khoảng trắng.
+   - Giữ nguyên toàn bộ phần khác.
 */
-html,body{overscroll-behavior-y:none}
+html{
+  background-color:#065f46;
+  background-image:url('ks.webp');
+  background-size:cover;
+  background-position:center center;
+  background-repeat:no-repeat;
+  background-attachment:scroll;
+  overscroll-behavior-y:none;
+}
+body{overscroll-behavior-y:none}
 .hdr-card{will-change:auto;isolation:isolate}
-
-/* Xoá background trực tiếp trên body, chuyển sang ::before */
 @media (hover:none), (pointer:coarse), (max-width:768px){
-  body{
-    background-image:none!important;
+  html{
     background-color:#065f46!important;
+    background-image:url('ks.webp')!important;
+    background-size:cover!important;
+    background-position:center center!important;
+    background-repeat:no-repeat!important;
+    background-attachment:scroll!important;
   }
-  body::before{
-    content:'';
-    position:fixed;
-    inset:0;
-    z-index:-1;
-    background-image:url('ks.webp');
-    background-size:cover;
-    background-position:center center;
-    background-repeat:no-repeat;
-    background-color:#065f46;
-    /* Không dùng will-change hay transform để tránh tạo stacking context mới */
+  body{
+    background:transparent!important;
+    -webkit-overflow-scrolling:touch;
   }
-  body.dark-mode::before{
-    /* Dark mode overlay: giữ ảnh nền nhưng phủ lớp tối lên trên */
-    background-image:url('ks.webp');
-    background-size:cover;
-    background-position:center center;
-    background-repeat:no-repeat;
-    background-color:#021a0a;
+  body.dark-mode{
+    background:transparent!important;
   }
   .hdr-card{
     background:rgba(255,255,255,.22)!important;
@@ -707,6 +706,7 @@ html,body{overscroll-behavior-y:none}
     box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 30px rgba(0,255,100,0.06)!important;
   }
 }
+
 
 </style>
 </head>
