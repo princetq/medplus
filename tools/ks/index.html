@@ -18,7 +18,11 @@
 #csb-thumb { position:absolute; right:0; width:3px; background:rgba(255,255,255,0.45); border-radius:4px; transition:background 0.2s; min-height:28px; }
 #csb-thumb:hover { background:rgba(255,255,255,0.75); }
 
-body{font-family:'Montserrat',sans-serif;color:#1e293b;line-height:1.5;font-size:16px;background:#065f46;}
+html,body{height:100%;width:100%;overflow:hidden;overscroll-behavior:none;margin:0;padding:0}
+.bg-fixed{position:fixed;inset:0;z-index:0;background:url('ks.webp') center center/cover no-repeat;background-color:#065f46;pointer-events:none}
+body.dark-mode .bg-fixed{background:linear-gradient(rgba(0,10,5,0.45),rgba(0,10,5,0.45)),url('ks.webp') center center/cover no-repeat;background-color:#021a0a}
+.page-scroll{position:relative;z-index:1;width:100%;height:100%;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;padding:10px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;color:#1e293b;line-height:1.5;font-size:16px}
+body.has-result .page-scroll{justify-content:flex-start}
 /* ── TOAST ─────────────────────────────────────── */
 #toast-box{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:9999;width:92%;max-width:400px;pointer-events:none}
 .toast{background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-left:5px solid #16a34a;padding:12px 14px;border-radius:8px;margin-bottom:8px;box-shadow:0 4px 14px rgba(0,0,0,.15);display:flex;align-items:center;gap:10px;animation:tIn .3s ease;pointer-events:auto;font-size:17px;font-weight:600;color:#1e293b}
@@ -367,7 +371,7 @@ body.dark-mode .wi-box {
   color: #a7f3d0;
 }
 body.dark-mode .wi-val { color: #d1fae5; }
-body.dark-mode #obeseNote { color: #fcd34d !important; }
+body.dark-mode #obeseNote { color:#fff !important; background:rgba(217,119,6,0.75) !important; }
 
 /* Drug card */
 body.dark-mode .drug-card {
@@ -658,59 +662,6 @@ body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !import
 
 
 
-/* ── FIX ẢNH NỀN MOBILE – kỹ thuật từ bản tiêm truyền ─────────────────────────
-   Nguyên lý: html+body overflow:hidden, ảnh nền trong div.bg-fixed position:fixed,
-   toàn bộ nội dung + scroll nằm trong div.page-scroll (overflow-y:auto).
-   → Ảnh nền tuyệt đối đứng yên, cuộn mượt, không khoảng trắng.
-*/
-html,body{
-  height:100%;
-  width:100%;
-  overflow:hidden;
-  overscroll-behavior:none;
-  margin:0;
-  padding:0;
-}
-/* Lớp ảnh nền cố định – z-index:0, không scroll cùng nội dung */
-.bg-fixed{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  background:url('ks.webp') center center/cover no-repeat;
-  background-color:#065f46;
-  pointer-events:none;
-}
-body.dark-mode .bg-fixed{
-  background:linear-gradient(rgba(0,10,5,0.45),rgba(0,10,5,0.45)),
-             url('ks.webp') center center/cover no-repeat;
-  background-color:#021a0a;
-}
-/* Container cuộn – thay thế body scroll */
-.page-scroll{
-  position:relative;
-  z-index:1;
-  width:100%;
-  height:100%;
-  overflow-y:auto;
-  overflow-x:hidden;
-  -webkit-overflow-scrolling:touch;
-  overscroll-behavior-y:contain;
-  /* Giữ padding gốc của body */
-  padding:10px;
-  box-sizing:border-box;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-}
-.page-scroll.has-result{
-  justify-content:flex-start;
-}
-@media(max-width:480px){
-  .page-scroll{padding:5px;}
-}
-/* Header card giữ nguyên hoàn toàn */
-.hdr-card{will-change:auto;isolation:isolate}
 
 </style>
 </head>
@@ -808,7 +759,7 @@ body.dark-mode .bg-fixed{
  <div class="wi-row"><span>Cân nặng thực (TBW):</span><span class="wi-val" id="a_tbw"></span></div>
  <div class="wi-row"><span>Cân nặng lý tưởng (IBW):</span><span class="wi-val" id="a_ibw"></span></div>
  <div class="wi-row" id="adjRow" style="display:none"><span>Cân nặng hiệu chỉnh (AdjBW):</span><span class="wi-val" id="a_adjbw"></span></div>
- <div id="obeseNote" style="color:#d97706;font-size:13px;font-style:italic;margin-top:3px"></div>
+ <div id="obeseNote" style="color:#fff;font-size:13px;font-weight:700;font-style:italic;margin-top:4px;background:rgba(217,119,6,0.85);border-radius:6px;padding:3px 8px;display:inline-block"></div>
  </div>
 
  <div style="margin-bottom:13px">
@@ -1278,7 +1229,7 @@ function calcAdult(){
  document.getElementById('obeseNote').textContent=pA.isObese?'⚠️ Béo phì (>130% IBW)':'';
  if(document.getElementById('a_drug').value!=='')renderAdultDrug();
  document.getElementById('resetAllBtn').style.display='block';
- document.body.classList.add('has-result');window.scrollTo({top:0,behavior:'smooth'});
+ document.body.classList.add('has-result');requestAnimationFrame(function(){document.getElementById('pageScroll').scrollTop=0;});
 }
 function ckCG(w,cre){let v=((140-pA.age)*w*1.23)/cre;if(!pA.isMale)v*=0.85;return v;}
 function useAdj(){pA.crcl=pA.crclAlt; pA.useMeth = 'crcl'; pA.usedWeight = pA.isObese ? pA.tbw : pA.ibw; pA.usedWeightName = pA.isObese ? 'Cân nặng thực' : 'Cân nặng lý tưởng'; document.getElementById('a_methCrcl').classList.add('on'); document.getElementById('a_methGfr').classList.remove('on'); updateAdultResultUI(); document.getElementById('a_crclAlt').innerHTML='<span style="color:#16a34a">✅ Đã áp dụng CrCl theo '+pA.usedWeightName+'.</span>';renderAdultDrug();toast('Đã cập nhật liều!','success')}
@@ -2062,22 +2013,24 @@ function resetAll(){
  });
  document.getElementById('resetAllBtn').style.display='none';
  document.body.classList.remove('has-result');
- window.scrollTo({top:0,behavior:'smooth'});
+ requestAnimationFrame(function(){document.getElementById('pageScroll').scrollTop=0;});
 }
 
 // ── CUSTOM SCROLLBAR (PC only) ──
 (function(){
     if (window.matchMedia('(hover: none)').matches) return;
     if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+    var scroller = document.getElementById('pageScroll');
+    if (!scroller) return;
     var track = document.createElement('div'); track.id = 'csb';
     var thumb = document.createElement('div'); thumb.id = 'csb-thumb';
     track.appendChild(thumb);
     document.body.appendChild(track);
     var hideTimer = null, isDragging = false, dragStartY = 0, dragStartScroll = 0;
     function update() {
-        var st = window.pageYOffset || document.documentElement.scrollTop;
-        var sh = document.documentElement.scrollHeight;
-        var ch = document.documentElement.clientHeight;
+        var st = scroller.scrollTop;
+        var sh = scroller.scrollHeight;
+        var ch = scroller.clientHeight;
         if (sh <= ch) { track.classList.remove('show'); return; }
         track.classList.add('show');
         var ratio = st / (sh - ch);
@@ -2091,21 +2044,21 @@ function resetAll(){
         clearTimeout(hideTimer);
         hideTimer = setTimeout(function(){ track.classList.remove('show'); }, 1200);
     }
-    window.addEventListener('scroll', showAndHide, { passive: true });
+    scroller.addEventListener('scroll', showAndHide, { passive: true });
     window.addEventListener('resize', update, { passive: true });
     thumb.addEventListener('mousedown', function(e) {
         isDragging = true; dragStartY = e.clientY;
-        dragStartScroll = window.pageYOffset;
+        dragStartScroll = scroller.scrollTop;
         document.body.style.userSelect = 'none'; e.preventDefault();
     });
     document.addEventListener('mousemove', function(e) {
         if (!isDragging) return;
-        var sh = document.documentElement.scrollHeight;
-        var ch = document.documentElement.clientHeight;
+        var sh = scroller.scrollHeight;
+        var ch = scroller.clientHeight;
         var trkH = track.offsetHeight;
         var tmbH = Math.max(28, (ch / sh) * trkH);
         var delta = e.clientY - dragStartY;
-        window.scrollTo(0, dragStartScroll + delta / (trkH - tmbH) * (sh - ch));
+        scroller.scrollTop = dragStartScroll + delta / (trkH - tmbH) * (sh - ch);
         update();
     });
     document.addEventListener('mouseup', function() {
