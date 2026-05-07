@@ -1812,6 +1812,34 @@ body.dark-mode .iv-iframe-container iframe {
                 background: rgba(0, 0, 0, 0.75);
             }
         }
+
+
+        /* ============================================================
+           FIX RIÊNG CÔNG CỤ KHÁNG SINH TRONG IFRAME
+           Giữ nguyên 3 công cụ khác. Không sửa nội dung/logic iframe.
+           Lý do: công cụ kháng sinh có background fixed + glass blur bên trong,
+           dễ nhấp nháy khi iframe bị contain/content-visibility/transform từ trang cha.
+           ============================================================ */
+        #ks-modal.modal-overlay,
+        #ks-modal .iv-modal-content,
+        #ks-modal .iv-iframe-container,
+        #ks-modal #ks-iframe {
+            transform: none !important;
+            -webkit-transform: none !important;
+            will-change: auto !important;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        #ks-modal .iv-iframe-container {
+            isolation: isolate;
+            contain: none !important;
+        }
+
+        #ks-modal #ks-iframe {
+            contain: none !important;
+            content-visibility: visible !important;
+        }
 </style>
 </head>
 <body>
