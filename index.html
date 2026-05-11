@@ -3314,11 +3314,12 @@ body.dark-mode .iv-iframe-container iframe {
             }
             
             filteredData = rawData.filter(function(i) {
-                const matchesSearch = i.brand.toLowerCase().includes(query) || (i.active && i.active.toLowerCase().includes(query));
-                const matchesLetter = selectedLetter === '' || i.brand.trim().toUpperCase().startsWith(selectedLetter);
-                const matchesGroup = selectedGroup === '' || String(i.group || '').trim() === selectedGroup;
-                return matchesSearch && matchesLetter && matchesGroup;
-            });
+  const matchesSearch = i.brand.toLowerCase().includes(query) || (i.active && i.active.toLowerCase().includes(query));
+  const matchesLetter = !selectedLetter || i.brand.trim().toUpperCase().startsWith(selectedLetter);
+  const matchesGroup = !selectedGroup || String(i.group).trim() === selectedGroup;
+  const isActive = !i.status || String(i.status).trim().toLowerCase() !== 'x';
+  return matchesSearch && matchesLetter && matchesGroup && isActive;
+});
             document.getElementById('medCount').innerText = filteredData.length + ' thuốc';
             renderInitial();
         }
