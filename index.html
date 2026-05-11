@@ -1037,28 +1037,62 @@ body.dark-mode .iv-iframe-container iframe {
             color: #9dbfc8 !important;
         }
 
-        /* --- ĐOẠN SỬA MÀU KHỐI LƯU Ý (CALLOUT) CHO LIGHTMODE --- */
+        /* --- ĐỒNG BỘ CHÚ THÍCH CALLOUT TRONG TỜ HDSD --- */
+        #hdsd-content .hdsd-callout,
         #hdsd-content div[style*="background:rgba(76,175,80,0.09)"] {
+            display: flex !important;
+            gap: 10px !important;
             background: #FFF9E1 !important;
             border: 1px solid #FFD54F !important;
             color: #8B633B !important;
-            font-style: italic;
             border-radius: 12px !important;
+            padding: 12px 14px !important;
             margin: 10px 0 !important;
+            font-style: italic !important;
         }
-        #hdsd-content div[style*="background:rgba(76,175,80,0.09)"] * {
+        #hdsd-content .hdsd-callout-icon {
+            font-size: 20px !important;
+            line-height: 1.4 !important;
+            flex-shrink: 0 !important;
+        }
+        #hdsd-content .hdsd-callout-text,
+        #hdsd-content .hdsd-callout-text *,
+        #hdsd-content div[style*="background:rgba(76,175,80,0.09)"] div,
+        #hdsd-content div[style*="background:rgba(76,175,80,0.09)"] div * {
             color: #8B633B !important;
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif !important;
+            font-size: 16px !important;
+            font-weight: 400 !important;
+            line-height: 1.7 !important;
+            opacity: 1 !important;
+            letter-spacing: -0.01em !important;
+        }
+        #hdsd-content .hdsd-callout-text strong,
+        #hdsd-content .hdsd-callout-text b,
+        #hdsd-content div[style*="background:rgba(76,175,80,0.09)"] strong,
+        #hdsd-content div[style*="background:rgba(76,175,80,0.09)"] b {
+            font-weight: 400 !important;
+        }
+        #hdsd-content .hdsd-callout-children {
+            margin-top: 6px !important;
         }
 
-        /* --- ĐOẠN SỬA MÀU KHỐI LƯU Ý (CALLOUT) CHO DARK MODE --- */
+        /* --- CALLOUT HDSD: DARK MODE --- */
+        body.dark-mode #hdsd-content .hdsd-callout,
         body.dark-mode #hdsd-content div[style*="background:rgba(76,175,80,0.09)"] {
             background: rgba(40, 28, 5, 0.65) !important;
             border: 1px solid rgba(255, 209, 102, 0.4) !important;
             color: #ffd166 !important;
-            font-style: italic;
         }
-        body.dark-mode #hdsd-content div[style*="background:rgba(76,175,80,0.09)"] * {
+        body.dark-mode #hdsd-content .hdsd-callout-text,
+        body.dark-mode #hdsd-content .hdsd-callout-text *,
+        body.dark-mode #hdsd-content div[style*="background:rgba(76,175,80,0.09)"] div,
+        body.dark-mode #hdsd-content div[style*="background:rgba(76,175,80,0.09)"] div * {
             color: #ffd166 !important;
+            font-size: 16px !important;
+            font-weight: 400 !important;
+            line-height: 1.7 !important;
+            opacity: 1 !important;
         }
 
         /* === HDSD MOBILE OPTIMIZED === */
@@ -3501,9 +3535,9 @@ body.dark-mode .iv-iframe-container iframe {
                         html += '<blockquote>'+text+(ch?'<div style="margin-top:6px">'+ch+'</div>':'')+'</blockquote>';
                         break;
                     case 'callout':
-                        html += '<div style="display:flex;gap:10px;background:rgba(76,175,80,0.09);border:1px solid rgba(76,175,80,0.25);border-radius:10px;padding:12px 14px;margin:10px 0">'
-                              + '<span style="font-size:20px;flex-shrink:0">'+(b.icon&&b.icon.emoji?b.icon.emoji:'ℹ️')+'</span>'
-                              + '<div style="font-size:15px;line-height:1.7;">'+text+(ch?'<div style="margin-top:6px">'+ch+'</div>':'')+'</div>'
+                        html += '<div class="hdsd-callout">'
+                              + '<span class="hdsd-callout-icon">'+(b.icon&&b.icon.emoji?b.icon.emoji:'ℹ️')+'</span>'
+                              + '<div class="hdsd-callout-text">'+text+(ch?'<div class="hdsd-callout-children">'+ch+'</div>':'')+'</div>'
                               + '</div>';
                         break;
                     case 'divider':
