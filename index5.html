@@ -579,6 +579,8 @@
             width: 100vw;
             overflow-x: hidden;
             min-height: 100dvh; 
+            overscroll-behavior-y: none;
+            overscroll-behavior-x: none;
         }
 
         /* 2. KHU VỰC CÁCH LY: CHỈ ÁP DỤNG CHO ĐIỆN THOẠI (Dưới 600px) */
@@ -3161,12 +3163,23 @@ body.dark-mode .iv-iframe-container iframe {
                     if (bellBtn) { bellBtn.style.opacity = '1'; bellBtn.style.pointerEvents = ''; }
                 }
 
-                const scrollBottom = window.innerHeight + window.scrollY;
-                const docHeight = document.documentElement.scrollHeight;
-                if (scrollBottom >= docHeight - 500 && scrollBottom <= docHeight + 100) {
-                    if (!isRendering && displayedCount < filteredData.length) {
-                        renderBatch();
-                    }
+                const scrollTop = Math.max(0, window.scrollY || document.documentElement.scrollTop || 0);
+                const scrollBottom = window.innerHeight + scrollTop;
+                const docHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+
+                if (scrollBottom >= docHeight - 500 && scrollBottom <= docHeight + 120 && !window.__scrollRenderScheduled) {
+                    window.__scrollRenderScheduled = true;
+                    requestAnimationFrame(function() {
+                        window.__scrollRenderScheduled = false;
+                        const latestScrollTop = Math.max(0, window.scrollY || document.documentElement.scrollTop || 0);
+                        const latestScrollBottom = window.innerHeight + latestScrollTop;
+                        const latestDocHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+                        if (latestScrollBottom >= latestDocHeight - 500 && latestScrollBottom <= latestDocHeight + 120) {
+                            if (!isRendering && displayedCount < filteredData.length) {
+                                renderBatch();
+                            }
+                        }
+                    });
                 }
 
                 // TỐI ƯU HIỆU NĂNG: chỉ đóng băng animation khi cuộn trên mobile; PC vẫn chạy hiệu ứng khi cuộn
@@ -5219,6 +5232,64 @@ body.dark-mode .iv-iframe-container iframe {
 
         })();
 
+        // Fix iOS Safari rubber-band overscroll / pull-to-refresh gây reload khi cuộn nhanh
+        function initIOSScrollReloadGuard() {
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            if (!isIOS) return;
+
+            let lastTouchY = 0;
+            const scrollableSelector = '.modal-content, .chat-messages, .iv-iframe-container, #hdsd-content';
+
+            function canScrollableParentMove(target, deltaY) {
+                let el = target;
+                while (el && el !== document.body && el !== document.documentElement) {
+                    if (el.matches && el.matches(scrollableSelector)) {
+                        const style = window.getComputedStyle(el);
+                        const canScrollY = /(auto|scroll)/.test(style.overflowY) && el.scrollHeight > el.clientHeight + 1;
+                        if (canScrollY) {
+                            if (deltaY > 0 && el.scrollTop > 0) return true;
+                            if (deltaY < 0 && el.scrollTop + el.clientHeight < el.scrollHeight - 1) return true;
+                        }
+                    }
+                    el = el.parentElement;
+                }
+                return false;
+            }
+
+            document.addEventListener('touchstart', function(e) {
+                if (e.touches && e.touches.length) {
+                    lastTouchY = e.touches[0].clientY;
+                }
+            }, { passive: true });
+
+            document.addEventListener('touchmove', function(e) {
+                if (!e.touches || !e.touches.length) return;
+
+                // Khi modal/chat đang mở, phần lockBodyScroll hiện có xử lý riêng.
+                if (document.body.classList.contains('modal-open') || document.body.classList.contains('chat-open')) return;
+
+                const currentY = e.touches[0].clientY;
+                const deltaY = currentY - lastTouchY;
+                lastTouchY = currentY;
+
+                if (canScrollableParentMove(e.target, deltaY)) return;
+
+                const scrollingEl = document.scrollingElement || document.documentElement;
+                const scrollTop = Math.max(0, scrollingEl.scrollTop || window.scrollY || 0);
+                const maxScroll = Math.max(0, scrollingEl.scrollHeight - window.innerHeight);
+                const atTop = scrollTop <= 0;
+                const atBottom = scrollTop >= maxScroll - 1;
+
+                // deltaY > 0: kéo xuống khi đang ở đầu trang -> pull-to-refresh.
+                // deltaY < 0: kéo lên khi đang ở cuối trang -> rubber-band cuối trang.
+                if ((atTop && deltaY > 0) || (atBottom && deltaY < 0)) {
+                    if (e.cancelable) e.preventDefault();
+                }
+            }, { passive: false });
+        }
+
+        initIOSScrollReloadGuard();
+
         // Fix iOS Safari smooth scroll gây reload trang
         function scrollToTopSafe() {
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
@@ -5231,6 +5302,7 @@ body.dark-mode .iv-iframe-container iframe {
                 document.body.classList.remove('page-hidden');
             }
         });
+
 </script>
 
 <script>
