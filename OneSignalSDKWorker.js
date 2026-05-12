@@ -5,10 +5,10 @@ const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/icons/icon-192x192.png' // Nên cache sẵn logo để app load nhanh hơn
-  '/tools/ks/ks.webp'
-  '/tools/tiemtruyen/tiem.webp'
-  '/tools/ttthuoc/TTthuoc.webp'
+  '/icons/icon-192x192.png', // Nên cache sẵn logo để app load nhanh hơn
+  '/tools/ks/ks.webp',
+  '/tools/tiemtruyen/tiem.webp',
+  '/tools/ttthuoc/TTthuoc.webp',
   '/tools/tuongki/tuongki.webp'
 
 ];
