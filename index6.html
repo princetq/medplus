@@ -4338,13 +4338,12 @@ body.dark-mode .iv-iframe-container iframe {
 
         async function nativeShareHDSD() {
             const data = window._currentHDSDShare || {};
-            if (navigator.share && data.url) {
-                try {
-                    await navigator.share({ title: data.title || 'Tờ hướng dẫn sử dụng', text: data.title || 'Tờ hướng dẫn sử dụng', url: data.url });
-                    return;
-                } catch (e) {}
+            if (!navigator.share || !data.url) return;
+            try {
+                await navigator.share({ title: data.title || 'Tờ hướng dẫn sử dụng', text: data.title || 'Tờ hướng dẫn sử dụng', url: data.url });
+            } catch (e) {
+                // Người dùng hủy bảng chia sẻ hoặc trình duyệt không hoàn tất chia sẻ: không tự copy link.
             }
-            copyHDSDShareLink();
         }
 
         async function copyHDSDShareLink() {
