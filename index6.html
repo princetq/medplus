@@ -2216,7 +2216,7 @@ body.dark-mode .iv-iframe-container iframe {
             <div class="hdsd-share-grid">
                 <button class="hdsd-share-option" type="button" onclick="nativeShareHDSD()">📲 Chia sẻ nhanh</button>
                 <div class="hdsd-zalo-sdk-wrap" id="hdsd-zalo-sdk-holder">
-                    <a class="hdsd-share-option hdsd-zalo-custom-btn zalo-share-button" id="hdsd-zalo-share" role="button" tabindex="0" data-href="" data-type="0" data-layout="1" data-color="blue" data-customize="true">Zalo</a>
+                    <a class="hdsd-share-option hdsd-zalo-custom-btn" id="hdsd-zalo-share" target="_blank" rel="noopener" href="#" aria-label="Chia sẻ qua Zalo">Zalo</a>
                 </div>
                 <a class="hdsd-share-option" id="hdsd-share-facebook" target="_blank" rel="noopener">Facebook</a>
                 <a class="hdsd-share-option" id="hdsd-share-messenger" target="_blank" rel="noopener">Messenger</a>
@@ -2230,7 +2230,7 @@ body.dark-mode .iv-iframe-container iframe {
         </div>
     </div>
 
-    <script src="https://sp.zalo.me/plugins/sdk.js"></script>
+    <!-- PATCH: Zalo share uses direct official share endpoint because SDK custom button was unreliable inside the modal. -->
 
     <div id="bell-modal">
         <div id="bell-modal-box">
@@ -4298,22 +4298,26 @@ body.dark-mode .iv-iframe-container iframe {
             });
         }
 
+        function encodeZaloPayload_(str) {
+            try {
+                return btoa(unescape(encodeURIComponent(str)));
+            } catch (e) {
+                return btoa(str);
+            }
+        }
+
+        function getZaloShareUrl_(shareUrl) {
+            const payload = JSON.stringify({ url: shareUrl || window.location.href });
+            return 'https://button-share.zalo.me/share_external?d=' + encodeURIComponent(encodeZaloPayload_(payload));
+        }
+
         function renderHDSDZaloSDKButton_(shareUrl) {
             const holder = document.getElementById('hdsd-zalo-sdk-holder');
             if (!holder) return;
-            holder.innerHTML = '<a class="hdsd-share-option hdsd-zalo-custom-btn zalo-share-button" id="hdsd-zalo-share" role="button" tabindex="0" data-href="" data-type="0" data-layout="1" data-color="blue" data-customize="true">Zalo</a>';
+            holder.innerHTML = '<a class="hdsd-share-option hdsd-zalo-custom-btn" id="hdsd-zalo-share" target="_blank" rel="noopener" href="#" aria-label="Chia sẻ qua Zalo">Zalo</a>';
             const btn = document.getElementById('hdsd-zalo-share');
-            if (btn) btn.setAttribute('data-href', shareUrl || window.location.href);
-
-            const reload = function() {
-                try {
-                    if (window.ZaloSocialSDK && typeof window.ZaloSocialSDK.reload === 'function') {
-                        window.ZaloSocialSDK.reload();
-                    }
-                } catch (e) {}
-            };
-            reload();
-            setTimeout(reload, 250);
+            if (!btn) return;
+            btn.href = getZaloShareUrl_(shareUrl || window.location.href);
         }
 
         function openHDSDShareModal(encodedNotionUrl, encodedTitle, evt) {
