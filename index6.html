@@ -23,6 +23,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script src="https://sp.zalo.me/plugins/sdk.js"></script>
     <script>
         window.OneSignalDeferred = window.OneSignalDeferred || [];
         OneSignalDeferred.push(async function(OneSignal) {
@@ -2213,6 +2214,7 @@ body.dark-mode .iv-iframe-container iframe {
             <div class="hdsd-share-desc">Gửi link này cho người khác. Khi họ mở link, trang web sẽ tự bật đúng tờ HDSD.</div>
             <div class="hdsd-share-grid">
                 <button class="hdsd-share-option" type="button" onclick="nativeShareHDSD()">📲 Chia sẻ nhanh</button>
+                <div class="hdsd-share-option zalo-share-button" id="hdsd-share-zalo" data-href="" data-layout="1" data-color="blue" data-customize="true">Zalo</div>
                 <a class="hdsd-share-option" id="hdsd-share-facebook" target="_blank" rel="noopener">Facebook</a>
                 <a class="hdsd-share-option" id="hdsd-share-messenger" target="_blank" rel="noopener">Messenger</a>
                 <a class="hdsd-share-option" id="hdsd-share-telegram" target="_blank" rel="noopener">Telegram</a>
@@ -4280,6 +4282,32 @@ body.dark-mode .iv-iframe-container iframe {
             return u.toString();
         }
 
+
+        function escapeAttr_(value) {
+            return String(value || '')
+                .replace(/&/g, '&amp;')
+                .replace(/"/g, '&quot;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        function renderHDSDZaloButton_(shareUrl) {
+            const zaloBtn = document.getElementById('hdsd-share-zalo');
+            if (!zaloBtn) return;
+            zaloBtn.setAttribute('data-href', shareUrl);
+            zaloBtn.setAttribute('data-layout', '1');
+            zaloBtn.setAttribute('data-color', 'blue');
+            zaloBtn.setAttribute('data-customize', 'true');
+            zaloBtn.textContent = 'Zalo';
+            setTimeout(function() {
+                try {
+                    if (window.ZaloSocialSDK && typeof window.ZaloSocialSDK.reload === 'function') {
+                        window.ZaloSocialSDK.reload();
+                    }
+                } catch (e) {}
+            }, 80);
+        }
+
         function bindHDSDShareButtons(root) {
             const scope = root || document;
             scope.querySelectorAll('.hdsd-share-btn[data-hdsd-share]').forEach(function(btn) {
@@ -4306,6 +4334,7 @@ body.dark-mode .iv-iframe-container iframe {
 
             const input = document.getElementById('hdsd-share-link');
             if (input) input.value = shareUrl;
+            renderHDSDZaloButton_(shareUrl);
 
             const encodedUrl = encodeURIComponent(shareUrl);
             const encodedText = encodeURIComponent(shareText);
