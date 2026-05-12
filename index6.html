@@ -1998,7 +1998,8 @@ body.dark-mode .iv-iframe-container iframe {
         .hdsd-share-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;}
         .hdsd-share-title{font-size:17px;font-weight:900;color:#2e7d32;}
         body.dark-mode .hdsd-share-title{color:#50dcb4;}
-        .hdsd-share-close{width:32px;height:32px;border:none;border-radius:50%;background:rgba(46,125,50,0.08);color:#2e7d32;font-size:22px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;}
+        .hdsd-share-close{width:32px;height:32px;border:none;border-radius:50%;background:rgba(46,125,50,0.08);color:#2e7d32;font-size:0;line-height:0;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;position:relative;}
+        .hdsd-share-close::before{content:"\00d7";font-size:22px;line-height:1;display:block;transform:translateY(-1px);}
         body.dark-mode .hdsd-share-close{background:rgba(80,220,180,0.1);color:#50dcb4;}
         .hdsd-share-desc{font-size:13px;color:#555;line-height:1.55;margin-bottom:14px;}
         body.dark-mode .hdsd-share-desc{color:#b8c9c0;}
@@ -2010,7 +2011,7 @@ body.dark-mode .iv-iframe-container iframe {
         .hdsd-share-copy-row{display:flex;gap:8px;margin-top:10px;}
         #hdsd-share-link{flex:1;min-width:0;border:1px solid rgba(46,125,50,0.22);border-radius:10px;padding:10px 11px;font-size:12px;color:#2b2b2b;background:#fff;font-family:inherit;}
         body.dark-mode #hdsd-share-link{background:#07162a;border-color:rgba(80,220,180,0.25);color:#d7fff0;}
-        #hdsd-copy-btn{border:none;border-radius:10px;padding:0 13px;background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;font-weight:900;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap;}
+        #hdsd-copy-btn{border:none;border-radius:10px;padding:0 13px;background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;font-weight:900;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap;-webkit-tap-highlight-color:transparent;user-select:none;}
         @media(max-width:600px){.hdsd-action-row{justify-content:space-between;}.hdsd-share-btn{padding:7px 12px;}#hdsd-share-box{max-width:330px;padding:18px;}.hdsd-share-grid{grid-template-columns:1fr;}}
 
 </style>
@@ -2212,7 +2213,6 @@ body.dark-mode .iv-iframe-container iframe {
             <div class="hdsd-share-desc">Gửi link này cho người khác. Khi họ mở link, trang web sẽ tự bật đúng tờ HDSD.</div>
             <div class="hdsd-share-grid">
                 <button class="hdsd-share-option" type="button" onclick="nativeShareHDSD()">📲 Chia sẻ nhanh</button>
-                <button class="hdsd-share-option" id="hdsd-share-zalo" type="button" onclick="shareToZaloHDSD()">Zalo</button>
                 <a class="hdsd-share-option" id="hdsd-share-facebook" target="_blank" rel="noopener">Facebook</a>
                 <a class="hdsd-share-option" id="hdsd-share-messenger" target="_blank" rel="noopener">Messenger</a>
                 <a class="hdsd-share-option" id="hdsd-share-telegram" target="_blank" rel="noopener">Telegram</a>
@@ -4309,12 +4309,10 @@ body.dark-mode .iv-iframe-container iframe {
 
             const encodedUrl = encodeURIComponent(shareUrl);
             const encodedText = encodeURIComponent(shareText);
-            const zalo = document.getElementById('hdsd-share-zalo');
             const facebook = document.getElementById('hdsd-share-facebook');
             const messenger = document.getElementById('hdsd-share-messenger');
             const telegram = document.getElementById('hdsd-share-telegram');
             const whatsapp = document.getElementById('hdsd-share-whatsapp');
-            if (zalo) zalo.dataset.shareUrl = shareUrl;
             if (facebook) facebook.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodedUrl;
             if (messenger) messenger.href = 'fb-messenger://share?link=' + encodedUrl;
             if (telegram) telegram.href = 'https://t.me/share/url?url=' + encodedUrl + '&text=' + encodeURIComponent(title || 'Tờ hướng dẫn sử dụng');
@@ -4338,39 +4336,6 @@ body.dark-mode .iv-iframe-container iframe {
             }
         }
 
-        async function shareToZaloHDSD() {
-            const data = window._currentHDSDShare || {};
-            if (!data.url) { copyHDSDShareLink(); return; }
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-            if (isIOS) {
-                if (navigator.share) {
-                    try {
-                        await navigator.share({ title: data.title || 'Tờ hướng dẫn sử dụng', text: data.title || 'Tờ hướng dẫn sử dụng', url: data.url });
-                        return;
-                    } catch (e) {
-                        if (e && e.name === 'AbortError') return;
-                    }
-                }
-                try {
-                    if (navigator.clipboard && window.isSecureContext) {
-                        await navigator.clipboard.writeText(data.url);
-                    } else {
-                        const input = document.getElementById('hdsd-share-link');
-                        if (input) { input.focus(); input.select(); document.execCommand('copy'); }
-                    }
-                } catch (e) {}
-                const btn = document.getElementById('hdsd-share-zalo');
-                if (btn) {
-                    const oldText = btn.textContent;
-                    btn.textContent = 'ĐÃ COPY LINK';
-                    setTimeout(function(){ btn.textContent = oldText; }, 1500);
-                }
-                window.location.href = 'zalo://';
-                return;
-            }
-            window.open('https://zalo.me/share?u=' + encodeURIComponent(data.url), '_blank', 'noopener');
-        }
-
         async function nativeShareHDSD() {
             const data = window._currentHDSDShare || {};
             if (navigator.share && data.url) {
@@ -4385,24 +4350,31 @@ body.dark-mode .iv-iframe-container iframe {
         async function copyHDSDShareLink() {
             const input = document.getElementById('hdsd-share-link');
             const btn = document.getElementById('hdsd-copy-btn');
-            if (!input) return;
-            const text = input.value || ((window._currentHDSDShare || {}).url || '');
+            const text = (input && input.value) || ((window._currentHDSDShare || {}).url || '');
+            if (!text) return;
+
             try {
                 if (navigator.clipboard && window.isSecureContext) {
                     await navigator.clipboard.writeText(text);
                 } else {
-                    input.focus();
-                    input.select();
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    ta.setAttribute('readonly', '');
+                    ta.style.position = 'fixed';
+                    ta.style.left = '-9999px';
+                    ta.style.top = '0';
+                    document.body.appendChild(ta);
+                    ta.focus();
+                    ta.select();
                     document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
                 }
-                if (btn) {
-                    btn.textContent = 'ĐÃ COPY';
-                    setTimeout(function(){ btn.textContent = 'COPY'; }, 1400);
-                }
-            } catch (e) {
-                input.focus();
-                input.select();
-                if (btn) btn.textContent = 'BÔI ĐEN';
+            } catch (e) {}
+
+            if (btn) {
+                btn.textContent = 'ĐÃ COPY';
+                setTimeout(function(){ btn.textContent = 'COPY'; }, 1400);
             }
         }
 
