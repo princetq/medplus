@@ -18,6 +18,7 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(urlsToCache))
   );
+   self.skipWaiting(); // ← Chỉ cần thêm dòng này
 });
 
 self.addEventListener('fetch', event => {
