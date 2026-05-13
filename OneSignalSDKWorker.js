@@ -1,6 +1,4 @@
-importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js");
-
-const CACHE_NAME = 'medplus-cache-v2';
+const CACHE_NAME = 'medplus-cache-v3';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -85,4 +83,6 @@ self.addEventListener('notificationclick', event => {
         return self.clients.openWindow(targetUrl);
       })
   );
-}, true); // true = override OneSignal handler mặc định
+});
+
+importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js");
