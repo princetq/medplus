@@ -488,7 +488,30 @@
         /* Notification inbox: hiển thị số chưa đọc trên nút chuông */
         #bell-btn[data-unread]:not([data-unread="0"])::after,
         #bell-btn.granted[data-unread]:not([data-unread="0"])::after{
-            content:attr(data-unread)!important;position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#e53935;color:#fff;border:2px solid #fff;font-size:11px;font-weight:900;line-height:1;text-align:center;display:flex!important;align-items:center;justify-content:center;box-sizing:border-box;z-index:2
+            content:attr(data-unread)!important;
+            position:absolute;
+            top:-7px;
+            right:-7px;
+            min-width:22px;
+            height:22px;
+            padding:0 6px;
+            border-radius:999px;
+            background:#e53935;
+            color:#fff;
+            border:2px solid #fff;
+            font-size:13px;
+            font-weight:900;
+            line-height:1;
+            letter-spacing:-.03em;
+            text-align:center;
+            display:flex!important;
+            align-items:center!important;
+            justify-content:center!important;
+            box-sizing:border-box;
+            z-index:2;
+            box-shadow:0 2px 8px rgba(229,57,53,0.32);
+            font-variant-numeric:tabular-nums;
+            font-family:'Inter','Segoe UI',sans-serif!important;
         }
         #bell-btn.denied[data-unread]::after{display:none!important}
         #notif-list-wrap{margin:14px 0 10px;text-align:left;max-height:52vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:2px;overscroll-behavior:contain!important;touch-action:pan-y!important;flex:1;min-height:0}
@@ -498,14 +521,28 @@
         .notif-item:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(46,125,50,0.12)}
         .notif-item.unread{background:rgba(255,235,59,0.22);border-color:rgba(251,192,45,0.65)}
         .notif-title{font-size:15px;font-weight:900;color:#1b5e20;margin-bottom:5px;line-height:1.35}
-        .notif-body{font-size:14px;color:#444;line-height:1.5;white-space:pre-line}
+        .notif-body{font-size:14px;color:#444;line-height:1.5;white-space:normal;word-break:break-word;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
         .notif-time{font-size:13px;color:#888;margin-top:6px}
-        .notif-actions{display:flex;gap:8px;margin-top:9px;align-items:center}
+        .notif-actions{display:flex;gap:8px;margin-top:9px;align-items:center;flex-wrap:wrap}
         .notif-action-btn{border:none;border-radius:9px;padding:7px 9px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Inter','Segoe UI',sans-serif!important;background:rgba(46,125,50,0.12);color:#2e7d32}
         .notif-action-btn:hover{background:rgba(46,125,50,0.2)}
         .notif-action-btn.danger{background:rgba(229,57,53,0.1);color:#c62828}
         .notif-action-btn.danger:hover{background:rgba(229,57,53,0.18)}
         .notif-empty{text-align:center;color:#777;font-size:15px;padding:14px 0;font-family:'Inter','Segoe UI',sans-serif!important}
+        #notif-detail-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.38);z-index:100001;padding:18px;overscroll-behavior:none!important;touch-action:none!important}
+        #notif-detail-modal.show{display:flex}
+        #notif-detail-box{width:100%;max-width:390px;max-height:82dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#fff;border-radius:20px;padding:22px 18px 18px;position:relative;text-align:left;box-shadow:0 18px 60px rgba(0,0,0,0.32);font-family:'Inter','Segoe UI',sans-serif!important;overscroll-behavior:contain!important;touch-action:pan-y!important}
+        @media(min-width:601px){#notif-detail-box{max-width:540px}}
+        .notif-detail-x{position:absolute;top:10px;right:10px;width:34px;height:34px;border:none;border-radius:50%;background:rgba(46,125,50,0.08);color:#2e7d32;font-size:22px;font-weight:900;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Inter','Segoe UI',sans-serif!important}
+        .notif-detail-kicker{font-size:13px;font-weight:900;color:#2e7d32;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;padding-right:40px}
+        .notif-detail-title{font-size:19px;font-weight:900;color:#1b5e20;line-height:1.35;margin-bottom:6px;padding-right:38px}
+        .notif-detail-time{font-size:13px;color:#777;margin-bottom:14px}
+        .notif-detail-body{font-size:16px;color:#333;line-height:1.65;white-space:pre-line;word-break:break-word;background:rgba(46,125,50,0.06);border:1px solid rgba(46,125,50,0.14);border-radius:14px;padding:13px 14px}
+        .notif-detail-actions{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap}
+        .notif-detail-actions button{border:none;border-radius:12px;padding:10px 14px;font-size:14px;font-weight:900;cursor:pointer;font-family:'Inter','Segoe UI',sans-serif!important}
+        .notif-detail-view-btn{background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;box-shadow:0 4px 12px rgba(46,125,50,0.22)}
+        .notif-detail-delete-btn{background:rgba(229,57,53,0.1);color:#c62828}
+        .notif-detail-close-btn{background:rgba(46,125,50,0.08);color:#2e7d32;border:1px solid rgba(46,125,50,0.24)!important}
         body.dark-mode .notif-toolbar button{background:linear-gradient(135deg,#0d4a32,#062a1c);color:#4df5c0;border:1px solid rgba(80,220,180,0.35)}
         body.dark-mode .notif-item{background:rgba(8,20,42,0.75);border-color:rgba(80,220,180,0.2)}
         body.dark-mode .notif-item.unread{background:rgba(255,209,102,0.12);border-color:rgba(255,209,102,0.4)}
@@ -515,6 +552,15 @@
         body.dark-mode .notif-action-btn{background:rgba(80,220,180,0.1);color:#4df5c0;border:1px solid rgba(80,220,180,0.18)}
         body.dark-mode .notif-action-btn.danger{background:rgba(229,57,53,0.12);color:#ff8a80;border-color:rgba(229,57,53,0.22)}
         body.dark-mode .notif-empty{color:#91a8a0}
+        body.dark-mode #notif-detail-box{background:linear-gradient(160deg,rgba(8,20,42,0.98),rgba(5,15,32,0.99));border:1px solid rgba(80,220,180,0.22);box-shadow:0 24px 70px rgba(0,0,0,0.62)}
+        body.dark-mode .notif-detail-x{background:rgba(80,220,180,0.08);color:#4df5c0}
+        body.dark-mode .notif-detail-kicker{color:#50dcb4}
+        body.dark-mode .notif-detail-title{color:#4df5c0}
+        body.dark-mode .notif-detail-time{color:#91a8a0}
+        body.dark-mode .notif-detail-body{background:rgba(8,20,42,0.72);border-color:rgba(80,220,180,0.18);color:#c8d8f0}
+        body.dark-mode .notif-detail-view-btn{background:linear-gradient(135deg,#0d4a32,#062a1c);color:#4df5c0;border:1px solid rgba(80,220,180,0.35)}
+        body.dark-mode .notif-detail-delete-btn{background:rgba(229,57,53,0.12);color:#ff8a80;border:1px solid rgba(229,57,53,0.22)}
+        body.dark-mode .notif-detail-close-btn{background:rgba(80,220,180,0.08);color:#4df5c0;border-color:rgba(80,220,180,0.28)!important}
         .back-top.visible{opacity:1;transform:translateY(0)}
         .back-top:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.3)}
         .back-top svg{width:20px;height:20px}
@@ -2413,6 +2459,21 @@ body.dark-mode .iv-iframe-container iframe {
             <button class="bm-btn-allow" id="bm-btn-allow">🔔 Bật thông báo</button>
             <button class="bm-btn-close" type="button" onclick="closeBellModal()">Đóng</button>
         </div>
+
+        <div id="notif-detail-modal" aria-hidden="true">
+            <div id="notif-detail-box" role="dialog" aria-modal="true" aria-labelledby="notif-detail-title">
+                <button class="notif-detail-x" type="button" onclick="closeNotificationDetail(event)" aria-label="Đóng chi tiết thông báo">×</button>
+                <div class="notif-detail-kicker">Chi tiết thông báo</div>
+                <div class="notif-detail-title" id="notif-detail-title"></div>
+                <div class="notif-detail-time" id="notif-detail-time"></div>
+                <div class="notif-detail-body" id="notif-detail-body"></div>
+                <div class="notif-detail-actions">
+                    <button class="notif-detail-view-btn" id="notif-detail-view-btn" type="button" onclick="openCurrentNotificationLink(event)" style="display:none">XEM</button>
+                    <button class="notif-detail-delete-btn" type="button" onclick="deleteCurrentNotification(event)">Xóa tin</button>
+                    <button class="notif-detail-close-btn" type="button" onclick="closeNotificationDetail(event)">Đóng</button>
+                </div>
+            </div>
+        </div>
     </div>
     <button id="bell-btn" title="Nhận thông báo thuốc mới" onclick="handleBellClick()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -3516,6 +3577,8 @@ body.dark-mode .iv-iframe-container iframe {
                     el.classList.contains('iv-iframe-container') ||
                     el.id === 'hdsd-content' ||
                     el.id === 'hdsd-share-box' ||
+                    el.id === 'notif-list-wrap' ||
+                    el.id === 'notif-detail-box' ||
                     el.classList.contains('chat-messages')
                 ) && _canScrollEl(el, dy)) return el;
                 el = el.parentElement;
@@ -3560,6 +3623,8 @@ body.dark-mode .iv-iframe-container iframe {
                     el.classList.contains('iv-iframe-container') ||
                     el.id === 'hdsd-content' ||
                     el.id === 'hdsd-share-box' ||
+                    el.id === 'notif-list-wrap' ||
+                    el.id === 'notif-detail-box' ||
                     el.classList.contains('chat-messages')
                 ) && _canScrollEl(el, e.deltaY)) return;
                 el = el.parentElement;
@@ -5586,7 +5651,9 @@ body.dark-mode .iv-iframe-container iframe {
             }
 
             function openBellModal() {
-                if (!bellModal.classList.contains('show')) {
+                if (typeof lockBodyScroll === 'function') {
+                    lockBodyScroll('bell');
+                } else if (!bellModal.classList.contains('show')) {
                     bellModalScrollY = window.scrollY || document.documentElement.scrollTop || 0;
                     document.documentElement.classList.add('bell-modal-open');
                     document.body.classList.add('bell-modal-open');
@@ -5601,17 +5668,24 @@ body.dark-mode .iv-iframe-container iframe {
             }
 
             window.closeBellModal = function() {
+                if (typeof window.closeNotificationDetail === 'function') {
+                    window.closeNotificationDetail(null, true);
+                }
                 bellModal.classList.remove('show');
-                const savedY = Number(document.body.dataset.bellModalScrollY || bellModalScrollY || 0);
-                document.documentElement.classList.remove('bell-modal-open');
-                document.body.classList.remove('bell-modal-open');
-                document.body.style.position = '';
-                document.body.style.top = '';
-                document.body.style.left = '';
-                document.body.style.right = '';
-                document.body.style.width = '';
-                delete document.body.dataset.bellModalScrollY;
-                window.scrollTo(0, savedY);
+                if (typeof unlockBodyScroll === 'function') {
+                    unlockBodyScroll('bell');
+                } else {
+                    const savedY = Number(document.body.dataset.bellModalScrollY || bellModalScrollY || 0);
+                    document.documentElement.classList.remove('bell-modal-open');
+                    document.body.classList.remove('bell-modal-open');
+                    document.body.style.position = '';
+                    document.body.style.top = '';
+                    document.body.style.left = '';
+                    document.body.style.right = '';
+                    document.body.style.width = '';
+                    delete document.body.dataset.bellModalScrollY;
+                    window.scrollTo(0, savedY);
+                }
             };
 
             function saveNotifications(list) {
@@ -5700,37 +5774,57 @@ body.dark-mode .iv-iframe-container iframe {
                 saveNotifications(list);
             };
 
+            function getNotificationById(id) {
+                return getNotifications().find(function(n) { return String(n.id) === String(id); }) || null;
+            }
+
+            function extractFirstUrl(text) {
+                const match = String(text || '').match(/https?:\/\/[^\s<>"']+|\/[A-Za-z0-9._~:\/?#[\]@!$&()*+,;=%-]+/i);
+                return match ? match[0].replace(/[),.;]+$/, '') : '';
+            }
+
+            function getNotificationTargetUrl(item) {
+                if (!item) return '';
+                return item.url || item.launchURL || extractFirstUrl(item.body) || extractFirstUrl(item.title) || '';
+            }
+
+            function renderNotificationList() {
+                const listEl = document.getElementById('notif-list');
+                if (!listEl) return;
+
+                const list = getNotifications();
+                if (!list.length) {
+                    listEl.innerHTML = '<div class="notif-empty">Chưa có thông báo nào.</div>';
+                    return;
+                }
+
+                listEl.innerHTML = list.map(function(n) {
+                    const safeId = encodeURIComponent(String(n.id)).replace(/'/g, '%27');
+                    const readBtn = n.read ? '' : '<button type="button" class="notif-action-btn" onclick="markNotificationRead(decodeURIComponent(\'' + safeId + '\'), event)">Đánh dấu đã đọc</button>';
+                    return '<div class="notif-item ' + (n.read ? '' : 'unread') + '" onclick="openSavedNotification(decodeURIComponent(\'' + safeId + '\'))">' +
+                        '<div class="notif-title">' + escapeHtml(n.title) + '</div>' +
+                        '<div class="notif-body">' + escapeHtml(n.body) + '</div>' +
+                        '<div class="notif-time">' + (n.read ? 'Đã đọc' : 'Chưa đọc') + ' • ' + formatTime(n.time) + '</div>' +
+                        '<div class="notif-actions">' + readBtn + '<button type="button" class="notif-action-btn danger" onclick="deleteNotification(decodeURIComponent(\'' + safeId + '\'), event)">Xóa</button></div>' +
+                    '</div>';
+                }).join('');
+            }
+
             window.openNotificationCenter = function() {
                 const box = document.getElementById('bell-modal-box');
                 const listWrap = document.getElementById('notif-list-wrap');
-                const listEl = document.getElementById('notif-list');
                 const btnAllow = document.getElementById('bm-btn-allow');
 
                 if (box) box.classList.add('notif-mode');
                 document.getElementById('bm-icon').textContent = '🔔';
                 document.getElementById('bm-title').textContent = 'Thông báo gần đây';
-                document.getElementById('bm-desc').textContent = 'Lưu lại tối đa 10 thông báo mới nhất; thông báo đã xóa sẽ không tự tải lại từ notifications.json.';
+                document.getElementById('bm-desc').textContent = 'Lưu lại tối đa 10 thông báo mới nhất; bấm một thông báo để xem chi tiết.';
                 document.getElementById('bm-steps').innerHTML = '';
 
                 if (btnAllow) btnAllow.style.display = 'none';
                 if (listWrap) listWrap.style.display = '';
 
-                const list = getNotifications();
-                if (!list.length) {
-                    listEl.innerHTML = '<div class="notif-empty">Chưa có thông báo nào.</div>';
-                } else {
-                    listEl.innerHTML = list.map(function(n) {
-                        const safeId = encodeURIComponent(String(n.id)).replace(/'/g, '%27');
-                        const readBtn = n.read ? '' : '<button type="button" class="notif-action-btn" onclick="markNotificationRead(decodeURIComponent(\'' + safeId + '\'), event)">Đánh dấu đã đọc</button>';
-                        return '<div class="notif-item ' + (n.read ? '' : 'unread') + '" onclick="openSavedNotification(decodeURIComponent(\'' + safeId + '\'))">' +
-                            '<div class="notif-title">' + escapeHtml(n.title) + '</div>' +
-                            '<div class="notif-body">' + escapeHtml(n.body) + '</div>' +
-                            '<div class="notif-time">' + (n.read ? 'Đã đọc' : 'Chưa đọc') + ' • ' + formatTime(n.time) + '</div>' +
-                            '<div class="notif-actions">' + readBtn + '<button type="button" class="notif-action-btn danger" onclick="deleteNotification(decodeURIComponent(\'' + safeId + '\'), event)">Xóa</button></div>' +
-                        '</div>';
-                    }).join('');
-                }
-
+                renderNotificationList();
                 openBellModal();
             };
 
@@ -5741,21 +5835,88 @@ body.dark-mode .iv-iframe-container iframe {
 
                 item.read = true;
                 saveNotifications(list);
+                renderNotificationList();
+                window.openNotificationDetail(id);
+            };
 
-                if (item.url) {
-                    window.closeBellModal();
-                    if (item.url.includes('hdsd=')) {
-                        history.pushState(null, '', item.url);
-                        window.hdsdShareAutoOpened = false;
-                        if (typeof openSharedHDSDFromUrl === 'function') {
-                            openSharedHDSDFromUrl();
-                        }
-                    } else {
-                        window.location.href = item.url;
+            window.openNotificationDetail = function(id) {
+                const item = getNotificationById(id);
+                if (!item) return;
+
+                const detailModal = document.getElementById('notif-detail-modal');
+                const detailTitle = document.getElementById('notif-detail-title');
+                const detailTime = document.getElementById('notif-detail-time');
+                const detailBody = document.getElementById('notif-detail-body');
+                const viewBtn = document.getElementById('notif-detail-view-btn');
+                if (!detailModal || !detailTitle || !detailTime || !detailBody || !viewBtn) return;
+
+                detailModal.dataset.currentId = String(item.id);
+                detailTitle.textContent = item.title || 'Thông báo MedPlus';
+                detailTime.textContent = (item.read ? 'Đã đọc' : 'Chưa đọc') + ' • ' + formatTime(item.time);
+                detailBody.textContent = item.body || '';
+
+                const targetUrl = getNotificationTargetUrl(item);
+                if (targetUrl) {
+                    viewBtn.dataset.url = targetUrl;
+                    viewBtn.style.display = '';
+                } else {
+                    viewBtn.dataset.url = '';
+                    viewBtn.style.display = 'none';
+                }
+
+                detailModal.classList.add('show');
+                detailModal.setAttribute('aria-hidden', 'false');
+                if (typeof lockBodyScroll === 'function') lockBodyScroll('bell-detail');
+            };
+
+            window.closeNotificationDetail = function(event, silent) {
+                if (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                const detailModal = document.getElementById('notif-detail-modal');
+                if (detailModal) {
+                    detailModal.classList.remove('show');
+                    detailModal.setAttribute('aria-hidden', 'true');
+                    delete detailModal.dataset.currentId;
+                }
+                if (typeof unlockBodyScroll === 'function') unlockBodyScroll('bell-detail');
+            };
+
+            function openNotificationUrl(url) {
+                if (!url) return;
+                window.closeNotificationDetail(null, true);
+                window.closeBellModal();
+
+                if (url.includes('hdsd=')) {
+                    history.pushState(null, '', url);
+                    window.hdsdShareAutoOpened = false;
+                    if (typeof openSharedHDSDFromUrl === 'function') {
+                        openSharedHDSDFromUrl();
                     }
                 } else {
-                    window.openNotificationCenter();
+                    window.location.href = url;
                 }
+            }
+
+            window.openCurrentNotificationLink = function(event) {
+                if (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                const viewBtn = document.getElementById('notif-detail-view-btn');
+                openNotificationUrl(viewBtn ? viewBtn.dataset.url : '');
+            };
+
+            window.deleteCurrentNotification = function(event) {
+                if (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                const detailModal = document.getElementById('notif-detail-modal');
+                const id = detailModal ? detailModal.dataset.currentId : '';
+                if (!id) return;
+                window.deleteNotification(id, event);
             };
 
             window.markNotificationRead = function(id, event) {
@@ -5769,7 +5930,7 @@ body.dark-mode .iv-iframe-container iframe {
                     item.read = true;
                     saveNotifications(list);
                 }
-                window.openNotificationCenter();
+                renderNotificationList();
             };
 
             window.deleteNotification = function(id, event) {
@@ -5777,10 +5938,13 @@ body.dark-mode .iv-iframe-container iframe {
                     event.preventDefault();
                     event.stopPropagation();
                 }
+                const detailModal = document.getElementById('notif-detail-modal');
+                const wasCurrentDetail = detailModal && String(detailModal.dataset.currentId || '') === String(id);
                 const list = getNotifications();
                 rememberDeletedNotificationIds(id);
                 saveNotifications(list.filter(function(n) { return String(n.id) !== String(id); }));
-                window.openNotificationCenter();
+                if (wasCurrentDetail) window.closeNotificationDetail(null, true);
+                renderNotificationList();
             };
 
             window.markAllNotificationsRead = function() {
@@ -5788,7 +5952,7 @@ body.dark-mode .iv-iframe-container iframe {
                     return Object.assign({}, n, { read: true });
                 });
                 saveNotifications(list);
-                window.openNotificationCenter();
+                renderNotificationList();
             };
 
             window.clearNotifications = function() {
@@ -5796,7 +5960,8 @@ body.dark-mode .iv-iframe-container iframe {
                 localStorage.setItem(NOTIF_CLEARED_AT_KEY, String(Date.now()));
                 localStorage.removeItem(NOTIF_KEY);
                 updateNotificationBadge();
-                window.openNotificationCenter();
+                window.closeNotificationDetail(null, true);
+                renderNotificationList();
             };
 
             async function syncNotificationsFromServer() {
@@ -5862,6 +6027,13 @@ body.dark-mode .iv-iframe-container iframe {
             bellModal.addEventListener('click', function(e) {
                 if (e.target === bellModal) window.closeBellModal();
             });
+
+            const notifDetailModal = document.getElementById('notif-detail-modal');
+            if (notifDetailModal) {
+                notifDetailModal.addEventListener('click', function(e) {
+                    if (e.target === notifDetailModal) window.closeNotificationDetail(e);
+                });
+            }
 
             function showModal(icon, title, desc, steps, btnText, btnAction) {
                 const box = document.getElementById('bell-modal-box');
