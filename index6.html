@@ -2539,6 +2539,16 @@ body.dark-mode .iv-iframe-container iframe {
             }
         }
 
+
+        /* === FINAL: only explicit close controls may close notification modals === */
+        .notif-detail-close-btn {
+            display: none !important;
+        }
+        #bell-modal,
+        #notif-detail-modal {
+            cursor: default !important;
+        }
+
 </style>
 </head>
 <body>
@@ -2779,7 +2789,6 @@ body.dark-mode .iv-iframe-container iframe {
                 <div class="notif-detail-actions">
                     <button class="notif-detail-view-btn" id="notif-detail-view-btn" type="button" onclick="openCurrentNotificationLink(event)" style="display:none">XEM</button>
                     <button class="notif-detail-delete-btn" type="button" onclick="deleteCurrentNotification(event)">Xóa tin</button>
-                    <button class="notif-detail-close-btn" type="button" onclick="closeNotificationDetail(event)">Đóng</button>
                 </div>
             </div>
         </div>
@@ -6386,15 +6395,22 @@ body.dark-mode .iv-iframe-container iframe {
                 if (!document.hidden) syncNotificationsFromServer();
             });
 
-            // Đóng modal khi click nền
+            // Không đóng modal khi click nền/overlay.
+            // Modal thông báo gần đây chỉ đóng bằng nút "Đóng".
             bellModal.addEventListener('click', function(e) {
-                if (e.target === bellModal) window.closeBellModal();
+                if (e.target === bellModal) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
             });
 
             const notifDetailModal = document.getElementById('notif-detail-modal');
             if (notifDetailModal) {
                 notifDetailModal.addEventListener('click', function(e) {
-                    if (e.target === notifDetailModal) window.closeNotificationDetail(e);
+                    if (e.target === notifDetailModal) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
                 });
             }
 
@@ -6574,7 +6590,4 @@ body.dark-mode .iv-iframe-container iframe {
         });
     })();
 </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"7939e04a4baf43c8b86a560f74aac60e","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"febbfaacdfbc4a51921583d5e93de024","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-</body>
 </html>
