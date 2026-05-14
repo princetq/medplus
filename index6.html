@@ -2462,6 +2462,83 @@ body.dark-mode .iv-iframe-container iframe {
             }
         }
 
+
+        /* === FINAL FIX: smooth half-outside notification bell animation === */
+        #bell-modal-box.notif-mode #notif-floating-bell {
+            position: absolute !important;
+            left: 50% !important;
+            top: -33px !important;
+            width: 66px !important;
+            height: 66px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background: transparent !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            outline: 0 !important;
+            color: inherit !important;
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif !important;
+            font-size: 52px !important;
+            line-height: 1 !important;
+            z-index: 5 !important;
+            pointer-events: none !important;
+            transform: translateX(-50%) !important;
+            transform-origin: 50% 18% !important;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.18));
+            opacity: 0;
+            visibility: hidden;
+            will-change: opacity, visibility;
+        }
+
+        #bell-modal-box.notif-mode #notif-floating-bell.show {
+            visibility: visible !important;
+        }
+
+        #bell-modal-box.notif-mode #notif-floating-bell.notif-bell-shake {
+            animation: notifBellSmoothFadeHoldHide 1.65s ease-in-out both !important;
+        }
+
+        #bell-modal-box.notif-mode #notif-floating-bell .notif-bell-glyph {
+            display: block;
+            line-height: 1;
+            transform-origin: 50% 14%;
+            will-change: transform, opacity;
+        }
+
+        #bell-modal-box.notif-mode #notif-floating-bell.notif-bell-shake .notif-bell-glyph {
+            animation: notifBellSmoothThreeShake 1.2s cubic-bezier(.22, .85, .25, 1) both !important;
+        }
+
+        @keyframes notifBellSmoothFadeHoldHide {
+            0%   { opacity: 0; visibility: visible; }
+            12%  { opacity: 1; visibility: visible; }
+            78%  { opacity: 1; visibility: visible; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+
+        @keyframes notifBellSmoothThreeShake {
+            0%   { opacity: 0; transform: translateY(7px) scale(.86) rotate(0deg); }
+            10%  { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+            18%  { transform: translateY(0) scale(1.03) rotate(-18deg); }
+            27%  { transform: translateY(0) scale(1.03) rotate(17deg); }
+            36%  { transform: translateY(0) scale(1.03) rotate(-15deg); }
+            45%  { transform: translateY(0) scale(1.02) rotate(13deg); }
+            54%  { transform: translateY(0) scale(1.02) rotate(-10deg); }
+            63%  { transform: translateY(0) scale(1.01) rotate(8deg); }
+            74%  { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(-6px) scale(.9) rotate(0deg); }
+        }
+
+        @media (max-width: 600px) {
+            #bell-modal-box.notif-mode #notif-floating-bell {
+                top: -31px !important;
+                width: 62px !important;
+                height: 62px !important;
+                font-size: 49px !important;
+            }
+        }
+
 </style>
 </head>
 <body>
@@ -2675,7 +2752,7 @@ body.dark-mode .iv-iframe-container iframe {
 
     <div id="bell-modal">
         <div id="bell-modal-box">
-            <div id="notif-floating-bell" aria-hidden="true">🔔</div>
+            <div id="notif-floating-bell" aria-hidden="true"><span class="notif-bell-glyph">🔔</span></div>
             <div class="bm-icon" id="bm-icon">🔔</div>
             <div class="bm-title" id="bm-title">Bật thông báo</div>
             <div class="bm-desc" id="bm-desc">Nhận thông báo khi có thuốc mới hoặc cập nhật thông tin quan trọng.</div>
@@ -5895,16 +5972,22 @@ body.dark-mode .iv-iframe-container iframe {
                 const floatingBell = document.getElementById('notif-floating-bell');
                 if (!floatingBell) return;
 
-                // Chuông đã là con của #bell-modal-box.notif-mode và được CSS đặt top:-50% chiều cao,
-                // nên nó luôn vắt đúng nửa trong/nửa ngoài theo mép trên modal.
+                if (!floatingBell.querySelector('.notif-bell-glyph')) {
+                    floatingBell.innerHTML = '<span class="notif-bell-glyph">🔔</span>';
+                }
+
+                // Giữ vị trí vắt nửa trong/nửa ngoài bằng CSS; chỉ reset animation.
                 floatingBell.classList.remove('show', 'notif-bell-shake');
                 floatingBell.style.left = '';
                 floatingBell.style.top = '';
 
+                // Force reflow + double RAF để animation chạy lại mượt trên Safari/iOS.
+                void floatingBell.offsetWidth;
                 requestAnimationFrame(function() {
                     floatingBell.classList.add('show');
-                    void floatingBell.offsetWidth;
-                    floatingBell.classList.add('notif-bell-shake');
+                    requestAnimationFrame(function() {
+                        floatingBell.classList.add('notif-bell-shake');
+                    });
                 });
             }
 
@@ -6491,5 +6574,7 @@ body.dark-mode .iv-iframe-container iframe {
         });
     })();
 </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"7939e04a4baf43c8b86a560f74aac60e","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"febbfaacdfbc4a51921583d5e93de024","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
