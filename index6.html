@@ -2549,6 +2549,74 @@ body.dark-mode .iv-iframe-container iframe {
             cursor: default !important;
         }
 
+
+        /* === FINAL: notification toolbar stays below sub header; mobile size adjustment === */
+        #bell-modal-box.notif-mode .notif-toolbar {
+            display: flex;
+            gap: 8px;
+            margin: 0 0 12px 0 !important;
+            flex-shrink: 0 !important;
+            width: 100%;
+            position: relative;
+            z-index: 4;
+        }
+
+        #bell-modal-box.notif-mode .notif-toolbar button {
+            min-height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            line-height: 1.25;
+        }
+
+        #bell-modal-box.notif-mode #notif-list-wrap {
+            margin: 0 0 10px !important;
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
+            overflow-y: auto !important;
+            max-height: none !important;
+            padding-right: 2px;
+        }
+
+        @media (max-width: 600px) {
+            #bell-modal {
+                padding-left: 8px !important;
+                padding-right: 8px !important;
+            }
+
+            #bell-modal-box.notif-mode {
+                width: min(calc(100vw - 16px), 430px) !important;
+                max-width: none !important;
+                max-height: 79dvh !important;
+                height: 79dvh !important;
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+            }
+
+            #bell-modal-box.notif-mode #notif-list-wrap {
+                max-height: none !important;
+            }
+        }
+
+
+        /* === FINAL: reduce notification shaking bell size by 20% === */
+        #bell-modal-box.notif-mode #notif-floating-bell {
+            top: -26.5px !important;
+            width: 53px !important;
+            height: 53px !important;
+            font-size: 42px !important;
+        }
+
+        @media (max-width: 600px) {
+            #bell-modal-box.notif-mode #notif-floating-bell {
+                top: -25px !important;
+                width: 50px !important;
+                height: 50px !important;
+                font-size: 39px !important;
+            }
+        }
+
 </style>
 </head>
 <body>
@@ -2768,11 +2836,12 @@ body.dark-mode .iv-iframe-container iframe {
             <div class="bm-desc" id="bm-desc">Nhận thông báo khi có thuốc mới hoặc cập nhật thông tin quan trọng.</div>
             <div class="bm-steps" id="bm-steps"></div>
 
+            <div class="notif-toolbar" id="notif-toolbar" style="display:none">
+                <button type="button" onclick="markAllNotificationsRead()">Đánh dấu đã đọc</button>
+                <button type="button" onclick="clearNotifications()">Xóa lịch sử</button>
+            </div>
+
             <div id="notif-list-wrap" style="display:none">
-                <div class="notif-toolbar">
-                    <button type="button" onclick="markAllNotificationsRead()">Đánh dấu đã đọc</button>
-                    <button type="button" onclick="clearNotifications()">Xóa lịch sử</button>
-                </div>
                 <div id="notif-list"></div>
             </div>
 
@@ -6165,16 +6234,18 @@ body.dark-mode .iv-iframe-container iframe {
             window.openNotificationCenter = function() {
                 const box = document.getElementById('bell-modal-box');
                 const listWrap = document.getElementById('notif-list-wrap');
+                const toolbar = document.getElementById('notif-toolbar');
                 const btnAllow = document.getElementById('bm-btn-allow');
 
                 bellModal.classList.add('notif-center-open');
                 if (box) box.classList.add('notif-mode');
                 document.getElementById('bm-icon').textContent = '🔔';
                 document.getElementById('bm-title').textContent = 'THÔNG BÁO GẦN ĐÂY';
-                document.getElementById('bm-desc').textContent = 'Lưu lại tối đa 10 thông báo mới nhất; bấm một thông báo để xem chi tiết.';
+                document.getElementById('bm-desc').textContent = 'Bấm vào nội dung thông báo để xem chi tiết';
                 document.getElementById('bm-steps').innerHTML = '';
 
                 if (btnAllow) btnAllow.style.display = 'none';
+                if (toolbar) toolbar.style.display = 'flex';
                 if (listWrap) listWrap.style.display = '';
 
                 renderNotificationList();
@@ -6425,7 +6496,9 @@ body.dark-mode .iv-iframe-container iframe {
                 document.getElementById('bm-steps').innerHTML = steps;
 
                 const listWrap = document.getElementById('notif-list-wrap');
+                const toolbar = document.getElementById('notif-toolbar');
                 if (listWrap) listWrap.style.display = 'none';
+                if (toolbar) toolbar.style.display = 'none';
 
                 const btnAllow = document.getElementById('bm-btn-allow');
                 if (btnText) {
@@ -6590,4 +6663,5 @@ body.dark-mode .iv-iframe-container iframe {
         });
     })();
 </script>
+</body>
 </html>
