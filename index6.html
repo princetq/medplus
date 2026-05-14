@@ -2397,7 +2397,72 @@ body.dark-mode .iv-iframe-container iframe {
         #notif-floating-bell { z-index: 100002 !important; }
 
 
-    </style>
+    
+        /* === FINAL PATCH: đặt chuông lắc vắt đúng 1/2 qua mép trên modal thông báo === */
+        #bell-modal-box.notif-mode {
+            position: relative !important;
+            overflow: visible !important;
+            padding-top: 46px !important; /* chừa nửa dưới của chuông nằm trong modal */
+        }
+
+        #bell-modal-box.notif-mode #notif-floating-bell {
+            position: absolute !important;
+            left: 50% !important;
+            top: -33px !important; /* 66px / 2: nửa chuông nhô ra ngoài, nửa nằm trong modal */
+            width: 66px !important;
+            height: 66px !important;
+            display: none;
+            align-items: center !important;
+            justify-content: center !important;
+            background: transparent !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            outline: 0 !important;
+            color: inherit !important;
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif !important;
+            font-size: 52px !important;
+            line-height: 1 !important;
+            z-index: 5 !important;
+            pointer-events: none !important;
+            transform: translateX(-50%) !important;
+            transform-origin: 50% 18% !important;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.18));
+        }
+
+        #bell-modal-box.notif-mode #notif-floating-bell.show {
+            display: flex !important;
+        }
+
+        #bell-modal-box.notif-mode #notif-floating-bell.notif-bell-shake {
+            animation: notifBellHalfOutsideShakeThenHide 1.35s ease-in-out both !important;
+        }
+
+        @keyframes notifBellHalfOutsideShakeThenHide {
+            0%   { opacity: 0; visibility: visible; transform: translateX(-50%) translateY(8px) scale(.9) rotate(0deg); }
+            8%   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1) rotate(0deg); }
+            15%  { transform: translateX(-50%) translateY(0) scale(1.04) rotate(-18deg); }
+            25%  { transform: translateX(-50%) translateY(0) scale(1.04) rotate(16deg); }
+            35%  { transform: translateX(-50%) translateY(0) scale(1.04) rotate(-14deg); }
+            45%  { transform: translateX(-50%) translateY(0) scale(1.04) rotate(12deg); }
+            55%  { transform: translateX(-50%) translateY(0) scale(1.02) rotate(-9deg); }
+            65%  { transform: translateX(-50%) translateY(0) scale(1.02) rotate(7deg); }
+            76%  { opacity: 1; transform: translateX(-50%) translateY(0) scale(1) rotate(0deg); }
+            100% { opacity: 0; visibility: hidden; transform: translateX(-50%) translateY(-8px) scale(.94) rotate(0deg); }
+        }
+
+        @media (max-width: 600px) {
+            #bell-modal-box.notif-mode {
+                padding-top: 44px !important;
+            }
+            #bell-modal-box.notif-mode #notif-floating-bell {
+                top: -31px !important;
+                width: 62px !important;
+                height: 62px !important;
+                font-size: 49px !important;
+            }
+        }
+
+</style>
 </head>
 <body>
 
@@ -2609,8 +2674,8 @@ body.dark-mode .iv-iframe-container iframe {
     </div>
 
     <div id="bell-modal">
-        <div id="notif-floating-bell" aria-hidden="true">🔔</div>
         <div id="bell-modal-box">
+            <div id="notif-floating-bell" aria-hidden="true">🔔</div>
             <div class="bm-icon" id="bm-icon">🔔</div>
             <div class="bm-title" id="bm-title">Bật thông báo</div>
             <div class="bm-desc" id="bm-desc">Nhận thông báo khi có thuốc mới hoặc cập nhật thông tin quan trọng.</div>
@@ -5828,20 +5893,15 @@ body.dark-mode .iv-iframe-container iframe {
 
             function playNotificationFloatingBell() {
                 const floatingBell = document.getElementById('notif-floating-bell');
-                const box = document.getElementById('bell-modal-box');
-                if (!floatingBell || !box) return;
+                if (!floatingBell) return;
 
+                // Chuông đã là con của #bell-modal-box.notif-mode và được CSS đặt top:-50% chiều cao,
+                // nên nó luôn vắt đúng nửa trong/nửa ngoài theo mép trên modal.
                 floatingBell.classList.remove('show', 'notif-bell-shake');
+                floatingBell.style.left = '';
+                floatingBell.style.top = '';
 
                 requestAnimationFrame(function() {
-                    const rect = box.getBoundingClientRect();
-                    const centerX = rect.left + rect.width / 2;
-                    // Đặt chuông vắt nửa trong, nửa ngoài mép trên modal thông báo.
-                    const topY = Math.max(8, rect.top - (floatingBell.offsetHeight / 2));
-
-                    floatingBell.style.left = centerX + 'px';
-                    floatingBell.style.top = topY + 'px';
-
                     floatingBell.classList.add('show');
                     void floatingBell.offsetWidth;
                     floatingBell.classList.add('notif-bell-shake');
