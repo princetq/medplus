@@ -26,10 +26,51 @@
     <script>
         window.OneSignalDeferred = window.OneSignalDeferred || [];
         OneSignalDeferred.push(async function(OneSignal) {
+            // 1. Khởi tạo OneSignal
             await OneSignal.init({
                 appId: "11f9c34a-8444-4fea-9a3c-db805edd7f39",
                 notifyButton: { enable: false },
                 allowLocalhostAsSecureOrigin: true,
+                serviceWorkerPath: "OneSignalSDKWorker.js",
+                serviceWorkerParam: { scope: "/" }
+            });
+
+            // 2. Lắng nghe sự kiện click thông báo ngay tại Client
+            OneSignal.Notifications.addEventListener('click', function(event) {
+                // Lấy URL từ thông báo (hỗ trợ cả launchURL và additionalData)
+                const launchUrl = event.notification.launchURL || 
+                                 (event.notification.additionalData && event.notification.additionalData.url);
+
+                // Lưu lại thông báo đã bấm vào hộp thông báo nội bộ của app
+                if (typeof window.addMedplusNotification === 'function') {
+                    window.addMedplusNotification({
+                        id: event.notification.notificationId ||
+                            event.notification.id ||
+                            (event.notification.additionalData && event.notification.additionalData.id) ||
+                            launchUrl ||
+                            Date.now(),
+                        title: event.notification.title || 'Thông báo MedPlus',
+                        body: event.notification.body || '',
+                        url: launchUrl || '',
+                        read: true,
+                        time: Date.now()
+                    });
+                }
+
+                // Nếu URL có chứa tham số hdsd=
+                if (launchUrl && launchUrl.includes('hdsd=')) {
+                    // Ngăn trình duyệt mở tab mới nếu app PWA đang chạy ngầm
+                    event.preventDefault(); 
+                    
+                    // Đẩy URL mới lên thanh địa chỉ mà không reload trang
+                    history.pushState(null, '', launchUrl);
+                    
+                    // Kích hoạt hàm mở popup tờ hướng dẫn sử dụng
+                    window.hdsdShareAutoOpened = false;
+                    if (typeof openSharedHDSDFromUrl === 'function') {
+                        openSharedHDSDFromUrl();
+                    }
+                }
             });
         });
     </script>
@@ -434,6 +475,28 @@
         body.dark-mode #bell-modal-box .bm-steps{color:#bbb}
         #bell-modal-box .bm-btn-allow{background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;border:none;padding:12px 0;border-radius:12px;font-weight:800;font-size:15px;width:100%;cursor:pointer;margin-bottom:8px;box-shadow:0 4px 12px rgba(46,125,50,0.3)}
         #bell-modal-box .bm-btn-cancel{background:transparent;color:#888;border:none;padding:8px;font-size:13px;cursor:pointer;width:100%}
+
+        /* Notification inbox: hiển thị số chưa đọc trên nút chuông */
+        #bell-btn[data-unread]:not([data-unread="0"])::after,
+        #bell-btn.granted[data-unread]:not([data-unread="0"])::after{
+            content:attr(data-unread)!important;position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#e53935;color:#fff;border:2px solid #fff;font-size:11px;font-weight:900;line-height:15px;text-align:center;display:block!important;z-index:2
+        }
+        #bell-btn.denied[data-unread]::after{display:none!important}
+        #notif-list-wrap{margin:14px 0 10px;text-align:left;max-height:52vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:2px}
+        .notif-toolbar{display:flex;gap:8px;margin-bottom:10px}
+        .notif-toolbar button{flex:1;border:none;border-radius:10px;padding:8px 6px;font-size:12px;font-weight:800;cursor:pointer;color:#fff;background:linear-gradient(135deg,#2e7d32,#1b5e20)}
+        .notif-item{border:1px solid rgba(46,125,50,0.18);border-radius:12px;padding:10px 11px;margin-bottom:8px;background:rgba(46,125,50,0.06);cursor:pointer;transition:.2s}
+        .notif-item:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(46,125,50,0.12)}
+        .notif-item.unread{background:rgba(255,235,59,0.22);border-color:rgba(251,192,45,0.65)}
+        .notif-title{font-size:13px;font-weight:900;color:#1b5e20;margin-bottom:4px;line-height:1.35}
+        .notif-body{font-size:12px;color:#444;line-height:1.45;white-space:pre-line}
+        .notif-time{font-size:11px;color:#888;margin-top:5px}
+        body.dark-mode .notif-toolbar button{background:linear-gradient(135deg,#0d4a32,#062a1c);color:#4df5c0;border:1px solid rgba(80,220,180,0.35)}
+        body.dark-mode .notif-item{background:rgba(8,20,42,0.75);border-color:rgba(80,220,180,0.2)}
+        body.dark-mode .notif-item.unread{background:rgba(255,209,102,0.12);border-color:rgba(255,209,102,0.4)}
+        body.dark-mode .notif-title{color:#4df5c0}
+        body.dark-mode .notif-body{color:#c8d8f0}
+        body.dark-mode .notif-time{color:#91a8a0}
         .back-top.visible{opacity:1;transform:translateY(0)}
         .back-top:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.3)}
         .back-top svg{width:20px;height:20px}
@@ -1983,12 +2046,12 @@ body.dark-mode .iv-iframe-container iframe {
 
         /* === HDSD SHARE BUTTON + MODAL === */
         .hdsd-action-row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:12px 0 4px;width:100%;}
-        .hdsd-orig-btn{display:inline-flex;align-items:center;gap:8px;background:transparent;color:#2e7d32;border:1.5px solid #2e7d32;font-family:Inter,Segoe UI,sans-serif;font-size:13px;font-weight:600;padding:7px 16px;border-radius:8px;text-decoration:none;margin:12px 0 4px;transition:.2s;}
+        .hdsd-orig-btn{display:inline-flex;align-items:center;gap:8px;background:transparent;color:#2e7d32;border:1.5px solid #2e7d32;font-family:Inter,Segoe UI,sans-serif;font-size:13px;font-weight:600;padding:0 16px;height:34px;box-sizing:border-box;line-height:1;border-radius:8px;text-decoration:none;margin:12px 0 4px;transition:.2s;}
         .hdsd-orig-btn:hover{background:rgba(46,125,50,0.07);}
         body.dark-mode .hdsd-orig-btn{color:#50dcb4;border-color:#50dcb4;}
         body.dark-mode .hdsd-orig-btn:hover{background:rgba(80,220,180,0.1);}
         .hdsd-action-row .hdsd-orig-btn{margin:0!important;}
-        .hdsd-share-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;background:rgba(46,125,50,0.08);color:#2e7d32;border:1.5px solid #2e7d32;font-family:Inter,Segoe UI,sans-serif;font-size:13px;font-weight:700;padding:7px 14px;border-radius:8px;cursor:pointer;transition:.2s;line-height:1.2;margin-left:auto;}
+        .hdsd-share-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;background:rgba(46,125,50,0.08);color:#2e7d32;border:1.5px solid #2e7d32;font-family:Inter,Segoe UI,sans-serif;font-size:13px;font-weight:700;padding:0 14px;height:34px;box-sizing:border-box;line-height:1;border-radius:8px;cursor:pointer;transition:.2s;margin-left:auto;}
         .hdsd-share-btn:hover{background:rgba(46,125,50,0.13);transform:translateY(-1px);}
         body.dark-mode .hdsd-share-btn{color:#50dcb4;border-color:#50dcb4;background:rgba(80,220,180,0.08);}
         body.dark-mode .hdsd-share-btn:hover{background:rgba(80,220,180,0.14);}
@@ -1996,24 +2059,49 @@ body.dark-mode .iv-iframe-container iframe {
         #hdsd-share-box{width:100%;max-width:360px;background:rgba(255,255,255,0.98);border-radius:18px;padding:20px;box-shadow:0 18px 55px rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.8);animation:modalIn .3s cubic-bezier(.25,1,.5,1) forwards;}
         body.dark-mode #hdsd-share-box{background:#0d1f3c;color:#e6f7ef;border-color:rgba(80,220,180,0.18);box-shadow:0 18px 55px rgba(0,0,0,0.55);}
         .hdsd-share-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;}
-        .hdsd-share-title{font-size:17px;font-weight:900;color:#2e7d32;}
+        .hdsd-share-title{font-size:19px;font-weight:900;color:#2e7d32;}
         body.dark-mode .hdsd-share-title{color:#50dcb4;}
         .hdsd-share-close{width:32px;height:32px;border:none;border-radius:50%;background:rgba(46,125,50,0.08);color:#2e7d32;font-size:0;line-height:0;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;position:relative;}
-        .hdsd-share-close::before{content:"\00d7";font-size:22px;line-height:1;display:block;transform:translateY(-1px);}
+        .hdsd-share-close::before{content:"\00d7";font-size:24px;line-height:1;display:block;transform:translateY(-1px);}
         body.dark-mode .hdsd-share-close{background:rgba(80,220,180,0.1);color:#50dcb4;}
-        .hdsd-share-desc{font-size:13px;color:#555;line-height:1.55;margin-bottom:14px;}
+        .hdsd-share-desc{font-size:15px;color:#555;line-height:1.55;margin-bottom:14px;}
         body.dark-mode .hdsd-share-desc{color:#b8c9c0;}
         .hdsd-share-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px;}
-        .hdsd-share-option{display:flex;align-items:center;justify-content:center;gap:7px;min-height:42px;border-radius:12px;border:1px solid rgba(46,125,50,0.2);background:rgba(46,125,50,0.06);color:#1b5e20;text-decoration:none;font-weight:800;font-size:13px;cursor:pointer;font-family:inherit;transition:.2s;}
+        .hdsd-share-option{display:flex;align-items:center;justify-content:center;gap:7px;min-height:42px;border-radius:12px;border:1px solid rgba(46,125,50,0.2);background:rgba(46,125,50,0.06);color:#1b5e20;text-decoration:none;font-weight:800;font-size:15px;cursor:pointer;font-family:inherit;transition:.2s;}
         .hdsd-share-option:hover{background:rgba(46,125,50,0.12);transform:translateY(-1px);}
         body.dark-mode .hdsd-share-option{border-color:rgba(80,220,180,0.22);background:rgba(80,220,180,0.08);color:#d7fff0;}
         body.dark-mode .hdsd-share-option:hover{background:rgba(80,220,180,0.14);}
         .hdsd-share-copy-row{display:flex;gap:8px;margin-top:10px;}
-        #hdsd-share-link{flex:1;min-width:0;border:1px solid rgba(46,125,50,0.22);border-radius:10px;padding:10px 11px;font-size:12px;color:#2b2b2b;background:#fff;font-family:inherit;}
+        #hdsd-share-link{flex:1;min-width:0;border:1px solid rgba(46,125,50,0.22);border-radius:10px;padding:10px 11px;font-size:14px;color:#2b2b2b;background:#fff;font-family:inherit;}
         body.dark-mode #hdsd-share-link{background:#07162a;border-color:rgba(80,220,180,0.25);color:#d7fff0;}
-        #hdsd-copy-btn{border:none;border-radius:10px;padding:0 13px;background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;font-weight:900;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap;-webkit-tap-highlight-color:transparent;user-select:none;}
-        @media(max-width:600px){.hdsd-action-row{justify-content:space-between;}.hdsd-share-btn{padding:7px 12px;}#hdsd-share-box{max-width:330px;padding:18px;}.hdsd-share-grid{grid-template-columns:1fr;}}
+        #hdsd-copy-btn{border:none;border-radius:10px;padding:0 13px;background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;font-weight:900;font-size:14px;cursor:pointer;font-family:inherit;white-space:nowrap;-webkit-tap-highlight-color:transparent;user-select:none;}
+        @media(max-width:600px){.hdsd-action-row{justify-content:space-between;}.hdsd-share-btn{padding:0 12px;height:34px;}#hdsd-share-box{max-width:330px;padding:18px;}.hdsd-share-grid{grid-template-columns:1fr;}}
 
+/* FIX V3: Light mode mobile - bo tron chinh xac lop sang ngoai o chon nhom duoc ly */
+        @media (max-width: 600px) {
+            body:not(.dark-mode) .group-filter-wrapper {
+                border-radius: 12px !important;
+            }
+
+            /* Dua lop mo/sang ra khung cha de khong bi overflow:hidden cat vuong */
+            body:not(.dark-mode) .group-filter-wrapper:has(.group-filter-select.active-filter) {
+                box-shadow: 0 2px 8px rgba(76,175,80,0.30) !important;
+            }
+
+            body:not(.dark-mode) .group-filter-wrapper:focus-within {
+                box-shadow: 0 0 0 3px rgba(76,175,80,0.22), 0 6px 20px rgba(27,94,32,0.18) !important;
+            }
+
+            /* Tat shadow ngoai tren chinh select vi no nam ben trong wrapper overflow:hidden nen bi cat vuong */
+            body:not(.dark-mode) .group-filter-select.active-filter,
+            body:not(.dark-mode) .group-filter-select:focus,
+            body:not(.dark-mode) .group-filter-select.active-filter:focus {
+                outline: none !important;
+                border-color: #4caf50 !important;
+                background-color: rgba(255,255,255,0.99) !important;
+                box-shadow: none !important;
+            }
+        }
 </style>
 </head>
 <body>
@@ -2207,7 +2295,7 @@ body.dark-mode .iv-iframe-container iframe {
     <div id="hdsd-share-modal">
         <div id="hdsd-share-box">
             <div class="hdsd-share-head">
-                <div class="hdsd-share-title">Chia sẻ tờ HDSD</div>
+                <div class="hdsd-share-title">CHIA SẺ TỜ HDSD</div>
                 <button class="hdsd-share-close" type="button" onclick="closeHDSDShareModal()">&times;</button>
             </div>
             <div class="hdsd-share-desc">Gửi link này cho người khác. Khi họ mở link, trang web sẽ tự bật đúng tờ HDSD.</div>
@@ -2231,8 +2319,17 @@ body.dark-mode .iv-iframe-container iframe {
             <div class="bm-title" id="bm-title">Bật thông báo</div>
             <div class="bm-desc" id="bm-desc">Nhận thông báo khi có thuốc mới hoặc cập nhật thông tin quan trọng.</div>
             <div class="bm-steps" id="bm-steps"></div>
+
+            <div id="notif-list-wrap" style="display:none">
+                <div class="notif-toolbar">
+                    <button type="button" onclick="markAllNotificationsRead()">Đánh dấu đã đọc</button>
+                    <button type="button" onclick="clearNotifications()">Xóa lịch sử</button>
+                </div>
+                <div id="notif-list"></div>
+            </div>
+
             <button class="bm-btn-allow" id="bm-btn-allow">🔔 Bật thông báo</button>
-            <button class="bm-btn-cancel" onclick="document.getElementById('bell-modal').classList.remove('show')">Để sau</button>
+            <button class="bm-btn-cancel" onclick="document.getElementById('bell-modal').classList.remove('show')">Đóng</button>
         </div>
     </div>
     <button id="bell-btn" title="Nhận thông báo thuốc mới" onclick="handleBellClick()">
@@ -2601,6 +2698,37 @@ body.dark-mode .iv-iframe-container iframe {
         const MEDPLUS_API_URL = "medplus.json?t=" + new Date().getTime();
         
         let rawData = [];
+
+        // ── Nhận lệnh mở HDSD từ Service Worker (iOS BFCache fallback) ──
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.addEventListener('message', function(event) {
+            if (!event.data || event.data.type !== 'ONESIGNAL_NOTIFICATION_CLICK') return;
+
+            var url = event.data.url;
+            try {
+              var params = new URLSearchParams(new URL(url).search);
+              var hdsdId = params.get('hdsd');
+              if (hdsdId) {
+                // Cập nhật URL trên thanh địa chỉ không reload trang
+                history.replaceState(null, '', url);
+                // Reset flag rồi mở tờ HDSD
+                window.hdsdShareAutoOpened = false;
+                openSharedHDSDFromUrl();
+              }
+            } catch (e) {
+              console.warn('SW message handler error:', e);
+            }
+          });
+        }
+
+        // ── Xử lý BFCache iOS: trang được restore từ cache ──
+        window.addEventListener('pageshow', function(event) {
+          if (event.persisted) {
+            // Trang từ BFCache → URL có thể đã đổi, check lại
+            window.hdsdShareAutoOpened = false;
+            openSharedHDSDFromUrl();
+          }
+        });
         let filteredData = [];
         let selectedLetter = '';
         let selectedGroup = '';
@@ -4378,22 +4506,60 @@ body.dark-mode .iv-iframe-container iframe {
         }
 
         function openSharedHDSDFromUrl() {
-            if (window._hdsdShareAutoOpened) return;
-            const params = new URLSearchParams(window.location.search);
-            const token = params.get('hdsd');
-            if (!token) return;
-            window._hdsdShareAutoOpened = true;
+          if (window.hdsdShareAutoOpened) return;
 
-            const decoded = decodeURIComponent(String(token || '').trim());
-            const found = (rawData || []).find(function(item) {
-                if (!item || !item.link) return false;
-                return getHDSDPageId_(item.link) === decoded || normalizeHDSDUrl_(item.link) === decoded;
+          var params = new URLSearchParams(window.location.search);
+          var token = params.get('hdsd');
+          if (!token) return;
+
+          window.hdsdShareAutoOpened = true;
+          var decoded = decodeURIComponent(String(token)).trim();
+
+          function doOpen() {
+            var found = rawData.find(function(item) {
+              if (!item || !item.link) return false;
+              // So sánh pageId trong link với token từ URL
+              var linkPageId = extractPageIdFromUrl(item.link);
+              return linkPageId === decoded || item.link === decoded;
             });
+
             if (found) {
-                openNotionPopup(found.link, found.image || '', found.lastUpdated || '');
+              openNotionPopup(found.link, found.image, found.lastUpdated);
             } else {
-                openNotionPopup(decoded);
+              // Fallback: build URL Notion hợp lệ từ pageId
+              var notionUrl = 'https://www.notion.so/' + decoded;
+              openNotionPopup(notionUrl, '', null);
             }
+          }
+
+          // Hàm tách pageId từ Notion URL (tương đương extractPageId trong GAS)
+          function extractPageIdFromUrl(url) {
+            if (!url) return '';
+            var clean = url.split(/[?#]/)[0].replace(/\/+$/, '');
+            var hexMatch = clean.match(/(?:[-\/])([a-f0-9]{32})$/i);
+            if (hexMatch) return hexMatch[1];
+            var fallback = clean.replace(/-/g, '').match(/([a-f0-9]{32})$/i);
+            return fallback ? fallback[1] : url;
+          }
+
+          if (rawData && rawData.length > 0) {
+            doOpen();
+            return;
+          }
+
+          // Polling chờ rawData load xong (tối đa 8 giây)
+          var waited = 0;
+          var interval = setInterval(function() {
+            waited += 200;
+            if (rawData && rawData.length > 0) {
+              clearInterval(interval);
+              doOpen();
+            } else if (waited >= 8000) {
+              clearInterval(interval);
+              var notionUrl = 'https://www.notion.so/' + decoded;
+              openNotionPopup(notionUrl, '', null);
+            }
+          }, 200);
         }
 
         function findDrugByHDSDUrl_(url) {
@@ -5283,7 +5449,7 @@ body.dark-mode .iv-iframe-container iframe {
             window.addEventListener('pageshow', function() { document.body.classList.remove('page-hidden'); });
 
         // ============================================================
-        // BELL BUTTON — Xin quyền thông báo OneSignal
+        // BELL BUTTON — Xin quyền thông báo OneSignal + hộp thông báo gần đây
         // ============================================================
         (function() {
             const bellBtn = document.getElementById('bell-btn');
@@ -5294,17 +5460,224 @@ body.dark-mode .iv-iframe-container iframe {
             const isStandalone = window.navigator.standalone === true
                               || window.matchMedia('(display-mode: standalone)').matches;
             const hasNotifAPI = 'Notification' in window;
+            const NOTIF_KEY = 'medplus_notifications_v1';
+            const NOTIF_CLEARED_AT_KEY = 'medplus_notifications_cleared_at_v1';
+            const MAX_NOTIFICATIONS = 10;
+
+            function parseNotifTime(value) {
+                if (typeof value === 'number' && isFinite(value)) return value;
+                if (typeof value === 'string') {
+                    const asNumber = Number(value);
+                    if (isFinite(asNumber)) return asNumber;
+                    const asDate = Date.parse(value);
+                    if (isFinite(asDate)) return asDate;
+                }
+                return Date.now();
+            }
+
+            function getNotifications() {
+                try {
+                    const value = JSON.parse(localStorage.getItem(NOTIF_KEY) || '[]');
+                    return Array.isArray(value) ? value : [];
+                } catch (e) {
+                    return [];
+                }
+            }
+
+            function saveNotifications(list) {
+                const seen = new Set();
+                const latestTen = (Array.isArray(list) ? list : [])
+                    .filter(function(item) {
+                        if (!item || !item.id) return false;
+                        const key = String(item.id);
+                        if (seen.has(key)) return false;
+                        seen.add(key);
+                        return true;
+                    })
+                    .map(function(item) {
+                        return Object.assign({}, item, { time: parseNotifTime(item.time) });
+                    })
+                    .sort(function(a, b) { return Number(b.time || 0) - Number(a.time || 0); })
+                    .slice(0, MAX_NOTIFICATIONS);
+
+                localStorage.setItem(NOTIF_KEY, JSON.stringify(latestTen));
+                updateNotificationBadge();
+            }
+
+            function escapeHtml(str) {
+                return String(str || '')
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
+
+            function formatTime(ts) {
+                try {
+                    return new Date(parseNotifTime(ts)).toLocaleString('vi-VN', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                    });
+                } catch (e) {
+                    return '';
+                }
+            }
+
+            function updateNotificationBadge() {
+                const unread = getNotifications().filter(function(n) { return !n.read; }).length;
+                bellBtn.setAttribute('data-unread', unread > 99 ? '99+' : String(unread));
+            }
+            window.updateNotificationBadge = updateNotificationBadge;
+
+            window.addMedplusNotification = function(payload) {
+                payload = payload || {};
+                const now = Date.now();
+                const id = String(payload.id || payload.url || (now + '_' + Math.random().toString(36).slice(2)));
+                const time = parseNotifTime(payload.time || now);
+                const clearedAt = Number(localStorage.getItem(NOTIF_CLEARED_AT_KEY) || 0);
+
+                // Nếu người dùng đã xóa lịch sử, không nạp lại thông báo cũ từ notifications.json.
+                // Muốn thông báo mới sau khi xóa vẫn hiện, hãy đặt field time/date/createdAt/timestamp mới hơn clearedAt.
+                if (time <= clearedAt) return;
+
+                const list = getNotifications();
+                const existing = list.find(function(n) { return String(n.id) === id; });
+
+                if (existing) {
+                    // Giữ trạng thái đã đọc/chưa đọc trên máy người dùng, chỉ cập nhật nội dung nếu có thay đổi.
+                    existing.title = payload.title || existing.title || 'Thông báo MedPlus';
+                    existing.body = payload.body || payload.message || existing.body || '';
+                    existing.url = payload.url || payload.launchURL || existing.url || '';
+                    existing.time = time;
+                    saveNotifications(list);
+                    return;
+                }
+
+                list.unshift({
+                    id: id,
+                    title: payload.title || 'Thông báo MedPlus',
+                    body: payload.body || payload.message || '',
+                    url: payload.url || payload.launchURL || '',
+                    time: time,
+                    read: !!payload.read
+                });
+                saveNotifications(list);
+            };
+
+            window.openNotificationCenter = function() {
+                const listWrap = document.getElementById('notif-list-wrap');
+                const listEl = document.getElementById('notif-list');
+                const btnAllow = document.getElementById('bm-btn-allow');
+
+                document.getElementById('bm-icon').textContent = '🔔';
+                document.getElementById('bm-title').textContent = 'Thông báo gần đây';
+                document.getElementById('bm-desc').textContent = 'Lưu lại tối đa 10 thông báo mới nhất; thông báo đã xóa sẽ không tự tải lại từ notifications.json.';
+                document.getElementById('bm-steps').innerHTML = '';
+
+                if (btnAllow) btnAllow.style.display = 'none';
+                if (listWrap) listWrap.style.display = '';
+
+                const list = getNotifications();
+                if (!list.length) {
+                    listEl.innerHTML = '<div style="text-align:center;color:#777;font-size:13px;padding:14px 0">Chưa có thông báo nào.</div>';
+                } else {
+                    listEl.innerHTML = list.map(function(n) {
+                        const safeId = encodeURIComponent(String(n.id)).replace(/'/g, '%27');
+                        return '<div class="notif-item ' + (n.read ? '' : 'unread') + '" onclick="openSavedNotification(decodeURIComponent(\'' + safeId + '\'))">' +
+                            '<div class="notif-title">' + escapeHtml(n.title) + '</div>' +
+                            '<div class="notif-body">' + escapeHtml(n.body) + '</div>' +
+                            '<div class="notif-time">' + (n.read ? 'Đã đọc' : 'Chưa đọc') + ' • ' + formatTime(n.time) + '</div>' +
+                        '</div>';
+                    }).join('');
+                }
+
+                bellModal.classList.add('show');
+            };
+
+            window.openSavedNotification = function(id) {
+                const list = getNotifications();
+                const item = list.find(function(n) { return String(n.id) === String(id); });
+                if (!item) return;
+
+                item.read = true;
+                saveNotifications(list);
+
+                if (item.url) {
+                    bellModal.classList.remove('show');
+                    if (item.url.includes('hdsd=')) {
+                        history.pushState(null, '', item.url);
+                        window.hdsdShareAutoOpened = false;
+                        if (typeof openSharedHDSDFromUrl === 'function') {
+                            openSharedHDSDFromUrl();
+                        }
+                    } else {
+                        window.location.href = item.url;
+                    }
+                } else {
+                    window.openNotificationCenter();
+                }
+            };
+
+            window.markAllNotificationsRead = function() {
+                const list = getNotifications().map(function(n) {
+                    return Object.assign({}, n, { read: true });
+                });
+                saveNotifications(list);
+                window.openNotificationCenter();
+            };
+
+            window.clearNotifications = function() {
+                localStorage.setItem(NOTIF_CLEARED_AT_KEY, String(Date.now()));
+                localStorage.removeItem(NOTIF_KEY);
+                updateNotificationBadge();
+                window.openNotificationCenter();
+            };
+
+            async function syncNotificationsFromServer() {
+                try {
+                    const res = await fetch('/notifications.json?ts=' + Date.now(), { cache: 'no-store' });
+                    if (!res.ok) return;
+                    const items = await res.json();
+                    if (!Array.isArray(items)) return;
+
+                    items.forEach(function(item) {
+                        const rawTime = item.time || item.date || item.createdAt || item.timestamp;
+
+                        // Sau khi người dùng đã xóa lịch sử, bỏ qua thông báo không có mốc thời gian rõ ràng
+                        // để tránh tải lại các thông báo cũ không phân biệt được mới/cũ.
+                        if (!rawTime && Number(localStorage.getItem(NOTIF_CLEARED_AT_KEY) || 0) > 0) return;
+
+                        window.addMedplusNotification({
+                            id: item.id,
+                            title: item.title,
+                            body: item.body || item.message || '',
+                            url: item.url || item.launchURL || '',
+                            time: rawTime || Date.now(),
+                            read: false
+                        });
+                    });
+                } catch (e) {
+                    console.warn('Không đồng bộ được notifications.json', e);
+                }
+            }
+            window.syncNotificationsFromServer = syncNotificationsFromServer;
 
             function updateBellState(permission) {
                 bellBtn.classList.remove('pending', 'granted', 'denied', 'ios-not-pwa');
                 if (permission === 'granted') {
                     bellBtn.classList.add('granted');
-                    bellBtn.title = '✅ Đã bật thông báo';
+                    bellBtn.title = '🔔 Mở thông báo gần đây';
                 } else if (permission === 'denied') {
                     bellBtn.classList.add('denied');
                     bellBtn.title = '🔕 Thông báo bị chặn';
+                } else {
+                    bellBtn.title = 'Nhận thông báo thuốc mới';
                 }
-                // default = không class → xanh lá + dot đỏ
+                updateNotificationBadge();
             }
 
             // Khởi tạo trạng thái ban đầu (delay 1s chờ browser/OneSignal init)
@@ -5314,7 +5687,14 @@ body.dark-mode .iv-iframe-container iframe {
                 } else if (hasNotifAPI) {
                     updateBellState(Notification.permission);
                 }
+                updateNotificationBadge();
+                syncNotificationsFromServer();
             }, 1000);
+
+            window.addEventListener('focus', syncNotificationsFromServer);
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) syncNotificationsFromServer();
+            });
 
             // Đóng modal khi click nền
             bellModal.addEventListener('click', function(e) {
@@ -5326,6 +5706,10 @@ body.dark-mode .iv-iframe-container iframe {
                 document.getElementById('bm-title').textContent = title;
                 document.getElementById('bm-desc').textContent = desc;
                 document.getElementById('bm-steps').innerHTML = steps;
+
+                const listWrap = document.getElementById('notif-list-wrap');
+                if (listWrap) listWrap.style.display = 'none';
+
                 const btnAllow = document.getElementById('bm-btn-allow');
                 if (btnText) {
                     btnAllow.style.display = '';
@@ -5333,6 +5717,7 @@ body.dark-mode .iv-iframe-container iframe {
                     btnAllow.onclick = btnAction;
                 } else {
                     btnAllow.style.display = 'none';
+                    btnAllow.onclick = null;
                 }
                 bellModal.classList.add('show');
             }
@@ -5362,7 +5747,8 @@ body.dark-mode .iv-iframe-container iframe {
                     return;
                 }
                 if (Notification.permission === 'granted') {
-                    showModal('✅', 'Đã bật thông báo', 'Bạn sẽ nhận được thông báo khi có thuốc mới hoặc cập nhật quan trọng.', '', null, null);
+                    syncNotificationsFromServer();
+                    window.openNotificationCenter();
                     return;
                 }
                 // Chưa cấp quyền → hiện modal xin quyền
@@ -5380,7 +5766,7 @@ body.dark-mode .iv-iframe-container iframe {
                                 if (p === 'granted' || p === 'denied') {
                                     updateBellState(p);
                                     if (p === 'granted') {
-                                        showModal('✅', 'Đã bật thông báo!', 'Bạn sẽ nhận được thông báo khi có cập nhật mới từ Khoa Dược.', '', null, null);
+                                        showModal('✅', 'Đã bật thông báo!', 'Bạn sẽ nhận được thông báo khi có cập nhật mới từ Khoa Dược. Bấm nút chuông để xem lại thông báo gần đây.', '', null, null);
                                     }
                                 } else {
                                     pollPermission(attempts - 1);
@@ -5391,7 +5777,7 @@ body.dark-mode .iv-iframe-container iframe {
                         Notification.requestPermission().then(function(r) {
                             updateBellState(r);
                             if (r === 'granted') {
-                                showModal('✅', 'Đã bật thông báo!', 'Bạn sẽ nhận được thông báo khi có cập nhật mới từ Khoa Dược.', '', null, null);
+                                showModal('✅', 'Đã bật thông báo!', 'Bạn sẽ nhận được thông báo khi có cập nhật mới từ Khoa Dược. Bấm nút chuông để xem lại thông báo gần đây.', '', null, null);
                             } else if (r === 'denied') {
                                 showModal('🔕', 'Đã từ chối', 'Bạn có thể bật lại trong Cài đặt trình duyệt → Thông báo.', '', null, null);
                             } else {
@@ -5403,7 +5789,6 @@ body.dark-mode .iv-iframe-container iframe {
                 );
             };
         })();
-
                 // ============================================================
         // PERF MODE — Double tap/click header để tắt/bật hiệu ứng
         // ============================================================
