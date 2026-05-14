@@ -2322,6 +2322,75 @@ body.dark-mode .iv-iframe-container iframe {
         }
 
 
+
+        /* === FINAL TWEAKS: notification detail X, recent title, HDSD share weight, floating bell size === */
+        #bell-modal-box.notif-mode .bm-title {
+            text-transform: uppercase !important;
+            letter-spacing: 0.02em !important;
+        }
+
+        /* Giảm độ đậm tiêu đề trong modal chia sẻ tờ HDSD */
+        .hdsd-share-title {
+            font-weight: 700 !important;
+            letter-spacing: -0.015em !important;
+        }
+
+        /* Giảm kích cỡ chuông lắc khoảng 20% và giữ nền hoàn toàn trong suốt */
+        #notif-floating-bell {
+            width: 53px !important;
+            height: 53px !important;
+            font-size: 42px !important;
+            background: transparent !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.16)) !important;
+        }
+
+        /* Căn chính giữa nút X chi tiết thông báo và làm nét mảnh hơn */
+        .notif-detail-x {
+            width: 34px !important;
+            height: 34px !important;
+            padding: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            position: absolute !important;
+            font-size: 0 !important;
+            line-height: 0 !important;
+            font-weight: 400 !important;
+            text-align: center !important;
+            overflow: hidden !important;
+        }
+        .notif-detail-x::before,
+        .notif-detail-x::after {
+            content: '' !important;
+            position: absolute !important;
+            left: 50% !important;
+            top: 50% !important;
+            width: 14px !important;
+            height: 1.6px !important;
+            border-radius: 999px !important;
+            background: currentColor !important;
+            transform-origin: 50% 50% !important;
+            display: block !important;
+            line-height: 0 !important;
+        }
+        .notif-detail-x::before {
+            transform: translate(-50%, -50%) rotate(45deg) !important;
+        }
+        .notif-detail-x::after {
+            transform: translate(-50%, -50%) rotate(-45deg) !important;
+        }
+
+        @media (max-width:600px) {
+            #notif-floating-bell {
+                width: 46px !important;
+                height: 46px !important;
+                font-size: 37px !important;
+            }
+        }
+
+
     </style>
 </head>
 <body>
@@ -5943,7 +6012,7 @@ body.dark-mode .iv-iframe-container iframe {
                 bellModal.classList.add('notif-center-open');
                 if (box) box.classList.add('notif-mode');
                 document.getElementById('bm-icon').textContent = '🔔';
-                document.getElementById('bm-title').textContent = 'Thông báo gần đây';
+                document.getElementById('bm-title').textContent = 'THÔNG BÁO GẦN ĐÂY';
                 document.getElementById('bm-desc').textContent = 'Lưu lại tối đa 10 thông báo mới nhất; bấm một thông báo để xem chi tiết.';
                 document.getElementById('bm-steps').innerHTML = '';
 
