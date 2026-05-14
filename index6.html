@@ -471,8 +471,6 @@
         @media(min-width:601px){#bell-modal-box.notif-mode{max-width:416px}}
         body.dark-mode #bell-modal-box{background:#1e2a1e;color:#e8e8e8}
         #bell-modal-box .bm-icon{font-size:48px;margin-bottom:10px;flex-shrink:0}
-        #bell-modal-box .bm-icon.bell-shake{animation:bellModalIconShake .62s ease-in-out 3;transform-origin:50% 12%}
-        @keyframes bellModalIconShake{0%,100%{transform:rotate(0deg)}15%{transform:rotate(-13deg)}30%{transform:rotate(12deg)}45%{transform:rotate(-9deg)}60%{transform:rotate(7deg)}75%{transform:rotate(-4deg)}90%{transform:rotate(2deg)}}
         #bell-modal-box .bm-title{font-size:17px;font-weight:800;color:#2e7d32;margin-bottom:8px;flex-shrink:0}
         #bell-modal-box.notif-mode .bm-title{font-size:19px!important}
         body.dark-mode #bell-modal-box .bm-title{color:#4df5c0}
@@ -492,31 +490,28 @@
         #bell-btn.granted[data-unread]:not([data-unread="0"])::after{
             content:attr(data-unread)!important;
             position:absolute;
-            top:-9px;
-            right:-9px;
-            min-width:26px;
-            height:26px;
-            padding:0 7px;
+            top:-7px;
+            right:-7px;
+            min-width:22px;
+            height:22px;
+            padding:0 6px;
             border-radius:999px;
-            background:linear-gradient(135deg,#ef5350,#d32f2f);
+            background:#e53935;
             color:#fff;
             border:2px solid #fff;
-            font-size:15px;
+            font-size:13px;
             font-weight:900;
             line-height:1;
-            letter-spacing:-.04em;
+            letter-spacing:-.03em;
             text-align:center;
             display:flex!important;
             align-items:center!important;
             justify-content:center!important;
             box-sizing:border-box;
             z-index:2;
-            box-shadow:0 3px 10px rgba(229,57,53,0.36), inset 0 1px 0 rgba(255,255,255,0.35);
+            box-shadow:0 2px 8px rgba(229,57,53,0.32);
             font-variant-numeric:tabular-nums;
-            font-feature-settings:"tnum" 1;
-            font-family:'Inter','Segoe UI',Roboto,sans-serif!important;
-            -webkit-font-smoothing:antialiased;
-            text-rendering:geometricPrecision;
+            font-family:'Inter','Segoe UI',sans-serif!important;
         }
         #bell-btn.denied[data-unread]::after{display:none!important}
         #notif-list-wrap{margin:14px 0 10px;text-align:left;max-height:52vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:2px;overscroll-behavior:contain!important;touch-action:pan-y!important;flex:1;min-height:0}
@@ -534,35 +529,19 @@
         .notif-action-btn.danger{background:rgba(229,57,53,0.1);color:#c62828}
         .notif-action-btn.danger:hover{background:rgba(229,57,53,0.18)}
         .notif-empty{text-align:center;color:#777;font-size:15px;padding:14px 0;font-family:'Inter','Segoe UI',sans-serif!important}
-        #notif-detail-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.42);z-index:100001;padding:18px;overscroll-behavior:none!important;touch-action:none!important}
+        #notif-detail-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.38);z-index:100001;padding:18px;overscroll-behavior:none!important;touch-action:none!important}
         #notif-detail-modal.show{display:flex}
-        #notif-detail-box{
-            width:100%;max-width:390px;max-height:82dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;
-            background:rgba(248,255,247,0.94);border:1px solid rgba(46,125,50,0.30);border-radius:20px;
-            padding:24px 18px 18px;position:relative;text-align:left;
-            box-shadow:0 18px 48px rgba(27,94,32,0.24),0 0 0 1px rgba(255,255,255,0.72),inset 0 1px 0 rgba(255,255,255,0.72);
-            backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-            font-family:'Inter','Segoe UI',Roboto,sans-serif!important;letter-spacing:-0.01em;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
-            overscroll-behavior:contain!important;touch-action:pan-y!important;
-        }
-        #notif-detail-box *{font-family:'Inter','Segoe UI',Roboto,sans-serif!important}
+        #notif-detail-box{width:100%;max-width:390px;max-height:82dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#fff;border-radius:20px;padding:22px 18px 18px;position:relative;text-align:left;box-shadow:0 18px 60px rgba(0,0,0,0.32);font-family:'Inter','Segoe UI',sans-serif!important;overscroll-behavior:contain!important;touch-action:pan-y!important}
         @media(min-width:601px){#notif-detail-box{max-width:540px}}
-        .notif-detail-x{
-            position:absolute;top:12px;right:12px;width:36px;height:36px;padding:0 0 2px 0;border:none;border-radius:50%;
-            background:rgba(46,125,50,0.10);color:#2e7d32;font-size:25px;font-weight:900;line-height:1;cursor:pointer;
-            display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(27,94,32,0.10);
-            transition:transform .2s ease,background .2s ease,box-shadow .2s ease;
-        }
-        .notif-detail-x:hover{background:rgba(46,125,50,0.16);transform:scale(1.06);box-shadow:0 5px 14px rgba(27,94,32,0.16)}
-        .notif-detail-kicker{font-size:13px;font-weight:900;color:#2e7d32;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;padding-right:48px}
-        .notif-detail-title{font-size:19px;font-weight:900;color:#1b5e20;line-height:1.35;margin-bottom:6px;padding-right:44px;text-shadow:0 1px 0 rgba(255,255,255,0.85)}
-        .notif-detail-time{font-size:13px;color:#4e6b4e;margin-bottom:14px;font-weight:600}
-        .notif-detail-body{font-size:16px;color:#2f3f2f;line-height:1.65;white-space:pre-line;word-break:break-word;background:rgba(255,255,255,0.62);border:1px solid rgba(46,125,50,0.20);border-radius:14px;padding:13px 14px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.68)}
+        .notif-detail-x{position:absolute;top:10px;right:10px;width:34px;height:34px;border:none;border-radius:50%;background:rgba(46,125,50,0.08);color:#2e7d32;font-size:22px;font-weight:900;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Inter','Segoe UI',sans-serif!important}
+        .notif-detail-kicker{font-size:13px;font-weight:900;color:#2e7d32;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;padding-right:40px}
+        .notif-detail-title{font-size:19px;font-weight:900;color:#1b5e20;line-height:1.35;margin-bottom:6px;padding-right:38px}
+        .notif-detail-time{font-size:13px;color:#777;margin-bottom:14px}
+        .notif-detail-body{font-size:16px;color:#333;line-height:1.65;white-space:pre-line;word-break:break-word;background:rgba(46,125,50,0.06);border:1px solid rgba(46,125,50,0.14);border-radius:14px;padding:13px 14px}
         .notif-detail-actions{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap}
-        .notif-detail-actions button{border:none;border-radius:12px;padding:10px 14px;font-size:14px;font-weight:900;cursor:pointer;font-family:'Inter','Segoe UI',Roboto,sans-serif!important;letter-spacing:-0.01em;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
-        .notif-detail-actions button:hover{transform:translateY(-1px)}
-        .notif-detail-view-btn{background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;box-shadow:0 4px 12px rgba(46,125,50,0.25)}
-        .notif-detail-delete-btn{background:rgba(229,57,53,0.10);color:#c62828;border:1px solid rgba(229,57,53,0.18)!important}
+        .notif-detail-actions button{border:none;border-radius:12px;padding:10px 14px;font-size:14px;font-weight:900;cursor:pointer;font-family:'Inter','Segoe UI',sans-serif!important}
+        .notif-detail-view-btn{background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;box-shadow:0 4px 12px rgba(46,125,50,0.22)}
+        .notif-detail-delete-btn{background:rgba(229,57,53,0.1);color:#c62828}
         .notif-detail-close-btn{background:rgba(46,125,50,0.08);color:#2e7d32;border:1px solid rgba(46,125,50,0.24)!important}
         body.dark-mode .notif-toolbar button{background:linear-gradient(135deg,#0d4a32,#062a1c);color:#4df5c0;border:1px solid rgba(80,220,180,0.35)}
         body.dark-mode .notif-item{background:rgba(8,20,42,0.75);border-color:rgba(80,220,180,0.2)}
@@ -573,19 +552,15 @@
         body.dark-mode .notif-action-btn{background:rgba(80,220,180,0.1);color:#4df5c0;border:1px solid rgba(80,220,180,0.18)}
         body.dark-mode .notif-action-btn.danger{background:rgba(229,57,53,0.12);color:#ff8a80;border-color:rgba(229,57,53,0.22)}
         body.dark-mode .notif-empty{color:#91a8a0}
-        body.dark-mode #notif-detail-modal{background:rgba(0,5,15,0.72)!important}
-        body.dark-mode #notif-detail-box{background:rgba(10,22,45,0.92);border:1px solid rgba(80,220,180,0.18);box-shadow:0 18px 58px rgba(0,0,0,0.58),0 0 24px rgba(80,220,180,0.10),inset 0 1px 0 rgba(80,220,180,0.08);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
-        body.dark-mode #notif-detail-box::after{content:'';position:absolute;inset:0;border-radius:20px;pointer-events:none;background:radial-gradient(circle at 50% 0%,rgba(80,220,180,0.08),transparent 70%)}
-        body.dark-mode .notif-detail-x{background:rgba(80,220,180,0.10);color:#4df5c0;box-shadow:0 3px 12px rgba(0,0,0,0.25)}
-        body.dark-mode .notif-detail-x:hover{background:rgba(80,220,180,0.16);box-shadow:0 5px 18px rgba(80,220,180,0.18)}
+        body.dark-mode #notif-detail-box{background:linear-gradient(160deg,rgba(8,20,42,0.98),rgba(5,15,32,0.99));border:1px solid rgba(80,220,180,0.22);box-shadow:0 24px 70px rgba(0,0,0,0.62)}
+        body.dark-mode .notif-detail-x{background:rgba(80,220,180,0.08);color:#4df5c0}
         body.dark-mode .notif-detail-kicker{color:#50dcb4}
-        body.dark-mode .notif-detail-title{color:#d0eee0;text-shadow:none}
+        body.dark-mode .notif-detail-title{color:#4df5c0}
         body.dark-mode .notif-detail-time{color:#91a8a0}
-        body.dark-mode .notif-detail-body{background:rgba(8,20,42,0.70);border-color:rgba(80,220,180,0.16);color:#c8d8f0;box-shadow:inset 0 1px 0 rgba(80,220,180,0.05)}
-        body.dark-mode .notif-detail-view-btn{background:linear-gradient(135deg,#0d4a32,#062a1c);color:#4df5c0;border:1px solid rgba(80,220,180,0.35);box-shadow:0 4px 15px rgba(0,0,0,0.3),0 0 10px rgba(80,220,180,0.15)}
-        body.dark-mode .notif-detail-delete-btn{background:rgba(229,57,53,0.12);color:#ff8a80;border:1px solid rgba(229,57,53,0.22)!important}
+        body.dark-mode .notif-detail-body{background:rgba(8,20,42,0.72);border-color:rgba(80,220,180,0.18);color:#c8d8f0}
+        body.dark-mode .notif-detail-view-btn{background:linear-gradient(135deg,#0d4a32,#062a1c);color:#4df5c0;border:1px solid rgba(80,220,180,0.35)}
+        body.dark-mode .notif-detail-delete-btn{background:rgba(229,57,53,0.12);color:#ff8a80;border:1px solid rgba(229,57,53,0.22)}
         body.dark-mode .notif-detail-close-btn{background:rgba(80,220,180,0.08);color:#4df5c0;border-color:rgba(80,220,180,0.28)!important}
-        @media(max-width:600px){body.dark-mode #notif-detail-box{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(10,22,45,0.96)!important}}
         .back-top.visible{opacity:1;transform:translateY(0)}
         .back-top:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.3)}
         .back-top svg{width:20px;height:20px}
@@ -2255,7 +2230,99 @@ body.dark-mode .iv-iframe-container iframe {
             font-weight: 800 !important;
         }
 
-</style>
+
+        /* === PATCH: notification detail + floating bell (based on medplus_notifications_inbox_10_detail_modal.html) === */
+        #notif-detail-modal,
+        #notif-detail-modal *,
+        #notif-floating-bell {
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif !important;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        #bell-modal-box.notif-mode .bm-icon {
+            display: none !important;
+        }
+
+        #notif-floating-bell {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 12px;
+            width: 66px;
+            height: 66px;
+            align-items: center;
+            justify-content: center;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            color: inherit;
+            font-size: 52px;
+            line-height: 1;
+            z-index: 100000;
+            pointer-events: none;
+            transform: translateX(-50%);
+            transform-origin: 50% 12%;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.18));
+        }
+
+        #notif-floating-bell.show {
+            display: flex;
+        }
+
+        #notif-floating-bell.notif-bell-shake {
+            animation: notifBellShakeThenHide 1.35s ease-in-out both;
+        }
+
+        @keyframes notifBellShakeThenHide {
+            0% { opacity: 0; visibility: visible; transform: translate(-50%, 6px) scale(.9) rotate(0deg); }
+            8% { opacity: 1; transform: translate(-50%, 0) scale(1) rotate(0deg); }
+            15% { transform: translate(-50%, 0) scale(1.04) rotate(-18deg); }
+            25% { transform: translate(-50%, 0) scale(1.04) rotate(16deg); }
+            35% { transform: translate(-50%, 0) scale(1.04) rotate(-14deg); }
+            45% { transform: translate(-50%, 0) scale(1.04) rotate(12deg); }
+            55% { transform: translate(-50%, 0) scale(1.02) rotate(-9deg); }
+            65% { transform: translate(-50%, 0) scale(1.02) rotate(7deg); }
+            76% { opacity: 1; transform: translate(-50%, 0) scale(1) rotate(0deg); }
+            100% { opacity: 0; visibility: hidden; transform: translate(-50%, -8px) scale(.94) rotate(0deg); }
+        }
+
+        .notif-detail-x {
+            display: grid !important;
+            place-items: center !important;
+            padding: 0 !important;
+            line-height: 1 !important;
+            font-size: 0 !important;
+            text-align: center !important;
+        }
+
+        .notif-detail-x::before {
+            content: '×';
+            display: block;
+            width: 100%;
+            height: 100%;
+            line-height: 32px;
+            text-align: center;
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif !important;
+            font-size: 24px;
+            font-weight: 900;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width:600px) {
+            #notif-floating-bell {
+                width: 58px;
+                height: 58px;
+                font-size: 46px;
+            }
+            .notif-detail-x::before {
+                line-height: 32px;
+            }
+        }
+
+
+    </style>
 </head>
 <body>
 
@@ -2467,6 +2534,7 @@ body.dark-mode .iv-iframe-container iframe {
     </div>
 
     <div id="bell-modal">
+        <div id="notif-floating-bell" aria-hidden="true">🔔</div>
         <div id="bell-modal-box">
             <div class="bm-icon" id="bm-icon">🔔</div>
             <div class="bm-title" id="bm-title">Bật thông báo</div>
@@ -2487,7 +2555,7 @@ body.dark-mode .iv-iframe-container iframe {
 
         <div id="notif-detail-modal" aria-hidden="true">
             <div id="notif-detail-box" role="dialog" aria-modal="true" aria-labelledby="notif-detail-title">
-                <button class="notif-detail-x" type="button" onclick="closeNotificationDetail(event)" aria-label="Đóng chi tiết thông báo">×</button>
+                <button class="notif-detail-x" type="button" onclick="closeNotificationDetail(event)" aria-label="Đóng chi tiết thông báo"></button>
                 <div class="notif-detail-kicker">Chi tiết thông báo</div>
                 <div class="notif-detail-title" id="notif-detail-title"></div>
                 <div class="notif-detail-time" id="notif-detail-time"></div>
@@ -5675,6 +5743,36 @@ body.dark-mode .iv-iframe-container iframe {
                 localStorage.setItem(NOTIF_DELETED_IDS_KEY, JSON.stringify(Array.from(set).slice(-200)));
             }
 
+
+            function hideNotificationFloatingBell() {
+                const floatingBell = document.getElementById('notif-floating-bell');
+                if (!floatingBell) return;
+                floatingBell.classList.remove('show', 'notif-bell-shake');
+                floatingBell.style.left = '';
+                floatingBell.style.top = '';
+            }
+
+            function playNotificationFloatingBell() {
+                const floatingBell = document.getElementById('notif-floating-bell');
+                const box = document.getElementById('bell-modal-box');
+                if (!floatingBell || !box) return;
+
+                floatingBell.classList.remove('show', 'notif-bell-shake');
+
+                requestAnimationFrame(function() {
+                    const rect = box.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const topY = Math.max(10, rect.top - floatingBell.offsetHeight - 8);
+
+                    floatingBell.style.left = centerX + 'px';
+                    floatingBell.style.top = topY + 'px';
+
+                    floatingBell.classList.add('show');
+                    void floatingBell.offsetWidth;
+                    floatingBell.classList.add('notif-bell-shake');
+                });
+            }
+
             function openBellModal() {
                 if (typeof lockBodyScroll === 'function') {
                     lockBodyScroll('bell');
@@ -5697,6 +5795,8 @@ body.dark-mode .iv-iframe-container iframe {
                     window.closeNotificationDetail(null, true);
                 }
                 bellModal.classList.remove('show');
+                bellModal.classList.remove('notif-center-open');
+                hideNotificationFloatingBell();
                 if (typeof unlockBodyScroll === 'function') {
                     unlockBodyScroll('bell');
                 } else {
@@ -5840,14 +5940,9 @@ body.dark-mode .iv-iframe-container iframe {
                 const listWrap = document.getElementById('notif-list-wrap');
                 const btnAllow = document.getElementById('bm-btn-allow');
 
+                bellModal.classList.add('notif-center-open');
                 if (box) box.classList.add('notif-mode');
-                const bmIcon = document.getElementById('bm-icon');
-                if (bmIcon) {
-                    bmIcon.textContent = '🔔';
-                    bmIcon.classList.remove('bell-shake');
-                    void bmIcon.offsetWidth;
-                    bmIcon.classList.add('bell-shake');
-                }
+                document.getElementById('bm-icon').textContent = '🔔';
                 document.getElementById('bm-title').textContent = 'Thông báo gần đây';
                 document.getElementById('bm-desc').textContent = 'Lưu lại tối đa 10 thông báo mới nhất; bấm một thông báo để xem chi tiết.';
                 document.getElementById('bm-steps').innerHTML = '';
@@ -5857,6 +5952,7 @@ body.dark-mode .iv-iframe-container iframe {
 
                 renderNotificationList();
                 openBellModal();
+                playNotificationFloatingBell();
             };
 
             window.openSavedNotification = function(id) {
@@ -6068,12 +6164,10 @@ body.dark-mode .iv-iframe-container iframe {
 
             function showModal(icon, title, desc, steps, btnText, btnAction) {
                 const box = document.getElementById('bell-modal-box');
+                bellModal.classList.remove('notif-center-open');
+                hideNotificationFloatingBell();
                 if (box) box.classList.remove('notif-mode');
-                const bmIcon = document.getElementById('bm-icon');
-                if (bmIcon) {
-                    bmIcon.classList.remove('bell-shake');
-                    bmIcon.textContent = icon;
-                }
+                document.getElementById('bm-icon').textContent = icon;
                 document.getElementById('bm-title').textContent = title;
                 document.getElementById('bm-desc').textContent = desc;
                 document.getElementById('bm-steps').innerHTML = steps;
