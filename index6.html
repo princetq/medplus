@@ -2391,6 +2391,12 @@ body.dark-mode .iv-iframe-container iframe {
         }
 
 
+        /* V2 tweaks: bỏ dòng kicker trong modal chi tiết, chuông nằm nửa trong/nửa ngoài modal */
+        .notif-detail-kicker { display: none !important; }
+        #bell-modal-box.notif-mode { overflow: visible !important; }
+        #notif-floating-bell { z-index: 100002 !important; }
+
+
     </style>
 </head>
 <body>
@@ -2625,7 +2631,6 @@ body.dark-mode .iv-iframe-container iframe {
         <div id="notif-detail-modal" aria-hidden="true">
             <div id="notif-detail-box" role="dialog" aria-modal="true" aria-labelledby="notif-detail-title">
                 <button class="notif-detail-x" type="button" onclick="closeNotificationDetail(event)" aria-label="Đóng chi tiết thông báo"></button>
-                <div class="notif-detail-kicker">Chi tiết thông báo</div>
                 <div class="notif-detail-title" id="notif-detail-title"></div>
                 <div class="notif-detail-time" id="notif-detail-time"></div>
                 <div class="notif-detail-body" id="notif-detail-body"></div>
@@ -5831,7 +5836,8 @@ body.dark-mode .iv-iframe-container iframe {
                 requestAnimationFrame(function() {
                     const rect = box.getBoundingClientRect();
                     const centerX = rect.left + rect.width / 2;
-                    const topY = Math.max(10, rect.top - floatingBell.offsetHeight - 8);
+                    // Đặt chuông vắt nửa trong, nửa ngoài mép trên modal thông báo.
+                    const topY = Math.max(8, rect.top - (floatingBell.offsetHeight / 2));
 
                     floatingBell.style.left = centerX + 'px';
                     floatingBell.style.top = topY + 'px';
@@ -5994,7 +6000,7 @@ body.dark-mode .iv-iframe-container iframe {
 
                 listEl.innerHTML = list.map(function(n) {
                     const safeId = encodeURIComponent(String(n.id)).replace(/'/g, '%27');
-                    const readBtn = n.read ? '' : '<button type="button" class="notif-action-btn" onclick="markNotificationRead(decodeURIComponent(\'' + safeId + '\'), event)">Đánh dấu đã đọc</button>';
+                    const readBtn = '<button type="button" class="notif-action-btn" onclick="toggleNotificationRead(decodeURIComponent(\'' + safeId + '\'), event)">' + (n.read ? 'Đánh dấu chưa đọc' : 'Đánh dấu đã đọc') + '</button>';
                     return '<div class="notif-item ' + (n.read ? '' : 'unread') + '" onclick="openSavedNotification(decodeURIComponent(\'' + safeId + '\'))">' +
                         '<div class="notif-title">' + escapeHtml(n.title) + '</div>' +
                         '<div class="notif-body">' + escapeHtml(n.body) + '</div>' +
@@ -6115,7 +6121,7 @@ body.dark-mode .iv-iframe-container iframe {
                 window.deleteNotification(id, event);
             };
 
-            window.markNotificationRead = function(id, event) {
+            window.setNotificationReadState = function(id, readState, event) {
                 if (event) {
                     event.preventDefault();
                     event.stopPropagation();
@@ -6123,10 +6129,28 @@ body.dark-mode .iv-iframe-container iframe {
                 const list = getNotifications();
                 const item = list.find(function(n) { return String(n.id) === String(id); });
                 if (item) {
-                    item.read = true;
+                    item.read = !!readState;
                     saveNotifications(list);
                 }
                 renderNotificationList();
+            };
+
+            window.toggleNotificationRead = function(id, event) {
+                if (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                const list = getNotifications();
+                const item = list.find(function(n) { return String(n.id) === String(id); });
+                if (item) {
+                    item.read = !item.read;
+                    saveNotifications(list);
+                }
+                renderNotificationList();
+            };
+
+            window.markNotificationRead = function(id, event) {
+                window.setNotificationReadState(id, true, event);
             };
 
             window.deleteNotification = function(id, event) {
