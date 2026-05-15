@@ -36,29 +36,13 @@
             });
 
             // 2. Lắng nghe sự kiện click thông báo ngay tại Client
-            OneSignal.Notifications.addEventListener('click', function(event) {
-                // Lấy URL từ thông báo (hỗ trợ cả launchURL và additionalData)
-                const launchUrl = event.notification.launchURL || 
-                                 (event.notification.additionalData && event.notification.additionalData.url);
+            OneSignal.Notifications.addEventListener('click', function(event) {
+                // Lấy URL từ thông báo (hỗ trợ cả launchURL và additionalData)
+                const launchUrl = event.notification.launchURL || 
+                                 (event.notification.additionalData && event.notification.additionalData.url);
 
-                // Lưu lại thông báo đã bấm vào hộp thông báo nội bộ của app
-                if (typeof window.addMedplusNotification === 'function') {
-                    window.addMedplusNotification({
-                        id: event.notification.notificationId ||
-                            event.notification.id ||
-                            (event.notification.additionalData && event.notification.additionalData.id) ||
-                            launchUrl ||
-                            Date.now(),
-                        title: event.notification.title || 'Thông báo MedPlus',
-                        body: event.notification.body || '',
-                        url: launchUrl || '',
-                        read: true,
-                        time: Date.now()
-                    });
-                }
-
-                // Nếu URL có chứa tham số hdsd=
-                if (launchUrl && launchUrl.includes('hdsd=')) {
+                // Nếu URL có chứa tham số hdsd=
+                if (launchUrl && launchUrl.includes('hdsd=')) {
                     // Ngăn trình duyệt mở tab mới nếu app PWA đang chạy ngầm
                     event.preventDefault(); 
                     
@@ -2617,6 +2601,37 @@ body.dark-mode .iv-iframe-container iframe {
             }
         }
 
+/* PATCH: Modal thông báo gần đây - Mobile */
+        @media (max-width: 600px) {
+            #bell-modal-box.notif-mode {
+                width: min(calc(100vw - 16px), 344px) !important;
+                max-width: none !important;
+                max-height: 63dvh !important;
+                height: var(--notif-modal-h, auto) !important;
+                transition: height 0.35s cubic-bezier(.4,0,.2,1) !important;
+            }
+            #bell-modal-box.notif-mode #notif-floating-bell {
+                top: -30px !important;
+                width: 60px !important;
+                height: 60px !important;
+                font-size: 47px !important;
+            }
+            #bell-modal-box.notif-mode {
+                padding-top: 50px !important;
+            }
+        }
+
+@media (max-width: 600px) {
+            #bell-modal-box.notif-mode .bm-desc {
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                font-size: clamp(10px, 3.9vw, 13px) !important;
+                margin-bottom: 8px !important;
+                width: 100% !important;
+                display: block !important;
+            }
+        }
+
 </style>
 </head>
 <body>
@@ -2840,12 +2855,11 @@ body.dark-mode .iv-iframe-container iframe {
             <div class="bm-desc" id="bm-desc">Nhận thông báo khi có thuốc mới hoặc cập nhật thông tin quan trọng.</div>
             <div class="bm-steps" id="bm-steps"></div>
 
-            <div class="notif-toolbar" id="notif-toolbar" style="display:none">
-                <button type="button" onclick="markAllNotificationsRead()">Đánh dấu đã đọc</button>
-                <button type="button" onclick="clearNotifications()">Xóa lịch sử</button>
-            </div>
+            <div class="notif-toolbar" id="notif-toolbar" style="display:none">
+                <button type="button" onclick="clearNotifications()" style="width: 100%;">Xóa toàn bộ lịch sử</button>
+            </div>
 
-            <div id="notif-list-wrap" style="display:none">
+            <div id="notif-list-wrap" style="display:none">
                 <div id="notif-list"></div>
             </div>
 
@@ -6220,19 +6234,39 @@ body.dark-mode .iv-iframe-container iframe {
                 const list = getNotifications();
                 if (!list.length) {
                     listEl.innerHTML = '<div class="notif-empty">Chưa có thông báo nào.</div>';
+                   _updateNotifModalHeight(0); // THÊM
                     return;
                 }
 
                 listEl.innerHTML = list.map(function(n) {
-                    const safeId = encodeURIComponent(String(n.id)).replace(/'/g, '%27');
-                    const readBtn = '<button type="button" class="notif-action-btn" onclick="toggleNotificationRead(decodeURIComponent(\'' + safeId + '\'), event)">' + (n.read ? 'Đánh dấu chưa đọc' : 'Đánh dấu đã đọc') + '</button>';
-                    return '<div class="notif-item ' + (n.read ? '' : 'unread') + '" onclick="openSavedNotification(decodeURIComponent(\'' + safeId + '\'))">' +
-                        '<div class="notif-title">' + escapeHtml(n.title) + '</div>' +
-                        '<div class="notif-body">' + escapeHtml(n.body) + '</div>' +
-                        '<div class="notif-time">' + (n.read ? 'Đã đọc' : 'Chưa đọc') + ' • ' + formatTime(n.time) + '</div>' +
-                        '<div class="notif-actions">' + readBtn + '<button type="button" class="notif-action-btn danger" onclick="deleteNotification(decodeURIComponent(\'' + safeId + '\'), event)">Xóa</button></div>' +
-                    '</div>';
-                }).join('');
+                    const safeId = encodeURIComponent(String(n.id)).replace(/'/g, '%27');
+                    return '<div class="notif-item" onclick="openSavedNotification(decodeURIComponent(\'' + safeId + '\'))">' +
+                        '<div class="notif-title">' + escapeHtml(n.title) + '</div>' +
+                        '<div class="notif-body">' + escapeHtml(n.body) + '</div>' +
+                        '<div class="notif-time">' + formatTime(n.time) + '</div>' +
+                        '<div class="notif-actions"><button type="button" class="notif-action-btn danger" onclick="deleteNotification(decodeURIComponent(\'' + safeId + '\'), event)">Xóa tin này</button></div>' +
+                    '</div>';
+                }).join('');
+
+              _updateNotifModalHeight(list.length); // THÊM
+            }
+
+            function _updateNotifModalHeight(count) {
+                if (window.innerWidth > 600) return;
+                const box = document.getElementById('bell-modal-box');
+                if (!box || !box.classList.contains('notif-mode')) return;
+
+                if (count === 0) {
+                    // Khi chưa có tin: để modal tự co theo nội dung, không ép height cứng
+                    box.style.removeProperty('--notif-modal-h');
+                    box.style.height = 'auto';
+                } else {
+                    // Có tin: ép height tăng dần, tối đa 63dvh
+                    var MAX_H = 63, BASE_H = 42, PER_ITEM = 7;
+                    var targetH = Math.min(MAX_H, BASE_H + (count - 1) * PER_ITEM);
+                    box.style.height = '';
+                    box.style.setProperty('--notif-modal-h', targetH + 'dvh');
+                }
             }
 
             window.openNotificationCenter = function() {
@@ -6249,13 +6283,19 @@ body.dark-mode .iv-iframe-container iframe {
                 document.getElementById('bm-steps').innerHTML = '';
 
                 if (btnAllow) btnAllow.style.display = 'none';
-                if (toolbar) toolbar.style.display = 'flex';
-                if (listWrap) listWrap.style.display = '';
+                if (toolbar) toolbar.style.display = 'flex';
+                if (listWrap) listWrap.style.display = '';
 
-                renderNotificationList();
-                openBellModal();
-                playNotificationFloatingBell();
-            };
+                // TỰ ĐỘNG XÓA CHẤM ĐỎ
+                const list = getNotifications().map(function(n) {
+                    return Object.assign({}, n, { read: true });
+                });
+                saveNotifications(list);
+
+                renderNotificationList();
+                openBellModal();
+                playNotificationFloatingBell();
+            };
 
             window.openSavedNotification = function(id) {
                 const list = getNotifications();
@@ -6348,38 +6388,7 @@ body.dark-mode .iv-iframe-container iframe {
                 window.deleteNotification(id, event);
             };
 
-            window.setNotificationReadState = function(id, readState, event) {
-                if (event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                const list = getNotifications();
-                const item = list.find(function(n) { return String(n.id) === String(id); });
-                if (item) {
-                    item.read = !!readState;
-                    saveNotifications(list);
-                }
-                renderNotificationList();
-            };
-
-            window.toggleNotificationRead = function(id, event) {
-                if (event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                const list = getNotifications();
-                const item = list.find(function(n) { return String(n.id) === String(id); });
-                if (item) {
-                    item.read = !item.read;
-                    saveNotifications(list);
-                }
-                renderNotificationList();
-            };
-
-            window.markNotificationRead = function(id, event) {
-                window.setNotificationReadState(id, true, event);
-            };
-
+            
             window.deleteNotification = function(id, event) {
                 if (event) {
                     event.preventDefault();
@@ -6394,14 +6403,7 @@ body.dark-mode .iv-iframe-container iframe {
                 renderNotificationList();
             };
 
-            window.markAllNotificationsRead = function() {
-                const list = getNotifications().map(function(n) {
-                    return Object.assign({}, n, { read: true });
-                });
-                saveNotifications(list);
-                renderNotificationList();
-            };
-
+           
             window.clearNotifications = function() {
                 rememberDeletedNotificationIds(getNotifications().map(function(n) { return n.id; }));
                 localStorage.setItem(NOTIF_CLEARED_AT_KEY, String(Date.now()));
