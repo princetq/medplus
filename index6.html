@@ -6038,6 +6038,14 @@ body.dark-mode .iv-iframe-container iframe {
                 }
             }
 
+            // HÀM MỚI: Lọc các thông báo có thời gian <= hiện tại (chưa tới giờ thì giấu đi)
+            function getVisibleNotifications() {
+                const now = Date.now();
+                return getNotifications().filter(function(n) {
+                    return n.time <= now; 
+                });
+            }
+
             function getDeletedNotificationIds() {
                 try {
                     const value = JSON.parse(localStorage.getItem(NOTIF_DELETED_IDS_KEY) || '[]');
@@ -6171,7 +6179,7 @@ body.dark-mode .iv-iframe-container iframe {
             }
 
             function updateNotificationBadge() {
-                const unread = getNotifications().filter(function(n) { return !n.read; }).length;
+                const unread = getVisibleNotifications().filter(function(n) { return !n.read; }).length;
                 bellBtn.setAttribute('data-unread', unread > 99 ? '99+' : String(unread));
             }
             window.updateNotificationBadge = updateNotificationBadge;
@@ -6231,7 +6239,7 @@ body.dark-mode .iv-iframe-container iframe {
                 const listEl = document.getElementById('notif-list');
                 if (!listEl) return;
 
-                const list = getNotifications();
+                const list = getVisibleNotifications();
                 if (!list.length) {
                     listEl.innerHTML = '<div class="notif-empty">Chưa có thông báo nào.</div>';
                    _updateNotifModalHeight(0); // THÊM
@@ -6466,6 +6474,15 @@ body.dark-mode .iv-iframe-container iframe {
                 updateNotificationBadge();
                 syncNotificationsFromServer();
             }, 1000);
+
+            // Tự động kiểm tra mỗi 30 giây để hiện chấm đỏ khi tới giờ
+            setInterval(function() {
+                updateNotificationBadge();
+                const box = document.getElementById('bell-modal-box');
+                if (box && box.classList.contains('notif-mode')) {
+                    renderNotificationList();
+                }
+            }, 30000);
 
             window.addEventListener('focus', syncNotificationsFromServer);
             document.addEventListener('visibilitychange', function() {
