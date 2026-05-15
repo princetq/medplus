@@ -2536,15 +2536,17 @@ body.dark-mode .iv-iframe-container iframe {
         }
 
         #bell-modal-box.notif-mode .notif-toolbar button {
-            flex: none !important; /* Bỏ lệnh flex để nút không bị giãn béo ra */
-            width: 100%;
-            min-height: 36px; /* Ép nút mỏng lại */
-            padding: 6px 12px;
-            display: flex;
+            flex: none !important; 
+            width: auto !important; /* Thu gọn vừa đúng bằng chữ */
+            min-height: 34px !important; /* Nút mỏng và thanh thoát hơn */
+            padding: 6px 24px !important; /* Kéo dài 2 bên một chút cho cân đối */
+            border-radius: 20px !important; /* Bo góc tròn trịa */
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             line-height: 1.25;
+            font-size: 13px !important;
         }
 
         #bell-modal-box.notif-mode #notif-list-wrap {
@@ -2849,8 +2851,8 @@ body.dark-mode .iv-iframe-container iframe {
             <div class="bm-steps" id="bm-steps"></div>
 
             <div class="notif-toolbar" id="notif-toolbar" style="display:none">
-                <button type="button" onclick="clearNotifications()" style="width: 100%;">Xóa toàn bộ lịch sử</button>
-            </div>
+                <button type="button" onclick="clearNotifications()">Xóa toàn bộ lịch sử</button>
+            </div>
 
             <div id="notif-list-wrap" style="display:none">
                 <div id="notif-list"></div>
