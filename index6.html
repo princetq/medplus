@@ -469,33 +469,22 @@
         body.dark-mode #bell-modal-box .bm-btn-close{background:rgba(80,220,180,0.08);color:#4df5c0;border-color:rgba(80,220,180,0.3);box-shadow:none}
         body.dark-mode #bell-modal-box .bm-btn-close:hover{background:rgba(80,220,180,0.14)}
 
-        /* Notification inbox: hiển thị số chưa đọc trên nút chuông */
+        /* Notification inbox: hiển thị CHẤM ĐỎ chưa đọc trên nút chuông */
         #bell-btn[data-unread]:not([data-unread="0"])::after,
         #bell-btn.granted[data-unread]:not([data-unread="0"])::after{
-            content:attr(data-unread)!important;
-            position:absolute;
-            top:-7px;
-            right:-7px;
-            min-width:22px;
-            height:22px;
-            padding:0 6px;
-            border-radius:999px;
-            background:#e53935;
-            color:#fff;
-            border:2px solid #fff;
-            font-size:13px;
-            font-weight:900;
-            line-height:1;
-            letter-spacing:-.03em;
-            text-align:center;
-            display:flex!important;
-            align-items:center!important;
-            justify-content:center!important;
-            box-sizing:border-box;
-            z-index:2;
-            box-shadow:0 2px 8px rgba(229,57,53,0.32);
-            font-variant-numeric:tabular-nums;
-            font-family:'Inter','Segoe UI',sans-serif!important;
+            content: '' !important;
+            position: absolute;
+            top: 2px;
+            right: 4px;
+            min-width: 12px;
+            height: 12px;
+            padding: 0;
+            border-radius: 50%;
+            background: #e53935;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(229,57,53,0.4);
+            z-index: 2;
+            display: block !important;
         }
         #bell-btn.denied[data-unread]::after{display:none!important}
         #notif-list-wrap{margin:14px 0 10px;text-align:left;max-height:52vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:2px;overscroll-behavior:contain!important;touch-action:pan-y!important;flex:1;min-height:0}
@@ -6181,6 +6170,15 @@ body.dark-mode .iv-iframe-container iframe {
             function updateNotificationBadge() {
                 const unread = getVisibleNotifications().filter(function(n) { return !n.read; }).length;
                 bellBtn.setAttribute('data-unread', unread > 99 ? '99+' : String(unread));
+
+                // THÊM MỚI: Đồng bộ số đếm ra Icon ngoài màn hình chính (PWA)
+                if ('setAppBadge' in navigator) {
+                    if (unread > 0) {
+                        navigator.setAppBadge(unread).catch(function(err) { console.warn('Lỗi Badge:', err); });
+                    } else {
+                        navigator.clearAppBadge().catch(function(err) { console.warn('Lỗi Clear Badge:', err); });
+                    }
+                }
             }
             window.updateNotificationBadge = updateNotificationBadge;
 
@@ -6294,11 +6292,15 @@ body.dark-mode .iv-iframe-container iframe {
                 if (toolbar) toolbar.style.display = 'flex';
                 if (listWrap) listWrap.style.display = '';
 
-                // TỰ ĐỘNG XÓA CHẤM ĐỎ
-                const list = getNotifications().map(function(n) {
-                    return Object.assign({}, n, { read: true });
-                });
-                saveNotifications(list);
+                // TỰ ĐỘNG XÓA CHẤM ĐỎ (Nhưng chỉ xóa cho các tin nhắn đã đến giờ hiển thị)
+                const now = Date.now();
+                const list = getNotifications().map(function(n) {
+                    if (n.time <= now) {
+                        return Object.assign({}, n, { read: true }); // Tin hiện tại: Đánh dấu đã đọc
+                    }
+                    return n; // Tin tương lai (ẩn): Giữ nguyên trạng thái chưa đọc
+                });
+                saveNotifications(list);
 
                 renderNotificationList();
                 openBellModal();
