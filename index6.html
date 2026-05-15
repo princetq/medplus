@@ -462,6 +462,7 @@
         #bell-modal-box.notif-mode .bm-desc{font-size:15px!important}
         body.dark-mode #bell-modal-box .bm-desc{color:#aaa}
         #bell-modal-box .bm-steps{text-align:left;font-size:13px;color:#444;line-height:1.9;margin-bottom:20px;flex-shrink:0}
+        #bell-modal-box.notif-mode .bm-steps{display:none} /* Gắn thêm dòng này để giấu nó đi khi mở hộp thư */
         body.dark-mode #bell-modal-box .bm-steps{color:#bbb}
         #bell-modal-box .bm-btn-allow{background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;border:none;padding:12px 0;border-radius:12px;font-weight:800;font-size:15px;width:100%;cursor:pointer;margin-bottom:8px;box-shadow:0 4px 12px rgba(46,125,50,0.3);font-family:inherit!important;flex-shrink:0}
         #bell-modal-box .bm-btn-close{background:rgba(46,125,50,0.08);color:#2e7d32;border:1px solid rgba(46,125,50,0.28);padding:11px 0;border-radius:12px;font-weight:800;font-size:15px;width:100%;cursor:pointer;font-family:inherit!important;box-shadow:0 3px 10px rgba(46,125,50,0.08);flex-shrink:0}
@@ -2526,8 +2527,8 @@ body.dark-mode .iv-iframe-container iframe {
         /* === FINAL: notification toolbar stays below sub header; mobile size adjustment === */
         #bell-modal-box.notif-mode .notif-toolbar {
             display: flex;
-            gap: 8px;
-            margin: 0 0 12px 0 !important;
+            justify-content: center;
+            margin: -4px 0 12px 0 !important; /* Kéo xích lên sát sub-header */
             flex-shrink: 0 !important;
             width: 100%;
             position: relative;
@@ -2535,7 +2536,10 @@ body.dark-mode .iv-iframe-container iframe {
         }
 
         #bell-modal-box.notif-mode .notif-toolbar button {
-            min-height: 38px;
+            flex: none !important; /* Bỏ lệnh flex để nút không bị giãn béo ra */
+            width: 100%;
+            min-height: 36px; /* Ép nút mỏng lại */
+            padding: 6px 12px;
             display: flex;
             align-items: center;
             justify-content: center;
