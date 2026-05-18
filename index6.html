@@ -3836,7 +3836,7 @@ body.dark-mode .iv-iframe-container iframe {
             text += "\n<huong_dan_cach_tra_loi>\n";
             text += "Bạn là MedPlus AI của Khoa Dược - Bệnh viện Đa khoa tỉnh Tuyên Quang. Chỉ trả lời dựa trên dữ liệu thuốc được cung cấp và kiến thức dược lý để phân loại nhóm con.\n";
             text += "Với câu hỏi số lượng/thống kê thuần túy: trả lời bằng số lượng thuốc phù hợp sau khi đã lọc đúng ý người dùng; có thể kèm thống kê rất ngắn theo nhóm nếu cần; KHÔNG liệt kê chi tiết từng thuốc.\n";
-            text += "Với câu hỏi kể tên/liệt kê/danh sách/thuốc nào: trước hết phải lọc đúng ý người dùng từ danh sách ứng viên, sau đó đếm kết quả cuối. Nếu kết quả cuối có từ 1 đến " + MAX_DETAILED_DRUG_RESULTS + " thuốc, hãy trả lời số lượng + mỗi thuốc gồm: Tên thuốc, Hoạt chất, Hàm lượng, Dạng bào chế, HDSD dạng [XEM HDSD](URL). Không được bỏ Hoạt chất trong phần chi tiết gọn.\n";
+            text += "Với câu hỏi kể tên/liệt kê/danh sách/thuốc nào: trước hết phải lọc đúng ý người dùng từ danh sách ứng viên, sau đó đếm kết quả cuối. Nếu kết quả cuối có từ 1 đến " + MAX_DETAILED_DRUG_RESULTS + " thuốc, hãy trả lời số lượng + đánh số thứ tự từng thuốc tăng dần 1, 2, 3...; mỗi thuốc gồm: Tên thuốc, Hoạt chất, Hàm lượng, Dạng bào chế, HDSD đúng dạng [XEM HDSD](URL). Không được bỏ Hoạt chất trong phần chi tiết gọn.\n";
             text += "Nếu kết quả cuối nhiều hơn " + MAX_DETAILED_DRUG_RESULTS + " thuốc, chỉ trả lời số lượng + tên thuốc thật ngắn; không kèm hàm lượng/dạng/HDSD để tránh hết token. Có thể hướng người dùng hỏi hẹp hơn theo nhóm nhỏ hoặc hoạt chất.\n";
             text += "Với câu hỏi có nhóm con: phải lọc đúng nhóm con từ danh sách ứng viên. Ví dụ hỏi 'kháng sinh nhóm carbapenem' thì chỉ lấy các thuốc carbapenem, không trả toàn bộ kháng sinh. Tương tự với thuốc tim mạch/huyết áp và các nhóm con khác.\n";
             text += "Với câu hỏi yêu cầu trả lời quá dài hoặc yêu cầu chi tiết nhiều thuốc: không cố viết dài. Hãy trả lời chung bằng số lượng/tóm tắt ngắn và hướng người dùng hỏi chi tiết theo từng thuốc hoặc từng nhóm nhỏ hơn.\n";
@@ -5156,12 +5156,23 @@ body.dark-mode .iv-iframe-container iframe {
                 return "<span style=\"color:" + c[(parseInt(n)-1)%c.length] + ";font-weight:bold\">" + m + "</span>"; 
             });
             
-            // 2. [THÊM MỚI] Bắt cú pháp [XEM HDSD](URL) từ AI và biến thành Nút bấm (Tận dụng class hdsd-btn có sẵn của bạn)
-            text = text.replace(/\[XEM HDSD\]\(([^)]+)\)/gi, function(match, url) {
-                const encodedUrl = encodeURIComponent(String(url || '').trim());
+            // 2. Chuẩn hóa mọi dạng HDSD từ AI/scan ảnh thành đúng nút mở tờ HDSD trong app
+            function buildHDSDChatButton_(url) {
+                url = String(url || '').trim().replace(/[.,;]+$/, '');
+                const encodedUrl = encodeURIComponent(url);
                 return `<button class="hdsd-btn" style="display: inline-flex; width: auto; padding: 6px 16px; margin-top: 8px; z-index: 2; position: relative;" onclick="openHDSDFromChat('${encodedUrl}', event)">📄 XEM HDSD</button>`;
+            }
+            
+            // 2a. Bắt cú pháp markdown HDSD: [XEM HDSD](URL), [Tờ HDSD](URL), [Hướng dẫn sử dụng](URL)...
+            text = text.replace(/\[((?:XEM\s*)?(?:(?:TỜ|TO)\s*)?(?:HDSD|HƯỚNG DẪN SỬ DỤNG|HUONG DAN SU DUNG))\]\((https?:\/\/[^)]+)\)/gi, function(match, label, url) {
+                return buildHDSDChatButton_(url);
             });
-
+            
+            // 2b. Bắt link HDSD dạng thô do nhánh quét ảnh/Gemini trả về: HDSD: https://..., Tờ HDSD: https://...
+            text = text.replace(/((?:HDSD|TỜ HDSD|TO HDSD|HƯỚNG DẪN SỬ DỤNG|HUONG DAN SU DUNG)\s*(?:\([^)]*\))?\s*[:：-]\s*)(https?:\/\/[^\s<)"']+)/gi, function(match, prefix, url) {
+                return prefix + buildHDSDChatButton_(url);
+            });
+            
             // 3. Xử lý các link Markdown thông thường (nếu có)
             text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "<a href=\"$2\" target=\"_blank\">$1</a>");
             
@@ -5172,11 +5183,12 @@ body.dark-mode .iv-iframe-container iframe {
             text = text.replace(/(?<!href="|">|openNotionPopup\(')(https?:\/\/[^\s<']+)/g, function(u) { 
                 return "<a href=\"" + u + "\" target=\"_blank\">" + u + "</a>"; 
             });
-
+            
             // 6. Xử lý chia đoạn (Paragraph) và Danh sách (List)
             let paragraphs = text.split('\n\n'); 
             if (paragraphs.length <= 1) paragraphs = text.split('\n');
             let html = "";
+            let orderedCounter = 0;
             paragraphs.forEach(function(p) { 
                 p = p.trim(); 
                 if (!p) return;
@@ -5191,11 +5203,13 @@ body.dark-mode .iv-iframe-container iframe {
                         }
                         else if (/^\d+\.\s*/.test(item)) { 
                             ordered = true; 
-                            list += "<li>" + item.replace(/^\d+\.\s*/,'').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>') + "</li>"; 
+                            orderedCounter += 1;
+                            list += "<li value=\"" + orderedCounter + "\">" + item.replace(/^\d+\.\s*/,'').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>') + "</li>"; 
                         }
                     });
                     html += ordered ? "<ol>" + list + "</ol>" : "<ul>" + list + "</ul>";
                 } else { 
+                    orderedCounter = 0;
                     html += "<p>" + p + "</p>"; 
                 }
             });
@@ -5270,7 +5284,7 @@ body.dark-mode .iv-iframe-container iframe {
                 + "Hãy phân tích hình ảnh người dùng tải lên. Chỉ trả lời kết quả cuối cùng, không in nháp, không in Role/Goal/User says/Analysis/Thought.\n\n"
                 + "QUAN TRỌNG VỚI ẢNH ĐƠN THUỐC: phải OCR và liệt kê TẤT CẢ thuốc/dòng thuốc đọc được trên đơn, kể cả thuốc không có trong danh mục bệnh viện. Không được chỉ nêu thuốc khớp danh mục. Nếu thấy 12 thuốc thì phải liệt kê đủ 12 thuốc.\n"
                 + "NẾU LÀ ĐƠN THUỐC: hãy đọc OCR các phần có thể thấy, gồm họ tên người bệnh nếu có, bác sĩ nếu có, chẩn đoán nếu có, tên thuốc/hoạt chất/hàm lượng/cách dùng nếu đọc được. "
-                + "Sau đó đối chiếu với danh mục thuốc bệnh viện bên dưới. Với thuốc tìm thấy trong dữ liệu bệnh viện, ghi rõ Tên thuốc, Hoạt chất, Hàm lượng, Dạng bào chế và link dạng [XEM HDSD](URL). Với thuốc chưa tìm thấy, vẫn phải liệt kê tên thuốc đọc được và ghi rõ chưa thấy trong danh mục bệnh viện từ dữ liệu hiện có.\n"
+                + "Sau đó đối chiếu với danh mục thuốc bệnh viện bên dưới. Với thuốc tìm thấy trong dữ liệu bệnh viện, ghi rõ Tên thuốc, Hoạt chất, Hàm lượng, Dạng bào chế và HDSD đúng dạng [XEM HDSD](URL); không in link Notion/link trần. Nếu có nhiều thuốc, đánh số thứ tự tăng dần 1, 2, 3... Với thuốc chưa tìm thấy, vẫn phải liệt kê tên thuốc đọc được và ghi rõ chưa thấy trong danh mục bệnh viện từ dữ liệu hiện có.\n"
                 + "NẾU LÀ ẢNH VỈ/HỘP/nhãn thuốc: hãy đọc tên thuốc/hoạt chất trên ảnh, giải thích ngắn thuốc là gì, rồi đối chiếu thuốc cùng tên hoặc cùng hoạt chất trong dữ liệu bệnh viện.\n"
                 + "NẾU KHÔNG ĐỌC ĐƯỢC ẢNH: nói rõ ảnh mờ/thiếu thông tin và đề nghị chụp lại rõ hơn, nhưng không được tự bịa tên thuốc.\n\n"
                 + "ĐỊNH DẠNG BẮT BUỘC NẾU LÀ ĐƠN THUỐC:\n"
@@ -5286,7 +5300,7 @@ body.dark-mode .iv-iframe-container iframe {
 
             const geminiPrescriptionPromptText = "Đây là hình ảnh do người dùng tải lên. \n" +
                 "NẾU LÀ ĐƠN THUỐC: Tuyệt đối không liệt kê các bước của quy trình đăng ký khám. Hãy trích xuất thông tin Họ và tên (tên bệnh nhân), Tên bác sỹ (ở mục ký số bởi), Nội dung chẩn đoán và các thuốc trên đơn. Sau đó trả lời CHÍNH XÁC theo mẫu sau:\n" +
-                "'Xin chào **[Họ và tên]** bạn đang cầm trên tay đơn thuốc của **<span style=\"color:red\">Bệnh viện Đa khoa tỉnh Tuyên Quang</span>** được kê bởi bác sĩ **[tên bác sĩ]** với chẩn đoán: [nội dung chẩn đoán]. **Chú ý: uống thuốc đúng thời gian và liều dùng trong mục \"Cách dùng\" ở trên đơn**. Đơn thuốc của bạn có những thuốc sau (với đơn có từ 2 thuốc trở lên nếu chỉ có 1 thuốc thì bỏ từ \"những\" đi): [liệt kê tên thuốc, hoạt chất, hàm lượng, dạng và tờ HDSD (hướng dẫn sử dụng) dựa trên dữ liệu y khoa bên dưới]. Nếu không đúng tên biệt dược trong dữ liệu, hãy gợi ý thuốc chứa cùng hoạt chất trên đơn có trong dữ liệu với đầy đủ tên, hoạt chất, hàm lượng, dạng và hướng dẫn sử dụng. Chúc bạn thật nhiều niềm vui và sức khỏe!'\n" +
+                "'Xin chào **[Họ và tên]** bạn đang cầm trên tay đơn thuốc của **<span style=\"color:red\">Bệnh viện Đa khoa tỉnh Tuyên Quang</span>** được kê bởi bác sĩ **[tên bác sĩ]** với chẩn đoán: [nội dung chẩn đoán]. **Chú ý: uống thuốc đúng thời gian và liều dùng trong mục \"Cách dùng\" ở trên đơn**. Đơn thuốc của bạn có những thuốc sau (với đơn có từ 2 thuốc trở lên nếu chỉ có 1 thuốc thì bỏ từ \"những\" đi): [đánh số thứ tự tăng dần 1, 2, 3... và liệt kê tên thuốc, hoạt chất, hàm lượng, dạng, HDSD đúng dạng [XEM HDSD](URL); không in link Notion/link trần; dựa trên dữ liệu y khoa bên dưới]. Nếu không đúng tên biệt dược trong dữ liệu, hãy gợi ý thuốc chứa cùng hoạt chất trên đơn có trong dữ liệu với đầy đủ tên, hoạt chất, hàm lượng, dạng và HDSD đúng dạng [XEM HDSD](URL). Chúc bạn thật nhiều niềm vui và sức khỏe!'\n" +
                 "NẾU KHÔNG PHẢI ĐƠN THUỐC: Hãy phân tích bình thường (quét và trích xuất TÊN THUỐC hoặc HOẠT CHẤT. Sau đó đưa ra thông tin chi tiết về: Biệt dược, Hàm lượng, Dạng thuốc, và Hướng dẫn sử dụng. Lưu ý: Nếu có nhiều biệt dược chứa hoạt chất đó, hãy liệt kê rõ ràng).\n\n" +
                 (medicalContext ? "Dữ liệu tham khảo (Medical Context):\n" + medicalContext + "\n\n" : "") +
                 "Dữ liệu thuốc tại Bệnh viện Đa khoa tỉnh Tuyên Quang để đối chiếu:" + allDrugsString;
@@ -5894,7 +5908,7 @@ body.dark-mode .iv-iframe-container iframe {
                 const antiLongAnswerRules = "\n\n<quy_tac_chong_cat_cau>\n"
                     + "Nếu câu hỏi liên quan danh sách/thống kê thuốc, hãy dùng dữ liệu thuốc liên quan đã cung cấp để lọc đúng ý người dùng. HTML không hard-code nhóm con; AI phải tự lọc nhóm con theo hoạt chất/nhóm thuốc.\n"
                     + "Nếu người dùng hỏi số lượng/thống kê thuần túy, chỉ trả lời số lượng thuốc phù hợp; có thể kèm thống kê rất ngắn, không liệt kê chi tiết từng thuốc.\n"
-                    + "Nếu người dùng yêu cầu kể tên/liệt kê/danh sách/thuốc nào: nếu kết quả cuối sau khi AI lọc còn từ 1 đến " + MAX_DETAILED_DRUG_RESULTS + " thuốc, trả lời số lượng + từng thuốc gồm Tên thuốc, Hoạt chất, Hàm lượng, Dạng bào chế và HDSD bằng cú pháp [XEM HDSD](URL). Nếu nhiều hơn " + MAX_DETAILED_DRUG_RESULTS + " thuốc, chỉ trả lời số lượng + tên thuốc ngắn gọn.\n"
+                    + "Nếu người dùng yêu cầu kể tên/liệt kê/danh sách/thuốc nào: nếu kết quả cuối sau khi AI lọc còn từ 1 đến " + MAX_DETAILED_DRUG_RESULTS + " thuốc, trả lời số lượng + đánh số thứ tự từng thuốc tăng dần 1, 2, 3...; mỗi thuốc gồm Tên thuốc, Hoạt chất, Hàm lượng, Dạng bào chế và HDSD đúng cú pháp [XEM HDSD](URL). Nếu nhiều hơn " + MAX_DETAILED_DRUG_RESULTS + " thuốc, chỉ trả lời số lượng + tên thuốc ngắn gọn.\n"
                     + "Nếu câu hỏi yêu cầu chi tiết nhiều thuốc, hãy trả lời chung chung, nêu rằng nội dung quá dài và hướng người dùng hỏi theo từng thuốc hoặc từng nhóm nhỏ hơn.\n"
                     + "Không để câu trả lời kết thúc cụt giữa câu. Giữ câu trả lời gọn, ưu tiên dưới 1200 ký tự với câu hỏi danh sách/thống kê.\n"
                     + "</quy_tac_chong_cat_cau>";
