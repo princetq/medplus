@@ -3283,6 +3283,12 @@ body.dark-mode .iv-iframe-container iframe {
         let aiMedicines = [];
         let activeIngredientsText = "";
         let medicineCount = 0;
+        let ragDrugIndex = [];
+        let ragDrugIndexSourceSize = 0;
+        const AI_FULL_SCAN_CACHE = {};
+        const AI_SCAN_PREFILTER_MIN_RESULTS = 18;
+        const AI_SCAN_PREFILTER_MAX_RESULTS = 220;
+        const AI_SCAN_CHUNK_SIZE = 90;
 
         const DATA_JSON_URL = "https://gist.githubusercontent.com/princetq/ff31fa8d9ea0a6f7ed485ed5c67cd0e5/raw/data.json";
         const AI_ICON = "<svg class=\"message-icon-svg\" viewBox=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"12\" fill=\"#E63946\"/><path d=\"M12 6V18M6 12H18\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg>";
@@ -3334,13 +3340,186 @@ body.dark-mode .iv-iframe-container iframe {
             };
         }
 
+        function getDrugDedupeKey_(drug) {
+            return removeAccents([drug && drug.brand, drug && drug.active, drug && drug.strength, drug && drug.form].join('|'));
+        }
+
+        function sortDrugsByBrand_(drugs) {
+            return (drugs || []).slice().sort(function(a, b) {
+                return String(a.brand || '').localeCompare(String(b.brand || ''), 'vi');
+            });
+        }
+
+        function dedupeDrugs_(drugs) {
+            const seen = new Set();
+            return (drugs || []).filter(function(d) {
+                const key = getDrugDedupeKey_(d);
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            });
+        }
+
+        function getCurrentDrugSource_(dataList) {
+            return (aiMedicines && aiMedicines.length > 0) ? aiMedicines : (dataList || []);
+        }
+
+        function buildRagDrugIndex_(sourceList) {
+            return (sourceList || []).map(normalizeDrugForRag);
+        }
+
+        function getRagDrugIndex_(dataList) {
+            const sourceList = getCurrentDrugSource_(dataList);
+            if (!sourceList || sourceList.length === 0) return [];
+            if (!ragDrugIndex || ragDrugIndexSourceSize !== sourceList.length) {
+                ragDrugIndex = buildRagDrugIndex_(sourceList);
+                ragDrugIndexSourceSize = sourceList.length;
+            }
+            return ragDrugIndex;
+        }
+
+        function resetAiFullScanCache_() {
+            Object.keys(AI_FULL_SCAN_CACHE).forEach(function(k) { delete AI_FULL_SCAN_CACHE[k]; });
+        }
+
+        function getAiFullScanCacheKey_(userMessage, allDrugs) {
+            return removeAccents(userMessage) + '|' + ((allDrugs && allDrugs.length) || 0) + '|' + (medicineCount || 0);
+        }
+
+        function scoreDrugForAiPrefilter_(drug, queryWords) {
+            if (!drug || !queryWords || queryWords.length === 0) return 0;
+            const brand = removeAccents(drug.brand || '');
+            const active = drug.activeNorm || removeAccents(drug.active || '');
+            const group = drug.groupNorm || removeAccents(drug.group || '');
+            const searchText = drug.searchText || removeAccents([drug.brand, drug.active, drug.group, drug.strength, drug.form].join(' '));
+            const phrase = queryWords.join(' ');
+            let score = 0;
+
+            if (phrase && group.includes(phrase)) score += 120;
+            if (phrase && active.includes(phrase)) score += 100;
+            if (phrase && searchText.includes(phrase)) score += 70;
+            if (allWordsInText_(queryWords, group)) score += 80;
+            if (allWordsInText_(queryWords, active)) score += 65;
+            queryWords.forEach(function(w) {
+                if (!w) return;
+                if (group.includes(w)) score += 22;
+                if (active.includes(w)) score += 18;
+                if (brand.includes(w)) score += 8;
+                if (searchText.includes(w)) score += 4;
+            });
+            return score;
+        }
+
+        function buildAiFullScanCandidateList_(userMessage, allDrugs) {
+            const drugs = allDrugs || [];
+            const normalizedQuestion = removeAccents(userMessage);
+            const queryWords = getRagQueryWords_(normalizedQuestion);
+            if (!queryWords.length || drugs.length <= AI_SCAN_CHUNK_SIZE) return drugs;
+
+            const scored = drugs
+                .map(function(d) { return { drug: d, score: scoreDrugForAiPrefilter_(d, queryWords) }; })
+                .filter(function(x) { return x.score > 0; })
+                .sort(function(a, b) {
+                    if (b.score !== a.score) return b.score - a.score;
+                    return String(a.drug.brand || '').localeCompare(String(b.drug.brand || ''), 'vi');
+                })
+                .map(function(x) { return x.drug; });
+
+            // Chỉ giảm danh mục khi kết quả lọc nhanh đủ nhiều và đủ rõ.
+            // Nếu quá ít, có thể là do người dùng dùng từ đồng nghĩa/bệnh cảnh; fallback toàn danh mục để tránh bỏ sót.
+            if (scored.length >= AI_SCAN_PREFILTER_MIN_RESULTS && scored.length <= AI_SCAN_PREFILTER_MAX_RESULTS) {
+                return scored;
+            }
+            return drugs;
+        }
+
+        function isBroadGroupDrugQuestion_(info) {
+            return !!(info && info.isStructuredDrugQuery && !info.identityQuery && !info.tooBroadWithoutTopic);
+        }
+
+        function isShortGroupDrugPhrase_(normalizedQuestion) {
+            const q = String(normalizedQuestion || '').trim().replace(/\s+/g, ' ');
+            if (!q) return false;
+
+            // Loại các câu hỏi định nghĩa/tư vấn một thuốc cụ thể để không ép trả dạng danh sách ngắn.
+            const detailOrIdentityTerms = [
+                'la thuoc gi', 'thuoc gi', 'la gi', 'cong dung', 'dung de lam gi',
+                'hdsd', 'huong dan su dung', 'lieu dung', 'cach dung', 'tac dung phu',
+                'chong chi dinh', 'than trong', 'tuong tac', 'dung duoc khong'
+            ];
+            if (detailOrIdentityTerms.some(function(term) { return q.includes(term); })) return false;
+
+            const cleanupTopic = function(topic) {
+                return String(topic || '')
+                    .replace(/\b(cua benh vien|trong benh vien|o benh vien|tai benh vien|benh vien|bvdk|bv|tuyen quang)\b/g, ' ')
+                    .replace(/\b(co khong|khong|gi|nao|vay|nhe|a|ha)\b/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            };
+
+            const drugPrefixMatch = q.match(/^thuoc\s+(.+)$/);
+            if (drugPrefixMatch) {
+                const topic = cleanupTopic(drugPrefixMatch[1]);
+                if (!topic) return false;
+                const words = topic.split(/\s+/).filter(Boolean);
+
+                // Một số nhóm hay viết gọn một token vẫn là câu hỏi nhóm thuốc.
+                const singleTokenGroupTerms = [
+                    'ppi', 'nsaid', 'statin', 'insulin', 'vitamin', 'corticoid',
+                    'cephalosporin', 'carbapenem', 'macrolid', 'quinolon', 'opioid',
+                    'heparin', 'warfarin', 'doac', 'acei', 'arb'
+                ];
+                if (words.length === 1) {
+                    const t = words[0];
+                    return singleTokenGroupTerms.includes(t)
+                        || /(prazol|sartan|pril|statin|mycin|cyclin|cillin|xacin)$/.test(t);
+                }
+
+                // Ví dụ: thuốc bảo vệ dạ dày, thuốc chống nôn, thuốc giãn phế quản,
+                // thuốc rối loạn lipid máu, thuốc chống đông, thuốc kháng sinh, thuốc tim mạch...
+                return words.length >= 2;
+            }
+
+            // Người dùng có thể gõ ngắn không có chữ "thuốc".
+            const knownShortGroupPatterns = [
+                /^khang sinh(\s|$)/,
+                /^tim mach(\s|$)/,
+                /^ha huyet ap(\s|$)/,
+                /^huyet ap(\s|$)/,
+                /^tieu duong(\s|$)/,
+                /^da day(\s|$)/,
+                /^bao ve da day(\s|$)/,
+                /^chong non(\s|$)/,
+                /^gian phe quan(\s|$)/,
+                /^roi loan lipid mau(\s|$)/,
+                /^ha lipid mau(\s|$)/,
+                /^chong dong(\s|$)/,
+                /^cam mau(\s|$)/,
+                /^ppi(\s|$)/,
+                /^nsaid(\s|$)/,
+                /^statin(\s|$)/
+            ];
+            return knownShortGroupPatterns.some(function(pattern) { return pattern.test(q); });
+        }
+
         function isBroadDrugListQuery(normalizedQuestion) {
+            const q = String(normalizedQuestion || '').trim().replace(/\s+/g, ' ');
             const broadTerms = [
                 'cac thuoc', 'nhung thuoc', 'danh sach', 'liet ke', 'nhom',
                 'benh vien co', 'o benh vien', 'tai benh vien', 'thuoc nao',
                 'co thuoc nao', 'ppi', 'uc che bom proton', 'cam mau', 'dong mau'
             ];
-            return broadTerms.some(term => normalizedQuestion.includes(term));
+            const broadPatterns = [
+                /\bbenh vien co\s+.+\b(gi|nao|khong)\b/,
+                /\b(o|tai) benh vien\s+.*\bco\s+.+\b(gi|nao|khong)\b/,
+                /\bco\s+(thuoc|cac thuoc|nhung thuoc)\s+.+\b(gi|nao|khong)\b/,
+                /^\s*thuoc\s+.+\b(gi|nao)\s*$/,
+                /\b(cac|nhung|danh sach|liet ke|ke ten)\s+thuoc\s+.+/,
+                /\bthuoc\s+.+\b(nhom|phan nhom|loai|dong|he|the he)\b/
+            ];
+            return isShortGroupDrugPhrase_(q)
+                || broadTerms.some(function(term) { return q.includes(term); })
+                || broadPatterns.some(function(pattern) { return pattern.test(q); });
         }
 
         function isPpiQuery(normalizedQuestion) {
@@ -3502,14 +3681,14 @@ body.dark-mode .iv-iframe-container iframe {
 
 
         function getDrugQueryInfo_(userMessage, dataList) {
-            const sourceList = (aiMedicines && aiMedicines.length > 0) ? aiMedicines : (dataList || []);
+            const sourceList = getCurrentDrugSource_(dataList);
             const normalizedQuestion = removeAccents(userMessage);
             const broadQuery = isBroadDrugListQuery(normalizedQuestion);
             const countQuery = isDrugCountStatsQuery_(normalizedQuestion);
             const compactListQuery = isCompactDrugListQuery(normalizedQuestion);
             const longDetailQuery = isPotentiallyLongDrugDetailQuery_(normalizedQuestion);
             const identityQuery = isDrugIdentityQuery(normalizedQuestion);
-            const allDrugs = (sourceList || []).map(normalizeDrugForRag);
+            const allDrugs = getRagDrugIndex_(sourceList);
             const queryWords = getRagQueryWords_(normalizedQuestion);
             const candidateQueryWords = getCandidateScopeWords_(normalizedQuestion, queryWords);
             const tooBroadWithoutTopic = broadQuery && queryWords.length === 0;
@@ -3591,6 +3770,25 @@ body.dark-mode .iv-iframe-container iframe {
             line += '  - Dạng bào chế: ' + form + '\n';
             line += '  - HDSD: ' + (link ? '[XEM HDSD](' + link + ')' : 'Đang cập nhật') + '\n';
             return line;
+        }
+
+        function buildAiFullCatalogScanAnswer_(info, finalDrugs) {
+            const drugs = finalDrugs || [];
+            const hospital = 'Bệnh viện Đa khoa tỉnh Tuyên Quang';
+
+            if (!drugs.length) {
+                return 'Tôi chưa tìm thấy thuốc phù hợp với yêu cầu này trong dữ liệu hiện có của **' + hospital + '**.';
+            }
+
+            const maxItems = 80;
+            let answer = 'Tại **Khoa Dược BVĐK Tuyên Quang**, hiện có **' + drugs.length + '** thuốc phù hợp với yêu cầu của bạn:\n\n';
+            drugs.slice(0, maxItems).forEach(function(d, i) {
+                answer += (i + 1) + '. **' + (d.brand || 'Đang cập nhật') + '** — Hoạt chất: ' + (d.active || 'Đang cập nhật') + '\n';
+            });
+            if (drugs.length > maxItems) {
+                answer += '\nDanh sách còn **' + (drugs.length - maxItems) + '** thuốc khác. Bạn có thể hỏi hẹp hơn theo phân nhóm hoặc hoạt chất để xem tiếp.';
+            }
+            return answer;
         }
 
         function buildStructuredDrugAnswer_(info, finalDrugs) {
@@ -3753,8 +3951,121 @@ body.dark-mode .iv-iframe-container iframe {
             return { ok: true, drugs: verifiedAll };
         }
 
+        function shouldUseAiFullCatalogScan_(info) {
+            if (!info || !info.isStructuredDrugQuery) return false;
+            // Câu hỏi quá rộng kiểu "bệnh viện có những thuốc nào" không gửi toàn bộ danh mục cho AI.
+            // Các câu hỏi có chủ đề/nhóm/bệnh cảnh như cầm máu, PPI, dạ dày, NSAID...
+            // sẽ bỏ qua RAG score cứng và để AI quét trực tiếp toàn bộ tên thuốc + hoạt chất.
+            if (info.tooBroadWithoutTopic) return false;
+            return true;
+        }
+
+        function formatDrugLineForFullAiScan_(d, index) {
+            return index + '. Tên: ' + (d.brand || 'Đang cập nhật')
+                + ' | Hoạt chất: ' + (d.active || 'Đang cập nhật')
+                + ' | Nhóm: ' + (d.group || 'Đang cập nhật');
+        }
+
+        async function selectDrugSubsetFromFullCatalogWithAI_(userMessage, allDrugs) {
+            if (!allDrugs || allDrugs.length === 0) return { ok: true, drugs: [] };
+
+            const cacheKey = getAiFullScanCacheKey_(userMessage, allDrugs);
+            if (AI_FULL_SCAN_CACHE[cacheKey]) {
+                return {
+                    ok: true,
+                    drugs: AI_FULL_SCAN_CACHE[cacheKey].slice(),
+                    fromCache: true,
+                    scannedCount: AI_FULL_SCAN_CACHE[cacheKey].length
+                };
+            }
+
+            const candidateDrugs = buildAiFullScanCandidateList_(userMessage, allDrugs);
+            const usingReducedCatalog = candidateDrugs.length < allDrugs.length;
+            const chunkSize = AI_SCAN_CHUNK_SIZE;
+            let selectedAll = [];
+
+            for (let start = 0; start < candidateDrugs.length; start += chunkSize) {
+                const chunk = candidateDrugs.slice(start, start + chunkSize);
+                const catalogText = chunk.map(function(d, i) {
+                    return formatDrugLineForFullAiScan_(d, i + 1);
+                }).join('
+');
+
+                const scanPrompt = 'Bạn là bộ lọc danh mục thuốc của Khoa Dược BVĐK Tuyên Quang.
+'
+                    + 'Nhiệm vụ: đọc câu hỏi người dùng và QUÉT TRỰC TIẾP danh sách thuốc dưới đây theo Tên thuốc, Hoạt chất và Nhóm.
+'
+                    + 'Áp dụng cho mọi câu hỏi dạng hỏi danh mục theo nhóm thuốc, phân nhóm, chỉ định, cơ quan/bệnh cảnh hoặc tác dụng dược lý, ví dụ: kháng sinh, tim mạch, huyết áp, tiểu đường, PPI/dạ dày, cầm máu, giảm đau, NSAID, chống viêm, chống dị ứng, hô hấp, thần kinh, dịch truyền...
+'
+                    + 'Không dùng so khớp từ khóa cứng. Hãy dùng kiến thức dược lý để nhận diện thuốc phù hợp từ tên thuốc, hoạt chất và nhóm dược lý.
+'
+                    + 'Chỉ chọn thuốc thật sự phù hợp với câu hỏi. Không thêm thuốc ngoài danh sách. Không chọn thuốc chỉ vì biệt dược trùng một chữ nhưng hoạt chất/nhóm không liên quan.
+'
+                    + 'Nếu câu hỏi chỉ hỏi số lượng, vẫn chọn ids đúng để hệ thống đếm.
+'
+                    + 'Chỉ trả về JSON hợp lệ, không giải thích, không markdown, đúng mẫu: {"ids":[1,2,3]}
+
+'
+                    + 'Câu hỏi người dùng: ' + userMessage + '
+'
+                    + 'Phạm vi quét: ' + (usingReducedCatalog ? 'danh sách đã được giảm bằng index nhanh, nếu không thấy phù hợp hãy trả ids rỗng' : 'toàn bộ danh mục thuốc') + '.
+
+'
+                    + '<danh_muc_thuoc_chunk>
+' + catalogText + '
+</danh_muc_thuoc_chunk>';
+
+                let chunkOk = false;
+                let chunkSelected = [];
+                for (let m = 0; m < AI_MODELS.length && !chunkOk; m++) {
+                    for (let k = 0; k < API_KEYS.length && !chunkOk; k++) {
+                        try {
+                            const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/' + AI_MODELS[m] + ':generateContent?key=' + API_KEYS[k];
+                            const payload = {
+                                contents: [{ role: 'user', parts: [{ text: scanPrompt }] }],
+                                generationConfig: { temperature: 0.0, maxOutputTokens: 768 }
+                            };
+                            const res = await fetch(apiUrl, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(payload)
+                            });
+                            if (!res.ok) continue;
+                            const data = await res.json();
+                            const text = extractGeminiText_(data);
+                            const ids = parseSelectedDrugIds_(text);
+                            if (ids.length > 0 || /"ids"\s*:\s*\[\s*\]/.test(String(text || ''))) {
+                                const seenIds = new Set();
+                                chunkSelected = ids
+                                    .filter(function(id) { return id >= 1 && id <= chunk.length; })
+                                    .filter(function(id) { if (seenIds.has(id)) return false; seenIds.add(id); return true; })
+                                    .map(function(id) { return chunk[id - 1]; });
+                                chunkOk = true;
+                            }
+                        } catch (e) {}
+                    }
+                }
+
+                if (!chunkOk) {
+                    return { ok: false, drugs: [] };
+                }
+                selectedAll = selectedAll.concat(chunkSelected);
+            }
+
+            selectedAll = sortDrugsByBrand_(dedupeDrugs_(selectedAll));
+            AI_FULL_SCAN_CACHE[cacheKey] = selectedAll.slice();
+
+            return {
+                ok: true,
+                drugs: selectedAll,
+                fromCache: false,
+                scannedCount: candidateDrugs.length,
+                reducedCatalog: usingReducedCatalog
+            };
+        }
+
         function getRelevantDrugsContext(userMessage, dataList) {
-            const sourceList = (aiMedicines && aiMedicines.length > 0) ? aiMedicines : (dataList || []);
+            const sourceList = getCurrentDrugSource_(dataList);
             if (!userMessage || !sourceList || sourceList.length === 0) return "";
 
             const normalizedQuestion = removeAccents(userMessage);
@@ -3764,9 +4075,13 @@ body.dark-mode .iv-iframe-container iframe {
             const longDetailQuery = isPotentiallyLongDrugDetailQuery_(normalizedQuestion);
             const identityQuery = isDrugIdentityQuery(normalizedQuestion);
             const questionSubject = getQuestionSubject(userMessage);
-            const allDrugs = sourceList.map(normalizeDrugForRag);
+            const allDrugs = getRagDrugIndex_(sourceList);
             const queryWords = getRagQueryWords_(normalizedQuestion);
             const includeDetailFields = identityQuery && !broadQuery;
+
+            // Mini-RAG còn lại chỉ phục vụ câu hỏi thuốc/hoạt chất cụ thể.
+            // Câu hỏi dạng nhóm thuốc/bệnh cảnh đã đi qua AI full scan hoặc structured answer ở sendMessage().
+            if (broadQuery && !identityQuery) return "";
 
             let matchedDrugs = [];
 
@@ -4930,6 +5245,9 @@ body.dark-mode .iv-iframe-container iframe {
                 if (Array.isArray(d.medicines)) aiMedicines = d.medicines;
                 if (d.activeIngredientsText) activeIngredientsText = d.activeIngredientsText;
                 if (d.medicineCount) medicineCount = d.medicineCount;
+                ragDrugIndex = buildRagDrugIndex_(aiMedicines);
+                ragDrugIndexSourceSize = aiMedicines.length;
+                resetAiFullScanCache_();
             } catch (e) { console.error("Không thể tải dữ liệu y khoa:", e); }
         }
 
@@ -5870,8 +6188,27 @@ body.dark-mode .iv-iframe-container iframe {
                 if (keyIdx >= API_KEYS.length) throw new Error("ALL_KEYS_EXHAUSTED");
                 const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/" + AI_MODELS[modelIdx] + ":generateContent?key=" + API_KEYS[keyIdx];
                 
-                const dataForRag = (aiMedicines && aiMedicines.length > 0) ? aiMedicines : rawData;
+                const dataForRag = getCurrentDrugSource_(rawData);
                 const drugQueryInfo = getDrugQueryInfo_(userMessage, dataForRag);
+                if (shouldUseAiFullCatalogScan_(drugQueryInfo)) {
+                    document.getElementById('typing-text').innerText = "MedPlus AI đang quét danh mục thuốc...";
+                    const aiScan = await selectDrugSubsetFromFullCatalogWithAI_(userMessage, drugQueryInfo.allDrugs || []);
+                    if (!aiScan.ok) {
+                        clearInterval(timerInterval);
+                        typingIndicator.style.display = 'none';
+                        displayMessage('Tôi chưa quét được danh mục thuốc bằng AI nên chưa trả kết quả để tránh sai sót dữ liệu y khoa. Bạn vui lòng thử lại sau ít giây hoặc hỏi hẹp hơn theo hoạt chất/tên thuốc.', 'ai');
+                        sendButton.disabled = false;
+                        return;
+                    }
+
+                    const localReply = buildAiFullCatalogScanAnswer_(drugQueryInfo, aiScan.drugs || []);
+                    clearInterval(timerInterval);
+                    typingIndicator.style.display = 'none';
+                    displayMessage(localReply, 'ai');
+                    sendButton.disabled = false;
+                    return;
+                }
+
                 if (shouldUseStructuredDrugAnswer_(drugQueryInfo)) {
                     let finalDrugs = drugQueryInfo.matchedDrugs || [];
                     if (drugQueryInfo.needsAiSubFilter) {
