@@ -3437,6 +3437,16 @@ body.dark-mode .iv-iframe-container iframe {
             return !!(info && info.isStructuredDrugQuery && !info.identityQuery && !info.tooBroadWithoutTopic);
         }
 
+        function hasNormalizedPhrase_(text, phrase) {
+            const q = String(text || '').trim().replace(/\s+/g, ' ');
+            const words = String(phrase || '').trim().split(/\s+/).filter(Boolean);
+            if (!q || words.length === 0) return false;
+            const body = words.map(function(w) {
+                return w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            }).join('\\s+');
+            return new RegExp('(^|\\s)' + body + '(?=\\s|$)').test(q);
+        }
+
         function isShortGroupDrugPhrase_(normalizedQuestion) {
             const q = String(normalizedQuestion || '').trim().replace(/\s+/g, ' ');
             if (!q) return false;
@@ -3447,7 +3457,7 @@ body.dark-mode .iv-iframe-container iframe {
                 'hdsd', 'huong dan su dung', 'lieu dung', 'cach dung', 'tac dung phu',
                 'chong chi dinh', 'than trong', 'tuong tac', 'dung duoc khong'
             ];
-            if (detailOrIdentityTerms.some(function(term) { return q.includes(term); })) return false;
+            if (detailOrIdentityTerms.some(function(term) { return hasNormalizedPhrase_(q, term); })) return false;
 
             const cleanupTopic = function(topic) {
                 return String(topic || '')
@@ -3536,11 +3546,10 @@ body.dark-mode .iv-iframe-container iframe {
         }
 
         function isDrugIdentityQuery(normalizedQuestion) {
-            return normalizedQuestion.includes('la thuoc gi')
-                || normalizedQuestion.includes('thuoc gi')
-                || normalizedQuestion.includes('la gi')
-                || normalizedQuestion.includes('cong dung')
-                || normalizedQuestion.includes('dung de lam gi');
+            const q = String(normalizedQuestion || '').trim().replace(/\s+/g, ' ');
+            return ['la thuoc gi', 'thuoc gi', 'la gi', 'cong dung', 'dung de lam gi'].some(function(term) {
+                return hasNormalizedPhrase_(q, term);
+            });
         }
 
         // =========================================================================
@@ -3988,32 +3997,18 @@ body.dark-mode .iv-iframe-container iframe {
                 const chunk = candidateDrugs.slice(start, start + chunkSize);
                 const catalogText = chunk.map(function(d, i) {
                     return formatDrugLineForFullAiScan_(d, i + 1);
-                }).join('
-');
+                }).join('\n');
 
-                const scanPrompt = 'Bạn là bộ lọc danh mục thuốc của Khoa Dược BVĐK Tuyên Quang.
-'
-                    + 'Nhiệm vụ: đọc câu hỏi người dùng và QUÉT TRỰC TIẾP danh sách thuốc dưới đây theo Tên thuốc, Hoạt chất và Nhóm.
-'
-                    + 'Áp dụng cho mọi câu hỏi dạng hỏi danh mục theo nhóm thuốc, phân nhóm, chỉ định, cơ quan/bệnh cảnh hoặc tác dụng dược lý, ví dụ: kháng sinh, tim mạch, huyết áp, tiểu đường, PPI/dạ dày, cầm máu, giảm đau, NSAID, chống viêm, chống dị ứng, hô hấp, thần kinh, dịch truyền...
-'
-                    + 'Không dùng so khớp từ khóa cứng. Hãy dùng kiến thức dược lý để nhận diện thuốc phù hợp từ tên thuốc, hoạt chất và nhóm dược lý.
-'
-                    + 'Chỉ chọn thuốc thật sự phù hợp với câu hỏi. Không thêm thuốc ngoài danh sách. Không chọn thuốc chỉ vì biệt dược trùng một chữ nhưng hoạt chất/nhóm không liên quan.
-'
-                    + 'Nếu câu hỏi chỉ hỏi số lượng, vẫn chọn ids đúng để hệ thống đếm.
-'
-                    + 'Chỉ trả về JSON hợp lệ, không giải thích, không markdown, đúng mẫu: {"ids":[1,2,3]}
-
-'
-                    + 'Câu hỏi người dùng: ' + userMessage + '
-'
-                    + 'Phạm vi quét: ' + (usingReducedCatalog ? 'danh sách đã được giảm bằng index nhanh, nếu không thấy phù hợp hãy trả ids rỗng' : 'toàn bộ danh mục thuốc') + '.
-
-'
-                    + '<danh_muc_thuoc_chunk>
-' + catalogText + '
-</danh_muc_thuoc_chunk>';
+                const scanPrompt = 'Bạn là bộ lọc danh mục thuốc của Khoa Dược BVĐK Tuyên Quang.\n'
+                    + 'Nhiệm vụ: đọc câu hỏi người dùng và QUÉT TRỰC TIẾP danh sách thuốc dưới đây theo Tên thuốc, Hoạt chất và Nhóm.\n'
+                    + 'Áp dụng cho mọi câu hỏi dạng hỏi danh mục theo nhóm thuốc, phân nhóm, chỉ định, cơ quan/bệnh cảnh hoặc tác dụng dược lý, ví dụ: kháng sinh, tim mạch, huyết áp, tiểu đường, PPI/dạ dày, cầm máu, giảm đau, NSAID, chống viêm, chống dị ứng, hô hấp, thần kinh, dịch truyền...\n'
+                    + 'Không dùng so khớp từ khóa cứng. Hãy dùng kiến thức dược lý để nhận diện thuốc phù hợp từ tên thuốc, hoạt chất và nhóm dược lý.\n'
+                    + 'Chỉ chọn thuốc thật sự phù hợp với câu hỏi. Không thêm thuốc ngoài danh sách. Không chọn thuốc chỉ vì biệt dược trùng một chữ nhưng hoạt chất/nhóm không liên quan.\n'
+                    + 'Nếu câu hỏi chỉ hỏi số lượng, vẫn chọn ids đúng để hệ thống đếm.\n'
+                    + 'Chỉ trả về JSON hợp lệ, không giải thích, không markdown, đúng mẫu: {"ids":[1,2,3]}\n\n'
+                    + 'Câu hỏi người dùng: ' + userMessage + '\n'
+                    + 'Phạm vi quét: ' + (usingReducedCatalog ? 'danh sách đã được giảm bằng index nhanh, nếu không thấy phù hợp hãy trả ids rỗng' : 'toàn bộ danh mục thuốc') + '.\n\n'
+                    + '<danh_muc_thuoc_chunk>\n' + catalogText + '\n</danh_muc_thuoc_chunk>';
 
                 let chunkOk = false;
                 let chunkSelected = [];
