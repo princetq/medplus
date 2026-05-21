@@ -98,8 +98,14 @@
       pointer-events:none;
     }
 
-    .nav-links{display:flex;align-items:center;gap:5px}
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:5px;
+    }
+
     .nav-links button{
+      position:relative;
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -108,22 +114,64 @@
       line-height:1;
       color:#fff;
       background:rgba(255,255,255,.15);
-      border:1px solid rgba(255,255,255,.3);
+      border:0;
+      outline:0;
+      appearance:none;
+      -webkit-appearance:none;
       backdrop-filter:blur(6px);
       -webkit-backdrop-filter:blur(6px);
-      box-shadow:0 2px 8px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.25);
+      box-shadow:
+        0 2px 8px rgba(0,0,0,.12),
+        inset 0 1px 0 rgba(255,255,255,.25);
       font-size:.8rem;
       font-weight:600;
       border-radius:8px;
       white-space:nowrap;
       letter-spacing:.25px;
       cursor:pointer;
-      transition:.25s;
+      transition:
+        background .25s ease,
+        box-shadow .25s ease,
+        transform .25s ease;
       font-family:inherit;
       box-sizing:border-box;
+      overflow:hidden;
+      -webkit-tap-highlight-color:transparent;
+      transform:translateZ(0);
     }
-    .nav-links button:hover{background:rgba(255,255,255,.28);box-shadow:0 4px 14px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.35);transform:translateY(-1px)}
-    .nav-links button.active{background:rgba(255,255,255,.35);box-shadow:0 4px 14px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.4);border-color:rgba(255,255,255,.6)}
+
+    .nav-links button::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      border:1px solid rgba(255,255,255,.30);
+      pointer-events:none;
+      box-sizing:border-box;
+    }
+
+    .nav-links button:hover{
+      background:rgba(255,255,255,.28);
+      box-shadow:
+        0 4px 14px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.35);
+      transform:translate3d(0,-1px,0);
+    }
+
+    .nav-links button:hover::after{
+      border-color:rgba(255,255,255,.45);
+    }
+
+    .nav-links button.active{
+      background:rgba(255,255,255,.35);
+      box-shadow:
+        0 4px 14px rgba(0,0,0,.2),
+        inset 0 1px 0 rgba(255,255,255,.4);
+    }
+
+    .nav-links button.active::after{
+      border-color:rgba(255,255,255,.60);
+    }
 
     .hamburger{
       display:none;
@@ -141,11 +189,33 @@
       flex-shrink:0;
       -webkit-tap-highlight-color:transparent;
     }
-    .hamburger:hover{background:transparent;box-shadow:none}
-    .hamburger span{display:block;width:17px;height:2px;background:#fff;border-radius:2px;transition:.25s}
-    .hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
-    .hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
-    .hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+    .hamburger:hover{
+      background:transparent;
+      box-shadow:none;
+    }
+
+    .hamburger span{
+      display:block;
+      width:17px;
+      height:2px;
+      background:#fff;
+      border-radius:2px;
+      transition:.25s;
+    }
+
+    .hamburger.open span:nth-child(1){
+      transform:translateY(6px) rotate(45deg);
+    }
+
+    .hamburger.open span:nth-child(2){
+      opacity:0;
+      transform:scaleX(0);
+    }
+
+    .hamburger.open span:nth-child(3){
+      transform:translateY(-6px) rotate(-45deg);
+    }
 
     .mobile-menu{
       display:none;
@@ -173,7 +243,13 @@
       overflow-y:auto;
       overscroll-behavior:contain;
     }
-    .mobile-menu.open{display:flex;transform:translateX(0);opacity:1}
+
+    .mobile-menu.open{
+      display:flex;
+      transform:translateX(0);
+      opacity:1;
+    }
+
     .mobile-menu::before{
       content:'';
       position:absolute;
@@ -193,21 +269,39 @@
       width:100%;
       height:46px;
       padding:0 14px;
+      border:0;
+      outline:0;
+      appearance:none;
+      -webkit-appearance:none;
       border-radius:14px;
-      border:1px solid rgba(255,255,255,.20);
       background:rgba(255,255,255,.12);
       color:#fff;
       font-size:.9rem;
       font-weight:700;
       letter-spacing:.25px;
       cursor:pointer;
-      transition:.22s ease;
+      transition:
+        background .22s ease,
+        box-shadow .22s ease,
+        transform .22s ease;
       box-shadow:
         0 6px 16px rgba(0,0,0,.10),
         inset 0 1px 0 rgba(255,255,255,.20);
       backdrop-filter:blur(10px);
       -webkit-backdrop-filter:blur(10px);
       overflow:hidden;
+      box-sizing:border-box;
+      -webkit-tap-highlight-color:transparent;
+      transform:translateZ(0);
+    }
+
+    .mobile-menu button::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      border:1px solid rgba(255,255,255,.22);
+      pointer-events:none;
       box-sizing:border-box;
     }
 
@@ -224,7 +318,9 @@
       color:#fff;
       opacity:.96;
       pointer-events:none;
+      z-index:1;
     }
+
     .menu-ico svg{
       width:20px;
       height:20px;
@@ -237,6 +333,8 @@
     }
 
     .menu-text{
+      position:relative;
+      z-index:1;
       width:100%;
       text-align:center;
       padding-left:28px;
@@ -247,19 +345,26 @@
     }
 
     .mobile-menu button:hover{
-      transform:translateY(-1px);
+      transform:translate3d(0,-1px,0);
       background:rgba(255,255,255,.20);
-      border-color:rgba(255,255,255,.30);
       box-shadow:
         0 10px 20px rgba(0,0,0,.12),
         inset 0 1px 0 rgba(255,255,255,.26);
     }
+
+    .mobile-menu button:hover::after{
+      border-color:rgba(255,255,255,.32);
+    }
+
     .mobile-menu button.active{
       background:rgba(255,255,255,.28);
-      border-color:rgba(255,255,255,.42);
       box-shadow:
         0 12px 24px rgba(0,0,0,.14),
         inset 0 1px 0 rgba(255,255,255,.34);
+    }
+
+    .mobile-menu button.active::after{
+      border-color:rgba(255,255,255,.46);
     }
 
     .menu-overlay{
@@ -274,34 +379,82 @@
       -webkit-backdrop-filter:blur(2px);
       z-index:9998;
     }
-    .menu-overlay.open{display:block}
+
+    .menu-overlay.open{
+      display:block;
+    }
 
     .page-wrap{
       position:relative;
       left:0;
       transition:left .24s ease, transform .24s ease;
     }
-    .page-wrap.shifted{left:-75vw}
 
-    .web-container{width:100%;height:calc(var(--vh, 1vh) * 100 - 52px);position:relative}
-    .embedded-site{
-      position:absolute;inset:0;width:100%;height:100%;border:none;display:none;background:#fff;
-      -webkit-overflow-scrolling:touch;overscroll-behavior:contain
+    .page-wrap.shifted{
+      left:-75vw;
     }
-    .embedded-site.active{display:block}
+
+    .web-container{
+      width:100%;
+      height:calc(var(--vh, 1vh) * 100 - 52px);
+      position:relative;
+    }
+
+    .embedded-site{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      border:none;
+      display:none;
+      background:#fff;
+      -webkit-overflow-scrolling:touch;
+      overscroll-behavior:contain;
+    }
+
+    .embedded-site.active{
+      display:block;
+    }
 
     @media (max-width:768px){
-      .nav-links{display:none}
-      .hamburger{display:flex}
-      .logo-circle{width:36px;height:36px}
-      .site-logo{width:34px;height:34px}
-      .brand-badge{padding:5px 10px;font-size:.7rem;letter-spacing:.9px}
-      .custom-navbar{padding:0 10px}
-      .menu-text{transform:none;padding-right:18px}
+      .nav-links{
+        display:none;
+      }
+
+      .hamburger{
+        display:flex;
+      }
+
+      .logo-circle{
+        width:36px;
+        height:36px;
+      }
+
+      .site-logo{
+        width:34px;
+        height:34px;
+      }
+
+      .brand-badge{
+        padding:5px 10px;
+        font-size:.7rem;
+        letter-spacing:.9px;
+      }
+
+      .custom-navbar{
+        padding:0 10px;
+      }
+
+      .menu-text{
+        transform:none;
+        padding-right:18px;
+      }
     }
 
-    @media (max-width:768px) and (orientation:landscape){
-      .brand-badge{display:none}
+    @media (orientation:landscape) and (max-height:600px) and (hover:none) and (pointer:coarse){
+      .brand-badge{
+        display:none !important;
+      }
     }
   </style>
 </head>
@@ -322,7 +475,11 @@
       <button data-tab="lienhe" onclick="switchTab('lienhe')">LIÊN HỆ</button>
     </nav>
 
-    <button class="hamburger" id="hamburgerBtn" aria-label="Mở menu"><span></span><span></span><span></span></button>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Mở menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </header>
 
   <nav class="mobile-menu" id="mobileMenu">
@@ -424,21 +581,34 @@
       currentTab = id;
       document.querySelectorAll('.embedded-site').forEach(f => f.classList.remove('active'));
       clearActiveButtons();
+
       const iframe = document.getElementById('iframe-' + id);
+
       if (iframe) {
         iframe.classList.add('active');
-        if (!iframe.src && iframe.dataset.src) iframe.src = iframe.dataset.src;
+
+        if (!iframe.src && iframe.dataset.src) {
+          iframe.src = iframe.dataset.src;
+        }
       }
+
       document.querySelectorAll('[data-tab="' + id + '"]').forEach(b => b.classList.add('active'));
     }
 
     function reloadIframe(id) {
       const iframe = document.getElementById('iframe-' + id);
+
       if (!iframe) return;
+
       const src = iframe.src || iframe.dataset.src;
+
       if (!src) return;
+
       iframe.src = '';
-      requestAnimationFrame(() => { iframe.src = src; });
+
+      requestAnimationFrame(() => {
+        iframe.src = src;
+      });
     }
 
     function closeMobileMenu() {
@@ -457,15 +627,26 @@
 
     function switchTab(id, isMobile = false) {
       if (!TAB_IDS.includes(id)) return;
-      if (id === currentTab) reloadIframe(id);
-      else setActive(id);
-      if (isMobile) closeMobileMenu();
+
+      if (id === currentTab) {
+        reloadIframe(id);
+      } else {
+        setActive(id);
+      }
+
+      if (isMobile) {
+        closeMobileMenu();
+      }
     }
 
     document.getElementById('hamburgerBtn').addEventListener('click', () => {
       const menu = document.getElementById('mobileMenu');
-      if (menu.classList.contains('open')) closeMobileMenu();
-      else openMobileMenu();
+
+      if (menu.classList.contains('open')) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
     });
 
     document.getElementById('menuOverlay').addEventListener('click', closeMobileMenu);
@@ -480,6 +661,7 @@
 
     window.addEventListener('message', (event) => {
       if (!event.data || event.data.type !== 'inner-nav') return;
+
       document.querySelectorAll('#desktopNav button, #mobileMenu button').forEach(b => b.classList.remove('active'));
     });
   </script>
