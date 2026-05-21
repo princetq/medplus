@@ -1,95 +1,134 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebApp Dược Tuyên Quang - Tùy Biến Giao Diện</title>
-    <style>
-        /* Reset cài đặt mặc định của trình duyệt */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body, html {
-            width: 100%;
-            height: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden; /* Ẩn thanh cuộn của trang gốc để tránh bị 2 thanh cuộn */
-            background-color: #f4f6f9;
-        }
-
-        /* Thanh điều hướng phía trên (Có thể tùy biến thêm code/nút bấm tùy ý) */
-        .custom-navbar {
-            background-color: #0056b3;
-            color: white;
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 60px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .logo-text {
-            font-weight: bold;
-            font-size: 1.2rem;
-            letter-spacing: 0.5px;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            margin-left: 15px;
-            font-size: 0.95rem;
-            padding: 6px 12px;
-            border-radius: 4px;
-            transition: background 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Khung chứa nội dung nhúng - Tự động tính toán chiều cao còn lại */
-        .web-container {
-            width: 100%;
-            height: calc(100vh - 60px); /* Toàn màn hình trừ đi 60px chiều cao của thanh điều hướng */
-            position: relative;
-        }
-
-        /* Cấu hình iframe mượt mà, co giãn Responsive */
-        .embedded-site {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Khoa Dược - BVĐK Tỉnh Tuyên Quang</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{width:100%;height:100%;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;overflow:hidden;background:#f4f6f9}
+    .custom-navbar{background:linear-gradient(135deg,#2d6218 0%,#37761d 60%,#429021 100%);color:#fff;padding:0 20px;display:flex;justify-content:space-between;align-items:center;height:60px;box-shadow:0 2px 16px rgba(55,118,29,.4);position:relative;z-index:1000}
+    .logo-text{font-weight:700;font-size:1.05rem;letter-spacing:.4px;white-space:nowrap}
+    .nav-links{display:flex;align-items:center;gap:6px}
+    .nav-links button{color:#fff;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 2px 8px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.25);font-size:.82rem;font-weight:600;padding:7px 13px;border-radius:8px;white-space:nowrap;letter-spacing:.3px;cursor:pointer;transition:.25s;font-family:inherit}
+    .nav-links button:hover{background:rgba(255,255,255,.28);box-shadow:0 4px 14px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.35);transform:translateY(-1px)}
+    .nav-links button.active{background:rgba(255,255,255,.35);box-shadow:0 4px 14px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.4);border-color:rgba(255,255,255,.6)}
+    .hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:42px;height:42px;cursor:pointer;border-radius:8px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 2px 8px rgba(0,0,0,.12);transition:.25s;flex-shrink:0}
+    .hamburger:hover{background:rgba(255,255,255,.28)}
+    .hamburger span{display:block;width:22px;height:2.5px;background:#fff;border-radius:2px;transition:.3s}
+    .hamburger.open span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+    .hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+    .hamburger.open span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+    .mobile-menu{display:none;position:absolute;top:60px;left:0;right:0;background:linear-gradient(160deg,#2d6218 0%,#37761d 100%);box-shadow:0 8px 24px rgba(55,118,29,.4);z-index:999;flex-direction:column;padding:10px 16px 14px;gap:8px;border-top:1px solid rgba(255,255,255,.15)}
+    .mobile-menu.open{display:flex}
+    .mobile-menu button{color:#fff;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 2px 8px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.2);font-size:.9rem;font-weight:600;padding:10px 16px;border-radius:8px;letter-spacing:.3px;cursor:pointer;text-align:left;transition:.2s;font-family:inherit;width:100%}
+    .mobile-menu button:hover{background:rgba(255,255,255,.25)}
+    .mobile-menu button.active{background:rgba(255,255,255,.32);border-color:rgba(255,255,255,.55)}
+    .web-container{width:100%;height:calc(100vh - 60px);position:relative}
+    .embedded-site{position:absolute;inset:0;width:100%;height:100%;border:none;display:none}
+    .embedded-site.active{display:block}
+    @media (max-width:768px){.nav-links{display:none}.hamburger{display:flex}.logo-text{font-size:.88rem}}
+  </style>
 </head>
 <body>
+  <header class="custom-navbar">
+    <div class="logo-text">🏥 KHOA DƯỢC - BVĐK TỈNH TUYÊN QUANG</div>
+    <nav class="nav-links" id="desktopNav">
+      <button data-tab="medplus" onclick="switchTab('medplus')" class="active">MEDPLUS - TRA CỨU THUỐC</button>
+      <button data-tab="chuyenmon" onclick="switchTab('chuyenmon')">CẬP NHẬT CHUYÊN MÔN</button>
+      <button data-tab="phacdieu_tri" onclick="switchTab('phacdieu_tri')">PHÁC ĐỒ ĐIỀU TRỊ</button>
+      <button data-tab="lichtruc" onclick="switchTab('lichtruc')">LỊCH TRỰC</button>
+      <button data-tab="lienhe" onclick="switchTab('lienhe')">LIÊN HỆ</button>
+    </nav>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Mở menu"><span></span><span></span><span></span></button>
+  </header>
 
-    <!-- 1. THANH ĐIỀU HƯỚNG TÙY BIẾN (Có thể tự sửa HTML/CSS ở đây) -->
-    <header class="custom-navbar">
-        <div class="logo-text">🏥 HỆ THỐNG QUẢN LÝ DƯỢC</div>
-        <nav class="nav-links">
-            <a href="#">Trang Chủ</a>
-            <a href="https://www.duoctuyenquang.com/" target="_blank">Mở Trang Gốc</a>
-        </nav>
-    </header>
+  <nav class="mobile-menu" id="mobileMenu">
+    <button data-tab="medplus" onclick="switchTab('medplus', true)" class="active">💊 MEDPLUS - TRA CỨU THUỐC</button>
+    <button data-tab="chuyenmon" onclick="switchTab('chuyenmon', true)">📚 CẬP NHẬT CHUYÊN MÔN</button>
+    <button data-tab="phacdieu_tri" onclick="switchTab('phacdieu_tri', true)">📋 PHÁC ĐỒ ĐIỀU TRỊ</button>
+    <button data-tab="lichtruc" onclick="switchTab('lichtruc', true)">📅 LỊCH TRỰC</button>
+    <button data-tab="lienhe" onclick="switchTab('lienhe', true)">📞 LIÊN HỆ</button>
+  </nav>
 
-    <!-- 2. KHU VỰC NHÚNG TRANG GOOGLE SITES -->
-    <main class="web-container">
-        <iframe 
-  src="https://googlesites.princetq.workers.dev/" 
-  width="100%" 
-  height="800px" 
-  sandbox="allow-scripts allow-forms allow-same-origin allow-popups"
-  frameborder="0"
-  loading="lazy">
-</iframe>
-    </main>
+  <main class="web-container">
+    <iframe id="iframe-medplus" class="embedded-site active"
+      src="https://ngocanh.io.vn/index.html"
+      loading="eager"
+      sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
 
+    <iframe id="iframe-chuyenmon" class="embedded-site"
+      data-src="https://googlesites.princetq.workers.dev/c%E1%BA%ADp-nh%E1%BA%ADt-chuy%C3%AAn-m%C3%B4n"
+      loading="lazy"
+      sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+
+    <iframe id="iframe-phacdieu_tri" class="embedded-site"
+      data-src="https://googlesites.princetq.workers.dev/ph%C3%A1c-%C4%91%E1%BB%93-%C4%91i%E1%BB%81u-tr%E1%BB%8B"
+      loading="lazy"
+      sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+
+    <iframe id="iframe-lichtruc" class="embedded-site"
+      data-src="https://googlesites.princetq.workers.dev/l%E1%BB%8Bch-tr%E1%BB%B1c"
+      loading="lazy"
+      sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+
+    <iframe id="iframe-lienhe" class="embedded-site"
+      data-src="https://googlesites.princetq.workers.dev/li%C3%AAn-h%E1%BB%87"
+      loading="lazy"
+      sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+  </main>
+
+  <script>
+    const TAB_IDS = ['medplus','chuyenmon','phacdieu_tri','lichtruc','lienhe'];
+    let currentTab = 'medplus';
+
+    function clearActiveButtons() {
+      document.querySelectorAll('#desktopNav button, #mobileMenu button').forEach(b => b.classList.remove('active'));
+    }
+
+    function setActive(id) {
+      currentTab = id;
+      document.querySelectorAll('.embedded-site').forEach(f => f.classList.remove('active'));
+      clearActiveButtons();
+      const iframe = document.getElementById('iframe-' + id);
+      if (iframe) {
+        iframe.classList.add('active');
+        if (!iframe.src && iframe.dataset.src) iframe.src = iframe.dataset.src;
+      }
+      document.querySelectorAll('[data-tab="' + id + '"]').forEach(b => b.classList.add('active'));
+    }
+
+    function reloadIframe(id) {
+      const iframe = document.getElementById('iframe-' + id);
+      if (!iframe) return;
+      const src = iframe.src || iframe.dataset.src;
+      if (!src) return;
+      iframe.src = '';
+      requestAnimationFrame(() => { iframe.src = src; });
+    }
+
+    function switchTab(id, isMobile = false) {
+      if (!TAB_IDS.includes(id)) return;
+      if (id === currentTab) reloadIframe(id);
+      else setActive(id);
+      if (isMobile) {
+        document.getElementById('hamburgerBtn').classList.remove('open');
+        document.getElementById('mobileMenu').classList.remove('open');
+      }
+    }
+
+    document.getElementById('hamburgerBtn').addEventListener('click', () => {
+      document.getElementById('hamburgerBtn').classList.toggle('open');
+      document.getElementById('mobileMenu').classList.toggle('open');
+    });
+
+    document.addEventListener('DOMContentLoaded', () => setActive('medplus'));
+
+    window.addEventListener('message', (event) => {
+      if (!event.data || event.data.type !== 'inner-nav') return;
+      document.querySelectorAll('#desktopNav button, #mobileMenu button')
+        .forEach(b => b.classList.remove('active'));
+    });
+  </script>
 </body>
 </html>
