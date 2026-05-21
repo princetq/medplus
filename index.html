@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+  <title>Khoa Dược - BVĐK Tỉnh Tuyên Quang</title>
+
+  <!-- PWA / WEB APP -->
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+  <link rel="shortcut icon" type="image/png" href="/icons/icon-192x192.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png">
+  <meta name="theme-color" content="#2d6218">
+
+  <!-- SERVICE WORKER -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/OneSignalSDKWorker.js')
+          .then(reg => console.log('Service Worker registered!', reg))
+          .catch(err => console.error('Service Worker registration failed', err));
+      });
+    }
+  </script>
+
+  <!-- VERCEL ANALYTICS -->
+  <script defer src="/_vercel/insights/script.js"></script>
+  <script defer src="/_vercel/speed-insights/script.js"></script>
+
+  <!-- ONESIGNAL -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "11f9c34a-8444-4fea-9a3c-db805edd7f39",
+        notifyButton: { enable: false },
+        allowLocalhostAsSecureOrigin: true,
+        serviceWorkerPath: "OneSignalSDKWorker.js",
+        serviceWorkerParam: { scope: "/" }
+      });
+
+      OneSignal.Notifications.addEventListener('click', function(event) {
+        const launchUrl =
+          event.notification.launchURL ||
+          (event.notification.additionalData && event.notification.additionalData.url);
+
+        if (launchUrl && launchUrl.includes('hdsd=')) {
+          event.preventDefault();
+          openHDSDInDrugIframe(launchUrl);
+        }
+      });
+    });
+  </script>
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{
+      width:100%;
+      height:100%;
+      font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+      overflow:hidden;
+      background:#f4f6f9;
+    }
+    body{position:relative}
+
+    .custom-navbar{
+      background:linear-gradient(135deg,#2d6218 0%,#37761d 60%,#429021 100%);
+      color:#fff;
+      padding:0 14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      height:52px;
+      box-shadow:0 2px 16px rgba(55,118,29,.4);
+      position:relative;
+      z-index:1000;
+    }
+
+    .logo-wrap{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      min-width:0;
+    }
+
+    .logo-circle{
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      background:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+      box-shadow:0 4px 12px rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.88);
+      overflow:hidden;
+      padding:0;
+    }
+
+    .site-logo{
+      width:36px;
+      height:36px;
+      object-fit:cover;
+      display:block;
+      margin:0;
+    }
+
+    .brand-badge{
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:6px 14px;
+      border-radius:999px;
+      color:#fff;
+      font-weight:900;
+      letter-spacing:1.2px;
+      font-size:.74rem;
+      text-transform:uppercase;
+      white-space:nowrap;
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.22);
+      box-shadow:
+        0 10px 26px rgba(0,0,0,.12),
+        inset 0 1px 0 rgba(255,255,255,.35);
+      backdrop-filter:blur(16px) saturate(170%);
+      -webkit-backdrop-filter:blur(16px) saturate(170%);
+      overflow:hidden;
+    }
+
+    .brand-badge::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      padding:1px;
+      border-radius:inherit;
+      background:linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.08),rgba(255,255,255,.28));
+      -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+      pointer-events:none;
+    }
+
+    .brand-badge::after{
+      content:'';
+      position:absolute;
+      inset:1px 1px auto 1px;
+      height:42%;
+      border-radius:999px;
+      background:linear-gradient(to bottom,rgba(255,255,255,.42),rgba(255,255,255,0));
+      pointer-events:none;
+    }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:5px;
+    }
+
+    .nav-links button{
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      height:32px;
+      padding:0 12px;
+      line-height:1;
+      color:#fff;
+      background:rgba(255,255,255,.15);
+      border:0;
+      outline:0;
+      appearance:none;
+      -webkit-appearance:none;
+      backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(6px);
+      box-shadow:
+        0 2px 8px rgba(0,0,0,.12),
+        inset 0 1px 0 rgba(255,255,255,.25);
+      font-size:.8rem;
+      font-weight:600;
+      border-radius:8px;
+      white-space:nowrap;
+      letter-spacing:.25px;
+      cursor:pointer;
+      transition:
+        background .25s ease,
+        box-shadow .25s ease,
+        transform .25s ease;
+      font-family:inherit;
+      box-sizing:border-box;
+      overflow:hidden;
+      -webkit-tap-highlight-color:transparent;
+      transform:translateZ(0);
+    }
+
+    .nav-links button::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      border:1px solid rgba(255,255,255,.30);
+      pointer-events:none;
+      box-sizing:border-box;
+    }
+
+    .nav-links button:hover{
+      background:rgba(255,255,255,.28);
+      box-shadow:
+        0 4px 14px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.35);
+      transform:translate3d(0,-1px,0);
+    }
+
+    .nav-links button:hover::after{
+      border-color:rgba(255,255,255,.45);
+    }
+
+    .nav-links button.active{
+      background:rgba(255,255,255,.35);
+      box-shadow:
+        0 4px 14px rgba(0,0,0,.2),
+        inset 0 1px 0 rgba(255,255,255,.4);
+    }
+
+    .nav-links button.active::after{
+      border-color:rgba(255,255,255,.60);
+    }
+
+    .hamburger{
+      display:none;
+      width:32px;
+      height:32px;
+      padding:0;
+      border:none;
+      background:transparent;
+      box-shadow:none;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:4px;
+      cursor:pointer;
+      flex-shrink:0;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    .hamburger:hover{
+      background:transparent;
+      box-shadow:none;
+    }
+
+    .hamburger span{
+      display:block;
+      width:17px;
+      height:2px;
+      background:#fff;
+      border-radius:2px;
+      transition:.25s;
+    }
+
+    .hamburger.open span:nth-child(1){
+      transform:translateY(6px) rotate(45deg);
+    }
+
+    .hamburger.open span:nth-child(2){
+      opacity:0;
+      transform:scaleX(0);
+    }
+
+    .hamburger.open span:nth-child(3){
+      transform:translateY(-6px) rotate(-45deg);
+    }
+
+    .mobile-menu{
+      display:none;
+      position:fixed;
+      top:52px;
+      right:0;
+      width:75vw;
+      max-width:none;
+      min-width:0;
+      height:calc(var(--vh, 1vh) * 100 - 52px);
+      padding:12px 12px 14px;
+      z-index:9999;
+      flex-direction:column;
+      gap:8px;
+      background:linear-gradient(180deg,rgba(45,98,24,.98) 0%,rgba(55,118,29,.96) 100%);
+      border-left:1px solid rgba(255,255,255,.14);
+      box-shadow:
+        -18px 0 40px rgba(0,0,0,.22),
+        inset 1px 0 0 rgba(255,255,255,.12);
+      backdrop-filter:blur(18px) saturate(165%);
+      -webkit-backdrop-filter:blur(18px) saturate(165%);
+      transform:translateX(100%);
+      transition:transform .24s ease, opacity .24s ease;
+      opacity:0;
+      overflow-y:auto;
+      overscroll-behavior:contain;
+    }
+
+    .mobile-menu.open{
+      display:flex;
+      transform:translateX(0);
+      opacity:1;
+    }
+
+    .mobile-menu::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255,255,255,.20), transparent 34%),
+        radial-gradient(circle at 80% 0%, rgba(255,255,255,.12), transparent 28%);
+    }
+
+    .mobile-menu button{
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      gap:10px;
+      width:100%;
+      height:46px;
+      padding:0 14px;
+      border:0;
+      outline:0;
+      appearance:none;
+      -webkit-appearance:none;
+      border-radius:14px;
+      background:rgba(255,255,255,.12);
+      color:#fff;
+      font-size:.9rem;
+      font-weight:700;
+      letter-spacing:.25px;
+      cursor:pointer;
+      transition:
+        background .22s ease,
+        box-shadow .22s ease,
+        transform .22s ease;
+      box-shadow:
+        0 6px 16px rgba(0,0,0,.10),
+        inset 0 1px 0 rgba(255,255,255,.20);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      overflow:hidden;
+      box-sizing:border-box;
+      -webkit-tap-highlight-color:transparent;
+      transform:translateZ(0);
+    }
+
+    .mobile-menu button::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      border:1px solid rgba(255,255,255,.22);
+      pointer-events:none;
+      box-sizing:border-box;
+    }
+
+    .menu-ico{
+      position:absolute;
+      left:14px;
+      top:50%;
+      transform:translateY(-50%);
+      width:22px;
+      height:22px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      opacity:.96;
+      pointer-events:none;
+      z-index:1;
+    }
+
+    .menu-ico svg{
+      width:20px;
+      height:20px;
+      fill:none;
+      stroke:currentColor;
+      stroke-width:1.9;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      display:block;
+    }
+
+    .menu-text{
+      position:relative;
+      z-index:1;
+      width:100%;
+      text-align:center;
+      padding-left:28px;
+      padding-right:28px;
+      display:block;
+      line-height:1;
+      transform:none;
+    }
+
+    .mobile-menu button:hover{
+      transform:translate3d(0,-1px,0);
+      background:rgba(255,255,255,.20);
+      box-shadow:
+        0 10px 20px rgba(0,0,0,.12),
+        inset 0 1px 0 rgba(255,255,255,.26);
+    }
+
+    .mobile-menu button:hover::after{
+      border-color:rgba(255,255,255,.32);
+    }
+
+    .mobile-menu button.active{
+      background:rgba(255,255,255,.28);
+      box-shadow:
+        0 12px 24px rgba(0,0,0,.14),
+        inset 0 1px 0 rgba(255,255,255,.34);
+    }
+
+    .mobile-menu button.active::after{
+      border-color:rgba(255,255,255,.46);
+    }
+
+    .menu-overlay{
+      display:none;
+      position:fixed;
+      top:52px;
+      left:0;
+      right:25vw;
+      bottom:0;
+      background:rgba(0,0,0,.35);
+      backdrop-filter:blur(2px);
+      -webkit-backdrop-filter:blur(2px);
+      z-index:9998;
+    }
+
+    .menu-overlay.open{
+      display:block;
+    }
+
+    .page-wrap{
+      position:relative;
+      left:0;
+      transition:left .24s ease, transform .24s ease;
+    }
+
+    .page-wrap.shifted{
+      left:-75vw;
+    }
+
+    .web-container{
+      width:100%;
+      height:calc(var(--vh, 1vh) * 100 - 52px);
+      position:relative;
+    }
+
+    .embedded-site{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      border:none;
+      display:none;
+      background:#fff;
+      -webkit-overflow-scrolling:touch;
+      overscroll-behavior:contain;
+    }
+
+    .embedded-site.active{
+      display:block;
+    }
+
+    @media (max-width:768px){
+      .nav-links{
+        display:none;
+      }
+
+      .hamburger{
+        display:flex;
+      }
+
+      .logo-circle{
+        width:36px;
+        height:36px;
+      }
+
+      .site-logo{
+        width:34px;
+        height:34px;
+      }
+
+      .brand-badge{
+        padding:5px 10px;
+        font-size:.7rem;
+        letter-spacing:.9px;
+      }
+
+      .custom-navbar{
+        padding:0 10px;
+      }
+
+      .menu-text{
+        transform:none;
+        padding-right:18px;
+      }
+    }
+
+    @media (orientation:landscape) and (max-height:600px) and (hover:none) and (pointer:coarse){
+      .brand-badge{
+        display:none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="custom-navbar">
+    <div class="logo-wrap">
+      <div class="logo-circle">
+        <img src="/icons/medplus-logo.webp" alt="MedPlus Logo" class="site-logo">
+      </div>
+      <div class="brand-badge">MEDPLUS</div>
+    </div>
+
+    <nav class="nav-links" id="desktopNav">
+      <button data-tab="medplus" onclick="switchTab('medplus')" class="active">TRA CỨU THUỐC</button>
+      <button data-tab="chuyenmon" onclick="switchTab('chuyenmon')">CẬP NHẬT CHUYÊN MÔN</button>
+      <button data-tab="phacdieu_tri" onclick="switchTab('phacdieu_tri')">PHÁC ĐỒ ĐIỀU TRỊ</button>
+      <button data-tab="lichtruc" onclick="switchTab('lichtruc')">LỊCH TRỰC</button>
+      <button data-tab="lienhe" onclick="switchTab('lienhe')">LIÊN HỆ</button>
+    </nav>
+
+    <button class="hamburger" id="hamburgerBtn" aria-label="Mở menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <nav class="mobile-menu" id="mobileMenu">
+    <button data-tab="medplus" onclick="switchTab('medplus', true)" class="active">
+      <span class="menu-ico">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 7v10M7 12h10"></path>
+        </svg>
+      </span>
+      <span class="menu-text">TRA CỨU THUỐC</span>
+    </button>
+
+    <button data-tab="chuyenmon" onclick="switchTab('chuyenmon', true)">
+      <span class="menu-ico">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 7v10M9 10h6M9 14h6"></path>
+        </svg>
+      </span>
+      <span class="menu-text">CẬP NHẬT CHUYÊN MÔN</span>
+    </button>
+
+    <button data-tab="phacdieu_tri" onclick="switchTab('phacdieu_tri', true)">
+      <span class="menu-ico">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M8 9h8M8 12h8M8 15h8"></path>
+        </svg>
+      </span>
+      <span class="menu-text">PHÁC ĐỒ ĐIỀU TRỊ</span>
+    </button>
+
+    <button data-tab="lichtruc" onclick="switchTab('lichtruc', true)">
+      <span class="menu-ico">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="4" y="5" width="16" height="15" rx="2"></rect>
+          <path d="M8 3v4M16 3v4M4 9h16M8 13h3M13 13h3M8 16h3"></path>
+        </svg>
+      </span>
+      <span class="menu-text">LỊCH TRỰC</span>
+    </button>
+
+    <button data-tab="lienhe" onclick="switchTab('lienhe', true)">
+      <span class="menu-ico">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path>
+          <path d="m6 8 6 4 6-4"></path>
+        </svg>
+      </span>
+      <span class="menu-text">LIÊN HỆ</span>
+    </button>
+  </nav>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <div class="page-wrap" id="pageWrap">
+    <main class="web-container">
+      <iframe id="iframe-medplus" class="embedded-site active"
+        data-src="/tra-cuu-thuoc.html"
+        loading="eager"></iframe>
+
+      <iframe id="iframe-chuyenmon" class="embedded-site"
+        data-src="https://googlesites.princetq.workers.dev/c%E1%BA%ADp-nh%E1%BA%ADt-chuy%C3%AAn-m%C3%B4n"
+        loading="lazy"
+        sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+
+      <iframe id="iframe-phacdieu_tri" class="embedded-site"
+        data-src="https://googlesites.princetq.workers.dev/ph%C3%A1c-%C4%91%E1%BB%93-%C4%91i%E1%BB%81u-tr%E1%BB%8B"
+        loading="lazy"
+        sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+
+      <iframe id="iframe-lichtruc" class="embedded-site"
+        data-src="https://googlesites.princetq.workers.dev/l%E1%BB%8Bch-tr%E1%BB%B1c"
+        loading="lazy"
+        sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+
+      <iframe id="iframe-lienhe" class="embedded-site"
+        data-src="https://googlesites.princetq.workers.dev/li%C3%AAn-h%E1%BB%87"
+        loading="lazy"
+        sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+    </main>
+  </div>
+
+  <script>
+    const TAB_IDS = ['medplus','chuyenmon','phacdieu_tri','lichtruc','lienhe'];
+    let currentTab = 'medplus';
+
+    function setVh() {
+      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    }
+
+    function clearActiveButtons() {
+      document.querySelectorAll('#desktopNav button, #mobileMenu button').forEach(b => b.classList.remove('active'));
+    }
+
+    function getMedplusSrc() {
+      return '/tra-cuu-thuoc.html' + window.location.search + window.location.hash;
+    }
+
+    function buildIframeSrc(id) {
+      const iframe = document.getElementById('iframe-' + id);
+      if (!iframe) return '';
+
+      if (id === 'medplus') {
+        return getMedplusSrc();
+      }
+
+      return iframe.dataset.src || '';
+    }
+
+    function setActive(id) {
+      currentTab = id;
+
+      document.querySelectorAll('.embedded-site').forEach(f => f.classList.remove('active'));
+      clearActiveButtons();
+
+      const iframe = document.getElementById('iframe-' + id);
+
+      if (iframe) {
+        iframe.classList.add('active');
+
+        if (!iframe.src) {
+          const src = buildIframeSrc(id);
+          if (src) iframe.src = src;
+        }
+      }
+
+      document.querySelectorAll('[data-tab="' + id + '"]').forEach(b => b.classList.add('active'));
+    }
+
+    function reloadIframe(id) {
+      const iframe = document.getElementById('iframe-' + id);
+      if (!iframe) return;
+
+      const src = id === 'medplus'
+        ? getMedplusSrc()
+        : (iframe.src || iframe.dataset.src);
+
+      if (!src) return;
+
+      iframe.src = '';
+
+      requestAnimationFrame(() => {
+        iframe.src = src;
+      });
+    }
+
+    function closeMobileMenu() {
+      document.getElementById('hamburgerBtn').classList.remove('open');
+      document.getElementById('mobileMenu').classList.remove('open');
+      document.getElementById('menuOverlay').classList.remove('open');
+      document.getElementById('pageWrap').classList.remove('shifted');
+    }
+
+    function openMobileMenu() {
+      document.getElementById('hamburgerBtn').classList.add('open');
+      document.getElementById('mobileMenu').classList.add('open');
+      document.getElementById('menuOverlay').classList.add('open');
+      document.getElementById('pageWrap').classList.add('shifted');
+    }
+
+    function switchTab(id, isMobile = false) {
+      if (!TAB_IDS.includes(id)) return;
+
+      if (id === currentTab) {
+        reloadIframe(id);
+      } else {
+        setActive(id);
+      }
+
+      if (isMobile) {
+        closeMobileMenu();
+      }
+    }
+
+    function setPwaBadge(unread) {
+      const count = Number(unread || 0);
+
+      if (!('setAppBadge' in navigator) || !('clearAppBadge' in navigator)) {
+        return;
+      }
+
+      if (count > 0) {
+        navigator.setAppBadge(count).catch(err => console.warn('Lỗi setAppBadge:', err));
+      } else {
+        navigator.clearAppBadge().catch(err => console.warn('Lỗi clearAppBadge:', err));
+      }
+    }
+
+    function postToMedplusIframe(message) {
+      const iframe = document.getElementById('iframe-medplus');
+      if (!iframe || !iframe.contentWindow) return;
+
+      try {
+        iframe.contentWindow.postMessage(message, window.location.origin);
+      } catch (e) {
+        console.warn('Không gửi được message tới tra-cuu-thuoc:', e);
+      }
+    }
+
+    function openHDSDInDrugIframe(url) {
+      if (!url) return;
+
+      history.pushState(null, '', url);
+      setActive('medplus');
+
+      const iframe = document.getElementById('iframe-medplus');
+      if (!iframe) return;
+
+      const targetSrc = getMedplusSrc();
+
+      if (!iframe.src || !iframe.src.includes('/tra-cuu-thuoc.html')) {
+        iframe.src = targetSrc;
+      }
+
+      const send = () => {
+        postToMedplusIframe({
+          type: 'MEDPLUS_OPEN_HDSD',
+          url: window.location.href
+        });
+      };
+
+      iframe.addEventListener('load', send, { once: true });
+      setTimeout(send, 600);
+    }
+
+    document.getElementById('hamburgerBtn').addEventListener('click', () => {
+      const menu = document.getElementById('mobileMenu');
+
+      if (menu.classList.contains('open')) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    });
+
+    document.getElementById('menuOverlay').addEventListener('click', closeMobileMenu);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setVh();
+      setActive('medplus');
+
+      if (window.location.search.includes('hdsd=')) {
+        setTimeout(() => openHDSDInDrugIframe(window.location.href), 700);
+      }
+    });
+
+    window.addEventListener('resize', setVh);
+    window.addEventListener('orientationchange', setVh);
+
+    window.addEventListener('message', event => {
+      if (event.origin !== window.location.origin) return;
+      if (!event.data || typeof event.data !== 'object') return;
+
+      if (event.data.type === 'inner-nav') {
+        document.querySelectorAll('#desktopNav button, #mobileMenu button').forEach(b => b.classList.remove('active'));
+        return;
+      }
+
+      if (event.data.type === 'MEDPLUS_BADGE_UNREAD') {
+        setPwaBadge(event.data.unread);
+        return;
+      }
+
+      if (event.data.type === 'MEDPLUS_OPEN_HDSD') {
+        openHDSDInDrugIframe(event.data.url || window.location.href);
+      }
+    });
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', event => {
+        if (!event.data || typeof event.data !== 'object') return;
+
+        if (event.data.type === 'ONESIGNAL_NOTIFICATION_CLICK' && event.data.url) {
+          openHDSDInDrugIframe(event.data.url);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
