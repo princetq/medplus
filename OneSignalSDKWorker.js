@@ -2,6 +2,7 @@ const CACHE_NAME = 'medplus-cache-v5.3'; // Nhớ tăng số này mỗi lần c�
 const urlsToCache = [
   '/',
   '/index.html',
+  '/tra-cuu-thuoc.html',
   '/manifest.json',
   '/icons/icon-192x192.png',
   '/tools/ks/ks.webp',
