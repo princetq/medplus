@@ -212,28 +212,38 @@
     }
 
     .menu-ico{
+      position:absolute;
+      left:14px;
+      top:50%;
+      transform:translateY(-50%);
       width:22px;
       height:22px;
-      flex:0 0 22px;
-      display:inline-flex;
+      display:flex;
       align-items:center;
       justify-content:center;
       color:#fff;
       opacity:.96;
+      pointer-events:none;
     }
     .menu-ico svg{
       width:20px;
       height:20px;
-      fill:currentColor;
+      fill:none;
+      stroke:currentColor;
+      stroke-width:1.9;
+      stroke-linecap:round;
+      stroke-linejoin:round;
       display:block;
     }
 
     .menu-text{
-      flex:1;
-      display:block;
+      width:100%;
       text-align:center;
+      padding-left:28px;
+      padding-right:28px;
+      display:block;
+      line-height:1;
       transform:none;
-      padding-right:22px;
     }
 
     .mobile-menu button:hover{
@@ -287,6 +297,11 @@
       .site-logo{width:34px;height:34px}
       .brand-badge{padding:5px 10px;font-size:.7rem;letter-spacing:.9px}
       .custom-navbar{padding:0 10px}
+      .menu-text{transform:none;padding-right:18px}
+    }
+
+    @media (max-width:768px) and (orientation:landscape){
+      .brand-badge{display:none}
     }
   </style>
 </head>
@@ -314,7 +329,8 @@
     <button data-tab="medplus" onclick="switchTab('medplus', true)" class="active">
       <span class="menu-ico">
         <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 2a10 10 0 1 0 10 10A10.012 10.012 0 0 0 12 2Zm4.3 7.7-4.9 5.7a1 1 0 0 1-1.45.07L8 12.45a1 1 0 1 1 1.41-1.41l1.2 1.2 4.2-4.95a1 1 0 1 1 1.49 1.33Z"/>
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 7v10M7 12h10"></path>
         </svg>
       </span>
       <span class="menu-text">TRA CỨU THUỐC</span>
@@ -323,7 +339,8 @@
     <button data-tab="chuyenmon" onclick="switchTab('chuyenmon', true)">
       <span class="menu-ico">
         <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 2a10 10 0 1 0 10 10A10.012 10.012 0 0 0 12 2Zm1 5v3h3v2h-3v3h-2v-3H8v-2h3V7Z"/>
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 7v10M9 10h6M9 14h6"></path>
         </svg>
       </span>
       <span class="menu-text">CẬP NHẬT CHUYÊN MÔN</span>
@@ -332,7 +349,8 @@
     <button data-tab="phacdieu_tri" onclick="switchTab('phacdieu_tri', true)">
       <span class="menu-ico">
         <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 2a10 10 0 1 0 10 10A10.012 10.012 0 0 0 12 2Zm-4 7h8v2H8Zm0 4h8v2H8Z"/>
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M8 9h8M8 12h8M8 15h8"></path>
         </svg>
       </span>
       <span class="menu-text">PHÁC ĐỒ ĐIỀU TRỊ</span>
@@ -341,7 +359,8 @@
     <button data-tab="lichtruc" onclick="switchTab('lichtruc', true)">
       <span class="menu-ico">
         <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M7 2v2H5a2 2 0 0 0-2 2v2h18V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2Zm12 8H5v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2Zm-7 2h2v3h3v2h-5Z"/>
+          <rect x="4" y="5" width="16" height="15" rx="2"></rect>
+          <path d="M8 3v4M16 3v4M4 9h16M8 13h3M13 13h3M8 16h3"></path>
         </svg>
       </span>
       <span class="menu-text">LỊCH TRỰC</span>
@@ -350,7 +369,8 @@
     <button data-tab="lienhe" onclick="switchTab('lienhe', true)">
       <span class="menu-ico">
         <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 2a10 10 0 1 0 10 10A10.012 10.012 0 0 0 12 2Zm-4 6h8a1 1 0 0 1 1 1v1l-5 3-5-3V9a1 1 0 0 1 1-1Zm-1 4 5 3 5-3v2a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1Z"/>
+          <path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path>
+          <path d="m6 8 6 4 6-4"></path>
         </svg>
       </span>
       <span class="menu-text">LIÊN HỆ</span>
