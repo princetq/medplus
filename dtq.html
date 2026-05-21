@@ -7,8 +7,11 @@
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     html,body{width:100%;height:100%;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;overflow:hidden;background:#f4f6f9}
+    body{position:relative}
     .custom-navbar{background:linear-gradient(135deg,#2d6218 0%,#37761d 60%,#429021 100%);color:#fff;padding:0 20px;display:flex;justify-content:space-between;align-items:center;height:60px;box-shadow:0 2px 16px rgba(55,118,29,.4);position:relative;z-index:1000}
-    .logo-text{font-weight:700;font-size:1.05rem;letter-spacing:.4px;white-space:nowrap}
+    .logo-wrap{display:flex;align-items:center;gap:10px;min-width:0}
+    .site-logo{width:36px;height:36px;object-fit:contain;flex-shrink:0;display:block}
+    .logo-text{font-weight:700;font-size:1.05rem;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .nav-links{display:flex;align-items:center;gap:6px}
     .nav-links button{color:#fff;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 2px 8px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.25);font-size:.82rem;font-weight:600;padding:7px 13px;border-radius:8px;white-space:nowrap;letter-spacing:.3px;cursor:pointer;transition:.25s;font-family:inherit}
     .nav-links button:hover{background:rgba(255,255,255,.28);box-shadow:0 4px 14px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.35);transform:translateY(-1px)}
@@ -24,15 +27,23 @@
     .mobile-menu button{color:#fff;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 2px 8px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.2);font-size:.9rem;font-weight:600;padding:10px 16px;border-radius:8px;letter-spacing:.3px;cursor:pointer;text-align:left;transition:.2s;font-family:inherit;width:100%}
     .mobile-menu button:hover{background:rgba(255,255,255,.25)}
     .mobile-menu button.active{background:rgba(255,255,255,.32);border-color:rgba(255,255,255,.55)}
-    .web-container{width:100%;height:calc(100vh - 60px);position:relative}
-    .embedded-site{position:absolute;inset:0;width:100%;height:100%;border:none;display:none}
+    .web-container{width:100%;height:calc(var(--vh, 1vh) * 100 - 60px);position:relative}
+    .embedded-site{position:absolute;inset:0;width:100%;height:100%;border:none;display:none;background:#fff}
     .embedded-site.active{display:block}
-    @media (max-width:768px){.nav-links{display:none}.hamburger{display:flex}.logo-text{font-size:.88rem}}
+    @media (max-width:768px){
+      .nav-links{display:none}
+      .hamburger{display:flex}
+      .logo-text{font-size:.88rem}
+      .custom-navbar{padding:0 12px}
+    }
   </style>
 </head>
 <body>
   <header class="custom-navbar">
-    <div class="logo-text">🏥 KHOA DƯỢC - BVĐK TỈNH TUYÊN QUANG</div>
+    <div class="logo-wrap">
+      <img src="./icons/medplus-logo.webp" alt="MedPlus Logo" class="site-logo">
+      <div class="logo-text">KHOA DƯỢC - BVĐK TỈNH TUYÊN QUANG</div>
+    </div>
     <nav class="nav-links" id="desktopNav">
       <button data-tab="medplus" onclick="switchTab('medplus')" class="active">MEDPLUS - TRA CỨU THUỐC</button>
       <button data-tab="chuyenmon" onclick="switchTab('chuyenmon')">CẬP NHẬT CHUYÊN MÔN</button>
@@ -82,6 +93,10 @@
     const TAB_IDS = ['medplus','chuyenmon','phacdieu_tri','lichtruc','lienhe'];
     let currentTab = 'medplus';
 
+    function setVh() {
+      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    }
+
     function clearActiveButtons() {
       document.querySelectorAll('#desktopNav button, #mobileMenu button').forEach(b => b.classList.remove('active'));
     }
@@ -122,12 +137,16 @@
       document.getElementById('mobileMenu').classList.toggle('open');
     });
 
-    document.addEventListener('DOMContentLoaded', () => setActive('medplus'));
+    document.addEventListener('DOMContentLoaded', () => {
+      setVh();
+      setActive('medplus');
+    });
 
+    window.addEventListener('resize', setVh);
+    window.addEventListener('orientationchange', setVh);
     window.addEventListener('message', (event) => {
       if (!event.data || event.data.type !== 'inner-nav') return;
-      document.querySelectorAll('#desktopNav button, #mobileMenu button')
-        .forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('#desktopNav button, #mobileMenu button').forEach(b => b.classList.remove('active'));
     });
   </script>
 </body>
