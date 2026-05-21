@@ -45,9 +45,11 @@
     }
 
     .site-logo{
-      width:100%;
-      height:100%;
+      width:36px;
+      height:36px;
+      object-fit:cover;
       display:block;
+      margin:0;
     }
 
     .brand-badge{
@@ -101,14 +103,24 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      height:30px;
-      padding:0 11px;
+      height:32px;
+      padding:0 12px;
       line-height:1;
-      color:#fff;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
-      backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+      color:#fff;
+      background:rgba(255,255,255,.15);
+      border:1px solid rgba(255,255,255,.3);
+      backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(6px);
       box-shadow:0 2px 8px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.25);
-      font-size:.8rem;font-weight:600;border-radius:8px;
-      white-space:nowrap;letter-spacing:.25px;cursor:pointer;transition:.25s;font-family:inherit
+      font-size:.8rem;
+      font-weight:600;
+      border-radius:8px;
+      white-space:nowrap;
+      letter-spacing:.25px;
+      cursor:pointer;
+      transition:.25s;
+      font-family:inherit;
+      box-sizing:border-box;
     }
     .nav-links button:hover{background:rgba(255,255,255,.28);box-shadow:0 4px 14px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.35);transform:translateY(-1px)}
     .nav-links button.active{background:rgba(255,255,255,.35);box-shadow:0 4px 14px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.4);border-color:rgba(255,255,255,.6)}
@@ -176,9 +188,10 @@
       position:relative;
       display:flex;
       align-items:center;
-      justify-content:center;
+      justify-content:flex-start;
+      gap:10px;
       width:100%;
-      min-height:46px;
+      height:46px;
       padding:0 14px;
       border-radius:14px;
       border:1px solid rgba(255,255,255,.20);
@@ -187,7 +200,6 @@
       font-size:.9rem;
       font-weight:700;
       letter-spacing:.25px;
-      text-align:center;
       cursor:pointer;
       transition:.22s ease;
       box-shadow:
@@ -196,8 +208,34 @@
       backdrop-filter:blur(10px);
       -webkit-backdrop-filter:blur(10px);
       overflow:hidden;
+      box-sizing:border-box;
     }
-    .mobile-menu button::before{content:none}
+
+    .menu-ico{
+      width:22px;
+      height:22px;
+      flex:0 0 22px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      opacity:.96;
+    }
+    .menu-ico svg{
+      width:20px;
+      height:20px;
+      fill:currentColor;
+      display:block;
+    }
+
+    .menu-text{
+      flex:1;
+      display:block;
+      text-align:center;
+      transform:none;
+      padding-right:22px;
+    }
+
     .mobile-menu button:hover{
       transform:translateY(-1px);
       background:rgba(255,255,255,.20);
@@ -256,11 +294,7 @@
   <header class="custom-navbar">
     <div class="logo-wrap">
       <div class="logo-circle">
-        <img
-          class="site-logo"
-          alt="MedPlus Logo"
-          src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='%234caf50'/><stop offset='100%' stop-color='%232e7d32'/></linearGradient><linearGradient id='h' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='%23ffffff' stop-opacity='.98'/><stop offset='100%' stop-color='%23e8f5e9' stop-opacity='.92'/></linearGradient></defs><circle cx='32' cy='32' r='30' fill='url(%23g)'/><circle cx='32' cy='32' r='27' fill='none' stroke='%23ffffff' stroke-opacity='.7' stroke-width='2'/><rect x='29' y='15' width='6' height='34' rx='3' fill='url(%23h)'/><rect x='15' y='29' width='34' height='6' rx='3' fill='url(%23h)'/><path d='M43 16h5l-8 12-4-2z' fill='%23a5d6a7' opacity='.95'/><path d='M21 48h-5l8-12 4 2z' fill='%23a5d6a7' opacity='.95'/></svg>"
-        >
+        <img src="./icons/medplus-logo.webp" alt="MedPlus Logo" class="site-logo">
       </div>
       <div class="brand-badge">MEDPLUS</div>
     </div>
@@ -277,11 +311,50 @@
   </header>
 
   <nav class="mobile-menu" id="mobileMenu">
-    <button data-tab="medplus" onclick="switchTab('medplus', true)" class="active">TRA CỨU THUỐC</button>
-    <button data-tab="chuyenmon" onclick="switchTab('chuyenmon', true)">CẬP NHẬT CHUYÊN MÔN</button>
-    <button data-tab="phacdieu_tri" onclick="switchTab('phacdieu_tri', true)">PHÁC ĐỒ ĐIỀU TRỊ</button>
-    <button data-tab="lichtruc" onclick="switchTab('lichtruc', true)">LỊCH TRỰC</button>
-    <button data-tab="lienhe" onclick="switchTab('lienhe', true)">LIÊN HỆ</button>
+    <button data-tab="medplus" onclick="switchTab('medplus', true)" class="active">
+      <span class="menu-ico">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2a10 10 0 1 0 10 10A10.012 10.012 0 0 0 12 2Zm4.3 7.7-4.9 5.7a1 1 0 0 1-1.45.07L8 12.45a1 1 0 1 1 1.41-1.41l1.2 1.2 4.2-4.95a1 1 0 1 1 1.49 1.33Z"/>
+        </svg>
+      </span>
+      <span class="menu-text">TRA CỨU THUỐC</span>
+    </button>
+
+    <button data-tab="chuyenmon" onclick="switchTab('chuyenmon', true)">
+      <span class="menu-ico">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2a10 10 0 1 0 10 10A10.012 10.012 0 0 0 12 2Zm1 5v3h3v2h-3v3h-2v-3H8v-2h3V7Z"/>
+        </svg>
+      </span>
+      <span class="menu-text">CẬP NHẬT CHUYÊN MÔN</span>
+    </button>
+
+    <button data-tab="phacdieu_tri" onclick="switchTab('phacdieu_tri', true)">
+      <span class="menu-ico">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2a10 10 0 1 0 10 10A10.012 10.012 0 0 0 12 2Zm-4 7h8v2H8Zm0 4h8v2H8Z"/>
+        </svg>
+      </span>
+      <span class="menu-text">PHÁC ĐỒ ĐIỀU TRỊ</span>
+    </button>
+
+    <button data-tab="lichtruc" onclick="switchTab('lichtruc', true)">
+      <span class="menu-ico">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 2v2H5a2 2 0 0 0-2 2v2h18V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2Zm12 8H5v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2Zm-7 2h2v3h3v2h-5Z"/>
+        </svg>
+      </span>
+      <span class="menu-text">LỊCH TRỰC</span>
+    </button>
+
+    <button data-tab="lienhe" onclick="switchTab('lienhe', true)">
+      <span class="menu-ico">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2a10 10 0 1 0 10 10A10.012 10.012 0 0 0 12 2Zm-4 6h8a1 1 0 0 1 1 1v1l-5 3-5-3V9a1 1 0 0 1 1-1Zm-1 4 5 3 5-3v2a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1Z"/>
+        </svg>
+      </span>
+      <span class="menu-text">LIÊN HỆ</span>
+    </button>
   </nav>
 
   <div class="menu-overlay" id="menuOverlay"></div>
