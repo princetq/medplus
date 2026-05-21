@@ -12,11 +12,11 @@
     .custom-navbar{
       background:linear-gradient(135deg,#2d6218 0%,#37761d 60%,#429021 100%);
       color:#fff;
-      padding:0 16px;
+      padding:0 14px;
       display:flex;
       justify-content:space-between;
       align-items:center;
-      height:56px;
+      height:52px;
       box-shadow:0 2px 16px rgba(55,118,29,.4);
       position:relative;
       z-index:1000;
@@ -25,7 +25,7 @@
     .logo-wrap{
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:8px;
       min-width:0;
     }
 
@@ -39,49 +39,51 @@
       justify-content:center;
       flex-shrink:0;
       box-shadow:0 4px 12px rgba(0,0,0,.18);
-      border:2px solid rgba(255,255,255,.75);
+      border:1px solid rgba(255,255,255,.72);
       overflow:hidden;
+      padding:0;
     }
 
     .site-logo{
-      width:26px;
-      height:26px;
-      object-fit:contain;
+      width:34px;
+      height:34px;
+      object-fit:cover;
       display:block;
+      margin:0;
     }
 
     .brand-badge{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      padding:7px 13px;
+      padding:6px 12px;
       border-radius:999px;
-      background:linear-gradient(135deg,#ffffff,#e8f5e9);
-      color:#1b5e20;
+      background:linear-gradient(135deg,#e8f5ff,#ffffff);
+      color:#0f4c81;
       font-weight:900;
       letter-spacing:1px;
-      font-size:.8rem;
+      font-size:.76rem;
       text-transform:uppercase;
-      box-shadow:0 4px 14px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.8);
+      box-shadow:0 4px 14px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.85);
       border:1px solid rgba(255,255,255,.7);
       white-space:nowrap;
     }
 
-    .nav-links{display:flex;align-items:center;gap:6px}
+    .nav-links{display:flex;align-items:center;gap:5px}
     .nav-links button{
       color:#fff;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
       backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
       box-shadow:0 2px 8px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.25);
-      font-size:.82rem;font-weight:600;padding:7px 13px;border-radius:8px;
-      white-space:nowrap;letter-spacing:.3px;cursor:pointer;transition:.25s;font-family:inherit
+      font-size:.8rem;font-weight:600;padding:6px 11px;border-radius:8px;
+      white-space:nowrap;letter-spacing:.25px;cursor:pointer;transition:.25s;font-family:inherit
     }
     .nav-links button:hover{background:rgba(255,255,255,.28);box-shadow:0 4px 14px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.35);transform:translateY(-1px)}
     .nav-links button.active{background:rgba(255,255,255,.35);box-shadow:0 4px 14px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.4);border-color:rgba(255,255,255,.6)}
 
     .hamburger{
       display:none;
-      width:34px;
-      height:34px;
+      width:32px;
+      height:32px;
       padding:0;
       border:none;
       background:transparent;
@@ -95,7 +97,7 @@
       -webkit-tap-highlight-color:transparent;
     }
     .hamburger:hover{background:transparent;box-shadow:none}
-    .hamburger span{display:block;width:18px;height:2px;background:#fff;border-radius:2px;transition:.25s}
+    .hamburger span{display:block;width:17px;height:2px;background:#fff;border-radius:2px;transition:.25s}
     .hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
     .hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
     .hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
@@ -103,15 +105,15 @@
     .mobile-menu{
       display:none;
       position:absolute;
-      top:56px;
+      top:52px;
       left:0;
       right:0;
       background:linear-gradient(160deg,#2d6218 0%,#37761d 100%);
       box-shadow:0 8px 24px rgba(55,118,29,.4);
       z-index:999;
       flex-direction:column;
-      padding:10px 16px 14px;
-      gap:8px;
+      padding:10px 14px 12px;
+      gap:7px;
       border-top:1px solid rgba(255,255,255,.15)
     }
     .mobile-menu.open{display:flex}
@@ -119,28 +121,16 @@
       color:#fff;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);
       backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
       box-shadow:0 2px 8px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.2);
-      font-size:.9rem;font-weight:600;padding:10px 16px;border-radius:8px;
+      font-size:.88rem;font-weight:600;padding:10px 14px;border-radius:8px;
       letter-spacing:.3px;cursor:pointer;text-align:left;transition:.2s;font-family:inherit;width:100%
     }
     .mobile-menu button:hover{background:rgba(255,255,255,.25)}
     .mobile-menu button.active{background:rgba(255,255,255,.32);border-color:rgba(255,255,255,.55)}
 
-    .web-container{
-      width:100%;
-      height:calc(var(--vh, 1vh) * 100 - 56px);
-      position:relative
-    }
-
+    .web-container{width:100%;height:calc(var(--vh, 1vh) * 100 - 52px);position:relative}
     .embedded-site{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      border:none;
-      display:none;
-      background:#fff;
-      -webkit-overflow-scrolling:touch;
-      overscroll-behavior:contain
+      position:absolute;inset:0;width:100%;height:100%;border:none;display:none;background:#fff;
+      -webkit-overflow-scrolling:touch;overscroll-behavior:contain
     }
     .embedded-site.active{display:block}
 
@@ -148,9 +138,9 @@
       .nav-links{display:none}
       .hamburger{display:flex}
       .logo-circle{width:36px;height:36px}
-      .site-logo{width:24px;height:24px}
-      .brand-badge{padding:6px 11px;font-size:.76rem;letter-spacing:.9px}
-      .custom-navbar{padding:0 12px}
+      .site-logo{width:32px;height:32px}
+      .brand-badge{padding:5px 10px;font-size:.7rem;letter-spacing:.9px}
+      .custom-navbar{padding:0 10px}
     }
   </style>
 </head>
