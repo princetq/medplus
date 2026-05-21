@@ -1,4 +1,4 @@
-const CACHE_NAME = 'medplus-cache-v5.5'; // Nhớ tăng số này mỗi lần cập nhật app
+const CACHE_NAME = 'medplus-cache-v5.6'; // Nhớ tăng số này mỗi lần cập nhật app
 const urlsToCache = [
   '/',
   '/index.html',
