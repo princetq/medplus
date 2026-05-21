@@ -53,24 +53,49 @@
     }
 
     .brand-badge{
+      position:relative;
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      padding:6px 12px;
+      padding:6px 14px;
       border-radius:999px;
-      background:rgba(255,255,255,.16);
-      color:#ffffff;
-      font-weight:800;
-      letter-spacing:1px;
-      font-size:.76rem;
+      color:#fff;
+      font-weight:900;
+      letter-spacing:1.2px;
+      font-size:.74rem;
       text-transform:uppercase;
-      box-shadow:
-        0 8px 24px rgba(0,0,0,.12),
-        inset 0 1px 0 rgba(255,255,255,.35);
-      border:1px solid rgba(255,255,255,.28);
-      backdrop-filter:blur(14px) saturate(160%);
-      -webkit-backdrop-filter:blur(14px) saturate(160%);
       white-space:nowrap;
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.22);
+      box-shadow:
+        0 10px 26px rgba(0,0,0,.12),
+        inset 0 1px 0 rgba(255,255,255,.35);
+      backdrop-filter:blur(16px) saturate(170%);
+      -webkit-backdrop-filter:blur(16px) saturate(170%);
+      overflow:hidden;
+    }
+
+    .brand-badge::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      padding:1px;
+      border-radius:inherit;
+      background:linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.08),rgba(255,255,255,.28));
+      -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+      pointer-events:none;
+    }
+
+    .brand-badge::after{
+      content:'';
+      position:absolute;
+      inset:1px 1px auto 1px;
+      height:42%;
+      border-radius:999px;
+      background:linear-gradient(to bottom,rgba(255,255,255,.42),rgba(255,255,255,0));
+      pointer-events:none;
     }
 
     .nav-links{display:flex;align-items:center;gap:5px}
@@ -108,28 +133,107 @@
 
     .mobile-menu{
       display:none;
+      position:fixed;
+      top:52px;
+      right:0;
+      width:50vw;
+      max-width:320px;
+      min-width:240px;
+      height:calc(var(--vh, 1vh) * 100 - 52px);
+      padding:12px 12px 14px;
+      z-index:9999;
+      flex-direction:column;
+      gap:8px;
+      background:linear-gradient(180deg,rgba(45,98,24,.98) 0%,rgba(55,118,29,.96) 100%);
+      border-left:1px solid rgba(255,255,255,.14);
+      box-shadow:
+        -18px 0 40px rgba(0,0,0,.22),
+        inset 1px 0 0 rgba(255,255,255,.12);
+      backdrop-filter:blur(18px) saturate(165%);
+      -webkit-backdrop-filter:blur(18px) saturate(165%);
+      transform:translateX(100%);
+      transition:transform .24s ease, opacity .24s ease;
+      opacity:0;
+      overflow-y:auto;
+      overscroll-behavior:contain;
+    }
+    .mobile-menu.open{display:flex;transform:translateX(0);opacity:1}
+    .mobile-menu::before{
+      content:'';
       position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255,255,255,.20), transparent 34%),
+        radial-gradient(circle at 80% 0%, rgba(255,255,255,.12), transparent 28%);
+    }
+
+    .mobile-menu button{
+      position:relative;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      width:100%;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.20);
+      background:rgba(255,255,255,.12);
+      color:#fff;
+      font-size:.9rem;
+      font-weight:700;
+      letter-spacing:.25px;
+      text-align:left;
+      cursor:pointer;
+      transition:.22s ease;
+      box-shadow:
+        0 6px 16px rgba(0,0,0,.10),
+        inset 0 1px 0 rgba(255,255,255,.20);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      overflow:hidden;
+    }
+    .mobile-menu button::before{
+      content:'';
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:rgba(255,255,255,.85);
+      box-shadow:0 0 0 4px rgba(255,255,255,.10);
+      flex-shrink:0;
+    }
+    .mobile-menu button:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.20);
+      border-color:rgba(255,255,255,.30);
+      box-shadow:
+        0 10px 20px rgba(0,0,0,.12),
+        inset 0 1px 0 rgba(255,255,255,.26);
+    }
+    .mobile-menu button.active{
+      background:rgba(255,255,255,.28);
+      border-color:rgba(255,255,255,.42);
+      box-shadow:
+        0 12px 24px rgba(0,0,0,.14),
+        inset 0 1px 0 rgba(255,255,255,.34);
+    }
+    .mobile-menu button.active::before{
+      background:#fff;
+      box-shadow:0 0 0 5px rgba(255,255,255,.16);
+    }
+
+    .menu-overlay{
+      display:none;
+      position:fixed;
       top:52px;
       left:0;
-      right:0;
-      background:linear-gradient(160deg,#2d6218 0%,#37761d 100%);
-      box-shadow:0 8px 24px rgba(55,118,29,.4);
-      z-index:999;
-      flex-direction:column;
-      padding:10px 14px 12px;
-      gap:7px;
-      border-top:1px solid rgba(255,255,255,.15)
+      right:50vw;
+      height:calc(var(--vh, 1vh) * 100 - 52px);
+      background:rgba(0,0,0,.35);
+      backdrop-filter:blur(2px);
+      -webkit-backdrop-filter:blur(2px);
+      z-index:9998;
     }
-    .mobile-menu.open{display:flex}
-    .mobile-menu button{
-      color:#fff;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);
-      backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-      box-shadow:0 2px 8px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.2);
-      font-size:.88rem;font-weight:600;padding:10px 14px;border-radius:8px;
-      letter-spacing:.3px;cursor:pointer;text-align:left;transition:.2s;font-family:inherit;width:100%
-    }
-    .mobile-menu button:hover{background:rgba(255,255,255,.25)}
-    .mobile-menu button.active{background:rgba(255,255,255,.32);border-color:rgba(255,255,255,.55)}
+    .menu-overlay.open{display:block}
 
     .web-container{width:100%;height:calc(var(--vh, 1vh) * 100 - 52px);position:relative}
     .embedded-site{
@@ -175,6 +279,8 @@
     <button data-tab="lichtruc" onclick="switchTab('lichtruc', true)">📅 LỊCH TRỰC</button>
     <button data-tab="lienhe" onclick="switchTab('lienhe', true)">📞 LIÊN HỆ</button>
   </nav>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
 
   <main class="web-container">
     <iframe id="iframe-medplus" class="embedded-site active"
@@ -236,20 +342,32 @@
       requestAnimationFrame(() => { iframe.src = src; });
     }
 
+    function closeMobileMenu() {
+      document.getElementById('hamburgerBtn').classList.remove('open');
+      document.getElementById('mobileMenu').classList.remove('open');
+      document.getElementById('menuOverlay').classList.remove('open');
+    }
+
+    function openMobileMenu() {
+      document.getElementById('hamburgerBtn').classList.add('open');
+      document.getElementById('mobileMenu').classList.add('open');
+      document.getElementById('menuOverlay').classList.add('open');
+    }
+
     function switchTab(id, isMobile = false) {
       if (!TAB_IDS.includes(id)) return;
       if (id === currentTab) reloadIframe(id);
       else setActive(id);
-      if (isMobile) {
-        document.getElementById('hamburgerBtn').classList.remove('open');
-        document.getElementById('mobileMenu').classList.remove('open');
-      }
+      if (isMobile) closeMobileMenu();
     }
 
     document.getElementById('hamburgerBtn').addEventListener('click', () => {
-      document.getElementById('hamburgerBtn').classList.toggle('open');
-      document.getElementById('mobileMenu').classList.toggle('open');
+      const menu = document.getElementById('mobileMenu');
+      if (menu.classList.contains('open')) closeMobileMenu();
+      else openMobileMenu();
     });
+
+    document.getElementById('menuOverlay').addEventListener('click', closeMobileMenu);
 
     document.addEventListener('DOMContentLoaded', () => {
       setVh();
