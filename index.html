@@ -3013,6 +3013,8 @@ body{
   overscroll-behavior:none !important;
   touch-action:none !important;
   contain:layout paint;
+  transform:translateZ(0);
+  -webkit-transform:translateZ(0);
 }
 
 .medplus-aux-frame-wrap.open{display:block}
@@ -3023,9 +3025,9 @@ body{
   border:0;
   display:block;
   background:#fff;
-  overflow:auto !important;
-  overscroll-behavior:contain !important;
-  touch-action:pan-y !important;
+  overflow:hidden !important;
+  overscroll-behavior:none !important;
+  touch-action:auto !important;
   -webkit-overflow-scrolling:touch;
 }
 
@@ -3115,60 +3117,65 @@ body.dark-mode .medplus-aux-frame{
   background:#020810 !important;
 }
 
-/* Khi iframe navbar mở: đóng băng và vô hiệu toàn bộ trang chủ bên dưới. */
+/* Khi iframe navbar mở: dùng trạng thái như modal toàn màn hình, đóng băng trang chủ bên dưới. */
+body.medplus-aux-open .container,
+body.medplus-aux-open .footer,
+body.medplus-aux-open .nature-background,
+body.medplus-aux-open #night-container,
+body.medplus-aux-open .product-grid,
+body.medplus-aux-open .skeleton-grid,
+body.medplus-aux-open .search-wrapper,
+body.medplus-aux-open .header-main{
+  pointer-events:none !important;
+  user-select:none !important;
+}
+
+/* Loại bỏ toàn bộ hiệu ứng của trang chủ khi iframe navbar đang mở. */
+body.medplus-aux-open .container *,
+body.medplus-aux-open .footer *,
+body.medplus-aux-open .nature-background *,
+body.medplus-aux-open #night-container *,
+body.medplus-aux-open .product-grid *,
+body.medplus-aux-open .skeleton-grid *,
+body.medplus-aux-open .search-wrapper *,
+body.medplus-aux-open .header-main *,
 body.medplus-aux-open .leaf,
 body.medplus-aux-open .star,
 body.medplus-aux-open .shooting-star,
 body.medplus-aux-open .planet,
-body.medplus-aux-open .zen-logo img,
-body.medplus-aux-open .new-badge,
 body.medplus-aux-open .new-badge::before,
 body.medplus-aux-open .new-badge::after,
-body.medplus-aux-open .syringe-icon,
-body.medplus-aux-open .tk-icon,
-body.medplus-aux-open .medplus-badge::after,
-body.medplus-aux-open .iv-badge-btn,
-body.medplus-aux-open .iv-badge-btn .syringe-icon,
-body.medplus-aux-open .skeleton-el,
-body.medplus-aux-open .glass-card,
-body.medplus-aux-open .back-top,
-body.medplus-aux-open .notion-btn,
-body.medplus-aux-open .google-search-btn,
-body.medplus-aux-open .footer-badge,
-body.medplus-aux-open #chat-widget-btn{
-  animation-play-state:paused !important;
+body.medplus-aux-open .medplus-badge::after{
+  animation:none !important;
   transition:none !important;
+  scroll-behavior:auto !important;
   will-change:auto !important;
 }
+
+/* Ẩn hẳn các lớp nền động để tránh GPU/animation chạy ngầm. */
 body.medplus-aux-open .nature-background,
 body.medplus-aux-open #night-container{
   display:none !important;
 }
 
-/* Khi mở iframe navbar: ẩn hoàn toàn nút chatbot, cửa sổ chatbot và nút chuông/thông báo. */
+/* Khi mở iframe navbar: ẩn hoàn toàn chatbot, chuông, notification, back-to-top. */
 body.medplus-aux-open #chat-widget-btn,
 body.medplus-aux-open #chat-widget-window,
+body.medplus-aux-open #chat-overlay,
 body.medplus-aux-open #bell-btn,
 body.medplus-aux-open .back-top,
 body.medplus-aux-open #bell-modal,
-body.medplus-aux-open #notif-detail-modal{
+body.medplus-aux-open #notif-detail-modal,
+body.medplus-aux-open #notif-floating-bell{
   display:none !important;
   visibility:hidden !important;
   opacity:0 !important;
   pointer-events:none !important;
+  animation:none !important;
+  transition:none !important;
 }
 
-body.medplus-aux-open .container,
-body.medplus-aux-open .search-wrapper,
-body.medplus-aux-open .product-grid,
-body.medplus-aux-open .skeleton-grid,
-body.medplus-aux-open .header-main,
-body.medplus-aux-open .footer,
-body.medplus-aux-open .back-top,
-body.medplus-aux-open #bell-btn,
-body.medplus-aux-open #chat-widget-btn{
-  pointer-events:none !important;
-}
+/* Chỉ navbar và iframe còn nhận tương tác. */
 body.medplus-aux-open .medplus-app-nav,
 body.medplus-aux-open .medplus-app-nav *,
 body.medplus-aux-open .medplus-aux-frame-wrap,
@@ -7882,6 +7889,34 @@ body.medplus-aux-open .medplus-aux-frame-wrap *{
       }
     }
 
+    function loadMedplusAuxFrame(targetUrl){
+      if (!auxFrame || !targetUrl) return;
+
+      auxFrame.dataset.expectedSrc = targetUrl;
+      auxFrame.removeAttribute('srcdoc');
+      auxFrame.style.visibility = 'visible';
+
+      /* Không chuyển qua about:blank khi mở/switch tab navbar.
+         Việc set about:blank trước rồi mới set URL thật là nguyên nhân thỉnh thoảng thấy trắng. */
+      try {
+        if (auxFrame.contentWindow && auxFrame.contentWindow.location && auxFrame.contentWindow.location.href !== 'about:blank') {
+          auxFrame.contentWindow.location.replace(targetUrl);
+        } else {
+          auxFrame.setAttribute('src', targetUrl);
+        }
+      } catch (e) {
+        auxFrame.setAttribute('src', targetUrl);
+      }
+
+      /* Fallback rất nhẹ: nếu vì browser/PWA giữ iframe ở about:blank, nạp lại URL thật. */
+      setTimeout(function(){
+        if (!document.body.classList.contains('medplus-aux-open')) return;
+        if (!auxFrame || auxFrame.dataset.expectedSrc !== targetUrl) return;
+        const attr = auxFrame.getAttribute('src') || '';
+        if (!attr || attr === 'about:blank') auxFrame.setAttribute('src', targetUrl);
+      }, 120);
+    }
+
     window.medplusNavSwitch = function(id, isMobile){
       const wasAuxOpen = document.body.classList.contains('medplus-aux-open');
 
@@ -7902,33 +7937,26 @@ body.medplus-aux-open .medplus-aux-frame-wrap *{
         document.body.classList.remove('medplus-aux-open');
         document.documentElement.classList.remove('medplus-aux-open');
         if (typeof unlockBodyScroll === 'function') unlockBodyScroll('medplus-aux');
-        if (auxFrame) auxFrame.src = 'about:blank';
+        if (auxFrame) {
+          delete auxFrame.dataset.expectedSrc;
+          auxFrame.src = 'about:blank';
+        }
         loadingFromIndexNav = false;
         if (nav) nav.classList.remove('nav-hidden');
       } else if (MEDPLUS_NAV_URLS[id]) {
         const targetUrl = MEDPLUS_NAV_URLS[id];
 
+        /* Làm giống modal chi tiết thuốc: hiển thị lớp phủ rồi gọi lockBodyScroll(key). */
         if (auxWrap) {
           auxWrap.classList.add('open');
           auxWrap.setAttribute('aria-hidden', 'false');
         }
-        /* Chatbot/chuông được ẩn bằng CSS khi body.medplus-aux-open bật. */
         document.body.classList.add('medplus-aux-open');
         document.documentElement.classList.add('medplus-aux-open');
         if (typeof lockBodyScroll === 'function') lockBodyScroll('medplus-aux');
         if (nav) nav.classList.remove('nav-hidden');
 
-        if (auxFrame) {
-          auxFrame.dataset.medplusParentOpen = '1';
-
-          /* Luôn nạp lại trang gốc của mục được bấm.
-             Cách này đảm bảo dù iframe đang ở trang con/nội bộ nào,
-             bấm navbar index vẫn quay về đúng trang chính của mục đó. */
-          auxFrame.src = 'about:blank';
-          requestAnimationFrame(function(){
-            auxFrame.src = targetUrl;
-          });
-        }
+        loadMedplusAuxFrame(targetUrl);
       }
 
       if (isMobile) closeMedplusMobileMenu();
@@ -7986,38 +8014,26 @@ body.medplus-aux-open .medplus-aux-frame-wrap *{
 
     if (auxFrame) {
       auxFrame.addEventListener('load', function(){
-        /* Không xoá active khi iframe load.
-           Lý do: khi bấm navbar index, iframe có thể load about:blank trước rồi mới load URL thật.
-           Nếu xoá active ở sự kiện load, nút vừa sáng sẽ tự nhả ra. */
+        /* Không xoá active khi iframe load/chạm. Navbar giữ đúng mục đang mở. */
         delete auxFrame.dataset.medplusParentOpen;
+
+        /* Nếu load nhầm about:blank khi đang mở aux, nạp lại URL thật ngay. */
+        if (document.body.classList.contains('medplus-aux-open')) {
+          const expected = auxFrame.dataset.expectedSrc || MEDPLUS_NAV_URLS[currentNav];
+          const attr = auxFrame.getAttribute('src') || '';
+          if (expected && (!attr || attr === 'about:blank')) {
+            auxFrame.setAttribute('src', expected);
+            return;
+          }
+        }
+
         setTimeout(hardenMedplusAuxIframeScroll, 80);
         setTimeout(hardenMedplusAuxIframeScroll, 350);
         setTimeout(function(){
           loadingFromIndexNav = false;
         }, 900);
       });
-
-      auxFrame.addEventListener('pointerdown', function(){
-        /* Chỉ xoá active khi người dùng thật sự thao tác trong iframe. */
-        clearIndexNavBecauseIframeWasUsed();
-      });
-
-      auxFrame.addEventListener('touchstart', function(){
-        clearIndexNavBecauseIframeWasUsed();
-      }, { passive:true });
     }
-
-    window.addEventListener('blur', function(){
-      setTimeout(function(){
-        if (!document.body.classList.contains('medplus-aux-open')) return;
-        if (document.activeElement !== auxFrame) return;
-
-        /* Bỏ qua focus tự phát sinh ngay sau khi navbar index vừa nạp iframe. */
-        if (loadingFromIndexNav || Date.now() - lastIndexNavClickAt < 1200) return;
-
-        clearIndexNavBecauseIframeWasUsed();
-      }, 80);
-    });
 
     window.addEventListener('scroll', function(){
       if (!ticking) {
