@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#eef2f0">
+<meta name="theme-color" content="#0056b3">
 <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
 
 <script>
@@ -95,6 +95,520 @@
         body:not(.dark-mode) .group-filter-select option{font-weight:500!important}
 
         .glass-panel{background:var(--g-bg);backdrop-filter:var(--g-blur);-webkit-backdrop-filter:var(--g-blur);border:1px solid var(--g-border);box-shadow:var(--shadow);border-radius:var(--rad)}
+
+:root{
+  --medplus-nav-height:52px;
+  --medplus-nav-safe-top:env(safe-area-inset-top,0px);
+}
+
+body{
+  padding-top:calc(var(--medplus-nav-height) + var(--medplus-nav-safe-top) + 40px) !important;
+}
+
+.medplus-app-nav{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  height:calc(var(--medplus-nav-height) + var(--medplus-nav-safe-top));
+  padding:var(--medplus-nav-safe-top) 14px 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  color:#1b5e20;
+  background:linear-gradient(135deg,rgba(238,242,240,.90) 0,rgba(232,240,235,.84) 55%,rgba(224,236,229,.88) 100%);
+  backdrop-filter:blur(18px) saturate(165%);
+  -webkit-backdrop-filter:blur(18px) saturate(165%);
+  box-shadow:0 3px 18px rgba(27,94,32,.15);
+  z-index:9000;
+  transition:transform .26s ease, opacity .26s ease, box-shadow .26s ease;
+  will-change:transform;
+}
+
+.medplus-app-nav::before{
+  content:"";
+  position:absolute;
+  left:8px;
+  right:8px;
+  top:calc(var(--medplus-nav-safe-top) + 5px);
+  bottom:5px;
+  border-radius:16px;
+  border:1px solid rgba(46,125,50,.34);
+  background:rgba(255,255,255,.20);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.72), inset 0 -1px 0 rgba(46,125,50,.12), 0 8px 24px rgba(27,94,32,.12);
+  backdrop-filter:blur(14px) saturate(160%);
+  -webkit-backdrop-filter:blur(14px) saturate(160%);
+  pointer-events:none;
+  z-index:0;
+}
+
+.medplus-app-nav.nav-hidden{
+  transform:translateY(calc(-1 * var(--medplus-nav-height) - var(--medplus-nav-safe-top)));
+  opacity:.98;
+}
+
+.medplus-nav-logo-wrap,
+.medplus-desktop-nav,
+.medplus-hamburger{
+  position:relative;
+  z-index:1;
+}
+
+.medplus-nav-logo-wrap{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+}
+
+.medplus-nav-logo-circle{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  box-shadow:0 4px 12px rgba(27,94,32,.16);
+  border:1px solid rgba(255,255,255,.92);
+  overflow:hidden;
+}
+
+.medplus-nav-logo-circle img{
+  width:36px;
+  height:36px;
+  object-fit:cover;
+  display:block;
+}
+
+.medplus-nav-badge{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:6px 14px;
+  border-radius:999px;
+  color:#1b5e20;
+  font-weight:900;
+  letter-spacing:1.2px;
+  font-size:.74rem;
+  text-transform:uppercase;
+  white-space:nowrap;
+  background:rgba(255,255,255,.42);
+  border:1px solid rgba(46,125,50,.22);
+  box-shadow:0 10px 26px rgba(27,94,32,.10), inset 0 1px 0 rgba(255,255,255,.65);
+  overflow:hidden;
+}
+
+.medplus-nav-badge::after{
+  content:"";
+  position:absolute;
+  inset:1px 1px auto 1px;
+  height:42px;
+  border-radius:999px;
+  background:linear-gradient(to bottom,rgba(255,255,255,.58),rgba(255,255,255,0));
+  pointer-events:none;
+}
+
+.medplus-desktop-nav{
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+
+.medplus-desktop-nav button,
+.medplus-mobile-menu button{
+  font-family:inherit;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.medplus-desktop-nav button{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:32px;
+  padding:0 12px;
+  line-height:1;
+  color:#1b5e20;
+  background:rgba(255,255,255,.38);
+  border:0;
+  outline:0;
+  appearance:none;
+  -webkit-appearance:none;
+  box-shadow:0 2px 8px rgba(27,94,32,.10), inset 0 1px 0 rgba(255,255,255,.58);
+  font-size:.8rem;
+  font-weight:700;
+  border-radius:8px;
+  white-space:nowrap;
+  letter-spacing:.25px;
+  cursor:pointer;
+  transition:background .22s ease, box-shadow .22s ease, transform .22s ease, color .22s ease;
+  overflow:hidden;
+  transform:translateZ(0);
+}
+
+.medplus-desktop-nav button::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  border:1px solid rgba(46,125,50,.22);
+  pointer-events:none;
+  box-sizing:border-box;
+}
+
+.medplus-desktop-nav button:hover{
+  background:rgba(255,255,255,.58);
+  box-shadow:0 4px 14px rgba(27,94,32,.14), inset 0 1px 0 rgba(255,255,255,.72);
+  transform:translate3d(0,-1px,0);
+}
+
+.medplus-desktop-nav button.active{
+  color:#fff;
+  background:linear-gradient(135deg,rgba(46,125,50,.88),rgba(27,94,32,.88));
+  box-shadow:0 4px 14px rgba(27,94,32,.20), inset 0 1px 0 rgba(255,255,255,.26);
+}
+
+.medplus-desktop-nav button.active::after{
+  border-color:rgba(255,255,255,.48);
+}
+
+.medplus-hamburger{
+  display:none;
+  width:34px;
+  height:34px;
+  padding:0;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:4px;
+  cursor:pointer;
+  flex-shrink:0;
+}
+
+.medplus-hamburger span{
+  display:block;
+  width:19px;
+  height:2px;
+  background:#2e7d32;
+  border-radius:2px;
+  transition:.25s;
+}
+
+.medplus-hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.medplus-hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.medplus-hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+.medplus-mobile-menu{
+  display:none;
+  position:fixed;
+  top:calc(var(--medplus-nav-height) + var(--medplus-nav-safe-top));
+  right:0;
+  width:75vw;
+  height:calc(var(--vh,1vh) * 100 - var(--medplus-nav-height) - var(--medplus-nav-safe-top));
+  padding:26px 12px 14px;
+  z-index:8999;
+  flex-direction:column;
+  gap:9px;
+  background:linear-gradient(180deg,rgba(238,242,240,.96) 0,rgba(224,236,229,.96) 100%);
+  border-left:1px solid rgba(46,125,50,.20);
+  box-shadow:-18px 0 40px rgba(27,94,32,.16), inset 1px 0 0 rgba(255,255,255,.66);
+  backdrop-filter:blur(18px) saturate(165%);
+  -webkit-backdrop-filter:blur(18px) saturate(165%);
+  transform:translateX(100%);
+  transition:transform .24s ease, opacity .24s ease;
+  opacity:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+}
+
+.medplus-mobile-menu.open{
+  display:flex;
+  transform:translateX(0);
+  opacity:1;
+}
+
+.medplus-mobile-menu button{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:10px;
+  width:100%;
+  height:48px;
+  padding:0 14px;
+  border:0;
+  outline:0;
+  appearance:none;
+  -webkit-appearance:none;
+  border-radius:14px;
+  background:rgba(255,255,255,.42);
+  color:#1b5e20;
+  font-size:.9rem;
+  font-weight:800;
+  letter-spacing:.25px;
+  cursor:pointer;
+  transition:background .22s ease, box-shadow .22s ease, transform .22s ease, color .22s ease;
+  box-shadow:0 6px 16px rgba(27,94,32,.09), inset 0 1px 0 rgba(255,255,255,.62);
+  overflow:hidden;
+  transform:translateZ(0);
+}
+
+.medplus-mobile-menu button::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  border:1px solid rgba(46,125,50,.24);
+  pointer-events:none;
+  box-sizing:border-box;
+}
+
+.medplus-mobile-menu button.active{
+  color:#fff;
+  background:linear-gradient(135deg,rgba(46,125,50,.90),rgba(27,94,32,.90));
+  box-shadow:0 12px 24px rgba(27,94,32,.16), inset 0 1px 0 rgba(255,255,255,.24);
+}
+
+.medplus-mobile-ico{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  width:25px;
+  height:25px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:currentColor;
+  opacity:.98;
+  pointer-events:none;
+  z-index:1;
+}
+
+.medplus-mobile-ico svg{
+  width:23px;
+  height:23px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  display:block;
+}
+
+.medplus-mobile-text{
+  position:relative;
+  z-index:1;
+  width:100%;
+  text-align:center;
+  padding-left:30px;
+  padding-right:24px;
+  display:block;
+  line-height:1;
+}
+
+.medplus-menu-overlay{
+  display:none;
+  position:fixed;
+  top:calc(var(--medplus-nav-height) + var(--medplus-nav-safe-top));
+  left:0;
+  right:25vw;
+  bottom:0;
+  background:rgba(0,0,0,.28);
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+  z-index:8998;
+}
+
+.medplus-menu-overlay.open{display:block}
+
+.medplus-aux-frame-wrap{
+  display:none;
+  position:fixed;
+  left:0;
+  right:0;
+  top:calc(var(--medplus-nav-height) + var(--medplus-nav-safe-top));
+  bottom:0;
+  z-index:8500;
+  background:#fff;
+  overflow:hidden !important;
+  overscroll-behavior:none !important;
+  touch-action:none !important;
+  contain:layout paint;
+  transform:translateZ(0);
+  -webkit-transform:translateZ(0);
+}
+
+.medplus-aux-frame-wrap.open{display:block}
+
+.medplus-aux-frame{
+  width:100%;
+  height:100%;
+  border:0;
+  display:none;
+  background:#fff;
+  overflow:hidden !important;
+  overscroll-behavior:none !important;
+  touch-action:auto !important;
+  -webkit-overflow-scrolling:touch;
+}
+
+.medplus-aux-frame.active{display:block}
+
+html.medplus-aux-open,
+body.medplus-aux-open{
+  overflow:hidden !important;
+  overscroll-behavior:none !important;
+}
+
+body.not.dark-mode .medplus-app-nav{
+  color:#1b5e20 !important;
+  background:linear-gradient(135deg,rgba(238,250,232,.94) 0,rgba(247,255,245,.90) 55%,rgba(232,248,228,.92) 100%) !important;
+  box-shadow:0 3px 18px rgba(27,94,32,.16) !important;
+}
+
+body.not.dark-mode .medplus-app-nav::before{
+  background:rgba(255,255,255,.30) !important;
+  border-color:rgba(46,125,50,.34) !important;
+}
+
+body.dark-mode .medplus-app-nav{
+  color:#50dcb4 !important;
+  background:linear-gradient(135deg,rgba(4,12,28,.96) 0,rgba(8,22,48,.94) 55%,rgba(5,18,38,.96) 100%) !important;
+  box-shadow:0 4px 22px rgba(0,0,0,.55),0 0 18px rgba(80,220,180,.12) !important;
+}
+
+body.dark-mode .medplus-app-nav::before{
+  background:rgba(8,20,42,.48) !important;
+  border-color:rgba(80,220,180,.22) !important;
+  box-shadow:inset 0 1px 0 rgba(80,220,180,.10),0 8px 28px rgba(0,0,0,.42) !important;
+}
+
+body.dark-mode .medplus-nav-logo-circle{
+  background:#061226 !important;
+  border-color:rgba(80,220,180,.35) !important;
+}
+
+body.dark-mode .medplus-nav-badge{
+  background:linear-gradient(135deg,#0d4a32,#062a1c) !important;
+  color:#4df5c0 !important;
+  border:1px solid rgba(80,220,180,.35) !important;
+  box-shadow:0 0 12px rgba(80,220,180,.20) !important;
+}
+
+body.dark-mode .medplus-desktop-nav button,
+body.dark-mode .medplus-mobile-menu button{
+  color:#50dcb4 !important;
+  background:rgba(8,20,42,.68) !important;
+  box-shadow:none !important;
+}
+
+body.dark-mode .medplus-desktop-nav button::after,
+body.dark-mode .medplus-mobile-menu button::after{
+  border-color:rgba(80,220,180,.18) !important;
+}
+
+body.dark-mode .medplus-desktop-nav button:hover{
+  background:rgba(20,45,80,.84) !important;
+}
+
+body.dark-mode .medplus-desktop-nav button.active,
+body.dark-mode .medplus-mobile-menu button.active{
+  color:#4df5c0 !important;
+  background:linear-gradient(135deg,#0d4a32,#062a1c) !important;
+  box-shadow:0 0 14px rgba(80,220,180,.25) !important;
+}
+
+body.dark-mode .medplus-hamburger span{
+  background:#50dcb4 !important;
+}
+
+body.dark-mode .medplus-mobile-menu{
+  background:linear-gradient(180deg,rgba(4,12,28,.98) 0,rgba(8,22,48,.98) 100%) !important;
+  border-left-color:rgba(80,220,180,.18) !important;
+  box-shadow:-18px 0 40px rgba(0,0,0,.45),inset 1px 0 0 rgba(80,220,180,.08) !important;
+}
+
+body.dark-mode .medplus-menu-overlay{
+  background:rgba(0,5,15,.50) !important;
+}
+
+body.dark-mode .medplus-aux-frame-wrap,
+body.dark-mode .medplus-aux-frame{
+  background:#020810 !important;
+}
+
+body.medplus-aux-open .container,
+body.medplus-aux-open .footer,
+body.medplus-aux-open .nature-background,
+body.medplus-aux-open .night-background,
+body.medplus-aux-open .product-grid,
+body.medplus-aux-open .skeleton-grid,
+body.medplus-aux-open .search-wrapper,
+body.medplus-aux-open .header-main,
+body.medplus-aux-open .leaf,
+body.medplus-aux-open .star,
+body.medplus-aux-open .shooting-star,
+body.medplus-aux-open .planet,
+body.medplus-aux-open .new-badge::before,
+body.medplus-aux-open .new-badge::after,
+body.medplus-aux-open .medplus-badge::after{
+  animation:none !important;
+  transition:none !important;
+  scroll-behavior:auto !important;
+  will-change:auto !important;
+}
+
+body.medplus-aux-open .nature-background,
+body.medplus-aux-open .night-background{
+  display:none !important;
+}
+
+body.medplus-aux-open .medplus-app-nav,
+body.medplus-aux-open .medplus-aux-frame-wrap{
+  pointer-events:auto !important;
+}
+
+@media (max-width:768px){
+  body{
+    padding-top:calc(var(--medplus-nav-height) + var(--medplus-nav-safe-top) + 20px) !important;
+  }
+  .medplus-app-nav{
+    padding-left:10px;
+    padding-right:10px;
+  }
+  .medplus-desktop-nav{
+    display:none;
+  }
+  .medplus-hamburger{
+    display:flex;
+  }
+  .medplus-nav-logo-circle{
+    width:36px;
+    height:36px;
+  }
+  .medplus-nav-logo-circle img{
+    width:34px;
+    height:34px;
+  }
+  .medplus-nav-badge{
+    padding:5px 10px;
+    font-size:.7rem;
+    letter-spacing:.9px;
+  }
+}
+
+@media (max-width:600px){
+  .medplus-mobile-menu{
+    width:82vw;
+  }
+}
         
         .container{max-width:1300px;margin:0 auto;padding:0 20px;position:relative;z-index:auto}
 
@@ -2651,616 +3165,74 @@ body.dark-mode .iv-iframe-container iframe {
             }
         }
 
-
-
-/* ==============================================================
-   MEDPLUS TOP NAV — glass, mobile auto-hide, auxiliary iframe pages
-   Added without changing the original drug-search app logic.
-   ============================================================== */
-:root{
-  --medplus-nav-height:52px;
-  --medplus-nav-safe-top:env(safe-area-inset-top,0px);
-}
-
-body{
-  padding-top:calc(var(--medplus-nav-height) + var(--medplus-nav-safe-top) + 40px) !important;
-}
-
-.medplus-app-nav{
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  height:calc(var(--medplus-nav-height) + var(--medplus-nav-safe-top));
-  padding:var(--medplus-nav-safe-top) 14px 0;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  color:#1b5e20;
-  background:linear-gradient(135deg,rgba(238,242,240,.90) 0%,rgba(232,240,235,.84) 55%,rgba(224,236,229,.88) 100%);
-  backdrop-filter:blur(18px) saturate(165%);
-  -webkit-backdrop-filter:blur(18px) saturate(165%);
-  box-shadow:0 3px 18px rgba(27,94,32,.15);
-  z-index:9000;
-  transition:transform .26s ease, opacity .26s ease, box-shadow .26s ease;
-  will-change:transform;
-}
-
-.medplus-app-nav::before{
-  content:'';
-  position:absolute;
-  left:8px;
-  right:8px;
-  top:calc(var(--medplus-nav-safe-top) + 5px);
-  bottom:5px;
-  border-radius:16px;
-  border:1px solid rgba(46,125,50,.34);
-  background:rgba(255,255,255,.20);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.72),
-    inset 0 -1px 0 rgba(46,125,50,.12),
-    0 8px 24px rgba(27,94,32,.12);
-  backdrop-filter:blur(14px) saturate(160%);
-  -webkit-backdrop-filter:blur(14px) saturate(160%);
-  pointer-events:none;
-  z-index:0;
-}
-
-.medplus-app-nav.nav-hidden{
-  transform:translateY(calc(-1 * (var(--medplus-nav-height) + var(--medplus-nav-safe-top))));
-  opacity:.98;
-}
-
-.medplus-nav-logo-wrap,
-.medplus-desktop-nav,
-.medplus-hamburger{
-  position:relative;
-  z-index:1;
-}
-
-.medplus-nav-logo-wrap{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  min-width:0;
-}
-
-.medplus-nav-logo-circle{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  background:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-shrink:0;
-  box-shadow:0 4px 12px rgba(27,94,32,.16);
-  border:1px solid rgba(255,255,255,.92);
-  overflow:hidden;
-}
-
-.medplus-nav-logo-circle img{
-  width:36px;
-  height:36px;
-  object-fit:cover;
-  display:block;
-}
-
-.medplus-nav-badge{
-  position:relative;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:6px 14px;
-  border-radius:999px;
-  color:#1b5e20;
-  font-weight:900;
-  letter-spacing:1.2px;
-  font-size:.74rem;
-  text-transform:uppercase;
-  white-space:nowrap;
-  background:rgba(255,255,255,.42);
-  border:1px solid rgba(46,125,50,.22);
-  box-shadow:
-    0 10px 26px rgba(27,94,32,.10),
-    inset 0 1px 0 rgba(255,255,255,.65);
-  overflow:hidden;
-}
-
-.medplus-nav-badge::after{
-  content:'';
-  position:absolute;
-  inset:1px 1px auto 1px;
-  height:42%;
-  border-radius:999px;
-  background:linear-gradient(to bottom,rgba(255,255,255,.58),rgba(255,255,255,0));
-  pointer-events:none;
-}
-
-.medplus-desktop-nav{
-  display:flex;
-  align-items:center;
-  gap:5px;
-}
-
-.medplus-desktop-nav button,
-.medplus-mobile-menu button{
-  font-family:inherit;
-  -webkit-tap-highlight-color:transparent;
-}
-
-.medplus-desktop-nav button{
-  position:relative;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  height:32px;
-  padding:0 12px;
-  line-height:1;
-  color:#1b5e20;
-  background:rgba(255,255,255,.38);
-  border:0;
-  outline:0;
-  appearance:none;
-  -webkit-appearance:none;
-  box-shadow:
-    0 2px 8px rgba(27,94,32,.10),
-    inset 0 1px 0 rgba(255,255,255,.58);
-  font-size:.8rem;
-  font-weight:700;
-  border-radius:8px;
-  white-space:nowrap;
-  letter-spacing:.25px;
-  cursor:pointer;
-  transition:background .22s ease, box-shadow .22s ease, transform .22s ease, color .22s ease;
-  overflow:hidden;
-  transform:translateZ(0);
-}
-
-.medplus-desktop-nav button::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  border-radius:inherit;
-  border:1px solid rgba(46,125,50,.22);
-  pointer-events:none;
-  box-sizing:border-box;
-}
-
-.medplus-desktop-nav button:hover{
-  background:rgba(255,255,255,.58);
-  box-shadow:
-    0 4px 14px rgba(27,94,32,.14),
-    inset 0 1px 0 rgba(255,255,255,.72);
-  transform:translate3d(0,-1px,0);
-}
-
-.medplus-desktop-nav button.active{
-  color:#fff;
-  background:linear-gradient(135deg,rgba(46,125,50,.88),rgba(27,94,32,.88));
-  box-shadow:
-    0 4px 14px rgba(27,94,32,.20),
-    inset 0 1px 0 rgba(255,255,255,.26);
-}
-
-.medplus-desktop-nav button.active::after{
-  border-color:rgba(255,255,255,.48);
-}
-
-.medplus-hamburger{
-  display:none;
-  width:34px;
-  height:34px;
-  padding:0;
-  border:0;
-  background:transparent;
-  box-shadow:none;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  gap:4px;
-  cursor:pointer;
-  flex-shrink:0;
-}
-
-.medplus-hamburger span{
-  display:block;
-  width:19px;
-  height:2px;
-  background:#2e7d32;
-  border-radius:2px;
-  transition:.25s;
-}
-
-.medplus-hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
-.medplus-hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
-.medplus-hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-
-.medplus-mobile-menu{
-  display:none;
-  position:fixed;
-  top:calc(var(--medplus-nav-height) + var(--medplus-nav-safe-top));
-  right:0;
-  width:75vw;
-  height:calc(var(--vh,1vh) * 100 - var(--medplus-nav-height) - var(--medplus-nav-safe-top));
-  padding:26px 12px 14px;
-  z-index:8999;
-  flex-direction:column;
-  gap:9px;
-  background:linear-gradient(180deg,rgba(238,242,240,.96) 0%,rgba(224,236,229,.96) 100%);
-  border-left:1px solid rgba(46,125,50,.20);
-  box-shadow:-18px 0 40px rgba(27,94,32,.16), inset 1px 0 0 rgba(255,255,255,.66);
-  backdrop-filter:blur(18px) saturate(165%);
-  -webkit-backdrop-filter:blur(18px) saturate(165%);
-  transform:translateX(100%);
-  transition:transform .24s ease, opacity .24s ease;
-  opacity:0;
-  overflow-y:auto;
-  overscroll-behavior:contain;
-}
-
-.medplus-mobile-menu.open{
-  display:flex;
-  transform:translateX(0);
-  opacity:1;
-}
-
-.medplus-mobile-menu button{
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:flex-start;
-  gap:10px;
-  width:100%;
-  height:48px;
-  padding:0 14px;
-  border:0;
-  outline:0;
-  appearance:none;
-  -webkit-appearance:none;
-  border-radius:14px;
-  background:rgba(255,255,255,.42);
-  color:#1b5e20;
-  font-size:.9rem;
-  font-weight:800;
-  letter-spacing:.25px;
-  cursor:pointer;
-  transition:background .22s ease, box-shadow .22s ease, transform .22s ease, color .22s ease;
-  box-shadow:0 6px 16px rgba(27,94,32,.09), inset 0 1px 0 rgba(255,255,255,.62);
-  overflow:hidden;
-  transform:translateZ(0);
-}
-
-.medplus-mobile-menu button::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  border-radius:inherit;
-  border:1px solid rgba(46,125,50,.24);
-  pointer-events:none;
-  box-sizing:border-box;
-}
-
-.medplus-mobile-menu button.active{
-  color:#fff;
-  background:linear-gradient(135deg,rgba(46,125,50,.90),rgba(27,94,32,.90));
-  box-shadow:0 12px 24px rgba(27,94,32,.16), inset 0 1px 0 rgba(255,255,255,.24);
-}
-
-.medplus-mobile-ico{
-  position:absolute;
-  left:14px;
-  top:50%;
-  transform:translateY(-50%);
-  width:25px;
-  height:25px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:currentColor;
-  opacity:.98;
-  pointer-events:none;
-  z-index:1;
-}
-
-.medplus-mobile-ico svg{
-  width:23px;
-  height:23px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:2;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-  display:block;
-}
-
-.medplus-mobile-text{
-  position:relative;
-  z-index:1;
-  width:100%;
-  text-align:center;
-  padding-left:30px;
-  padding-right:24px;
-  display:block;
-  line-height:1;
-}
-
-.medplus-menu-overlay{
-  display:none;
-  position:fixed;
-  top:calc(var(--medplus-nav-height) + var(--medplus-nav-safe-top));
-  left:0;
-  right:25vw;
-  bottom:0;
-  background:rgba(0,0,0,.28);
-  backdrop-filter:blur(2px);
-  -webkit-backdrop-filter:blur(2px);
-  z-index:8998;
-}
-
-.medplus-menu-overlay.open{display:block}
-
-.medplus-aux-frame-wrap{
-  display:none;
-  position:fixed;
-  left:0;
-  right:0;
-  top:calc(var(--medplus-nav-height) + var(--medplus-nav-safe-top));
-  bottom:0;
-  z-index:8500;
-  background:#fff;
-  overflow:hidden !important;
-  overscroll-behavior:none !important;
-  touch-action:none !important;
-  contain:layout paint;
-  transform:translateZ(0);
-  -webkit-transform:translateZ(0);
-}
-
-.medplus-aux-frame-wrap.open{display:block}
-
-.medplus-aux-frame{
-  width:100%;
-  height:100%;
-  border:0;
-  display:block;
-  background:#fff;
-  overflow:hidden !important;
-  overscroll-behavior:none !important;
-  touch-action:auto !important;
-  -webkit-overflow-scrolling:touch;
-}
-
-html.medplus-aux-open,
-body.medplus-aux-open{
-  overflow:hidden !important;
-  overscroll-behavior:none !important;
-}
-
-/* NAVBAR LIGHT/DARK THEME + AUX IFRAME SCROLL GUARD */
-body:not(.dark-mode) .medplus-app-nav{
-  color:#1b5e20 !important;
-  background:linear-gradient(135deg,rgba(238,250,232,.94) 0%,rgba(247,255,245,.90) 55%,rgba(232,248,228,.92) 100%) !important;
-  box-shadow:0 3px 18px rgba(27,94,32,.16) !important;
-}
-body:not(.dark-mode) .medplus-app-nav::before{
-  background:rgba(255,255,255,.30) !important;
-  border-color:rgba(46,125,50,.34) !important;
-}
-body:not(.dark-mode) .medplus-nav-logo-circle{
-  background:#fff !important;
-  border-color:rgba(46,125,50,.20) !important;
-}
-body:not(.dark-mode) .medplus-nav-badge,
-body:not(.dark-mode) .medplus-desktop-nav button,
-body:not(.dark-mode) .medplus-mobile-menu button{
-  color:#1b5e20 !important;
-}
-body:not(.dark-mode) .medplus-desktop-nav button.active,
-body:not(.dark-mode) .medplus-mobile-menu button.active{
-  color:#fff !important;
-  background:linear-gradient(135deg,rgba(46,125,50,.92),rgba(27,94,32,.92)) !important;
-}
-body.dark-mode .medplus-app-nav{
-  color:#50dcb4 !important;
-  background:linear-gradient(135deg,rgba(4,12,28,.96) 0%,rgba(8,22,48,.94) 55%,rgba(5,18,38,.96) 100%) !important;
-  box-shadow:0 4px 22px rgba(0,0,0,.55),0 0 18px rgba(80,220,180,.12) !important;
-}
-body.dark-mode .medplus-app-nav::before{
-  background:rgba(8,20,42,.48) !important;
-  border-color:rgba(80,220,180,.22) !important;
-  box-shadow:inset 0 1px 0 rgba(80,220,180,.10),0 8px 28px rgba(0,0,0,.42) !important;
-}
-body.dark-mode .medplus-nav-logo-circle{
-  background:#061226 !important;
-  border-color:rgba(80,220,180,.35) !important;
-  box-shadow:0 0 14px rgba(80,220,180,.20) !important;
-}
-body.dark-mode .medplus-nav-badge{
-  background:linear-gradient(135deg,#0d4a32,#062a1c) !important;
-  color:#4df5c0 !important;
-  border:1px solid rgba(80,220,180,.35) !important;
-  box-shadow:0 0 12px rgba(80,220,180,.20) !important;
-}
-body.dark-mode .medplus-desktop-nav button,
-body.dark-mode .medplus-mobile-menu button{
-  color:#50dcb4 !important;
-  background:rgba(8,20,42,.68) !important;
-  box-shadow:none !important;
-}
-body.dark-mode .medplus-desktop-nav button::after,
-body.dark-mode .medplus-mobile-menu button::after{
-  border-color:rgba(80,220,180,.18) !important;
-}
-body.dark-mode .medplus-desktop-nav button:hover{
-  background:rgba(20,45,80,.84) !important;
-}
-body.dark-mode .medplus-desktop-nav button.active,
-body.dark-mode .medplus-mobile-menu button.active{
-  color:#4df5c0 !important;
-  background:linear-gradient(135deg,#0d4a32,#062a1c) !important;
-  box-shadow:0 0 14px rgba(80,220,180,.25) !important;
-}
-body.dark-mode .medplus-hamburger span{
-  background:#50dcb4 !important;
-}
-body.dark-mode .medplus-mobile-menu{
-  background:linear-gradient(180deg,rgba(4,12,28,.98) 0%,rgba(8,22,48,.98) 100%) !important;
-  border-left-color:rgba(80,220,180,.18) !important;
-  box-shadow:-18px 0 40px rgba(0,0,0,.45),inset 1px 0 0 rgba(80,220,180,.08) !important;
-}
-body.dark-mode .medplus-menu-overlay{
-  background:rgba(0,5,15,.50) !important;
-}
-body.dark-mode .medplus-aux-frame-wrap,
-body.dark-mode .medplus-aux-frame{
-  background:#020810 !important;
-}
-
-/* Khi iframe navbar mở: dùng trạng thái như modal toàn màn hình, đóng băng trang chủ bên dưới. */
-body.medplus-aux-open .container,
-body.medplus-aux-open .footer,
-body.medplus-aux-open .nature-background,
-body.medplus-aux-open #night-container,
-body.medplus-aux-open .product-grid,
-body.medplus-aux-open .skeleton-grid,
-body.medplus-aux-open .search-wrapper,
-body.medplus-aux-open .header-main{
-  pointer-events:none !important;
-  user-select:none !important;
-}
-
-/* Loại bỏ toàn bộ hiệu ứng của trang chủ khi iframe navbar đang mở. */
-body.medplus-aux-open .container *,
-body.medplus-aux-open .footer *,
-body.medplus-aux-open .nature-background *,
-body.medplus-aux-open #night-container *,
-body.medplus-aux-open .product-grid *,
-body.medplus-aux-open .skeleton-grid *,
-body.medplus-aux-open .search-wrapper *,
-body.medplus-aux-open .header-main *,
-body.medplus-aux-open .leaf,
-body.medplus-aux-open .star,
-body.medplus-aux-open .shooting-star,
-body.medplus-aux-open .planet,
-body.medplus-aux-open .new-badge::before,
-body.medplus-aux-open .new-badge::after,
-body.medplus-aux-open .medplus-badge::after{
-  animation:none !important;
-  transition:none !important;
-  scroll-behavior:auto !important;
-  will-change:auto !important;
-}
-
-/* Ẩn hẳn các lớp nền động để tránh GPU/animation chạy ngầm. */
-body.medplus-aux-open .nature-background,
-body.medplus-aux-open #night-container{
-  display:none !important;
-}
-
-/* Khi mở iframe navbar: ẩn hoàn toàn chatbot, chuông, notification, back-to-top. */
-body.medplus-aux-open #chat-widget-btn,
-body.medplus-aux-open #chat-widget-window,
-body.medplus-aux-open #chat-overlay,
-body.medplus-aux-open #bell-btn,
-body.medplus-aux-open .back-top,
-body.medplus-aux-open #bell-modal,
-body.medplus-aux-open #notif-detail-modal,
-body.medplus-aux-open #notif-floating-bell{
-  display:none !important;
-  visibility:hidden !important;
-  opacity:0 !important;
-  pointer-events:none !important;
-  animation:none !important;
-  transition:none !important;
-}
-
-/* Chỉ navbar và iframe còn nhận tương tác. */
-body.medplus-aux-open .medplus-app-nav,
-body.medplus-aux-open .medplus-app-nav *,
-body.medplus-aux-open .medplus-aux-frame-wrap,
-body.medplus-aux-open .medplus-aux-frame-wrap *{
-  pointer-events:auto !important;
-}
-
-@media (max-width:768px){
-  body{
-    padding-top:calc(var(--medplus-nav-height) + var(--medplus-nav-safe-top) + 20px) !important;
-  }
-  .medplus-app-nav{
-    padding-left:10px;
-    padding-right:10px;
-  }
-  .medplus-desktop-nav{display:none}
-  .medplus-hamburger{display:flex}
-  .medplus-nav-logo-circle{width:36px;height:36px}
-  .medplus-nav-logo-circle img{width:34px;height:34px}
-  .medplus-nav-badge{padding:5px 10px;font-size:.7rem;letter-spacing:.9px}
-}
-
-@media (orientation:landscape) and (max-height:600px) and (hover:none) and (pointer:coarse){
-  .medplus-nav-badge{display:none !important}
-}
-
 </style>
 </head>
 <body>
 
-  <!-- MEDPLUS TOP NAV: added to original homepage -->
-  <header class="medplus-app-nav" id="medplusAppNav">
-    <div class="medplus-nav-logo-wrap">
-      <div class="medplus-nav-logo-circle">
-        <img src="/icons/medplus-logo.webp" alt="MedPlus Logo" onerror="this.onerror=null;this.src='/icons/medplus-logo-fallback.webp';">
-      </div>
-      <div class="medplus-nav-badge">MEDPLUS</div>
-    </div>
-
-    <nav class="medplus-desktop-nav" id="medplusDesktopNav">
-      <button type="button" data-medplus-nav="medplus" onclick="medplusNavSwitch('medplus')" class="active">TRA CỨU THUỐC</button>
-      <button type="button" data-medplus-nav="chuyenmon" onclick="medplusNavSwitch('chuyenmon')">CẬP NHẬT CHUYÊN MÔN</button>
-      <button type="button" data-medplus-nav="phacdieu_tri" onclick="medplusNavSwitch('phacdieu_tri')">PHÁC ĐỒ ĐIỀU TRỊ</button>
-      <button type="button" data-medplus-nav="lichtruc" onclick="medplusNavSwitch('lichtruc')">LỊCH TRỰC</button>
-      <button type="button" data-medplus-nav="lienhe" onclick="medplusNavSwitch('lienhe')">LIÊN HỆ</button>
-    </nav>
-
-    <button type="button" class="medplus-hamburger" id="medplusHamburgerBtn" aria-label="Mở menu điều hướng">
-      <span></span><span></span><span></span>
-    </button>
-  </header>
-
-  <nav class="medplus-mobile-menu" id="medplusMobileMenu">
-    <button type="button" data-medplus-nav="medplus" onclick="medplusNavSwitch('medplus', true)" class="active">
-      <span class="medplus-mobile-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 7v10M7 12h10"></path></svg></span>
-      <span class="medplus-mobile-text">TRA CỨU THUỐC</span>
-    </button>
-    <button type="button" data-medplus-nav="chuyenmon" onclick="medplusNavSwitch('chuyenmon', true)">
-      <span class="medplus-mobile-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 7v10M9 10h6M9 14h6"></path></svg></span>
-      <span class="medplus-mobile-text">CẬP NHẬT CHUYÊN MÔN</span>
-    </button>
-    <button type="button" data-medplus-nav="phacdieu_tri" onclick="medplusNavSwitch('phacdieu_tri', true)">
-      <span class="medplus-mobile-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M8 9h8M8 12h8M8 15h8"></path></svg></span>
-      <span class="medplus-mobile-text">PHÁC ĐỒ ĐIỀU TRỊ</span>
-    </button>
-    <button type="button" data-medplus-nav="lichtruc" onclick="medplusNavSwitch('lichtruc', true)">
-      <span class="medplus-mobile-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M8 3v4M16 3v4M4 9h16M8 13h3M13 13h3M8 16h3"></path></svg></span>
-      <span class="medplus-mobile-text">LỊCH TRỰC</span>
-    </button>
-    <button type="button" data-medplus-nav="lienhe" onclick="medplusNavSwitch('lienhe', true)">
-      <span class="medplus-mobile-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path><path d="m6 8 6 4 6-4"></path></svg></span>
-      <span class="medplus-mobile-text">LIÊN HỆ</span>
-    </button>
-  </nav>
-
-  <div class="medplus-menu-overlay" id="medplusMenuOverlay"></div>
-
-  <div class="medplus-aux-frame-wrap" id="medplusAuxFrameWrap" aria-hidden="true">
-    <iframe id="medplusAuxFrame" class="medplus-aux-frame" title="Trang nội dung phụ" loading="lazy" sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
-  </div>
-
-
     <div class="nature-background" id="leaf-container"></div>
     <div id="perf-toast"><span id="perf-toast-icon">⚡</span> <span id="perf-toast-msg">Đã tắt hiệu ứng — tiết kiệm pin</span></div>
     <div class="night-background" id="night-container" style="display:none;"></div>
+
+<header class="medplus-app-nav" id="medplusAppNav">
+  <div class="medplus-nav-logo-wrap">
+    <div class="medplus-nav-logo-circle">
+      <img src="/icons/medplus-logo.webp" alt="MedPlus Logo" onerror="this.onerror=null;this.src='/icons/medplus-logo-fallback.webp'">
+    </div>
+    <div class="medplus-nav-badge">MEDPLUS</div>
+  </div>
+
+  <nav class="medplus-desktop-nav" id="medplusDesktopNav">
+    <button type="button" data-medplus-nav="medplus" onclick="medplusNavSwitch('medplus')" class="active">TRA CỨU THUỐC</button>
+    <button type="button" data-medplus-nav="chuyenmon" onclick="medplusNavSwitch('chuyenmon')">CẬP NHẬT CHUYÊN MÔN</button>
+    <button type="button" data-medplus-nav="phacdieutri" onclick="medplusNavSwitch('phacdieutri')">PHÁC ĐỒ ĐIỀU TRỊ</button>
+    <button type="button" data-medplus-nav="lichtruc" onclick="medplusNavSwitch('lichtruc')">LỊCH TRỰC</button>
+    <button type="button" data-medplus-nav="lienhe" onclick="medplusNavSwitch('lienhe')">LIÊN HỆ</button>
+  </nav>
+
+  <button type="button" class="medplus-hamburger" id="medplusHamburgerBtn" aria-label="Mở menu điều hướng">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<nav class="medplus-mobile-menu" id="medplusMobileMenu">
+  <button type="button" data-medplus-nav="medplus" onclick="medplusNavSwitch('medplus', true)" class="active">
+    <span class="medplus-mobile-ico">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 7v10M7 12h10"></path></svg>
+    </span>
+    <span class="medplus-mobile-text">TRA CỨU THUỐC</span>
+  </button>
+
+  <button type="button" data-medplus-nav="chuyenmon" onclick="medplusNavSwitch('chuyenmon', true)">
+    <span class="medplus-mobile-ico">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 7v10M9 10h6M9 14h6"></path></svg>
+    </span>
+    <span class="medplus-mobile-text">CẬP NHẬT CHUYÊN MÔN</span>
+  </button>
+
+  <button type="button" data-medplus-nav="phacdieutri" onclick="medplusNavSwitch('phacdieutri', true)">
+    <span class="medplus-mobile-ico">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M8 9h8M8 12h8M8 15h8"></path></svg>
+    </span>
+    <span class="medplus-mobile-text">PHÁC ĐỒ ĐIỀU TRỊ</span>
+  </button>
+
+  <button type="button" data-medplus-nav="lichtruc" onclick="medplusNavSwitch('lichtruc', true)">
+    <span class="medplus-mobile-ico">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M8 3v4M16 3v4M4 9h16M8 13h3M13 13h3M8 16h3"></path></svg>
+    </span>
+    <span class="medplus-mobile-text">LỊCH TRỰC</span>
+  </button>
+
+  <button type="button" data-medplus-nav="lienhe" onclick="medplusNavSwitch('lienhe', true)">
+    <span class="medplus-mobile-ico">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path><path d="m6 8 6 4 6-4"></path></svg>
+    </span>
+    <span class="medplus-mobile-text">LIÊN HỆ</span>
+  </button>
+</nav>
+
+<div class="medplus-menu-overlay" id="medplusMenuOverlay"></div>
+<div class="medplus-aux-frame-wrap" id="medplusAuxFrameWrap" aria-hidden="true"></div>
 
     <div class="container">
         <div class="glass-panel header-main">
@@ -4964,7 +4936,6 @@ body.medplus-aux-open .medplus-aux-frame-wrap *{
                 if (el.classList && (
                     el.classList.contains('modal-content') ||
                     el.classList.contains('iv-iframe-container') ||
-                    el.classList.contains('medplus-aux-frame-wrap') ||
                     el.id === 'hdsd-content' ||
                     el.id === 'hdsd-share-box' ||
                     el.id === 'notif-list-wrap' ||
@@ -4986,10 +4957,6 @@ body.medplus-aux-open .medplus-aux-frame-wrap *{
 
             _scrollY = window.scrollY;
             document.body.style.top = '-' + _scrollY + 'px';
-            document.body.style.position = 'fixed';
-            document.body.style.left = '0';
-            document.body.style.right = '0';
-            document.body.style.width = '100%';
             document.body.classList.add('modal-open');
             document.documentElement.classList.add('modal-open');
             document.body.style.overflow = 'hidden';
@@ -5015,7 +4982,6 @@ body.medplus-aux-open .medplus-aux-frame-wrap *{
                 if (el.classList && (
                     el.classList.contains('modal-content') ||
                     el.classList.contains('iv-iframe-container') ||
-                    el.classList.contains('medplus-aux-frame-wrap') ||
                     el.id === 'hdsd-content' ||
                     el.id === 'hdsd-share-box' ||
                     el.id === 'notif-list-wrap' ||
@@ -5046,8 +5012,6 @@ body.medplus-aux-open .medplus-aux-frame-wrap *{
             document.body.style.top = '';
             document.body.style.position = '';
             document.body.style.width = '';
-            document.body.style.left = '';
-            document.body.style.right = '';
             const sy = _scrollY;
             requestAnimationFrame(function() {
                 window.scrollTo(0, sy);
@@ -7815,245 +7779,216 @@ body.medplus-aux-open .medplus-aux-frame-wrap *{
         });
     })();
 </script>
-
-
 <script>
-  (function(){
-    const MEDPLUS_NAV_URLS = {
-      chuyenmon: 'https://googlesites.princetq.workers.dev/c%E1%BA%ADp-nh%E1%BA%ADt-chuy%C3%AAn-m%C3%B4n',
-      phacdieu_tri: 'https://googlesites.princetq.workers.dev/ph%C3%A1c-%C4%91%E1%BB%93-%C4%91i%E1%BB%81u-tr%E1%BB%8B',
-      lichtruc: 'https://googlesites.princetq.workers.dev/l%E1%BB%8Bch-tr%E1%BB%B1c',
-      lienhe: 'https://googlesites.princetq.workers.dev/li%C3%AAn-h%E1%BB%87'
-    };
+(() => {
+  const MEDPLUSNAVURLS = {
+    medplus: '/',
+    chuyenmon: 'https://googlesites.princetq.workers.dev/c%E1%BA%ADp-nh%E1%BA%ADt-chuy%C3%AAn-m%C3%B4n',
+    phacdieutri: 'https://googlesites.princetq.workers.dev/ph%C3%A1c-%C4%91%E1%BB%93-%C4%91i%E1%BB%81u-tr%E1%BB%8B',
+    lichtruc: 'https://googlesites.princetq.workers.dev/l%E1%BB%8Bch-tr%E1%BB%B1c',
+    lienhe: 'https://googlesites.princetq.workers.dev/li%C3%AAn-h%E1%BB%87'
+  };
 
-    const nav = document.getElementById('medplusAppNav');
-    const hamburger = document.getElementById('medplusHamburgerBtn');
-    const mobileMenu = document.getElementById('medplusMobileMenu');
-    const overlay = document.getElementById('medplusMenuOverlay');
-    const auxWrap = document.getElementById('medplusAuxFrameWrap');
-    const auxFrame = document.getElementById('medplusAuxFrame');
-    let currentNav = 'medplus';
-    let lastScrollY = window.scrollY || 0;
-    let ticking = false;
-    let loadingFromIndexNav = false;
-    let lastIndexNavClickAt = 0;
+  const nav = document.getElementById('medplusAppNav');
+  const hamburger = document.getElementById('medplusHamburgerBtn');
+  const mobileMenu = document.getElementById('medplusMobileMenu');
+  const overlay = document.getElementById('medplusMenuOverlay');
+  const auxWrap = document.getElementById('medplusAuxFrameWrap');
+  const auxFrames = Object.create(null);
 
-    function setActiveNav(id){
-      document.querySelectorAll('[data-medplus-nav]').forEach(function(btn){
-        btn.classList.toggle('active', btn.getAttribute('data-medplus-nav') === id);
-      });
-    }
+  let currentNav = 'medplus';
+  let activeAuxId = '';
+  let lastScrollY = window.scrollY || 0;
+  let ticking = false;
+  let loadingFromIndexNav = false;
+  let lastIndexNavClickAt = 0;
+  let preloadedAuxFrames = false;
 
-    function clearActiveNav(){
-      document.querySelectorAll('[data-medplus-nav]').forEach(function(btn){
-        btn.classList.remove('active');
-      });
-    }
+  function setActiveNav(id){
+    document.querySelectorAll('[data-medplus-nav]').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-medplus-nav') === id);
+    });
+  }
 
-    function closeMedplusMobileMenu(){
-      if (hamburger) hamburger.classList.remove('open');
-      if (mobileMenu) mobileMenu.classList.remove('open');
-      if (overlay) overlay.classList.remove('open');
-      if (nav) nav.classList.remove('nav-hidden');
-    }
+  function closeMedplusMobileMenu(){
+    if (hamburger) hamburger.classList.remove('open');
+    if (mobileMenu) mobileMenu.classList.remove('open');
+    if (overlay) overlay.classList.remove('open');
+    if (nav) nav.classList.remove('nav-hidden');
+  }
 
-    function openMedplusMobileMenu(){
-      if (hamburger) hamburger.classList.add('open');
-      if (mobileMenu) mobileMenu.classList.add('open');
-      if (overlay) overlay.classList.add('open');
-      if (nav) nav.classList.remove('nav-hidden');
-    }
+  function openMedplusMobileMenu(){
+    if (hamburger) hamburger.classList.add('open');
+    if (mobileMenu) mobileMenu.classList.add('open');
+    if (overlay) overlay.classList.add('open');
+    if (nav) nav.classList.remove('nav-hidden');
+  }
 
-    function hardenMedplusAuxIframeScroll(){
-      if (!auxFrame) return;
-      try {
-        const doc = auxFrame.contentDocument || (auxFrame.contentWindow && auxFrame.contentWindow.document);
-        if (!doc || !doc.documentElement) return;
+  function shouldKeepNavVisible(){
+    if (window.innerWidth >= 768) return true;
+    if (!nav) return true;
+    if (mobileMenu && mobileMenu.classList.contains('open')) return true;
+    if (document.body.classList.contains('modal-open')) return true;
+    if (document.body.classList.contains('bell-modal-open')) return true;
+    if (document.body.classList.contains('medplus-aux-open')) return true;
+    const active = document.activeElement;
+    if (active && /INPUT|TEXTAREA|SELECT/.test(active.tagName)) return true;
+    return false;
+  }
 
-        doc.documentElement.style.overscrollBehavior = 'none';
-        if (doc.body) {
-          doc.body.style.overscrollBehavior = 'none';
-          doc.body.style.overflowX = 'hidden';
-          doc.body.style.webkitOverflowScrolling = 'touch';
-          doc.body.style.touchAction = 'pan-y';
-        }
-
-        if (doc.head && !doc.getElementById('medplus-aux-scroll-guard-style')) {
-          const style = doc.createElement('style');
-          style.id = 'medplus-aux-scroll-guard-style';
-          style.textContent = 'html,body{overscroll-behavior:none!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-y!important} *{overscroll-behavior:contain}';
-          doc.head.appendChild(style);
-        }
-      } catch (e) {
-        /* Iframe khác origin: parent vẫn đã bị khóa bằng lockBodyScroll('medplus-aux'). */
-      }
-    }
-
-    function loadMedplusAuxFrame(targetUrl){
-      if (!auxFrame || !targetUrl) return;
-
-      auxFrame.dataset.expectedSrc = targetUrl;
-      auxFrame.removeAttribute('srcdoc');
-      auxFrame.style.visibility = 'visible';
-
-      /* Không chuyển qua about:blank khi mở/switch tab navbar.
-         Việc set about:blank trước rồi mới set URL thật là nguyên nhân thỉnh thoảng thấy trắng. */
-      try {
-        if (auxFrame.contentWindow && auxFrame.contentWindow.location && auxFrame.contentWindow.location.href !== 'about:blank') {
-          auxFrame.contentWindow.location.replace(targetUrl);
-        } else {
-          auxFrame.setAttribute('src', targetUrl);
-        }
-      } catch (e) {
-        auxFrame.setAttribute('src', targetUrl);
-      }
-
-      /* Fallback rất nhẹ: nếu vì browser/PWA giữ iframe ở about:blank, nạp lại URL thật. */
-      setTimeout(function(){
-        if (!document.body.classList.contains('medplus-aux-open')) return;
-        if (!auxFrame || auxFrame.dataset.expectedSrc !== targetUrl) return;
-        const attr = auxFrame.getAttribute('src') || '';
-        if (!attr || attr === 'about:blank') auxFrame.setAttribute('src', targetUrl);
-      }, 120);
-    }
-
-    window.medplusNavSwitch = function(id, isMobile){
-      const wasAuxOpen = document.body.classList.contains('medplus-aux-open');
-
-      if (id === currentNav && id === 'medplus' && !wasAuxOpen) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-
-      currentNav = id;
-      setActiveNav(id);
-      lastIndexNavClickAt = Date.now();
-      loadingFromIndexNav = id !== 'medplus';
-
-      if (id === 'medplus') {
-        if (auxWrap) {
-          auxWrap.classList.remove('open');
-          auxWrap.setAttribute('aria-hidden', 'true');
-        }
-        document.body.classList.remove('medplus-aux-open');
-        document.documentElement.classList.remove('medplus-aux-open');
-        if (typeof unlockBodyScroll === 'function') unlockBodyScroll('medplus-aux');
-        if (auxFrame) {
-          delete auxFrame.dataset.expectedSrc;
-          auxFrame.src = 'about:blank';
-        }
-        loadingFromIndexNav = false;
-        if (nav) nav.classList.remove('nav-hidden');
-      } else if (MEDPLUS_NAV_URLS[id]) {
-        const targetUrl = MEDPLUS_NAV_URLS[id];
-
-        /* Làm giống modal chi tiết thuốc: hiển thị lớp phủ rồi gọi lockBodyScroll(key). */
-        if (auxWrap) {
-          auxWrap.classList.add('open');
-          auxWrap.setAttribute('aria-hidden', 'false');
-        }
-        document.body.classList.add('medplus-aux-open');
-        document.documentElement.classList.add('medplus-aux-open');
-        if (typeof lockBodyScroll === 'function') lockBodyScroll('medplus-aux');
-        if (nav) nav.classList.remove('nav-hidden');
-
-        loadMedplusAuxFrame(targetUrl);
-      }
-
-      if (isMobile) closeMedplusMobileMenu();
-    };
-
-    function shouldKeepNavVisible(){
-      if (window.innerWidth > 768) return true;
-      if (!nav) return true;
-      if (mobileMenu && mobileMenu.classList.contains('open')) return true;
-      if (document.body.classList.contains('modal-open')) return true;
-      if (document.body.classList.contains('bell-modal-open')) return true;
-      if (document.body.classList.contains('medplus-aux-open')) return true;
-      const active = document.activeElement;
-      if (active && /^(INPUT|TEXTAREA|SELECT)$/.test(active.tagName)) return true;
-      return false;
-    }
-
-    function updateAutoHideNav(){
-      ticking = false;
-      if (!nav) return;
-
-      const y = Math.max(0, window.scrollY || document.documentElement.scrollTop || 0);
-
-      if (shouldKeepNavVisible() || y < 90) {
-        nav.classList.remove('nav-hidden');
-        lastScrollY = y;
-        return;
-      }
-
-      if (y > lastScrollY + 8) {
-        nav.classList.add('nav-hidden');
-      } else if (y < lastScrollY - 6) {
-        nav.classList.remove('nav-hidden');
-      }
-
+  function updateAutoHideNav(){
+    if (!nav) return;
+    const y = Math.max(0, window.scrollY || document.documentElement.scrollTop || 0);
+    if (shouldKeepNavVisible() || y < 90){
+      nav.classList.remove('nav-hidden');
       lastScrollY = y;
+      return;
     }
+    if (y > lastScrollY + 8) nav.classList.add('nav-hidden');
+    else if (y < lastScrollY - 6) nav.classList.remove('nav-hidden');
+    lastScrollY = y;
+  }
 
-    if (hamburger) {
-      hamburger.addEventListener('click', function(){
-        if (mobileMenu && mobileMenu.classList.contains('open')) closeMedplusMobileMenu();
-        else openMedplusMobileMenu();
-      });
-    }
-
-    if (overlay) overlay.addEventListener('click', closeMedplusMobileMenu);
-
-
-    function clearIndexNavBecauseIframeWasUsed(){
-      if (!document.body.classList.contains('medplus-aux-open')) return;
-
-      currentNav = '';
-      clearActiveNav();
-    }
-
-    if (auxFrame) {
-      auxFrame.addEventListener('load', function(){
-        /* Không xoá active khi iframe load/chạm. Navbar giữ đúng mục đang mở. */
-        delete auxFrame.dataset.medplusParentOpen;
-
-        /* Nếu load nhầm about:blank khi đang mở aux, nạp lại URL thật ngay. */
-        if (document.body.classList.contains('medplus-aux-open')) {
-          const expected = auxFrame.dataset.expectedSrc || MEDPLUS_NAV_URLS[currentNav];
-          const attr = auxFrame.getAttribute('src') || '';
-          if (expected && (!attr || attr === 'about:blank')) {
-            auxFrame.setAttribute('src', expected);
-            return;
-          }
-        }
-
-        setTimeout(hardenMedplusAuxIframeScroll, 80);
-        setTimeout(hardenMedplusAuxIframeScroll, 350);
-        setTimeout(function(){
-          loadingFromIndexNav = false;
-        }, 900);
-      });
-    }
-
-    window.addEventListener('scroll', function(){
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(updateAutoHideNav);
+  function hardenMedplusAuxIframeScroll(frame){
+    if (!frame) return;
+    try{
+      const doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+      if (!doc || !doc.documentElement) return;
+      doc.documentElement.style.overscrollBehavior = 'none';
+      if (doc.body){
+        doc.body.style.overscrollBehavior = 'none';
+        doc.body.style.overflowX = 'hidden';
+        doc.body.style.webkitOverflowScrolling = 'touch';
+        doc.body.style.touchAction = 'pan-y';
       }
-    }, { passive:true });
+    }catch(e){}
+  }
 
-    window.addEventListener('resize', function(){
-      if (window.innerWidth > 768) {
-        closeMedplusMobileMenu();
-        if (nav) nav.classList.remove('nav-hidden');
-      }
+  function getMedplusAuxFrame(id){
+    if (!auxWrap || !MEDPLUSNAVURLS[id]) return null;
+    if (auxFrames[id]) return auxFrames[id];
+
+    const frame = document.createElement('iframe');
+    frame.className = 'medplus-aux-frame';
+    frame.dataset.navId = id;
+    frame.dataset.expectedSrc = MEDPLUSNAVURLS[id];
+    frame.title = 'Trang ' + id;
+    frame.loading = 'eager';
+    frame.setAttribute('sandbox', 'allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox');
+    frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+    frame.src = MEDPLUSNAVURLS[id];
+
+    frame.addEventListener('load', () => {
+      hardenMedplusAuxIframeScroll(frame);
+      if (frame.dataset.navId === activeAuxId) loadingFromIndexNav = false;
     });
 
-    document.addEventListener('visibilitychange', function(){
-      if (!document.hidden && nav) nav.classList.remove('nav-hidden');
+    auxWrap.appendChild(frame);
+    auxFrames[id] = frame;
+    return frame;
+  }
+
+  function activateMedplusAuxFrame(id){
+    const frame = getMedplusAuxFrame(id);
+    if (!frame) return;
+
+    Object.keys(auxFrames).forEach(key => {
+      auxFrames[key].classList.toggle('active', key === id);
     });
-  })();
+
+    activeAuxId = id;
+    const expected = MEDPLUSNAVURLS[id];
+    const currentSrc = frame.getAttribute('src');
+    if (!currentSrc || currentSrc === 'about:blank') frame.src = expected;
+
+    setTimeout(() => hardenMedplusAuxIframeScroll(frame), 120);
+  }
+
+  function closeMedplusAuxFrames(){
+    if (auxWrap){
+      auxWrap.classList.remove('open');
+      auxWrap.setAttribute('aria-hidden', 'true');
+    }
+    Object.keys(auxFrames).forEach(key => auxFrames[key].classList.remove('active'));
+    activeAuxId = '';
+    document.body.classList.remove('medplus-aux-open');
+    document.documentElement.classList.remove('medplus-aux-open');
+    if (nav) nav.classList.remove('nav-hidden');
+  }
+
+  function preloadMedplusAuxFrames(){
+    if (preloadedAuxFrames || !auxWrap) return;
+    preloadedAuxFrames = true;
+    Object.keys(MEDPLUSNAVURLS).forEach(id => {
+      if (id !== 'medplus') getMedplusAuxFrame(id);
+    });
+  }
+
+  function scheduleMedplusAuxPreload(){
+    if ('requestIdleCallback' in window) requestIdleCallback(preloadMedplusAuxFrames, {timeout:2500});
+    else setTimeout(preloadMedplusAuxFrames, 1800);
+  }
+
+  window.medplusNavSwitch = function(id, isMobile){
+    const wasAuxOpen = document.body.classList.contains('medplus-aux-open');
+
+    if (id === currentNav && id === 'medplus' && !wasAuxOpen){
+      window.scrollTo({top:0, behavior:'smooth'});
+      return;
+    }
+
+    currentNav = id;
+    setActiveNav(id);
+    lastIndexNavClickAt = Date.now();
+    loadingFromIndexNav = id !== 'medplus';
+
+    if (id === 'medplus'){
+      closeMedplusAuxFrames();
+    }else if (MEDPLUSNAVURLS[id]){
+      if (auxWrap){
+        auxWrap.classList.add('open');
+        auxWrap.setAttribute('aria-hidden', 'false');
+      }
+      document.body.classList.add('medplus-aux-open');
+      document.documentElement.classList.add('medplus-aux-open');
+      if (nav) nav.classList.remove('nav-hidden');
+      activateMedplusAuxFrame(id);
+      if (isMobile) closeMedplusMobileMenu();
+    }
+  };
+
+  if (hamburger){
+    hamburger.addEventListener('click', () => {
+      if (mobileMenu && mobileMenu.classList.contains('open')) closeMedplusMobileMenu();
+      else openMedplusMobileMenu();
+    });
+  }
+
+  if (overlay) overlay.addEventListener('click', closeMedplusMobileMenu);
+
+  window.addEventListener('scroll', () => {
+    if (!ticking){
+      ticking = true;
+      requestAnimationFrame(() => {
+        updateAutoHideNav();
+        ticking = false;
+      });
+    }
+  }, {passive:true});
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 768) closeMedplusMobileMenu();
+    if (nav) nav.classList.remove('nav-hidden');
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && nav) nav.classList.remove('nav-hidden');
+  });
+
+  window.addEventListener('load', () => {
+    scheduleMedplusAuxPreload();
+  });
+})();
 </script>
-
 </body>
 </html>
