@@ -7930,32 +7930,34 @@ body.dark-mode .iv-iframe-container iframe {
   }
 
   window.medplusNavSwitch = function(id, isMobile){
-    const wasAuxOpen = document.body.classList.contains('medplus-aux-open');
+  const wasAuxOpen = document.body.classList.contains('medplus-aux-open');
 
-    if (id === currentNav && id === 'medplus' && !wasAuxOpen){
-      window.scrollTo({top:0, behavior:'smooth'});
-      return;
+  if (id === currentNav && id === 'medplus' && !wasAuxOpen){
+    window.scrollTo({top:0, behavior:'smooth'});
+    if (isMobile) closeMedplusMobileMenu();
+    return;
+  }
+
+  currentNav = id;
+  setActiveNav(id);
+  lastIndexNavClickAt = Date.now();
+  loadingFromIndexNav = id !== 'medplus';
+
+  if (id === 'medplus'){
+    closeMedplusAuxFrames();
+  }else if (MEDPLUSNAVURLS[id]){
+    if (auxWrap){
+      auxWrap.classList.add('open');
+      auxWrap.setAttribute('aria-hidden', 'false');
     }
+    document.body.classList.add('medplus-aux-open');
+    document.documentElement.classList.add('medplus-aux-open');
+    if (nav) nav.classList.remove('nav-hidden');
+    activateMedplusAuxFrame(id);
+  }
 
-    currentNav = id;
-    setActiveNav(id);
-    lastIndexNavClickAt = Date.now();
-    loadingFromIndexNav = id !== 'medplus';
-
-    if (id === 'medplus'){
-      closeMedplusAuxFrames();
-    }else if (MEDPLUSNAVURLS[id]){
-      if (auxWrap){
-        auxWrap.classList.add('open');
-        auxWrap.setAttribute('aria-hidden', 'false');
-      }
-      document.body.classList.add('medplus-aux-open');
-      document.documentElement.classList.add('medplus-aux-open');
-      if (nav) nav.classList.remove('nav-hidden');
-      activateMedplusAuxFrame(id);
-      if (isMobile) closeMedplusMobileMenu();
-    }
-  };
+  if (isMobile) closeMedplusMobileMenu();
+};
 
   if (hamburger){
     hamburger.addEventListener('click', () => {
