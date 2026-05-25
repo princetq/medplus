@@ -150,32 +150,6 @@ body{
   opacity:.98;
 }
 
-#nav-search-results {
-    position: absolute;
-    top: 110%;
-    right: 0;
-    width: 260px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    display: none;
-    z-index: 100;
-}
-
-.search-item {
-    padding: 10px;
-    cursor: pointer;
-    border-bottom: 1px solid #eee;
-}
-
-.search-item:hover {
-    background: #f0f0f0;
-}
-
-body.dark-mode #nav-search-results {
-    background: #0d1f3c;
-    color: #a8d0c0;
-}
 
 .medplus-nav-logo-wrap,
 .medplus-desktop-nav,
@@ -2628,7 +2602,6 @@ body.dark-mode .iv-iframe-container iframe {
         }
 
 
-
         /* LIGHT MODE: tăng độ trong suốt riêng cho ô tìm kiếm */
         body:not(.dark-mode) .search-box {
             background-color: rgba(247,255,245,0.82) !important;
@@ -2861,7 +2834,6 @@ body.dark-mode .iv-iframe-container iframe {
                 line-height: 32px;
             }
         }
-
 
 
         /* === FINAL TWEAKS: notification detail X, recent title, HDSD share weight, floating bell size === */
@@ -3194,22 +3166,60 @@ body.dark-mode .iv-iframe-container iframe {
             }
         }
 
-.medplus-nav-search-wrap { display: flex; align-items: center; position: relative; margin-left: auto; margin-right: 15px; z-index: 15; }
-        .medplus-nav-search-trigger { background: transparent; border: none; color: #1b5e20; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 6px; transition: transform 0.2s ease, visibility 0.1s; }
-        .medplus-nav-search-trigger:hover { transform: scale(1.12); }
-        .medplus-nav-search-box { display: none; align-items: center; padding: 6px 12px; background: rgba(247, 255, 245, 0.96); border: 1px solid rgba(46, 125, 50, 0.4); border-radius: 10px; position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 260px; box-shadow: 0 4px 15px rgba(27, 94, 32, 0.15); }
-        .medplus-nav-search-box.open { display: flex; animation: cardIn 0.25s cubic-bezier(.25,1,.5,1) both; }
-        .medplus-nav-search-box input { flex: 1; border: none; background: transparent; outline: none; font-size: 14px; color: #1b5e20; font-weight: 600; padding-right: 8px; }
-        .medplus-nav-search-box input::placeholder { color: rgba(27, 94, 32, 0.5); }
-        #nav-search-clear-icon { cursor: pointer; stroke: #d32f2f; transition: transform 0.2s ease; flex-shrink: 0; }
-        #nav-search-clear-icon:hover { transform: scale(1.15); }
-        body.dark-mode .medplus-nav-search-trigger { color: #50dcb4; }
-        body.dark-mode .medplus-nav-search-box { background: #0d1f3c; border-color: rgba(80, 220, 180, 0.35); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); }
-        body.dark-mode .medplus-nav-search-box input { color: #a8d0c0; }
-        body.dark-mode .medplus-nav-search-box input::placeholder { color: rgba(80, 180, 140, 0.4); }
-        body.dark-mode #nav-search-clear-icon { stroke: #50dcb4; }
-        @media (max-width: 768px) { .medplus-nav-search-wrap { margin-right: 5px; } .medplus-nav-search-box { width: 190px; padding: 5px 10px; } }
 
+        @media (max-width: 768px) {
+
+ }
+
+/* Sửa lại nav để chứa ô tìm kiếm */
+#medplusDesktopNav { position: relative; display: flex; align-items: center; }
+
+/* --- TÌM KIẾM TRÊN NAVBAR (TỐI ƯU TRƯỢT NGANG) --- */
+.medplus-nav-search-wrap { 
+    display: flex; 
+    align-items: center; 
+    position: relative; 
+    margin-right: 15px; 
+    z-index: 1000;
+}
+
+.medplus-nav-search-trigger { 
+    background: transparent; border: none; cursor: pointer; color: #1b5e20; padding: 0 10px; font-size: 18px;
+}
+
+.medplus-nav-search-box { 
+    position: absolute; 
+    left: 35px; /* Điều chỉnh vị trí so với nút Tra cứu */
+    top: 50%; transform: translateY(-50%);
+    width: 0; 
+    overflow: hidden; 
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255,255,255,0.95);
+    border-radius: 8px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(46,125,50,0.3);
+    white-space: nowrap;
+}
+
+.medplus-nav-search-box.open { width: 180px; padding: 0 8px; }
+.medplus-nav-search-box input { width: 100%; border: none; background: transparent; outline: none; font-size: 14px; padding: 0 5px; }
+
+/* Dropdown hiển thị kết quả */
+#nav-search-results { 
+    position: absolute; top: 110%; right: 0; width: 260px; background: #fff; 
+    border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: none; z-index: 9999;
+}
+.search-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #eee; color: #1b5e20; font-size: 14px; }
+.search-item:hover { background: #e8f5e9; }
+
+/* Dark mode cho tìm kiếm */
+body.dark-mode .medplus-nav-search-box { background: #0d1f3c; border-color: rgba(80, 220, 180, 0.3); }
+body.dark-mode .medplus-nav-search-trigger { color: #50dcb4; }
+body.dark-mode #nav-search-results { background: #0d1f3c; color: #a8d0c0; }
+body.dark-mode .search-item { color: #a8d0c0; border-bottom-color: #1a2a4a; }
+body.dark-mode .search-item:hover { background: #1a3a4a; }
 </style>
 </head>
 <body>
@@ -3227,21 +3237,20 @@ body.dark-mode .iv-iframe-container iframe {
   </div>
 
   <nav class="medplus-desktop-nav" id="medplusDesktopNav">
+    <div class="medplus-nav-search-wrap" id="medplusNavSearchWrap">
+        <button type="button" class="medplus-nav-search-trigger" id="medplusNavSearchTrigger" onclick="toggleNavbarSearch(true)">
+            🔍
+        </button>
+        <div class="medplus-nav-search-box" id="medplusNavSearchBox">
+            <input type="text" id="nav-q" placeholder="Tìm..." oninput="filterNavbarIframeData()">
+        </div>
+    </div>
     <button type="button" data-medplus-nav="medplus" onclick="medplusNavSwitch('medplus')" class="active">TRA CỨU THUỐC</button>
     <button type="button" data-medplus-nav="chuyenmon" onclick="medplusNavSwitch('chuyenmon')">CẬP NHẬT CHUYÊN MÔN</button>
     <button type="button" data-medplus-nav="phacdieutri" onclick="medplusNavSwitch('phacdieutri')">PHÁC ĐỒ ĐIỀU TRỊ</button>
     <button type="button" data-medplus-nav="lichtruc" onclick="medplusNavSwitch('lichtruc')">LỊCH TRỰC</button>
     <button type="button" data-medplus-nav="lienhe" onclick="medplusNavSwitch('lienhe')">LIÊN HỆ</button>
   </nav>
-  <div class="medplus-nav-search-wrap" id="medplusNavSearchWrap" style="display: none;">
-      <button type="button" class="medplus-nav-search-trigger" id="medplusNavSearchTrigger" onclick="toggleNavbarSearch(true)" title="Tìm kiếm trong tài liệu">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      </button>
-      <div class="medplus-nav-search-box" id="medplusNavSearchBox">
-          <input type="text" id="nav-q" placeholder="Tìm nội dung..." oninput="filterNavbarIframeData()">
-          <svg id="nav-search-clear-icon" onclick="toggleNavbarSearch(false)" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-      </div>
-  </div>
 
   <button type="button" class="medplus-hamburger" id="medplusHamburgerBtn" aria-label="Mở menu điều hướng">
     <span></span><span></span><span></span>
@@ -8072,80 +8081,45 @@ const searchWrap = document.getElementById('medplusNavSearchWrap');
   window.addEventListener('load', () => {
     scheduleMedplusAuxPreload();
   });
-window.toggleNavbarSearch = function(isOpen) {
+
+  // --- DÁN ĐOẠN CODE TÌM KIẾM CỦA MÌNH VÀO ĐÂY ---
+  window.toggleNavbarSearch = function(isOpen) {
     const box = document.getElementById('medplusNavSearchBox');
     const trigger = document.getElementById('medplusNavSearchTrigger');
-    const input = document.getElementById('nav-q');
-    if (!box || !trigger) return;
-
-    if (isOpen) {
-      box.classList.add('open');
-      trigger.style.visibility = 'hidden';
-      if (input) { input.value = ''; input.focus(); }
-    } else {
-      box.classList.remove('open');
-      trigger.style.visibility = 'visible';
-      if (input) input.value = '';
-      if (typeof filterNavbarIframeData === 'function') filterNavbarIframeData();
-    }
+    box.classList.toggle('open', isOpen);
+    trigger.style.visibility = isOpen ? 'hidden' : 'visible';
+    if(isOpen) document.getElementById('nav-q').focus();
   };
 
   window.filterNavbarIframeData = async function() {
     const query = document.getElementById('nav-q').value.trim();
-    const resultsContainer = document.getElementById('nav-search-results'); // Bạn cần tạo div này
+    if (query.length < 2) return;
+    const res = await fetch(`https://googlesites.princetq.workers.dev/api/search?q=${encodeURIComponent(query)}`);
+    const results = await res.json();
     
-    if (query.length < 2) {
-        if (resultsContainer) resultsContainer.style.display = 'none';
-        return;
+    let container = document.getElementById('nav-search-results');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'nav-search-results';
+        document.getElementById('medplusNavSearchBox').appendChild(container);
     }
-
-    try {
-        // Gửi từ khóa tới Worker của bạn
-        const response = await fetch(`https://googlesites.princetq.workers.dev/api/search?q=${encodeURIComponent(query)}`);
-        const results = await response.json();
-        
-        renderNavbarSearchResults(results);
-    } catch (e) {
-        console.error("Lỗi tìm kiếm:", e);
-    }
+    container.innerHTML = results.map(r => `<div class="search-item" onclick="openSearchResult('${r.url}')">${r.title}</div>`).join('');
+    container.style.display = 'block';
   };
-
-  function renderNavbarSearchResults(results) {
-      // Bạn cần tạo một div id="nav-search-results" trong HTML Navbar của bạn
-      let container = document.getElementById('nav-search-results');
-      if (!container) {
-          container = document.createElement('div');
-          container.id = 'nav-search-results';
-          document.getElementById('medplusNavSearchBox').appendChild(container);
-      }
-      
-      if (results.length === 0) {
-          container.innerHTML = '<div class="no-result">Không tìm thấy bài viết</div>';
-      } else {
-          container.innerHTML = results.map(r => `
-              <div class="search-item" onclick="openSearchResult('${r.url}')">
-                  ${r.title}
-              </div>
-          `).join('');
-      }
-      container.style.display = 'block';
-  }
-
-  // Hàm mở bài viết khi bấm vào kết quả
+  
   window.openSearchResult = function(url) {
       const iframe = document.getElementById('medplusAuxFrameWrap').querySelector('iframe');
       if (iframe) {
-          iframe.src = url; // Load bài viết vào Iframe
-          toggleNavbarSearch(false); // Đóng hộp tìm kiếm
+          iframe.src = url;
+          toggleNavbarSearch(false);
       }
   };
 
 document.addEventListener('click', (e) => {
       const box = document.getElementById('medplusNavSearchBox');
       const trigger = document.getElementById('medplusNavSearchTrigger');
-      const searchWrap = document.getElementById('medplusNavSearchWrap');
-      
-      if (searchWrap && !searchWrap.contains(e.target)) {
+      // Nếu hộp đang mở, và người dùng bấm ra ngoài cả hộp lẫn nút kích hoạt
+      if (box && box.classList.contains('open') && !box.contains(e.target) && !trigger.contains(e.target)) {
           toggleNavbarSearch(false);
       }
   });
