@@ -3393,6 +3393,23 @@ body.dark-mode .nav-clear-btn { color: #ff8a80; }
   }
 }
 
+
+
+/* --- ĐỒNG BỘ FONT NAVBAR VỚI TRANG CHỦ --- */
+.medplus-app-nav,
+.medplus-app-nav *,
+.medplus-mobile-menu,
+.medplus-mobile-menu *,
+.medplus-nav-search-wrap,
+.medplus-nav-search-wrap *,
+.medplus-mobile-actions,
+.medplus-mobile-actions *,
+#nav-search-results,
+#nav-search-results *,
+#mobile-nav-search-results,
+#mobile-nav-search-results * {
+  font-family: 'Inter','Segoe UI',sans-serif !important;
+}
 </style>
 </head>
 <body>
@@ -3411,7 +3428,7 @@ body.dark-mode .nav-clear-btn { color: #ff8a80; }
 
   <nav class="medplus-desktop-nav" id="medplusDesktopNav">
     <div class="medplus-nav-search-wrap" id="medplusNavSearchWrap">
-        <div class="medplus-nav-search-pill" id="medplusNavSearchBox" role="button" aria-label="Mở tìm kiếm trong tab hiện tại" title="Tìm kiếm trong tab hiện tại" tabindex="0">
+        <div class="medplus-nav-search-pill" id="medplusNavSearchBox" role="button" aria-label="Mở tìm kiếm tài liệu" title="Tìm tài liệu" tabindex="0">
             <svg class="nav-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -3431,7 +3448,7 @@ body.dark-mode .nav-clear-btn { color: #ff8a80; }
 
   <div class="medplus-mobile-actions" id="medplusMobileActions">
     <div class="medplus-nav-search-wrap medplus-mobile-search-wrap" id="medplusMobileNavSearchWrap">
-        <div class="medplus-nav-search-pill" id="medplusMobileNavSearchBox" role="button" aria-label="Mở tìm kiếm trong tab hiện tại" title="Tìm kiếm trong tab hiện tại" tabindex="0">
+        <div class="medplus-nav-search-pill" id="medplusMobileNavSearchBox" role="button" aria-label="Mở tìm kiếm tài liệu" title="Tìm tài liệu" tabindex="0">
             <svg class="nav-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -8218,8 +8235,6 @@ body.dark-mode .nav-clear-btn { color: #ff8a80; }
       mobileWrap.classList.toggle('nav-search-visible', !!show);
     }
 
-    updateNavbarSearchPlaceholder();
-
     if (!show && typeof toggleNavbarSearch === 'function') {
       toggleNavbarSearch(false, 'all');
     }
@@ -8314,116 +8329,6 @@ updateNavbarSearchVisibility(id);
     }
   };
 
-  const NAVBAR_SEARCH_TAB_META = {
-    chuyenmon: {
-      label: 'Cập nhật chuyên môn',
-      tokens: [
-        'chuyenmon',
-        'cap nhat chuyen mon',
-        'cap-nhat-chuyen-mon',
-        'cập nhật chuyên môn',
-        'cập-nhật-chuyên-môn',
-        'c%E1%BA%ADp-nh%E1%BA%ADt-chuy%C3%AAn-m%C3%B4n'.toLowerCase()
-      ]
-    },
-    phacdieutri: {
-      label: 'Phác đồ điều trị',
-      tokens: [
-        'phacdieutri',
-        'phac do dieu tri',
-        'phac-do-dieu-tri',
-        'phác đồ điều trị',
-        'phác-đồ-điều-trị',
-        'ph%C3%A1c-%C4%91%E1%BB%93-%C4%91i%E1%BB%81u-tr%E1%BB%8B'.toLowerCase()
-      ]
-    }
-  };
-
-  function normalizeNavbarText(str){
-      return String(str || '')
-          .toLowerCase()
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .replace(/đ/g, 'd')
-          .replace(/Đ/g, 'd')
-          .replace(/[^a-z0-9\s\/-]/g, ' ')
-          .replace(/\s+/g, ' ')
-          .trim();
-  }
-
-  function getCurrentNavbarSearchTab(){
-      const id = activeAuxId || currentNav || '';
-      return shouldShowNavbarSearch(id) ? id : '';
-  }
-
-  function getNavbarSearchTabLabel(tab){
-      return (NAVBAR_SEARCH_TAB_META[tab] && NAVBAR_SEARCH_TAB_META[tab].label) || '';
-  }
-
-  function updateNavbarSearchPlaceholder(){
-      const tab = getCurrentNavbarSearchTab();
-      const label = getNavbarSearchTabLabel(tab);
-      ['desktop','mobile'].forEach(function(mode){
-          const els = getNavbarSearchElements(mode);
-          if (!els.input) return;
-          els.input.placeholder = 'Nhập nội dung tìm kiếm';
-          els.input.setAttribute('aria-label', label ? ('Nhập nội dung tìm kiếm trong tab ' + label) : 'Nhập nội dung tìm kiếm');
-      });
-  }
-
-  function getSearchComparableFields(item){
-      if (!item || typeof item !== 'object') return [];
-      return [
-          item.tab,
-          item.sourceTab,
-          item.scope,
-          item.category,
-          item.section,
-          item.group,
-          item.parent,
-          item.parentTitle,
-          item.source,
-          item.sourceUrl,
-          item.sourcePath,
-          item.pageUrl,
-          item.page,
-          item.path,
-          item.url,
-          item.link,
-          item.href
-      ].filter(Boolean).map(function(v){ return String(v); });
-  }
-
-  function isSearchResultInCurrentTab(item, tab){
-      if (!tab || !NAVBAR_SEARCH_TAB_META[tab]) return false;
-      const meta = NAVBAR_SEARCH_TAB_META[tab];
-      const rawFields = getSearchComparableFields(item);
-      if (!rawFields.length) return false;
-      const normalizedTokens = meta.tokens.map(normalizeNavbarText);
-
-      return rawFields.some(function(field){
-          const raw = String(field || '').toLowerCase();
-          const decoded = (function(){
-              try { return decodeURIComponent(raw); } catch(e) { return raw; }
-          })();
-          const normalized = normalizeNavbarText(decoded);
-
-          return meta.tokens.some(function(token){
-              return raw.includes(token.toLowerCase()) || decoded.includes(token.toLowerCase());
-          }) || normalizedTokens.some(function(token){
-              return token && normalized.includes(token);
-          });
-      });
-  }
-
-  function filterSearchResultsForCurrentTab(results, tab){
-      if (!Array.isArray(results)) return [];
-      if (!tab) return [];
-      return results.filter(function(item){
-          return isSearchResultInCurrentTab(item, tab);
-      });
-  }
-
   function isMobileNavbarSearchMode(){
       return window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
   }
@@ -8490,6 +8395,75 @@ updateNavbarSearchVisibility(id);
       return [];
   }
 
+
+  function normalizeNavbarSearchText(str){
+      return String(str || '')
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/đ/g, 'd')
+          .replace(/Đ/g, 'd')
+          .replace(/[^a-z0-9\s_\-\/]/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+  }
+
+  function getCurrentNavbarSearchTabParam(){
+      const id = currentNav || activeAuxId || '';
+      if (id === 'chuyenmon') return 'cap-nhat-chuyen-mon';
+      if (id === 'phacdieutri') return 'phac-do-dieu-tri';
+      return '';
+  }
+
+  function inferNavbarSearchTabFromValue(value){
+      const text = normalizeNavbarSearchText(value);
+      if (!text) return '';
+      if (
+          text.includes('cap nhat chuyen mon') ||
+          text.includes('cap-nhat-chuyen-mon') ||
+          text.includes('cap_nhat_chuyen_mon') ||
+          text.includes('chuyen mon') ||
+          text.includes('chuyen-mon') ||
+          text.includes('chuyenmon')
+      ) {
+          return 'cap-nhat-chuyen-mon';
+      }
+      if (
+          text.includes('phac do dieu tri') ||
+          text.includes('phac-do-dieu-tri') ||
+          text.includes('phac_do_dieu_tri') ||
+          text.includes('phac do') ||
+          text.includes('phac-do') ||
+          text.includes('phacdieutri')
+      ) {
+          return 'phac-do-dieu-tri';
+      }
+      return '';
+  }
+
+  function getNavbarSearchResultTab(item){
+      if (!item) return '';
+      const directTab = item.tab || item.sourceTab || item.category || item.section || item.nav || item.navId;
+      const direct = inferNavbarSearchTabFromValue(directTab);
+      if (direct) return direct;
+
+      const url = item.url || item.link || item.href || item.path || '';
+      return inferNavbarSearchTabFromValue(url);
+  }
+
+  function filterNavbarSearchResultsByCurrentTab(results){
+      const tab = getCurrentNavbarSearchTabParam();
+      if (!tab) return [];
+
+      return results.filter(function(item){
+          const itemTab = getNavbarSearchResultTab(item);
+
+          if (itemTab) return itemTab === tab;
+
+          return false;
+      });
+  }
+
   function showNavbarSearchMessage(message, isError, mode){
       const container = getNavbarSearchResultsContainer(mode);
       if (!container) return;
@@ -8507,7 +8481,7 @@ updateNavbarSearchVisibility(id);
       container.innerHTML = '';
 
       if (!results.length) {
-          showNavbarSearchMessage('Không tìm thấy nội dung trong tab này...', false, mode);
+          showNavbarSearchMessage('Không tìm thấy tài liệu...', false, mode);
           return;
       }
 
@@ -8583,16 +8557,8 @@ updateNavbarSearchVisibility(id);
       const clearBtn = els.clearBtn;
       const box = els.box;
       const query = input ? input.value.trim() : '';
-      const currentTab = getCurrentNavbarSearchTab();
       const container = getNavbarSearchResultsContainer(els.key);
       if (!input || !container) return;
-
-      updateNavbarSearchPlaceholder();
-
-      if (!currentTab) {
-          container.style.display = 'none';
-          return;
-      }
 
       if (box) box.classList.add('open');
       if (clearBtn) clearBtn.style.display = query.length > 0 ? 'block' : 'none';
@@ -8611,8 +8577,9 @@ updateNavbarSearchVisibility(id);
           showNavbarSearchMessage('Đang tìm...', false, els.key);
 
           try {
-              const searchTab = currentTab;
-              const url = `https://googlesites.princetq.workers.dev/api/search?q=${encodeURIComponent(query)}&tab=${encodeURIComponent(searchTab)}`;
+              const currentSearchTab = getCurrentNavbarSearchTabParam();
+              const tabParam = currentSearchTab ? `&tab=${encodeURIComponent(currentSearchTab)}` : '';
+              const url = `https://googlesites.princetq.workers.dev/api/search?q=${encodeURIComponent(query)}${tabParam}`;
               const res = await fetch(url, { cache: 'no-store', signal: navSearchController.signal });
               const raw = await res.text();
               let payload = null;
@@ -8626,10 +8593,9 @@ updateNavbarSearchVisibility(id);
               if (!res.ok) throw new Error('API tìm kiếm đang lỗi ' + res.status);
               if (seq !== navSearchSeq) return;
 
-              const results = filterSearchResultsForCurrentTab(
+              const results = filterNavbarSearchResultsByCurrentTab(
                   normalizeNavbarSearchResults(payload)
-                      .filter(item => item && (item.title || item.name || item.label || item.text || item.url || item.link || item.href)),
-                  searchTab
+                      .filter(item => item && (item.title || item.name || item.label || item.text || item.url || item.link || item.href))
               );
 
               renderNavbarSearchResults(results, els.key);
@@ -8658,7 +8624,7 @@ updateNavbarSearchVisibility(id);
   window.openSearchResult = function(url) {
       if (!url) return;
       const frameWrap = document.getElementById('medplusAuxFrameWrap');
-      const targetId = getCurrentNavbarSearchTab() || 'chuyenmon';
+      const targetId = activeAuxId || (currentNav && currentNav !== 'medplus' ? currentNav : 'chuyenmon');
       const iframe = getMedplusAuxFrame(targetId);
 
       if (frameWrap && iframe) {
@@ -8736,7 +8702,6 @@ updateNavbarSearchVisibility(id);
       toggleNavbarSearch(false, 'all');
   }
 
-  updateNavbarSearchPlaceholder();
   initNavbarSearchPillEvents('desktop');
   initNavbarSearchPillEvents('mobile');
 
