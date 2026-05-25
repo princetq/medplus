@@ -3174,113 +3174,225 @@ body.dark-mode .iv-iframe-container iframe {
 /* Sửa lại nav để chứa ô tìm kiếm */
 #medplusDesktopNav { position: relative; display: flex; align-items: center; }
 
-/* --- TÌM KIẾM TRÊN NAVBAR (TRƯỢT SANG TRÁI) --- */
+.medplus-mobile-actions {
+    display: none;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+}
+
+/* --- TÌM KIẾM TRÊN NAVBAR (KÍNH LÚP TỰ MỞ RỘNG THÀNH Ô TÌM KIẾM) --- */
 .medplus-nav-search-wrap { 
-    display: flex; 
+    display: none; 
     align-items: center; 
     position: relative; 
-    margin-right: 4px; /* Ép sát vào nút TRA CỨU THUỐC hơn */
+    margin-right: 4px;
     z-index: 1000;
+    flex: 0 0 auto;
 }
 
-.medplus-nav-search-trigger { 
-    background: transparent; 
-    border: none; 
-    cursor: pointer; 
-    color: #1b5e20; 
-    padding: 0 6px; 
+.medplus-nav-search-pill {
+    width: 34px;
+    height: 32px;
+    padding: 0 7px;
     display: flex;
     align-items: center;
-    transition: color 0.3s;
-    z-index: 2; /* Luôn nổi lên trên */
+    justify-content: center;
+    gap: 0;
+    color: #1b5e20;
+    background: rgba(255,255,255,.38);
+    border: 1px solid rgba(46,125,50,.22);
+    border-radius: 999px;
+    box-shadow: 0 2px 8px rgba(27,94,32,.10), inset 0 1px 0 rgba(255,255,255,.58);
+    cursor: pointer;
+    overflow: hidden;
+    transition: width .36s cubic-bezier(.4,0,.2,1), padding .36s cubic-bezier(.4,0,.2,1), background .22s ease, border-color .22s ease, box-shadow .22s ease;
+    transform: translateZ(0);
 }
 
-.medplus-nav-search-trigger:hover {
-    color: #4caf50;
+.medplus-nav-search-pill:hover,
+.medplus-nav-search-pill.open {
+    background: rgba(255,255,255,.62);
+    border-color: rgba(76,175,80,.45);
+    box-shadow: 0 4px 15px rgba(27,94,32,.14), inset 0 1px 0 rgba(255,255,255,.72);
 }
 
-.medplus-nav-search-box { 
-    position: absolute; 
-    right: 32px; /* Neo từ bên phải (cạnh kính lúp) trượt sang trái */
-    top: 50%; 
-    transform: translateY(-50%);
-    width: 0; 
-    opacity: 0;
-    overflow: hidden; 
-    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, padding 0.35s ease;
-    background: rgba(255,255,255,0.95);
-    border-radius: 20px; /* Bo tròn giống ô tìm kiếm trang chủ */
-    height: 34px;
-    display: flex;
-    align-items: center;
-    border: 1px solid transparent;
+.medplus-nav-search-pill.open {
+    width: 230px;
+    padding: 0 10px;
+    justify-content: flex-start;
+    cursor: default;
 }
 
-.medplus-nav-search-box.open { 
-    width: 220px; 
-    padding: 0 12px; 
-    opacity: 1;
-    border-color: rgba(76,175,80,0.4);
-    box-shadow: 0 4px 15px rgba(27,94,32,0.1);
+.medplus-nav-search-pill:not(.open) {
+    cursor: pointer;
 }
 
-.medplus-nav-search-box input { 
-    flex: 1; 
+.nav-search-icon {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.medplus-nav-search-pill input { 
+    width: 0;
     min-width: 0;
+    opacity: 0;
+    margin-left: 0;
+    padding: 0;
     border: none; 
     background: transparent; 
     outline: none; 
-    font-size: 14px; 
     color: #1b5e20;
+    font-size: 14px;
     font-weight: 600;
     font-family: inherit;
+    pointer-events: none;
+    transition: width .36s cubic-bezier(.4,0,.2,1), opacity .22s ease, margin-left .36s cubic-bezier(.4,0,.2,1);
 }
 
-.medplus-nav-search-box input::placeholder {
-    color: rgba(27,94,32,0.5);
+.medplus-nav-search-pill.open input {
+    width: 100%;
+    opacity: 1;
+    margin-left: 8px;
+    pointer-events: auto;
+    cursor: text;
+}
+
+.medplus-nav-search-pill input::placeholder {
+    color: rgba(27,94,32,.5);
     font-weight: 500;
 }
 
-/* Nút X xóa text */
 .nav-clear-btn {
     width: 16px;
     height: 16px;
     cursor: pointer;
     color: #d32f2f;
-    display: none; /* Ẩn mặc định, chỉ hiện khi gõ chữ */
-    flex-shrink: 0;
+    display: none;
+    flex: 0 0 16px;
     margin-left: 6px;
-    transition: transform 0.2s;
+    transition: transform .2s ease;
 }
 
-.nav-clear-btn:hover {
-    transform: scale(1.15);
-}
+.nav-clear-btn:hover { transform: scale(1.15); }
 
-/* Dropdown hiển thị kết quả */
-#nav-search-results { 
-    position: absolute; top: calc(100% + 12px); right: 0; width: 260px; background: rgba(255,255,255,0.98); 
-    border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); display: none; z-index: 9999;
-    border: 1px solid rgba(46,125,50,0.2);
-    overflow: hidden;
+#nav-search-results,
+#mobile-nav-search-results { 
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 290px;
+    max-height: 360px;
+    overflow-y: auto;
+    background: rgba(255,255,255,.98); 
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.15);
+    display: none;
+    z-index: 9999;
+    border: 1px solid rgba(46,125,50,.2);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 }
-.search-item { padding: 12px 15px; cursor: pointer; border-bottom: 1px solid rgba(0,0,0,0.05); color: #1b5e20; font-size: 14px; font-weight: 600; transition: 0.2s; }
-.search-item:last-child { border-bottom: none; }
-.search-item:hover { background: rgba(76,175,80,0.1); padding-left: 18px; }
 
-/* Dark mode cho tìm kiếm Navbar */
-body.dark-mode .medplus-nav-search-trigger { color: #50dcb4; }
-body.dark-mode .medplus-nav-search-trigger:hover { color: #fff; }
-body.dark-mode .medplus-nav-search-box { background: rgba(8, 20, 42, 0.85); }
-body.dark-mode .medplus-nav-search-box.open { border-color: rgba(80, 220, 180, 0.4); box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-body.dark-mode .medplus-nav-search-box input { color: #c8d8f0; }
-body.dark-mode .medplus-nav-search-box input::placeholder { color: rgba(80, 220, 180, 0.4); }
-body.dark-mode #nav-search-results { background: rgba(8, 20, 42, 0.95); border-color: rgba(80, 220, 180, 0.3); }
-body.dark-mode .search-item { color: #c8d8f0; border-bottom-color: rgba(255,255,255,0.05); }
-body.dark-mode .search-item:hover { background: rgba(80, 220, 180, 0.15); color: #50dcb4; }
+.search-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(0,0,0,.05);
+    color: #1b5e20;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+    transition: background .2s ease, padding-left .2s ease, color .2s ease;
+}
+.search-item:last-child { border-bottom: none; }
+.search-item:hover { background: rgba(76,175,80,.1); padding-left: 18px; }
+.search-item.nav-search-status { cursor: default; color: #667; font-weight: 600; }
+.search-item.nav-search-status:hover { background: transparent; padding-left: 15px; }
+.search-item.nav-search-error { color: #d32f2f; }
+
+body.dark-mode .medplus-nav-search-pill {
+    color: #50dcb4;
+    background: rgba(8,20,42,.68);
+    border-color: rgba(80,220,180,.18);
+    box-shadow: none;
+}
+body.dark-mode .medplus-nav-search-pill:hover,
+body.dark-mode .medplus-nav-search-pill.open {
+    background: rgba(20,45,80,.84);
+    border-color: rgba(80,220,180,.4);
+    box-shadow: 0 4px 15px rgba(0,0,0,.4);
+}
+body.dark-mode .medplus-nav-search-pill input { color: #c8d8f0; }
+body.dark-mode .medplus-nav-search-pill input::placeholder { color: rgba(80,220,180,.4); }
+body.dark-mode #nav-search-results,
+body.dark-mode #mobile-nav-search-results { background: rgba(8,20,42,.95); border-color: rgba(80,220,180,.3); }
+body.dark-mode .search-item { color: #c8d8f0; border-bottom-color: rgba(255,255,255,.05); }
+body.dark-mode .search-item:hover { background: rgba(80,220,180,.15); color: #50dcb4; }
+body.dark-mode .search-item.nav-search-status:hover { background: transparent; color: #c8d8f0; }
+body.dark-mode .search-item.nav-search-error { color: #ff8a80; }
 body.dark-mode .nav-clear-btn { color: #ff8a80; }
+
+/* --- FIX MOBILE NAVBAR: hamburger + nút tìm kiếm cạnh nhau --- */
+@media (max-width: 768px) {
+  #medplusDesktopNav {
+    display: none !important;
+  }
+
+  .medplus-mobile-actions {
+    display: flex !important;
+  }
+
+  #medplusHamburgerBtn {
+    display: flex !important;
+  }
+
+  #medplusMobileMenu.open {
+    display: flex !important;
+  }
+
+  #medplusNavSearchWrap {
+    display: none !important;
+  }
+
+  #medplusMobileNavSearchWrap {
+    margin-right: 0;
+  }
+
+  #medplusMobileNavSearchWrap.nav-search-visible {
+    display: flex !important;
+  }
+
+  #medplusMobileNavSearchBox.open {
+    width: min(218px, calc(100vw - 142px));
+  }
+
+  #mobile-nav-search-results {
+    right: -42px;
+    width: min(300px, calc(100vw - 24px));
+    max-height: 55vh;
+  }
+}
+
+@media (min-width: 769px) {
+  #medplusDesktopNav {
+    display: flex !important;
+  }
+
+  .medplus-mobile-actions {
+    display: none !important;
+  }
+
+  #medplusHamburgerBtn {
+    display: none !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -3299,18 +3411,16 @@ body.dark-mode .nav-clear-btn { color: #ff8a80; }
 
   <nav class="medplus-desktop-nav" id="medplusDesktopNav">
     <div class="medplus-nav-search-wrap" id="medplusNavSearchWrap">
-        <div class="medplus-nav-search-box" id="medplusNavSearchBox">
-            <input type="text" id="nav-q" placeholder="Tìm tài liệu..." oninput="filterNavbarIframeData()">
-            <svg class="nav-clear-btn" id="nav-clear-btn" onclick="clearNavSearch()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-        </div>
-        <button type="button" class="medplus-nav-search-trigger" id="medplusNavSearchTrigger" onclick="toggleNavbarSearch()">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <div class="medplus-nav-search-pill" id="medplusNavSearchBox" role="button" aria-label="Mở tìm kiếm trong tab hiện tại" title="Tìm kiếm trong tab hiện tại" tabindex="0">
+            <svg class="nav-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-        </button>
+            <input type="text" id="nav-q" placeholder="Nhập nội dung tìm kiếm" autocomplete="off" oninput="filterNavbarIframeData(event)" onkeydown="handleNavbarSearchKey(event)">
+            <svg class="nav-clear-btn" id="nav-clear-btn" onclick="event.stopPropagation(); clearNavSearch(false)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </div>
     </div>
     <button type="button" data-medplus-nav="medplus" onclick="medplusNavSwitch('medplus')" class="active">TRA CỨU THUỐC</button>
     <button type="button" data-medplus-nav="chuyenmon" onclick="medplusNavSwitch('chuyenmon')">CẬP NHẬT CHUYÊN MÔN</button>
@@ -3319,9 +3429,24 @@ body.dark-mode .nav-clear-btn { color: #ff8a80; }
     <button type="button" data-medplus-nav="lienhe" onclick="medplusNavSwitch('lienhe')">LIÊN HỆ</button>
   </nav>
 
-  <button type="button" class="medplus-hamburger" id="medplusHamburgerBtn" aria-label="Mở menu điều hướng">
-    <span></span><span></span><span></span>
-  </button>
+  <div class="medplus-mobile-actions" id="medplusMobileActions">
+    <div class="medplus-nav-search-wrap medplus-mobile-search-wrap" id="medplusMobileNavSearchWrap">
+        <div class="medplus-nav-search-pill" id="medplusMobileNavSearchBox" role="button" aria-label="Mở tìm kiếm trong tab hiện tại" title="Tìm kiếm trong tab hiện tại" tabindex="0">
+            <svg class="nav-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="mobile-nav-q" placeholder="Nhập nội dung tìm kiếm" autocomplete="off" oninput="filterNavbarIframeData(event)" onkeydown="handleNavbarSearchKey(event)">
+            <svg class="nav-clear-btn" id="mobile-nav-clear-btn" onclick="event.stopPropagation(); clearNavSearch(false)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </div>
+    </div>
+
+    <button type="button" class="medplus-hamburger" id="medplusHamburgerBtn" aria-label="Mở menu điều hướng">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </header>
 
 <nav class="medplus-mobile-menu" id="medplusMobileMenu">
@@ -8077,6 +8202,29 @@ body.dark-mode .nav-clear-btn { color: #ff8a80; }
     else setTimeout(preloadMedplusAuxFrames, 1800);
   }
 
+  function shouldShowNavbarSearch(id){
+    return id === 'chuyenmon' || id === 'phacdieutri';
+  }
+
+  function updateNavbarSearchVisibility(id){
+    const desktopWrap = document.getElementById('medplusNavSearchWrap');
+    const mobileWrap = document.getElementById('medplusMobileNavSearchWrap');
+    const show = shouldShowNavbarSearch(id);
+
+    if (desktopWrap) desktopWrap.style.display = show ? 'flex' : 'none';
+
+    if (mobileWrap) {
+      mobileWrap.style.display = show ? 'flex' : 'none';
+      mobileWrap.classList.toggle('nav-search-visible', !!show);
+    }
+
+    updateNavbarSearchPlaceholder();
+
+    if (!show && typeof toggleNavbarSearch === 'function') {
+      toggleNavbarSearch(false, 'all');
+    }
+  }
+
   window.medplusNavSwitch = function(id, isMobile){
   const wasAuxOpen = document.body.classList.contains('medplus-aux-open');
 
@@ -8091,15 +8239,7 @@ body.dark-mode .nav-clear-btn { color: #ff8a80; }
   lastIndexNavClickAt = Date.now();
   loadingFromIndexNav = id !== 'medplus';
 
-const searchWrap = document.getElementById('medplusNavSearchWrap');
-  if (searchWrap) {
-    if (id === 'chuyenmon' || id === 'phacdieutri') {
-      searchWrap.style.display = 'flex';
-    } else {
-      searchWrap.style.display = 'none';
-      if(typeof toggleNavbarSearch === 'function') toggleNavbarSearch(false);
-    }
-  }
+updateNavbarSearchVisibility(id);
 
   if (id === 'medplus'){
     closeMedplusAuxFrames();
@@ -8147,99 +8287,487 @@ const searchWrap = document.getElementById('medplusNavSearchWrap');
 
   window.addEventListener('load', () => {
     scheduleMedplusAuxPreload();
+    updateNavbarSearchVisibility(currentNav || 'medplus');
   });
 
+  updateNavbarSearchVisibility(currentNav || 'medplus');
+
   // --- LOGIC TÌM KIẾM NAVBAR ---
-  window.toggleNavbarSearch = function(forceOpen) {
-      const box = document.getElementById('medplusNavSearchBox');
-      const input = document.getElementById('nav-q');
-      
+  let navSearchTimer = null;
+  let navSearchController = null;
+  let navSearchSeq = 0;
+
+  const NAVBAR_SEARCH_INSTANCES = {
+    desktop: {
+      wrap: 'medplusNavSearchWrap',
+      box: 'medplusNavSearchBox',
+      input: 'nav-q',
+      clear: 'nav-clear-btn',
+      results: 'nav-search-results'
+    },
+    mobile: {
+      wrap: 'medplusMobileNavSearchWrap',
+      box: 'medplusMobileNavSearchBox',
+      input: 'mobile-nav-q',
+      clear: 'mobile-nav-clear-btn',
+      results: 'mobile-nav-search-results'
+    }
+  };
+
+  const NAVBAR_SEARCH_TAB_META = {
+    chuyenmon: {
+      label: 'Cập nhật chuyên môn',
+      tokens: [
+        'chuyenmon',
+        'cap nhat chuyen mon',
+        'cap-nhat-chuyen-mon',
+        'cập nhật chuyên môn',
+        'cập-nhật-chuyên-môn',
+        'c%E1%BA%ADp-nh%E1%BA%ADt-chuy%C3%AAn-m%C3%B4n'.toLowerCase()
+      ]
+    },
+    phacdieutri: {
+      label: 'Phác đồ điều trị',
+      tokens: [
+        'phacdieutri',
+        'phac do dieu tri',
+        'phac-do-dieu-tri',
+        'phác đồ điều trị',
+        'phác-đồ-điều-trị',
+        'ph%C3%A1c-%C4%91%E1%BB%93-%C4%91i%E1%BB%81u-tr%E1%BB%8B'.toLowerCase()
+      ]
+    }
+  };
+
+  function normalizeNavbarText(str){
+      return String(str || '')
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/đ/g, 'd')
+          .replace(/Đ/g, 'd')
+          .replace(/[^a-z0-9\s\/-]/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+  }
+
+  function getCurrentNavbarSearchTab(){
+      const id = activeAuxId || currentNav || '';
+      return shouldShowNavbarSearch(id) ? id : '';
+  }
+
+  function getNavbarSearchTabLabel(tab){
+      return (NAVBAR_SEARCH_TAB_META[tab] && NAVBAR_SEARCH_TAB_META[tab].label) || '';
+  }
+
+  function updateNavbarSearchPlaceholder(){
+      const tab = getCurrentNavbarSearchTab();
+      const label = getNavbarSearchTabLabel(tab);
+      ['desktop','mobile'].forEach(function(mode){
+          const els = getNavbarSearchElements(mode);
+          if (!els.input) return;
+          els.input.placeholder = 'Nhập nội dung tìm kiếm';
+          els.input.setAttribute('aria-label', label ? ('Nhập nội dung tìm kiếm trong tab ' + label) : 'Nhập nội dung tìm kiếm');
+      });
+  }
+
+  function getSearchComparableFields(item){
+      if (!item || typeof item !== 'object') return [];
+      return [
+          item.tab,
+          item.sourceTab,
+          item.scope,
+          item.category,
+          item.section,
+          item.group,
+          item.parent,
+          item.parentTitle,
+          item.source,
+          item.sourceUrl,
+          item.sourcePath,
+          item.pageUrl,
+          item.page,
+          item.path,
+          item.url,
+          item.link,
+          item.href
+      ].filter(Boolean).map(function(v){ return String(v); });
+  }
+
+  function isSearchResultInCurrentTab(item, tab){
+      if (!tab || !NAVBAR_SEARCH_TAB_META[tab]) return false;
+      const meta = NAVBAR_SEARCH_TAB_META[tab];
+      const rawFields = getSearchComparableFields(item);
+      if (!rawFields.length) return false;
+      const normalizedTokens = meta.tokens.map(normalizeNavbarText);
+
+      return rawFields.some(function(field){
+          const raw = String(field || '').toLowerCase();
+          const decoded = (function(){
+              try { return decodeURIComponent(raw); } catch(e) { return raw; }
+          })();
+          const normalized = normalizeNavbarText(decoded);
+
+          return meta.tokens.some(function(token){
+              return raw.includes(token.toLowerCase()) || decoded.includes(token.toLowerCase());
+          }) || normalizedTokens.some(function(token){
+              return token && normalized.includes(token);
+          });
+      });
+  }
+
+  function filterSearchResultsForCurrentTab(results, tab){
+      if (!Array.isArray(results)) return [];
+      if (!tab) return [];
+      return results.filter(function(item){
+          return isSearchResultInCurrentTab(item, tab);
+      });
+  }
+
+  function isMobileNavbarSearchMode(){
+      return window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+  }
+
+  function getNavbarSearchElements(mode){
+      const key = mode || (isMobileNavbarSearchMode() ? 'mobile' : 'desktop');
+      const cfg = NAVBAR_SEARCH_INSTANCES[key] || NAVBAR_SEARCH_INSTANCES.desktop;
+      return {
+          key,
+          cfg,
+          wrap: document.getElementById(cfg.wrap),
+          box: document.getElementById(cfg.box),
+          input: document.getElementById(cfg.input),
+          clearBtn: document.getElementById(cfg.clear),
+          container: document.getElementById(cfg.results)
+      };
+  }
+
+  function getNavbarSearchElementsFromTarget(target){
+      if (target && target.closest) {
+          const mobileWrap = document.getElementById('medplusMobileNavSearchWrap');
+          const desktopWrap = document.getElementById('medplusNavSearchWrap');
+          if (mobileWrap && mobileWrap.contains(target)) return getNavbarSearchElements('mobile');
+          if (desktopWrap && desktopWrap.contains(target)) return getNavbarSearchElements('desktop');
+      }
+
+      const mobile = getNavbarSearchElements('mobile');
+      const desktop = getNavbarSearchElements('desktop');
+      if (mobile.box && mobile.box.classList.contains('open')) return mobile;
+      if (desktop.box && desktop.box.classList.contains('open')) return desktop;
+      return getNavbarSearchElements();
+  }
+
+  function closeAllNavbarSearches(){
+      ['desktop','mobile'].forEach(function(mode){
+          const els = getNavbarSearchElements(mode);
+          if (els.box) els.box.classList.remove('open');
+          if (els.input) els.input.value = '';
+          if (els.clearBtn) els.clearBtn.style.display = 'none';
+          const container = document.getElementById(els.cfg.results);
+          if (container) container.style.display = 'none';
+      });
+  }
+
+  function getNavbarSearchResultsContainer(mode){
+      const els = getNavbarSearchElements(mode);
+      if (!els.wrap) return null;
+      let container = document.getElementById(els.cfg.results);
+      if (!container) {
+          container = document.createElement('div');
+          container.id = els.cfg.results;
+          els.wrap.appendChild(container);
+      }
+      return container;
+  }
+
+  function normalizeNavbarSearchResults(payload){
+      if (Array.isArray(payload)) return payload;
+      if (!payload || typeof payload !== 'object') return [];
+      if (Array.isArray(payload.results)) return payload.results;
+      if (Array.isArray(payload.items)) return payload.items;
+      if (Array.isArray(payload.data)) return payload.data;
+      if (payload.data && Array.isArray(payload.data.results)) return payload.data.results;
+      return [];
+  }
+
+  function showNavbarSearchMessage(message, isError, mode){
+      const container = getNavbarSearchResultsContainer(mode);
+      if (!container) return;
+      container.innerHTML = '';
+      const item = document.createElement('div');
+      item.className = 'search-item nav-search-status' + (isError ? ' nav-search-error' : '');
+      item.textContent = message;
+      container.appendChild(item);
+      container.style.display = 'block';
+  }
+
+  function renderNavbarSearchResults(results, mode){
+      const container = getNavbarSearchResultsContainer(mode);
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (!results.length) {
+          showNavbarSearchMessage('Không tìm thấy nội dung trong tab này...', false, mode);
+          return;
+      }
+
+      results.slice(0, 12).forEach(result => {
+          const title = result.title || result.name || result.label || result.text || 'Tài liệu';
+          const url = result.url || result.link || result.href || result.path || '';
+          const item = document.createElement('div');
+          item.className = 'search-item';
+          item.textContent = title;
+          if (url) {
+              item.dataset.url = url;
+              item.addEventListener('click', () => openSearchResult(url));
+          } else {
+              item.classList.add('nav-search-status');
+          }
+          container.appendChild(item);
+      });
+
+      container.style.display = 'block';
+  }
+
+  window.toggleNavbarSearch = function(forceOpen, mode) {
+      if (mode === 'all') {
+          if (forceOpen === false) closeAllNavbarSearches();
+          return;
+      }
+
+      const els = getNavbarSearchElements(mode);
+      const box = els.box;
+      const input = els.input;
       if (!box || !input) return;
 
-      // Nếu không truyền tham số, tự động toggle trạng thái hiện tại
       const isOpen = typeof forceOpen === 'boolean' ? forceOpen : !box.classList.contains('open');
-      
-      box.classList.toggle('open', isOpen);
-      
+
       if (isOpen) {
-          input.focus();
+          ['desktop','mobile'].forEach(function(otherMode){
+              if (otherMode !== els.key) {
+                  const other = getNavbarSearchElements(otherMode);
+                  if (other.box) other.box.classList.remove('open');
+                  if (other.container) other.container.style.display = 'none';
+              }
+          });
+      }
+
+      box.classList.toggle('open', isOpen);
+
+      if (isOpen) {
+          setTimeout(() => input.focus(), 80);
       } else {
-          // Đóng thì reset ô tìm kiếm
-          clearNavSearch();
+          clearNavSearch(true, els.key);
       }
   };
 
-  window.clearNavSearch = function() {
-      const input = document.getElementById('nav-q');
-      const clearBtn = document.getElementById('nav-clear-btn');
-      const container = document.getElementById('nav-search-results');
-      
+  window.clearNavSearch = function(closeBox, mode) {
+      const els = getNavbarSearchElements(mode);
+      const box = els.box;
+      const input = els.input;
+      const clearBtn = els.clearBtn;
+      const container = getNavbarSearchResultsContainer(els.key);
+
+      if (navSearchTimer) clearTimeout(navSearchTimer);
+      if (navSearchController) navSearchController.abort();
       if (input) input.value = '';
       if (clearBtn) clearBtn.style.display = 'none';
       if (container) container.style.display = 'none';
-      if (input) input.focus();
+      if (closeBox && box) box.classList.remove('open');
+      if (!closeBox && input) input.focus();
   };
 
-  window.filterNavbarIframeData = async function() {
-      const input = document.getElementById('nav-q');
-      const clearBtn = document.getElementById('nav-clear-btn');
-      const wrap = document.getElementById('medplusNavSearchWrap');
-      if (!input || !wrap) return;
+  window.filterNavbarIframeData = function(e) {
+      const els = getNavbarSearchElementsFromTarget(e && e.target);
+      const input = els.input;
+      const clearBtn = els.clearBtn;
+      const box = els.box;
+      const query = input ? input.value.trim() : '';
+      const currentTab = getCurrentNavbarSearchTab();
+      const container = getNavbarSearchResultsContainer(els.key);
+      if (!input || !container) return;
 
-      const query = input.value.trim();
-      
-      // Hiện/ẩn nút X
+      updateNavbarSearchPlaceholder();
+
+      if (!currentTab) {
+          container.style.display = 'none';
+          return;
+      }
+
+      if (box) box.classList.add('open');
       if (clearBtn) clearBtn.style.display = query.length > 0 ? 'block' : 'none';
 
-      let container = document.getElementById('nav-search-results');
-      if (!container) {
-          container = document.createElement('div');
-          container.id = 'nav-search-results';
-          // Gắn vào Wrapper thay vì Box để khi Box co lại, dropdown không bị bóp méo
-          wrap.appendChild(container);
-      }
+      if (navSearchTimer) clearTimeout(navSearchTimer);
+      if (navSearchController) navSearchController.abort();
 
       if (query.length < 2) {
           container.style.display = 'none';
           return;
       }
 
-      try {
-          const res = await fetch(`https://googlesites.princetq.workers.dev/api/search?q=${encodeURIComponent(query)}`);
-          const results = await res.json();
-          
-          if (results && results.length > 0) {
-              container.innerHTML = results.map(r => `<div class="search-item" onclick="openSearchResult('${String(r.url).replace(/'/g, '&#39;')}')">${r.title}</div>`).join('');
-          } else {
-              container.innerHTML = `<div class="search-item" style="color: #888; cursor: default;">Không tìm thấy tài liệu...</div>`;
+      navSearchTimer = setTimeout(async () => {
+          const seq = ++navSearchSeq;
+          navSearchController = new AbortController();
+          showNavbarSearchMessage('Đang tìm...', false, els.key);
+
+          try {
+              const searchTab = currentTab;
+              const url = `https://googlesites.princetq.workers.dev/api/search?q=${encodeURIComponent(query)}&tab=${encodeURIComponent(searchTab)}`;
+              const res = await fetch(url, { cache: 'no-store', signal: navSearchController.signal });
+              const raw = await res.text();
+              let payload = null;
+
+              try {
+                  payload = raw ? JSON.parse(raw) : [];
+              } catch (parseErr) {
+                  throw new Error('API không trả về JSON hợp lệ');
+              }
+
+              if (!res.ok) throw new Error('API tìm kiếm đang lỗi ' + res.status);
+              if (seq !== navSearchSeq) return;
+
+              const results = filterSearchResultsForCurrentTab(
+                  normalizeNavbarSearchResults(payload)
+                      .filter(item => item && (item.title || item.name || item.label || item.text || item.url || item.link || item.href)),
+                  searchTab
+              );
+
+              renderNavbarSearchResults(results, els.key);
+          } catch (err) {
+              if (err && err.name === 'AbortError') return;
+              console.error('Lỗi tìm kiếm:', err);
+              showNavbarSearchMessage('Chưa lấy được dữ liệu tìm kiếm. Kiểm tra lại API /api/search hoặc CORS.', true, els.key);
           }
-          container.style.display = 'block';
-      } catch (err) {
-          console.error("Lỗi tìm kiếm:", err);
-      }
+      }, 250);
   };
-  
-  window.openSearchResult = function(url) {
-      const frameWrap = document.getElementById('medplusAuxFrameWrap');
-      const iframe = frameWrap ? frameWrap.querySelector('iframe.active') : null;
-      if (iframe) {
-          iframe.src = url;
-          toggleNavbarSearch(false);
+
+  window.handleNavbarSearchKey = function(e){
+      if (!e) return;
+      const els = getNavbarSearchElementsFromTarget(e.target);
+      if (e.key === 'Escape') {
+          toggleNavbarSearch(false, els.key);
+          return;
+      }
+      if (e.key === 'Enter') {
+          const container = getNavbarSearchResultsContainer(els.key);
+          const firstResult = container ? container.querySelector('.search-item[data-url]') : null;
+          if (firstResult && firstResult.dataset.url) openSearchResult(firstResult.dataset.url);
       }
   };
 
-  // Đóng ô tìm kiếm khi bấm ra ngoài
-  document.addEventListener('click', (e) => {
-      const box = document.getElementById('medplusNavSearchBox');
-      const trigger = document.getElementById('medplusNavSearchTrigger');
-      const container = document.getElementById('nav-search-results');
-      
-      if (box && trigger && box.classList.contains('open')) {
-          if (!box.contains(e.target) && !trigger.contains(e.target) && (!container || !container.contains(e.target))) {
-              toggleNavbarSearch(false);
-          }
+  window.openSearchResult = function(url) {
+      if (!url) return;
+      const frameWrap = document.getElementById('medplusAuxFrameWrap');
+      const targetId = getCurrentNavbarSearchTab() || 'chuyenmon';
+      const iframe = getMedplusAuxFrame(targetId);
+
+      if (frameWrap && iframe) {
+          frameWrap.classList.add('open');
+          frameWrap.setAttribute('aria-hidden', 'false');
+          document.body.classList.add('medplus-aux-open');
+          document.documentElement.classList.add('medplus-aux-open');
+          currentNav = targetId;
+          setActiveNav(targetId);
+          activateMedplusAuxFrame(targetId);
+          iframe.src = url;
+          toggleNavbarSearch(false, 'all');
+          return;
       }
+
+      window.location.href = url;
+  };
+
+  function initNavbarSearchPillEvents(mode){
+      const els = getNavbarSearchElements(mode);
+      const box = els.box;
+      const input = els.input;
+      const clearBtn = els.clearBtn;
+      if (!box || !input || box.dataset.boundSearchPill === '1') return;
+
+      box.dataset.boundSearchPill = '1';
+
+      box.addEventListener('click', function(e){
+          if (clearBtn && clearBtn.contains(e.target)) return;
+          toggleNavbarSearch(true, els.key);
+      });
+
+      box.addEventListener('keydown', function(e){
+          if (e.target === input) return;
+          if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleNavbarSearch(true, els.key);
+          }
+      });
+
+      ['keydown','keypress','keyup','click','mousedown','pointerdown','touchstart'].forEach(function(eventName){
+          input.addEventListener(eventName, function(e){
+              e.stopPropagation();
+          });
+      });
+
+      if (clearBtn) {
+          ['click','mousedown','pointerdown','touchstart'].forEach(function(eventName){
+              clearBtn.addEventListener(eventName, function(e){
+                  e.stopPropagation();
+              });
+          });
+      }
+  }
+
+  function isClickInsideNavbarSearch(target){
+      return ['desktop','mobile'].some(function(mode){
+          const els = getNavbarSearchElements(mode);
+          const container = document.getElementById(els.cfg.results);
+          return !!(
+              (els.box && els.box.contains(target)) ||
+              (container && container.contains(target))
+          );
+      });
+  }
+
+  function closeNavbarSearchWhenOutside(e){
+      const anyOpen = ['desktop','mobile'].some(function(mode){
+          const els = getNavbarSearchElements(mode);
+          return !!(els.box && els.box.classList.contains('open'));
+      });
+      if (!anyOpen) return;
+      if (isClickInsideNavbarSearch(e.target)) return;
+      toggleNavbarSearch(false, 'all');
+  }
+
+  updateNavbarSearchPlaceholder();
+  initNavbarSearchPillEvents('desktop');
+  initNavbarSearchPillEvents('mobile');
+
+  ['pointerdown','mousedown','touchstart','click'].forEach(function(eventName){
+      document.addEventListener(eventName, closeNavbarSearchWhenOutside, true);
   });
+
+  document.addEventListener('focusin', function(e){
+      const anyOpen = ['desktop','mobile'].some(function(mode){
+          const els = getNavbarSearchElements(mode);
+          return !!(els.box && els.box.classList.contains('open'));
+      });
+      if (!anyOpen) return;
+      if (isClickInsideNavbarSearch(e.target)) return;
+      toggleNavbarSearch(false, 'all');
+  }, true);
+
+  window.addEventListener('resize', function(){
+      updateNavbarSearchVisibility(currentNav || 'medplus');
+      toggleNavbarSearch(false, 'all');
+  });
+
+  window.addEventListener('blur', function(){
+      setTimeout(function(){
+          const active = document.activeElement;
+          if (active && active.tagName === 'IFRAME') {
+              toggleNavbarSearch(false, 'all');
+          }
+      }, 0);
+  });
+
 
 })();
 </script>
