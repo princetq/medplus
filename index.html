@@ -4741,36 +4741,24 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
 
 
 /* FIX PC: KS + Tương tác thuốc nhấp nháy lớp blur/tối khi chạy trong modal.
-   Chỉ áp dụng cho PC và chỉ 2 modal này; Tiêm truyền/Tương hợp-Tương kỵ giữ nguyên. */
+   Giữ nguyên màu nền/viền của .iv-modal-content và .iv-iframe-container giống Tiêm truyền/Tương hợp-Tương kỵ.
+   Chỉ tắt riêng các tối ưu tạo lớp render của iframe/container gây flicker. */
 @media (min-width:769px){
   #ks-modal,
   #tt-modal{
     isolation:isolate !important;
   }
 
-  #ks-modal .iv-modal-content,
-  #tt-modal .iv-modal-content,
   #ks-modal .iv-iframe-container,
   #tt-modal .iv-iframe-container{
-    background:#ffffff !important;
-    overflow:hidden !important;
     transform:none !important;
     -webkit-transform:none !important;
-    contain:none !important;
-    content-visibility:visible !important;
     backface-visibility:hidden !important;
     -webkit-backface-visibility:hidden !important;
   }
 
-  #ks-modal .iv-modal-content,
-  #tt-modal .iv-modal-content{
-    animation:none !important;
-  }
-
   #ks-iframe,
   #tt-iframe{
-    background:#ffffff !important;
-    border-radius:16px !important;
     transform:none !important;
     -webkit-transform:none !important;
     contain:none !important;
@@ -10373,9 +10361,5 @@ updateNavbarSearchVisibility(id);
 })();
 </script>
 
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"7939e04a4baf43c8b86a560f74aac60e","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"febbfaacdfbc4a51921583d5e93de024","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"7939e04a4baf43c8b86a560f74aac60e","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"febbfaacdfbc4a51921583d5e93de024","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
