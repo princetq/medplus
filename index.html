@@ -4760,55 +4760,91 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
 
 
 
-/* === FIX PC 4 MODAL CÔNG CỤ: GIỮ HIỆU ỨNG XUẤT HIỆN TỪ TỪ NHƯNG KHÔNG ANIMATE IFRAME ===
-   Chỉ áp dụng PC cho: Tiêm truyền, Chỉnh liều KS, Tương tác thuốc, Tương hợp - Tương kỵ.
-   Lý do: animation modalIn gốc có translate/scale trên .modal-content chứa iframe;
-   khi iframe đang render có thể sinh sọc blur/nhấp nháy. Block này đổi riêng 4 modal công cụ
-   sang fade-in opacity, không transform iframe/container. Các phần khác giữ nguyên. */
-@media (min-width: 601px) {
-  @keyframes pcToolModalFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+        /* ==============================================================
+           FIX PC 4 MODAL CÔNG CỤ: GIỮ CẢM GIÁC XUẤT HIỆN NHẸ, CHỐNG NHẤP NHÁY IFRAME
+           - Chỉ áp dụng PC (>600px)
+           - Không dùng transform/scale trên khối chứa iframe
+           - Không nạp/hiện iframe trong lúc modal đang fade vào
+           ============================================================== */
+        @media (min-width: 601px) {
+            #iv-modal,
+            #ks-modal,
+            #tt-modal,
+            #tk-modal {
+                animation: medplusToolOverlayFade .20s ease-out both !important;
+                will-change: auto !important;
+                transform: none !important;
+                -webkit-transform: none !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
 
-  #iv-modal .modal-content.iv-modal-content,
-  #ks-modal .modal-content.iv-modal-content,
-  #tt-modal .modal-content.iv-modal-content,
-  #tk-modal .modal-content.iv-modal-content {
-    animation: pcToolModalFadeIn .32s ease-out forwards !important;
-    transform: none !important;
-    -webkit-transform: none !important;
-    will-change: opacity !important;
-    backface-visibility: hidden !important;
-    -webkit-backface-visibility: hidden !important;
-  }
+            #iv-modal .iv-modal-content,
+            #ks-modal .iv-modal-content,
+            #tt-modal .iv-modal-content,
+            #tk-modal .iv-modal-content {
+                animation: medplusToolContentFade .22s ease-out both !important;
+                transition: none !important;
+                transform: none !important;
+                -webkit-transform: none !important;
+                will-change: auto !important;
+                backface-visibility: hidden !important;
+                -webkit-backface-visibility: hidden !important;
+                contain: layout paint !important;
+                isolation: isolate !important;
+            }
 
-  #iv-modal .iv-iframe-container,
-  #ks-modal .iv-iframe-container,
-  #tt-modal .iv-iframe-container,
-  #tk-modal .iv-iframe-container,
-  #iv-modal iframe,
-  #ks-modal iframe,
-  #tt-modal iframe,
-  #tk-modal iframe {
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
-    -webkit-transform: none !important;
-    will-change: auto !important;
-    backface-visibility: hidden !important;
-    -webkit-backface-visibility: hidden !important;
-  }
+            #iv-modal .iv-iframe-container,
+            #ks-modal .iv-iframe-container,
+            #tt-modal .iv-iframe-container,
+            #tk-modal .iv-iframe-container {
+                animation: none !important;
+                transition: none !important;
+                transform: none !important;
+                -webkit-transform: none !important;
+                will-change: auto !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                contain: layout paint !important;
+                content-visibility: visible !important;
+                background: #ffffff !important;
+            }
 
-  #iv-modal iframe,
-  #ks-modal iframe,
-  #tt-modal iframe,
-  #tk-modal iframe {
-    content-visibility: visible !important;
-    contain: layout paint !important;
-  }
-}
+            #iv-modal iframe,
+            #ks-modal iframe,
+            #tt-modal iframe,
+            #tk-modal iframe {
+                animation: none !important;
+                transform: none !important;
+                -webkit-transform: none !important;
+                will-change: auto !important;
+                backface-visibility: hidden !important;
+                -webkit-backface-visibility: hidden !important;
+                contain: none !important;
+                content-visibility: visible !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+                transition: opacity .12s ease-out !important;
+            }
 
+            #iv-modal iframe.medplus-tool-iframe-ready,
+            #ks-modal iframe.medplus-tool-iframe-ready,
+            #tt-modal iframe.medplus-tool-iframe-ready,
+            #tk-modal iframe.medplus-tool-iframe-ready {
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+        }
+
+        @keyframes medplusToolOverlayFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes medplusToolContentFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 </style>
 </head>
 <body>
@@ -5076,7 +5112,7 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
             <span class="close-btn" onclick="closeIVModal()">&times;</span>
             <div class="iv-iframe-container">
                 <div class="iv-iframe-loader" id="iv-loader">Đang tải công cụ...</div>
-                <iframe id="iv-iframe" onload="document.getElementById('iv-loader').style.display='none'"></iframe>
+                <iframe id="iv-iframe" onload="medplusToolIframeLoaded('iv-iframe', 'iv-loader')"></iframe>
             </div>
         </div>
     </div>
@@ -5086,7 +5122,7 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
             <span class="close-btn" onclick="closeKSModal()">&times;</span>
             <div class="iv-iframe-container">
                 <div class="iv-iframe-loader" id="ks-loader">Đang tải công cụ...</div>
-                <iframe id="ks-iframe" onload="document.getElementById('ks-loader').style.display='none'"></iframe>
+                <iframe id="ks-iframe" onload="medplusToolIframeLoaded('ks-iframe', 'ks-loader')"></iframe>
             </div>
         </div>
     </div>
@@ -5096,7 +5132,7 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
             <span class="close-btn" onclick="closeTTModal()">&times;</span>
             <div class="iv-iframe-container">
                 <div class="iv-iframe-loader" id="tt-loader">Đang tải công cụ...</div>
-                <iframe id="tt-iframe" onload="document.getElementById('tt-loader').style.display='none'"></iframe>
+                <iframe id="tt-iframe" onload="medplusToolIframeLoaded('tt-iframe', 'tt-loader')"></iframe>
             </div>
         </div>
     </div>
@@ -5106,7 +5142,7 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
             <span class="close-btn" onclick="closeTKModal()">&times;</span>
             <div class="iv-iframe-container">
                 <div class="iv-iframe-loader" id="tk-loader">Đang tải công cụ...</div>
-                <iframe id="tk-iframe" onload="document.getElementById('tk-loader').style.display='none'"></iframe>
+                <iframe id="tk-iframe" onload="medplusToolIframeLoaded('tk-iframe', 'tk-loader')"></iframe>
             </div>
         </div>
     </div>
@@ -7472,68 +7508,88 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
             }, 300);
         }
 
-        function openIVModal() {
-            document.getElementById('iv-modal').style.display = 'flex';
-            lockBodyScroll('iv');
-            const iframe = document.getElementById('iv-iframe');
-            if (!iframe.getAttribute('src')) {
-                document.getElementById('iv-loader').style.display = 'block';
-                iframe.setAttribute('src', "./tools/tiemtruyen/");
+
+
+        /* FIX PC 4 MODAL CÔNG CỤ: nạp iframe sau khi modal đã hiện xong để tránh sọc blur/nhấp nháy */
+        const medplusToolIframeTimers = {};
+
+        function medplusOpenToolModal(modalId, iframeId, loaderId, url, lockKey) {
+            const modal = document.getElementById(modalId);
+            const iframe = document.getElementById(iframeId);
+            const loader = document.getElementById(loaderId);
+            if (!modal || !iframe) return;
+
+            clearTimeout(medplusToolIframeTimers[iframeId]);
+            iframe.classList.remove('medplus-tool-iframe-ready');
+            if (loader) loader.style.display = 'block';
+
+            modal.style.display = 'flex';
+            lockBodyScroll(lockKey);
+
+            const loadIframe = () => {
+                if (modal.style.display !== 'none' && !iframe.getAttribute('src')) {
+                    iframe.setAttribute('src', url);
+                }
+            };
+
+            if (window.innerWidth > 600) {
+                medplusToolIframeTimers[iframeId] = setTimeout(loadIframe, 240);
+            } else {
+                loadIframe();
             }
         }
+
+        function medplusCloseToolModal(modalId, iframeId, lockKey) {
+            const modal = document.getElementById(modalId);
+            const iframe = document.getElementById(iframeId);
+            clearTimeout(medplusToolIframeTimers[iframeId]);
+            if (modal) modal.style.display = 'none';
+            unlockBodyScroll(lockKey);
+            if (iframe) {
+                iframe.classList.remove('medplus-tool-iframe-ready');
+                iframe.src = '';
+            }
+        }
+
+        function medplusToolIframeLoaded(iframeId, loaderId) {
+            const iframe = document.getElementById(iframeId);
+            const loader = document.getElementById(loaderId);
+            if (loader) loader.style.display = 'none';
+            if (!iframe) return;
+            if (window.innerWidth > 600) {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => iframe.classList.add('medplus-tool-iframe-ready'));
+                });
+            } else {
+                iframe.classList.add('medplus-tool-iframe-ready');
+            }
+        }
+        function openIVModal() {
+            medplusOpenToolModal('iv-modal', 'iv-iframe', 'iv-loader', './tools/tiemtruyen/', 'iv');
+        }
         function closeIVModal() {
-            document.getElementById('iv-modal').style.display = 'none';
-            unlockBodyScroll('iv');
-            // Terminate iframe process — tránh JS/animation chạy ngầm gây nóng máy
-            document.getElementById('iv-iframe').src = '';
+            medplusCloseToolModal('iv-modal', 'iv-iframe', 'iv');
         }
 
         function openKSModal() {
-            document.getElementById('ks-modal').style.display = 'flex';
-            lockBodyScroll('ks');
-            const iframe = document.getElementById('ks-iframe');
-            if (!iframe.getAttribute('src')) {
-                document.getElementById('ks-loader').style.display = 'block';
-                iframe.setAttribute('src', "./tools/ks/");
-            }
+            medplusOpenToolModal('ks-modal', 'ks-iframe', 'ks-loader', './tools/ks/', 'ks');
         }
         function closeKSModal() {
-            document.getElementById('ks-modal').style.display = 'none';
-            unlockBodyScroll('ks');
-            // Terminate iframe process — tránh JS/animation chạy ngầm gây nóng máy
-            document.getElementById('ks-iframe').src = '';
+            medplusCloseToolModal('ks-modal', 'ks-iframe', 'ks');
         }
 
         function openTTModal() {
-            document.getElementById('tt-modal').style.display = 'flex';
-            lockBodyScroll('tt');
-            const iframe = document.getElementById('tt-iframe');
-            if (!iframe.getAttribute('src')) {
-                document.getElementById('tt-loader').style.display = 'block';
-                iframe.setAttribute('src', "./tools//ttthuoc/");
-            }
+            medplusOpenToolModal('tt-modal', 'tt-iframe', 'tt-loader', './tools//ttthuoc/', 'tt');
         }
         function closeTTModal() {
-            document.getElementById('tt-modal').style.display = 'none';
-            unlockBodyScroll('tt');
-            // Terminate iframe process — tránh JS/animation chạy ngầm gây nóng máy
-            document.getElementById('tt-iframe').src = '';
+            medplusCloseToolModal('tt-modal', 'tt-iframe', 'tt');
         }
 
         function openTKModal() {
-            document.getElementById('tk-modal').style.display = 'flex';
-            lockBodyScroll('tk');
-            const iframe = document.getElementById('tk-iframe');
-            if (!iframe.getAttribute('src')) {
-                document.getElementById('tk-loader').style.display = 'block';
-                iframe.setAttribute('src', "./tools/tuongki/");
-            }
+            medplusOpenToolModal('tk-modal', 'tk-iframe', 'tk-loader', './tools/tuongki/', 'tk');
         }
         function closeTKModal() {
-            document.getElementById('tk-modal').style.display = 'none';
-            unlockBodyScroll('tk');
-            // Terminate iframe process — tránh JS/animation chạy ngầm gây nóng máy
-            document.getElementById('tk-iframe').src = '';
+            medplusCloseToolModal('tk-modal', 'tk-iframe', 'tk');
         }
 
         function toggleChatWidget() {
@@ -10341,6 +10397,8 @@ updateNavbarSearchVisibility(id);
 
 })();
 </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"7939e04a4baf43c8b86a560f74aac60e","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"febbfaacdfbc4a51921583d5e93de024","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 
 <script>
 (function(){
