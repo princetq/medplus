@@ -4722,10 +4722,11 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
   }
 }
 
-/* MOBILE: khi mở các tab ngoài Tra cứu, navbar dùng nền kín để không nhìn xuyên về nền trang Tra cứu */
+/* MOBILE: khi mở các tab ngoài Tra cứu, navbar dùng nền kín tông xanh nhạt, không còn lớp trong bị trắng lệch tông */
 @media (max-width:768px){
   body.medplus-aux-open.medplus-nav-light-only .medplus-app-nav{
-    background:linear-gradient(135deg,#eef2f0 0,#e8f0eb 55%,#e0ece5 100%) !important;
+    background:linear-gradient(135deg,#eef8ed 0,#e5f3e4 55%,#dceedd 100%) !important;
+    color:#1b5e20 !important;
     backdrop-filter:none !important;
     -webkit-backdrop-filter:none !important;
   }
@@ -4733,38 +4734,16 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
   body.medplus-aux-open.medplus-nav-light-only .medplus-app-nav::before{
     background:linear-gradient(135deg,#f1faf0 0,#e8f5e6 55%,#dff0df 100%) !important;
     border-color:rgba(46,125,50,.30) !important;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.66), inset 0 -1px 0 rgba(46,125,50,.10), 0 6px 18px rgba(27,94,32,.10) !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.68), inset 0 -1px 0 rgba(46,125,50,.10), 0 8px 24px rgba(27,94,32,.10) !important;
     backdrop-filter:none !important;
     -webkit-backdrop-filter:none !important;
   }
-}
 
-
-/* FIX PC: KS + Tương tác thuốc nhấp nháy lớp blur/tối khi chạy trong modal.
-   Giữ nguyên màu nền/viền của .iv-modal-content và .iv-iframe-container giống Tiêm truyền/Tương hợp-Tương kỵ.
-   Chỉ tắt riêng các tối ưu tạo lớp render của iframe/container gây flicker. */
-@media (min-width:769px){
-  #ks-modal,
-  #tt-modal{
-    isolation:isolate !important;
-  }
-
-  #ks-modal .iv-iframe-container,
-  #tt-modal .iv-iframe-container{
-    transform:none !important;
-    -webkit-transform:none !important;
-    backface-visibility:hidden !important;
-    -webkit-backface-visibility:hidden !important;
-  }
-
-  #ks-iframe,
-  #tt-iframe{
-    transform:none !important;
-    -webkit-transform:none !important;
-    contain:none !important;
-    content-visibility:visible !important;
-    backface-visibility:hidden !important;
-    -webkit-backface-visibility:hidden !important;
+  body.medplus-aux-open.medplus-nav-light-only .medplus-nav-badge{
+    background:rgba(232,245,230,.78) !important;
+    border-color:rgba(46,125,50,.26) !important;
+    color:#1b5e20 !important;
+    box-shadow:0 8px 22px rgba(27,94,32,.09), inset 0 1px 0 rgba(255,255,255,.58) !important;
   }
 }
 
@@ -4786,6 +4765,64 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
   body.dark-mode:not(.medplus-aux-open) .medplus-app-nav::before{
     background:rgba(8,20,42,.62) !important;
     border-color:rgba(80,220,180,.24) !important;
+  }
+}
+
+/* PC: khoanh vùng lỗi nhấp nháy KS + Tương tác thuốc.
+   Giữ lại animation mở modal gốc; chỉ cô lập lớp render và thêm nền đệm phía sau iframe để không lộ overlay tối/blur khi iframe repaint. */
+@media (min-width:769px){
+  #ks-modal,
+  #tt-modal{
+    isolation:isolate !important;
+  }
+
+  #ks-modal .iv-modal-content,
+  #tt-modal .iv-modal-content{
+    contain:none !important;
+    content-visibility:visible !important;
+  }
+
+  #ks-modal .iv-modal-content::before,
+  #tt-modal .iv-modal-content::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:20px;
+    background:#ffffff;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  body.dark-mode #ks-modal .iv-modal-content::before,
+  body.dark-mode #tt-modal .iv-modal-content::before{
+    background:#0d1f3c;
+  }
+
+  #ks-modal .iv-iframe-container,
+  #tt-modal .iv-iframe-container{
+    z-index:1;
+    transform:none !important;
+    -webkit-transform:none !important;
+    contain:none !important;
+    content-visibility:visible !important;
+    backface-visibility:hidden !important;
+    -webkit-backface-visibility:hidden !important;
+  }
+
+  #ks-iframe,
+  #tt-iframe{
+    background:#ffffff !important;
+    transform:none !important;
+    -webkit-transform:none !important;
+    contain:none !important;
+    content-visibility:visible !important;
+    backface-visibility:hidden !important;
+    -webkit-backface-visibility:hidden !important;
+  }
+
+  body.dark-mode #ks-iframe,
+  body.dark-mode #tt-iframe{
+    background:#0d1f3c !important;
   }
 }
 </style>
@@ -10361,5 +10398,9 @@ updateNavbarSearchVisibility(id);
 })();
 </script>
 
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"7939e04a4baf43c8b86a560f74aac60e","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"febbfaacdfbc4a51921583d5e93de024","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"7939e04a4baf43c8b86a560f74aac60e","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"febbfaacdfbc4a51921583d5e93de024","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
