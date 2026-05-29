@@ -655,23 +655,8 @@
     </style>
 
 <style id="iframe-fix">
-/* Xử lý lỗi nháy sọc trên iframe Safari/iOS an toàn không làm hỏng blur */
-body.iframe-embed {
-    -webkit-perspective: 1000px;
-    perspective: 1000px;
-}
-body.iframe-embed #bg-layer,
-body.iframe-embed .section-card,
-body.iframe-embed .search-toolbar,
-body.iframe-embed .result-item-wrapper,
-body.iframe-embed .disease-card,
-body.iframe-embed .empty-state,
-body.iframe-embed .toast-msg {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-}
+body.iframe-embed *{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+body.iframe-embed .section-card,body.iframe-embed .search-toolbar,body.iframe-embed .result-item-wrapper,body.iframe-embed .disease-card,body.iframe-embed .empty-state,body.iframe-embed .toast-msg{transform:translateZ(0)}
 </style>
 </head>
 <body>
