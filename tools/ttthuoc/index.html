@@ -654,21 +654,26 @@
         body.dark-mode #csb-thumb:hover { background:rgba(74, 222, 128, 0.8); }
     </style>
 
-<style id="iframe-light-hard-fix">
+<style id="iframe-noblur-fix">
+html.parent-light body.iframe-embed .section-card,
+html.parent-light body.iframe-embed .header,
+html.parent-light body.iframe-embed .main-body,
+html.parent-light body.iframe-embed .search-toolbar,
+html.parent-light body.iframe-embed .disease-card,
+html.parent-light body.iframe-embed .result-item-wrapper,
+html.parent-light body.iframe-embed .empty-state,
+html.parent-light body.iframe-embed .toast-msg {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+  -webkit-transform: none !important;
+}
 html.parent-light body.iframe-embed .section-card,
 html.parent-light body.iframe-embed .header,
 html.parent-light body.iframe-embed .search-toolbar {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  transform: translateZ(0) !important;
-  -webkit-transform: translateZ(0) !important;
-}
-html.parent-light body.iframe-embed .section-card {
-  background: rgba(255,255,255,0.98) !important;
-  border-color: rgba(255,255,255,0.9) !important;
-}
-html.parent-light body.iframe-embed .header {
-  background: rgba(255,255,255,0.88) !important;
+  background-image: none !important;
 }
 </style>
 </head>
@@ -1273,15 +1278,13 @@ html.parent-light body.iframe-embed .header {
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"7939e04a4baf43c8b86a560f74aac60e","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"febbfaacdfbc4a51921583d5e93de024","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 
-<script id="iframe-light-hard-fix-js">
+<script id="iframe-noblur-fix-js">
 (function(){
   try {
     if (window.self !== window.top) {
       document.documentElement.classList.add('iframe-embed');
       var dark = false;
-      try {
-        dark = !!(window.parent && window.parent.document && window.parent.document.body && window.parent.document.body.classList.contains('dark-mode'));
-      } catch(e) {}
+      try { dark = window.parent && window.parent.document && window.parent.document.body && window.parent.document.body.classList.contains('dark-mode'); } catch(e) {}
       document.documentElement.classList.toggle('parent-light', !dark);
     }
   } catch(e) {
