@@ -1195,50 +1195,6 @@ body.medplus-aux-open .medplus-aux-frame-wrap{
         
         .chat-widget-container .disclaimer{background:rgba(255,248,225,0.92);border-left:4px solid #ffc107;padding:5px 12px;border-radius:10px;font-size:15px;line-height:1.4;width:100%;margin-top:6px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
 
-
-
-        /* PC HOME TOOL MODAL: tắt hiệu ứng nền/trang chủ khi mở 4 modal công cụ, giữ nguyên animation mở modal */
-        @media (min-width: 601px) {
-            body.pc-tool-modal-open .container,
-            body.pc-tool-modal-open .footer,
-            body.pc-tool-modal-open .nature-background,
-            body.pc-tool-modal-open .night-background,
-            body.pc-tool-modal-open .product-grid,
-            body.pc-tool-modal-open .skeleton-grid,
-            body.pc-tool-modal-open .search-wrapper,
-            body.pc-tool-modal-open .header-main,
-            body.pc-tool-modal-open .leaf,
-            body.pc-tool-modal-open .star,
-            body.pc-tool-modal-open .shooting-star,
-            body.pc-tool-modal-open .planet,
-            body.pc-tool-modal-open .zen-logo img,
-            body.pc-tool-modal-open .medplus-badge::after,
-            body.pc-tool-modal-open .new-badge,
-            body.pc-tool-modal-open .new-badge::before,
-            body.pc-tool-modal-open .new-badge::after,
-            body.pc-tool-modal-open .skeleton-el,
-            body.pc-tool-modal-open .iv-badge-btn,
-            body.pc-tool-modal-open .iv-badge-btn *,
-            body.pc-tool-modal-open .glass-card,
-            body.pc-tool-modal-open .glass-card *,
-            body.pc-tool-modal-open .hdsd-btn,
-            body.pc-tool-modal-open .abc-toggle-btn,
-            body.pc-tool-modal-open .letter-btn,
-            body.pc-tool-modal-open .view-btn,
-            body.pc-tool-modal-open .search-box,
-            body.pc-tool-modal-open .group-filter-wrapper,
-            body.pc-tool-modal-open .group-filter-select,
-            body.pc-tool-modal-open #chat-widget-btn,
-            body.pc-tool-modal-open #bell-btn,
-            body.pc-tool-modal-open .back-top,
-            body.pc-tool-modal-open #notif-floating-bell {
-                animation: none !important;
-                transition: none !important;
-                scroll-behavior: auto !important;
-                will-change: auto !important;
-            }
-        }
-
         /* --- CẬP NHẬT KÍCH THƯỚC MODAL CHO PC --- */
         @media (min-width: 601px) {
             .iv-modal-content {
@@ -4802,6 +4758,66 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
   }
 }
 
+
+
+        /* ==============================================================
+           PC TOOL MODAL FLICKER FIX — CHỈ ÁP DỤNG 4 MODAL CÔNG CỤ
+           Mục tiêu: bỏ hiệu ứng/transition gây repaint bên trong iframe
+           khi mở modal Tiêm truyền, Chỉnh liều KS, Tương tác thuốc,
+           Tương hợp - Tương kỵ. Không ảnh hưởng các modal/nút/phần khác.
+           ============================================================== */
+        @media (min-width: 601px) {
+            #iv-modal.modal-overlay,
+            #ks-modal.modal-overlay,
+            #tt-modal.modal-overlay,
+            #tk-modal.modal-overlay {
+                animation: none !important;
+                transition: none !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                transform: none !important;
+            }
+
+            #iv-modal .iv-modal-content,
+            #ks-modal .iv-modal-content,
+            #tt-modal .iv-modal-content,
+            #tk-modal .iv-modal-content {
+                animation: none !important;
+                transition: none !important;
+                transform: none !important;
+                -webkit-transform: none !important;
+                will-change: auto !important;
+                backface-visibility: hidden;
+                -webkit-backface-visibility: hidden;
+            }
+
+            #iv-modal .iv-iframe-container,
+            #ks-modal .iv-iframe-container,
+            #tt-modal .iv-iframe-container,
+            #tk-modal .iv-iframe-container {
+                animation: none !important;
+                transition: none !important;
+                transform: none !important;
+                -webkit-transform: none !important;
+                will-change: auto !important;
+                contain: layout paint !important;
+                isolation: isolate;
+            }
+
+            #iv-modal iframe,
+            #ks-modal iframe,
+            #tt-modal iframe,
+            #tk-modal iframe {
+                animation: none !important;
+                transition: none !important;
+                transform: none !important;
+                -webkit-transform: none !important;
+                will-change: auto !important;
+                content-visibility: visible !important;
+                contain: none !important;
+                opacity: 1 !important;
+            }
+        }
 </style>
 </head>
 <body>
@@ -7465,19 +7481,8 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
             }, 300);
         }
 
-
-
-        function setPCToolModalEffectsPaused(isOpen) {
-            if (window.innerWidth > 600) {
-                document.body.classList.toggle('pc-tool-modal-open', !!isOpen);
-            } else {
-                document.body.classList.remove('pc-tool-modal-open');
-            }
-        }
-
         function openIVModal() {
             document.getElementById('iv-modal').style.display = 'flex';
-            setPCToolModalEffectsPaused(true);
             lockBodyScroll('iv');
             const iframe = document.getElementById('iv-iframe');
             if (!iframe.getAttribute('src')) {
@@ -7487,7 +7492,6 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
         }
         function closeIVModal() {
             document.getElementById('iv-modal').style.display = 'none';
-            setPCToolModalEffectsPaused(false);
             unlockBodyScroll('iv');
             // Terminate iframe process — tránh JS/animation chạy ngầm gây nóng máy
             document.getElementById('iv-iframe').src = '';
@@ -7495,7 +7499,6 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
 
         function openKSModal() {
             document.getElementById('ks-modal').style.display = 'flex';
-            setPCToolModalEffectsPaused(true);
             lockBodyScroll('ks');
             const iframe = document.getElementById('ks-iframe');
             if (!iframe.getAttribute('src')) {
@@ -7505,7 +7508,6 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
         }
         function closeKSModal() {
             document.getElementById('ks-modal').style.display = 'none';
-            setPCToolModalEffectsPaused(false);
             unlockBodyScroll('ks');
             // Terminate iframe process — tránh JS/animation chạy ngầm gây nóng máy
             document.getElementById('ks-iframe').src = '';
@@ -7513,7 +7515,6 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
 
         function openTTModal() {
             document.getElementById('tt-modal').style.display = 'flex';
-            setPCToolModalEffectsPaused(true);
             lockBodyScroll('tt');
             const iframe = document.getElementById('tt-iframe');
             if (!iframe.getAttribute('src')) {
@@ -7523,7 +7524,6 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
         }
         function closeTTModal() {
             document.getElementById('tt-modal').style.display = 'none';
-            setPCToolModalEffectsPaused(false);
             unlockBodyScroll('tt');
             // Terminate iframe process — tránh JS/animation chạy ngầm gây nóng máy
             document.getElementById('tt-iframe').src = '';
@@ -7531,7 +7531,6 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
 
         function openTKModal() {
             document.getElementById('tk-modal').style.display = 'flex';
-            setPCToolModalEffectsPaused(true);
             lockBodyScroll('tk');
             const iframe = document.getElementById('tk-iframe');
             if (!iframe.getAttribute('src')) {
@@ -7541,7 +7540,6 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
         }
         function closeTKModal() {
             document.getElementById('tk-modal').style.display = 'none';
-            setPCToolModalEffectsPaused(false);
             unlockBodyScroll('tk');
             // Terminate iframe process — tránh JS/animation chạy ngầm gây nóng máy
             document.getElementById('tk-iframe').src = '';
@@ -10393,9 +10391,5 @@ updateNavbarSearchVisibility(id);
 })();
 </script>
 
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"7939e04a4baf43c8b86a560f74aac60e","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"febbfaacdfbc4a51921583d5e93de024","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"7939e04a4baf43c8b86a560f74aac60e","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"febbfaacdfbc4a51921583d5e93de024","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
