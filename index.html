@@ -4769,7 +4769,8 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
 }
 
 /* PC: khoanh vùng lỗi nhấp nháy KS + Tương tác thuốc.
-   Giữ lại animation mở modal gốc; chỉ cô lập lớp render và thêm nền đệm phía sau iframe để không lộ overlay tối/blur khi iframe repaint. */
+   Nguyên nhân là modal animation/GPU layer + iframe repaint làm lộ overlay tối/blur.
+   Giữ viền/nền .iv-iframe-container giống Tiêm truyền/Tương hợp-Tương kỵ, chỉ thêm nền đệm vô hình phía sau iframe. */
 @media (min-width:769px){
   #ks-modal,
   #tt-modal{
@@ -4778,6 +4779,9 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
 
   #ks-modal .iv-modal-content,
   #tt-modal .iv-modal-content{
+    animation:none !important;
+    transform:none !important;
+    -webkit-transform:none !important;
     contain:none !important;
     content-visibility:visible !important;
   }
