@@ -655,8 +655,29 @@
     </style>
 
 <style id="iframe-fix">
-body.iframe-embed *{backface-visibility:hidden;-webkit-backface-visibility:hidden}
-body.iframe-embed .section-card,body.iframe-embed .search-toolbar,body.iframe-embed .result-item-wrapper,body.iframe-embed .disease-card,body.iframe-embed .empty-state,body.iframe-embed .toast-msg{transform:translateZ(0)}
+/* Khắc phục triệt để lỗi nháy sọc viền và giật lag trên iframe (Safari/iOS) */
+body.iframe-embed * {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+body.iframe-embed #bg-layer {
+    will-change: auto !important;
+    transition: none !important;
+}
+body.iframe-embed .app-container {
+    transition: none !important;
+}
+body.iframe-embed .section-card,
+body.iframe-embed .search-toolbar,
+body.iframe-embed .result-item-wrapper,
+body.iframe-embed .disease-card,
+body.iframe-embed .empty-state,
+body.iframe-embed .toast-msg {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    background-clip: padding-box;
+    isolation: isolate;
+}
 </style>
 </head>
 <body>
