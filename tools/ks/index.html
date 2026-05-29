@@ -665,10 +665,12 @@ body.dark-mode [style*="font-weight:700;color:#0f172a"] { color: #e2f5ee !import
 
 </style>
 
+<!-- INSERT HERE: IFRAME FIX CSS -->
 <style id="iframe-fix">
 body.iframe-embed *{backface-visibility:hidden;-webkit-backface-visibility:hidden}
 body.iframe-embed .hdr-card,body.iframe-embed .card,body.iframe-embed .toast{transform:translateZ(0)}
 </style>
+<!-- END INSERT -->
 </head>
 <body>
 <div class="bg-fixed"></div>
@@ -2192,9 +2194,10 @@ function resetAll(){
 })();
 </script>
 </div><!-- /.page-scroll -->
-
+<!-- INSERT HERE: IFRAME FIX JS -->
 <script id="iframe-fix-js">
 (function(){try{if(window.self!==window.top)document.documentElement.classList.add('iframe-embed')}catch(e){document.documentElement.classList.add('iframe-embed')}})();
 </script>
+<!-- END INSERT -->
 </body>
 </html>
