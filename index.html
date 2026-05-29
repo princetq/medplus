@@ -1195,50 +1195,6 @@ body.medplus-aux-open .medplus-aux-frame-wrap{
         
         .chat-widget-container .disclaimer{background:rgba(255,248,225,0.92);border-left:4px solid #ffc107;padding:5px 12px;border-radius:10px;font-size:15px;line-height:1.4;width:100%;margin-top:6px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
 
-
-
-        /* PC HOME TOOL MODAL: tắt hiệu ứng nền/trang chủ khi mở 4 modal công cụ, giữ nguyên animation mở modal */
-        @media (min-width: 601px) {
-            body.pc-tool-modal-open .container,
-            body.pc-tool-modal-open .footer,
-            body.pc-tool-modal-open .nature-background,
-            body.pc-tool-modal-open .night-background,
-            body.pc-tool-modal-open .product-grid,
-            body.pc-tool-modal-open .skeleton-grid,
-            body.pc-tool-modal-open .search-wrapper,
-            body.pc-tool-modal-open .header-main,
-            body.pc-tool-modal-open .leaf,
-            body.pc-tool-modal-open .star,
-            body.pc-tool-modal-open .shooting-star,
-            body.pc-tool-modal-open .planet,
-            body.pc-tool-modal-open .zen-logo img,
-            body.pc-tool-modal-open .medplus-badge::after,
-            body.pc-tool-modal-open .new-badge,
-            body.pc-tool-modal-open .new-badge::before,
-            body.pc-tool-modal-open .new-badge::after,
-            body.pc-tool-modal-open .skeleton-el,
-            body.pc-tool-modal-open .iv-badge-btn,
-            body.pc-tool-modal-open .iv-badge-btn *,
-            body.pc-tool-modal-open .glass-card,
-            body.pc-tool-modal-open .glass-card *,
-            body.pc-tool-modal-open .hdsd-btn,
-            body.pc-tool-modal-open .abc-toggle-btn,
-            body.pc-tool-modal-open .letter-btn,
-            body.pc-tool-modal-open .view-btn,
-            body.pc-tool-modal-open .search-box,
-            body.pc-tool-modal-open .group-filter-wrapper,
-            body.pc-tool-modal-open .group-filter-select,
-            body.pc-tool-modal-open #chat-widget-btn,
-            body.pc-tool-modal-open #bell-btn,
-            body.pc-tool-modal-open .back-top,
-            body.pc-tool-modal-open #notif-floating-bell {
-                animation: none !important;
-                transition: none !important;
-                scroll-behavior: auto !important;
-                will-change: auto !important;
-            }
-        }
-
         /* --- CẬP NHẬT KÍCH THƯỚC MODAL CHO PC --- */
         @media (min-width: 601px) {
             .iv-modal-content {
@@ -7465,19 +7421,10 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
             }, 300);
         }
 
-
-
-        function setPCToolModalEffectsPaused(isOpen) {
-            if (window.innerWidth > 600) {
-                document.body.classList.toggle('pc-tool-modal-open', !!isOpen);
-            } else {
-                document.body.classList.remove('pc-tool-modal-open');
-            }
-        }
-
         function openIVModal() {
+            document.body.classList.add('medplus-aux-open');
+            document.documentElement.classList.add('medplus-aux-open');
             document.getElementById('iv-modal').style.display = 'flex';
-            setPCToolModalEffectsPaused(true);
             lockBodyScroll('iv');
             const iframe = document.getElementById('iv-iframe');
             if (!iframe.getAttribute('src')) {
@@ -7486,16 +7433,18 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
             }
         }
         function closeIVModal() {
+            document.body.classList.remove('medplus-aux-open');
+            document.documentElement.classList.remove('medplus-aux-open');
             document.getElementById('iv-modal').style.display = 'none';
-            setPCToolModalEffectsPaused(false);
             unlockBodyScroll('iv');
             // Terminate iframe process — tránh JS/animation chạy ngầm gây nóng máy
             document.getElementById('iv-iframe').src = '';
         }
 
         function openKSModal() {
+            document.body.classList.add('medplus-aux-open');
+            document.documentElement.classList.add('medplus-aux-open');
             document.getElementById('ks-modal').style.display = 'flex';
-            setPCToolModalEffectsPaused(true);
             lockBodyScroll('ks');
             const iframe = document.getElementById('ks-iframe');
             if (!iframe.getAttribute('src')) {
@@ -7504,16 +7453,18 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
             }
         }
         function closeKSModal() {
+            document.body.classList.remove('medplus-aux-open');
+            document.documentElement.classList.remove('medplus-aux-open');
             document.getElementById('ks-modal').style.display = 'none';
-            setPCToolModalEffectsPaused(false);
             unlockBodyScroll('ks');
             // Terminate iframe process — tránh JS/animation chạy ngầm gây nóng máy
             document.getElementById('ks-iframe').src = '';
         }
 
         function openTTModal() {
+            document.body.classList.add('medplus-aux-open');
+            document.documentElement.classList.add('medplus-aux-open');
             document.getElementById('tt-modal').style.display = 'flex';
-            setPCToolModalEffectsPaused(true);
             lockBodyScroll('tt');
             const iframe = document.getElementById('tt-iframe');
             if (!iframe.getAttribute('src')) {
@@ -7522,16 +7473,18 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
             }
         }
         function closeTTModal() {
+            document.body.classList.remove('medplus-aux-open');
+            document.documentElement.classList.remove('medplus-aux-open');
             document.getElementById('tt-modal').style.display = 'none';
-            setPCToolModalEffectsPaused(false);
             unlockBodyScroll('tt');
             // Terminate iframe process — tránh JS/animation chạy ngầm gây nóng máy
             document.getElementById('tt-iframe').src = '';
         }
 
         function openTKModal() {
+            document.body.classList.add('medplus-aux-open');
+            document.documentElement.classList.add('medplus-aux-open');
             document.getElementById('tk-modal').style.display = 'flex';
-            setPCToolModalEffectsPaused(true);
             lockBodyScroll('tk');
             const iframe = document.getElementById('tk-iframe');
             if (!iframe.getAttribute('src')) {
@@ -7540,8 +7493,9 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
             }
         }
         function closeTKModal() {
+            document.body.classList.remove('medplus-aux-open');
+            document.documentElement.classList.remove('medplus-aux-open');
             document.getElementById('tk-modal').style.display = 'none';
-            setPCToolModalEffectsPaused(false);
             unlockBodyScroll('tk');
             // Terminate iframe process — tránh JS/animation chạy ngầm gây nóng máy
             document.getElementById('tk-iframe').src = '';
