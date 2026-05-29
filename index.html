@@ -4779,6 +4779,29 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
       rgba(232,248,228,.98) 100%) !important;
   }
 }
+
+@keyframes medplusModalFadeStable {
+  0% { opacity: 0; transform: translateY(10px) translateZ(0); }
+  100% { opacity: 1; transform: translateY(0) translateZ(0); }
+}
+
+.modal-overlay .iv-modal-content {
+  animation: medplusModalFadeStable .22s ease-out forwards !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  transform-origin: center center !important;
+  will-change: opacity, transform !important;
+}
+
+@media (max-width: 600px) {
+  .modal-overlay {
+    background: rgba(0,0,0,.92) !important;
+  }
+
+  body.dark-mode .modal-overlay {
+    background: rgba(0,5,15,.96) !important;
+  }
+}
 </style>
 </head>
 <body>
