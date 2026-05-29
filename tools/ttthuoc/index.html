@@ -655,28 +655,27 @@
     </style>
 
 <style id="iframe-fix">
-/* Khắc phục triệt để lỗi nháy sọc viền và giật lag trên iframe (Safari/iOS) */
-body.iframe-embed * {
+/* Sửa lỗi selector: JS thêm class vào <html> nên phải dùng .iframe-embed thay vì body.iframe-embed */
+.iframe-embed * {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 }
-body.iframe-embed #bg-layer {
-    will-change: auto !important;
-    transition: none !important;
-}
-body.iframe-embed .app-container {
-    transition: none !important;
-}
-body.iframe-embed .section-card,
-body.iframe-embed .search-toolbar,
-body.iframe-embed .result-item-wrapper,
-body.iframe-embed .disease-card,
-body.iframe-embed .empty-state,
-body.iframe-embed .toast-msg {
+.iframe-embed .section-card,
+.iframe-embed .search-toolbar,
+.iframe-embed .result-item-wrapper,
+.iframe-embed .disease-card,
+.iframe-embed .empty-state,
+.iframe-embed .toast-msg {
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
-    background-clip: padding-box;
-    isolation: isolate;
+}
+/* ĐÂY LÀ FIX CHO PC: Chặn vòng lặp vô tận của hàm centerUI() gây nhảy layout trong iframe */
+.iframe-embed .app-container {
+    margin-top: 20px !important;
+    transition: none !important;
+}
+.iframe-embed #bg-layer {
+    will-change: auto !important;
 }
 </style>
 </head>
