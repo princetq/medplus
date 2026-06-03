@@ -5106,6 +5106,392 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
   }
 }
 
+
+/* ALL TABLET = MOBILE HOME LAYOUT PATCH - chỉ ghi đè responsive, giữ nguyên các phần khác */
+@media (min-width: 601px) and (max-width: 1180px), (min-width: 601px) and (pointer: coarse) {
+  body{
+    padding-top:calc(var(--medplus-nav-height) + var(--medplus-nav-safe-top) + 20px) !important;
+  }
+
+  .medplus-app-nav{
+    padding-left:10px !important;
+    padding-right:10px !important;
+  }
+
+  .medplus-desktop-nav{
+    display:none !important;
+  }
+
+  .medplus-hamburger{
+    display:flex !important;
+  }
+
+  .medplus-mobile-actions{
+    display:flex !important;
+  }
+
+  .medplus-nav-logo-circle{
+    width:36px !important;
+    height:36px !important;
+  }
+
+  .medplus-nav-logo-circle img{
+    width:34px !important;
+    height:34px !important;
+  }
+
+  .medplus-nav-badge{
+    padding:5px 10px !important;
+    font-size:.7rem !important;
+    letter-spacing:.9px !important;
+  }
+
+  .medplus-mobile-menu{
+    width:75vw !important;
+    max-width:430px !important;
+  }
+
+  .container{
+    max-width:100% !important;
+    padding-left:18px !important;
+    padding-right:18px !important;
+  }
+
+  .search-wrapper{
+    display:grid !important;
+    grid-template-columns:auto auto 1fr auto !important;
+    align-items:center !important;
+    margin-bottom:20px !important;
+    gap:8px !important;
+    flex-wrap:unset !important;
+    background:transparent !important;
+  }
+
+  .abc-toggle-btn{
+    grid-column:1 !important;
+    grid-row:1 !important;
+    order:unset !important;
+  }
+
+  .view-toggle{
+    grid-column:2 !important;
+    grid-row:1 !important;
+    order:unset !important;
+    margin-left:0 !important;
+  }
+
+  .search-box{
+    grid-column:3 / 5 !important;
+    grid-row:1 !important;
+    width:100% !important;
+    max-width:none !important;
+    min-width:0 !important;
+    padding:8px 10px !important;
+    order:unset !important;
+  }
+
+  .search-box:focus-within{
+    max-width:none !important;
+    transform:none !important;
+  }
+
+  .search-box input{
+    font-size:16px !important;
+    min-width:0 !important;
+    line-height:normal !important;
+    padding:0 !important;
+    display:block !important;
+    height:auto !important;
+    margin:0 !important;
+  }
+
+  .search-box svg{
+    flex-shrink:0 !important;
+  }
+
+  .alphabet-filter{
+    grid-column:1 / -1 !important;
+    grid-row:2 !important;
+    width:100% !important;
+    max-width:100% !important;
+    justify-content:flex-start !important;
+    margin-top:8px !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    order:unset !important;
+  }
+
+  .alphabet-filter[style*="display: flex"]{
+    display:flex !important;
+  }
+
+  .letter-btn{
+    flex:0 0 32px !important;
+  }
+
+  .group-filter-wrapper{
+    grid-column:1 / 4 !important;
+    grid-row:3 !important;
+    width:-webkit-fit-content !important;
+    width:fit-content !important;
+    max-width:205px !important;
+    order:unset !important;
+    align-self:center !important;
+    justify-self:start !important;
+    height:36px !important;
+    overflow:hidden !important;
+    transition:max-width .38s cubic-bezier(0.2, 0, 0, 1) !important;
+    will-change:max-width !important;
+    transform:translateZ(0) !important;
+  }
+
+  .group-filter-wrapper.temp-hide{
+    max-width:44px !important;
+    min-width:44px !important;
+    pointer-events:none !important;
+  }
+
+  .group-filter-wrapper.temp-hide .group-filter-select{
+    background-image:none !important;
+    padding:0 !important;
+    max-width:44px !important;
+  }
+
+  .group-filter-wrapper.temp-hide .group-text-overlay{
+    opacity:0 !important;
+    transition:opacity 0.2s ease !important;
+  }
+
+  .group-filter-wrapper .group-filter-select{
+    width:-webkit-fit-content !important;
+    width:fit-content !important;
+    max-width:185px !important;
+    min-width:44px !important;
+    height:34px !important;
+    font-size:12px !important;
+    padding:0 28px 0 34px !important;
+    border-radius:12px !important;
+    transition:max-width .38s cubic-bezier(0.2, 0, 0, 1), padding .38s cubic-bezier(0.2, 0, 0, 1), background-color 0.2s, border-color 0.2s !important;
+    will-change:max-width, padding !important;
+  }
+
+  .iv-btn-wrapper{
+    position:relative !important;
+    grid-column:4 !important;
+    grid-row:3 !important;
+    justify-self:end !important;
+    align-self:center !important;
+    margin:0 !important;
+    display:flex !important;
+    flex-wrap:nowrap !important;
+    gap:6px !important;
+    height:36px !important;
+    align-items:center !important;
+    right:auto !important;
+    top:auto !important;
+    overflow:visible !important;
+  }
+
+  .count-badge{
+    grid-column:1 / -1 !important;
+    grid-row:4 !important;
+    justify-self:flex-start !important;
+    font-size:13px !important;
+    padding:4px 10px !important;
+    margin:4px 0 0 0 !important;
+    order:unset !important;
+  }
+
+  .ks-text-pc{display:none !important;}
+  .ks-text-mobile{display:inline !important;}
+
+  .iv-badge-btn{
+    width:36px !important;
+    height:36px !important;
+    padding:0 !important;
+    border-radius:50% !important;
+    display:block !important;
+    position:relative !important;
+    z-index:10 !important;
+    border:1.5px solid rgba(255,255,255,0.5) !important;
+    overflow:visible !important;
+  }
+
+  .iv-badge-btn.iv-expanded{
+    z-index:100 !important;
+    background:linear-gradient(135deg, #43a047, #1b5e20) !important;
+    animation-play-state:paused, paused !important;
+    transform:translateY(0) translateZ(0) !important;
+  }
+
+  .iv-badge-btn .syringe-icon{
+    position:absolute !important;
+    width:22px !important;
+    height:22px !important;
+    left:50% !important;
+    top:50% !important;
+    transform:translate(-50%, -50%) scale(1) rotate(0deg) !important;
+    -webkit-transform:translate(-50%, -50%) scale(1) rotate(0deg) !important;
+    filter:drop-shadow(-1px 2px 2px rgba(0,0,0,0.25)) !important;
+    transition:transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    z-index:30 !important;
+  }
+
+  .iv-badge-btn .iv-btn-text{
+    position:absolute !important;
+    right:-2px !important;
+    top:-2px !important;
+    height:40px !important;
+    line-height:38px !important;
+    background:linear-gradient(135deg, #4caf50, #2e7d32) !important;
+    border:1.5px solid rgba(255,255,255,0.5) !important;
+    border-radius:20px !important;
+    white-space:nowrap !important;
+    z-index:20 !important;
+    pointer-events:none !important;
+    font-size:12px !important;
+    color:#fff !important;
+    box-sizing:border-box !important;
+    box-shadow:0 4px 15px rgba(46,125,50,0.3) !important;
+    max-width:none !important;
+    width:max-content !important;
+    padding:0 44px 0 16px !important;
+    opacity:0 !important;
+    clip-path:inset(0 100% 0 0 round 20px) !important;
+    -webkit-clip-path:inset(0 100% 0 0 round 20px) !important;
+    overflow:visible !important;
+    transition:clip-path 0.38s cubic-bezier(0.2, 0, 0, 1), -webkit-clip-path 0.38s cubic-bezier(0.2, 0, 0, 1), opacity 0.28s ease, background-color 0.3s ease !important;
+    will-change:clip-path, opacity !important;
+    transform:translateZ(0) !important;
+    -webkit-transform:translateZ(0) !important;
+  }
+
+  .iv-badge-btn.iv-expanded .iv-btn-text{
+    clip-path:inset(0 0% 0 0 round 20px) !important;
+    -webkit-clip-path:inset(0 0% 0 0 round 20px) !important;
+    opacity:1 !important;
+  }
+
+  .iv-badge-btn:not(.iv-expanded) .iv-btn-text{
+    will-change:auto !important;
+  }
+
+  .iv-badge-btn.iv-expanded .syringe-icon{
+    transform:translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
+    -webkit-transform:translate(-50%, -50%) scale(1.9) rotate(0deg) !important;
+    animation:iconPopWiggle 0.6s ease-in-out infinite !important;
+    filter:drop-shadow(-2px 4px 5px rgba(0,0,0,0.4)) !important;
+  }
+
+  .product-grid,
+  .skeleton-grid{
+    grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+    gap:10px !important;
+  }
+
+  .product-grid.list-view{
+    grid-template-columns:1fr !important;
+    gap:10px !important;
+  }
+
+  .product-grid.list-view .glass-card{
+    flex-direction:row !important;
+    align-items:center !important;
+    padding:10px 16px !important;
+    gap:14px !important;
+  }
+
+  .product-grid.list-view .img-wrap{
+    width:65px !important;
+    height:65px !important;
+    margin-bottom:0 !important;
+    flex-shrink:0 !important;
+    border-radius:10px !important;
+  }
+
+  .product-grid.list-view .card-content{
+    flex-direction:row !important;
+    align-items:center !important;
+    flex-wrap:wrap !important;
+    gap:4px 12px !important;
+  }
+
+  .product-grid.list-view .p-title,
+  .product-grid.list-view .card-info{
+    container-type:inline-size !important;
+    overflow:hidden !important;
+    white-space:nowrap !important;
+    margin-bottom:0 !important;
+  }
+
+  .product-grid.list-view .p-title{
+    width:100% !important;
+    font-size:16px !important;
+    display:block !important;
+  }
+
+  .product-grid.list-view .card-info{
+    flex:1 !important;
+    min-width:0 !important;
+  }
+
+  .product-grid.list-view .p-info{
+    display:inline-block !important;
+    white-space:nowrap !important;
+    margin-right:12px !important;
+    margin-top:0 !important;
+    margin-bottom:0 !important;
+  }
+
+  .product-grid.list-view .hdsd-btn{
+    width:auto !important;
+    margin-top:0 !important;
+    padding:6px 14px !important;
+    flex-shrink:0 !important;
+    position:relative !important;
+    z-index:2 !important;
+  }
+
+  .product-grid.list-view .new-badge{
+    position:static !important;
+    flex-shrink:0 !important;
+    order:-1 !important;
+  }
+
+  .modal-overlay{
+    padding:10px !important;
+  }
+
+  .modal-content{
+    width:100% !important;
+    max-width:calc(100vw - 20px) !important;
+    max-height:92dvh !important;
+    padding:22px !important;
+    border-radius:18px !important;
+  }
+
+  .iv-modal-content{
+    width:100% !important;
+    max-width:calc(100vw - 20px) !important;
+    height:86dvh !important;
+    max-height:86dvh !important;
+  }
+
+  #iv-modal .close-btn,
+  #ks-modal .close-btn,
+  #tt-modal .close-btn,
+  #tk-modal .close-btn{
+    color:#ffffff !important;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1180px) and (orientation: landscape), (min-width: 601px) and (pointer: coarse) and (orientation: landscape) {
+  .product-grid,
+  .skeleton-grid{
+    grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -5364,11 +5750,11 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
         <img id="image-zoom-img" src="" alt="Zoomed Image">
     </div>
 
-    <div class="modal-overlay" id="modal" onclick="if(event.target===this && window.innerWidth>600) closeModal()">
+    <div class="modal-overlay" id="modal" onclick="if(event.target===this && window.innerWidth>1180) closeModal()">
         <div class="modal-content"><span class="close-btn" onclick="closeModal()">&times;</span><div id="modal-body"></div></div>
     </div>
 
-    <div class="modal-overlay" id="iv-modal" onclick="if(event.target===this && window.innerWidth>600) closeIVModal()">
+    <div class="modal-overlay" id="iv-modal" onclick="if(event.target===this && window.innerWidth>1180) closeIVModal()">
         <div class="modal-content iv-modal-content">
             <span class="close-btn" onclick="closeIVModal()">&times;</span>
             <div class="iv-iframe-container">
@@ -5378,7 +5764,7 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
         </div>
     </div>
 
-    <div class="modal-overlay" id="ks-modal" onclick="if(event.target===this && window.innerWidth>600) closeKSModal()">
+    <div class="modal-overlay" id="ks-modal" onclick="if(event.target===this && window.innerWidth>1180) closeKSModal()">
         <div class="modal-content iv-modal-content">
             <span class="close-btn" onclick="closeKSModal()">&times;</span>
             <div class="iv-iframe-container">
@@ -5388,7 +5774,7 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
         </div>
     </div>
 
-    <div class="modal-overlay" id="tt-modal" onclick="if(event.target===this && window.innerWidth>600) closeTTModal()">
+    <div class="modal-overlay" id="tt-modal" onclick="if(event.target===this && window.innerWidth>1180) closeTTModal()">
         <div class="modal-content iv-modal-content">
             <span class="close-btn" onclick="closeTTModal()">&times;</span>
             <div class="iv-iframe-container">
@@ -5398,7 +5784,7 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
         </div>
     </div>
 
-    <div class="modal-overlay" id="tk-modal" onclick="if(event.target===this && window.innerWidth>600) closeTKModal()">
+    <div class="modal-overlay" id="tk-modal" onclick="if(event.target===this && window.innerWidth>1180) closeTKModal()">
         <div class="modal-content iv-modal-content">
             <span class="close-btn" onclick="closeTKModal()">&times;</span>
             <div class="iv-iframe-container">
@@ -5408,7 +5794,7 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
         </div>
     </div>
 
-    <div class="modal-overlay" id="hdsd-modal" onclick="if(event.target===this && window.innerWidth>600) closeHDSDModal()">
+    <div class="modal-overlay" id="hdsd-modal" onclick="if(event.target===this && window.innerWidth>1180) closeHDSDModal()">
         <div class="modal-content iv-modal-content" style="background: var(--bg); padding: 0;">
             <span class="close-btn" onclick="closeHDSDModal()" style="z-index: 50;">&times;</span>
             <div class="iv-iframe-container" style="background: transparent; border: none; box-shadow: none; padding: 0;">
@@ -7160,11 +7546,18 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
             filterData();
         }
 
+        function isMedplusTabletLikeViewport_() {
+            return window.matchMedia && (
+                window.matchMedia('(min-width: 601px) and (max-width: 1180px)').matches ||
+                window.matchMedia('(min-width: 601px) and (pointer: coarse)').matches
+            );
+        }
+
         /* --- XỬ LÝ CLICK CHO 4 NÚT CÔNG CỤ --- */
         function handleTKClick() {
             var btn = document.querySelector('.tk-badge-btn');
             var filterWrap = document.getElementById('groupFilterWrapper');
-            if (window.innerWidth > 1024) { openTKModal(); return; }
+            if (window.innerWidth > 1180 && !isMedplusTabletLikeViewport_()) { openTKModal(); return; }
             if (btn.classList.contains('iv-expanded')) { openTKModal(); return; }
             btn.classList.add('iv-expanded');
             if (filterWrap) filterWrap.classList.add('temp-hide');
@@ -7180,7 +7573,7 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
         function handleTTClick() {
             var btn = document.querySelector('.tt-badge-btn');
             var filterWrap = document.getElementById('groupFilterWrapper');
-            if (window.innerWidth > 1024) { openTTModal(); return; }
+            if (window.innerWidth > 1180 && !isMedplusTabletLikeViewport_()) { openTTModal(); return; }
             if (btn.classList.contains('iv-expanded')) { openTTModal(); return; }
             btn.classList.add('iv-expanded');
             if (filterWrap) filterWrap.classList.add('temp-hide');
@@ -7196,7 +7589,7 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
         function handleKSClick() {
             var btn = document.querySelector('.ks-badge-btn');
             var filterWrap = document.getElementById('groupFilterWrapper');
-            if (window.innerWidth > 1024) { openKSModal(); return; }
+            if (window.innerWidth > 1180 && !isMedplusTabletLikeViewport_()) { openKSModal(); return; }
             if (btn.classList.contains('iv-expanded')) { openKSModal(); return; }
             btn.classList.add('iv-expanded');
             if (filterWrap) filterWrap.classList.add('temp-hide');
@@ -7212,7 +7605,7 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
         function handleIVClick() {
             var btn = document.querySelectorAll('.iv-badge-btn')[0]; 
             var filterWrap = document.getElementById('groupFilterWrapper');
-            if (window.innerWidth > 1024) { openIVModal(); return; }
+            if (window.innerWidth > 1180 && !isMedplusTabletLikeViewport_()) { openIVModal(); return; }
             if (btn.classList.contains('iv-expanded')) { openIVModal(); return; }
             btn.classList.add('iv-expanded');
             if (filterWrap) filterWrap.classList.add('temp-hide');
@@ -10105,7 +10498,7 @@ updateNavbarSearchVisibility(id);
   }, {passive:true});
 
   window.addEventListener('resize', () => {
-    const keepMobileNavbarLayout = window.matchMedia && window.matchMedia('(max-width: 1024px) and (orientation: landscape) and (max-height: 620px)').matches;
+    const keepMobileNavbarLayout = window.matchMedia && (window.matchMedia('(max-width: 1180px)').matches || window.matchMedia('(min-width: 601px) and (pointer: coarse)').matches);
     if (window.innerWidth >= 769 && !keepMobileNavbarLayout) closeMedplusMobileMenu();
     if (nav) nav.classList.remove('nav-hidden');
   });
@@ -10116,7 +10509,7 @@ updateNavbarSearchVisibility(id);
 
 
   function isDesktopNavbarMotionMode(){
-    const forceMobileLandscape = window.matchMedia && window.matchMedia('(max-width: 1024px) and (orientation: landscape) and (max-height: 620px)').matches;
+    const forceMobileLandscape = window.matchMedia && (window.matchMedia('(max-width: 1180px)').matches || window.matchMedia('(min-width: 601px) and (pointer: coarse)').matches);
     return window.innerWidth >= 769 && !forceMobileLandscape;
   }
 
@@ -10220,7 +10613,8 @@ updateNavbarSearchVisibility(id);
 
   function isMobileNavbarSearchMode(){
       return window.matchMedia && (
-          window.matchMedia('(max-width: 768px)').matches ||
+          window.matchMedia('(max-width: 1180px)').matches ||
+          window.matchMedia('(min-width: 601px) and (pointer: coarse)').matches ||
           isMobileLandscapeNavbarMode()
       );
   }
