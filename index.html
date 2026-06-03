@@ -5108,7 +5108,7 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
 
 
 /* ALL TABLET = MOBILE HOME LAYOUT PATCH - chỉ ghi đè responsive, giữ nguyên các phần khác */
-@media (min-width: 601px) and (max-width: 1180px), (min-width: 601px) and (pointer: coarse) and (orientation: portrait), (min-width: 601px) and (pointer: coarse) and (orientation: landscape) and (max-width: 1189px) {
+@media (min-width: 601px) and (max-width: 1024px), (min-width: 601px) and (pointer: coarse) and (orientation: portrait), (min-width: 601px) and (pointer: coarse) and (orientation: landscape) and (max-width: 1099px) {
   body{
     padding-top:calc(var(--medplus-nav-height) + var(--medplus-nav-safe-top) + 20px) !important;
   }
@@ -5485,7 +5485,7 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
   }
 }
 
-@media (min-width: 601px) and (max-width: 1180px) and (orientation: landscape), (min-width: 601px) and (pointer: coarse) and (orientation: landscape) and (max-width: 1189px) {
+@media (min-width: 601px) and (max-width: 1024px) and (orientation: landscape), (min-width: 601px) and (pointer: coarse) and (orientation: landscape) and (max-width: 1099px) {
   .product-grid,
   .skeleton-grid{
     grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
@@ -5496,7 +5496,7 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
 /* FINAL FIX: ép navbar mobile/hamburger cho tablet + mobile xoay ngang
    - Ghi đè các rule desktop @media(min-width:769px) xuất hiện trước đó.
    - Không thay đổi nội dung/chức năng khác. */
-@media (max-width: 1180px), (min-width: 601px) and (pointer: coarse) and (orientation: portrait), (min-width: 601px) and (pointer: coarse) and (orientation: landscape) and (max-width: 1189px), (hover: none) and (pointer: coarse) and (orientation: landscape) and (max-height: 600px) {
+@media (max-width: 1024px), (min-width: 601px) and (pointer: coarse) and (orientation: portrait), (min-width: 601px) and (pointer: coarse) and (orientation: landscape) and (max-width: 1099px), (hover: none) and (pointer: coarse) and (orientation: landscape) and (max-height: 600px) {
   .medplus-app-nav{
     padding-left:10px !important;
     padding-right:10px !important;
@@ -5551,6 +5551,32 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
   }
 }
 
+
+
+/* FINAL OVERRIDE: tablet lớn xoay ngang (iPad Air/iPad Pro/Pixel Tablet rộng) dùng giao diện PC; mobile landscape thấp vẫn dùng hamburger. */
+@media (min-width: 1100px) and (orientation: landscape) and (min-height: 601px) {
+  .medplus-desktop-nav,
+  #medplusDesktopNav{
+    display:flex !important;
+    visibility:visible !important;
+    pointer-events:auto !important;
+  }
+
+  .medplus-hamburger,
+  #medplusHamburgerBtn{
+    display:none !important;
+    visibility:hidden !important;
+    pointer-events:none !important;
+  }
+
+  .medplus-mobile-actions{
+    display:flex !important;
+  }
+
+  body{
+    padding-top:calc(var(--medplus-nav-height) + var(--medplus-nav-safe-top) + 40px) !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -6007,8 +6033,10 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
 
             const frag = document.createDocumentFragment();
 
-            // Nếu màn hình <= 600px (Mobile) thì tạo 88 sao, ngược lại 160 sao
-            const starCount = window.innerWidth <= 600 ? 44 : 88;
+            // Mobile/tablet dùng mật độ sao nhẹ như mobile; PC giữ mật độ cao hơn.
+            const isMobileOrTabletNight = window.innerWidth <= 600 ||
+                (window.matchMedia && window.matchMedia('(pointer: coarse) and (max-width: 1366px)').matches);
+            const starCount = isMobileOrTabletNight ? 44 : 88;
 
             for (let i = 0; i < starCount; i++) {
                 const s = document.createElement('div');
