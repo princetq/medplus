@@ -5791,109 +5791,6 @@ body.medplus-aux-open .new-badge::after{
   }
 }
 
-
-
-/* --- STRICT FIX BADGE KHOA DƯỢC: không bị cắt + chỉ pop đúng 1 lần, không lặp do resize/iOS --- */
-.medplus-app-nav,
-.medplus-nav-logo-wrap,
-.medplus-nav-logo-wrap.nav-logo-entering{
-  overflow:visible !important;
-}
-
-.medplus-nav-logo-wrap{
-  padding-right:10px !important;
-}
-
-.medplus-nav-badge,
-.medplus-nav-logo-wrap.nav-logo-entering .medplus-nav-badge{
-  overflow:visible !important;
-  opacity:1 !important;
-  transform:none !important;
-  -webkit-transform:none !important;
-  filter:none !important;
-  transform-origin:center center !important;
-  -webkit-transform-origin:center center !important;
-  animation:none !important;
-  animation-name:none !important;
-  animation-iteration-count:1 !important;
-  will-change:auto !important;
-}
-
-.medplus-nav-badge::before,
-.medplus-nav-badge::after{
-  animation:none !important;
-  animation-name:none !important;
-}
-
-html.medplus-badge-pop-strict-run .medplus-nav-badge,
-html.medplus-badge-pop-strict-run .medplus-nav-logo-wrap.nav-logo-entering .medplus-nav-badge{
-  opacity:1 !important;
-  animation:medplusBadgeStrictPopOnce .88s cubic-bezier(.20,0,.12,1) both !important;
-  will-change:transform, box-shadow, text-shadow !important;
-}
-
-html.medplus-badge-pop-strict-done .medplus-nav-badge,
-html.medplus-badge-pop-strict-done .medplus-nav-logo-wrap.nav-logo-entering .medplus-nav-badge,
-html.medplus-ios-safari-badge-pop-once .medplus-nav-badge,
-html.medplus-ios-safari-badge-pop-once .medplus-nav-logo-wrap.nav-logo-entering .medplus-nav-badge,
-html.medplus-ios-safari-badge-pop-done .medplus-nav-badge,
-html.medplus-ios-safari-badge-pop-done .medplus-nav-logo-wrap.nav-logo-entering .medplus-nav-badge{
-  opacity:1 !important;
-  transform:none !important;
-  -webkit-transform:none !important;
-  filter:none !important;
-  animation:none !important;
-  animation-name:none !important;
-  will-change:auto !important;
-}
-
-@keyframes medplusBadgeStrictPopOnce{
-  0%{
-    transform:scale(1);
-    -webkit-transform:scale(1);
-  }
-  42%{
-    transform:scale(1.085);
-    -webkit-transform:scale(1.085);
-    box-shadow:0 0 0 1px rgba(76,175,80,.22),0 0 14px rgba(76,175,80,.24),0 10px 26px rgba(27,94,32,.12),inset 0 1px 0 rgba(255,255,255,.72);
-    text-shadow:0 0 8px rgba(255,255,255,.48);
-  }
-  74%{
-    transform:scale(.995);
-    -webkit-transform:scale(.995);
-  }
-  100%{
-    transform:scale(1);
-    -webkit-transform:scale(1);
-  }
-}
-
-body.dark-mode html.medplus-badge-pop-strict-run .medplus-nav-badge,
-html.medplus-badge-pop-strict-run body.dark-mode .medplus-nav-badge{
-  animation-name:medplusBadgeStrictPopOnceDark !important;
-}
-
-@keyframes medplusBadgeStrictPopOnceDark{
-  0%{
-    transform:scale(1);
-    -webkit-transform:scale(1);
-  }
-  42%{
-    transform:scale(1.085);
-    -webkit-transform:scale(1.085);
-    box-shadow:0 0 0 1px rgba(80,220,180,.34),0 0 14px rgba(80,220,180,.30),0 0 24px rgba(80,220,180,.14),inset 0 1px 0 rgba(255,255,255,.12);
-    text-shadow:0 0 10px rgba(80,220,180,.55);
-  }
-  74%{
-    transform:scale(.995);
-    -webkit-transform:scale(.995);
-  }
-  100%{
-    transform:scale(1);
-    -webkit-transform:scale(1);
-  }
-}
-
 </style>
 </head>
 <body>
@@ -11648,7 +11545,8 @@ updateNavbarSearchVisibility(id);
   if (!isIOSSafari) return;
 
   var root = document.documentElement;
-  root.classList.add('medplus-ios-safari-badge-pop-once');
+  var badgePopTimer = null;
+  var badgeFinishTimer = null;
 
   function stopBadgeSlideClass(){
     var logoWrap = document.querySelector('.medplus-nav-logo-wrap');
@@ -11661,68 +11559,31 @@ updateNavbarSearchVisibility(id);
     root.classList.add('medplus-ios-safari-badge-pop-done');
   }
 
+  function startDelayedBadgePop(){
+    if (root.classList.contains('medplus-ios-safari-badge-pop-done')) return;
+    stopBadgeSlideClass();
+    root.classList.remove('medplus-ios-safari-badge-pop-once');
+    clearTimeout(badgePopTimer);
+    clearTimeout(badgeFinishTimer);
+
+    badgePopTimer = setTimeout(function(){
+      stopBadgeSlideClass();
+      root.classList.add('medplus-ios-safari-badge-pop-once');
+      badgeFinishTimer = setTimeout(finishBadgePop, 1350);
+    }, 3000);
+  }
+
   document.addEventListener('DOMContentLoaded', function(){
     setTimeout(stopBadgeSlideClass, 0);
   }, { once: true });
 
   window.addEventListener('load', function(){
-    stopBadgeSlideClass();
-    setTimeout(finishBadgePop, 1250);
+    startDelayedBadgePop();
   }, { once: true });
 
   window.addEventListener('resize', function(){
-    if (root.classList.contains('medplus-ios-safari-badge-pop-done')) stopBadgeSlideClass();
+    stopBadgeSlideClass();
   }, { passive: true });
-})();
-</script>
-
-
-<script>
-(function(){
-  if (window.__medplusStrictBadgeOnceInstalled) return;
-  window.__medplusStrictBadgeOnceInstalled = true;
-
-  var root = document.documentElement;
-
-  function stopOldBadgeAnimations(){
-    root.classList.remove('medplus-ios-safari-badge-pop-once');
-    root.classList.remove('medplus-ios-safari-badge-pop-done');
-    var logoWrap = document.querySelector('.medplus-nav-logo-wrap');
-    if (logoWrap) logoWrap.classList.remove('nav-logo-entering');
-  }
-
-  function playBadgeOnce(){
-    if (window.__medplusStrictBadgePopPlayed) {
-      stopOldBadgeAnimations();
-      root.classList.add('medplus-badge-pop-strict-done');
-      return;
-    }
-    window.__medplusStrictBadgePopPlayed = true;
-    stopOldBadgeAnimations();
-    root.classList.remove('medplus-badge-pop-strict-done');
-    root.classList.add('medplus-badge-pop-strict-run');
-    window.setTimeout(function(){
-      stopOldBadgeAnimations();
-      root.classList.remove('medplus-badge-pop-strict-run');
-      root.classList.add('medplus-badge-pop-strict-done');
-    }, 1050);
-  }
-
-  document.addEventListener('DOMContentLoaded', function(){
-    stopOldBadgeAnimations();
-  }, { once:true });
-
-  window.addEventListener('load', function(){
-    playBadgeOnce();
-  }, { once:true });
-
-  window.addEventListener('resize', function(){
-    stopOldBadgeAnimations();
-    if (window.__medplusStrictBadgePopPlayed) {
-      root.classList.remove('medplus-badge-pop-strict-run');
-      root.classList.add('medplus-badge-pop-strict-done');
-    }
-  }, { passive:true });
 })();
 </script>
 
