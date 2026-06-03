@@ -5577,6 +5577,57 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
     padding-top:calc(var(--medplus-nav-height) + var(--medplus-nav-safe-top) + 40px) !important;
   }
 }
+
+
+/* --- FIX iPad Air/tablet landscape PC navbar: căn phải và tránh trùng nút tìm kiếm --- */
+@media (min-width: 1100px) and (orientation: landscape) and (min-height: 601px) {
+  .medplus-app-nav{
+    justify-content:space-between !important;
+  }
+
+  .medplus-nav-logo-wrap{
+    flex:0 0 auto !important;
+  }
+
+  .medplus-desktop-nav,
+  #medplusDesktopNav{
+    display:flex !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    pointer-events:auto !important;
+    margin-left:auto !important;
+    margin-right:0 !important;
+    justify-content:flex-end !important;
+    align-items:center !important;
+    flex:0 1 auto !important;
+    width:auto !important;
+    max-width:calc(100vw - 185px) !important;
+  }
+
+  .medplus-mobile-actions,
+  #medplusMobileActions,
+  #medplusMobileNavSearchWrap{
+    display:none !important;
+    visibility:hidden !important;
+    opacity:0 !important;
+    pointer-events:none !important;
+  }
+
+  .medplus-hamburger,
+  #medplusHamburgerBtn{
+    display:none !important;
+    visibility:hidden !important;
+    opacity:0 !important;
+    pointer-events:none !important;
+  }
+
+  #medplusNavSearchWrap{
+    flex:0 0 auto !important;
+    margin-left:0 !important;
+    margin-right:6px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -10518,8 +10569,9 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
     if (desktopWrap) desktopWrap.style.display = show ? 'flex' : 'none';
 
     if (mobileWrap) {
-      mobileWrap.style.display = show ? 'flex' : 'none';
-      mobileWrap.classList.toggle('nav-search-visible', !!show);
+      const forceDesktopSearch = typeof isLargeTabletLandscapePcNavbarMode === 'function' && isLargeTabletLandscapePcNavbarMode();
+      mobileWrap.style.display = (show && !forceDesktopSearch) ? 'flex' : 'none';
+      mobileWrap.classList.toggle('nav-search-visible', !!show && !forceDesktopSearch);
     }
 
     if (shouldAnimate) {
@@ -10695,18 +10747,24 @@ updateNavbarSearchVisibility(id);
     }
   };
 
+  function isLargeTabletLandscapePcNavbarMode(){
+      return window.matchMedia && window.matchMedia('(min-width: 1100px) and (orientation: landscape) and (min-height: 601px)').matches;
+  }
+
   function isMobileLandscapeNavbarMode(){
+      if (isLargeTabletLandscapePcNavbarMode()) return false;
       return window.matchMedia && (
-          window.matchMedia('(max-width: 1180px) and (orientation: landscape)').matches ||
+          window.matchMedia('(max-width: 1024px) and (orientation: landscape) and (max-height: 620px)').matches ||
           window.matchMedia('(hover: none) and (pointer: coarse) and (orientation: landscape) and (max-height: 600px)').matches
       );
   }
 
   function isMobileNavbarSearchMode(){
+      if (isLargeTabletLandscapePcNavbarMode()) return false;
       return window.matchMedia && (
-          window.matchMedia('(max-width: 1180px)').matches ||
+          window.matchMedia('(max-width: 768px)').matches ||
           window.matchMedia('(min-width: 601px) and (pointer: coarse) and (orientation: portrait)').matches ||
-          window.matchMedia('(min-width: 601px) and (pointer: coarse) and (orientation: landscape) and (max-width: 1189px)').matches ||
+          window.matchMedia('(min-width: 601px) and (pointer: coarse) and (orientation: landscape) and (max-width: 1099px)').matches ||
           isMobileLandscapeNavbarMode()
       );
   }
