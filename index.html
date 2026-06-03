@@ -5696,56 +5696,11 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
 }
 
 
-/* BATTERY-SAFE PATCH: chỉ kích hoạt khi mở tab phụ qua navbar (medplus-aux-open).
-   Mục tiêu: tắt thêm các lớp hiệu ứng/blur của trang chủ phía sau iframe để giảm tải GPU, không ảnh hưởng trạng thái trang chủ bình thường. */
+/* BATTERY-SAFE PATCH LITE: chỉ kích hoạt khi mở tab phụ qua navbar (medplus-aux-open).
+   Bản nhẹ: không tác động vào header/badge KHOA DƯỢC để tránh vệt xanh khi badge phóng to/nháy. */
 html.medplus-aux-open,
 body.medplus-aux-open{
   scroll-behavior:auto !important;
-}
-
-body.medplus-aux-open .container,
-body.medplus-aux-open .footer,
-body.medplus-aux-open .product-grid,
-body.medplus-aux-open .skeleton-grid,
-body.medplus-aux-open .search-wrapper,
-body.medplus-aux-open .header-main{
-  animation:none !important;
-  transition:none !important;
-  transform:none !important;
-  filter:none !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-  will-change:auto !important;
-  content-visibility:hidden !important;
-  contain:strict !important;
-  pointer-events:none !important;
-}
-
-body.medplus-aux-open .container *,
-body.medplus-aux-open .footer *,
-body.medplus-aux-open .product-grid *,
-body.medplus-aux-open .skeleton-grid *,
-body.medplus-aux-open .search-wrapper *,
-body.medplus-aux-open .header-main *,
-body.medplus-aux-open .container *::before,
-body.medplus-aux-open .container *::after,
-body.medplus-aux-open .footer *::before,
-body.medplus-aux-open .footer *::after,
-body.medplus-aux-open .product-grid *::before,
-body.medplus-aux-open .product-grid *::after,
-body.medplus-aux-open .skeleton-grid *::before,
-body.medplus-aux-open .skeleton-grid *::after,
-body.medplus-aux-open .search-wrapper *::before,
-body.medplus-aux-open .search-wrapper *::after,
-body.medplus-aux-open .header-main *::before,
-body.medplus-aux-open .header-main *::after{
-  animation:none !important;
-  transition:none !important;
-  transform:none !important;
-  filter:none !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-  will-change:auto !important;
 }
 
 body.medplus-aux-open .nature-background,
@@ -5757,105 +5712,45 @@ body.medplus-aux-open .planet{
   display:none !important;
   animation:none !important;
   transition:none !important;
-  transform:none !important;
-  filter:none !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
   will-change:auto !important;
   content-visibility:hidden !important;
 }
 
-body.medplus-aux-open::before,
-body.medplus-aux-open::after{
+body.medplus-aux-open .product-grid,
+body.medplus-aux-open .skeleton-grid,
+body.medplus-aux-open .search-wrapper,
+body.medplus-aux-open .footer{
   animation:none !important;
   transition:none !important;
-  filter:none !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
+  will-change:auto !important;
+  content-visibility:hidden !important;
+  contain:layout paint !important;
+  pointer-events:none !important;
+}
+
+body.medplus-aux-open .product-grid *,
+body.medplus-aux-open .skeleton-grid *,
+body.medplus-aux-open .search-wrapper *,
+body.medplus-aux-open .footer *,
+body.medplus-aux-open .product-grid *::before,
+body.medplus-aux-open .product-grid *::after,
+body.medplus-aux-open .skeleton-grid *::before,
+body.medplus-aux-open .skeleton-grid *::after,
+body.medplus-aux-open .search-wrapper *::before,
+body.medplus-aux-open .search-wrapper *::after,
+body.medplus-aux-open .footer *::before,
+body.medplus-aux-open .footer *::after{
+  animation:none !important;
+  transition:none !important;
   will-change:auto !important;
 }
 
-
-/* --- FIX BADGE KHOA DƯỢC: bỏ vệt xanh ngoài badge khi pop trên iPhone/Safari --- */
-@supports (-webkit-touch-callout: none) {
-  @media (max-width: 768px), (max-width: 1024px) and (orientation: landscape) and (max-height: 620px) {
-    html.medplus-ios-safari-badge-pop-once .medplus-nav-badge,
-    html.medplus-ios-safari-badge-pop-once .medplus-nav-logo-wrap.nav-logo-entering .medplus-nav-badge {
-      isolation: isolate !important;
-      backface-visibility: hidden !important;
-      -webkit-backface-visibility: hidden !important;
-      transform-style: flat !important;
-      -webkit-transform-style: flat !important;
-      filter: none !important;
-    }
-
-    @keyframes medplusIOSSafariBadgePopGlowOnce {
-      0% {
-        opacity: 1;
-        transform: scale(1);
-        -webkit-transform: scale(1);
-        filter: none;
-        box-shadow: 0 10px 26px rgba(27,94,32,.10), inset 0 1px 0 rgba(255,255,255,.65);
-        text-shadow: none;
-      }
-      38% {
-        opacity: 1;
-        transform: scale(1.12);
-        -webkit-transform: scale(1.12);
-        filter: none;
-        box-shadow: 0 10px 26px rgba(27,94,32,.10), inset 0 1px 0 rgba(255,255,255,.86), inset 0 0 0 1px rgba(76,175,80,.24);
-        text-shadow: 0 1px 0 rgba(255,255,255,.72);
-      }
-      70% {
-        transform: scale(1.035);
-        -webkit-transform: scale(1.035);
-        box-shadow: 0 10px 26px rgba(27,94,32,.10), inset 0 1px 0 rgba(255,255,255,.72), inset 0 0 0 1px rgba(76,175,80,.16);
-        text-shadow: 0 1px 0 rgba(255,255,255,.46);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1);
-        -webkit-transform: scale(1);
-        filter: none;
-        box-shadow: 0 10px 26px rgba(27,94,32,.10), inset 0 1px 0 rgba(255,255,255,.65);
-        text-shadow: none;
-      }
-    }
-
-    @keyframes medplusIOSSafariBadgePopGlowOnceDark {
-      0% {
-        opacity: 1;
-        transform: scale(1);
-        -webkit-transform: scale(1);
-        filter: none;
-        box-shadow: 0 0 15px rgba(80, 220, 180, 0.22), inset 0 1px 0 rgba(255,255,255,0.1);
-        text-shadow: 0 0 8px rgba(80, 220, 180, 0.46);
-      }
-      38% {
-        opacity: 1;
-        transform: scale(1.12);
-        -webkit-transform: scale(1.12);
-        filter: none;
-        box-shadow: 0 0 15px rgba(80, 220, 180, 0.22), inset 0 1px 0 rgba(255,255,255,.18), inset 0 0 0 1px rgba(80,220,180,.28);
-        text-shadow: 0 0 10px rgba(80,220,180,.72);
-      }
-      70% {
-        transform: scale(1.035);
-        -webkit-transform: scale(1.035);
-        box-shadow: 0 0 15px rgba(80, 220, 180, 0.22), inset 0 1px 0 rgba(255,255,255,.12), inset 0 0 0 1px rgba(80,220,180,.20);
-        text-shadow: 0 0 8px rgba(80,220,180,.50);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1);
-        -webkit-transform: scale(1);
-        filter: none;
-        box-shadow: 0 0 15px rgba(80, 220, 180, 0.22), inset 0 1px 0 rgba(255,255,255,0.1);
-        text-shadow: 0 0 8px rgba(80, 220, 180, 0.46);
-      }
-    }
-  }
+body.medplus-aux-open .new-badge::before,
+body.medplus-aux-open .new-badge::after{
+  animation:none !important;
+  transition:none !important;
 }
+
 </style>
 </head>
 <body>
