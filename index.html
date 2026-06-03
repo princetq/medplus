@@ -5108,7 +5108,7 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
 
 
 /* ALL TABLET = MOBILE HOME LAYOUT PATCH - chỉ ghi đè responsive, giữ nguyên các phần khác */
-@media (min-width: 601px) and (max-width: 1180px), (min-width: 601px) and (pointer: coarse) {
+@media (min-width: 601px) and (max-width: 1180px), (min-width: 601px) and (pointer: coarse) and (orientation: portrait), (min-width: 601px) and (pointer: coarse) and (orientation: landscape) and (max-width: 1189px) {
   body{
     padding-top:calc(var(--medplus-nav-height) + var(--medplus-nav-safe-top) + 20px) !important;
   }
@@ -5485,7 +5485,7 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
   }
 }
 
-@media (min-width: 601px) and (max-width: 1180px) and (orientation: landscape), (min-width: 601px) and (pointer: coarse) and (orientation: landscape) {
+@media (min-width: 601px) and (max-width: 1180px) and (orientation: landscape), (min-width: 601px) and (pointer: coarse) and (orientation: landscape) and (max-width: 1189px) {
   .product-grid,
   .skeleton-grid{
     grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
@@ -5496,7 +5496,7 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
 /* FINAL FIX: ép navbar mobile/hamburger cho tablet + mobile xoay ngang
    - Ghi đè các rule desktop @media(min-width:769px) xuất hiện trước đó.
    - Không thay đổi nội dung/chức năng khác. */
-@media (max-width: 1180px), (pointer: coarse), (hover: none) and (pointer: coarse), (orientation: landscape) and (max-height: 700px) {
+@media (max-width: 1180px), (min-width: 601px) and (pointer: coarse) and (orientation: portrait), (min-width: 601px) and (pointer: coarse) and (orientation: landscape) and (max-width: 1189px), (hover: none) and (pointer: coarse) and (orientation: landscape) and (max-height: 600px) {
   .medplus-app-nav{
     padding-left:10px !important;
     padding-right:10px !important;
@@ -7608,7 +7608,8 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
         function isMedplusTabletLikeViewport_() {
             return window.matchMedia && (
                 window.matchMedia('(min-width: 601px) and (max-width: 1180px)').matches ||
-                window.matchMedia('(min-width: 601px) and (pointer: coarse)').matches
+                window.matchMedia('(min-width: 601px) and (pointer: coarse) and (orientation: portrait)').matches ||
+                window.matchMedia('(min-width: 601px) and (pointer: coarse) and (orientation: landscape) and (max-width: 1189px)').matches
             );
         }
 
@@ -10557,7 +10558,7 @@ updateNavbarSearchVisibility(id);
   }, {passive:true});
 
   window.addEventListener('resize', () => {
-    const keepMobileNavbarLayout = window.matchMedia && (window.matchMedia('(max-width: 1180px)').matches || window.matchMedia('(min-width: 601px) and (pointer: coarse)').matches);
+    const keepMobileNavbarLayout = window.matchMedia && (window.matchMedia('(max-width: 1180px)').matches || window.matchMedia('(min-width: 601px) and (pointer: coarse) and (orientation: portrait)').matches || window.matchMedia('(min-width: 601px) and (pointer: coarse) and (orientation: landscape) and (max-width: 1189px)').matches || window.matchMedia('(hover: none) and (pointer: coarse) and (orientation: landscape) and (max-height: 600px)').matches);
     if (window.innerWidth >= 769 && !keepMobileNavbarLayout) closeMedplusMobileMenu();
     if (nav) nav.classList.remove('nav-hidden');
   });
@@ -10568,7 +10569,7 @@ updateNavbarSearchVisibility(id);
 
 
   function isDesktopNavbarMotionMode(){
-    const forceMobileLandscape = window.matchMedia && (window.matchMedia('(max-width: 1180px)').matches || window.matchMedia('(min-width: 601px) and (pointer: coarse)').matches);
+    const forceMobileLandscape = window.matchMedia && (window.matchMedia('(max-width: 1180px)').matches || window.matchMedia('(min-width: 601px) and (pointer: coarse) and (orientation: portrait)').matches || window.matchMedia('(min-width: 601px) and (pointer: coarse) and (orientation: landscape) and (max-width: 1189px)').matches || window.matchMedia('(hover: none) and (pointer: coarse) and (orientation: landscape) and (max-height: 600px)').matches);
     return window.innerWidth >= 769 && !forceMobileLandscape;
   }
 
@@ -10669,14 +10670,15 @@ updateNavbarSearchVisibility(id);
   function isMobileLandscapeNavbarMode(){
       return window.matchMedia && (
           window.matchMedia('(max-width: 1180px) and (orientation: landscape)').matches ||
-          window.matchMedia('(orientation: landscape) and (max-height: 700px)').matches
+          window.matchMedia('(hover: none) and (pointer: coarse) and (orientation: landscape) and (max-height: 600px)').matches
       );
   }
 
   function isMobileNavbarSearchMode(){
       return window.matchMedia && (
           window.matchMedia('(max-width: 1180px)').matches ||
-          window.matchMedia('(min-width: 601px) and (pointer: coarse)').matches ||
+          window.matchMedia('(min-width: 601px) and (pointer: coarse) and (orientation: portrait)').matches ||
+          window.matchMedia('(min-width: 601px) and (pointer: coarse) and (orientation: landscape) and (max-width: 1189px)').matches ||
           isMobileLandscapeNavbarMode()
       );
   }
