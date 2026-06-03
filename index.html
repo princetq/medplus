@@ -5492,6 +5492,65 @@ body.medplus-nav-light-only .medplus-nav-search-wrap.nav-search-attention .medpl
   }
 }
 
+
+/* FINAL FIX: ép navbar mobile/hamburger cho tablet + mobile xoay ngang
+   - Ghi đè các rule desktop @media(min-width:769px) xuất hiện trước đó.
+   - Không thay đổi nội dung/chức năng khác. */
+@media (max-width: 1180px), (pointer: coarse), (hover: none) and (pointer: coarse), (orientation: landscape) and (max-height: 700px) {
+  .medplus-app-nav{
+    padding-left:10px !important;
+    padding-right:10px !important;
+    overflow:visible !important;
+  }
+
+  .medplus-desktop-nav,
+  #medplusDesktopNav{
+    display:none !important;
+    visibility:hidden !important;
+    pointer-events:none !important;
+  }
+
+  .medplus-mobile-actions{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-end !important;
+    gap:6px !important;
+    position:relative !important;
+    z-index:3 !important;
+    flex-shrink:0 !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    pointer-events:auto !important;
+  }
+
+  .medplus-hamburger,
+  #medplusHamburgerBtn{
+    display:flex !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    pointer-events:auto !important;
+    flex-shrink:0 !important;
+  }
+
+  #medplusNavSearchWrap{
+    display:none !important;
+  }
+
+  #medplusMobileNavSearchWrap.nav-search-visible{
+    display:flex !important;
+  }
+
+  #medplusMobileMenu.open{
+    display:flex !important;
+  }
+
+  .medplus-nav-logo-wrap{
+    max-width:calc(100vw - 118px) !important;
+    overflow:hidden !important;
+    flex-shrink:1 !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -10608,7 +10667,10 @@ updateNavbarSearchVisibility(id);
   };
 
   function isMobileLandscapeNavbarMode(){
-      return window.matchMedia && window.matchMedia('(max-width: 1024px) and (orientation: landscape) and (max-height: 620px)').matches;
+      return window.matchMedia && (
+          window.matchMedia('(max-width: 1180px) and (orientation: landscape)').matches ||
+          window.matchMedia('(orientation: landscape) and (max-height: 700px)').matches
+      );
   }
 
   function isMobileNavbarSearchMode(){
