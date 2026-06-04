@@ -3,6 +3,7 @@ const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
+  '/styles.css',
   '/icons/icon-192x192.png',
   '/tools/ks/ks.webp',
   '/tools/tiemtruyen/tiem.webp',
