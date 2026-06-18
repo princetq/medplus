@@ -7039,7 +7039,7 @@ body.medplus-aux-open .new-badge::after{
                     s = s.replace(new RegExp('(^|\\s)' + esc + '(?=\\s|$)', 'g'), ' ');
                 });
             return s
-                .replace(/(cua|ve|cho|toi|hoi|xin|giup|can|muon|xem|biet|la|co|khong|may|bao nhieu)/g, ' ')
+                .replace(/\b(cua|ve|cho|toi|hoi|xin|giup|can|muon|xem|biet|la|co|khong|may|bao nhieu)\b/g, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
         }
@@ -7947,44 +7947,83 @@ body.medplus-aux-open .new-badge::after{
             return sections;
         }
 
+        function isNoisyHDSDSectionAlias_(alias) {
+            const a = removeAccents(alias || '').trim();
+            // Các từ này hữu ích để nhận diện ý định câu hỏi, nhưng rất dễ khớp nhầm
+            // nếu đem quét toàn văn HDSD (ví dụ "vỉ" -> "vì", "lọ" -> "lộ").
+            return !a || a.length <= 2 || /^(hop|vi|lo|ong|goi|chai|tuyp|lieu|uong|tiem|truyen|dung|bao|giu|co|phu|nu|thai|bu|me)$/.test(a);
+        }
+
+        function hdsdAliasPhraseHit_(normalizedText, alias) {
+            return hasNormalizedPhrase_(normalizedText, removeAccents(alias || ''));
+        }
+
         function selectHDSDExcerptForQuestion_(jsonData, userMessage) {
             const sections = buildHDSDTextSections_(jsonData);
             if (!sections.length) return '';
             const aliases = getHDSDQuestionAliases_(userMessage);
             const normalizedQuestion = removeAccents(userMessage || '');
+            const hasClearTopic = aliases.length > 0;
+
             let scored = sections.map(function(sec, index) {
                 const titleNorm = removeAccents(sec.title || '');
                 const textNorm = removeAccents(sec.text || '');
                 let score = 0;
+                let titleHit = false;
+                let textHit = false;
+
                 aliases.forEach(function(a) {
-                    if (titleNorm.indexOf(a) !== -1) score += 300;
-                    if (textNorm.indexOf(a) !== -1) score += 45;
+                    const aliasNorm = removeAccents(a || '').trim();
+                    if (!aliasNorm) return;
+
+                    // Ưu tiên tuyệt đối heading/tiêu đề mục HDSD. Ví dụ hỏi "quy cách đóng gói"
+                    // thì phải lấy mục "Quy cách đóng gói", không được kéo thêm các mục có chữ "entecavir".
+                    if (hdsdAliasPhraseHit_(titleNorm, aliasNorm)) {
+                        score += 1000;
+                        titleHit = true;
+                    }
+
+                    // Chỉ dùng toàn văn làm tín hiệu phụ, và bỏ các alias quá ngắn/gây nhiễu.
+                    if (!isNoisyHDSDSectionAlias_(aliasNorm) && hdsdAliasPhraseHit_(textNorm, aliasNorm)) {
+                        score += 35;
+                        textHit = true;
+                    }
                 });
+
                 if (!aliases.length) {
                     if (/hdsd|huong dan su dung/.test(normalizedQuestion)) score += 10;
                     if (/^(thong tin chung|noi dung chung)$/i.test(titleNorm)) score += 5;
                 }
-                return { section: sec, score: score, index: index };
+                return { section: sec, score: score, titleHit: titleHit, textHit: textHit, index: index };
             }).filter(function(x) { return x.score > 0 || !aliases.length; });
 
-            if (!scored.length && aliases.length) {
-                scored = sections.map(function(sec, index) { return { section: sec, score: 1, index: index }; });
-            }
+            if (!scored.length && aliases.length) return '';
 
             scored.sort(function(a, b) {
+                if (b.titleHit !== a.titleHit) return b.titleHit ? 1 : -1;
                 if (b.score !== a.score) return b.score - a.score;
                 return a.index - b.index;
             });
 
+            let selected = scored;
+            if (hasClearTopic) {
+                // Với câu hỏi có mục rõ trong HDSD, chỉ trả đúng section tốt nhất.
+                // Không ghép 5-6 section khác để tránh trả lời lan man ngoài câu hỏi.
+                selected = scored.slice(0, 1);
+            } else {
+                selected = scored.slice(0, 6);
+            }
+
             let excerpt = '';
-            const maxChars = 7000;
-            scored.slice(0, 6).forEach(function(item) {
+            const maxChars = hasClearTopic ? 2400 : 7000;
+            selected.forEach(function(item) {
                 if (excerpt.length >= maxChars) return;
                 let title = cleanDrugFieldForChat_(item.section.title || 'Nội dung HDSD');
                 let body = String(item.section.text || '').replace(/\s+\n/g, '\n').replace(/\n\s+/g, '\n').trim();
                 if (!body) return;
                 const block = '### ' + title + '\n' + body + '\n\n';
                 if ((excerpt + block).length <= maxChars) excerpt += block;
+                else if (!excerpt) excerpt = block.slice(0, maxChars).replace(/\s+\S*$/, '').trim();
             });
             return excerpt.trim();
         }
