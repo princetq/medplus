@@ -7036,7 +7036,7 @@ body.medplus-aux-open .new-badge::after{
                 .sort(function(a, b) { return b.length - a.length; })
                 .forEach(function(term) {
                     const esc = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                    s = s.replace(new RegExp('(^|\s)' + esc + '(?=\s|$)', 'g'), ' ');
+                    s = s.replace(new RegExp('(^|\\s)' + esc + '(?=\\s|$)', 'g'), ' ');
                 });
             return s
                 .replace(/\b(cua|ve|cho|toi|hoi|xin|giup|can|muon|xem|biet|la|co|khong|may|bao nhieu)\b/g, ' ')
@@ -8079,14 +8079,149 @@ body.medplus-aux-open .new-badge::after{
             return [];
         }
 
+
+        function normalizeHDSDHeadingTitleForChat_(title) {
+            return cleanDrugFieldForChat_(String(title || 'Nội dung HDSD').replace(/[：:]+\s*$/g, '').trim()) || 'Nội dung HDSD';
+        }
+
+        function isHDSDSubHeadingLike_(line) {
+            const raw = String(line || '').trim();
+            if (!raw || raw.length > 90) return false;
+            const norm = removeAccents(raw).replace(/[^a-z0-9]+/g, ' ').trim();
+            if (!norm || norm.length < 3) return false;
+            if (/^[0-9]+([.)]|\s)/.test(raw)) return true;
+            if (/^(hap thu|phan bo|chuyen hoa|thai tru|du lieu tien lam sang|du lieu lam sang|phu nu co thai|phu nu cho con bu|phu nu luc chuyen da va sinh de|tre em|nguoi cao tuoi|suy than|suy gan|tuong tac cua thuoc|tuong ky cua thuoc|dieu kien bao quan|han dung|tieu chuan chat luong|thanh phan hoat chat|thanh phan ta duoc|cach dung|lieu dung|qua lieu|quen lieu|xu tri qua lieu|dac diem|mo ta|dac tinh duoc luc hoc|dac tinh duoc dong hoc)$/.test(norm)) return true;
+            if (/[.!?;]$/.test(raw)) return false;
+            const words = norm.split(/\s+/).filter(Boolean).length;
+            if (words <= 7 && /^(hap|phan|chuyen|thai|phu|tuong|dieu|han|tieu|thanh|cach|lieu|qua|quen|xu|dac|mo|tre|nguoi|suy)\b/.test(norm)) return true;
+            return false;
+        }
+
+        function splitHDSDSectionIntoFragments_(section) {
+            const secTitle = normalizeHDSDHeadingTitleForChat_(section && section.title);
+            let text = String((section && section.text) || '').replace(/\r/g, '').replace(/[ \t]+/g, ' ').trim();
+            if (!text) return [];
+            let lines = text.split('\n').map(function(line) { return line.trim(); }).filter(Boolean);
+            const secTitleNorm = removeAccents(secTitle).replace(/[^a-z0-9]+/g, ' ').trim();
+            if (lines.length && removeAccents(lines[0]).replace(/[^a-z0-9]+/g, ' ').trim() === secTitleNorm) lines.shift();
+            if (!lines.length) return [];
+
+            let fragments = [];
+            let current = { title: secTitle, lines: [] };
+            let sawSubHeading = false;
+
+            lines.forEach(function(line, idx) {
+                const isHeading = isHDSDSubHeadingLike_(line) && idx < lines.length - 1;
+                if (isHeading) {
+                    if (current.lines.length) fragments.push(current);
+                    current = { title: normalizeHDSDHeadingTitleForChat_(line), lines: [] };
+                    sawSubHeading = true;
+                } else {
+                    current.lines.push(line);
+                }
+            });
+            if (current.lines.length) fragments.push(current);
+
+            if (!sawSubHeading || fragments.length <= 1) {
+                const paragraphs = lines.join('\n').split(/\n{2,}/).map(function(x) { return x.trim(); }).filter(Boolean);
+                if (paragraphs.length > 1) {
+                    return paragraphs.map(function(pg, i) {
+                        return { title: (i === 0 ? secTitle : (secTitle + ' - đoạn ' + (i + 1))), text: pg };
+                    });
+                }
+                return [{ title: secTitle, text: lines.join('\n') }];
+            }
+
+            return fragments.map(function(f) {
+                return { title: f.title || secTitle, text: (f.lines || []).join('\n').trim() };
+            }).filter(function(f) { return f.text; });
+        }
+
+        function buildHDSDExcerptFromFragments_(section, fragments, indexes) {
+            if (!section || !Array.isArray(fragments) || !fragments.length || !Array.isArray(indexes) || !indexes.length) return '';
+            const secTitle = normalizeHDSDHeadingTitleForChat_(section.title || 'Nội dung HDSD');
+            let excerpt = '### ' + secTitle + '\n';
+            const seen = new Set();
+            indexes.forEach(function(rawIndex) {
+                const index = parseInt(rawIndex, 10);
+                if (!Number.isFinite(index) || index < 0 || index >= fragments.length || seen.has(index)) return;
+                seen.add(index);
+                const frag = fragments[index] || {};
+                const fragTitle = normalizeHDSDHeadingTitleForChat_(frag.title || '');
+                const body = String(frag.text || '').replace(/\s+\n/g, '\n').replace(/\n\s+/g, '\n').trim();
+                if (!body) return;
+                if (fragTitle && removeAccents(fragTitle) !== removeAccents(secTitle)) excerpt += '#### ' + fragTitle + '\n';
+                excerpt += body + '\n\n';
+            });
+            return excerpt.trim();
+        }
+
+        async function chooseHDSDFragmentsWithAI_(userMessage, section, fragments) {
+            if (!Array.isArray(fragments) || fragments.length <= 1) return [];
+            const secTitle = normalizeHDSDHeadingTitleForChat_(section && section.title);
+            const fragmentList = fragments.map(function(frag, i) {
+                const title = normalizeHDSDHeadingTitleForChat_(frag.title || ('Đoạn ' + i));
+                const preview = cleanDrugFieldForChat_(String(frag.text || '').slice(0, 220));
+                return i + '. ' + title + (preview ? (' — ' + preview) : '');
+            }).join('\n');
+            const pickerPrompt = 'Bạn là bộ khoanh vùng tiểu mục trong tờ HDSD thuốc.\n'
+                + 'Nhiệm vụ: chọn đúng đoạn con/tiểu mục trả lời sát nhất câu hỏi người dùng trong mục lớn đã chọn.\n'
+                + 'Không trả lời nội dung thuốc, không giải thích, không tóm tắt, không thêm kiến thức y khoa.\n'
+                + 'Nếu câu hỏi chỉ hỏi một ý như hấp thu, phân bố, chuyển hóa, thải trừ, cho con bú, bảo quản, hạn dùng... hãy chọn đúng 1 đoạn con.\n'
+                + 'Nếu câu hỏi hỏi nhiều ý rõ ràng, chọn tối đa 3 đoạn con.\n'
+                + 'Nếu không có đoạn con nào phù hợp rõ, trả indexes rỗng.\n'
+                + 'Trả duy nhất JSON hợp lệ dạng: {"indexes":[0],"confidence":0.95}\n\n'
+                + 'Câu hỏi người dùng: ' + String(userMessage || '') + '\n\n'
+                + 'Mục lớn đã chọn: ' + secTitle + '\n\n'
+                + 'DANH SÁCH ĐOẠN CON/TIỂU MỤC:\n' + fragmentList;
+
+            for (let m = 0; m < AI_MODELS.length; m++) {
+                for (let k = 0; k < API_KEYS.length; k++) {
+                    try {
+                        const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/' + AI_MODELS[m] + ':generateContent?key=' + API_KEYS[k];
+                        const payload = {
+                            contents: [{ role: 'user', parts: [{ text: pickerPrompt }] }],
+                            generationConfig: { temperature: 0, maxOutputTokens: 80 }
+                        };
+                        const res = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        if (!res.ok) continue;
+                        const data = await res.json();
+                        const picked = parseHDSDSectionPickerResponse_(extractGeminiText_(data), fragments.length);
+                        if (picked.indexes.length && picked.confidence >= 0.45) return picked.indexes;
+                    } catch (e) {}
+                }
+            }
+            return [];
+        }
+
         async function selectHDSDExcerptForQuestionWithAI_(jsonData, userMessage) {
             const sections = buildHDSDTextSections_(jsonData);
             if (!sections.length) return '';
 
-            // Cách 1: chỉ cho AI chọn tiêu đề mục HDSD từ danh sách tiêu đề ngắn.
-            // Sau khi có index, web tự lấy nguyên nội dung JSON, không dùng AI để viết câu trả lời.
+            // Cách 1 mở rộng: AI chỉ chọn mục lớn + tiểu mục/đoạn con.
+            // Website vẫn tự lấy nguyên văn dữ liệu JSON để trả lời, không dùng AI viết nội dung thuốc.
             const aiIndexes = await chooseHDSDSectionsWithAI_(userMessage, sections);
             if (aiIndexes.length) {
+                let refined = '';
+                const seen = new Set();
+                for (let i = 0; i < aiIndexes.length; i++) {
+                    const index = parseInt(aiIndexes[i], 10);
+                    if (!Number.isFinite(index) || index < 0 || index >= sections.length || seen.has(index)) continue;
+                    seen.add(index);
+                    const section = sections[index];
+                    const fragments = splitHDSDSectionIntoFragments_(section);
+                    const fragIndexes = await chooseHDSDFragmentsWithAI_(userMessage, section, fragments);
+                    const block = fragIndexes.length
+                        ? buildHDSDExcerptFromFragments_(section, fragments, fragIndexes)
+                        : buildHDSDExcerptFromSections_(sections, [index], true);
+                    if (block) refined += (refined ? '\n\n' : '') + block;
+                }
+                if (refined.trim()) return refined.trim();
+
                 const excerpt = buildHDSDExcerptFromSections_(sections, aiIndexes, true);
                 if (excerpt) return excerpt;
             }
@@ -8185,9 +8320,9 @@ body.medplus-aux-open .new-badge::after{
             let text = String(excerpt || '').replace(/\r/g, '').trim();
             if (!text) return '';
 
-            // Chuyển tiêu đề markdown kỹ thuật thành nhãn dễ đọc trong chat.
-            text = text.replace(/^###\s*/gm, '**').replace(/^(\*\*[^\n]+)$/gm, function(m) {
-                return m.endsWith('**') ? m : (m + ':**');
+            // Chuyển tiêu đề markdown kỹ thuật thành nhãn dễ đọc trong chat, bỏ dấu ':' ở cuối tên đề mục.
+            text = text.replace(/^#{3,6}\s*(.+)$/gm, function(match, title) {
+                return '**' + normalizeHDSDHeadingTitleForChat_(title) + '**';
             });
 
             // Bỏ lặp dòng sát nhau do JSON Notion đôi khi có title + body giống nhau.
@@ -8229,7 +8364,7 @@ body.medplus-aux-open .new-badge::after{
             });
 
             if (!answer) return '';
-            answer += '\n\n**Lưu ý:** Nội dung trên được trích trực tiếp từ file JSON HDSD nội bộ. Nếu cần xem bố cục đầy đủ, bảng hoặc hình ảnh trong tờ gốc, hãy bấm nút XEM HDSD bên dưới.';
+            answer += '\n\n**Lưu ý:** Nội dung trên được trích trực tiếp từ tờ HDSD. Nếu cần xem bố cục đầy đủ, bảng hoặc hình ảnh trong tờ HDSD gốc, hãy bấm nút XEM HDSD bên dưới.';
             return appendDeterministicDrugListToAnswer_(answer, selectedDrugs || []);
         }
 
