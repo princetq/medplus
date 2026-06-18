@@ -7039,7 +7039,7 @@ body.medplus-aux-open .new-badge::after{
                     s = s.replace(new RegExp('(^|\\s)' + esc + '(?=\\s|$)', 'g'), ' ');
                 });
             return s
-                .replace(/\b(cua|ve|cho|toi|hoi|xin|giup|can|muon|xem|biet|la|co|khong|may|bao nhieu)\b/g, ' ')
+                .replace(/(cua|ve|cho|toi|hoi|xin|giup|can|muon|xem|biet|la|co|khong|may|bao nhieu)/g, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
         }
@@ -8005,55 +8005,56 @@ body.medplus-aux-open .new-badge::after{
             return items;
         }
 
+        function formatDirectHDSDExcerptForChat_(excerpt) {
+            let text = String(excerpt || '').replace(/\r/g, '').trim();
+            if (!text) return '';
+
+            // Chuyển tiêu đề markdown kỹ thuật thành nhãn dễ đọc trong chat.
+            text = text.replace(/^###\s*/gm, '**').replace(/^(\*\*[^\n]+)$/gm, function(m) {
+                return m.endsWith('**') ? m : (m + ':**');
+            });
+
+            // Bỏ lặp dòng sát nhau do JSON Notion đôi khi có title + body giống nhau.
+            const lines = text.split('\n').map(function(line) { return line.trim(); }).filter(Boolean);
+            let cleaned = [];
+            let lastNorm = '';
+            lines.forEach(function(line) {
+                const norm = removeAccents(line).replace(/[^a-z0-9]+/g, ' ').trim();
+                if (norm && norm === lastNorm) return;
+                cleaned.push(line);
+                lastNorm = norm;
+            });
+            text = cleaned.join('\n\n').replace(/\n{3,}/g, '\n\n').trim();
+
+            // Giới hạn để khung chat không quá dài; vẫn không gọi AI.
+            const maxChars = 5200;
+            if (text.length > maxChars) {
+                text = text.slice(0, maxChars).replace(/\s+\S*$/, '').trim()
+                    + '\n\n*Nội dung HDSD còn dài; hãy bấm nút XEM HDSD bên dưới để xem đầy đủ tờ gốc.*';
+            }
+            return text;
+        }
+
         async function composeHDSDGroundedAnswerWithAI_(userMessage, selectedDrugs) {
+            // Giữ nguyên tên hàm để không phải sửa lan rộng, nhưng nhánh HDSD rõ ràng
+            // sẽ trả trực tiếp từ JSON nội bộ và KHÔNG gọi API AI, nhằm tiết kiệm token
+            // và bám sát nội dung tờ HDSD gốc.
             const hdsdItems = await buildHDSDInternalContextForDrugs_(userMessage, selectedDrugs);
             if (!hdsdItems || !hdsdItems.length) return '';
 
-            const contextText = hdsdItems.map(function(item, index) {
+            let answer = '';
+            hdsdItems.forEach(function(item, index) {
                 const d = item.drug || {};
-                return '<thuoc_' + (index + 1) + ' ten="' + cleanDrugFieldForChat_(d.brand) + '">\n'
-                    + 'Tên thuốc: ' + cleanDrugFieldForChat_(d.brand) + '\n'
-                    + 'Hoạt chất/thành phần trong danh mục: ' + cleanDrugFieldForChat_(d.active) + '\n'
-                    + 'Dạng bào chế trong danh mục: ' + cleanDrugFieldForChat_(d.form) + '\n'
-                    + '<trich_doan_hdsd_noi_bo>\n' + item.excerpt + '\n</trich_doan_hdsd_noi_bo>\n'
-                    + '</thuoc_' + (index + 1) + '>';
-            }).join('\n\n');
+                const brand = cleanDrugFieldForChat_(d.brand || ('Thuốc ' + (index + 1)));
+                const excerpt = formatDirectHDSDExcerptForChat_(item.excerpt || '');
+                if (!excerpt) return;
+                if (answer) answer += '\n\n---\n\n';
+                answer += '**Theo tờ HDSD nội bộ của ' + brand + ':**\n\n' + excerpt;
+            });
 
-            const prompt = 'Bạn là MedPlus AI của Khoa Dược - Bệnh viện Đa khoa tỉnh Tuyên Quang.\n'
-                + 'Nhiệm vụ: trả lời câu hỏi người dùng dựa ƯU TIÊN trên dữ liệu tờ HDSD nội bộ JSON bên dưới.\n'
-                + 'Nếu trích đoạn HDSD có thông tin liên quan, hãy trả lời trực tiếp theo HDSD nội bộ, ngắn gọn, dễ hiểu, bằng tiếng Việt.\n'
-                + 'Nếu HDSD nội bộ không có thông tin đủ rõ cho đúng câu hỏi, phải nói rõ “Tờ HDSD nội bộ hiện chưa thấy thông tin này trong phần dữ liệu đã đọc”, sau đó mới bổ sung kiến thức chung nếu thật cần.\n'
-                + 'Không bịa dữ liệu, không thêm thuốc ngoài danh mục, không tự tạo URL, không viết [XEM HDSD](URL), không tự liệt kê phần đối chiếu danh mục thuốc. JavaScript website sẽ tự dựng danh mục và nút HDSD.\n'
-                + 'Không trả mã HTML/JS/CSS/JSON, không dùng code block. Không đánh số thứ tự 1, 2, 3 trong phần trả lời kiến thức. Mỗi ý viết thành đoạn riêng; các nhãn nên ở dạng **Ý chính:** nội dung.\n\n'
-                + 'Câu hỏi người dùng: ' + userMessage + '\n\n'
-                + '<du_lieu_hdsd_noi_bo_json>\n' + contextText + '\n</du_lieu_hdsd_noi_bo_json>';
-
-            for (let m = 0; m < AI_MODELS.length; m++) {
-                for (let k = 0; k < API_KEYS.length; k++) {
-                    try {
-                        const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/' + AI_MODELS[m] + ':generateContent?key=' + API_KEYS[k];
-                        const payload = {
-                            contents: [{ role: 'user', parts: [{ text: prompt }] }],
-                            generationConfig: { temperature: 0.05, maxOutputTokens: MAX_CHAT_OUTPUT_TOKENS }
-                        };
-                        const res = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-                        if (!res.ok) continue;
-                        const data = await res.json();
-                        const text = sanitizeAiReply_(extractGeminiText_(data), userMessage);
-                        if (text) return appendDeterministicDrugListToAnswer_(text, selectedDrugs || []);
-                    } catch (e) {}
-                }
-            }
-
-            // Fallback an toàn: vẫn ưu tiên trích đoạn HDSD, không để AI tự bịa HDSD/link.
-            const first = hdsdItems[0];
-            const fallbackText = '**Theo tờ HDSD nội bộ:** Tôi đã đọc dữ liệu HDSD JSON của **' + cleanDrugFieldForChat_(first.drug && first.drug.brand) + '** và tìm thấy nội dung liên quan dưới đây.\n\n'
-                + first.excerpt.split('\n').slice(0, 16).join('\n');
-            return appendDeterministicDrugListToAnswer_(fallbackText, selectedDrugs || []);
+            if (!answer) return '';
+            answer += '\n\n**Lưu ý:** Nội dung trên được trích trực tiếp từ file JSON HDSD nội bộ. Nếu cần xem bố cục đầy đủ, bảng hoặc hình ảnh trong tờ gốc, hãy bấm nút XEM HDSD bên dưới.';
+            return appendDeterministicDrugListToAnswer_(answer, selectedDrugs || []);
         }
 
         async function composeDrugAnswerWithAI_(userMessage, selectedDrugs, scanMeta) {
