@@ -7060,8 +7060,8 @@ body.medplus-aux-open .new-badge::after{
             let subject = normalizeDrugMatchText_(getQuestionSubject(userMessage));
             subject = stripHDSDIntentTermsForDrugSubject_(subject);
             subject = subject
-                .replace(/\b(cua|tai|trong|o|co|khong|vay|nhe|a|ha|the nao|nhu the nao)\b/g, ' ')
-                .replace(/\b(thuoc nay|loai nay|san pham nay)\b/g, ' ')
+                .replace(/(cua|tai|trong|o|co|khong|vay|nhe|a|ha|the nao|nhu the nao)/g, ' ')
+                .replace(/(thuoc nay|loai nay|san pham nay)/g, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
             return subject || stripHDSDIntentTermsForDrugSubject_(userMessage) || normalizeDrugMatchText_(userMessage);
@@ -7161,6 +7161,86 @@ body.medplus-aux-open .new-badge::after{
             return (needleWords || []).filter(function(w) {
                 return w && (h.indexOf(' ' + w + ' ') !== -1 || h.indexOf(' ' + w) !== -1 || h.indexOf(w + ' ') !== -1);
             }).length;
+        }
+
+
+        function isWeakDrugDisambiguationWord_(word) {
+            return ['thuoc','vien','ong','lo','hop','goi','chai','mg','ml','g','mcg','ui','iu','bao','phim','tab','cap','0','1','2','3','4','5','6','7','8','9'].indexOf(String(word || '')) !== -1;
+        }
+
+        function fuzzyWordMatchRatio_(queryWord, targetWord) {
+            const q = normalizeDrugMatchText_(queryWord);
+            const t = normalizeDrugMatchText_(targetWord);
+            if (!q || !t) return 0;
+            if (q === t) return 1;
+            if (q.length >= 2 && t.length >= 3 && t.indexOf(q) === 0) return Math.min(0.96, 0.82 + q.length / Math.max(t.length, 8));
+            if (t.length >= 3 && q.length >= 3 && q.indexOf(t) === 0) return 0.91;
+            const sim = fuzzySimilarity_(q, t);
+            return sim >= 0.82 ? sim : 0;
+        }
+
+        function getBrandDisambiguationWords_(value) {
+            return normalizeDrugMatchText_(value)
+                .split(/\s+/)
+                .filter(function(w) { return w && w.length >= 2 && !isWeakDrugDisambiguationWord_(w); });
+        }
+
+        function scoreBrandDisambiguation_(subject, drug) {
+            const subjectWords = getBrandDisambiguationWords_(subject);
+            const brandWords = getBrandDisambiguationWords_(drug && drug.brand);
+            const activeWords = getBrandDisambiguationWords_(drug && drug.active);
+            if (subjectWords.length < 2 || brandWords.length < 1) return { score: 0, brandOnlyHit: 0, totalHit: 0 };
+
+            let totalHit = 0;
+            let brandOnlyHit = 0;
+            let score = 0;
+
+            brandWords.forEach(function(bw) {
+                let best = 0;
+                subjectWords.forEach(function(sw) {
+                    const r = fuzzyWordMatchRatio_(sw, bw);
+                    if (r > best) best = r;
+                });
+                if (best >= 0.82) {
+                    totalHit += best;
+                    score += Math.round(best * 100);
+                    const isActiveWord = activeWords.some(function(aw) { return fuzzyWordMatchRatio_(aw, bw) >= 0.96; });
+                    if (!isActiveWord) {
+                        brandOnlyHit += best;
+                        score += Math.round(best * 150);
+                    }
+                }
+            });
+
+            const brandNorm = normalizeDrugMatchText_(drug && drug.brand);
+            const compactSubject = compactDrugMatchText_(subject);
+            const compactBrand = compactDrugMatchText_(brandNorm);
+            if (compactSubject && compactBrand && compactBrand.indexOf(compactSubject) !== -1 && compactSubject.length >= 6) score += 80;
+
+            return { score: score, brandOnlyHit: brandOnlyHit, totalHit: totalHit };
+        }
+
+        function resolveClearBrandCandidateFromSubject_(subject, drugs) {
+            const source = dedupeDrugs_(drugs || []);
+            if (!subject || source.length < 2) return null;
+            const scored = source.map(function(d) {
+                const s = scoreBrandDisambiguation_(subject, d);
+                return { drug: d, score: s.score, brandOnlyHit: s.brandOnlyHit, totalHit: s.totalHit };
+            }).filter(function(x) {
+                return x.score > 0 && x.brandOnlyHit >= 0.82;
+            }).sort(function(a, b) {
+                if (b.score !== a.score) return b.score - a.score;
+                return String(a.drug.brand || '').localeCompare(String(b.drug.brand || ''), 'vi');
+            });
+
+            if (!scored.length) return null;
+            const best = scored[0];
+            const second = scored[1];
+            const secondScore = second ? second.score : 0;
+            if (best.score >= 240 && (!second || best.score - secondScore >= 90 || best.score >= secondScore * 1.35)) {
+                return best.drug;
+            }
+            return null;
         }
 
         function getDrugNameMatchCandidates_(userMessage, allDrugs) {
@@ -7287,6 +7367,20 @@ body.medplus-aux-open .new-badge::after{
             const closeGap = best.score >= 9000 ? 30 : (best.score >= 6800 ? 120 : 300);
             const closeCandidates = candidates.filter(function(x) { return best.score - x.score <= closeGap; });
             const closeDrugs = dedupeDrugs_(closeCandidates.map(function(x) { return x.drug; }));
+
+            // Nếu câu hỏi chứa thêm phần biệt dược bị gõ sai nhẹ, ví dụ
+            // "entecavir stellar" → Entecavir STELLA 0.5 mg, thì tự khóa đúng thuốc.
+            // Chỉ hiện gợi ý khi còn nhiều thuốc ngang nhau và không có biệt dược nổi trội.
+            const brandDisambiguatedDrug = resolveClearBrandCandidateFromSubject_(result.subject, closeDrugs);
+            if (brandDisambiguatedDrug) {
+                return {
+                    type: 'exact_drug',
+                    drugs: [brandDisambiguatedDrug],
+                    confidence: 0.94,
+                    reason: 'brand_disambiguation',
+                    subject: result.subject
+                };
+            }
 
             if (best.score >= 9000 && closeDrugs.length === 1) {
                 return { type: 'exact_drug', drugs: closeDrugs, confidence: 1, reason: best.reason, subject: result.subject };
