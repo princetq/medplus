@@ -7036,7 +7036,7 @@ body.medplus-aux-open .new-badge::after{
                 .sort(function(a, b) { return b.length - a.length; })
                 .forEach(function(term) {
                     const esc = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                    s = s.replace(new RegExp('(^|\\s)' + esc + '(?=\\s|$)', 'g'), ' ');
+                    s = s.replace(new RegExp('(^|\s)' + esc + '(?=\s|$)', 'g'), ' ');
                 });
             return s
                 .replace(/\b(cua|ve|cho|toi|hoi|xin|giup|can|muon|xem|biet|la|co|khong|may|bao nhieu)\b/g, ' ')
@@ -7834,30 +7834,66 @@ body.medplus-aux-open .new-badge::after{
         function getHDSDQuestionAliases_(userMessage) {
             const q = removeAccents(userMessage || '');
             const groups = [
-                { label: 'Tên thuốc/mô tả', aliases: ['ten thuoc', 'mo ta', 'dang bao che', 'dang trinh bay', 'nhan dang', 'mau sac', 'hinh dang'] },
-                { label: 'Thành phần/hoạt chất', aliases: ['thanh phan', 'hoat chat', 'ta duoc', 'chua gi', 'cong thuc', 'ham luong'] },
-                { label: 'Chỉ định/công dụng', aliases: ['chi dinh', 'cong dung', 'tac dung', 'dung de lam gi', 'tri benh gi', 'dieu tri gi'] },
-                { label: 'Liều dùng/cách dùng', aliases: ['lieu dung', 'lieu', 'cach dung', 'cach su dung', 'duong dung', 'uong', 'tiem', 'truyen', 'pha truyen', 'cach pha', 'toc do truyen'] },
-                { label: 'Chống chỉ định', aliases: ['chong chi dinh', 'khong duoc dung', 'ai khong dung', 'khong nen dung'] },
-                { label: 'Thận trọng/cảnh báo', aliases: ['than trong', 'canh bao', 'luu y', 'than trong khi dung', 'khuyen cao'] },
-                { label: 'Tác dụng không mong muốn', aliases: ['tac dung phu', 'tac dung khong mong muon', 'adr', 'phan ung phu', 'khong mong muon'] },
-                { label: 'Tương tác thuốc', aliases: ['tuong tac', 'tuong tac thuoc', 'dung chung', 'phoi hop', 'tuong hop', 'tuong ky'] },
-                { label: 'Quá liều/quên liều', aliases: ['qua lieu', 'xu tri qua lieu', 'qua lieu lam gi', 'quen lieu', 'bo lieu'] },
-                { label: 'Bảo quản/hạn dùng', aliases: ['bao quan', 'han dung', 'han su dung', 'giu thuoc', 'dieu kien bao quan'] },
-                { label: 'Quy cách đóng gói', aliases: ['quy cach', 'quy cach dong goi', 'dong goi', 'bao bi', 'hop', 'vi', 'lo', 'chai', 'ong', 'goi', 'tuyp'] },
-                { label: 'Nhà sản xuất/xuất xứ', aliases: ['nha san xuat', 'noi san xuat', 'co so san xuat', 'cong ty san xuat', 'xuat xu', 'nuoc san xuat'] },
-                { label: 'Số đăng ký/tiêu chuẩn', aliases: ['so dang ky', 'sdk', 'dang ky', 'tieu chuan', 'tieu chuan chat luong'] },
-                { label: 'Chủ sở hữu/đơn vị đăng ký', aliases: ['chu so huu', 'don vi dang ky', 'co so dang ky', 'nha dang ky', 'thuong nhan'] },
-                { label: 'Phụ nữ có thai/cho con bú', aliases: ['phu nu co thai', 'mang thai', 'thai ky', 'cho con bu', 'bu me'] },
-                { label: 'Lái xe/vận hành máy', aliases: ['lai xe', 'van hanh may', 'may moc'] },
-                { label: 'Dược lực học', aliases: ['duoc luc hoc', 'co che tac dung'] },
-                { label: 'Dược động học', aliases: ['duoc dong hoc', 'hap thu', 'phan bo', 'chuyen hoa', 'thai tru'] },
-                { label: 'Phân loại thuốc', aliases: ['phan loai', 'nhom thuoc', 'thuoc ke don', 'ke don', 'otc'] }
+                { label: 'Tên thuốc/mô tả', priority: 42, aliases: ['ten thuoc', 'mo ta', 'dang bao che', 'dang trinh bay', 'nhan dang', 'mau sac', 'hinh dang'] },
+                { label: 'Thành phần/hoạt chất', priority: 82, aliases: ['thanh phan', 'hoat chat', 'ta duoc', 'chua gi', 'cong thuc', 'ham luong'] },
+                { label: 'Chỉ định/công dụng', priority: 74, aliases: ['chi dinh', 'cong dung', 'dung de lam gi', 'tri benh gi', 'dieu tri gi'] },
+                { label: 'Tác dụng', priority: 55, aliases: ['tac dung'] },
+                { label: 'Liều dùng/cách dùng', priority: 86, aliases: ['lieu dung', 'lieu', 'cach dung', 'cach su dung', 'duong dung', 'uong', 'tiem', 'truyen', 'pha truyen', 'cach pha', 'toc do truyen'] },
+                { label: 'Chống chỉ định', priority: 90, aliases: ['chong chi dinh', 'khong duoc dung', 'ai khong dung', 'khong nen dung'] },
+                { label: 'Thận trọng/cảnh báo', priority: 46, aliases: ['than trong', 'canh bao', 'luu y', 'than trong khi dung', 'khuyen cao'] },
+                { label: 'Tác dụng không mong muốn', priority: 88, aliases: ['tac dung phu', 'tac dung khong mong muon', 'adr', 'phan ung phu', 'khong mong muon'] },
+                { label: 'Tương tác thuốc', priority: 88, aliases: ['tuong tac', 'tuong tac thuoc', 'dung chung', 'phoi hop', 'tuong hop', 'tuong ky'] },
+                { label: 'Quá liều/quên liều', priority: 78, aliases: ['qua lieu', 'xu tri qua lieu', 'qua lieu lam gi', 'quen lieu', 'bo lieu'] },
+                { label: 'Bảo quản/hạn dùng', priority: 76, aliases: ['bao quan', 'han dung', 'han su dung', 'giu thuoc', 'dieu kien bao quan'] },
+                { label: 'Quy cách đóng gói', priority: 92, aliases: ['quy cach', 'quy cach dong goi', 'dong goi', 'bao bi', 'hop', 'vi', 'lo', 'chai', 'ong', 'goi', 'tuyp'] },
+                { label: 'Nhà sản xuất/xuất xứ', priority: 86, aliases: ['nha san xuat', 'noi san xuat', 'co so san xuat', 'cong ty san xuat', 'xuat xu', 'nuoc san xuat'] },
+                { label: 'Số đăng ký/tiêu chuẩn', priority: 84, aliases: ['so dang ky', 'sdk', 'dang ky', 'tieu chuan', 'tieu chuan chat luong'] },
+                { label: 'Chủ sở hữu/đơn vị đăng ký', priority: 82, aliases: ['chu so huu', 'don vi dang ky', 'co so dang ky', 'nha dang ky', 'thuong nhan'] },
+                { label: 'Phụ nữ có thai/cho con bú', priority: 96, aliases: ['phu nu co thai', 'phu nu mang thai', 'mang thai', 'thai ky', 'cho con bu', 'phu nu cho con bu', 'bu me', 'me cho con bu', 'chuyen da', 'sinh de'] },
+                { label: 'Lái xe/vận hành máy', priority: 84, aliases: ['lai xe', 'van hanh may', 'may moc'] },
+                { label: 'Dược lực học', priority: 80, aliases: ['duoc luc hoc', 'co che tac dung'] },
+                { label: 'Dược động học', priority: 80, aliases: ['duoc dong hoc', 'hap thu', 'phan bo', 'chuyen hoa', 'thai tru'] },
+                { label: 'Phân loại thuốc', priority: 70, aliases: ['phan loai', 'nhom thuoc', 'thuoc ke don', 'ke don', 'otc'] }
             ];
+
+            const genericAliases = new Set(['luu y', 'tac dung', 'dung', 'hop', 'vi', 'lo', 'ong', 'goi', 'chai', 'tuyp', 'lieu', 'uong', 'tiem', 'truyen']);
+            const scoredGroups = groups.map(function(g, groupIndex) {
+                let score = 0;
+                let matched = [];
+                g.aliases.forEach(function(a) {
+                    const alias = removeAccents(a || '').trim();
+                    if (!alias || !hasNormalizedPhrase_(q, alias)) return;
+                    matched.push(alias);
+                    const words = alias.split(/\s+/).filter(Boolean).length;
+                    let add = g.priority + alias.length * 3 + words * 12;
+                    if (genericAliases.has(alias)) add -= 42;
+                    if (words >= 3) add += 36;
+                    score += Math.max(8, add);
+                });
+                return { group: g, score: score, matched: matched, groupIndex: groupIndex };
+            }).filter(function(item) { return item.score > 0; });
+
+            if (!scoredGroups.length) return [];
+
+            scoredGroups.sort(function(a, b) {
+                if (b.score !== a.score) return b.score - a.score;
+                if (b.group.priority !== a.group.priority) return b.group.priority - a.group.priority;
+                return a.groupIndex - b.groupIndex;
+            });
+
+            const best = scoredGroups[0];
+            // Nếu câu hỏi có một chủ đề rất cụ thể (ví dụ "phụ nữ cho con bú") kèm từ chung
+            // như "lưu ý", chỉ dùng chủ đề cụ thể để tránh kéo nhầm sang mục "Cảnh báo/thận trọng".
+            const selectedGroups = scoredGroups.filter(function(item) {
+                if (item === best) return true;
+                if (item.score < best.score * 0.92) return false;
+                // Chỉ giữ thêm nhóm khác khi cả hai đều là nhóm cụ thể và điểm gần ngang nhau.
+                return item.group.priority >= 84 && best.group.priority >= 84;
+            });
+
             let aliases = [];
-            groups.forEach(function(g) {
-                const hit = g.aliases.some(function(a) { return hasNormalizedPhrase_(q, a); });
-                if (hit) aliases = aliases.concat(g.aliases);
+            selectedGroups.forEach(function(item) {
+                aliases = aliases.concat(item.group.aliases);
             });
             return aliases.filter(function(a, i, arr) { return arr.indexOf(a) === i; });
         }
@@ -7958,6 +7994,107 @@ body.medplus-aux-open .new-badge::after{
             return hasNormalizedPhrase_(normalizedText, removeAccents(alias || ''));
         }
 
+
+        function buildHDSDExcerptFromSections_(sections, indexes, hasClearTopic) {
+            if (!Array.isArray(sections) || !sections.length || !Array.isArray(indexes) || !indexes.length) return '';
+            let excerpt = '';
+            const maxChars = hasClearTopic ? 2600 : 7000;
+            const seen = new Set();
+            indexes.forEach(function(rawIndex) {
+                if (excerpt.length >= maxChars) return;
+                const index = parseInt(rawIndex, 10);
+                if (!Number.isFinite(index) || index < 0 || index >= sections.length || seen.has(index)) return;
+                seen.add(index);
+                const sec = sections[index] || {};
+                let title = cleanDrugFieldForChat_(sec.title || 'Nội dung HDSD');
+                let body = String(sec.text || '').replace(/\s+\n/g, '\n').replace(/\n\s+/g, '\n').trim();
+                if (!body) return;
+                const block = '### ' + title + '\n' + body + '\n\n';
+                if ((excerpt + block).length <= maxChars) excerpt += block;
+                else if (!excerpt) excerpt = block.slice(0, maxChars).replace(/\s+\S*$/, '').trim();
+            });
+            return excerpt.trim();
+        }
+
+        function parseHDSDSectionPickerResponse_(rawText, sectionCount) {
+            const text = String(rawText || '').replace(/```(?:json)?/gi, '').replace(/```/g, '').trim();
+            let payload = null;
+            const jsonMatch = text.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                try { payload = JSON.parse(jsonMatch[0]); } catch (e) { payload = null; }
+            }
+            let indexes = [];
+            let confidence = 0;
+            if (payload) {
+                if (Array.isArray(payload.indexes)) indexes = payload.indexes;
+                else if (Array.isArray(payload.sections)) indexes = payload.sections;
+                else if (Number.isFinite(Number(payload.index))) indexes = [payload.index];
+                else if (Number.isFinite(Number(payload.section))) indexes = [payload.section];
+                confidence = Number(payload.confidence || payload.score || 0);
+            } else {
+                const nums = text.match(/\b\d+\b/g) || [];
+                indexes = nums.slice(0, 3);
+            }
+            indexes = indexes.map(function(x) { return parseInt(x, 10); })
+                .filter(function(x, i, arr) { return Number.isFinite(x) && x >= 0 && x < sectionCount && arr.indexOf(x) === i; })
+                .slice(0, 3);
+            if (!confidence && indexes.length) confidence = 0.75;
+            return { indexes: indexes, confidence: confidence };
+        }
+
+        async function chooseHDSDSectionsWithAI_(userMessage, sections) {
+            if (!Array.isArray(sections) || !sections.length) return [];
+            const titleList = sections.map(function(sec, i) {
+                return i + '. ' + cleanDrugFieldForChat_(sec.title || 'Nội dung HDSD');
+            }).join('\n');
+            const pickerPrompt = 'Bạn là bộ phân loại tiêu đề mục HDSD thuốc.\n'
+                + 'Chỉ chọn mục HDSD phù hợp nhất với câu hỏi người dùng dựa trên DANH SÁCH TIÊU ĐỀ bên dưới.\n'
+                + 'Không trả lời nội dung thuốc, không giải thích, không tóm tắt, không thêm kiến thức y khoa.\n'
+                + 'Nếu câu hỏi chỉ hỏi một ý cụ thể, chọn đúng 1 index. Nếu câu hỏi hỏi rõ nhiều ý, chọn tối đa 3 index.\n'
+                + 'Nếu không có tiêu đề phù hợp, trả indexes rỗng.\n'
+                + 'Trả duy nhất JSON hợp lệ dạng: {"indexes":[0],"confidence":0.95}\n\n'
+                + 'Câu hỏi người dùng: ' + String(userMessage || '') + '\n\n'
+                + 'DANH SÁCH TIÊU ĐỀ HDSD:\n' + titleList;
+
+            for (let m = 0; m < AI_MODELS.length; m++) {
+                for (let k = 0; k < API_KEYS.length; k++) {
+                    try {
+                        const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/' + AI_MODELS[m] + ':generateContent?key=' + API_KEYS[k];
+                        const payload = {
+                            contents: [{ role: 'user', parts: [{ text: pickerPrompt }] }],
+                            generationConfig: { temperature: 0, maxOutputTokens: 80 }
+                        };
+                        const res = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        if (!res.ok) continue;
+                        const data = await res.json();
+                        const picked = parseHDSDSectionPickerResponse_(extractGeminiText_(data), sections.length);
+                        if (picked.indexes.length && picked.confidence >= 0.45) return picked.indexes;
+                    } catch (e) {}
+                }
+            }
+            return [];
+        }
+
+        async function selectHDSDExcerptForQuestionWithAI_(jsonData, userMessage) {
+            const sections = buildHDSDTextSections_(jsonData);
+            if (!sections.length) return '';
+
+            // Cách 1: chỉ cho AI chọn tiêu đề mục HDSD từ danh sách tiêu đề ngắn.
+            // Sau khi có index, web tự lấy nguyên nội dung JSON, không dùng AI để viết câu trả lời.
+            const aiIndexes = await chooseHDSDSectionsWithAI_(userMessage, sections);
+            if (aiIndexes.length) {
+                const excerpt = buildHDSDExcerptFromSections_(sections, aiIndexes, true);
+                if (excerpt) return excerpt;
+            }
+
+            // Nếu AI chọn mục không được hoặc API lỗi, quay về bộ luật cũ để tránh mất tính năng.
+            return selectHDSDExcerptForQuestion_(jsonData, userMessage);
+        }
+
         function selectHDSDExcerptForQuestion_(jsonData, userMessage) {
             const sections = buildHDSDTextSections_(jsonData);
             if (!sections.length) return '';
@@ -8036,7 +8173,7 @@ body.medplus-aux-open .new-badge::after{
                 const d = drugs[i];
                 const json = await loadHDSDJsonForDrug_(d);
                 if (!json) continue;
-                const excerpt = selectHDSDExcerptForQuestion_(json, userMessage);
+                const excerpt = await selectHDSDExcerptForQuestionWithAI_(json, userMessage);
                 if (!excerpt) continue;
                 items.push({ drug: d, excerpt: excerpt });
             }
