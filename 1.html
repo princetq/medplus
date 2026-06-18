@@ -6861,7 +6861,7 @@ body.medplus-aux-open .new-badge::after{
                 'chi dinh', 'chong chi dinh',
                 'duoc luc hoc', 'duoc dong hoc', 'duoc luc', 'duoc dong',
                 'tac dung phu', 'than trong', 'tuong tac', 'lieu dung', 'cach dung',
-                'hdsd', 'huong dan su dung'
+                'hdsd', 'huong dan su dung', 'quy cach', 'quy cach dong goi', 'dong goi', 'nha san xuat', 'so dang ky', 'sdk'
             ].some(function(term) {
                 return hasNormalizedPhrase_(q, term);
             });
@@ -6877,7 +6877,7 @@ body.medplus-aux-open .new-badge::after{
                 'tac dung phu', 'than trong', 'tuong tac',
                 'lieu dung', 'cach dung', 'bao quan', 'qua lieu',
                 'phu nu co thai', 'cho con bu', 'suy gan', 'suy than',
-                'hdsd', 'huong dan su dung'
+                'hdsd', 'huong dan su dung', 'quy cach', 'quy cach dong goi', 'dong goi', 'nha san xuat', 'so dang ky', 'sdk'
             ];
             return terms.some(function(term) { return hasNormalizedPhrase_(q, term); });
         }
@@ -7019,14 +7019,50 @@ body.medplus-aux-open .new-badge::after{
             return normalizeDrugMatchText_(value).replace(/\s+/g, '');
         }
 
+        function stripHDSDTopicTermsForDrugMatch_(value) {
+            let s = ' ' + normalizeDrugMatchText_(value) + ' ';
+            const extraTerms = [
+                'quy cach dong goi', 'quy cach', 'dong goi', 'dong goi nhu the nao', 'dong goi the nao',
+                'bao nhieu vien', 'bao nhieu ong', 'bao nhieu goi', 'hop bao nhieu', 'mot hop bao nhieu',
+                'hop may vi', 'hop may vien', 'may vi', 'may vien', 'quy cach hop', 'quy cach lo', 'quy cach chai', 'quy cach vi',
+                'lieu dung', 'lieu luong', 'cach dung', 'cach su dung', 'duong dung', 'cach pha', 'pha loang', 'hoan nguyen', 'toc do truyen', 'thoi gian truyen',
+                'thanh phan', 'hoat chat', 'ta duoc', 'ham luong', 'dang bao che', 'dang thuoc', 'mo ta', 'nhan dang',
+                'chi dinh', 'cong dung', 'tac dung', 'dung de lam gi', 'dieu tri gi', 'tri benh gi',
+                'chong chi dinh', 'than trong', 'canh bao', 'luu y', 'tuong tac', 'tac dung phu', 'tac dung khong mong muon',
+                'bao quan', 'han dung', 'han su dung', 'qua lieu', 'quen lieu', 'duoc luc hoc', 'duoc dong hoc',
+                'nha san xuat', 'noi san xuat', 'so dang ky', 'sdk', 'tieu chuan', 'don vi dang ky', 'chu so huu',
+                'phu nu co thai', 'mang thai', 'cho con bu', 'lai xe', 'van hanh may'
+            ];
+            let terms = extraTerms.slice();
+            try {
+                (getHDSDTopicGroups_() || []).forEach(function(group) {
+                    (group.aliases || []).forEach(function(alias) {
+                        const a = normalizeDrugMatchText_(alias);
+                        // Chỉ loại cụm chủ đề đủ dài/nhiều từ. Không loại các từ đơn quá chung như “hộp”, “lọ”, “ống” vì có thể nằm trong tên thuốc.
+                        if (a && (a.split(/\s+/).length >= 2 || a.length >= 9)) terms.push(a);
+                    });
+                });
+            } catch (e) {}
+            terms = uniqueStrings_(terms).sort(function(a, b) { return b.length - a.length; });
+            terms.forEach(function(term) {
+                if (!term || term.length < 3) return;
+                const pattern = new RegExp('(^|\\s)' + escapeRegExp_(term).replace(/\\s\+/g, '\\s+') + '(?=\\s|$)', 'g');
+                s = s.replace(pattern, ' ');
+            });
+            return s.replace(/\b(cua|tai|trong|o|co|khong|vay|nhe|a|ha|the nao|nhu the nao|cho biet|xin hoi|hoi)\b/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
         function getDrugSubjectForMatching_(userMessage) {
             let subject = normalizeDrugMatchText_(getQuestionSubject(userMessage));
+            subject = stripHDSDTopicTermsForDrugMatch_(subject) || subject;
             subject = subject
                 .replace(/\b(cua|tai|trong|o|co|khong|vay|nhe|a|ha|the nao|nhu the nao)\b/g, ' ')
                 .replace(/\b(thuoc nay|loai nay|san pham nay)\b/g, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
-            return subject || normalizeDrugMatchText_(userMessage);
+            return subject || stripHDSDTopicTermsForDrugMatch_(userMessage) || normalizeDrugMatchText_(userMessage);
         }
 
         function isGenericDrugSubject_(subject) {
@@ -7181,6 +7217,23 @@ body.medplus-aux-open .new-badge::after{
                             } else if (aliasWords.some(function(aw) { return aw === w || aw.indexOf(w) === 0; })) {
                                 score = 3000 + Math.min(w.length, 50);
                                 reason = 'single_word_prefix';
+                            } else {
+                                // Cho phép gõ sai nhẹ tên thuốc/hoạt chất một từ, ví dụ “entercavir” -> “entecavir”.
+                                let bestTokenSim = 0;
+                                let bestTokenDistance = 99;
+                                aliasWords.forEach(function(aw) {
+                                    if (!aw || aw.length < 5) return;
+                                    const sim = fuzzySimilarity_(w, aw);
+                                    const dist = levenshteinDistance_(normalizeDrugMatchText_(w), normalizeDrugMatchText_(aw));
+                                    if (sim > bestTokenSim || (sim === bestTokenSim && dist < bestTokenDistance)) {
+                                        bestTokenSim = sim;
+                                        bestTokenDistance = dist;
+                                    }
+                                });
+                                if (bestTokenDistance <= 2 || bestTokenSim >= 0.84) {
+                                    score = 3600 + Math.round(bestTokenSim * 100);
+                                    reason = 'single_word_fuzzy_' + bestTokenSim.toFixed(2);
+                                }
                             }
                         }
                     }
@@ -7950,24 +8003,6 @@ body.medplus-aux-open .new-badge::after{
                 .trim();
         }
 
-        function removeRepeatedHDSDTitleLine_(title, body) {
-            const titleNorm = hdsdNormalize_(title || '');
-            const lines = String(body || '').split(/\n+/);
-            while (lines.length) {
-                const firstNorm = hdsdNormalize_(lines[0] || '');
-                if (!firstNorm) {
-                    lines.shift();
-                    continue;
-                }
-                if (titleNorm && (firstNorm === titleNorm || hdsdApproxHasPhrase_(firstNorm, titleNorm) || hdsdApproxHasPhrase_(titleNorm, firstNorm))) {
-                    lines.shift();
-                    continue;
-                }
-                break;
-            }
-            return compactHDSDPlain_(lines.join('\n'));
-        }
-
         function isHDSDSectionStarter_(block) {
             const type = (block && (block.type || (block.value && block.value.type))) || '';
             const own = hdsdBlockOwnPlainText_(block);
@@ -8104,7 +8139,7 @@ body.medplus-aux-open .new-badge::after{
                     if (excerpt.length >= maxChars) return;
                     if (item.score < Math.max(45, topScore * 0.42)) return;
                     const title = cleanDrugFieldForChat_(item.section.title || item.label || 'Nội dung HDSD');
-                    const body = removeRepeatedHDSDTitleLine_(title, item.section.text || '');
+                    const body = compactHDSDPlain_(item.section.text || '');
                     if (!body) return;
                     const block = '### ' + title + '\n' + body + '\n\n';
                     if ((excerpt + block).length <= maxChars) excerpt += block;
@@ -8174,6 +8209,15 @@ body.medplus-aux-open .new-badge::after{
             if (isHDSDContentQuestion_(userMessage) && drugs.length > 0 && drugs.length <= 3) {
                 const hdsdGroundedAnswer = await composeHDSDGroundedAnswerWithAI_(userMessage, drugs);
                 if (hdsdGroundedAnswer) return hdsdGroundedAnswer;
+
+                // Câu hỏi đã xác định là hỏi nội dung HDSD của thuốc cụ thể: không fallback sang AI
+                // để tránh tạo nội dung/link không đúng tờ HDSD nội bộ.
+                const exactLocked = !!(scanMeta && (scanMeta.exactNameMatch || (scanMeta.drugNameResolution && scanMeta.drugNameResolution.type === 'exact_drug')));
+                if (exactLocked) {
+                    const msg = '**Chưa trích được nội dung HDSD nội bộ:** Tôi đã nhận diện được thuốc bạn hỏi, nhưng chưa tìm thấy mục phù hợp trong file JSON HDSD nội bộ nên tôi không trả lời bằng kiến thức tổng hợp để tránh sai lệch với tờ HDSD.'
+                        + '\n\n**Cách kiểm tra ngay:** bấm nút XEM HDSD bên dưới để mở tờ HDSD gốc của thuốc trong website.';
+                    return appendDeterministicDrugListToAnswer_(msg, drugs);
+                }
             }
             if (scanMeta && scanMeta.exactNameMatch && isExactDrugCompositionQuestion_(userMessage)) {
                 return appendDeterministicDrugListToAnswer_(buildExactDrugCompositionAnswer_(drugs), drugs);
@@ -8393,7 +8437,7 @@ body.medplus-aux-open .new-badge::after{
             // đều đi qua bước quét danh mục, để AI trả lời kiến thức trước rồi web tự gắn danh mục thuốc nếu có.
             const medicineIntentPatterns = [
                 /(^|\s)thuoc(\s|$)/,
-                /\b(hoat chat|thanh phan|biet duoc|hdsd|huong dan su dung|lieu dung|cach dung|chi dinh|chong chi dinh|tac dung|tuong tac)\b/,
+                /\b(hoat chat|thanh phan|biet duoc|hdsd|huong dan su dung|lieu dung|cach dung|chi dinh|chong chi dinh|tac dung|tuong tac|quy cach|dong goi|nha san xuat|so dang ky|sdk|bao quan|han dung)\b/,
                 /\b(dieu tri|chua|uống gi|uong gi|dung gi|su dung gi|ke don|don thuoc)\b/,
                 /\b(gout|gut|khop|di ngoai|tieu chay|tao bon|da day|trao nguoc|ho|sot|dau|viem|di ung|hen|copd)\b/,
                 /\b(huyet ap|tieu duong|tim mach|mo mau|roi loan lipid|cam mau|chay mau|nhiem khuan|viem phoi|tiet nieu|suy than|suy gan|non|buon non|mat ngu)\b/
