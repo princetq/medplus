@@ -7632,58 +7632,217 @@ body.medplus-aux-open .new-badge::after{
         }
 
 
+        function getHDSDTopicGroups_() {
+            return [
+                {
+                    label: 'Tên thuốc/mô tả',
+                    aliases: [
+                        'ten thuoc', 'ten san pham', 'ten duoc pham', 'mo ta', 'dac diem', 'nhan dang', 'cam quan', 'hinh dang', 'mau sac', 'kich thuoc', 'dang trinh bay',
+                        'vien mau gi', 'hinh dang vien', 'mo ta thuoc', 'dac tinh san pham'
+                    ]
+                },
+                {
+                    label: 'Thành phần/hoạt chất',
+                    aliases: [
+                        'thanh phan', 'thanh phan dinh tinh', 'thanh phan dinh luong', 'thanh phan dinh tinh dinh luong', 'hoat chat', 'duoc chat',
+                        'chua gi', 'gom nhung gi', 'co gi', 'cong thuc', 'cong thuc thanh phan', 'ham luong', 'nong do', 'ta duoc', 'ta chat', 'duoc lieu'
+                    ]
+                },
+                {
+                    label: 'Dạng bào chế',
+                    aliases: [
+                        'dang bao che', 'dang thuoc', 'dang dung', 'dang trinh bay', 'duong dung', 'vien nen', 'vien nang', 'bot pha tiem', 'dung dich tiem',
+                        'siro', 'hon dich', 'thuoc tiem', 'thuoc uong', 'thuoc boi', 'thuoc nho', 'thuoc dat'
+                    ]
+                },
+                {
+                    label: 'Quy cách đóng gói',
+                    aliases: [
+                        'quy cach', 'quy cach dong goi', 'dong goi', 'donggoi', 'quycach', 'bao bi', 'hinh thuc dong goi', 'dong goi nhu the nao',
+                        'dong goi the nao', 'hop', 'vi', 'lo', 'chai', 'ong', 'goi', 'tuyp', 'tui', 'khay', 'blister', 'strip',
+                        'mot hop bao nhieu', 'hop bao nhieu', 'bao nhieu vien', 'bao nhieu ong', 'bao nhieu goi', 'may vi', 'may vien', 'hop may vi', 'hop may vien',
+                        'quy cach hop', 'quy cach lo', 'quy cach vi', 'quy cach chai'
+                    ]
+                },
+                {
+                    label: 'Chỉ định/công dụng',
+                    aliases: [
+                        'chi dinh', 'cong dung', 'tac dung', 'co tac dung gi', 'dung de lam gi', 'dung lam gi', 'tri benh gi', 'dieu tri gi', 'dieu tri benh gi',
+                        'duoc dung trong', 'su dung trong', 'chi dinh dieu tri', 'chi dinh cua thuoc', 'cong dung cua thuoc', 'tac dung dieu tri'
+                    ]
+                },
+                {
+                    label: 'Liều dùng/cách dùng',
+                    aliases: [
+                        'lieu dung', 'lieu luong', 'lieu khuyen cao', 'lieu thong thuong', 'lieu nguoi lon', 'lieu tre em', 'lieu cao tuoi', 'lieu suy than', 'lieu suy gan',
+                        'cach dung', 'cach su dung', 'su dung nhu the nao', 'dung nhu the nao', 'uong nhu the nao', 'uong may lan', 'ngay may lan', 'moi lan may vien',
+                        'duong dung', 'thoi diem dung', 'truoc an', 'sau an', 'trong bua an', 'thoi gian dieu tri', 'dot dieu tri', 'lieu khoi dau', 'lieu duy tri',
+                        'cach pha', 'pha nhu the nao', 'hoan nguyen', 'pha loang', 'tiem truyen', 'truyen tinh mach', 'tiem tinh mach', 'toc do truyen', 'thoi gian truyen', 'pha truyen'
+                    ]
+                },
+                {
+                    label: 'Chống chỉ định',
+                    aliases: [
+                        'chong chi dinh', 'khong duoc dung', 'khong dung', 'ai khong dung', 'khong nen dung', 'doi tuong khong dung', 'qua man', 'di ung', 'man cam',
+                        'chong chi dinh voi', 'khong su dung cho', 'khong dung cho ai'
+                    ]
+                },
+                {
+                    label: 'Thận trọng/cảnh báo',
+                    aliases: [
+                        'than trong', 'canh bao', 'luu y', 'luu y dac biet', 'can luu y', 'than trong khi dung', 'canh bao dac biet', 'khuyen cao',
+                        'de phong', 'chu y de phong', 'nguy co', 'theo doi', 'can theo doi', 'than trong luc dung', 'can canh bao'
+                    ]
+                },
+                {
+                    label: 'Tác dụng không mong muốn',
+                    aliases: [
+                        'tac dung phu', 'tac dung khong mong muon', 'phan ung phu', 'phan ung bat loi', 'phan ung co hai', 'khong mong muon', 'adr', 'tdkmm',
+                        'tai bien', 'bien co bat loi', 'roi loan', 'tac hai', 'gay ra tac dung phu gi', 'gap tac dung phu gi'
+                    ]
+                },
+                {
+                    label: 'Tương tác thuốc',
+                    aliases: [
+                        'tuong tac', 'tuong tac thuoc', 'tuong tac voi', 'dung chung', 'dung cung', 'phoi hop', 'ket hop', 'anh huong cua thuoc khac',
+                        'ruou', 'thuc an', 'do an', 'thuoc khac', 'tuong hop', 'tuong ky', 'khong tuong hop', 'tuong ky voi', 'pha chung duoc khong'
+                    ]
+                },
+                {
+                    label: 'Quá liều/quên liều',
+                    aliases: [
+                        'qua lieu', 'xu tri qua lieu', 'qua lieu lam gi', 'dung qua lieu', 'trieu chung qua lieu', 'quen lieu', 'bo lieu', 'quen uong', 'quen dung',
+                        'xu tri khi quen lieu', 'khi quen lieu', 'lam gi khi qua lieu', 'lam gi khi quen lieu'
+                    ]
+                },
+                {
+                    label: 'Bảo quản/hạn dùng',
+                    aliases: [
+                        'bao quan', 'cach bao quan', 'dieu kien bao quan', 'nhiet do bao quan', 'giu thuoc', 'de thuoc', 'bao quan o dau', 'bao quan the nao',
+                        'han dung', 'han su dung', 'hansd', 'hsd', 'tuoi tho', 'shelf life', 'sau khi mo nap', 'sau khi pha', 'sau hoan nguyen', 'sau pha loang'
+                    ]
+                },
+                {
+                    label: 'Phụ nữ có thai/cho con bú',
+                    aliases: [
+                        'phu nu co thai', 'mang thai', 'thai ky', 'co thai', 'ba bau', 'me bau', 'thai phu', 'cho con bu', 'bu me', 'dang cho con bu',
+                        'phu nu cho con bu', 'su dung trong thai ky', 'su dung khi cho con bu', 'co thai dung duoc khong', 'cho con bu dung duoc khong'
+                    ]
+                },
+                {
+                    label: 'Lái xe/vận hành máy',
+                    aliases: [
+                        'lai xe', 'van hanh may', 'may moc', 'lai xe duoc khong', 'buon ngu', 'chong mat khi lai xe', 'anh huong lai xe', 'anh huong van hanh may'
+                    ]
+                },
+                {
+                    label: 'Dược lực học/cơ chế',
+                    aliases: [
+                        'duoc luc hoc', 'duoc luc', 'co che tac dung', 'co che', 'tac dung duoc ly', 'dac tinh duoc luc hoc', 'nhom duoc ly', 'atc', 'ma atc',
+                        'tac dung len co the', 'co che dieu tri'
+                    ]
+                },
+                {
+                    label: 'Dược động học',
+                    aliases: [
+                        'duoc dong hoc', 'duoc dong', 'dac tinh duoc dong hoc', 'hap thu', 'phan bo', 'chuyen hoa', 'thai tru', 'sinh kha dung', 'thoi gian ban thai',
+                        'tmax', 'cmax', 'auc', 'gan protein', 'dao thai', 'thanh thai', 'nong do dinh', 'nua doi thai tru'
+                    ]
+                },
+                {
+                    label: 'Thông tin sản xuất/đăng ký',
+                    aliases: [
+                        'nha san xuat', 'noi san xuat', 'co so san xuat', 'cong ty san xuat', 'san xuat boi', 'xuat xu', 'nuoc san xuat', 'dia chi san xuat',
+                        'so dang ky', 'sdk', 's d k', 'dang ky', 'so luu hanh', 'giay phep', 'tieu chuan', 'tieu chuan chat luong', 'tccs', 'duoc dien',
+                        'chu so huu', 'don vi dang ky', 'co so dang ky', 'nha dang ky', 'thuong nhan', 'cong ty dang ky', 'so giay phep'
+                    ]
+                },
+                {
+                    label: 'Thông tin chung khác',
+                    aliases: [
+                        'phan loai', 'loai thuoc', 'nhom thuoc', 'thuoc ke don', 'ke don', 'khong ke don', 'otc', 'duoc ban theo don', 'tieu chuan dong goi',
+                        'doc tinh', 'an toan tien lam sang', 'bao cao', 'ngay cap nhat', 'tai lieu tham khao'
+                    ]
+                }
+            ];
+        }
+
+        function hdsdNormalize_(value) {
+            return removeAccents(value || '').replace(/\s+/g, ' ').trim();
+        }
+
+        function hdsdCompact_(value) {
+            return hdsdNormalize_(value).replace(/\s+/g, '');
+        }
+
+        function hdsdTokens_(value) {
+            return hdsdNormalize_(value).split(/\s+/).filter(function(w) { return w && w.length >= 2; });
+        }
+
+        function hdsdTokenClose_(a, b) {
+            a = hdsdNormalize_(a);
+            b = hdsdNormalize_(b);
+            if (!a || !b) return false;
+            if (a === b) return true;
+            if ((a.length >= 4 && b.indexOf(a) === 0) || (b.length >= 4 && a.indexOf(b) === 0)) return true;
+            if (a.length >= 5 && b.length >= 5 && (a.indexOf(b) !== -1 || b.indexOf(a) !== -1)) return true;
+            const maxLen = Math.max(a.length, b.length);
+            const distance = levenshteinDistance_(a, b);
+            if (maxLen <= 4) return distance <= 1;
+            if (maxLen <= 7) return distance <= 1 || fuzzySimilarity_(a, b) >= 0.82;
+            return distance <= 2 || fuzzySimilarity_(a, b) >= 0.84;
+        }
+
+        function hdsdApproxHasPhrase_(text, phrase) {
+            const t = hdsdNormalize_(text);
+            const p = hdsdNormalize_(phrase);
+            if (!t || !p) return false;
+            if (hasNormalizedPhrase_(t, p) || t.indexOf(p) !== -1) return true;
+            const tc = hdsdCompact_(t);
+            const pc = hdsdCompact_(p);
+            if (pc.length >= 5 && tc.indexOf(pc) !== -1) return true;
+            const phraseTokens = hdsdTokens_(p);
+            if (!phraseTokens.length) return false;
+            const textTokens = hdsdTokens_(t);
+            if (!textTokens.length) return false;
+            if (phraseTokens.length === 1) {
+                const w = phraseTokens[0];
+                if (w.length <= 3) return textTokens.indexOf(w) !== -1;
+                return textTokens.some(function(x) { return hdsdTokenClose_(w, x); });
+            }
+            let hits = 0;
+            phraseTokens.forEach(function(w) {
+                if (textTokens.some(function(x) { return hdsdTokenClose_(w, x); })) hits += 1;
+            });
+            return hits >= Math.max(1, Math.ceil(phraseTokens.length * 0.72));
+        }
+
+        function getHDSDQuestionTopicGroups_(userMessage) {
+            const q = hdsdNormalize_(userMessage || '');
+            const groups = getHDSDTopicGroups_();
+            let hits = [];
+            groups.forEach(function(g) {
+                let best = 0;
+                (g.aliases || []).forEach(function(alias) {
+                    if (hdsdApproxHasPhrase_(q, alias)) best = Math.max(best, 1);
+                });
+                if (best) hits.push(g);
+            });
+            return hits;
+        }
+
         function isHDSDContentQuestion_(userMessage) {
-            const q = removeAccents(userMessage || '');
-            return hasNormalizedPhrase_(q, 'hdsd')
-                || hasNormalizedPhrase_(q, 'huong dan su dung')
-                || hasNormalizedPhrase_(q, 'thanh phan')
-                || hasNormalizedPhrase_(q, 'hoat chat')
-                || hasNormalizedPhrase_(q, 'chua gi')
-                || hasNormalizedPhrase_(q, 'chi dinh')
-                || hasNormalizedPhrase_(q, 'cong dung')
-                || hasNormalizedPhrase_(q, 'tac dung')
-                || hasNormalizedPhrase_(q, 'lieu dung')
-                || hasNormalizedPhrase_(q, 'cach dung')
-                || hasNormalizedPhrase_(q, 'duong dung')
-                || hasNormalizedPhrase_(q, 'chong chi dinh')
-                || hasNormalizedPhrase_(q, 'than trong')
-                || hasNormalizedPhrase_(q, 'canh bao')
-                || hasNormalizedPhrase_(q, 'tuong tac')
-                || hasNormalizedPhrase_(q, 'tac dung phu')
-                || hasNormalizedPhrase_(q, 'tac dung khong mong muon')
-                || hasNormalizedPhrase_(q, 'adr')
-                || hasNormalizedPhrase_(q, 'qua lieu')
-                || hasNormalizedPhrase_(q, 'bao quan')
-                || hasNormalizedPhrase_(q, 'phu nu co thai')
-                || hasNormalizedPhrase_(q, 'cho con bu')
-                || hasNormalizedPhrase_(q, 'lai xe')
-                || hasNormalizedPhrase_(q, 'van hanh may')
-                || hasNormalizedPhrase_(q, 'duoc luc hoc')
-                || hasNormalizedPhrase_(q, 'duoc dong hoc');
+            const q = hdsdNormalize_(userMessage || '');
+            if (!q) return false;
+            const genericTerms = ['hdsd', 'huong dan su dung', 'to huong dan', 'toa huong dan', 'noi dung to', 'thong tin trong to', 'to thuoc'];
+            if (genericTerms.some(function(term) { return hdsdApproxHasPhrase_(q, term); })) return true;
+            return getHDSDQuestionTopicGroups_(q).length > 0;
         }
 
         function getHDSDQuestionAliases_(userMessage) {
-            const q = removeAccents(userMessage || '');
-            const groups = [
-                { label: 'Thành phần/hoạt chất', aliases: ['thanh phan', 'hoat chat', 'chua gi', 'cong thuc'] },
-                { label: 'Chỉ định/công dụng', aliases: ['chi dinh', 'cong dung', 'tac dung', 'dung de lam gi', 'tri benh gi', 'dieu tri gi'] },
-                { label: 'Liều dùng/cách dùng', aliases: ['lieu dung', 'lieu', 'cach dung', 'duong dung', 'uong', 'tiem', 'truyen', 'pha truyen'] },
-                { label: 'Chống chỉ định', aliases: ['chong chi dinh', 'khong duoc dung', 'ai khong dung', 'khong nen dung'] },
-                { label: 'Thận trọng/cảnh báo', aliases: ['than trong', 'canh bao', 'luu y', 'than trong khi dung'] },
-                { label: 'Tác dụng không mong muốn', aliases: ['tac dung phu', 'tac dung khong mong muon', 'adr', 'phan ung phu', 'khong mong muon'] },
-                { label: 'Tương tác thuốc', aliases: ['tuong tac', 'tuong tac thuoc', 'dung chung', 'phoi hop'] },
-                { label: 'Quá liều/xử trí', aliases: ['qua lieu', 'xu tri qua lieu', 'qua lieu lam gi'] },
-                { label: 'Bảo quản', aliases: ['bao quan', 'han dung', 'giu thuoc'] },
-                { label: 'Phụ nữ có thai/cho con bú', aliases: ['phu nu co thai', 'mang thai', 'thai ky', 'cho con bu', 'bu me'] },
-                { label: 'Lái xe/vận hành máy', aliases: ['lai xe', 'van hanh may', 'may moc'] },
-                { label: 'Dược lực học', aliases: ['duoc luc hoc', 'co che tac dung'] },
-                { label: 'Dược động học', aliases: ['duoc dong hoc', 'hap thu', 'phan bo', 'chuyen hoa', 'thai tru'] }
-            ];
+            const groups = getHDSDQuestionTopicGroups_(userMessage);
             let aliases = [];
-            groups.forEach(function(g) {
-                const hit = g.aliases.some(function(a) { return hasNormalizedPhrase_(q, a); });
-                if (hit) aliases = aliases.concat(g.aliases);
-            });
+            groups.forEach(function(g) { aliases = aliases.concat(g.aliases || []); });
             return aliases.filter(function(a, i, arr) { return arr.indexOf(a) === i; });
         }
 
@@ -7719,7 +7878,17 @@ body.medplus-aux-open .new-badge::after{
         }
 
         function hdsdBlockOwnPlainText_(block) {
-            if (!block || !block.type) return '';
+            if (!block) return '';
+            if (!block.type && block.value) block = block.value;
+            if (!block.type && typeof block === 'object') {
+                let directParts = [];
+                ['plain_text', 'text', 'title', 'name', 'content'].forEach(function(k) {
+                    if (typeof block[k] === 'string') directParts.push(block[k]);
+                });
+                if (Array.isArray(block.rich_text)) directParts.push(hdsdRichTextArrayToPlain_(block.rich_text));
+                if (Array.isArray(block.title)) directParts.push(hdsdRichTextArrayToPlain_(block.title));
+                return directParts.join(' ').replace(/\s+/g, ' ').trim();
+            }
             const b = block[block.type] || {};
             let parts = [];
             if (Array.isArray(b.rich_text)) parts.push(hdsdRichTextArrayToPlain_(b.rich_text));
@@ -7730,11 +7899,15 @@ body.medplus-aux-open .new-badge::after{
             if (block.type === 'table_row' && Array.isArray(b.cells)) {
                 b.cells.forEach(function(cell) { parts.push(hdsdRichTextArrayToPlain_(cell)); });
             }
+            if (block.properties && block.properties.title && Array.isArray(block.properties.title)) {
+                parts.push(block.properties.title.map(function(x) { return Array.isArray(x) ? String(x[0] || '') : String(x || ''); }).join(''));
+            }
             return parts.join(' ').replace(/\s+/g, ' ').trim();
         }
 
         function hdsdBlockChildren_(block) {
             if (!block) return [];
+            if (!block.type && block.value) block = block.value;
             const b = block[block.type] || {};
             if (Array.isArray(block._children)) return block._children;
             if (Array.isArray(block.children)) return block.children;
@@ -7753,65 +7926,195 @@ body.medplus-aux-open .new-badge::after{
             return parts.join('\n').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
         }
 
+        function getHDSDTopLevelBlocks_(jsonData) {
+            if (!jsonData) return [];
+            if (Array.isArray(jsonData.blocks)) return jsonData.blocks;
+            if (Array.isArray(jsonData.results)) return jsonData.results;
+            if (Array.isArray(jsonData.children)) return jsonData.children;
+            if (jsonData.recordMap && jsonData.recordMap.block) {
+                return Object.values(jsonData.recordMap.block).map(function(x) { return x && (x.value || x); }).filter(Boolean);
+            }
+            if (jsonData.blockMap) {
+                return Object.values(jsonData.blockMap).map(function(x) { return x && (x.value || x); }).filter(Boolean);
+            }
+            return [];
+        }
+
+        function compactHDSDPlain_(text) {
+            return String(text || '')
+                .replace(/\r/g, '')
+                .replace(/[ \t]+\n/g, '\n')
+                .replace(/\n[ \t]+/g, '\n')
+                .replace(/[ \t]{2,}/g, ' ')
+                .replace(/\n{3,}/g, '\n\n')
+                .trim();
+        }
+
+        function removeRepeatedHDSDTitleLine_(title, body) {
+            const titleNorm = hdsdNormalize_(title || '');
+            const lines = String(body || '').split(/\n+/);
+            while (lines.length) {
+                const firstNorm = hdsdNormalize_(lines[0] || '');
+                if (!firstNorm) {
+                    lines.shift();
+                    continue;
+                }
+                if (titleNorm && (firstNorm === titleNorm || hdsdApproxHasPhrase_(firstNorm, titleNorm) || hdsdApproxHasPhrase_(titleNorm, firstNorm))) {
+                    lines.shift();
+                    continue;
+                }
+                break;
+            }
+            return compactHDSDPlain_(lines.join('\n'));
+        }
+
+        function isHDSDSectionStarter_(block) {
+            const type = (block && (block.type || (block.value && block.value.type))) || '';
+            const own = hdsdBlockOwnPlainText_(block);
+            const norm = hdsdNormalize_(own);
+            if (!own) return false;
+            if (/^heading_|^toggle$/.test(type || '')) return true;
+            if (own.length > 140) return false;
+            if (/^\s*(\d{1,2}|[ivx]+)[\.\)]\s+\S+/i.test(own)) return true;
+            if (/[:：]\s*$/.test(own) && own.length <= 120) return true;
+            const groups = getHDSDTopicGroups_();
+            return groups.some(function(g) {
+                return (g.aliases || []).some(function(alias) { return hdsdApproxHasPhrase_(norm, alias); });
+            });
+        }
+
         function buildHDSDTextSections_(jsonData) {
-            const blocks = (jsonData && Array.isArray(jsonData.blocks)) ? jsonData.blocks : [];
+            const blocks = getHDSDTopLevelBlocks_(jsonData);
             let sections = [];
             let general = [];
+            let current = null;
+            function flushCurrent_() {
+                if (!current) return;
+                const body = compactHDSDPlain_(current.textParts.join('\n'));
+                if (body) sections.push({ title: current.title || 'Nội dung HDSD', text: body });
+                current = null;
+            }
             blocks.forEach(function(block) {
-                const type = block && block.type;
                 const own = hdsdBlockOwnPlainText_(block);
                 const all = hdsdBlockAllPlainText_(block);
                 if (!all) return;
-                if (/^heading_|^toggle$/.test(type || '')) {
-                    sections.push({ title: own || 'Nội dung HDSD', text: all });
+                if (isHDSDSectionStarter_(block)) {
+                    flushCurrent_();
+                    current = { title: own || 'Nội dung HDSD', textParts: [all] };
+                } else if (current) {
+                    current.textParts.push(all);
                 } else {
                     general.push(all);
                 }
             });
-            if (general.length) sections.unshift({ title: 'Nội dung chung', text: general.join('\n') });
-            return sections;
+            flushCurrent_();
+            if (general.length) sections.unshift({ title: 'Nội dung chung', text: compactHDSDPlain_(general.join('\n')) });
+            return sections.filter(function(sec) { return sec && sec.text; });
+        }
+
+        function getHDSDQuestionKeywords_(userMessage) {
+            const q = hdsdNormalize_(userMessage || '');
+            const stop = new Set(['thuoc','cua','co','khong','la','gi','nao','nhu','the','ve','cho','toi','hoi','xin','hay','can','biet','trong','hdsd','huong','dan','su','dung','noi','dung','to','anh','chi','benh','vien']);
+            return q.split(/\s+/).filter(function(w) { return w && w.length >= 3 && !stop.has(w); });
+        }
+
+        function scoreHDSDSectionForQuestion_(section, userMessage) {
+            const titleNorm = hdsdNormalize_(section.title || '');
+            const textNorm = hdsdNormalize_(section.text || '');
+            const groups = getHDSDQuestionTopicGroups_(userMessage);
+            const aliases = getHDSDQuestionAliases_(userMessage);
+            const qKeywords = getHDSDQuestionKeywords_(userMessage);
+            let score = 0;
+            let matchedLabel = '';
+
+            groups.forEach(function(g) {
+                let groupScore = 0;
+                (g.aliases || []).forEach(function(alias) {
+                    if (hdsdApproxHasPhrase_(titleNorm, alias)) groupScore = Math.max(groupScore, 520);
+                    else if (hdsdApproxHasPhrase_(textNorm.slice(0, 900), alias)) groupScore = Math.max(groupScore, 120);
+                    else if (hdsdApproxHasPhrase_(textNorm, alias)) groupScore = Math.max(groupScore, 45);
+                });
+                if (groupScore > 0) {
+                    score += groupScore;
+                    if (!matchedLabel || groupScore >= 300) matchedLabel = g.label;
+                }
+            });
+
+            aliases.forEach(function(alias) {
+                if (hdsdApproxHasPhrase_(titleNorm, alias)) score += 60;
+                if (hdsdApproxHasPhrase_(textNorm.slice(0, 1200), alias)) score += 18;
+            });
+
+            qKeywords.forEach(function(w) {
+                if (titleNorm.indexOf(w) !== -1) score += 22;
+                else if (textNorm.indexOf(w) !== -1) score += 3;
+            });
+
+            return { score: score, matchedLabel: matchedLabel };
+        }
+
+        function extractHDSDWindowAroundAliases_(sections, aliases, userMessage) {
+            const qKeywords = getHDSDQuestionKeywords_(userMessage);
+            const needles = (aliases || []).concat(qKeywords || []).map(hdsdNormalize_).filter(function(x) { return x && x.length >= 3; });
+            if (!needles.length) return '';
+            const joined = sections.map(function(sec) {
+                return '### ' + (sec.title || 'Nội dung HDSD') + '\n' + (sec.text || '');
+            }).join('\n\n');
+            const joinedNorm = hdsdNormalize_(joined);
+            let bestPos = -1;
+            needles.some(function(alias) {
+                let pos = joinedNorm.indexOf(alias);
+                if (pos === -1) {
+                    const compactNeedle = hdsdCompact_(alias);
+                    const compactJoined = hdsdCompact_(joinedNorm);
+                    if (compactNeedle.length >= 5) pos = compactJoined.indexOf(compactNeedle);
+                }
+                if (pos !== -1) {
+                    bestPos = pos;
+                    return true;
+                }
+                return false;
+            });
+            if (bestPos === -1) return '';
+            const start = Math.max(0, bestPos - 500);
+            const end = Math.min(joined.length, bestPos + 2200);
+            return compactHDSDPlain_(joined.slice(start, end));
         }
 
         function selectHDSDExcerptForQuestion_(jsonData, userMessage) {
             const sections = buildHDSDTextSections_(jsonData);
             if (!sections.length) return '';
+            const groups = getHDSDQuestionTopicGroups_(userMessage);
             const aliases = getHDSDQuestionAliases_(userMessage);
-            const normalizedQuestion = removeAccents(userMessage || '');
-            let scored = sections.map(function(sec, index) {
-                const titleNorm = removeAccents(sec.title || '');
-                const textNorm = removeAccents(sec.text || '');
-                let score = 0;
-                aliases.forEach(function(a) {
-                    if (titleNorm.indexOf(a) !== -1) score += 300;
-                    if (textNorm.indexOf(a) !== -1) score += 45;
-                });
-                if (!aliases.length) {
-                    if (/hdsd|huong dan su dung/.test(normalizedQuestion)) score += 10;
-                    if (/^(thong tin chung|noi dung chung)$/i.test(titleNorm)) score += 5;
-                }
-                return { section: sec, score: score, index: index };
-            }).filter(function(x) { return x.score > 0 || !aliases.length; });
-
-            if (!scored.length && aliases.length) {
-                scored = sections.map(function(sec, index) { return { section: sec, score: 1, index: index }; });
-            }
+            const scored = sections.map(function(sec, index) {
+                const result = scoreHDSDSectionForQuestion_(sec, userMessage);
+                return { section: sec, score: result.score, label: result.matchedLabel, index: index };
+            }).filter(function(x) { return x.score > 0; });
 
             scored.sort(function(a, b) {
                 if (b.score !== a.score) return b.score - a.score;
                 return a.index - b.index;
             });
 
-            let excerpt = '';
-            const maxChars = 7000;
-            scored.slice(0, 6).forEach(function(item) {
-                if (excerpt.length >= maxChars) return;
-                let title = cleanDrugFieldForChat_(item.section.title || 'Nội dung HDSD');
-                let body = String(item.section.text || '').replace(/\s+\n/g, '\n').replace(/\n\s+/g, '\n').trim();
-                if (!body) return;
-                const block = '### ' + title + '\n' + body + '\n\n';
-                if ((excerpt + block).length <= maxChars) excerpt += block;
-            });
-            return excerpt.trim();
+            const maxChars = 5200;
+            if (scored.length && (scored[0].score >= 120 || groups.length > 0)) {
+                let excerpt = '';
+                const topScore = scored[0].score;
+                scored.slice(0, 5).forEach(function(item) {
+                    if (excerpt.length >= maxChars) return;
+                    if (item.score < Math.max(45, topScore * 0.42)) return;
+                    const title = cleanDrugFieldForChat_(item.section.title || item.label || 'Nội dung HDSD');
+                    const body = removeRepeatedHDSDTitleLine_(title, item.section.text || '');
+                    if (!body) return;
+                    const block = '### ' + title + '\n' + body + '\n\n';
+                    if ((excerpt + block).length <= maxChars) excerpt += block;
+                });
+                if (excerpt.trim()) return excerpt.trim();
+            }
+
+            const windowExcerpt = extractHDSDWindowAroundAliases_(sections, aliases, userMessage);
+            if (windowExcerpt) return windowExcerpt.slice(0, maxChars).trim();
+            return '';
         }
 
         async function buildHDSDInternalContextForDrugs_(userMessage, selectedDrugs) {
@@ -7830,55 +8133,40 @@ body.medplus-aux-open .new-badge::after{
             return items;
         }
 
+        function formatHDSDDirectExcerpt_(excerpt) {
+            let text = compactHDSDPlain_(excerpt || '');
+            if (!text) return '';
+            text = text
+                .replace(/^###\s*(.+)$/gm, function(_, title) { return '**' + cleanDrugFieldForChat_(title) + ':**'; })
+                .replace(/\n{3,}/g, '\n\n')
+                .trim();
+            const maxLen = 6200;
+            if (text.length > maxLen) {
+                text = text.slice(0, maxLen).replace(/\s+\S*$/, '').trim() + '\n\n*Nội dung HDSD còn tiếp; vui lòng bấm XEM HDSD để xem đầy đủ tờ gốc.*';
+            }
+            return text;
+        }
+
         async function composeHDSDGroundedAnswerWithAI_(userMessage, selectedDrugs) {
+            // Giữ tên hàm cũ để không sửa lan rộng, nhưng nhánh này KHÔNG gọi AI.
+            // Nếu nhận diện được mục rõ trong JSON HDSD, trả lời trực tiếp từ JSON để tiết kiệm token và tránh lệch tờ HDSD.
             const hdsdItems = await buildHDSDInternalContextForDrugs_(userMessage, selectedDrugs);
             if (!hdsdItems || !hdsdItems.length) return '';
 
-            const contextText = hdsdItems.map(function(item, index) {
+            let answer = '';
+            hdsdItems.forEach(function(item, index) {
                 const d = item.drug || {};
-                return '<thuoc_' + (index + 1) + ' ten="' + cleanDrugFieldForChat_(d.brand) + '">\n'
-                    + 'Tên thuốc: ' + cleanDrugFieldForChat_(d.brand) + '\n'
-                    + 'Hoạt chất/thành phần trong danh mục: ' + cleanDrugFieldForChat_(d.active) + '\n'
-                    + 'Dạng bào chế trong danh mục: ' + cleanDrugFieldForChat_(d.form) + '\n'
-                    + '<trich_doan_hdsd_noi_bo>\n' + item.excerpt + '\n</trich_doan_hdsd_noi_bo>\n'
-                    + '</thuoc_' + (index + 1) + '>';
-            }).join('\n\n');
+                const brand = cleanDrugFieldForChat_(d.brand || 'thuốc này');
+                const excerpt = formatHDSDDirectExcerpt_(item.excerpt);
+                if (!excerpt) return;
+                if (hdsdItems.length > 1) answer += '**' + (index + 1) + '. ' + brand + ':**\n\n';
+                else answer += '**Theo tờ HDSD nội bộ của ' + brand + ':**\n\n';
+                answer += excerpt + '\n\n';
+            });
 
-            const prompt = 'Bạn là MedPlus AI của Khoa Dược - Bệnh viện Đa khoa tỉnh Tuyên Quang.\n'
-                + 'Nhiệm vụ: trả lời câu hỏi người dùng dựa ƯU TIÊN trên dữ liệu tờ HDSD nội bộ JSON bên dưới.\n'
-                + 'Nếu trích đoạn HDSD có thông tin liên quan, hãy trả lời trực tiếp theo HDSD nội bộ, ngắn gọn, dễ hiểu, bằng tiếng Việt.\n'
-                + 'Nếu HDSD nội bộ không có thông tin đủ rõ cho đúng câu hỏi, phải nói rõ “Tờ HDSD nội bộ hiện chưa thấy thông tin này trong phần dữ liệu đã đọc”, sau đó mới bổ sung kiến thức chung nếu thật cần.\n'
-                + 'Không bịa dữ liệu, không thêm thuốc ngoài danh mục, không tự tạo URL, không viết [XEM HDSD](URL), không tự liệt kê phần đối chiếu danh mục thuốc. JavaScript website sẽ tự dựng danh mục và nút HDSD.\n'
-                + 'Không trả mã HTML/JS/CSS/JSON, không dùng code block. Không đánh số thứ tự 1, 2, 3 trong phần trả lời kiến thức. Mỗi ý viết thành đoạn riêng; các nhãn nên ở dạng **Ý chính:** nội dung.\n\n'
-                + 'Câu hỏi người dùng: ' + userMessage + '\n\n'
-                + '<du_lieu_hdsd_noi_bo_json>\n' + contextText + '\n</du_lieu_hdsd_noi_bo_json>';
-
-            for (let m = 0; m < AI_MODELS.length; m++) {
-                for (let k = 0; k < API_KEYS.length; k++) {
-                    try {
-                        const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/' + AI_MODELS[m] + ':generateContent?key=' + API_KEYS[k];
-                        const payload = {
-                            contents: [{ role: 'user', parts: [{ text: prompt }] }],
-                            generationConfig: { temperature: 0.05, maxOutputTokens: MAX_CHAT_OUTPUT_TOKENS }
-                        };
-                        const res = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-                        if (!res.ok) continue;
-                        const data = await res.json();
-                        const text = sanitizeAiReply_(extractGeminiText_(data), userMessage);
-                        if (text) return appendDeterministicDrugListToAnswer_(text, selectedDrugs || []);
-                    } catch (e) {}
-                }
-            }
-
-            // Fallback an toàn: vẫn ưu tiên trích đoạn HDSD, không để AI tự bịa HDSD/link.
-            const first = hdsdItems[0];
-            const fallbackText = '**Theo tờ HDSD nội bộ:** Tôi đã đọc dữ liệu HDSD JSON của **' + cleanDrugFieldForChat_(first.drug && first.drug.brand) + '** và tìm thấy nội dung liên quan dưới đây.\n\n'
-                + first.excerpt.split('\n').slice(0, 16).join('\n');
-            return appendDeterministicDrugListToAnswer_(fallbackText, selectedDrugs || []);
+            if (!answer.trim()) return '';
+            answer += '**Lưu ý:** Nội dung trên được trích trực tiếp từ file JSON HDSD nội bộ. Nếu cần xem bố cục đầy đủ, bảng hoặc hình ảnh trong tờ gốc, hãy bấm nút XEM HDSD bên dưới.';
+            return appendDeterministicDrugListToAnswer_(answer, selectedDrugs || []);
         }
 
         async function composeDrugAnswerWithAI_(userMessage, selectedDrugs, scanMeta) {
