@@ -7038,7 +7038,7 @@ body.medplus-aux-open .new-badge::after{
                 .slice()
                 .sort(function(a, b) { return b.length - a.length; })
                 .forEach(function(term) {
-                    const esc = escapeRegExp_(term);
+                    const esc = String(term || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                     s = s.replace(new RegExp('(^|\\s)' + esc + '(?=\\s|$)', 'g'), ' ');
                 });
             return s
@@ -7063,8 +7063,8 @@ body.medplus-aux-open .new-badge::after{
             let subject = normalizeDrugMatchText_(getQuestionSubject(userMessage));
             subject = stripHDSDIntentTermsForDrugSubject_(subject);
             subject = subject
-                .replace(/\b(cua|tai|trong|o|co|khong|vay|nhe|a|ha|the nao|nhu the nao)\b/g, ' ')
-                .replace(/\b(thuoc nay|loai nay|san pham nay)\b/g, ' ')
+                .replace(/(cua|tai|trong|o|co|khong|vay|nhe|a|ha|the nao|nhu the nao)/g, ' ')
+                .replace(/(thuoc nay|loai nay|san pham nay)/g, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
             return subject || stripHDSDIntentTermsForDrugSubject_(userMessage) || normalizeDrugMatchText_(userMessage);
@@ -7109,7 +7109,7 @@ body.medplus-aux-open .new-badge::after{
             const active = normalizeDrugMatchText_(drug && drug.active);
             if (active && active.length >= 4) aliases.push(active);
             const activeNoStrength = active
-                .replace(/\b\d+(?:[\s\/.-]*(?:mg|ml|g|mcg|ui|iu|%)?)\b/g, ' ')
+                .replace(/\d+(?:[\s\/.-]*(?:mg|ml|g|mcg|ui|iu|%)?)/g, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
             if (activeNoStrength && activeNoStrength !== active && activeNoStrength.length >= 4) aliases.push(activeNoStrength);
@@ -7967,23 +7967,53 @@ body.medplus-aux-open .new-badge::after{
             return parts.join('\n').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
         }
 
+
+        function hdsdFirstString_(value) {
+            if (!value) return '';
+            if (typeof value === 'string') return value;
+            if (Array.isArray(value)) {
+                for (let i = 0; i < value.length; i++) {
+                    const found = hdsdFirstString_(value[i]);
+                    if (found) return found;
+                }
+                return '';
+            }
+            if (typeof value === 'object') {
+                const keys = ['url', 'src', 'source', 'signedUrl', 'signed_url', 'file_url', 'public_url', 'original_url'];
+                for (let i = 0; i < keys.length; i++) {
+                    if (typeof value[keys[i]] === 'string' && value[keys[i]]) return value[keys[i]];
+                }
+                if (value.file) {
+                    const foundFile = hdsdFirstString_(value.file);
+                    if (foundFile) return foundFile;
+                }
+                if (value.external) {
+                    const foundExternal = hdsdFirstString_(value.external);
+                    if (foundExternal) return foundExternal;
+                }
+            }
+            return '';
+        }
+
         function hdsdBlockImageItems_(block) {
             let images = [];
             if (!block) return images;
             const type = block.type || '';
             const b = block[type] || {};
-            if (type === 'image') {
+
+            if (type === 'image' || block.image || b.file || b.external || b.url || block.url) {
                 let src = '';
                 if (b._proxy && b._blockId && typeof NOTION_WORKER !== 'undefined') {
                     src = NOTION_WORKER + '/image-proxy/' + b._blockId + '?v=' + Date.now();
                 } else if (block._proxy && block._blockId && typeof NOTION_WORKER !== 'undefined') {
                     src = NOTION_WORKER + '/image-proxy/' + block._blockId + '?v=' + Date.now();
                 } else {
-                    src = (b.file && b.file.url) || (b.external && b.external.url) || b.url || block.url || '';
+                    src = hdsdFirstString_(b.file) || hdsdFirstString_(b.external) || b.url || block.url || hdsdFirstString_(block.image) || '';
                 }
                 const cap = hdsdRichTextArrayToPlain_(b.caption || block.caption || []);
                 if (src) images.push({ src: String(src), caption: cleanDrugFieldForChat_(cap || '') });
             }
+
             hdsdBlockChildren_(block).forEach(function(child) {
                 images = images.concat(hdsdBlockImageItems_(child));
             });
@@ -8058,8 +8088,9 @@ body.medplus-aux-open .new-badge::after{
                 const sec = sections[index] || {};
                 let title = cleanDrugFieldForChat_(sec.title || 'Nội dung HDSD');
                 let body = String(sec.text || '').replace(/\s+\n/g, '\n').replace(/\n\s+/g, '\n').trim();
-                if (!body) return;
-                const block = '### ' + title + '\n' + body + '\n\n';
+                if (!body && !(sec.images || []).length) return;
+                const imageTokens = hdsdImagesToChatTokens_(sec.images || []);
+                const block = '### ' + title + '\n' + body + (imageTokens ? '\n' + imageTokens : '') + '\n\n';
                 if ((excerpt + block).length <= maxChars) excerpt += block;
                 else if (!excerpt) excerpt = block.slice(0, maxChars).replace(/\s+\S*$/, '').trim();
             });
@@ -8207,8 +8238,9 @@ body.medplus-aux-open .new-badge::after{
                 if (excerpt.length >= maxChars) return;
                 let title = cleanDrugFieldForChat_(item.section.title || 'Nội dung HDSD');
                 let body = String(item.section.text || '').replace(/\s+\n/g, '\n').replace(/\n\s+/g, '\n').trim();
-                if (!body) return;
-                const block = '### ' + title + '\n' + body + '\n\n';
+                if (!body && !(item.section.images || []).length) return;
+                const imageTokens = hdsdImagesToChatTokens_(item.section.images || []);
+                const block = '### ' + title + '\n' + body + (imageTokens ? '\n' + imageTokens : '') + '\n\n';
                 if ((excerpt + block).length <= maxChars) excerpt += block;
                 else if (!excerpt) excerpt = block.slice(0, maxChars).replace(/\s+\S*$/, '').trim();
             });
