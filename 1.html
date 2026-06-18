@@ -7870,18 +7870,74 @@ body.medplus-aux-open .new-badge::after{
             return hits >= Math.max(1, Math.ceil(phraseTokens.length * 0.72));
         }
 
+        function hdsdAliasMatchScore_(text, alias, options) {
+            const opts = options || {};
+            const t = hdsdNormalize_(text || '');
+            const a = hdsdNormalize_(alias || '');
+            if (!t || !a) return 0;
+
+            const aliasTokens = hdsdTokens_(a);
+            const textTokens = hdsdTokens_(t);
+            if (!aliasTokens.length || !textTokens.length) return 0;
+
+            // Khớp cụm chính xác là tín hiệu mạnh nhất.
+            if (hasNormalizedPhrase_(t, a) || t.indexOf(a) !== -1) return 220 + a.length;
+
+            const tc = hdsdCompact_(t);
+            const ac = hdsdCompact_(a);
+            if (ac.length >= 6 && tc.indexOf(ac) !== -1) return 205 + ac.length;
+
+            if (aliasTokens.length === 1) {
+                const w = aliasTokens[0];
+                const exactToken = textTokens.indexOf(w) !== -1;
+                if (w.length <= 3) return exactToken ? 150 : 0;
+                if (exactToken) return 185 + w.length;
+                if (opts.allowFuzzy !== false && w.length >= 5 && textTokens.some(function(x) { return hdsdTokenClose_(w, x); })) return 95 + w.length;
+                return 0;
+            }
+
+            let exactHits = 0;
+            let fuzzyHits = 0;
+            aliasTokens.forEach(function(w) {
+                if (textTokens.indexOf(w) !== -1) {
+                    exactHits += 1;
+                    fuzzyHits += 1;
+                } else if (opts.allowFuzzy !== false && w.length >= 4 && textTokens.some(function(x) { return hdsdTokenClose_(w, x); })) {
+                    fuzzyHits += 1;
+                }
+            });
+
+            if (exactHits === aliasTokens.length) return 175 + a.length;
+            if (aliasTokens.length >= 2 && fuzzyHits === aliasTokens.length) return 105 + a.length;
+            if (aliasTokens.length >= 3 && fuzzyHits >= Math.ceil(aliasTokens.length * 0.8)) return 82 + a.length;
+            return 0;
+        }
+
         function getHDSDQuestionTopicGroups_(userMessage) {
             const q = hdsdNormalize_(userMessage || '');
             const groups = getHDSDTopicGroups_();
-            let hits = [];
+            if (!q) return [];
+
+            const scored = [];
             groups.forEach(function(g) {
                 let best = 0;
                 (g.aliases || []).forEach(function(alias) {
-                    if (hdsdApproxHasPhrase_(q, alias)) best = Math.max(best, 1);
+                    if (isHDSDShortGenericAlias_(alias)) return;
+                    const s = hdsdAliasMatchScore_(q, alias, { allowFuzzy: true });
+                    if (s > best) best = s;
                 });
-                if (best) hits.push(g);
+                if (best >= 95) scored.push({ group: g, score: best });
             });
-            return hits;
+
+            if (!scored.length) return [];
+            scored.sort(function(a, b) { return b.score - a.score; });
+            const top = scored[0].score;
+
+            // Chỉ giữ các nhóm ý định mạnh nhất.
+            // Tránh lỗi hỏi “tương tác” nhưng fuzzy/alias phụ kéo nhầm sang “quy cách đóng gói”.
+            return scored
+                .filter(function(x) { return x.score >= Math.max(95, top * 0.72); })
+                .map(function(x) { return x.group; });
         }
 
         function isHDSDContentQuestion_(userMessage) {
@@ -8092,13 +8148,9 @@ body.medplus-aux-open .new-badge::after{
                     if (!titleNorm) return;
                     let titleScore = 0;
                     (g.aliases || []).forEach(function(alias) {
-                        const a = hdsdNormalize_(alias || '');
-                        if (!a || isHDSDShortGenericAlias_(a)) return;
-                        if (hasNormalizedPhrase_(titleNorm, a) || titleNorm.indexOf(a) !== -1) {
-                            titleScore = Math.max(titleScore, 1000 + a.length);
-                        } else if (a.length >= 5 && hdsdApproxHasPhrase_(titleNorm, a)) {
-                            titleScore = Math.max(titleScore, 850 + a.length);
-                        }
+                        if (isHDSDShortGenericAlias_(alias)) return;
+                        const s = hdsdAliasMatchScore_(titleNorm, alias, { allowFuzzy: true });
+                        if (s >= 95) titleScore = Math.max(titleScore, 800 + s);
                     });
                     if (!titleScore) return;
                     if (!best || titleScore > best.score || (titleScore === best.score && index < best.index)) {
@@ -8121,9 +8173,10 @@ body.medplus-aux-open .new-badge::after{
             groups.forEach(function(g) {
                 let groupScore = 0;
                 (g.aliases || []).forEach(function(alias) {
-                    if (hdsdApproxHasPhrase_(titleNorm, alias)) groupScore = Math.max(groupScore, 520);
-                    else if (hdsdAliasCanSearchBody_(alias) && hdsdApproxHasPhrase_(textNorm.slice(0, 900), alias)) groupScore = Math.max(groupScore, 120);
-                    else if (hdsdAliasCanSearchBody_(alias) && hdsdApproxHasPhrase_(textNorm, alias)) groupScore = Math.max(groupScore, 45);
+                    const titleAliasScore = hdsdAliasMatchScore_(titleNorm, alias, { allowFuzzy: true });
+                    if (titleAliasScore >= 95) groupScore = Math.max(groupScore, 520 + titleAliasScore);
+                    else if (hdsdAliasCanSearchBody_(alias) && hdsdAliasMatchScore_(textNorm.slice(0, 900), alias, { allowFuzzy: false }) >= 120) groupScore = Math.max(groupScore, 120);
+                    else if (!groups.length && hdsdAliasCanSearchBody_(alias) && hdsdAliasMatchScore_(textNorm, alias, { allowFuzzy: false }) >= 120) groupScore = Math.max(groupScore, 45);
                 });
                 if (groupScore > 0) {
                     score += groupScore;
@@ -8132,8 +8185,8 @@ body.medplus-aux-open .new-badge::after{
             });
 
             aliases.forEach(function(alias) {
-                if (hdsdApproxHasPhrase_(titleNorm, alias)) score += 60;
-                if (hdsdAliasCanSearchBody_(alias) && hdsdApproxHasPhrase_(textNorm.slice(0, 1200), alias)) score += 18;
+                if (hdsdAliasMatchScore_(titleNorm, alias, { allowFuzzy: true }) >= 95) score += 60;
+                if (hdsdAliasCanSearchBody_(alias) && hdsdAliasMatchScore_(textNorm.slice(0, 1200), alias, { allowFuzzy: false }) >= 120) score += 18;
             });
 
             // Khi câu hỏi đã nhận diện được mục HDSD rõ ràng, không cộng điểm theo tên thuốc/hoạt chất
@@ -8287,8 +8340,7 @@ body.medplus-aux-open .new-badge::after{
                 // để tránh tạo nội dung/link không đúng tờ HDSD nội bộ.
                 const exactLocked = !!(scanMeta && (scanMeta.exactNameMatch || (scanMeta.drugNameResolution && scanMeta.drugNameResolution.type === 'exact_drug')));
                 if (exactLocked) {
-                    const msg = '**Chưa trích được nội dung HDSD nội bộ:** Tôi đã nhận diện được thuốc bạn hỏi, nhưng chưa tìm thấy mục phù hợp trong file JSON HDSD nội bộ nên tôi không trả lời bằng kiến thức tổng hợp để tránh sai lệch với tờ HDSD.\n\n'
-                        + '**Cách kiểm tra ngay:** bấm nút XEM HDSD bên dưới để mở tờ HDSD gốc của thuốc trong website.';
+                    const msg = '**Chưa trích được nội dung HDSD nội bộ:** Tôi đã nhận diện được thuốc bạn hỏi, nhưng chưa tìm thấy mục phù hợp trong file JSON HDSD nội bộ nên tôi không trả lời bằng kiến thức tổng hợp để tránh sai lệch với tờ HDSD.\n\n**Cách kiểm tra ngay:** bấm nút XEM HDSD bên dưới để mở tờ HDSD gốc của thuốc trong website.';
                     return appendDeterministicDrugListToAnswer_(msg, drugs);
                 }
             }
