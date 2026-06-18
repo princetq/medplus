@@ -1183,7 +1183,7 @@ body.medplus-aux-open .medplus-aux-frame-wrap{
         .chat-widget-container .message-content a{color:#2E7D32;text-decoration:underline;font-weight:bold}
         .chat-widget-container .user-message .message-content a{color:#fff}
         .chat-widget-container .hdsd-chat-image-wrap{margin:10px 0;text-align:center}
-        .chat-widget-container .hdsd-chat-image-wrap img{max-width:100%;border-radius:10px;box-shadow:0 3px 12px rgba(0,0,0,0.12);cursor:zoom-in;display:block;margin:0 auto}
+        .chat-widget-container .hdsd-chat-image-wrap img{max-width:100%;border-radius:10px;box-shadow:0 3px 12px rgba(0,0,0,0.12);display:block;margin:0 auto}
         .chat-widget-container .hdsd-chat-image-wrap small{display:block;margin-top:5px;color:#666;font-size:12px;line-height:1.4}
         .chat-widget-container .chat-input-container{width:100%;display:flex;gap:10px;padding:10px 0;background:transparent;border:none;flex-shrink:0;align-items:center;position:relative}
         .chat-widget-container .chat-input{flex:1;height:48px;padding:12px 55px 12px 45px;border:1px solid rgba(255,255,255,0.35);background:rgba(255,255,255,0.18);backdrop-filter:blur(10px);border-radius:25px;outline:none;font-size:1rem;color:#fff;transition:.3s;box-shadow:inset 0 2px 6px rgba(0,0,0,0.05);resize:none;overflow:hidden;font-family:inherit}
@@ -7042,7 +7042,7 @@ body.medplus-aux-open .new-badge::after{
                     s = s.replace(new RegExp('(^|\s)' + esc + '(?=\s|$)', 'g'), ' ');
                 });
             return s
-                .replace(/(cua|ve|cho|toi|hoi|xin|giup|can|muon|xem|biet|la|co|khong|may|bao nhieu)/g, ' ')
+                .replace(/\b(cua|ve|cho|toi|hoi|xin|giup|can|muon|xem|biet|la|co|khong|may|bao nhieu)\b/g, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
         }
@@ -7063,8 +7063,8 @@ body.medplus-aux-open .new-badge::after{
             let subject = normalizeDrugMatchText_(getQuestionSubject(userMessage));
             subject = stripHDSDIntentTermsForDrugSubject_(subject);
             subject = subject
-                .replace(/(cua|tai|trong|o|co|khong|vay|nhe|a|ha|the nao|nhu the nao)/g, ' ')
-                .replace(/(thuoc nay|loai nay|san pham nay)/g, ' ')
+                .replace(/\b(cua|tai|trong|o|co|khong|vay|nhe|a|ha|the nao|nhu the nao)\b/g, ' ')
+                .replace(/\b(thuoc nay|loai nay|san pham nay)\b/g, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
             return subject || stripHDSDIntentTermsForDrugSubject_(userMessage) || normalizeDrugMatchText_(userMessage);
@@ -8036,30 +8036,58 @@ body.medplus-aux-open .new-badge::after{
             }).join('\n');
         }
 
+        function hdsdCleanImageCaptionForChat_(caption) {
+            const cap = cleanDrugFieldForChat_(caption || '');
+            const norm = removeAccents(cap).replace(/\s+/g, ' ').trim();
+            if (!cap || norm === 'dang cap nhat' || norm === 'loading' || norm === 'dang tai' || norm === 'cap nhat') return '';
+            return cap;
+        }
+
+        function hdsdBlockContentWithImageTokens_(block) {
+            if (!block) return '';
+            const parts = [];
+            const type = block.type || '';
+            const isImage = type === 'image' || !!(block.image);
+
+            if (isImage) {
+                const imgs = hdsdBlockImageItems_(block).map(function(img) {
+                    return { src: img.src || '', caption: hdsdCleanImageCaptionForChat_(img.caption || '') };
+                });
+                const tokens = hdsdImagesToChatTokens_(imgs);
+                if (tokens) parts.push(tokens);
+            } else {
+                const own = hdsdBlockOwnPlainText_(block);
+                if (own) parts.push(own);
+            }
+
+            hdsdBlockChildren_(block).forEach(function(child) {
+                const childContent = hdsdBlockContentWithImageTokens_(child);
+                if (childContent) parts.push(childContent);
+            });
+
+            return parts.join('\n').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
+        }
+
         function buildHDSDTextSections_(jsonData) {
             const blocks = (jsonData && Array.isArray(jsonData.blocks)) ? jsonData.blocks : [];
             let sections = [];
             let general = [];
-            let generalImages = [];
             let currentSection = null;
             blocks.forEach(function(block) {
                 const type = block && block.type;
                 const own = hdsdBlockOwnPlainText_(block);
-                const all = hdsdBlockAllPlainText_(block);
-                const imgs = hdsdBlockImageItems_(block);
-                if (!all && !imgs.length) return;
+                const content = hdsdBlockContentWithImageTokens_(block);
+                if (!content) return;
                 if (/^heading_|^toggle$/.test(type || '')) {
-                    currentSection = { title: own || 'Nội dung HDSD', text: all || own || '', images: hdsdDedupeImages_(imgs) };
+                    currentSection = { title: own || 'Nội dung HDSD', text: content || own || '', images: [] };
                     sections.push(currentSection);
+                } else if (currentSection) {
+                    currentSection.text = (String(currentSection.text || '').trim() + '\n' + content).trim();
                 } else {
-                    if (all) general.push(all);
-                    if (imgs.length) {
-                        if (currentSection) currentSection.images = hdsdDedupeImages_((currentSection.images || []).concat(imgs));
-                        else generalImages = generalImages.concat(imgs);
-                    }
+                    general.push(content);
                 }
             });
-            if (general.length || generalImages.length) sections.unshift({ title: 'Nội dung chung', text: general.join('\n'), images: hdsdDedupeImages_(generalImages) });
+            if (general.length) sections.unshift({ title: 'Nội dung chung', text: general.join('\n'), images: [] });
             return sections;
         }
 
@@ -8273,25 +8301,6 @@ body.medplus-aux-open .new-badge::after{
                     if (rx.test(q) || rx.test(subject)) hit = true;
                 }
 
-                if (!hit && brandWords.length > 1) {
-                    const significantBrandWords = brandWords.filter(function(w) {
-                        return w.length >= 5 && !/^(\d+|mg|mcg|ml|iu|ong|vien|hop|vi|lo|chai|goi|tuyp)$/.test(w);
-                    });
-                    const firstBrandWord = significantBrandWords[0] || '';
-                    if (firstBrandWord) {
-                        const rxFirst = new RegExp('(^|\\s)' + escapeRegExp_(firstBrandWord) + '(\\s|$)');
-                        if (rxFirst.test(q) || rxFirst.test(subject)) hit = true;
-                    }
-                    if (!hit && significantBrandWords.length >= 2) {
-                        let wordHits = 0;
-                        significantBrandWords.forEach(function(w) {
-                            const rxWord = new RegExp('(^|\\s)' + escapeRegExp_(w) + '(\\s|$)');
-                            if (rxWord.test(q) || rxWord.test(subject)) wordHits += 1;
-                        });
-                        if (wordHits >= 2) hit = true;
-                    }
-                }
-
                 if (hit) matches.push(d);
             });
 
@@ -8366,8 +8375,7 @@ body.medplus-aux-open .new-badge::after{
 
             if (!answer) return '';
             answer += '\n\n**Lưu ý:** Nội dung trên được trích trực tiếp từ tờ HDSD. Nếu cần xem bố cục đầy đủ, bảng hoặc hình ảnh trong tờ HDSD gốc, hãy bấm nút XEM HDSD bên dưới.';
-            const hdsdAnswerDrugs = dedupeDrugs_(hdsdItems.map(function(item) { return item.drug; }).filter(Boolean));
-            return appendDeterministicDrugListToAnswer_(answer, hdsdAnswerDrugs.length ? hdsdAnswerDrugs : (selectedDrugs || []));
+            return appendDeterministicDrugListToAnswer_(answer, selectedDrugs || []);
         }
 
         async function composeDrugAnswerWithAI_(userMessage, selectedDrugs, scanMeta) {
@@ -10234,10 +10242,12 @@ body.medplus-aux-open .new-badge::after{
                 try { url = decodeURIComponent(String(encodedUrl || '')); } catch (e) { url = String(encodedUrl || ''); }
                 try { cap = decodeURIComponent(String(encodedCaption || '')); } catch (e) { cap = String(encodedCaption || ''); }
                 if (!url) return '';
+                cap = cleanDrugFieldForChat_(cap || '');
+                const capNorm = removeAccents(cap).replace(/\s+/g, ' ').trim();
+                if (capNorm === 'dang cap nhat' || capNorm === 'loading' || capNorm === 'dang tai' || capNorm === 'cap nhat') cap = '';
                 const safeSrc = url.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                 const safeCap = cap.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                const clickUrl = encodeURIComponent(url);
-                return '<div class="hdsd-chat-image-wrap"><img src="' + safeSrc + '" loading="lazy" title="Nhấn để xem ảnh lớn" onclick="openImageZoom(decodeURIComponent(\'' + clickUrl + '\'))" onerror="this.parentElement.style.display=\'none\'">' + (safeCap ? '<small>' + safeCap + '</small>' : '') + '</div>';
+                return '<div class="hdsd-chat-image-wrap"><img src="' + safeSrc + '" loading="lazy" onerror="this.parentElement.style.display=\'none\'">' + (safeCap ? '<small>' + safeCap + '</small>' : '') + '</div>';
             }
             // 2b. Bắt cú pháp markdown HDSD: [XEM HDSD](URL), [Tờ HDSD](URL), [Hướng dẫn sử dụng](URL)...
             text = text.replace(/\[((?:XEM\s*)?(?:(?:TỜ|TO)\s*)?(?:HDSD|HƯỚNG DẪN SỬ DỤNG|HUONG DAN SU DUNG))\]\((https?:\/\/[^)]+)\)/gi, function(match, label, url) {
