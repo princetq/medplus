@@ -7038,11 +7038,11 @@ body.medplus-aux-open .new-badge::after{
                 .slice()
                 .sort(function(a, b) { return b.length - a.length; })
                 .forEach(function(term) {
-                    const esc = String(term || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                    s = s.replace(new RegExp('(^|\\s)' + esc + '(?=\\s|$)', 'g'), ' ');
+                    const esc = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    s = s.replace(new RegExp('(^|\s)' + esc + '(?=\s|$)', 'g'), ' ');
                 });
             return s
-                .replace(/\b(cua|ve|cho|toi|hoi|xin|giup|can|muon|xem|biet|la|co|khong|may|bao nhieu)\b/g, ' ')
+                .replace(/(cua|ve|cho|toi|hoi|xin|giup|can|muon|xem|biet|la|co|khong|may|bao nhieu)/g, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
         }
@@ -8273,6 +8273,25 @@ body.medplus-aux-open .new-badge::after{
                     if (rx.test(q) || rx.test(subject)) hit = true;
                 }
 
+                if (!hit && brandWords.length > 1) {
+                    const significantBrandWords = brandWords.filter(function(w) {
+                        return w.length >= 5 && !/^(\d+|mg|mcg|ml|iu|ong|vien|hop|vi|lo|chai|goi|tuyp)$/.test(w);
+                    });
+                    const firstBrandWord = significantBrandWords[0] || '';
+                    if (firstBrandWord) {
+                        const rxFirst = new RegExp('(^|\\s)' + escapeRegExp_(firstBrandWord) + '(\\s|$)');
+                        if (rxFirst.test(q) || rxFirst.test(subject)) hit = true;
+                    }
+                    if (!hit && significantBrandWords.length >= 2) {
+                        let wordHits = 0;
+                        significantBrandWords.forEach(function(w) {
+                            const rxWord = new RegExp('(^|\\s)' + escapeRegExp_(w) + '(\\s|$)');
+                            if (rxWord.test(q) || rxWord.test(subject)) wordHits += 1;
+                        });
+                        if (wordHits >= 2) hit = true;
+                    }
+                }
+
                 if (hit) matches.push(d);
             });
 
@@ -8347,7 +8366,8 @@ body.medplus-aux-open .new-badge::after{
 
             if (!answer) return '';
             answer += '\n\n**Lưu ý:** Nội dung trên được trích trực tiếp từ tờ HDSD. Nếu cần xem bố cục đầy đủ, bảng hoặc hình ảnh trong tờ HDSD gốc, hãy bấm nút XEM HDSD bên dưới.';
-            return appendDeterministicDrugListToAnswer_(answer, selectedDrugs || []);
+            const hdsdAnswerDrugs = dedupeDrugs_(hdsdItems.map(function(item) { return item.drug; }).filter(Boolean));
+            return appendDeterministicDrugListToAnswer_(answer, hdsdAnswerDrugs.length ? hdsdAnswerDrugs : (selectedDrugs || []));
         }
 
         async function composeDrugAnswerWithAI_(userMessage, selectedDrugs, scanMeta) {
@@ -10219,10 +10239,6 @@ body.medplus-aux-open .new-badge::after{
                 const clickUrl = encodeURIComponent(url);
                 return '<div class="hdsd-chat-image-wrap"><img src="' + safeSrc + '" loading="lazy" title="Nhấn để xem ảnh lớn" onclick="openImageZoom(decodeURIComponent(\'' + clickUrl + '\'))" onerror="this.parentElement.style.display=\'none\'">' + (safeCap ? '<small>' + safeCap + '</small>' : '') + '</div>';
             }
-            text = text.replace(/\{\{HDSD_IMAGE:([^|{}]+)\|\|([^{}]*)\}\}/g, function(match, url, cap) {
-                return buildHDSDChatImage_(url, cap);
-            });
-
             // 2b. Bắt cú pháp markdown HDSD: [XEM HDSD](URL), [Tờ HDSD](URL), [Hướng dẫn sử dụng](URL)...
             text = text.replace(/\[((?:XEM\s*)?(?:(?:TỜ|TO)\s*)?(?:HDSD|HƯỚNG DẪN SỬ DỤNG|HUONG DAN SU DUNG))\]\((https?:\/\/[^)]+)\)/gi, function(match, label, url) {
                 return buildHDSDChatButton_(url);
@@ -10246,6 +10262,11 @@ body.medplus-aux-open .new-badge::after{
             // 5. [ĐÃ SỬA] Tự động bắt link http thành thẻ <a>, NHƯNG BỎ QUA các link nằm trong thuộc tính onclick hoặc href
             text = text.replace(/(?<!href="|">|openNotionPopup\(')(https?:\/\/[^\s<']+)/g, function(u) { 
                 return "<a href=\"" + u + "\" target=\"_blank\">" + u + "</a>"; 
+            });
+
+            // 5a. Sau khi xử lý link thường, mới dựng ảnh HDSD để tránh URL trong thẻ <img> bị link hóa thành chữ.
+            text = text.replace(/\{\{HDSD_IMAGE:([^|{}]+)\|\|([^{}]*)\}\}/g, function(match, url, cap) {
+                return buildHDSDChatImage_(url, cap);
             });
             
             // 6. Xử lý chia đoạn (Paragraph) và Danh sách (List)
