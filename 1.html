@@ -8053,6 +8053,62 @@ body.medplus-aux-open .new-badge::after{
             return q.split(/\s+/).filter(function(w) { return w && w.length >= 3 && !stop.has(w); });
         }
 
+        function isHDSDShortGenericAlias_(alias) {
+            const a = hdsdNormalize_(alias || '');
+            return ['hop','vi','lo','chai','ong','goi','tui','tuyp','khay','strip','blister'].indexOf(a) !== -1;
+        }
+
+        function hdsdAliasCanSearchBody_(alias) {
+            const a = hdsdNormalize_(alias || '');
+            if (!a) return false;
+            if (isHDSDShortGenericAlias_(a)) return false;
+            if (a.length < 5 && a.split(/\s+/).length < 2) return false;
+            return true;
+        }
+
+        function stripRepeatedHDSDTitleFromBody_(title, body) {
+            const titleText = cleanDrugFieldForChat_(title || '');
+            let text = compactHDSDPlain_(body || '');
+            if (!titleText || !text) return text;
+            const titleNorm = hdsdNormalize_(titleText).replace(/^\d{1,2}[\.\)]\s*/, '').trim();
+            let lines = text.split('\n').map(function(line) { return String(line || '').trim(); });
+            while (lines.length) {
+                const firstNorm = hdsdNormalize_(lines[0]).replace(/^\d{1,2}[\.\)]\s*/, '').trim();
+                if (firstNorm && (firstNorm === titleNorm || hdsdApproxHasPhrase_(firstNorm, titleNorm) || hdsdApproxHasPhrase_(titleNorm, firstNorm))) {
+                    lines.shift();
+                } else {
+                    break;
+                }
+            }
+            return compactHDSDPlain_(lines.join('\n'));
+        }
+
+        function findStrictHDSDSectionByTopic_(sections, groups) {
+            if (!sections || !sections.length || !groups || !groups.length) return null;
+            let best = null;
+            groups.forEach(function(g) {
+                (sections || []).forEach(function(sec, index) {
+                    const titleNorm = hdsdNormalize_(sec && sec.title || '');
+                    if (!titleNorm) return;
+                    let titleScore = 0;
+                    (g.aliases || []).forEach(function(alias) {
+                        const a = hdsdNormalize_(alias || '');
+                        if (!a || isHDSDShortGenericAlias_(a)) return;
+                        if (hasNormalizedPhrase_(titleNorm, a) || titleNorm.indexOf(a) !== -1) {
+                            titleScore = Math.max(titleScore, 1000 + a.length);
+                        } else if (a.length >= 5 && hdsdApproxHasPhrase_(titleNorm, a)) {
+                            titleScore = Math.max(titleScore, 850 + a.length);
+                        }
+                    });
+                    if (!titleScore) return;
+                    if (!best || titleScore > best.score || (titleScore === best.score && index < best.index)) {
+                        best = { section: sec, score: titleScore, label: g.label, index: index };
+                    }
+                });
+            });
+            return best;
+        }
+
         function scoreHDSDSectionForQuestion_(section, userMessage) {
             const titleNorm = hdsdNormalize_(section.title || '');
             const textNorm = hdsdNormalize_(section.text || '');
@@ -8066,8 +8122,8 @@ body.medplus-aux-open .new-badge::after{
                 let groupScore = 0;
                 (g.aliases || []).forEach(function(alias) {
                     if (hdsdApproxHasPhrase_(titleNorm, alias)) groupScore = Math.max(groupScore, 520);
-                    else if (hdsdApproxHasPhrase_(textNorm.slice(0, 900), alias)) groupScore = Math.max(groupScore, 120);
-                    else if (hdsdApproxHasPhrase_(textNorm, alias)) groupScore = Math.max(groupScore, 45);
+                    else if (hdsdAliasCanSearchBody_(alias) && hdsdApproxHasPhrase_(textNorm.slice(0, 900), alias)) groupScore = Math.max(groupScore, 120);
+                    else if (hdsdAliasCanSearchBody_(alias) && hdsdApproxHasPhrase_(textNorm, alias)) groupScore = Math.max(groupScore, 45);
                 });
                 if (groupScore > 0) {
                     score += groupScore;
@@ -8077,12 +8133,14 @@ body.medplus-aux-open .new-badge::after{
 
             aliases.forEach(function(alias) {
                 if (hdsdApproxHasPhrase_(titleNorm, alias)) score += 60;
-                if (hdsdApproxHasPhrase_(textNorm.slice(0, 1200), alias)) score += 18;
+                if (hdsdAliasCanSearchBody_(alias) && hdsdApproxHasPhrase_(textNorm.slice(0, 1200), alias)) score += 18;
             });
 
+            // Khi câu hỏi đã nhận diện được mục HDSD rõ ràng, không cộng điểm theo tên thuốc/hoạt chất
+            // trong thân bài, vì các từ này xuất hiện ở rất nhiều mục và dễ kéo nhầm section.
             qKeywords.forEach(function(w) {
                 if (titleNorm.indexOf(w) !== -1) score += 22;
-                else if (textNorm.indexOf(w) !== -1) score += 3;
+                else if (!groups.length && textNorm.indexOf(w) !== -1) score += 3;
             });
 
             return { score: score, matchedLabel: matchedLabel };
@@ -8121,6 +8179,18 @@ body.medplus-aux-open .new-badge::after{
             if (!sections.length) return '';
             const groups = getHDSDQuestionTopicGroups_(userMessage);
             const aliases = getHDSDQuestionAliases_(userMessage);
+            const maxChars = 5200;
+
+            // Ưu tiên tuyệt đối section có heading khớp mục người dùng hỏi.
+            // Ví dụ hỏi "quy cách đóng gói Entecavir" thì chỉ lấy heading "Quy cách đóng gói",
+            // không quét lan theo chữ "entecavir" trong các mục dược động học/thận trọng/ADR.
+            const strictTitleMatch = findStrictHDSDSectionByTopic_(sections, groups);
+            if (strictTitleMatch && strictTitleMatch.section) {
+                const title = cleanDrugFieldForChat_(strictTitleMatch.section.title || strictTitleMatch.label || 'Nội dung HDSD');
+                const body = stripRepeatedHDSDTitleFromBody_(title, strictTitleMatch.section.text || '');
+                if (body) return ('### ' + title + '\n' + body).slice(0, maxChars).trim();
+            }
+
             const scored = sections.map(function(sec, index) {
                 const result = scoreHDSDSectionForQuestion_(sec, userMessage);
                 return { section: sec, score: result.score, label: result.matchedLabel, index: index };
@@ -8131,15 +8201,14 @@ body.medplus-aux-open .new-badge::after{
                 return a.index - b.index;
             });
 
-            const maxChars = 5200;
-            if (scored.length && (scored[0].score >= 120 || groups.length > 0)) {
+            if (scored.length && scored[0].score >= 120) {
                 let excerpt = '';
                 const topScore = scored[0].score;
-                scored.slice(0, 5).forEach(function(item) {
+                scored.slice(0, 3).forEach(function(item) {
                     if (excerpt.length >= maxChars) return;
-                    if (item.score < Math.max(45, topScore * 0.42)) return;
+                    if (item.score < Math.max(120, topScore * 0.55)) return;
                     const title = cleanDrugFieldForChat_(item.section.title || item.label || 'Nội dung HDSD');
-                    const body = compactHDSDPlain_(item.section.text || '');
+                    const body = stripRepeatedHDSDTitleFromBody_(title, item.section.text || '');
                     if (!body) return;
                     const block = '### ' + title + '\n' + body + '\n\n';
                     if ((excerpt + block).length <= maxChars) excerpt += block;
@@ -8147,8 +8216,12 @@ body.medplus-aux-open .new-badge::after{
                 if (excerpt.trim()) return excerpt.trim();
             }
 
-            const windowExcerpt = extractHDSDWindowAroundAliases_(sections, aliases, userMessage);
-            if (windowExcerpt) return windowExcerpt.slice(0, maxChars).trim();
+            // Chỉ dùng cửa sổ tìm kiếm rộng khi không có topic rõ ràng; nếu đã có topic rõ mà không bắt được heading,
+            // không lấy bừa đoạn chứa tên thuốc vì dễ trả sai mục.
+            if (!groups.length) {
+                const windowExcerpt = extractHDSDWindowAroundAliases_(sections, aliases, userMessage);
+                if (windowExcerpt) return windowExcerpt.slice(0, maxChars).trim();
+            }
             return '';
         }
 
@@ -8214,8 +8287,8 @@ body.medplus-aux-open .new-badge::after{
                 // để tránh tạo nội dung/link không đúng tờ HDSD nội bộ.
                 const exactLocked = !!(scanMeta && (scanMeta.exactNameMatch || (scanMeta.drugNameResolution && scanMeta.drugNameResolution.type === 'exact_drug')));
                 if (exactLocked) {
-                    const msg = '**Chưa trích được nội dung HDSD nội bộ:** Tôi đã nhận diện được thuốc bạn hỏi, nhưng chưa tìm thấy mục phù hợp trong file JSON HDSD nội bộ nên tôi không trả lời bằng kiến thức tổng hợp để tránh sai lệch với tờ HDSD.'
-                        + '\n\n**Cách kiểm tra ngay:** bấm nút XEM HDSD bên dưới để mở tờ HDSD gốc của thuốc trong website.';
+                    const msg = '**Chưa trích được nội dung HDSD nội bộ:** Tôi đã nhận diện được thuốc bạn hỏi, nhưng chưa tìm thấy mục phù hợp trong file JSON HDSD nội bộ nên tôi không trả lời bằng kiến thức tổng hợp để tránh sai lệch với tờ HDSD.\n\n'
+                        + '**Cách kiểm tra ngay:** bấm nút XEM HDSD bên dưới để mở tờ HDSD gốc của thuốc trong website.';
                     return appendDeterministicDrugListToAnswer_(msg, drugs);
                 }
             }
