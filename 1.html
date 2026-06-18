@@ -7038,11 +7038,11 @@ body.medplus-aux-open .new-badge::after{
                 .slice()
                 .sort(function(a, b) { return b.length - a.length; })
                 .forEach(function(term) {
-                    const esc = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                    s = s.replace(new RegExp('(^|\s)' + esc + '(?=\s|$)', 'g'), ' ');
+                    const esc = escapeRegExp_(term);
+                    s = s.replace(new RegExp('(^|\\s)' + esc + '(?=\\s|$)', 'g'), ' ');
                 });
             return s
-                .replace(/(cua|ve|cho|toi|hoi|xin|giup|can|muon|xem|biet|la|co|khong|may|bao nhieu)/g, ' ')
+                .replace(/\b(cua|ve|cho|toi|hoi|xin|giup|can|muon|xem|biet|la|co|khong|may|bao nhieu)\b/g, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
         }
@@ -7063,8 +7063,8 @@ body.medplus-aux-open .new-badge::after{
             let subject = normalizeDrugMatchText_(getQuestionSubject(userMessage));
             subject = stripHDSDIntentTermsForDrugSubject_(subject);
             subject = subject
-                .replace(/(cua|tai|trong|o|co|khong|vay|nhe|a|ha|the nao|nhu the nao)/g, ' ')
-                .replace(/(thuoc nay|loai nay|san pham nay)/g, ' ')
+                .replace(/\b(cua|tai|trong|o|co|khong|vay|nhe|a|ha|the nao|nhu the nao)\b/g, ' ')
+                .replace(/\b(thuoc nay|loai nay|san pham nay)\b/g, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
             return subject || stripHDSDIntentTermsForDrugSubject_(userMessage) || normalizeDrugMatchText_(userMessage);
@@ -7109,7 +7109,7 @@ body.medplus-aux-open .new-badge::after{
             const active = normalizeDrugMatchText_(drug && drug.active);
             if (active && active.length >= 4) aliases.push(active);
             const activeNoStrength = active
-                .replace(/\d+(?:[\s\/.-]*(?:mg|ml|g|mcg|ui|iu|%)?)/g, ' ')
+                .replace(/\b\d+(?:[\s\/.-]*(?:mg|ml|g|mcg|ui|iu|%)?)\b/g, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
             if (activeNoStrength && activeNoStrength !== active && activeNoStrength.length >= 4) aliases.push(activeNoStrength);
@@ -8019,7 +8019,7 @@ body.medplus-aux-open .new-badge::after{
                 const imgs = hdsdBlockImageItems_(block);
                 if (!all && !imgs.length) return;
                 if (/^heading_|^toggle$/.test(type || '')) {
-                    currentSection = { title: own || 'Nội dung HDSD', text: all, images: hdsdDedupeImages_(imgs) };
+                    currentSection = { title: own || 'Nội dung HDSD', text: all || own || '', images: hdsdDedupeImages_(imgs) };
                     sections.push(currentSection);
                 } else {
                     if (all) general.push(all);
@@ -8059,8 +8059,7 @@ body.medplus-aux-open .new-badge::after{
                 let title = cleanDrugFieldForChat_(sec.title || 'Nội dung HDSD');
                 let body = String(sec.text || '').replace(/\s+\n/g, '\n').replace(/\n\s+/g, '\n').trim();
                 if (!body) return;
-                const imageTokens = hdsdImagesToChatTokens_(sec.images || []);
-                const block = '### ' + title + '\n' + body + (imageTokens ? '\n' + imageTokens : '') + '\n\n';
+                const block = '### ' + title + '\n' + body + '\n\n';
                 if ((excerpt + block).length <= maxChars) excerpt += block;
                 else if (!excerpt) excerpt = block.slice(0, maxChars).replace(/\s+\S*$/, '').trim();
             });
@@ -8209,8 +8208,7 @@ body.medplus-aux-open .new-badge::after{
                 let title = cleanDrugFieldForChat_(item.section.title || 'Nội dung HDSD');
                 let body = String(item.section.text || '').replace(/\s+\n/g, '\n').replace(/\n\s+/g, '\n').trim();
                 if (!body) return;
-                const imageTokens = hdsdImagesToChatTokens_(sec.images || []);
-                const block = '### ' + title + '\n' + body + (imageTokens ? '\n' + imageTokens : '') + '\n\n';
+                const block = '### ' + title + '\n' + body + '\n\n';
                 if ((excerpt + block).length <= maxChars) excerpt += block;
                 else if (!excerpt) excerpt = block.slice(0, maxChars).replace(/\s+\S*$/, '').trim();
             });
@@ -8218,46 +8216,41 @@ body.medplus-aux-open .new-badge::after{
         }
 
 
-            // Nếu người dùng đã gõ trúng rõ tên biệt dược trong câu hỏi,
-            // chỉ dùng đúng biệt dược đó để trích HDSD. Tránh trường hợp một thuốc khác
-            // có hoạt chất/tên gần giống bị kéo vào cùng câu trả lời, ví dụ "rocalcic"
-            // kéo thêm "CALCITRIOL DHT".
-            function getExplicitBrandMatchesInQuestion_(question, drugs) {
-                const q = normalizeDrugMatchText_(question || '');
-                const subject = stripHDSDTopicWordsFromDrugSubject_(question || '');
-                const compactQ = q.replace(/\s+/g, '');
-                const compactSubject = String(subject || '').replace(/\s+/g, '');
-                const matches = [];
+        // Nếu người dùng đã gõ trúng rõ tên biệt dược trong câu hỏi,
+        // chỉ dùng đúng biệt dược đó để trích HDSD. Tránh kéo nhầm thuốc có tên/hoạt chất gần giống.
+        function getExplicitBrandMatchesInQuestion_(question, drugs) {
+            const q = normalizeDrugMatchText_(question || '');
+            const subject = stripHDSDIntentTermsForDrugSubject_(question || '');
+            const compactQ = q.replace(/\s+/g, '');
+            const compactSubject = String(subject || '').replace(/\s+/g, '');
+            const matches = [];
 
-                (drugs || []).forEach(function(d) {
-                    if (!d || !d.brand) return;
-                    const brand = normalizeDrugMatchText_(d.brand);
-                    const brandCompact = brand.replace(/\s+/g, '');
-                    const brandWords = brand.split(/\s+/).filter(function(w) { return w && w.length >= 4; });
-                    let hit = false;
+            (drugs || []).forEach(function(d) {
+                if (!d || !d.brand) return;
+                const brand = normalizeDrugMatchText_(d.brand);
+                const brandCompact = brand.replace(/\s+/g, '');
+                const brandWords = brand.split(/\s+/).filter(function(w) { return w && w.length >= 4; });
+                let hit = false;
 
-                    if (brand.length >= 4 && (q.indexOf(brand) >= 0 || subject.indexOf(brand) >= 0)) hit = true;
-                    if (!hit && brandCompact.length >= 5 && (compactQ.indexOf(brandCompact) >= 0 || compactSubject.indexOf(brandCompact) >= 0)) hit = true;
+                if (brand.length >= 4 && (q.indexOf(brand) >= 0 || subject.indexOf(brand) >= 0)) hit = true;
+                if (!hit && brandCompact.length >= 5 && (compactQ.indexOf(brandCompact) >= 0 || compactSubject.indexOf(brandCompact) >= 0)) hit = true;
 
-                    // Với biệt dược một từ như ROCALCIC, chỉ cần câu hỏi chứa nguyên token đó là đủ chắc chắn.
-                    if (!hit && brandWords.length === 1) {
-                        const w = brandWords[0];
-                        const rx = new RegExp('(^|\\s)' + escapeRegExp_(w) + '(\\s|$)');
-                        if (rx.test(q) || rx.test(subject)) hit = true;
-                    }
+                if (!hit && brandWords.length === 1) {
+                    const w = brandWords[0];
+                    const rx = new RegExp('(^|\\s)' + escapeRegExp_(w) + '(\\s|$)');
+                    if (rx.test(q) || rx.test(subject)) hit = true;
+                }
 
-                    if (hit) matches.push(d);
-                });
+                if (hit) matches.push(d);
+            });
 
-                return dedupeDrugs_(matches);
-            }
+            return dedupeDrugs_(matches);
+        }
 
         async function buildHDSDInternalContextForDrugs_(userMessage, selectedDrugs) {
             let drugs = dedupeDrugs_(selectedDrugs || []).filter(function(d) { return d && d.link; });
             const explicitBrandMatches = getExplicitBrandMatchesInQuestion_(userMessage, drugs);
-            if (explicitBrandMatches.length === 1) {
-                drugs = explicitBrandMatches;
-            }
+            if (explicitBrandMatches.length === 1) drugs = explicitBrandMatches;
             drugs = drugs.slice(0, 3);
             if (!drugs.length || !isHDSDContentQuestion_(userMessage)) return null;
             let items = [];
@@ -8279,7 +8272,7 @@ body.medplus-aux-open .new-badge::after{
 
             // Chuyển tiêu đề markdown kỹ thuật thành nhãn dễ đọc trong chat.
             text = text.replace(/^###\s*/gm, '**').replace(/^(\*\*[^\n]+)$/gm, function(m) {
-                return m.endsWith('**') ? m : (m + '**');
+                return m.endsWith('**') ? m : (m + ':**');
             });
 
             // Bỏ lặp dòng sát nhau do JSON Notion đôi khi có title + body giống nhau.
