@@ -7038,7 +7038,7 @@ body.medplus-aux-open .new-badge::after{
                 .slice()
                 .sort(function(a, b) { return b.length - a.length; })
                 .forEach(function(term) {
-                    const esc = escapeRegExp_(term);
+                    const esc = term.replace(/[.*+?^${}()|[\]\\]/g, '\$&');
                     s = s.replace(new RegExp('(^|\s)' + esc + '(?=\s|$)', 'g'), ' ');
                 });
             return s
@@ -8374,7 +8374,7 @@ body.medplus-aux-open .new-badge::after{
             });
 
             if (!answer) return '';
-            answer += '\n\n**Lưu ý:** <b><i>Nội dung trên được trích trực tiếp từ tờ HDSD. Nếu cần xem bản đầy đủ của tờ HDSD gốc, hãy bấm nút XEM HDSD bên dưới.</i></b>';
+            answer += '\n\n**Lưu ý:** <i>Nội dung trên được trích trực tiếp từ tờ HDSD. Nếu cần xem bản đầy đủ của tờ HDSD gốc, hãy bấm nút XEM HDSD bên dưới.</i>';
             const hdsdAnswerDrugs = dedupeDrugs_(hdsdItems.map(function(item) { return item && item.drug; }).filter(Boolean));
             return appendDeterministicDrugListToAnswer_(answer, hdsdAnswerDrugs);
         }
