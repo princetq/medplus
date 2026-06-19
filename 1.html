@@ -8912,11 +8912,9 @@ body.medplus-aux-open .new-badge::after{
             if (focusMeta && Number.isFinite(Number(focusMeta.parentIndex))) {
                 const idx = parseInt(focusMeta.parentIndex, 10);
                 const excerpt = buildHDSDExcerptFromSections_(sections, [idx], true);
-                const parentNorm = normalizeHDSDChatFocusText_(focusMeta.parentLabel || '');
-                const focusNorm = normalizeHDSDChatFocusText_(focusMeta.focusLabel || '');
-                if (parentNorm && focusNorm && parentNorm === focusNorm) {
-                    focusMeta.parentLabel = '';
-                }
+                // Giữ parentLabel kể cả khi trùng focusLabel để chatbot luôn có thể
+                // diễn giải: "Hãy xem chi tiết ở phần ... trong mục ...".
+                // Việc bôi đỏ vẫn dùng focusLabel, còn mở đúng mục vẫn dùng parentIndex.
                 return { excerpt: excerpt || '', focusMeta: focusMeta };
             }
 
@@ -9187,8 +9185,10 @@ body.medplus-aux-open .new-badge::after{
                 const focus = item.hdsdFocus || null;
                 let body = '';
 
-                if (focus && focus.parentLabel && focus.focusLabel) {
-                    body = 'Hãy xem chi tiết ở phần **' + focus.focusLabel + '** trong mục **' + focus.parentLabel + '**. '
+                if (focus && (focus.parentLabel || focus.focusLabel)) {
+                    const focusLabel = cleanDrugFieldForChat_(focus.focusLabel || focus.parentLabel || 'phù hợp');
+                    const parentLabel = cleanDrugFieldForChat_(focus.parentLabel || focus.focusLabel || 'phù hợp');
+                    body = 'Hãy xem chi tiết ở phần **' + focusLabel + '** trong mục **' + parentLabel + '**. '
                         + 'Khi bấm **XEM HDSD**, phần đó được bôi đỏ để bạn dễ nhận biết.';
                 } else {
                     body = formatDirectHDSDExcerptForChat_(item.excerpt || '');
@@ -9196,7 +9196,7 @@ body.medplus-aux-open .new-badge::after{
 
                 if (!body) return;
                 if (answer) answer += '\n\n---\n\n';
-                answer += '**Theo tờ HDSD nội bộ của ' + brand + ':**\n\n' + body;
+                answer += '**Theo nội dung tờ HDSD ' + brand + ':**\n\n' + body;
             });
 
             if (!answer) return '';
