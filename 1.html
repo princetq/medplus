@@ -7928,19 +7928,22 @@ body.medplus-aux-open .new-badge::after{
             const allDrugs = getRagDrugIndex_(sourceList);
             const strictShortBrandMatches = getStrictShortBrandMatches_(userMessage, allDrugs);
             const exactBrandNameMatches = strictShortBrandMatches.length > 0 ? [] : getExactBrandNameMatches_(userMessage, allDrugs);
-            const activeIngredientMatches = (strictShortBrandMatches.length > 0 || exactBrandNameMatches.length > 0) ? [] : getActiveIngredientMatchesForQuestion_(userMessage, allDrugs);
+            const activeIngredientMatches = (strictShortBrandMatches.length > 0 || (exactBrandNameMatches.length > 0 && !broadQuery)) ? [] : getActiveIngredientMatchesForQuestion_(userMessage, allDrugs);
             const drugNameResolution = strictShortBrandMatches.length > 0
                 ? { type: 'exact_drug', drugs: strictShortBrandMatches, confidence: 0.99, reason: 'strict_short_brand_exact', subject: getDrugSubjectForMatching_(userMessage) }
                 : (exactBrandNameMatches.length > 0
                     ? { type: 'exact_drug', drugs: exactBrandNameMatches, confidence: 1, reason: 'exact_brand_before_active', subject: getDrugSubjectForMatching_(userMessage) }
                     : resolveDrugNameFromQuestion_(userMessage, allDrugs));
+            const preferActiveIngredientForBroadQuery = broadQuery && activeIngredientMatches.length > 0 && activeIngredientMatches.length >= exactBrandNameMatches.length;
             const exactNameMatches = strictShortBrandMatches.length > 0
                 ? strictShortBrandMatches
-                : (exactBrandNameMatches.length > 0
-                    ? exactBrandNameMatches
-                    : (activeIngredientMatches.length > 0
-                        ? activeIngredientMatches
-                        : ((drugNameResolution && drugNameResolution.type === 'exact_drug') ? dedupeDrugs_(drugNameResolution.drugs || []) : [])));
+                : (preferActiveIngredientForBroadQuery
+                    ? activeIngredientMatches
+                    : (exactBrandNameMatches.length > 0
+                        ? exactBrandNameMatches
+                        : (activeIngredientMatches.length > 0
+                            ? activeIngredientMatches
+                            : ((drugNameResolution && drugNameResolution.type === 'exact_drug') ? dedupeDrugs_(drugNameResolution.drugs || []) : []))));
             const queryBase = identityQuery ? removeAccents(getQuestionSubject(userMessage)) : normalizedQuestion;
             const queryWords = getRagQueryWords_(queryBase);
             const candidateQueryWords = getCandidateScopeWords_(queryBase, queryWords);
@@ -8863,7 +8866,7 @@ body.medplus-aux-open .new-badge::after{
         function buildHDSDExcerptFromSections_(sections, indexes, hasClearTopic) {
             if (!Array.isArray(sections) || !sections.length || !Array.isArray(indexes) || !indexes.length) return '';
             let excerpt = '';
-            const maxChars = hasClearTopic ? 2600 : 7000;
+            const maxChars = Number.POSITIVE_INFINITY;
             const seen = new Set();
             indexes.forEach(function(rawIndex) {
                 if (excerpt.length >= maxChars) return;
@@ -9018,7 +9021,7 @@ body.medplus-aux-open .new-badge::after{
             }
 
             let excerpt = '';
-            const maxChars = hasClearTopic ? 2400 : 7000;
+            const maxChars = Number.POSITIVE_INFINITY;
             selected.forEach(function(item) {
                 if (excerpt.length >= maxChars) return;
                 let title = cleanDrugFieldForChat_(item.section.title || 'Nội dung HDSD');
@@ -9103,13 +9106,6 @@ body.medplus-aux-open .new-badge::after{
                 lastNorm = norm;
             });
             text = cleaned.join('\n\n').replace(/\n{3,}/g, '\n\n').trim();
-
-            // Giới hạn để khung chat không quá dài; vẫn không gọi AI.
-            const maxChars = 5200;
-            if (text.length > maxChars) {
-                text = text.slice(0, maxChars).replace(/\s+\S*$/, '').trim()
-                    + '\n\n*Nội dung HDSD còn dài; hãy bấm nút XEM HDSD bên dưới để xem đầy đủ tờ gốc.*';
-            }
             return text;
         }
 
@@ -9128,10 +9124,8 @@ body.medplus-aux-open .new-badge::after{
                 let body = '';
 
                 if (focus && focus.parentLabel && focus.focusLabel) {
-                    body = 'Hãy xem mục **' + focus.parentLabel + '**.\n\n'
-                        + 'Trong mục **' + focus.parentLabel + '** có phần **' + focus.focusLabel + '**. '
-                        + 'Bạn hãy tham khảo chi tiết ở phần **' + focus.focusLabel + '** của tờ HDSD. '
-                        + 'Khi bấm **XEM HDSD**, phần **' + focus.focusLabel + '** sẽ được bôi đỏ để dễ nhận biết.';
+                    body = 'Hãy xem chi tiết ở phần **' + focus.focusLabel + '** trong mục **' + focus.parentLabel + '**. '
+                        + 'Khi bấm **XEM HDSD**, phần đó được bôi đỏ để bạn dễ nhận biết.';
                 } else {
                     body = formatDirectHDSDExcerptForChat_(item.excerpt || '');
                 }
@@ -9424,7 +9418,20 @@ body.medplus-aux-open .new-badge::after{
                 };
             }
 
+            const broadQueryForActiveIngredient = isBroadDrugListQuery(removeAccents(userMessage));
             const exactBrandNameMatches = getExactBrandNameMatches_(userMessage, allDrugs);
+            const activeIngredientMatches = getActiveIngredientMatchesForQuestion_(userMessage, allDrugs);
+            const preferActiveIngredientForBroadQuery = broadQueryForActiveIngredient && activeIngredientMatches.length > 0 && activeIngredientMatches.length >= exactBrandNameMatches.length;
+
+            if (preferActiveIngredientForBroadQuery) {
+                return {
+                    ok: true,
+                    drugs: activeIngredientMatches,
+                    activeIngredientMatch: true,
+                    scannedCount: activeIngredientMatches.length
+                };
+            }
+
             if (exactBrandNameMatches.length > 0) {
                 return {
                     ok: true,
@@ -9435,7 +9442,6 @@ body.medplus-aux-open .new-badge::after{
                 };
             }
 
-            const activeIngredientMatches = getActiveIngredientMatchesForQuestion_(userMessage, allDrugs);
             if (activeIngredientMatches.length > 0) {
                 return {
                     ok: true,
@@ -9564,7 +9570,7 @@ body.medplus-aux-open .new-badge::after{
             const allDrugs = getRagDrugIndex_(sourceList);
             const strictShortBrandMatchesForContext = getStrictShortBrandMatches_(userMessage, allDrugs);
             const exactBrandNameMatchesForContext = strictShortBrandMatchesForContext.length > 0 ? [] : getExactBrandNameMatches_(userMessage, allDrugs);
-            const activeIngredientMatchesForContext = (strictShortBrandMatchesForContext.length > 0 || exactBrandNameMatchesForContext.length > 0) ? [] : getActiveIngredientMatchesForQuestion_(userMessage, allDrugs);
+            const activeIngredientMatchesForContext = (strictShortBrandMatchesForContext.length > 0 || (exactBrandNameMatchesForContext.length > 0 && !broadQuery)) ? [] : getActiveIngredientMatchesForQuestion_(userMessage, allDrugs);
             const exactResolutionForContext = strictShortBrandMatchesForContext.length > 0
                 ? { type: 'exact_drug', drugs: strictShortBrandMatchesForContext, confidence: 0.99, reason: 'strict_short_brand_exact', subject: getDrugSubjectForMatching_(userMessage) }
                 : (exactBrandNameMatchesForContext.length > 0
