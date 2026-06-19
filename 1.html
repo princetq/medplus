@@ -9121,69 +9121,131 @@ body.medplus-aux-open .new-badge::after{
 
         function extractHDSDJsonSiblingSubsectionExcerpt_(jsonData, userMessage) {
             const targets = hdsdExactSubsectionTargetsFromQuestion_(userMessage);
-            if (!targets.length || !jsonData || !Array.isArray(jsonData.blocks)) return '';
+            if (!targets.length || !jsonData) return '';
 
-            function collectAfterIndex_(list, startIndex, target) {
+            const rootBlocks = Array.isArray(jsonData.blocks) ? jsonData.blocks
+                : (jsonData && jsonData.data && Array.isArray(jsonData.data.blocks) ? jsonData.data.blocks : []);
+            if (!rootBlocks.length) return '';
+
+            function getChildren_(block) {
+                if (!block) return [];
+                const type = block.type || '';
+                const typed = type ? (block[type] || {}) : {};
+                if (Array.isArray(block._children)) return block._children;
+                if (Array.isArray(block.children)) return block.children;
+                if (Array.isArray(typed._children)) return typed._children;
+                if (Array.isArray(typed.children)) return typed.children;
+                return [];
+            }
+
+            function ownText_(block) {
+                return cleanDrugFieldForChat_(hdsdBlockOwnPlainText_(block || '') || '').trim();
+            }
+
+            function isTargetBlock_(block, target) {
+                return hdsdLineMatchesSubsectionTarget_(ownText_(block), target);
+            }
+
+            function richTextAllBold_(block) {
+                const rt = hdsdBlockRichTextArray_(block);
+                const nonEmpty = (rt || []).filter(function(r) { return String((r && r.plain_text) || '').trim(); });
+                if (!nonEmpty.length) return false;
+                return nonEmpty.every(function(r) { return !!(r.annotations && r.annotations.bold); });
+            }
+
+            function isBoundaryBlock_(block, target) {
+                if (!block) return false;
+                const type = block.type || '';
+                const text = ownText_(block);
+                if (!text) return /^heading_|^toggle$/.test(type || '');
+                if (target && hdsdLineMatchesSubsectionTarget_(text, target)) return false;
+                if (/^heading_|^toggle$/.test(type || '')) return true;
+                if (isHDSDKnownSubheadingText_(text)) return true;
+
+                // Một số HDSD dùng paragraph in đậm làm tiểu mục cùng cấp.
+                // Chỉ coi là ranh giới nếu dòng ngắn và không giống câu văn nội dung.
+                const norm = hdsdNormalizeSubheadingLine_(text || '');
+                if ((block.type || '') === 'paragraph' && richTextAllBold_(block) && norm.length <= 90 && !/[.!?]$/.test(text)) return true;
+                return false;
+            }
+
+            function contentForBodyBlock_(block) {
+                if (!block) return '';
+                // Với các block nội dung kế tiếp sau tiểu mục, lấy đúng nội dung của block đó và children nếu có.
+                // Không bỏ paragraph vì trong JSON Novelcin nội dung "Hấp thu" là paragraph cùng cấp ngay sau heading "Hấp thu".
+                return hdsdBlockContentWithImageTokens_(block);
+            }
+
+            function collectSiblingBody_(list, startIndex, target) {
                 const parts = [];
-                const images = [];
-                for (let j = startIndex + 1; j < (list || []).length; j++) {
+                for (let j = startIndex + 1; j < list.length; j++) {
                     const block = list[j];
-                    if (hdsdIsSiblingSubsectionBoundaryBlock_(block, target)) break;
-
-                    const content = hdsdBlockToSectionBodyContent_(block);
+                    if (isBoundaryBlock_(block, target)) break;
+                    const content = contentForBodyBlock_(block);
                     if (content) parts.push(content);
-
-                    const imgs = hdsdBlockImageItems_(block).map(function(img) {
-                        return { src: img.src || '', caption: hdsdCleanImageCaptionForChat_(img.caption || '') };
-                    });
-                    if (imgs.length) Array.prototype.push.apply(images, imgs);
                 }
-                let body = parts.join('\n')
+                const raw = parts.join('\n')
                     .replace(/\r/g, '')
                     .replace(/[ \t]+/g, ' ')
                     .replace(/\n{3,}/g, '\n\n')
                     .trim();
-                const imageTokens = hdsdImagesToChatTokens_(images);
-                if (imageTokens) body = (body ? body + '\n' : '') + imageTokens;
-                return body.trim();
+                return hdsdCleanSectionBody_(target.title || '', raw).trim();
             }
 
-            function scanList_(list) {
-                list = list || [];
+            function collectToggleOrHeadingBody_(block, target) {
+                const children = getChildren_(block);
+                if (!children.length) return '';
+
+                // Nếu hỏi một tiểu mục rõ trong một toggle lớn, vẫn ưu tiên tìm tiểu mục đó trong children.
+                const nested = scanList_(children, true);
+                if (nested) return nested.replace(/^###\s*[^\n]+\n?/, '').trim();
+
+                // Nếu chính block là mục được hỏi, trả toàn bộ children của nó.
+                const body = children.map(function(child) { return hdsdBlockContentWithImageTokens_(child); })
+                    .filter(Boolean)
+                    .join('\n')
+                    .replace(/\r/g, '')
+                    .replace(/[ \t]+/g, ' ')
+                    .replace(/\n{3,}/g, '\n\n')
+                    .trim();
+                return hdsdCleanSectionBody_(target.title || ownText_(block), body).trim();
+            }
+
+            function sectionResult_(title, body) {
+                body = String(body || '').trim();
+                if (!body) return '';
+                return '### ' + cleanDrugFieldForChat_(title || 'Nội dung HDSD') + '\n' + body;
+            }
+
+            function scanList_(list, nestedOnly) {
+                list = Array.isArray(list) ? list : [];
                 for (let i = 0; i < list.length; i++) {
                     const block = list[i];
-                    const own = hdsdBlockOwnPlainText_(block);
                     for (let t = 0; t < targets.length; t++) {
                         const target = targets[t];
-                        if (!hdsdLineMatchesSubsectionTarget_(own, target)) continue;
+                        if (!isTargetBlock_(block, target)) continue;
 
-                        // Nếu target là toggle/heading lớn, lấy nguyên children của nó.
-                        // Nếu target là paragraph tiểu mục cùng cấp, lấy các sibling kế tiếp.
                         let body = '';
-                        const children = hdsdBlockChildren_(block);
-                        if (/^heading_|^toggle$/.test((block && block.type) || '') && children.length) {
-                            body = children.map(function(child) { return hdsdBlockContentWithImageTokens_(child); })
-                                .filter(Boolean)
-                                .join('\n')
-                                .replace(/\r/g, '')
-                                .replace(/[ \t]+/g, ' ')
-                                .replace(/\n{3,}/g, '\n\n')
-                                .trim();
-                        } else {
-                            body = collectAfterIndex_(list, i, target);
+                        const type = (block && block.type) || '';
+                        if (/^heading_|^toggle$/.test(type || '')) {
+                            body = collectToggleOrHeadingBody_(block, target);
+                        }
+                        if (!body) {
+                            body = collectSiblingBody_(list, i, target);
                         }
 
-                        body = hdsdCleanSectionBody_(target.title || own || 'Nội dung HDSD', body);
-                        if (body) return '### ' + (target.title || cleanDrugFieldForChat_(own)) + '\n' + body;
+                        const title = target.title || ownText_(block) || 'Nội dung HDSD';
+                        const result = sectionResult_(title, body);
+                        if (result) return result;
                     }
 
-                    const childResult = scanList_(hdsdBlockChildren_(block));
+                    const childResult = scanList_(getChildren_(block), true);
                     if (childResult) return childResult;
                 }
                 return '';
             }
 
-            return scanList_(jsonData.blocks || '');
+            return scanList_(rootBlocks, false);
         }
 
 
