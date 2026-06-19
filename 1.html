@@ -8596,6 +8596,15 @@ body.medplus-aux-open .new-badge::after{
                         { label: 'Chuyển hóa', aliases: ['chuyen hoa', 'chuyen hoá', 'chuyen hoa thuoc', 'chuyen hoá thuốc'] },
                         { label: 'Thải trừ', aliases: ['thai tru', 'bai tiet', 'dao thai', 'thoi gian ban thai', 'nua doi thai tru'] }
                     ]
+                },
+                {
+                    parentLabel: 'Tương tác, tương kỵ của thuốc',
+                    parentAliases: ['tuong tac tuong ky cua thuoc', 'tuong tac tuong ki cua thuoc', 'tuong tac tuong ky', 'tuong tac tuong ki', 'tuong tac thuoc va tuong ky', 'tuong tac tuong hop tuong ky'],
+                    children: [
+                        { label: 'Tương tác thuốc', aliases: ['tuong tac thuoc', 'tuong tac', 'dung chung', 'phoi hop'] },
+                        { label: 'Tương kỵ của thuốc', aliases: ['tuong ky cua thuoc', 'tuong ki cua thuoc', 'tuong ky', 'tuong ki', 'khong tuong ky', 'tuong ky thuoc'] },
+                        { label: 'Tương hợp, tương kỵ', aliases: ['tuong hop tuong ky', 'tuong hop tuong ki', 'tuong hop'] }
+                    ]
                 }
             ];
 
@@ -8636,8 +8645,9 @@ body.medplus-aux-open .new-badge::after{
                 { label: 'Chống chỉ định', aliases: ['chong chi dinh', 'khong duoc dung', 'ai khong dung', 'khong nen dung'] },
                 { label: 'Cảnh báo và thận trọng', aliases: ['canh bao', 'than trong', 'luu y', 'than trong khi dung', 'khuyen cao'] },
                 { label: 'Tác dụng không mong muốn', aliases: ['tac dung khong mong muon', 'tac dung phu', 'adr', 'phan ung phu', 'khong mong muon'] },
-                { label: 'Tương tác thuốc', aliases: ['tuong tac', 'tuong tac thuoc', 'dung chung', 'phoi hop'] },
-                { label: 'Tương hợp, tương kỵ', aliases: ['tuong hop', 'tuong ky', 'tuong ki'] },
+                { label: 'Tương tác thuốc', aliases: ['tuong tac thuoc', 'tuong tac', 'dung chung', 'phoi hop'] },
+                { label: 'Tương kỵ của thuốc', aliases: ['tuong ky cua thuoc', 'tuong ki cua thuoc', 'tuong ky', 'tuong ki', 'tuong ky thuoc'] },
+                { label: 'Tương hợp, tương kỵ', aliases: ['tuong hop tuong ky', 'tuong hop tuong ki', 'tuong hop'] },
                 { label: 'Quá liều và xử trí', aliases: ['qua lieu', 'xu tri qua lieu', 'qua lieu lam gi'] },
                 { label: 'Quên liều', aliases: ['quen lieu', 'bo lieu'] },
                 { label: 'Phụ nữ có thai', aliases: ['phu nu co thai', 'phu nu mang thai', 'mang thai', 'thai ky', 'co thai'] },
@@ -8673,23 +8683,41 @@ body.medplus-aux-open .new-badge::after{
             if (!candidates.length) return '';
 
             const rawTitle = cleanHDSDSubheadingCandidateLine_(section.title || '');
+            const rawTitleNorm = removeAccents(rawTitle || '').replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
             const rawText = String(section.text || '').replace(/\r/g, '\n');
             const lines = rawText.split(/\n+/)
                 .map(function(line) { return cleanHDSDSubheadingCandidateLine_(line); })
                 .filter(Boolean);
-            const searchableLines = [rawTitle].concat(lines);
 
+            function normalizeLineForMatch_(line) {
+                return removeAccents(line || '').replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+            }
+
+            // Ưu tiên dòng tiêu đề con thật sự trong thân mục trước, không lấy tiêu đề mục lớn.
+            // Ví dụ trong mục "11. Tương tác, tương kỵ của thuốc" phải bôi đỏ "Tương kỵ của thuốc",
+            // không bôi đỏ tiêu đề mục lớn chỉ vì tiêu đề mục lớn cũng chứa chữ "tương kỵ".
             for (let c = 0; c < candidates.length; c++) {
                 const cand = candidates[c];
                 const aliases = (cand.aliases || []).map(function(a) { return removeAccents(a || '').trim(); }).filter(Boolean);
-                for (let i = 0; i < searchableLines.length; i++) {
-                    const line = searchableLines[i];
-                    const lineNorm = removeAccents(line || '').replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    const lineNorm = normalizeLineForMatch_(line);
                     if (!lineNorm) continue;
                     const shortEnoughToBeHeading = lineNorm.length <= 90;
                     const matched = aliases.some(function(alias) { return alias && hdsdAliasPhraseHit_(lineNorm, alias); });
-                    if (matched && shortEnoughToBeHeading) return cand.label;
+                    if (matched && shortEnoughToBeHeading) {
+                        // Trả lại đúng chữ đang có trong HDSD để nút XEM HDSD bôi đỏ đúng tiêu đề con.
+                        return line;
+                    }
                 }
+            }
+
+            // Sau cùng mới xét tiêu đề mục lớn. Nếu tiêu đề mục lớn đã là đích cần mở thì bôi đỏ mục lớn.
+            for (let c = 0; c < candidates.length; c++) {
+                const cand = candidates[c];
+                const aliases = (cand.aliases || []).map(function(a) { return removeAccents(a || '').trim(); }).filter(Boolean);
+                const matchedTitle = aliases.some(function(alias) { return alias && hdsdAliasPhraseHit_(rawTitleNorm, alias); });
+                if (matchedTitle) return rawTitle || cand.label;
             }
 
             // Nếu người dùng hỏi rõ một tiểu mục nhưng trong JSON không tách riêng dòng tiêu đề,
@@ -10824,14 +10852,28 @@ body.medplus-aux-open .new-badge::after{
             return score;
         }
 
-        function findHDSDChatFocusElement_(root, phrase) {
+        function findHDSDChatFocusElement_(root, phrase, options) {
             const phraseNorm = normalizeHDSDChatFocusText_(phrase);
             if (!root || !phraseNorm) return null;
+            options = options || {};
+            let rootSummary = null;
+            if (options.excludeRootSummary && root.children && String(root.tagName || '').toUpperCase() === 'DETAILS') {
+                for (let i = 0; i < root.children.length; i++) {
+                    if (String(root.children[i].tagName || '').toUpperCase() === 'SUMMARY') {
+                        rootSummary = root.children[i];
+                        break;
+                    }
+                }
+            }
+
             const nodes = Array.from(root.querySelectorAll('h1,h2,h3,summary span,summary,strong,b,p'));
             let best = null;
             let bestScore = -1;
 
             nodes.forEach(function(el) {
+                // Khi đang tìm mục con bên trong một details cha, bỏ qua summary của chính details cha.
+                // Điều này tránh lỗi bôi đỏ tiêu đề mục lớn "Tương tác, tương kỵ..." thay vì tiêu đề con "Tương kỵ của thuốc".
+                if (rootSummary && (el === rootSummary || rootSummary.contains(el))) return;
                 const score = scoreHDSDChatFocusElement_(el, phraseNorm);
                 if (score > bestScore) {
                     bestScore = score;
@@ -10874,7 +10916,7 @@ body.medplus-aux-open .new-badge::after{
                 }
             }
 
-            let target = findHDSDChatFocusElement_(searchRoot, focus);
+            let target = findHDSDChatFocusElement_(searchRoot, focus, { excludeRootSummary: searchRoot !== root });
 
             // Nếu đã xác định được mục lớn nhưng mục con chưa render kịp, chờ render trong chính mục lớn.
             // Tuyệt đối không fallback ra toàn văn khi đã có mục lớn, vì sẽ bắt nhầm các đoạn văn ở mục khác
