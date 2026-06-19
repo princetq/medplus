@@ -8406,17 +8406,32 @@ body.medplus-aux-open .new-badge::after{
         }
 
         function hdsdBlockOwnPlainText_(block) {
-            if (!block || !block.type) return '';
-            const b = block[block.type] || {};
+            if (!block) return '';
+            const type = block.type || '';
+            const b = type ? (block[type] || {}) : {};
             let parts = [];
+
+            // HDSD JSON có thể là Notion block chuẩn hoặc bản đã làm phẳng/chuẩn hóa.
+            // Bổ sung đọc text ở cả cấp block để tránh bỏ sót paragraph nằm ngay sau heading.
+            if (Array.isArray(block.rich_text)) parts.push(hdsdRichTextArrayToPlain_(block.rich_text));
+            if (Array.isArray(block.title)) parts.push(hdsdRichTextArrayToPlain_(block.title));
+            if (Array.isArray(block.caption)) parts.push(hdsdRichTextArrayToPlain_(block.caption));
+            if (Array.isArray(block.text)) parts.push(hdsdRichTextArrayToPlain_(block.text));
+            if (typeof block.plain_text === 'string') parts.push(block.plain_text);
+            if (typeof block.content === 'string') parts.push(block.content);
+            if (typeof block.text === 'string') parts.push(block.text);
+            if (block.text && typeof block.text.content === 'string') parts.push(block.text.content);
+
             if (Array.isArray(b.rich_text)) parts.push(hdsdRichTextArrayToPlain_(b.rich_text));
             if (Array.isArray(b.title)) parts.push(hdsdRichTextArrayToPlain_(b.title));
             if (Array.isArray(b.caption)) parts.push(hdsdRichTextArrayToPlain_(b.caption));
             if (Array.isArray(b.text)) parts.push(hdsdRichTextArrayToPlain_(b.text));
             if (b.text && typeof b.text.content === 'string') parts.push(b.text.content);
             if (typeof b.content === 'string') parts.push(b.content);
+            if (typeof b.plain_text === 'string') parts.push(b.plain_text);
+            if (typeof b.text === 'string') parts.push(b.text);
             if (b.url && typeof b.url === 'string') parts.push(b.url);
-            if (block.type === 'table_row' && Array.isArray(b.cells)) {
+            if (type === 'table_row' && Array.isArray(b.cells)) {
                 b.cells.forEach(function(cell) { parts.push(hdsdRichTextArrayToPlain_(cell)); });
             }
             return parts.join(' ').replace(/\s+/g, ' ').trim();
@@ -8587,7 +8602,7 @@ body.medplus-aux-open .new-badge::after{
             lines.forEach(function(line) {
                 const lineNorm = hdsdNormalizeSubheadingLine_(line || '');
                 // Bỏ dòng tiêu đề bị lặp lại trong thân section, ví dụ section title "Hấp thu"
-                // nhưng body chỉ chứa lại đúng dòng "Hấp thu". Đây là nguyên nhân trả về "Hấp thu:" rỗng.
+                // nhưng body chỉ chứa lại đúng dòng "Hấp thu".
                 if (titleNorm && lineNorm === titleNorm) return;
                 cleaned.push(line);
             });
@@ -8611,6 +8626,69 @@ body.medplus-aux-open .new-badge::after{
                 return hdsdImagesToChatTokens_(imgs);
             }
             return hdsdBlockOwnPlainText_(block);
+        }
+
+        function extractHDSDFlatSiblingSubsections_(blocks) {
+            const sections = [];
+            const boundaryHeadingTypes = /^(heading_|toggle$)/;
+
+            function pushSection(sec) {
+                if (!sec) return;
+                const title = cleanDrugFieldForChat_(sec.title || 'Nội dung HDSD');
+                const body = hdsdCleanSectionBody_(title, sec.text || '');
+                if (!body && !(sec.images || []).length) return;
+                sections.push({ title: title, text: body, images: sec.images || [] });
+            }
+
+            function appendBlockToSection(sec, block) {
+                if (!sec || !block) return;
+                const content = hdsdBlockContentWithImageTokens_(block);
+                if (content) sec.text = (String(sec.text || '').trim() + '\n' + content).trim();
+                const imgs = hdsdBlockImageItems_(block).map(function(img) {
+                    return { src: img.src || '', caption: hdsdCleanImageCaptionForChat_(img.caption || '') };
+                });
+                if (imgs.length) sec.images = (sec.images || []).concat(imgs);
+            }
+
+            function scanSiblingList_(list) {
+                let current = null;
+                (list || []).forEach(function(block) {
+                    const type = (block && block.type) || '';
+                    const own = hdsdBlockOwnPlainText_(block);
+                    const children = hdsdBlockChildren_(block);
+                    const ownIsKnownSubheading = isHDSDKnownSubheadingText_(own);
+                    const isBoundaryHeading = boundaryHeadingTypes.test(type || '');
+
+                    // Trường hợp Notion thường gặp: "Hấp thu" là 1 block heading/paragraph riêng,
+                    // đoạn nội dung là các block kế tiếp cùng cấp cho tới trước heading/tiểu mục tiếp theo.
+                    if (ownIsKnownSubheading) {
+                        pushSection(current);
+                        current = { title: cleanDrugFieldForChat_(own.replace(/[：:]+$/g, '')), text: '', images: [] };
+                        if (children.length) {
+                            children.forEach(function(child) { appendBlockToSection(current, child); });
+                        }
+                        return;
+                    }
+
+                    if (current) {
+                        // Một heading/toggle khác đánh dấu kết thúc tiểu mục đang gom.
+                        if (isBoundaryHeading && own) {
+                            pushSection(current);
+                            current = null;
+                            if (children.length) scanSiblingList_(children);
+                            return;
+                        }
+                        appendBlockToSection(current, block);
+                        return;
+                    }
+
+                    if (children.length) scanSiblingList_(children);
+                });
+                pushSection(current);
+            }
+
+            scanSiblingList_(blocks || []);
+            return sections;
         }
 
         function expandHDSDSubsectionsFromText_(sections) {
@@ -8696,7 +8774,12 @@ body.medplus-aux-open .new-badge::after{
 
             walk_(blocks);
             if (general.length) sections.unshift({ title: 'Nội dung chung', text: general.join('\n'), images: [] });
-            return expandHDSDSubsectionsFromText_(sections);
+
+            // Bổ sung pass theo thứ tự block cùng cấp: nhiều tờ HDSD để tiểu mục như "Hấp thu"
+            // là một block riêng, còn nội dung là paragraph ngay sau đó, không nằm trong children.
+            // Pass này gom các sibling kế tiếp cho tới trước tiểu mục/heading tiếp theo.
+            const flatSiblingSections = extractHDSDFlatSiblingSubsections_(blocks);
+            return expandHDSDSubsectionsFromText_(sections.concat(flatSiblingSections));
         }
 
         function isNoisyHDSDSectionAlias_(alias) {
