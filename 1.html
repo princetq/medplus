@@ -8584,91 +8584,7 @@ body.medplus-aux-open .new-badge::after{
             return hasNormalizedPhrase_(normalizedText, removeAccents(alias || ''));
         }
 
-        function getHDSDSubsectionFocusForQuestion_(userMessage) {
-            const q = removeAccents(userMessage || '');
-            const focusGroups = [
-                {
-                    parentLabel: 'Dược động học',
-                    parentAliases: ['duoc dong hoc', 'dac tinh duoc dong hoc', 'dac tinh duoc dong'],
-                    children: [
-                        { label: 'Hấp thu', aliases: ['hap thu', 'su hap thu', 'qua trinh hap thu'] },
-                        { label: 'Phân bố', aliases: ['phan bo', 'su phan bo', 'the tich phan bo'] },
-                        { label: 'Chuyển hóa', aliases: ['chuyen hoa', 'chuyen hoá', 'chuyen hoa thuoc', 'chuyen hoá thuốc'] },
-                        { label: 'Thải trừ', aliases: ['thai tru', 'bai tiet', 'dao thai', 'thoi gian ban thai', 'nua doi thai tru'] }
-                    ]
-                },
-                {
-                    parentLabel: 'Tương tác, tương kỵ của thuốc',
-                    parentAliases: ['tuong tac tuong ky cua thuoc', 'tuong tac tuong ki cua thuoc', 'tuong tac tuong ky', 'tuong tac tuong ki', 'tuong tac thuoc va tuong ky', 'tuong tac tuong hop tuong ky'],
-                    children: [
-                        { label: 'Tương tác thuốc', aliases: ['tuong tac thuoc', 'tuong tac', 'dung chung', 'phoi hop'] },
-                        { label: 'Tương kỵ của thuốc', aliases: ['tuong ky cua thuoc', 'tuong ki cua thuoc', 'tuong ky', 'tuong ki', 'khong tuong ky', 'tuong ky thuoc'] },
-                        { label: 'Tương hợp, tương kỵ', aliases: ['tuong hop tuong ky', 'tuong hop tuong ki', 'tuong hop'] }
-                    ]
-                }
-            ];
-
-            for (let i = 0; i < focusGroups.length; i++) {
-                const group = focusGroups[i];
-                for (let j = 0; j < group.children.length; j++) {
-                    const child = group.children[j];
-                    const hit = (child.aliases || []).some(function(alias) {
-                        return hasNormalizedPhrase_(q, removeAccents(alias || ''));
-                    });
-                    if (hit) {
-                        return {
-                            parentLabel: group.parentLabel,
-                            parentAliases: group.parentAliases || [],
-                            focusLabel: child.label,
-                            focusAliases: child.aliases || []
-                        };
-                    }
-                }
-            }
-            return null;
-        }
-
-        function getHDSDRequestedFocusCandidates_(userMessage) {
-            const q = removeAccents(userMessage || '');
-            const groups = [
-                { label: 'Hạn dùng', aliases: ['han dung', 'han su dung', 'han su dung cua', 'thoi han su dung', 'thoi han dung', 'expiry', 'expiration', 'shelf life'] },
-                { label: 'Điều kiện bảo quản', aliases: ['dieu kien bao quan', 'bao quan', 'giu thuoc', 'cach bao quan'] },
-                { label: 'Quy cách đóng gói', aliases: ['quy cach dong goi', 'quy cach', 'dong goi', 'bao bi'] },
-                { label: 'Tiêu chuẩn chất lượng', aliases: ['tieu chuan chat luong', 'tieu chuan', 'usp', 'bp', 'duoc dien'] },
-                { label: 'Nhà sản xuất', aliases: ['nha san xuat', 'noi san xuat', 'co so san xuat', 'cong ty san xuat', 'xuat xu', 'nuoc san xuat'] },
-                { label: 'Số đăng ký', aliases: ['so dang ky', 'sdk', 'dang ky'] },
-                { label: 'Chủ sở hữu/đơn vị đăng ký', aliases: ['chu so huu', 'don vi dang ky', 'co so dang ky', 'nha dang ky', 'thuong nhan'] },
-                { label: 'Thành phần', aliases: ['thanh phan', 'hoat chat', 'ta duoc', 'chua gi', 'cong thuc', 'ham luong'] },
-                { label: 'Chỉ định', aliases: ['chi dinh', 'cong dung', 'dung de lam gi', 'tri benh gi', 'dieu tri gi'] },
-                { label: 'Liều dùng', aliases: ['lieu dung', 'lieu', 'cach dung', 'cach su dung', 'duong dung'] },
-                { label: 'Cách pha/truyền', aliases: ['cach pha', 'pha truyen', 'tiem truyen', 'toc do truyen', 'truyen tinh mach'] },
-                { label: 'Chống chỉ định', aliases: ['chong chi dinh', 'khong duoc dung', 'ai khong dung', 'khong nen dung'] },
-                { label: 'Cảnh báo và thận trọng', aliases: ['canh bao', 'than trong', 'luu y', 'than trong khi dung', 'khuyen cao'] },
-                { label: 'Tác dụng không mong muốn', aliases: ['tac dung khong mong muon', 'tac dung phu', 'adr', 'phan ung phu', 'khong mong muon'] },
-                { label: 'Tương tác thuốc', aliases: ['tuong tac thuoc', 'tuong tac', 'dung chung', 'phoi hop'] },
-                { label: 'Tương kỵ của thuốc', aliases: ['tuong ky cua thuoc', 'tuong ki cua thuoc', 'tuong ky', 'tuong ki', 'tuong ky thuoc'] },
-                { label: 'Tương hợp, tương kỵ', aliases: ['tuong hop tuong ky', 'tuong hop tuong ki', 'tuong hop'] },
-                { label: 'Quá liều và xử trí', aliases: ['qua lieu', 'xu tri qua lieu', 'qua lieu lam gi'] },
-                { label: 'Quên liều', aliases: ['quen lieu', 'bo lieu'] },
-                { label: 'Phụ nữ có thai', aliases: ['phu nu co thai', 'phu nu mang thai', 'mang thai', 'thai ky', 'co thai'] },
-                { label: 'Phụ nữ cho con bú', aliases: ['phu nu cho con bu', 'cho con bu', 'bu me', 'me cho con bu'] },
-                { label: 'Lái xe và vận hành máy móc', aliases: ['lai xe', 'van hanh may', 'may moc'] },
-                { label: 'Dược lực học', aliases: ['duoc luc hoc', 'co che tac dung'] },
-                { label: 'Dược động học', aliases: ['duoc dong hoc', 'dac tinh duoc dong hoc'] },
-                { label: 'Hấp thu', aliases: ['hap thu', 'su hap thu', 'qua trinh hap thu'] },
-                { label: 'Phân bố', aliases: ['phan bo', 'su phan bo', 'the tich phan bo'] },
-                { label: 'Chuyển hóa', aliases: ['chuyen hoa', 'chuyen hoá', 'chuyen hoa thuoc', 'chuyen hoá thuốc'] },
-                { label: 'Thải trừ', aliases: ['thai tru', 'bai tiet', 'dao thai', 'thoi gian ban thai', 'nua doi thai tru'] }
-            ];
-
-            return groups.filter(function(g) {
-                return (g.aliases || []).some(function(alias) {
-                    return hasNormalizedPhrase_(q, removeAccents(alias || ''));
-                });
-            });
-        }
-
-        function cleanHDSDSubheadingCandidateLine_(value) {
+        function normalizeHDSDFocusLabel_(value) {
             return cleanDrugFieldForChat_(String(value || '')
                 .replace(/\{\{HDSD_IMAGE:[^}]+\}\}/g, ' ')
                 .replace(/^[\s#•\-*–—]+/g, '')
@@ -8677,52 +8593,222 @@ body.medplus-aux-open .new-badge::after{
                 .trim());
         }
 
-        function findHDSDSubFocusLabelInSection_(section, userMessage) {
-            if (!section) return '';
-            const candidates = getHDSDRequestedFocusCandidates_(userMessage);
-            if (!candidates.length) return '';
+        function normalizeHDSDFocusNorm_(value) {
+            return removeAccents(value || '').replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+        }
 
-            const rawTitle = cleanHDSDSubheadingCandidateLine_(section.title || '');
-            const rawTitleNorm = removeAccents(rawTitle || '').replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
-            const rawText = String(section.text || '').replace(/\r/g, '\n');
-            const lines = rawText.split(/\n+/)
-                .map(function(line) { return cleanHDSDSubheadingCandidateLine_(line); })
-                .filter(Boolean);
+        function hdsdLooksLikeSubHeading_(line) {
+            const raw = String(line || '').trim();
+            const clean = normalizeHDSDFocusLabel_(raw);
+            if (!clean) return false;
+            const norm = normalizeHDSDFocusNorm_(clean);
+            if (!norm || norm.length < 3 || norm.length > 120) return false;
+            if (/^https?:\/\//i.test(clean) || /\{\{HDSD_IMAGE:/i.test(raw)) return false;
+            if (/^(trang|page|loading|dang tai|cap nhat)$/i.test(norm)) return false;
 
-            function normalizeLineForMatch_(line) {
-                return removeAccents(line || '').replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+            const words = norm.split(/\s+/).filter(Boolean);
+            if (words.length > 14) return false;
+
+            const hasColon = /[:：]\s*$/.test(raw) || (/[:：]/.test(raw) && raw.split(/[:：]/)[0].trim().length <= 80);
+            const hasNumberPrefix = /^\s*\d+(?:\.\d+)*[\).\-\s]+/.test(raw);
+            const letterChars = clean.replace(/[^A-Za-zÀ-ỹ]/g, '');
+            const upperChars = letterChars.replace(/[a-zà-ỹ]/g, '');
+            const upperRatio = letterChars.length ? (upperChars.length / letterChars.length) : 0;
+            const commonHeading = /(thanh phan|chi dinh|chong chi dinh|lieu dung|cach dung|canh bao|than trong|tac dung khong mong muon|tuong tac|tuong ky|tuong hop|qua lieu|quen lieu|bao quan|han dung|han su dung|quy cach|dong goi|tieu chuan|nha san xuat|so dang ky|chu so huu|don vi dang ky|phu nu|mang thai|cho con bu|lai xe|van hanh may|duoc luc|duoc dong|hap thu|phan bo|chuyen hoa|thai tru|dac tinh|mo ta|dang bao che|ta duoc|hoat chat)/.test(norm);
+            const shortLine = clean.length <= 60;
+            const likelySentence = /[.!?]\s+/.test(raw) || (/[.!?]$/.test(raw) && clean.length > 55);
+
+            if (likelySentence && !hasColon && !hasNumberPrefix) return false;
+            return hasColon || hasNumberPrefix || upperRatio >= 0.55 || commonHeading || (shortLine && words.length <= 5);
+        }
+
+        function extractHDSDSubHeadingCandidates_(section) {
+            const result = [];
+            const seen = new Set();
+            const parentTitle = normalizeHDSDFocusLabel_(section && section.title ? section.title : '');
+            const parentNorm = normalizeHDSDFocusNorm_(parentTitle);
+            const text = String(section && section.text ? section.text : '').replace(/\r/g, '\n');
+            const lines = text.split(/\n+/).map(function(line) { return String(line || '').trim(); }).filter(Boolean);
+
+            lines.forEach(function(rawLine) {
+                let line = rawLine.replace(/\{\{HDSD_IMAGE:[^}]+\}\}/g, ' ').replace(/\s+/g, ' ').trim();
+                if (!line) return;
+
+                // Nếu dòng có dạng "HẠN DÙNG: 24 tháng..." thì chỉ lấy phần đứng trước dấu hai chấm làm tiêu đề con.
+                const colonParts = line.split(/[:：]/);
+                if (colonParts.length > 1 && colonParts[0].trim().length >= 3 && colonParts[0].trim().length <= 80) {
+                    const beforeColon = colonParts[0].trim();
+                    if (hdsdLooksLikeSubHeading_(beforeColon + ':')) line = beforeColon;
+                }
+
+                const clean = normalizeHDSDFocusLabel_(line);
+                const norm = normalizeHDSDFocusNorm_(clean);
+                if (!norm || norm === parentNorm) return;
+                if (!hdsdLooksLikeSubHeading_(line)) return;
+                if (seen.has(norm)) return;
+                seen.add(norm);
+                result.push(clean);
+            });
+
+            return result.slice(0, 40);
+        }
+
+        function buildHDSDFocusOutline_(sections) {
+            return (sections || []).map(function(sec, index) {
+                const title = normalizeHDSDFocusLabel_(sec && sec.title ? sec.title : ('Mục ' + (index + 1)));
+                return {
+                    index: index,
+                    title: title,
+                    children: extractHDSDSubHeadingCandidates_(sec || {})
+                };
+            });
+        }
+
+        function findClosestHDSDFocusLabelInOutline_(outline, parentIndex, rawFocusLabel) {
+            const parent = (outline || []).find(function(item) { return item.index === parentIndex; }) || null;
+            if (!parent) return '';
+            const requested = normalizeHDSDFocusNorm_(rawFocusLabel || '');
+            const labels = [parent.title].concat(parent.children || []);
+            if (!requested) return parent.title || '';
+
+            let best = '';
+            let bestScore = -1;
+            labels.forEach(function(label) {
+                const norm = normalizeHDSDFocusNorm_(label);
+                if (!norm) return;
+                let score = 0;
+                if (norm === requested) score += 1000;
+                if (hdsdFocusTextHasPhrase_(norm, requested) || hdsdFocusTextHasPhrase_(requested, norm)) score += 650;
+                const reqWords = requested.split(/\s+/).filter(Boolean);
+                const hit = reqWords.filter(function(w) { return w.length >= 3 && hdsdFocusTextHasPhrase_(norm, w); }).length;
+                score += hit * 80;
+                if ((parent.children || []).indexOf(label) >= 0) score += 45;
+                if (score > bestScore) {
+                    bestScore = score;
+                    best = label;
+                }
+            });
+            return bestScore >= 160 ? best : (parent.title || '');
+        }
+
+        function parseHDSDFocusPickerResponse_(rawText, sections, outline) {
+            const text = String(rawText || '').replace(/```(?:json)?/gi, '').replace(/```/g, '').trim();
+            let payload = null;
+            const jsonMatch = text.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                try { payload = JSON.parse(jsonMatch[0]); } catch (e) { payload = null; }
             }
+            if (!payload) return null;
 
-            // Ưu tiên dòng tiêu đề con thật sự trong thân mục trước, không lấy tiêu đề mục lớn.
-            // Ví dụ trong mục "11. Tương tác, tương kỵ của thuốc" phải bôi đỏ "Tương kỵ của thuốc",
-            // không bôi đỏ tiêu đề mục lớn chỉ vì tiêu đề mục lớn cũng chứa chữ "tương kỵ".
-            for (let c = 0; c < candidates.length; c++) {
-                const cand = candidates[c];
-                const aliases = (cand.aliases || []).map(function(a) { return removeAccents(a || '').trim(); }).filter(Boolean);
-                for (let i = 0; i < lines.length; i++) {
-                    const line = lines[i];
-                    const lineNorm = normalizeLineForMatch_(line);
-                    if (!lineNorm) continue;
-                    const shortEnoughToBeHeading = lineNorm.length <= 90;
-                    const matched = aliases.some(function(alias) { return alias && hdsdAliasPhraseHit_(lineNorm, alias); });
-                    if (matched && shortEnoughToBeHeading) {
-                        // Trả lại đúng chữ đang có trong HDSD để nút XEM HDSD bôi đỏ đúng tiêu đề con.
-                        return line;
-                    }
+            let parentIndex = Number.isFinite(Number(payload.parentIndex)) ? Number(payload.parentIndex)
+                : (Number.isFinite(Number(payload.index)) ? Number(payload.index)
+                : (Number.isFinite(Number(payload.sectionIndex)) ? Number(payload.sectionIndex) : -1));
+            parentIndex = parseInt(parentIndex, 10);
+            if (!Number.isFinite(parentIndex) || parentIndex < 0 || parentIndex >= sections.length) return null;
+
+            const parent = (outline || []).find(function(item) { return item.index === parentIndex; }) || { title: cleanDrugFieldForChat_(sections[parentIndex].title || '') };
+            const rawFocus = payload.focusLabel || payload.childLabel || payload.heading || payload.title || parent.title || '';
+            const focusLabel = findClosestHDSDFocusLabelInOutline_(outline, parentIndex, rawFocus) || parent.title || '';
+            const confidence = Number(payload.confidence || payload.score || 0.75);
+            if (!focusLabel || confidence < 0.45) return null;
+
+            const parentLabel = parent.title || cleanDrugFieldForChat_(sections[parentIndex].title || '');
+            return {
+                parentIndex: parentIndex,
+                parentLabel: parentLabel,
+                focusLabel: focusLabel,
+                confidence: confidence,
+                source: 'ai-outline-picker'
+            };
+        }
+
+        async function chooseHDSDFocusWithAI_(userMessage, sections) {
+            if (!Array.isArray(sections) || !sections.length) return null;
+            const outline = buildHDSDFocusOutline_(sections);
+            const outlineText = outline.map(function(item) {
+                let line = '[' + item.index + '] ' + item.title;
+                if (item.children && item.children.length) {
+                    line += '\n  Tiêu đề con: ' + item.children.map(function(c) { return '"' + c + '"'; }).join('; ');
+                }
+                return line;
+            }).join('\n');
+
+            const pickerPrompt = 'Bạn là bộ chọn vị trí trong tờ HDSD thuốc.\n'
+                + 'Nhiệm vụ: chọn đúng MỤC LỚN và nếu có thì chọn đúng TIÊU ĐỀ CON đang có thật trong danh sách dưới đây để website mở HDSD và bôi đỏ.\n'
+                + 'Chỉ được dùng tiêu đề xuất hiện trong DANH SÁCH. Không tự bịa tiêu đề mới. Không trả lời nội dung thuốc.\n'
+                + 'Nếu câu hỏi hỏi một phần nằm trong mục lớn, ví dụ hấp thu nằm trong dược động học, hạn dùng nằm trong thông tin thêm, tương kỵ nằm trong tương tác/tương kỵ, hãy trả focusLabel là đúng tiêu đề con.\n'
+                + 'Nếu câu hỏi hỏi cả mục lớn, trả focusLabel bằng tiêu đề mục lớn.\n'
+                + 'Trả duy nhất JSON hợp lệ dạng: {"parentIndex":0,"focusLabel":"Hấp thu","confidence":0.95}\n\n'
+                + 'Câu hỏi người dùng: ' + String(userMessage || '') + '\n\n'
+                + 'DANH SÁCH MỤC/TIÊU ĐỀ HDSD:\n' + outlineText;
+
+            for (let m = 0; m < AI_MODELS.length; m++) {
+                for (let k = 0; k < API_KEYS.length; k++) {
+                    try {
+                        const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/' + AI_MODELS[m] + ':generateContent?key=' + API_KEYS[k];
+                        const payload = {
+                            contents: [{ role: 'user', parts: [{ text: pickerPrompt }] }],
+                            generationConfig: { temperature: 0, maxOutputTokens: 120 }
+                        };
+                        const res = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        if (!res.ok) continue;
+                        const data = await res.json();
+                        const picked = parseHDSDFocusPickerResponse_(extractGeminiText_(data), sections, outline);
+                        if (picked) return picked;
+                    } catch (e) {}
                 }
             }
+            return null;
+        }
 
-            // Sau cùng mới xét tiêu đề mục lớn. Nếu tiêu đề mục lớn đã là đích cần mở thì bôi đỏ mục lớn.
-            for (let c = 0; c < candidates.length; c++) {
-                const cand = candidates[c];
-                const aliases = (cand.aliases || []).map(function(a) { return removeAccents(a || '').trim(); }).filter(Boolean);
-                const matchedTitle = aliases.some(function(alias) { return alias && hdsdAliasPhraseHit_(rawTitleNorm, alias); });
-                if (matchedTitle) return rawTitle || cand.label;
-            }
+        function chooseHDSDFocusLocally_(userMessage, sections) {
+            if (!Array.isArray(sections) || !sections.length) return null;
+            const q = removeAccents(userMessage || '');
+            const aliases = getHDSDQuestionAliases_(userMessage)
+                .map(function(a) { return removeAccents(a || '').trim(); })
+                .filter(function(a) { return a && !isNoisyHDSDSectionAlias_(a); });
+            const outline = buildHDSDFocusOutline_(sections);
+            let best = null;
+            let bestScore = -1;
 
-            // Nếu người dùng hỏi rõ một tiểu mục nhưng trong JSON không tách riêng dòng tiêu đề,
-            // vẫn truyền nhãn tiểu mục để web tìm trong đúng mục lớn; nếu không tìm thấy thì chỉ bôi đỏ mục lớn.
-            return candidates[0].label || '';
+            outline.forEach(function(item) {
+                const labels = [{ label: item.title, isChild: false }].concat((item.children || []).map(function(c) { return { label: c, isChild: true }; }));
+                labels.forEach(function(candidate) {
+                    const labelNorm = normalizeHDSDFocusNorm_(candidate.label);
+                    if (!labelNorm) return;
+                    let score = 0;
+                    if (hdsdFocusTextHasPhrase_(q, labelNorm)) score += 900;
+                    aliases.forEach(function(alias) {
+                        if (!alias) return;
+                        if (hdsdFocusTextHasPhrase_(labelNorm, alias)) score += 520;
+                        if (hdsdFocusTextHasPhrase_(q, alias) && hdsdFocusTextHasPhrase_(labelNorm, alias)) score += 460;
+                        if (labelNorm.indexOf(alias) === 0) score += 80;
+                    });
+                    if (candidate.isChild) score += 140;
+                    if (labelNorm.length <= 32) score += 45;
+                    if (score > bestScore) {
+                        bestScore = score;
+                        best = {
+                            parentIndex: item.index,
+                            parentLabel: item.title,
+                            focusLabel: candidate.label,
+                            confidence: Math.min(0.92, 0.45 + score / 1800),
+                            source: 'local-outline-picker'
+                        };
+                    }
+                });
+            });
+
+            return bestScore >= 520 ? best : null;
+        }
+
+        // Giữ tên hàm cũ để không ảnh hưởng phần khác, nhưng chuyển sang cơ chế outline toàn bộ tờ HDSD.
+        function getHDSDSubsectionFocusForQuestion_(userMessage) {
+            return null;
         }
 
         function findHDSDParentSectionIndexesForFocus_(sections, focusMeta) {
@@ -8746,44 +8832,29 @@ body.medplus-aux-open .new-badge::after{
 
         async function selectHDSDExcerptForQuestionWithMeta_(jsonData, userMessage) {
             const sections = buildHDSDTextSections_(jsonData);
+            if (!sections.length) return { excerpt: '', focusMeta: null };
 
-            // Với các câu hỏi mục nhỏ thuộc một mục lớn (ví dụ Hấp thu thuộc Dược động học),
-            // vẫn lấy nguyên mục lớn để trả lời ngắn gọn, nhưng truyền cả mục lớn + mục nhỏ
-            // sang nút XEM HDSD để bôi đỏ đúng tiêu đề mục nhỏ trong đúng phạm vi mục lớn.
-            const focusMeta = getHDSDSubsectionFocusForQuestion_(userMessage);
-            if (focusMeta) {
-                const parentIndexes = findHDSDParentSectionIndexesForFocus_(sections, focusMeta);
-                const excerpt = parentIndexes.length ? buildHDSDExcerptFromSections_(sections, parentIndexes, true) : '';
+            // GIẢI PHÁP TỔNG THỂ:
+            // 1) Web dựng outline thật của từng tờ HDSD: mục lớn + mọi tiêu đề con tìm được trong JSON.
+            // 2) AI chỉ được chọn vị trí trong outline đó, không tự viết nội dung và không tự bôi đỏ.
+            // 3) Nút XEM HDSD mở đúng mục lớn, rồi chỉ tìm/bôi đỏ tiêu đề con bên trong mục lớn.
+            // 4) Nếu AI lỗi, dùng bộ chọn local trên cùng outline; tuyệt đối không quét toàn văn để tránh bôi đỏ nhầm.
+            let focusMeta = await chooseHDSDFocusWithAI_(userMessage, sections);
+            if (!focusMeta) focusMeta = chooseHDSDFocusLocally_(userMessage, sections);
+
+            if (focusMeta && Number.isFinite(Number(focusMeta.parentIndex))) {
+                const idx = parseInt(focusMeta.parentIndex, 10);
+                const excerpt = buildHDSDExcerptFromSections_(sections, [idx], true);
+                const parentNorm = normalizeHDSDChatFocusText_(focusMeta.parentLabel || '');
+                const focusNorm = normalizeHDSDChatFocusText_(focusMeta.focusLabel || '');
+                if (parentNorm && focusNorm && parentNorm === focusNorm) {
+                    focusMeta.parentLabel = '';
+                }
                 return { excerpt: excerpt || '', focusMeta: focusMeta };
             }
 
-            if (!sections.length) return { excerpt: '', focusMeta: null };
-
-            // Giao AI chọn ĐÚNG index/tiêu đề mục HDSD từ danh sách tiêu đề có sẵn.
-            // AI không được tự viết nội dung và không tự tạo nút. Web dùng index/tiêu đề này
-            // để lấy nguyên văn từ JSON và bôi đỏ chính tiêu đề mục đã chọn khi mở tờ HDSD.
-            const aiIndexes = await chooseHDSDSectionsWithAI_(userMessage, sections);
-            if (aiIndexes.length) {
-                const excerpt = buildHDSDExcerptFromSections_(sections, aiIndexes, true);
-                const firstSection = sections[aiIndexes[0]] || null;
-                const title = firstSection && firstSection.title ? cleanDrugFieldForChat_(firstSection.title) : '';
-                const subFocusLabel = firstSection ? findHDSDSubFocusLabelInSection_(firstSection, userMessage) : '';
-                const titleNorm = normalizeHDSDChatFocusText_(title);
-                const subNorm = normalizeHDSDChatFocusText_(subFocusLabel);
-                let focusMeta = null;
-                if (title && subFocusLabel && subNorm && subNorm !== titleNorm) {
-                    focusMeta = { parentLabel: title, focusLabel: subFocusLabel, source: 'ai-section-subfocus', sectionIndex: aiIndexes[0] };
-                } else if (title) {
-                    focusMeta = { parentLabel: '', focusLabel: title, source: 'ai-section-title', sectionIndex: aiIndexes[0] };
-                }
-                return {
-                    excerpt: excerpt || '',
-                    focusMeta: focusMeta
-                };
-            }
-
-            // Nếu AI/API lỗi, dùng bộ luật cũ để vẫn có câu trả lời. Trường hợp này không truyền focus
-            // để tránh bôi đỏ nhầm; chỉ mở HDSD bình thường.
+            // Nếu không chọn được vị trí đáng tin cậy, vẫn lấy đoạn HDSD bằng bộ luật cũ nhưng không truyền focus.
+            // Như vậy nút XEM HDSD mở bình thường, không bôi đỏ sai.
             const excerpt = selectHDSDExcerptForQuestion_(jsonData, userMessage);
             return { excerpt: excerpt || '', focusMeta: null };
         }
@@ -9056,17 +9127,11 @@ body.medplus-aux-open .new-badge::after{
                 const focus = item.hdsdFocus || null;
                 let body = '';
 
-                if (focus && focus.focusLabel) {
-                    if (focus.parentLabel && normalizeHDSDChatFocusText_(focus.parentLabel) !== normalizeHDSDChatFocusText_(focus.focusLabel)) {
-                        body = 'Mục cần xem: **' + focus.parentLabel + '**.\n\n'
-                            + 'Trong mục **' + focus.parentLabel + '** có phần **' + focus.focusLabel + '**. '
-                            + 'Anh/chị tham khảo chi tiết ở mục **' + focus.focusLabel + '** trong phần sau của tờ HDSD. '
-                            + 'Khi bấm **XEM HDSD**, phần **' + focus.focusLabel + '** sẽ được bôi đỏ để dễ nhận biết.';
-                    } else {
-                        body = 'Mục cần xem: **' + focus.focusLabel + '**.\n\n'
-                            + 'Anh/chị tham khảo chi tiết ở mục **' + focus.focusLabel + '** trong phần sau của tờ HDSD. '
-                            + 'Khi bấm **XEM HDSD**, mục **' + focus.focusLabel + '** sẽ được mở và bôi đỏ để dễ nhận biết.';
-                    }
+                if (focus && focus.parentLabel && focus.focusLabel) {
+                    body = 'Mục cần xem: **' + focus.parentLabel + '**.\n\n'
+                        + 'Trong mục **' + focus.parentLabel + '** có phần **' + focus.focusLabel + '**. '
+                        + 'Anh/chị tham khảo chi tiết ở mục **' + focus.focusLabel + '** trong phần sau của tờ HDSD. '
+                        + 'Khi bấm **XEM HDSD**, phần **' + focus.focusLabel + '** sẽ được bôi đỏ để dễ nhận biết.';
                 } else {
                     body = formatDirectHDSDExcerptForChat_(item.excerpt || '');
                 }
@@ -10871,8 +10936,8 @@ body.medplus-aux-open .new-badge::after{
             let bestScore = -1;
 
             nodes.forEach(function(el) {
-                // Khi đang tìm mục con bên trong một details cha, bỏ qua summary của chính details cha.
-                // Điều này tránh lỗi bôi đỏ tiêu đề mục lớn "Tương tác, tương kỵ..." thay vì tiêu đề con "Tương kỵ của thuốc".
+                // Khi đang tìm tiêu đề con bên trong details của mục lớn,
+                // bỏ qua summary của chính mục lớn để tiêu đề lớn không cạnh tranh với tiêu đề con.
                 if (rootSummary && (el === rootSummary || rootSummary.contains(el))) return;
                 const score = scoreHDSDChatFocusElement_(el, phraseNorm);
                 if (score > bestScore) {
