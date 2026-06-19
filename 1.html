@@ -7946,7 +7946,14 @@ body.medplus-aux-open .new-badge::after{
             const tooBroadWithoutTopic = broadQuery && queryWords.length === 0;
 
             let matchedDrugs = [];
-            if (candidateQueryWords.length > 0) {
+            // CHỐNG NHẦM TOÀN CỤC:
+            // Với câu hỏi đã khớp chắc chắn biệt dược/hoạt chất, danh sách thuốc phải lấy đúng từ kết quả chắc chắn đó.
+            // Không cho nhánh chấm điểm theo từ khóa chạy chồng lên, vì dễ lọt thuốc chỉ trùng bệnh cảnh/nhóm/chữ đơn.
+            if (exactNameMatches.length > 0) {
+                matchedDrugs = exactNameMatches;
+            } else if (activeIngredientMatches.length > 0) {
+                matchedDrugs = activeIngredientMatches;
+            } else if (candidateQueryWords.length > 0) {
                 matchedDrugs = allDrugs
                     .map(function(d) { return { drug: d, score: scoreDrugForQuestion_(d, candidateQueryWords) }; })
                     .filter(function(x) { return x.score > 0; })
@@ -8568,6 +8575,76 @@ body.medplus-aux-open .new-badge::after{
             return hasNormalizedPhrase_(normalizedText, removeAccents(alias || ''));
         }
 
+        function chooseExactHDSDTitleIndexesFromQuestion_(userMessage, sections) {
+            if (!Array.isArray(sections) || !sections.length) return [];
+            const q = removeAccents(userMessage || '');
+            const groups = [
+                { priority: 120, terms: ['hap thu'], aliases: ['hap thu'] },
+                { priority: 120, terms: ['phan bo'], aliases: ['phan bo'] },
+                { priority: 120, terms: ['chuyen hoa'], aliases: ['chuyen hoa'] },
+                { priority: 120, terms: ['thai tru', 'bai tiet', 'dao thai'], aliases: ['thai tru', 'bai tiet', 'dao thai'] },
+                { priority: 95, terms: ['duoc dong hoc'], aliases: ['duoc dong hoc', 'dac tinh duoc dong hoc', 'cac dac tinh duoc dong hoc'] },
+                { priority: 95, terms: ['duoc luc hoc', 'co che tac dung'], aliases: ['duoc luc hoc', 'dac tinh duoc luc hoc', 'cac dac tinh duoc luc hoc', 'co che tac dung'] },
+                { priority: 110, terms: ['cong ty san xuat', 'nha san xuat', 'co so san xuat', 'noi san xuat', 'xuat xu', 'nuoc san xuat'], aliases: ['nha san xuat', 'san xuat', 'co so san xuat', 'xuat xu', 'nuoc san xuat'] },
+                { priority: 110, terms: ['quy cach dong goi', 'quy cach', 'dong goi'], aliases: ['quy cach dong goi', 'quy cach', 'dong goi'] },
+                { priority: 110, terms: ['so dang ky', 'sdk', 'tieu chuan', 'tieu chuan chat luong'], aliases: ['so dang ky', 'sdk', 'tieu chuan', 'tieu chuan chat luong'] },
+                { priority: 108, terms: ['bao quan', 'han dung', 'han su dung'], aliases: ['bao quan', 'han dung', 'han su dung'] },
+                { priority: 112, terms: ['phu nu cho con bu', 'cho con bu', 'bu me', 'mang thai', 'phu nu co thai', 'thai ky'], aliases: ['phu nu co thai', 'phu nu mang thai', 'mang thai', 'thai ky', 'cho con bu', 'phu nu cho con bu', 'bu me'] },
+                { priority: 108, terms: ['chi dinh', 'cong dung', 'cong nang', 'chu tri'], aliases: ['chi dinh', 'cong dung', 'cong nang', 'chu tri'] },
+                { priority: 108, terms: ['chong chi dinh'], aliases: ['chong chi dinh'] },
+                { priority: 108, terms: ['tac dung phu', 'tac dung khong mong muon', 'adr', 'phan ung phu'], aliases: ['tac dung khong mong muon', 'tac dung phu', 'adr', 'phan ung phu'] },
+                { priority: 106, terms: ['tuong tac', 'tuong tac thuoc'], aliases: ['tuong tac', 'tuong tac thuoc'] },
+                { priority: 106, terms: ['qua lieu', 'xu tri qua lieu', 'quen lieu'], aliases: ['qua lieu', 'xu tri qua lieu', 'quen lieu'] }
+            ];
+
+            let wanted = [];
+            groups.forEach(function(g) {
+                const hit = g.terms.some(function(term) { return hasNormalizedPhrase_(q, term); });
+                if (!hit) return;
+                g.aliases.forEach(function(alias) {
+                    wanted.push({ alias: removeAccents(alias || '').trim(), priority: g.priority });
+                });
+            });
+            wanted = wanted.filter(function(item, i, arr) {
+                if (!item.alias) return false;
+                return arr.findIndex(function(x) { return x.alias === item.alias && x.priority === item.priority; }) === i;
+            });
+            if (!wanted.length) return [];
+
+            const scored = [];
+            sections.forEach(function(sec, index) {
+                const titleNorm = removeAccents(sec && sec.title ? sec.title : '').trim();
+                if (!titleNorm) return;
+                let score = 0;
+                wanted.forEach(function(item) {
+                    const alias = item.alias;
+                    if (!alias) return;
+                    if (titleNorm === alias) score += item.priority + 500 + alias.length * 8;
+                    else if (hdsdAliasPhraseHit_(titleNorm, alias)) score += item.priority + 260 + alias.length * 5;
+                    else {
+                        // Cho phép tiêu đề dài kiểu "CÁC ĐẶC TÍNH DƯỢC ĐỘNG HỌC" khớp với "dược động học",
+                        // nhưng không dùng cơ chế này cho alias quá ngắn như "vỉ", "lọ".
+                        const titleCompact = titleNorm.replace(/[^a-z0-9]+/g, '');
+                        const aliasCompact = alias.replace(/[^a-z0-9]+/g, '');
+                        if (aliasCompact.length >= 6 && titleCompact.indexOf(aliasCompact) >= 0) {
+                            score += item.priority + 120 + alias.length * 3;
+                        }
+                    }
+                });
+                if (score > 0) {
+                    // Ưu tiên tiêu đề ngắn/đúng trọng tâm hơn tiêu đề cha quá rộng khi cùng khớp.
+                    score -= Math.min(80, Math.max(0, titleNorm.length - 28));
+                    scored.push({ index: index, score: score });
+                }
+            });
+
+            scored.sort(function(a, b) {
+                if (b.score !== a.score) return b.score - a.score;
+                return a.index - b.index;
+            });
+            return scored.map(function(item) { return item.index; }).slice(0, 3);
+        }
+
 
         function buildHDSDExcerptFromSections_(sections, indexes, hasClearTopic) {
             if (!Array.isArray(sections) || !sections.length || !Array.isArray(indexes) || !indexes.length) return '';
@@ -8657,6 +8734,15 @@ body.medplus-aux-open .new-badge::after{
         async function selectHDSDExcerptForQuestionWithAI_(jsonData, userMessage) {
             const sections = buildHDSDTextSections_(jsonData);
             if (!sections.length) return '';
+
+            // Ưu tiên khớp tiêu đề/subheading HDSD bằng luật chắc chắn trước khi hỏi AI.
+            // Ví dụ hỏi "hấp thu của NOVELCIN" thì phải lấy đúng mục "Hấp thu",
+            // không lấy cả mục cha "Các đặc tính dược động học" rồi làm rơi mất nội dung đoạn con.
+            const exactTitleIndexes = chooseExactHDSDTitleIndexesFromQuestion_(userMessage, sections);
+            if (exactTitleIndexes.length) {
+                const exactExcerpt = buildHDSDExcerptFromSections_(sections, exactTitleIndexes, true);
+                if (exactExcerpt) return exactExcerpt;
+            }
 
             // Cách 1: chỉ cho AI chọn tiêu đề mục HDSD từ danh sách tiêu đề ngắn.
             // Sau khi có index, web tự lấy nguyên nội dung JSON, không dùng AI để viết câu trả lời.
@@ -9075,10 +9161,20 @@ body.medplus-aux-open .new-badge::after{
                 /\b(huyet ap|tieu duong|tim mach|mo mau|roi loan lipid|cam mau|chay mau|nhiem khuan|viem phoi|tiet nieu|suy than|suy gan|non|buon non|mat ngu)\b/
             ];
 
-            return !!(
+            const hasSureDrugMatch = !!(
                 (info.exactNameMatches && info.exactNameMatches.length > 0) ||
+                (info.activeIngredientMatches && info.activeIngredientMatches.length > 0) ||
+                (info.drugNameResolution && info.drugNameResolution.type === 'exact_drug') ||
+                (info.drugNameResolution && info.drugNameResolution.type === 'multiple_candidates')
+            );
+
+            // Câu hỏi thông tin 1 thuốc/hoạt chất mà chưa khớp chắc chắn thì KHÔNG quét AI toàn danh mục.
+            // Nếu quét, AI có thể chọn nhầm thuốc do trùng chữ/nhóm/bệnh cảnh. Fuzzy chỉ dùng ở nhánh gợi ý tên thuốc.
+            if (info.identityQuery && !info.broadQuery && !hasSureDrugMatch) return false;
+
+            return !!(
+                hasSureDrugMatch ||
                 info.isStructuredDrugQuery ||
-                info.identityQuery ||
                 isHDSDContentQuestion_(q) ||
                 isSameActiveFallbackRequested_(q) ||
                 medicineIntentPatterns.some(function(pattern) { return pattern.test(q); })
@@ -9244,10 +9340,13 @@ body.medplus-aux-open .new-badge::after{
             const questionSubject = getQuestionSubject(userMessage);
             const allDrugs = getRagDrugIndex_(sourceList);
             const strictShortBrandMatchesForContext = getStrictShortBrandMatches_(userMessage, allDrugs);
-            const activeIngredientMatchesForContext = strictShortBrandMatchesForContext.length > 0 ? [] : getActiveIngredientMatchesForQuestion_(userMessage, allDrugs);
+            const exactBrandNameMatchesForContext = strictShortBrandMatchesForContext.length > 0 ? [] : getExactBrandNameMatches_(userMessage, allDrugs);
+            const activeIngredientMatchesForContext = (strictShortBrandMatchesForContext.length > 0 || exactBrandNameMatchesForContext.length > 0) ? [] : getActiveIngredientMatchesForQuestion_(userMessage, allDrugs);
             const exactResolutionForContext = strictShortBrandMatchesForContext.length > 0
                 ? { type: 'exact_drug', drugs: strictShortBrandMatchesForContext, confidence: 0.99, reason: 'strict_short_brand_exact', subject: getDrugSubjectForMatching_(userMessage) }
-                : resolveDrugNameFromQuestion_(userMessage, allDrugs);
+                : (exactBrandNameMatchesForContext.length > 0
+                    ? { type: 'exact_drug', drugs: exactBrandNameMatchesForContext, confidence: 1, reason: 'exact_brand_before_active', subject: getDrugSubjectForMatching_(userMessage) }
+                    : resolveDrugNameFromQuestion_(userMessage, allDrugs));
             const queryBase = (identityQuery || singleDrugInfoQuestion) ? removeAccents(questionSubject) : normalizedQuestion;
             const queryWords = getRagQueryWords_(queryBase);
             const includeDetailFields = identityQuery && !broadQuery;
@@ -9259,6 +9358,8 @@ body.medplus-aux-open .new-badge::after{
             let matchedDrugs = [];
             if (strictShortBrandMatchesForContext.length > 0) {
                 matchedDrugs = strictShortBrandMatchesForContext;
+            } else if (exactBrandNameMatchesForContext.length > 0) {
+                matchedDrugs = exactBrandNameMatchesForContext;
             } else if (activeIngredientMatchesForContext.length > 0) {
                 matchedDrugs = activeIngredientMatchesForContext;
             } else if (exactResolutionForContext && exactResolutionForContext.type === 'exact_drug') {
@@ -9268,7 +9369,7 @@ body.medplus-aux-open .new-badge::after{
             // Nguyên tắc mới: KHÔNG hard-code các nhóm con như carbapenem, chẹn beta, ức chế men chuyển...
             // HTML chỉ gom toàn bộ thuốc có liên quan theo từ khóa lớn trong câu hỏi.
             // AI sẽ đọc danh sách ứng viên này và tự chọn đúng nhóm con theo hoạt chất/nhóm thuốc.
-            if (matchedDrugs.length === 0 && queryWords.length > 0) {
+            if (matchedDrugs.length === 0 && queryWords.length > 0 && (broadQuery || !singleDrugInfoQuestion)) {
                 matchedDrugs = allDrugs
                     .map(function(d) { return { drug: d, score: scoreDrugForQuestion_(d, queryWords) }; })
                     .filter(function(x) { return x.score > 0; })
