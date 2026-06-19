@@ -9128,9 +9128,9 @@ body.medplus-aux-open .new-badge::after{
                 let body = '';
 
                 if (focus && focus.parentLabel && focus.focusLabel) {
-                    body = 'Mục cần xem: **' + focus.parentLabel + '**.\n\n'
+                    body = 'Hãy xem mục **' + focus.parentLabel + '**.\n\n'
                         + 'Trong mục **' + focus.parentLabel + '** có phần **' + focus.focusLabel + '**. '
-                        + 'Anh/chị tham khảo chi tiết ở mục **' + focus.focusLabel + '** trong phần sau của tờ HDSD. '
+                        + 'Bạn hãy tham khảo chi tiết ở phần **' + focus.focusLabel + '** của tờ HDSD. '
                         + 'Khi bấm **XEM HDSD**, phần **' + focus.focusLabel + '** sẽ được bôi đỏ để dễ nhận biết.';
                 } else {
                     body = formatDirectHDSDExcerptForChat_(item.excerpt || '');
@@ -9142,7 +9142,6 @@ body.medplus-aux-open .new-badge::after{
             });
 
             if (!answer) return '';
-            answer += '\n\n**Lưu ý:** <i>Nội dung trên được trích trực tiếp từ tờ HDSD. Nếu cần xem bản đầy đủ của tờ HDSD gốc, hãy bấm nút XEM HDSD bên dưới.</i>';
             const hdsdAnswerDrugs = dedupeDrugs_(hdsdItems.map(function(item) {
                 if (!item || !item.drug) return null;
                 const d = Object.assign({}, item.drug);
