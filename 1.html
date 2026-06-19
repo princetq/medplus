@@ -8412,7 +8412,9 @@ body.medplus-aux-open .new-badge::after{
             if (Array.isArray(b.rich_text)) parts.push(hdsdRichTextArrayToPlain_(b.rich_text));
             if (Array.isArray(b.title)) parts.push(hdsdRichTextArrayToPlain_(b.title));
             if (Array.isArray(b.caption)) parts.push(hdsdRichTextArrayToPlain_(b.caption));
+            if (Array.isArray(b.text)) parts.push(hdsdRichTextArrayToPlain_(b.text));
             if (b.text && typeof b.text.content === 'string') parts.push(b.text.content);
+            if (typeof b.content === 'string') parts.push(b.content);
             if (b.url && typeof b.url === 'string') parts.push(b.url);
             if (block.type === 'table_row' && Array.isArray(b.cells)) {
                 b.cells.forEach(function(cell) { parts.push(hdsdRichTextArrayToPlain_(cell)); });
@@ -8574,6 +8576,30 @@ body.medplus-aux-open .new-badge::after{
             return hdsdKnownSubheadingNorms_().has(norm);
         }
 
+        function hdsdCleanSectionBody_(title, body) {
+            const titleNorm = hdsdNormalizeSubheadingLine_(title || '');
+            const lines = String(body || '')
+                .replace(/\r/g, '')
+                .split(/\n+/)
+                .map(function(line) { return line.trim(); })
+                .filter(Boolean);
+            const cleaned = [];
+            lines.forEach(function(line) {
+                const lineNorm = hdsdNormalizeSubheadingLine_(line || '');
+                // Bỏ dòng tiêu đề bị lặp lại trong thân section, ví dụ section title "Hấp thu"
+                // nhưng body chỉ chứa lại đúng dòng "Hấp thu". Đây là nguyên nhân trả về "Hấp thu:" rỗng.
+                if (titleNorm && lineNorm === titleNorm) return;
+                cleaned.push(line);
+            });
+            return cleaned.join('\n').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
+        }
+
+        function hdsdSectionHasRealBody_(sec) {
+            if (!sec) return false;
+            const body = hdsdCleanSectionBody_(sec.title || '', sec.text || '');
+            return !!(body || (sec.images || []).length);
+        }
+
         function hdsdBlockOwnContentOnly_(block) {
             if (!block) return '';
             const type = block.type || '';
@@ -8594,7 +8620,7 @@ body.medplus-aux-open .new-badge::after{
             function pushSection(sec) {
                 if (!sec) return;
                 const title = cleanDrugFieldForChat_(sec.title || 'Nội dung HDSD');
-                const body = String(sec.text || '').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
+                const body = hdsdCleanSectionBody_(title, sec.text || '');
                 const key = removeAccents(title + '\n' + body).replace(/\s+/g, ' ').slice(0, 500);
                 if (!body && !(sec.images || []).length) return;
                 if (seen.has(key)) return;
@@ -8646,7 +8672,7 @@ body.medplus-aux-open .new-badge::after{
                         // Giữ section cha với toàn bộ nội dung để câu hỏi rộng như "dược động học"
                         // vẫn trả được đầy đủ; đồng thời đi sâu vào children để tạo section con như "Hấp thu".
                         const fullContent = hdsdBlockContentWithImageTokens_(block);
-                        const parentSection = { title: own || 'Nội dung HDSD', text: fullContent || '', images: [] };
+                        const parentSection = { title: own || 'Nội dung HDSD', text: hdsdCleanSectionBody_(own || 'Nội dung HDSD', fullContent || ''), images: [] };
                         sections.push(parentSection);
                         currentSection = parentSection;
                         if (children.length) {
@@ -8743,6 +8769,10 @@ body.medplus-aux-open .new-badge::after{
                 if (score > 0) {
                     // Ưu tiên tiêu đề ngắn/đúng trọng tâm hơn tiêu đề cha quá rộng khi cùng khớp.
                     score -= Math.min(80, Math.max(0, titleNorm.length - 28));
+                    // Ưu tiên section có thân nội dung thật. Tránh chọn section rỗng chỉ có tiêu đề
+                    // do parent/heading bị tách lặp, ví dụ trả về "Hấp thu:" nhưng không có nội dung.
+                    if (hdsdSectionHasRealBody_(sec)) score += 220;
+                    else score -= 1000;
                     scored.push({ index: index, score: score });
                 }
             });
@@ -8767,7 +8797,7 @@ body.medplus-aux-open .new-badge::after{
                 seen.add(index);
                 const sec = sections[index] || {};
                 let title = cleanDrugFieldForChat_(sec.title || 'Nội dung HDSD');
-                let body = String(sec.text || '').replace(/\s+\n/g, '\n').replace(/\n\s+/g, '\n').trim();
+                let body = hdsdCleanSectionBody_(title, sec.text || '').replace(/\s+\n/g, '\n').replace(/\n\s+/g, '\n').trim();
                 if (!body && !(sec.images || []).length) return;
                 const imageTokens = hdsdImagesToChatTokens_(sec.images || []);
                 const block = '### ' + title + '\n' + body + (imageTokens ? '\n' + imageTokens : '') + '\n\n';
@@ -8926,7 +8956,7 @@ body.medplus-aux-open .new-badge::after{
             selected.forEach(function(item) {
                 if (excerpt.length >= maxChars) return;
                 let title = cleanDrugFieldForChat_(item.section.title || 'Nội dung HDSD');
-                let body = String(item.section.text || '').replace(/\s+\n/g, '\n').replace(/\n\s+/g, '\n').trim();
+                let body = hdsdCleanSectionBody_(title, item.section.text || '').replace(/\s+\n/g, '\n').replace(/\n\s+/g, '\n').trim();
                 if (!body && !(item.section.images || []).length) return;
                 const imageTokens = hdsdImagesToChatTokens_(item.section.images || []);
                 const block = '### ' + title + '\n' + body + (imageTokens ? '\n' + imageTokens : '') + '\n\n';
