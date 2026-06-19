@@ -6956,15 +6956,18 @@ body.medplus-aux-open .new-badge::after{
                     return w.length >= 3;
                 });
             const subjectPhrase = subjectWords.join(' ');
-            if (!subjectPhrase) return [];
 
             // Nếu người dùng hỏi biệt dược rút gọn VIK/VIK 1/VIK1,
             // không xử lý như hoạt chất Vitamin K1; nhánh khớp biệt dược tuyệt đối sẽ xử lý trước.
             if (/^vik$/.test(subjectPhrase) || /^vik\s*1$/.test(subjectPhrase) || /^vik1$/.test(compactShortAlias_(subjectPhrase))) return [];
 
-            // Chỉ coi là hỏi hoạt chất khi phần còn lại ngắn/gọn như tên hoạt chất/biệt dược ngắn.
-            // Ví dụ: "vancomycin", "vitamin k1", "phytomenadion", "vik 1".
-            if (subjectWords.length > 4) return [];
+            const normalizedFullQuestion = normalizeDrugMatchText_(userMessage)
+                .replace(/\bvitamin\s+k\s*1\b/g, 'vitamin k1')
+                .replace(/\bvit\s+k\s*1\b/g, 'vit k1')
+                .replace(/\bk\s+1\b/g, 'k1')
+                .replace(/\bvik\s+1\b/g, 'vik 1')
+                .replace(/\s+/g, ' ')
+                .trim();
 
             const activeSynonymMap = {
                 'vitamin k1': [
@@ -6983,7 +6986,59 @@ body.medplus-aux-open .new-badge::after{
                 'phylloquinone': ['phylloquinone', 'phytomenadion', 'phytomenadione', 'phytonadione', 'vitamin k1', 'vit k1', 'k1', 'vik 1', 'vik1']
             };
 
-            const subjectsToMatch = uniqueStrings_([subjectPhrase].concat(activeSynonymMap[subjectPhrase] || []));
+            const isDistinctiveActiveSubject_ = function(value) {
+                const st = normalizeDrugMatchText_(value);
+                if (!st) return false;
+                const compact = compactDrugMatchText_(st);
+                if (/^(vik|vik1|vik 1)$/.test(st) || compact === 'vik1') return false;
+                if (['thuoc','vien','ong','lo','hop','goi','chai','mg','ml','g','mcg','ui','iu','acid','cao','kho','natri','sodium'].indexOf(st) !== -1) return false;
+                const words = st.split(/\s+/).filter(Boolean);
+                if (words.length === 1) return words[0].length >= 4 || /^[a-z]\d{1,2}$/.test(words[0]);
+                return words.some(function(w) { return w.length >= 4 || /^[a-z]\d{1,2}$/.test(w); });
+            };
+
+            const subjectsToMatchSeed = [];
+            // Trường hợp câu hỏi ngắn/gọn như "vancomycin là gì" hoặc "tác dụng vitamin k1".
+            if (subjectPhrase && subjectWords.length <= 4) {
+                subjectsToMatchSeed.push(subjectPhrase);
+                (activeSynonymMap[subjectPhrase] || []).forEach(function(x) { subjectsToMatchSeed.push(x); });
+            }
+
+            // Trường hợp câu hỏi dài nhưng có hoạt chất khớp chính xác, ví dụ:
+            // "khi dùng entecavir cho phụ nữ cho con bú lưu ý gì".
+            // Không dùng fuzzy để chọn thuốc; chỉ lấy khi hoạt chất/alias xuất hiện đúng cụm/từ độc lập trong câu hỏi.
+            Object.keys(activeSynonymMap).forEach(function(key) {
+                const vals = [key].concat(activeSynonymMap[key] || []);
+                vals.forEach(function(alias) {
+                    const a = normalizeDrugMatchText_(alias)
+                        .replace(/\bvitamin\s+k\s*1\b/g, 'vitamin k1')
+                        .replace(/\bvit\s+k\s*1\b/g, 'vit k1')
+                        .replace(/\bk\s+1\b/g, 'k1')
+                        .replace(/\bvik\s+1\b/g, 'vik 1')
+                        .trim();
+                    if (isDistinctiveActiveSubject_(a) && hasNormalizedPhrase_(normalizedFullQuestion, a)) {
+                        subjectsToMatchSeed.push(key);
+                        vals.forEach(function(x) { subjectsToMatchSeed.push(x); });
+                    }
+                });
+            });
+
+            source.forEach(function(d) {
+                const active = normalizeDrugMatchText_(d && d.active);
+                if (!active) return;
+                const activeWords = active.split(/\s+/).filter(Boolean);
+                if (isDistinctiveActiveSubject_(active) && hasNormalizedPhrase_(normalizedFullQuestion, active)) {
+                    subjectsToMatchSeed.push(active);
+                }
+                activeWords.forEach(function(w) {
+                    if (isDistinctiveActiveSubject_(w) && hasNormalizedPhrase_(normalizedFullQuestion, w)) {
+                        subjectsToMatchSeed.push(w);
+                    }
+                });
+            });
+
+            const subjectsToMatch = uniqueStrings_(subjectsToMatchSeed);
+            if (!subjectsToMatch.length) return [];
             const matched = [];
 
             const textMatchesActiveSubject_ = function(text, subjectText) {
@@ -7795,7 +7850,7 @@ body.medplus-aux-open .new-badge::after{
                 : resolveDrugNameFromQuestion_(userMessage, allDrugs);
             const exactNameMatches = strictShortBrandMatches.length > 0
                 ? strictShortBrandMatches
-                : (activeIngredientMatches.length > 1
+                : (activeIngredientMatches.length > 0
                     ? activeIngredientMatches
                     : ((drugNameResolution && drugNameResolution.type === 'exact_drug') ? dedupeDrugs_(drugNameResolution.drugs || []) : []));
             const queryBase = identityQuery ? removeAccents(getQuestionSubject(userMessage)) : normalizedQuestion;
@@ -8962,7 +9017,7 @@ body.medplus-aux-open .new-badge::after{
             }
 
             const activeIngredientMatches = getActiveIngredientMatchesForQuestion_(userMessage, allDrugs);
-            if (activeIngredientMatches.length > 1) {
+            if (activeIngredientMatches.length > 0) {
                 return {
                     ok: true,
                     drugs: activeIngredientMatches,
@@ -9104,7 +9159,7 @@ body.medplus-aux-open .new-badge::after{
             let matchedDrugs = [];
             if (strictShortBrandMatchesForContext.length > 0) {
                 matchedDrugs = strictShortBrandMatchesForContext;
-            } else if (activeIngredientMatchesForContext.length > 1) {
+            } else if (activeIngredientMatchesForContext.length > 0) {
                 matchedDrugs = activeIngredientMatchesForContext;
             } else if (exactResolutionForContext && exactResolutionForContext.type === 'exact_drug') {
                 matchedDrugs = dedupeDrugs_(exactResolutionForContext.drugs || []);
