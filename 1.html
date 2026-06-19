@@ -10682,23 +10682,49 @@ body.medplus-aux-open .new-badge::after{
             });
         }
 
+        function scoreHDSDChatFocusElement_(el, phraseNorm) {
+            const textNorm = normalizeHDSDChatFocusText_(el && el.textContent ? el.textContent : '');
+            if (!textNorm || !phraseNorm) return -1;
+
+            const exact = textNorm === phraseNorm;
+            const hasPhrase = exact || hdsdFocusTextHasPhrase_(textNorm, phraseNorm);
+            if (!hasPhrase) return -1;
+
+            const tag = String(el.tagName || '').toUpperCase();
+            const inSummary = !!(el.closest && el.closest('summary'));
+            const textLen = textNorm.length;
+            let score = exact ? 1000 : 250;
+
+            // Ưu tiên tiêu đề/mục nhỏ thật sự, tránh bắt nhầm các đoạn văn có chứa chữ như "hấp thu".
+            if (/^H[1-3]$/.test(tag)) score += 260;
+            if (tag === 'SUMMARY' || inSummary) score += 230;
+            if (tag === 'STRONG' || tag === 'B') score += 220;
+            if (tag === 'SPAN' && inSummary) score += 220;
+            if (tag === 'P' && el.querySelector && el.querySelector('strong,b')) score += 70;
+            if (textLen <= phraseNorm.length + 18) score += 190;
+            if (textNorm.indexOf(phraseNorm) === 0) score += 70;
+            if (tag === 'P' && textLen > 80) score -= 260;
+            if (textLen > 180) score -= 180;
+
+            return score;
+        }
+
         function findHDSDChatFocusElement_(root, phrase) {
             const phraseNorm = normalizeHDSDChatFocusText_(phrase);
             if (!root || !phraseNorm) return null;
             const nodes = Array.from(root.querySelectorAll('h1,h2,h3,summary span,summary,strong,b,p'));
-            const preferred = nodes.filter(function(el) {
-                return /^(H1|H2|H3|SUMMARY|SPAN)$/i.test(el.tagName || '') || el.closest('summary');
-            });
-            const lists = [preferred, nodes];
+            let best = null;
+            let bestScore = -1;
 
-            for (let i = 0; i < lists.length; i++) {
-                for (let j = 0; j < lists[i].length; j++) {
-                    const el = lists[i][j];
-                    const textNorm = normalizeHDSDChatFocusText_(el.textContent || '');
-                    if (textNorm === phraseNorm || hdsdFocusTextHasPhrase_(textNorm, phraseNorm)) return el;
+            nodes.forEach(function(el) {
+                const score = scoreHDSDChatFocusElement_(el, phraseNorm);
+                if (score > bestScore) {
+                    bestScore = score;
+                    best = el;
                 }
-            }
-            return null;
+            });
+
+            return best;
         }
 
         function openAncestorDetailsForHDSDFocus_(el) {
@@ -10722,12 +10748,27 @@ body.medplus-aux-open .new-badge::after{
             const parentFocus = window._pendingHDSDChatParentFocus || '';
             if (!focus) return;
 
-            let target = findHDSDChatFocusElement_(root, focus);
-
-            if (!target && parentFocus) {
-                const parentTarget = findHDSDChatFocusElement_(root, parentFocus);
-                if (parentTarget) openAncestorDetailsForHDSDFocus_(parentTarget);
+            let searchRoot = root;
+            let parentTarget = null;
+            if (parentFocus) {
+                parentTarget = findHDSDChatFocusElement_(root, parentFocus);
+                if (parentTarget) {
+                    openAncestorDetailsForHDSDFocus_(parentTarget);
+                    const parentDetails = parentTarget.closest ? parentTarget.closest('details') : null;
+                    if (parentDetails) searchRoot = parentDetails;
+                }
             }
+
+            let target = findHDSDChatFocusElement_(searchRoot, focus);
+
+            // Nếu đã xác định được mục lớn nhưng mục con chưa render kịp, chờ render trong chính mục lớn.
+            // Không fallback ngay ra toàn văn, vì có thể bắt nhầm đoạn văn ở mục khác có cùng chữ "hấp thu".
+            if (!target && searchRoot !== root && attempt < 8) {
+                setTimeout(function() { applyPendingHDSDChatFocus_(root, attempt + 1); }, 180);
+                return;
+            }
+
+            if (!target && searchRoot !== root) target = findHDSDChatFocusElement_(root, focus);
 
             if (!target && attempt < 5) {
                 setTimeout(function() { applyPendingHDSDChatFocus_(root, attempt + 1); }, 180);
