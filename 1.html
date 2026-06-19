@@ -6900,6 +6900,67 @@ body.medplus-aux-open .new-badge::after{
         }
 
 
+
+        function isVitaminK1Question_(userMessage) {
+            let q = normalizeDrugMatchText_(userMessage)
+                .replace(/\bvitamin\s+k\s*1\b/g, 'vitamin k1')
+                .replace(/\bvit\s+k\s*1\b/g, 'vit k1')
+                .replace(/\bk\s+1\b/g, 'k1')
+                .replace(/\s+/g, ' ')
+                .trim();
+            if (!q) return false;
+            return hasNormalizedPhrase_(q, 'vitamin k1')
+                || hasNormalizedPhrase_(q, 'vit k1')
+                || hasNormalizedPhrase_(q, 'phytomenadion')
+                || hasNormalizedPhrase_(q, 'phytomenadione')
+                || hasNormalizedPhrase_(q, 'phytonadion')
+                || hasNormalizedPhrase_(q, 'phytonadione')
+                || hasNormalizedPhrase_(q, 'phylloquinone')
+                || /(^|\s)k1(?=\s|$)/.test(q);
+        }
+
+        function getVitaminK1CatalogMatches_(userMessage, allDrugs) {
+            const source = allDrugs || [];
+            if (!source.length || !isVitaminK1Question_(userMessage)) return [];
+
+            const normalizeK1Text_ = function(value) {
+                return normalizeDrugMatchText_(value)
+                    .replace(/\bvitamin\s+k\s*1\b/g, 'vitamin k1')
+                    .replace(/\bvit\s+k\s*1\b/g, 'vit k1')
+                    .replace(/\bk\s+1\b/g, 'k1')
+                    .replace(/\bvik\s+1\b/g, 'vik 1')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            };
+
+            const k1ActiveTerms = [
+                'vitamin k1', 'vit k1', 'phytomenadion', 'phytomenadione',
+                'phytonadion', 'phytonadione', 'phylloquinone'
+            ];
+
+            const matched = source.filter(function(d) {
+                if (!d) return false;
+                const active = normalizeK1Text_(d.active || '');
+                const brand = normalizeK1Text_(d.brand || '');
+                const brandCompact = compactDrugMatchText_(brand);
+
+                // Chỉ nhận Vitamin K1 thật sự: khớp theo hoạt chất K1/phyto..., hoặc biệt dược K1 rất đặc hiệu.
+                // Không dùng từ "vitamin" đơn lẻ để tránh kéo Vitamin B1/B6/B12/D3 vào kết quả.
+                const activeOk = k1ActiveTerms.some(function(term) {
+                    return hasNormalizedPhrase_(active, term);
+                });
+                const brandOk = hasNormalizedPhrase_(brand, 'vitamin k1')
+                    || hasNormalizedPhrase_(brand, 'vit k1')
+                    || brandCompact === 'vitamink1'
+                    || brandCompact === 'vitk1'
+                    || brandCompact === 'vik1';
+
+                return activeOk || brandOk;
+            });
+
+            return sortDrugsByBrand_(dedupeDrugs_(matched));
+        }
+
         function getActiveIngredientMatchesForQuestion_(userMessage, allDrugs) {
             const source = allDrugs || [];
             if (!userMessage || !source.length) return [];
@@ -6917,7 +6978,8 @@ body.medplus-aux-open .new-badge::after{
                     .concat([
                         'la thuoc gi', 'thuoc gi', 'la gi', 'co tac dung gi', 'tac dung gi', 'tac dung',
                         'cong dung', 'dung de lam gi', 'dung lam gi', 'chi dinh', 'dieu tri gi',
-                        'cho toi hoi', 'xin hoi', 'ban cho biet', 'hay cho biet'
+                        'cho toi hoi', 'xin hoi', 'ban cho biet', 'hay cho biet',
+                        'tai benh vien', 'o benh vien', 'benh vien', 'bvdk tinh tuyen quang', 'bvdk tuyen quang'
                     ])
                     .map(normalizeDrugMatchText_)
                     .filter(Boolean)
@@ -7926,9 +7988,11 @@ body.medplus-aux-open .new-badge::after{
             const longDetailQuery = isPotentiallyLongDrugDetailQuery_(normalizedQuestion);
             const identityQuery = isDrugIdentityQuery(normalizedQuestion);
             const allDrugs = getRagDrugIndex_(sourceList);
-            const strictShortBrandMatches = getStrictShortBrandMatches_(userMessage, allDrugs);
-            const exactBrandNameMatches = strictShortBrandMatches.length > 0 ? [] : getExactBrandNameMatches_(userMessage, allDrugs);
-            const activeIngredientMatches = (strictShortBrandMatches.length > 0 || (exactBrandNameMatches.length > 0 && !broadQuery)) ? [] : getActiveIngredientMatchesForQuestion_(userMessage, allDrugs);
+            const forcedVitaminK1Matches = getVitaminK1CatalogMatches_(userMessage, allDrugs);
+            const hasForcedVitaminK1Matches = forcedVitaminK1Matches.length > 0;
+            const strictShortBrandMatches = hasForcedVitaminK1Matches ? [] : getStrictShortBrandMatches_(userMessage, allDrugs);
+            const exactBrandNameMatches = (hasForcedVitaminK1Matches || strictShortBrandMatches.length > 0) ? [] : getExactBrandNameMatches_(userMessage, allDrugs);
+            const activeIngredientMatches = hasForcedVitaminK1Matches ? forcedVitaminK1Matches : ((strictShortBrandMatches.length > 0 || (exactBrandNameMatches.length > 0 && !broadQuery)) ? [] : getActiveIngredientMatchesForQuestion_(userMessage, allDrugs));
             const drugNameResolution = strictShortBrandMatches.length > 0
                 ? { type: 'exact_drug', drugs: strictShortBrandMatches, confidence: 0.99, reason: 'strict_short_brand_exact', subject: getDrugSubjectForMatching_(userMessage) }
                 : (exactBrandNameMatches.length > 0
@@ -9406,6 +9470,17 @@ body.medplus-aux-open .new-badge::after{
 
         async function selectDrugSubsetFromFullCatalogWithAI_(userMessage, allDrugs) {
             if (!allDrugs || allDrugs.length === 0) return { ok: true, drugs: [] };
+
+            const forcedVitaminK1Matches = getVitaminK1CatalogMatches_(userMessage, allDrugs);
+            if (forcedVitaminK1Matches.length > 0) {
+                return {
+                    ok: true,
+                    drugs: forcedVitaminK1Matches,
+                    activeIngredientMatch: true,
+                    forcedVitaminK1Match: true,
+                    scannedCount: forcedVitaminK1Matches.length
+                };
+            }
 
             const strictShortBrandMatches = getStrictShortBrandMatches_(userMessage, allDrugs);
             if (strictShortBrandMatches.length > 0) {
