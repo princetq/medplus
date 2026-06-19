@@ -6958,9 +6958,9 @@ body.medplus-aux-open .new-badge::after{
             const subjectPhrase = subjectWords.join(' ');
             if (!subjectPhrase) return [];
 
-            // Nếu người dùng hỏi một biệt dược ngắn có số như VIK 1/VIK1,
+            // Nếu người dùng hỏi biệt dược rút gọn VIK/VIK 1/VIK1,
             // không xử lý như hoạt chất Vitamin K1; nhánh khớp biệt dược tuyệt đối sẽ xử lý trước.
-            if (/^vik\s*1$/.test(subjectPhrase) || /^vik1$/.test(compactShortAlias_(subjectPhrase))) return [];
+            if (/^vik$/.test(subjectPhrase) || /^vik\s*1$/.test(subjectPhrase) || /^vik1$/.test(compactShortAlias_(subjectPhrase))) return [];
 
             // Chỉ coi là hỏi hoạt chất khi phần còn lại ngắn/gọn như tên hoạt chất/biệt dược ngắn.
             // Ví dụ: "vancomycin", "vitamin k1", "phytomenadion", "vik 1".
@@ -6992,30 +6992,23 @@ body.medplus-aux-open .new-badge::after{
                 const st = normalizeDrugMatchText_(subjectText);
                 const stCompact = compactDrugMatchText_(st);
                 const words = st.split(/\s+/).filter(Boolean);
+                const activeWords = active.split(/\s+/).filter(Boolean);
                 if (!active || !st || !words.length) return false;
 
-                if (hasNormalizedPhrase_(active, st) || active.includes(st) || (stCompact && activeCompact.includes(stCompact))) return true;
+                // KHÔNG dùng fuzzy để chọn thuốc/hoạt chất. Chỉ chấp nhận khớp chắc chắn:
+                // cụm đầy đủ, compact chính xác hoặc toàn bộ token quan trọng xuất hiện rõ ràng.
+                if (hasNormalizedPhrase_(active, st) || active === st || (stCompact && activeCompact === stCompact)) return true;
                 if (words.length === 1) {
                     const w = words[0];
-                    return active.split(/\s+/).some(function(aw) {
-                            return aw === w
-                                || (w.length >= 5 && aw.length >= 5 && fuzzyWordMatchRatio_(w, aw) >= 0.92);
-                        })
-                        || active === w
-                        || active.indexOf(w + ' ') === 0;
+                    return activeWords.some(function(aw) { return aw === w; }) || active === w;
                 }
 
-                // Cho phép khớp gần đúng từng từ đối với hoạt chất/biệt dược có sai khác nhỏ
-                // nhưng vẫn yêu cầu tất cả các từ chính phải có mặt để tránh kéo nhầm thuốc khác.
-                const activeWords = active.split(/\s+/).filter(Boolean);
                 return words.every(function(w) {
                     if (!w) return true;
-                    if (active.indexOf(' ' + w + ' ') !== -1 || active.indexOf(w + ' ') === 0 || active.indexOf(' ' + w) === active.length - w.length - 1) return true;
                     if (/^[a-z]\d{1,2}$/.test(w) || /^\d+$/.test(w)) {
                         return activeWords.some(function(aw) { return aw === w || aw === w.replace(/[^a-z0-9]/g, ''); });
                     }
-                    if (w.length < 5) return false;
-                    return activeWords.some(function(aw) { return aw.length >= 5 && fuzzyWordMatchRatio_(w, aw) >= 0.92; });
+                    return activeWords.some(function(aw) { return aw === w; }) || hasNormalizedPhrase_(active, w);
                 });
             };
 
@@ -7182,7 +7175,7 @@ body.medplus-aux-open .new-badge::after{
                 .sort(function(a, b) { return b.length - a.length; })
                 .forEach(function(term) {
                     const esc = escapeRegExp_(term);
-                    s = s.replace(new RegExp('(^|\s)' + esc + '(?=\s|$)', 'g'), ' ');
+                    s = s.replace(new RegExp('(^|\\s)' + esc + '(?=\\s|$)', 'g'), ' ');
                 });
             return s
                 .replace(/\b(cua|ve|cho|toi|hoi|xin|giup|can|muon|xem|biet|la|co|khong|may|bao nhieu)\b/g, ' ')
@@ -7305,6 +7298,15 @@ body.medplus-aux-open .new-badge::after{
             return false;
         }
 
+        // Các bí danh rút gọn nguy cơ cao nhưng cần khóa tuyệt đối.
+        // Ví dụ: người dùng gõ "VIK" thường muốn hỏi VIK 1 Inj., không phải chữ "Vị" trong Tràng Hoàng Vị Khang.
+        const MEDPLUS_PROTECTED_SHORT_BRAND_BASE_ALIASES_ = ['vik'];
+
+        function isProtectedShortBrandBaseAlias_(value) {
+            const s = normalizeShortAlphaNumberAlias_(value);
+            return MEDPLUS_PROTECTED_SHORT_BRAND_BASE_ALIASES_.indexOf(s) !== -1;
+        }
+
         function getRiskyShortBrandAliases_(drug) {
             const brand = normalizeDrugMatchText_(drug && drug.brand);
             if (!brand) return [];
@@ -7341,13 +7343,13 @@ body.medplus-aux-open .new-badge::after{
                 aliases.push(compactMatch[1] + compactMatch[2]);
             }
 
-            // Riêng các biệt dược kiểu VIK 1 inj: cho phép viết VIK1/VIK 1 nhưng không coi "Vị/Khang" là trùng.
+            // Riêng các biệt dược kiểu VIK 1 inj: cho phép viết VIK/VIK1/VIK 1 nhưng không coi "Vị/Khang" là trùng.
             if (/\bvik\s*1\b/.test(brand) || /\bvik1\b/.test(brandCompact)) {
-                aliases.push('vik 1', 'vik1');
+                aliases.push('vik', 'vik 1', 'vik1');
             }
 
             return uniqueStrings_(aliases).filter(function(a) {
-                return a && a.length >= 3 && hasAlphaNumberShortPattern_(a);
+                return a && a.length >= 3 && (hasAlphaNumberShortPattern_(a) || isProtectedShortBrandBaseAlias_(a));
             });
         }
 
@@ -7534,6 +7536,9 @@ body.medplus-aux-open .new-badge::after{
                     let score = 0;
                     let reason = '';
 
+                    // KHÔNG dùng fuzzy để quyết định thuốc. Các trường hợp được chấp nhận:
+                    // khớp chính xác tên/alias, câu hỏi chứa trọn alias, compact chính xác,
+                    // hoặc đủ toàn bộ token rõ ràng của alias.
                     if (subject && subject === alias) {
                         score = 10000;
                         reason = 'subject_exact';
@@ -7546,46 +7551,12 @@ body.medplus-aux-open .new-badge::after{
                     } else if (!genericSubject && subjectCompact && aliasCompact && subjectCompact === aliasCompact) {
                         score = 9100;
                         reason = 'compact_exact';
-                    }
-
-                    if (!score && !genericSubject && !riskyShortSubject && subject.length >= 7 && alias.length >= 7) {
-                        const sim = fuzzySimilarity_(subject, alias);
-                        if (sim >= 0.88) {
-                            score = 7600 + Math.round(sim * 100);
-                            reason = 'fuzzy_' + sim.toFixed(2);
-                        }
-                    }
-
-                    if (!score && !genericSubject && !riskyShortSubject && subjectWords.length >= 2 && aliasWords.length >= 2) {
-                        const hit = tokenHitScore_(aliasWords, subject);
-                        const required = Math.max(2, Math.ceil(aliasWords.length * 0.8));
+                    } else if (!genericSubject && !riskyShortSubject && subjectWords.length >= 2 && aliasWords.length >= 2) {
+                        const hit = tokenHitScore_(subjectWords, alias);
+                        const required = Math.max(2, Math.ceil(subjectWords.length * 0.95));
                         if (hit >= required) {
-                            score = 6800 + hit;
-                            reason = 'token_coverage';
-                        }
-                    }
-
-                    if (!score && !genericSubject && !riskyShortSubject && subjectWords.length === 1) {
-                        const w = subjectWords[0];
-                        if (w.length >= 4) {
-                            if (alias.indexOf(w) === 0) {
-                                score = 3300 + Math.min(w.length, 50);
-                                reason = 'single_prefix';
-                            } else if (aliasWords.some(function(aw) { return aw === w || aw.indexOf(w) === 0; })) {
-                                score = 3000 + Math.min(w.length, 50);
-                                reason = 'single_word_prefix';
-                            } else {
-                                let bestWordSim = 0;
-                                aliasWords.forEach(function(aw) {
-                                    if (!aw || Math.max(aw.length, w.length) < 5) return;
-                                    const sim = fuzzySimilarity_(w, aw);
-                                    if (sim > bestWordSim) bestWordSim = sim;
-                                });
-                                if (bestWordSim >= 0.84) {
-                                    score = 5600 + Math.round(bestWordSim * 100);
-                                    reason = 'single_word_fuzzy_' + bestWordSim.toFixed(2);
-                                }
-                            }
+                            score = 7000 + hit;
+                            reason = 'token_exact_coverage';
                         }
                     }
 
@@ -7607,6 +7578,93 @@ body.medplus-aux-open .new-badge::after{
             });
 
             return { candidates: candidates, subject: subject, normalizedQuestion: q, genericSubject: genericSubject };
+        }
+
+        function getDrugNameSuggestionCandidates_(userMessage, allDrugs) {
+            const source = allDrugs || [];
+            const subject = getDrugSubjectForMatching_(userMessage);
+            const subjectNorm = normalizeDrugMatchText_(subject);
+            const subjectCompact = compactDrugMatchText_(subjectNorm);
+            const subjectWords = drugMatchWords_(subjectNorm);
+            const genericSubject = isGenericDrugSubject_(subjectNorm);
+            const riskyShortSubject = isRiskyShortDrugSubject_(subjectNorm);
+            const suggestions = [];
+
+            // Gợi ý gần đúng chỉ để người dùng chọn lại, tuyệt đối không dùng để tự trả lời HDSD/danh mục.
+            if (!subjectNorm || genericSubject) return { candidates: [], subject: subjectNorm };
+            if (riskyShortSubject && !isProtectedShortBrandBaseAlias_(subjectNorm)) return { candidates: [], subject: subjectNorm };
+            if (subjectNorm.length < 4 && !/^[a-z]{2,5}\d{1,3}$/.test(subjectCompact)) return { candidates: [], subject: subjectNorm };
+
+            source.forEach(function(d) {
+                const brand = normalizeDrugMatchText_(d && d.brand);
+                if (!brand || brand.length < 3) return;
+                const aliases = getDrugAliasesForMatching_(d);
+                let bestScore = 0;
+                let bestReason = '';
+
+                aliases.forEach(function(alias) {
+                    if (!alias || alias.length < 4) return;
+                    const aliasCompact = compactDrugMatchText_(alias);
+                    const aliasWords = drugMatchWords_(alias);
+                    let score = 0;
+                    let reason = '';
+
+                    if (subjectCompact && aliasCompact && subjectCompact.length >= 4) {
+                        const compactSim = fuzzySimilarity_(subjectCompact, aliasCompact);
+                        if (compactSim >= 0.84) {
+                            score = Math.max(score, 6200 + Math.round(compactSim * 100));
+                            reason = 'suggest_compact_' + compactSim.toFixed(2);
+                        }
+                    }
+
+                    if (subjectNorm.length >= 4 && alias.length >= 4) {
+                        const sim = fuzzySimilarity_(subjectNorm, alias);
+                        if (sim >= 0.82) {
+                            score = Math.max(score, 6000 + Math.round(sim * 100));
+                            reason = 'suggest_name_' + sim.toFixed(2);
+                        }
+                    }
+
+                    if (subjectWords.length >= 1 && aliasWords.length >= 1) {
+                        let wordScore = 0;
+                        subjectWords.forEach(function(sw) {
+                            let bestWord = 0;
+                            aliasWords.forEach(function(aw) {
+                                if (!sw || !aw || Math.max(sw.length, aw.length) < 4) return;
+                                const r = fuzzySimilarity_(sw, aw);
+                                if (r > bestWord) bestWord = r;
+                            });
+                            if (bestWord >= 0.84) wordScore += bestWord;
+                        });
+                        const requiredWords = Math.max(1, Math.ceil(subjectWords.length * 0.7));
+                        if (wordScore >= requiredWords * 0.84) {
+                            score = Math.max(score, 5600 + Math.round(wordScore * 100));
+                            reason = 'suggest_word';
+                        }
+                    }
+
+                    // Chỉ coi prefix là gợi ý nếu người dùng nhập ít nhất 4 ký tự và không phải chủ đề ngắn nguy cơ cao.
+                    if (!riskyShortSubject && subjectNorm.length >= 4 && alias.indexOf(subjectNorm) === 0) {
+                        score = Math.max(score, 5400 + Math.min(subjectNorm.length, 80));
+                        reason = 'suggest_prefix';
+                    }
+
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestReason = reason;
+                    }
+                });
+
+                if (bestScore > 0) suggestions.push({ drug: d, score: bestScore, reason: bestReason, len: brand.length });
+            });
+
+            suggestions.sort(function(a, b) {
+                if (b.score !== a.score) return b.score - a.score;
+                if (b.len !== a.len) return b.len - a.len;
+                return String(a.drug.brand || '').localeCompare(String(b.drug.brand || ''), 'vi');
+            });
+
+            return { candidates: suggestions, subject: subjectNorm };
         }
 
         function isProbableDrugNameTypoReason_(reason) {
@@ -7637,69 +7695,40 @@ body.medplus-aux-open .new-badge::after{
 
             const result = getDrugNameMatchCandidates_(userMessage, source);
             const candidates = result.candidates || [];
-            if (!candidates.length) {
-                return { type: 'general_question', drugs: [], confidence: 0, reason: 'no_candidate', subject: result.subject };
-            }
+            if (candidates.length) {
+                const best = candidates[0];
+                const closeGap = best.score >= 9000 ? 30 : 120;
+                const closeCandidates = candidates.filter(function(x) { return best.score - x.score <= closeGap; });
+                const closeDrugs = dedupeDrugs_(closeCandidates.map(function(x) { return x.drug; }));
 
-            const best = candidates[0];
-            const closeGap = best.score >= 9000 ? 30 : (best.score >= 6800 ? 120 : 300);
-            const closeCandidates = candidates.filter(function(x) { return best.score - x.score <= closeGap; });
-            const closeDrugs = dedupeDrugs_(closeCandidates.map(function(x) { return x.drug; }));
-
-            // Nếu câu hỏi chứa thêm phần biệt dược bị gõ sai nhẹ, ví dụ
-            // "entecavir stellar" → Entecavir STELLA 0.5 mg, thì tự khóa đúng thuốc.
-            // Chỉ hiện gợi ý khi còn nhiều thuốc ngang nhau và không có biệt dược nổi trội.
-            const brandDisambiguatedDrug = resolveClearBrandCandidateFromSubject_(result.subject, closeDrugs);
-            if (brandDisambiguatedDrug) {
-                return {
-                    type: 'exact_drug',
-                    drugs: [brandDisambiguatedDrug],
-                    confidence: 0.94,
-                    reason: 'brand_disambiguation',
-                    subject: result.subject
-                };
-            }
-
-            if (best.score >= 9000 && closeDrugs.length === 1) {
-                return { type: 'exact_drug', drugs: closeDrugs, confidence: 1, reason: best.reason, subject: result.subject };
-            }
-
-            if (best.score >= 6800 && closeDrugs.length === 1) {
-                if (isProbableDrugNameTypoReason_(best.reason)) {
-                    return {
-                        type: 'multiple_candidates',
-                        drugs: sortDrugsByBrand_(closeDrugs),
-                        confidence: 0.7,
-                        reason: 'possible_typo_' + best.reason,
-                        subject: result.subject
-                    };
+                if (best.score >= 9000 && closeDrugs.length === 1) {
+                    return { type: 'exact_drug', drugs: closeDrugs, confidence: 1, reason: best.reason, subject: result.subject };
                 }
-                return { type: 'exact_drug', drugs: closeDrugs, confidence: 0.9, reason: best.reason, subject: result.subject };
-            }
-
-            if (best.score >= 3000) {
-                if (closeDrugs.length === 1) {
-                    if (isProbableDrugNameTypoReason_(best.reason)) {
-                        return {
-                            type: 'multiple_candidates',
-                            drugs: sortDrugsByBrand_(closeDrugs),
-                            confidence: 0.62,
-                            reason: 'possible_typo_' + best.reason,
-                            subject: result.subject
-                        };
-                    }
-                    return { type: 'exact_drug', drugs: closeDrugs, confidence: 0.82, reason: best.reason, subject: result.subject };
+                if (best.score >= 6800 && closeDrugs.length === 1) {
+                    return { type: 'exact_drug', drugs: closeDrugs, confidence: 0.95, reason: best.reason, subject: result.subject };
                 }
                 return {
                     type: 'multiple_candidates',
                     drugs: sortDrugsByBrand_(closeDrugs).slice(0, 12),
-                    confidence: 0.65,
-                    reason: 'ambiguous_' + best.reason,
+                    confidence: 0.75,
+                    reason: 'ambiguous_exact_match',
                     subject: result.subject
                 };
             }
 
-            return { type: 'general_question', drugs: [], confidence: 0, reason: 'low_score', subject: result.subject };
+            const suggestionResult = getDrugNameSuggestionCandidates_(userMessage, source);
+            const suggestionCandidates = (suggestionResult.candidates || []).slice(0, 12);
+            if (suggestionCandidates.length > 0) {
+                return {
+                    type: 'multiple_candidates',
+                    drugs: sortDrugsByBrand_(dedupeDrugs_(suggestionCandidates.map(function(x) { return x.drug; }))).slice(0, 12),
+                    confidence: 0.55,
+                    reason: 'suggestions_only_not_selected',
+                    subject: suggestionResult.subject || result.subject
+                };
+            }
+
+            return { type: 'general_question', drugs: [], confidence: 0, reason: 'no_exact_candidate', subject: result.subject };
         }
 
 
@@ -8986,9 +9015,10 @@ body.medplus-aux-open .new-badge::after{
                 const scanPrompt = 'Bạn là bộ lọc danh mục thuốc của Khoa Dược BVĐK Tuyên Quang.\n'
                     + 'Nhiệm vụ: đọc câu hỏi người dùng và QUÉT TRỰC TIẾP danh sách thuốc dưới đây theo Tên thuốc, Hoạt chất và Nhóm.\n'
                     + 'Áp dụng cho mọi câu hỏi dạng hỏi danh mục theo nhóm thuốc, phân nhóm, chỉ định, cơ quan/bệnh cảnh hoặc tác dụng dược lý, ví dụ: kháng sinh, tim mạch, huyết áp, tiểu đường, PPI/dạ dày, cầm máu, giảm đau, NSAID, chống viêm, chống dị ứng, hô hấp, thần kinh, dịch truyền...\n'
-                    + 'Không dùng so khớp từ khóa cứng. Hãy dùng kiến thức dược lý để nhận diện thuốc phù hợp từ tên thuốc, hoạt chất và nhóm dược lý.\n'
+                    + 'Không dùng fuzzy/sửa lỗi chính tả để chọn một thuốc cụ thể. Nếu câu hỏi là tên thuốc/hoạt chất nhưng không khớp rõ ràng, trả ids rỗng để hệ thống gợi ý tên thuốc thay vì đoán.\n'
+                    + 'Chỉ dùng kiến thức dược lý để lọc các câu hỏi nhóm/danh mục rõ ràng, ví dụ kháng sinh, tim mạch, huyết áp, PPI/dạ dày, cầm máu, giảm đau, chống viêm, chống dị ứng, hô hấp, thần kinh, dịch truyền.\n'
                     + 'Chỉ chọn thuốc thật sự phù hợp với câu hỏi. Không thêm thuốc ngoài danh sách. Không chọn thuốc chỉ vì biệt dược trùng một chữ nhưng hoạt chất/nhóm không liên quan.\n'
-                    + 'Quy tắc chống nhầm tên ngắn: nếu câu hỏi là biệt dược ngắn có số như VIK 1/VIK1/B1/B6/B12/D3 thì chỉ chọn thuốc khớp đúng biệt dược/hoạt chất đó; không chọn thuốc chỉ vì trùng âm hoặc chữ tiếng Việt gần giống như vị, khang, tràng, gan, phế, não. Nếu câu hỏi là Vitamin K1/Phytomenadion thì chọn thuốc có hoạt chất Vitamin K1 và các biệt dược tương ứng, nhưng nếu hỏi VIK 1 thì chỉ chọn đúng VIK 1.\n'
+                    + 'Khóa chống nhầm tên ngắn: nếu câu hỏi chứa token độc lập "vik", "vik1" hoặc "vik 1" thì chỉ chọn VIK 1 Inj. nếu có trong chunk; tuyệt đối không chọn TRÀNG HOÀNG VỊ KHANG hoặc thuốc có chữ Vị/Khang/Tràng. Nếu câu hỏi là "vitamin k1" hoặc "phytomenadion/phytonadione" thì mới chọn các thuốc cùng hoạt chất Vitamin K1.\n'
                     + 'Nếu câu hỏi chỉ hỏi số lượng, vẫn chọn ids đúng để hệ thống đếm.\n'
                     + 'Chỉ trả về JSON hợp lệ, không giải thích, không markdown, không code fence, đúng mẫu: {"ids":[1,2,3]}\n\n'
                     + 'Câu hỏi người dùng: ' + userMessage + '\n'
@@ -11440,6 +11470,7 @@ body.medplus-aux-open .new-badge::after{
                 'Ví dụ: "Thông tư 20/2022/TT-BYT quy định gì" => {"scope":"medical","drug_catalog":false}.',
                 'Ví dụ: "vancomycin là gì" => {"scope":"medical","drug_catalog":true}.',
                 'Ví dụ: "tác dụng của vitamin k1" => {"scope":"medical","drug_catalog":true}.',
+                'Ví dụ: "tác dụng của vik" => {"scope":"medical","drug_catalog":true}.',
                 'Ví dụ: "tác dụng phụ của rocalcic" => {"scope":"medical","drug_catalog":true}.',
                 'Ví dụ: "bệnh viện có thuốc ung thư nào" => {"scope":"medical","drug_catalog":true}.',
                 'Ví dụ: "siêu thị go tuyên quang nằm ở đâu" => {"scope":"outside","drug_catalog":false}.',
