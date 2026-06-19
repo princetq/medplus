@@ -8561,6 +8561,8 @@ body.medplus-aux-open .new-badge::after{
         function hdsdKnownSubheadingNorms_() {
             return new Set([
                 'hap thu', 'phan bo', 'chuyen hoa', 'thai tru', 'bai tiet', 'dao thai',
+                'tuyen tinh/ phi tuyen tinh', 'tuyen tinh phi tuyen tinh', 'dan so dac biet',
+                'o nguoi suy than', 'o nguoi suy gan', 'phu nu mang thai', 'o nguoi thua can', 'o tre em',
                 'duoc luc hoc', 'duoc dong hoc', 'co che tac dung',
                 'chi dinh', 'cong dung', 'cong nang', 'chu tri',
                 'chong chi dinh', 'lieu dung', 'cach dung', 'duong dung',
@@ -9069,9 +9071,130 @@ body.medplus-aux-open .new-badge::after{
             return [];
         }
 
+
+        function hdsdBlockRichTextArray_(block) {
+            if (!block) return [];
+            const type = block.type || '';
+            const obj = block[type] || {};
+            if (Array.isArray(obj.rich_text)) return obj.rich_text;
+            if (Array.isArray(obj.title)) return obj.title;
+            return [];
+        }
+
+        function hdsdBlockLooksLikeStandaloneSubheading_(block) {
+            if (!block) return false;
+            const own = hdsdBlockOwnPlainText_(block);
+            const norm = hdsdNormalizeSubheadingLine_(own || '');
+            if (!norm || norm.length > 120) return false;
+            if (isHDSDKnownSubheadingText_(own)) return true;
+            const type = block.type || '';
+            if (/^heading_/.test(type || '')) return true;
+            const rt = hdsdBlockRichTextArray_(block);
+            const hasText = rt.some(function(r) { return String((r && r.plain_text) || '').trim(); });
+            const allBold = hasText && rt.every(function(r) {
+                const txt = String((r && r.plain_text) || '').trim();
+                if (!txt) return true;
+                return !!(r.annotations && r.annotations.bold);
+            });
+            // Nhiều tờ HDSD lưu tiểu mục như "Hấp thu", "Phân bố",
+            // "Tuyến tính/ Phi tuyến tính", "Dân số đặc biệt" bằng paragraph in đậm cùng cấp.
+            if (type === 'paragraph' && allBold && norm.length <= 90 && !/[.!?]$/.test(String(own || '').trim())) return true;
+            return false;
+        }
+
+        function hdsdIsSiblingSubsectionBoundaryBlock_(block, target) {
+            if (!block) return false;
+            const own = hdsdBlockOwnPlainText_(block);
+            const type = block.type || '';
+            if (!own) return /^heading_|^toggle$/.test(type || '');
+            if (target && hdsdLineMatchesSubsectionTarget_(own, target)) return false;
+            if (/^heading_|^toggle$/.test(type || '')) return true;
+            return hdsdBlockLooksLikeStandaloneSubheading_(block);
+        }
+
+        function hdsdBlockToSectionBodyContent_(block) {
+            if (!block) return '';
+            // Với block nội dung, lấy cả chính block và children theo đúng renderer chat,
+            // nhưng không dùng nếu đây chỉ là một heading/tiểu mục độc lập.
+            return hdsdBlockContentWithImageTokens_(block);
+        }
+
+        function extractHDSDJsonSiblingSubsectionExcerpt_(jsonData, userMessage) {
+            const targets = hdsdExactSubsectionTargetsFromQuestion_(userMessage);
+            if (!targets.length || !jsonData || !Array.isArray(jsonData.blocks)) return '';
+
+            function collectAfterIndex_(list, startIndex, target) {
+                const parts = [];
+                const images = [];
+                for (let j = startIndex + 1; j < (list || []).length; j++) {
+                    const block = list[j];
+                    if (hdsdIsSiblingSubsectionBoundaryBlock_(block, target)) break;
+
+                    const content = hdsdBlockToSectionBodyContent_(block);
+                    if (content) parts.push(content);
+
+                    const imgs = hdsdBlockImageItems_(block).map(function(img) {
+                        return { src: img.src || '', caption: hdsdCleanImageCaptionForChat_(img.caption || '') };
+                    });
+                    if (imgs.length) Array.prototype.push.apply(images, imgs);
+                }
+                let body = parts.join('\n')
+                    .replace(/\r/g, '')
+                    .replace(/[ \t]+/g, ' ')
+                    .replace(/\n{3,}/g, '\n\n')
+                    .trim();
+                const imageTokens = hdsdImagesToChatTokens_(images);
+                if (imageTokens) body = (body ? body + '\n' : '') + imageTokens;
+                return body.trim();
+            }
+
+            function scanList_(list) {
+                list = list || [];
+                for (let i = 0; i < list.length; i++) {
+                    const block = list[i];
+                    const own = hdsdBlockOwnPlainText_(block);
+                    for (let t = 0; t < targets.length; t++) {
+                        const target = targets[t];
+                        if (!hdsdLineMatchesSubsectionTarget_(own, target)) continue;
+
+                        // Nếu target là toggle/heading lớn, lấy nguyên children của nó.
+                        // Nếu target là paragraph tiểu mục cùng cấp, lấy các sibling kế tiếp.
+                        let body = '';
+                        const children = hdsdBlockChildren_(block);
+                        if (/^heading_|^toggle$/.test((block && block.type) || '') && children.length) {
+                            body = children.map(function(child) { return hdsdBlockContentWithImageTokens_(child); })
+                                .filter(Boolean)
+                                .join('\n')
+                                .replace(/\r/g, '')
+                                .replace(/[ \t]+/g, ' ')
+                                .replace(/\n{3,}/g, '\n\n')
+                                .trim();
+                        } else {
+                            body = collectAfterIndex_(list, i, target);
+                        }
+
+                        body = hdsdCleanSectionBody_(target.title || own || 'Nội dung HDSD', body);
+                        if (body) return '### ' + (target.title || cleanDrugFieldForChat_(own)) + '\n' + body;
+                    }
+
+                    const childResult = scanList_(hdsdBlockChildren_(block));
+                    if (childResult) return childResult;
+                }
+                return '';
+            }
+
+            return scanList_(jsonData.blocks || '');
+        }
+
+
         async function selectHDSDExcerptForQuestionWithAI_(jsonData, userMessage) {
-            // Ưu tiên trích trực tiếp từ HTML đã render của HDSD. Đây là đường chắc nhất cho
-            // cấu trúc Notion dạng: tiểu mục "Hấp thu" là một block riêng, nội dung là block kế tiếp cùng cấp.
+            // Ưu tiên đọc trực tiếp thứ tự block JSON Notion.
+            // Cấu trúc thực tế của NOVELCIN: "Hấp thu" là một paragraph in đậm,
+            // còn nội dung là paragraph kế tiếp cùng cấp trong _children của toggle "CÁC ĐẶC TÍNH DƯỢC ĐỘNG HỌC".
+            const siblingJsonExcerpt = extractHDSDJsonSiblingSubsectionExcerpt_(jsonData, userMessage);
+            if (siblingJsonExcerpt) return siblingJsonExcerpt;
+
+            // Fallback theo HTML renderer nếu dữ liệu JSON khác cấu trúc.
             const renderedFlatExcerpt = extractHDSDRenderedFlatSubsectionExcerpt_(jsonData, userMessage);
             if (renderedFlatExcerpt) return renderedFlatExcerpt;
 
