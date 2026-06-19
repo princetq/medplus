@@ -6734,9 +6734,12 @@ body.medplus-aux-open .new-badge::after{
 
         function buildAiFullScanCandidateList_(userMessage, allDrugs) {
             const drugs = allDrugs || [];
+            const strictShortBrandMatches = getStrictShortBrandMatches_(userMessage, drugs);
+            if (strictShortBrandMatches.length > 0) return strictShortBrandMatches;
             // CHẾ ĐỘ AI LÀM TẤT CẢ:
-            // Không dùng mini-RAG/prefilter để thu hẹp danh mục trước khi AI quét.
-            // Mọi câu hỏi thuốc/danh mục sẽ được AI đọc trực tiếp Tên thuốc + Hoạt chất + Nhóm
+            // Không dùng mini-RAG/prefilter để thu hẹp danh mục trước khi AI quét,
+            // trừ trường hợp tên biệt dược ngắn có số đã được khóa tuyệt đối ở trên.
+            // Mọi câu hỏi thuốc/danh mục còn lại sẽ được AI đọc trực tiếp Tên thuốc + Hoạt chất + Nhóm
             // theo từng chunk, tránh lỗi từ dân gian/bệnh cảnh như “khớp”, “đi ngoài”, “gout”.
             return drugs;
         }
@@ -6929,23 +6932,38 @@ body.medplus-aux-open .new-badge::after{
                 return s;
             };
 
-            const subject = cleanActiveIngredientSubject_(userMessage);
+            let subject = cleanActiveIngredientSubject_(userMessage);
             if (!subject) return [];
 
-            // Giữ lại token ngắn có ý nghĩa như K1, B1, B6, B12; bỏ token quá yếu.
-            const subjectWords = normalizeDrugMatchText_(subject)
-                .split(/\s+/)
-                .filter(function(w) {
+            // Chuẩn hóa riêng các hoạt chất/biệt dược ngắn có số để tránh rơi mất số "1".
+            // "Vitamin K 1" -> "vitamin k1"; "VIK 1" vẫn giữ là biệt dược "vik 1".
+            subject = normalizeDrugMatchText_(subject)
+                .replace(/\bvitamin\s+k\s*1\b/g, 'vitamin k1')
+                .replace(/\bvit\s+k\s*1\b/g, 'vit k1')
+                .replace(/\bk\s+1\b/g, 'k1')
+                .replace(/\bvik\s+1\b/g, 'vik 1')
+                .replace(/\s+/g, ' ')
+                .trim();
+
+            const rawSubjectWords = subject.split(/\s+/).filter(Boolean);
+            // Giữ lại token ngắn có ý nghĩa như K1, B1, B6, B12; riêng số "1" chỉ giữ khi đi sau VIK.
+            const subjectWords = rawSubjectWords
+                .filter(function(w, idx, arr) {
                     if (!w) return false;
                     if (/^[a-z]\d{1,2}$/.test(w)) return true;
+                    if (/^\d+$/.test(w)) return idx > 0 && arr[idx - 1] === 'vik';
                     if (/^\d+[a-z]*$/.test(w)) return false;
                     return w.length >= 3;
                 });
             const subjectPhrase = subjectWords.join(' ');
             if (!subjectPhrase) return [];
 
-            // Chỉ coi là hỏi hoạt chất khi phần còn lại ngắn/gọn như tên hoạt chất.
-            // Ví dụ: "vancomycin", "vitamin k1", "phytomenadion".
+            // Nếu người dùng hỏi một biệt dược ngắn có số như VIK 1/VIK1,
+            // không xử lý như hoạt chất Vitamin K1; nhánh khớp biệt dược tuyệt đối sẽ xử lý trước.
+            if (/^vik\s*1$/.test(subjectPhrase) || /^vik1$/.test(compactShortAlias_(subjectPhrase))) return [];
+
+            // Chỉ coi là hỏi hoạt chất khi phần còn lại ngắn/gọn như tên hoạt chất/biệt dược ngắn.
+            // Ví dụ: "vancomycin", "vitamin k1", "phytomenadion", "vik 1".
             if (subjectWords.length > 4) return [];
 
             const activeSynonymMap = {
@@ -6958,10 +6976,11 @@ body.medplus-aux-open .new-badge::after{
                 ],
                 'vit k1': ['vitamin k1', 'vit k1', 'vit k 1', 'vitamin k 1', 'k1', 'phytomenadion', 'phytomenadione', 'phytonadione', 'phylloquinone', 'vik 1', 'vik1'],
                 'vit k 1': ['vitamin k1', 'vit k1', 'vit k 1', 'vitamin k 1', 'k1', 'phytomenadion', 'phytomenadione', 'phytonadione', 'phylloquinone', 'vik 1', 'vik1'],
-                'phytomenadion': ['phytomenadion', 'phytomenadione', 'phytonadione', 'phylloquinone', 'vitamin k1', 'vit k1', 'vik 1', 'vik1'],
-                'phytomenadione': ['phytomenadione', 'phytomenadion', 'phytonadione', 'phylloquinone', 'vitamin k1', 'vit k1', 'vik 1', 'vik1'],
-                'phytonadione': ['phytonadione', 'phytomenadion', 'phytomenadione', 'phylloquinone', 'vitamin k1', 'vit k1', 'vik 1', 'vik1'],
-                'phylloquinone': ['phylloquinone', 'phytomenadion', 'phytomenadione', 'phytonadione', 'vitamin k1', 'vit k1', 'vik 1', 'vik1']
+                'k1': ['vitamin k1', 'vit k1', 'vit k 1', 'vitamin k 1', 'k1', 'phytomenadion', 'phytomenadione', 'phytonadione', 'phylloquinone', 'vik 1', 'vik1'],
+                'phytomenadion': ['phytomenadion', 'phytomenadione', 'phytonadione', 'phylloquinone', 'vitamin k1', 'vit k1', 'k1', 'vik 1', 'vik1'],
+                'phytomenadione': ['phytomenadione', 'phytomenadion', 'phytonadione', 'phylloquinone', 'vitamin k1', 'vit k1', 'k1', 'vik 1', 'vik1'],
+                'phytonadione': ['phytonadione', 'phytomenadion', 'phytomenadione', 'phylloquinone', 'vitamin k1', 'vit k1', 'k1', 'vik 1', 'vik1'],
+                'phylloquinone': ['phylloquinone', 'phytomenadion', 'phytomenadione', 'phytonadione', 'vitamin k1', 'vit k1', 'k1', 'vik 1', 'vik1']
             };
 
             const subjectsToMatch = uniqueStrings_([subjectPhrase].concat(activeSynonymMap[subjectPhrase] || []));
@@ -7162,11 +7181,11 @@ body.medplus-aux-open .new-badge::after{
                 .slice()
                 .sort(function(a, b) { return b.length - a.length; })
                 .forEach(function(term) {
-                    const esc = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const esc = escapeRegExp_(term);
                     s = s.replace(new RegExp('(^|\s)' + esc + '(?=\s|$)', 'g'), ' ');
                 });
             return s
-                .replace(/(cua|ve|cho|toi|hoi|xin|giup|can|muon|xem|biet|la|co|khong|may|bao nhieu)/g, ' ')
+                .replace(/\b(cua|ve|cho|toi|hoi|xin|giup|can|muon|xem|biet|la|co|khong|may|bao nhieu)\b/g, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
         }
@@ -7187,8 +7206,8 @@ body.medplus-aux-open .new-badge::after{
             let subject = normalizeDrugMatchText_(getQuestionSubject(userMessage));
             subject = stripHDSDIntentTermsForDrugSubject_(subject);
             subject = subject
-                .replace(/(cua|tai|trong|o|co|khong|vay|nhe|a|ha|the nao|nhu the nao)/g, ' ')
-                .replace(/(thuoc nay|loai nay|san pham nay)/g, ' ')
+                .replace(/\b(cua|tai|trong|o|co|khong|vay|nhe|a|ha|the nao|nhu the nao)\b/g, ' ')
+                .replace(/\b(thuoc nay|loai nay|san pham nay)\b/g, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
             return subject || stripHDSDIntentTermsForDrugSubject_(userMessage) || normalizeDrugMatchText_(userMessage);
@@ -7233,7 +7252,7 @@ body.medplus-aux-open .new-badge::after{
             const active = normalizeDrugMatchText_(drug && drug.active);
             if (active && active.length >= 4) aliases.push(active);
             const activeNoStrength = active
-                .replace(/\d+(?:[\s\/.-]*(?:mg|ml|g|mcg|ui|iu|%)?)/g, ' ')
+                .replace(/\b\d+(?:[\s\/.-]*(?:mg|ml|g|mcg|ui|iu|%)?)\b/g, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
             if (activeNoStrength && activeNoStrength !== active && activeNoStrength.length >= 4) aliases.push(activeNoStrength);
@@ -7248,6 +7267,126 @@ body.medplus-aux-open .new-badge::after{
             return uniqueStrings_(aliases).filter(function(alias) {
                 return MEDPLUS_GENERIC_DRUG_SUBJECTS_.indexOf(alias) === -1;
             });
+        }
+
+
+        const MEDPLUS_SHORT_NAME_FORM_WORDS_ = [
+            'inj', 'injection', 'tiem', 'ong', 'amp', 'ampoule', 'vial', 'lo',
+            'tab', 'tablet', 'vien', 'cap', 'capsule', 'sir', 'syrup', 'chai',
+            'cream', 'gel', 'drop', 'drops', 'sol', 'solution', 'infusion', 'truyen'
+        ];
+
+        function isDosageOrFormTokenForShortName_(word) {
+            const w = normalizeDrugMatchText_(word);
+            if (!w) return true;
+            if (MEDPLUS_SHORT_NAME_FORM_WORDS_.indexOf(w) !== -1) return true;
+            if (/^\d+(?:mg|ml|g|mcg|ui|iu|%)?$/.test(w)) return true;
+            if (/^(mg|ml|g|mcg|ui|iu|%)$/.test(w)) return true;
+            return false;
+        }
+
+        function normalizeShortAlphaNumberAlias_(value) {
+            return normalizeDrugMatchText_(value)
+                .replace(/\b([a-z]{1,5})\s+(\d{1,3})\b/g, '$1 $2')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function compactShortAlias_(value) {
+            return normalizeShortAlphaNumberAlias_(value).replace(/\s+/g, '');
+        }
+
+        function hasAlphaNumberShortPattern_(value) {
+            const s = normalizeShortAlphaNumberAlias_(value);
+            const compact = compactShortAlias_(s);
+            if (!s) return false;
+            if (/^[a-z]{1,5}\s+\d{1,3}$/.test(s)) return true;
+            if (/^[a-z]{1,5}\d{1,3}$/.test(compact)) return true;
+            return false;
+        }
+
+        function getRiskyShortBrandAliases_(drug) {
+            const brand = normalizeDrugMatchText_(drug && drug.brand);
+            if (!brand) return [];
+            const words = brand.split(/\s+/).filter(Boolean);
+            if (!words.length) return [];
+
+            let core = [];
+            for (let i = 0; i < words.length; i++) {
+                const w = words[i];
+                if (core.length > 0 && isDosageOrFormTokenForShortName_(w) && !/^\d+$/.test(w)) break;
+                if (/^\d+$/.test(w)) {
+                    const prev = core[core.length - 1] || '';
+                    if (/^[a-z]{1,5}$/.test(prev)) {
+                        core.push(w);
+                    }
+                    continue;
+                }
+                if (isDosageOrFormTokenForShortName_(w)) break;
+                core.push(w);
+                if (core.length >= 3) break;
+            }
+
+            const aliases = [];
+            const corePhrase = core.join(' ').trim();
+            if (hasAlphaNumberShortPattern_(corePhrase)) {
+                aliases.push(corePhrase);
+                aliases.push(compactShortAlias_(corePhrase));
+            }
+
+            const brandCompact = compactShortAlias_(brand);
+            const compactMatch = brandCompact.match(/^([a-z]{1,5})(\d{1,3})(?:[a-z]{0,4})?$/);
+            if (compactMatch) {
+                aliases.push(compactMatch[1] + ' ' + compactMatch[2]);
+                aliases.push(compactMatch[1] + compactMatch[2]);
+            }
+
+            // Riêng các biệt dược kiểu VIK 1 inj: cho phép viết VIK1/VIK 1 nhưng không coi "Vị/Khang" là trùng.
+            if (/\bvik\s*1\b/.test(brand) || /\bvik1\b/.test(brandCompact)) {
+                aliases.push('vik 1', 'vik1');
+            }
+
+            return uniqueStrings_(aliases).filter(function(a) {
+                return a && a.length >= 3 && hasAlphaNumberShortPattern_(a);
+            });
+        }
+
+        function getStrictShortBrandMatches_(userMessage, allDrugs) {
+            const source = allDrugs || [];
+            if (!userMessage || !source.length) return [];
+            const q = normalizeShortAlphaNumberAlias_(userMessage);
+            const subject = normalizeShortAlphaNumberAlias_(getDrugSubjectForMatching_(userMessage));
+            const qCompact = compactShortAlias_(q);
+            const subjectCompact = compactShortAlias_(subject);
+            const matches = [];
+
+            source.forEach(function(d) {
+                const aliases = getRiskyShortBrandAliases_(d);
+                if (!aliases.length) return;
+                const hit = aliases.some(function(alias) {
+                    const a = normalizeShortAlphaNumberAlias_(alias);
+                    const ac = compactShortAlias_(a);
+                    if (!a || !ac) return false;
+                    if (subject === a || subjectCompact === ac) return true;
+                    if (q === a || qCompact === ac) return true;
+                    if (hasNormalizedPhrase_(q, a)) return true;
+                    // Cho phép người dùng viết dính như VIK1 trong câu hỏi dài.
+                    if (ac.length >= 3 && new RegExp('(^|\\s)' + escapeRegExp_(ac) + '(?=\\s|$)').test(qCompact)) return true;
+                    return false;
+                });
+                if (hit) matches.push(d);
+            });
+
+            return sortDrugsByBrand_(dedupeDrugs_(matches));
+        }
+
+        function isRiskyShortDrugSubject_(subject) {
+            const s = normalizeShortAlphaNumberAlias_(subject);
+            if (!s) return false;
+            const words = s.split(/\s+/).filter(Boolean);
+            if (hasAlphaNumberShortPattern_(s)) return true;
+            if (words.length <= 2 && words.some(function(w) { return /^[a-z]{1,5}\d{1,3}$/.test(w); })) return true;
+            return false;
         }
 
         function levenshteinDistance_(a, b) {
@@ -7377,6 +7516,7 @@ body.medplus-aux-open .new-badge::after{
             const subjectCompact = compactDrugMatchText_(subject);
             const subjectWords = drugMatchWords_(subject);
             const genericSubject = isGenericDrugSubject_(subject);
+            const riskyShortSubject = isRiskyShortDrugSubject_(subject);
             const candidates = [];
 
             source.forEach(function(d) {
@@ -7408,7 +7548,7 @@ body.medplus-aux-open .new-badge::after{
                         reason = 'compact_exact';
                     }
 
-                    if (!score && !genericSubject && subject.length >= 7 && alias.length >= 7) {
+                    if (!score && !genericSubject && !riskyShortSubject && subject.length >= 7 && alias.length >= 7) {
                         const sim = fuzzySimilarity_(subject, alias);
                         if (sim >= 0.88) {
                             score = 7600 + Math.round(sim * 100);
@@ -7416,7 +7556,7 @@ body.medplus-aux-open .new-badge::after{
                         }
                     }
 
-                    if (!score && !genericSubject && subjectWords.length >= 2 && aliasWords.length >= 2) {
+                    if (!score && !genericSubject && !riskyShortSubject && subjectWords.length >= 2 && aliasWords.length >= 2) {
                         const hit = tokenHitScore_(aliasWords, subject);
                         const required = Math.max(2, Math.ceil(aliasWords.length * 0.8));
                         if (hit >= required) {
@@ -7425,7 +7565,7 @@ body.medplus-aux-open .new-badge::after{
                         }
                     }
 
-                    if (!score && !genericSubject && subjectWords.length === 1) {
+                    if (!score && !genericSubject && !riskyShortSubject && subjectWords.length === 1) {
                         const w = subjectWords[0];
                         if (w.length >= 4) {
                             if (alias.indexOf(w) === 0) {
@@ -7477,6 +7617,17 @@ body.medplus-aux-open .new-badge::after{
             const source = allDrugs || [];
             if (!userMessage || !source.length) {
                 return { type: 'general_question', drugs: [], confidence: 0, reason: 'empty' };
+            }
+
+            const strictShortBrandMatches = getStrictShortBrandMatches_(userMessage, source);
+            if (strictShortBrandMatches.length > 0) {
+                return {
+                    type: 'exact_drug',
+                    drugs: strictShortBrandMatches,
+                    confidence: 0.99,
+                    reason: 'strict_short_brand_exact',
+                    subject: getDrugSubjectForMatching_(userMessage)
+                };
             }
 
             const q = normalizeDrugMatchText_(userMessage);
@@ -7608,11 +7759,16 @@ body.medplus-aux-open .new-badge::after{
             const longDetailQuery = isPotentiallyLongDrugDetailQuery_(normalizedQuestion);
             const identityQuery = isDrugIdentityQuery(normalizedQuestion);
             const allDrugs = getRagDrugIndex_(sourceList);
-            const activeIngredientMatches = getActiveIngredientMatchesForQuestion_(userMessage, allDrugs);
-            const drugNameResolution = resolveDrugNameFromQuestion_(userMessage, allDrugs);
-            const exactNameMatches = activeIngredientMatches.length > 1
-                ? activeIngredientMatches
-                : ((drugNameResolution && drugNameResolution.type === 'exact_drug') ? dedupeDrugs_(drugNameResolution.drugs || []) : []);
+            const strictShortBrandMatches = getStrictShortBrandMatches_(userMessage, allDrugs);
+            const activeIngredientMatches = strictShortBrandMatches.length > 0 ? [] : getActiveIngredientMatchesForQuestion_(userMessage, allDrugs);
+            const drugNameResolution = strictShortBrandMatches.length > 0
+                ? { type: 'exact_drug', drugs: strictShortBrandMatches, confidence: 0.99, reason: 'strict_short_brand_exact', subject: getDrugSubjectForMatching_(userMessage) }
+                : resolveDrugNameFromQuestion_(userMessage, allDrugs);
+            const exactNameMatches = strictShortBrandMatches.length > 0
+                ? strictShortBrandMatches
+                : (activeIngredientMatches.length > 1
+                    ? activeIngredientMatches
+                    : ((drugNameResolution && drugNameResolution.type === 'exact_drug') ? dedupeDrugs_(drugNameResolution.drugs || []) : []));
             const queryBase = identityQuery ? removeAccents(getQuestionSubject(userMessage)) : normalizedQuestion;
             const queryWords = getRagQueryWords_(queryBase);
             const candidateQueryWords = getCandidateScopeWords_(queryBase, queryWords);
@@ -7649,6 +7805,8 @@ body.medplus-aux-open .new-badge::after{
                 longDetailQuery: longDetailQuery,
                 identityQuery: identityQuery,
                 allDrugs: allDrugs,
+                strictShortBrandMatches: strictShortBrandMatches,
+                strictShortBrandMatch: strictShortBrandMatches.length > 0,
                 exactNameMatches: exactNameMatches,
                 exactNameMatch: exactNameMatches.length > 0,
                 activeIngredientMatches: activeIngredientMatches,
@@ -7783,13 +7941,19 @@ body.medplus-aux-open .new-badge::after{
             const drugs = dedupeDrugs_(selectedDrugs || []);
             const hospital = 'Bệnh viện Đa khoa tỉnh Tuyên Quang';
 
-            let answer = '\n\n**Đối chiếu danh mục thuốc tại ' + hospital + ':**\n\n';
+            let answer = '\n\n';
             if (!drugs.length) {
-                answer += 'Hiện tại danh mục thuốc tại ' + hospital + ' không có thuốc này.';
+                answer += 'Tại **' + hospital + '** hiện chưa tìm thấy thuốc phù hợp trong danh mục.';
                 return answer;
             }
 
-            answer += 'Hiện có **' + drugs.length + '** thuốc phù hợp trong danh mục:\n\n';
+            if (drugs.length === 1) {
+                const oneBrand = cleanDrugFieldForChat_(drugs[0].brand);
+                answer += 'Tại **' + hospital + '** hiện có thuốc **"' + oneBrand + '"** phù hợp trong danh mục:\n\n';
+            } else {
+                answer += 'Tại **' + hospital + '** hiện có **' + drugs.length + '** thuốc phù hợp trong danh mục:\n\n';
+            }
+
             const shouldNumber = drugs.length > 1;
             drugs.forEach(function(d, i) {
                 const brand = cleanDrugFieldForChat_(d.brand);
@@ -8757,6 +8921,17 @@ body.medplus-aux-open .new-badge::after{
         async function selectDrugSubsetFromFullCatalogWithAI_(userMessage, allDrugs) {
             if (!allDrugs || allDrugs.length === 0) return { ok: true, drugs: [] };
 
+            const strictShortBrandMatches = getStrictShortBrandMatches_(userMessage, allDrugs);
+            if (strictShortBrandMatches.length > 0) {
+                return {
+                    ok: true,
+                    drugs: strictShortBrandMatches,
+                    exactNameMatch: true,
+                    strictShortBrandMatch: true,
+                    scannedCount: strictShortBrandMatches.length
+                };
+            }
+
             const activeIngredientMatches = getActiveIngredientMatchesForQuestion_(userMessage, allDrugs);
             if (activeIngredientMatches.length > 1) {
                 return {
@@ -8813,6 +8988,7 @@ body.medplus-aux-open .new-badge::after{
                     + 'Áp dụng cho mọi câu hỏi dạng hỏi danh mục theo nhóm thuốc, phân nhóm, chỉ định, cơ quan/bệnh cảnh hoặc tác dụng dược lý, ví dụ: kháng sinh, tim mạch, huyết áp, tiểu đường, PPI/dạ dày, cầm máu, giảm đau, NSAID, chống viêm, chống dị ứng, hô hấp, thần kinh, dịch truyền...\n'
                     + 'Không dùng so khớp từ khóa cứng. Hãy dùng kiến thức dược lý để nhận diện thuốc phù hợp từ tên thuốc, hoạt chất và nhóm dược lý.\n'
                     + 'Chỉ chọn thuốc thật sự phù hợp với câu hỏi. Không thêm thuốc ngoài danh sách. Không chọn thuốc chỉ vì biệt dược trùng một chữ nhưng hoạt chất/nhóm không liên quan.\n'
+                    + 'Quy tắc chống nhầm tên ngắn: nếu câu hỏi là biệt dược ngắn có số như VIK 1/VIK1/B1/B6/B12/D3 thì chỉ chọn thuốc khớp đúng biệt dược/hoạt chất đó; không chọn thuốc chỉ vì trùng âm hoặc chữ tiếng Việt gần giống như vị, khang, tràng, gan, phế, não. Nếu câu hỏi là Vitamin K1/Phytomenadion thì chọn thuốc có hoạt chất Vitamin K1 và các biệt dược tương ứng, nhưng nếu hỏi VIK 1 thì chỉ chọn đúng VIK 1.\n'
                     + 'Nếu câu hỏi chỉ hỏi số lượng, vẫn chọn ids đúng để hệ thống đếm.\n'
                     + 'Chỉ trả về JSON hợp lệ, không giải thích, không markdown, không code fence, đúng mẫu: {"ids":[1,2,3]}\n\n'
                     + 'Câu hỏi người dùng: ' + userMessage + '\n'
@@ -8882,8 +9058,11 @@ body.medplus-aux-open .new-badge::after{
             const sameActiveFallbackRequested = isSameActiveFallbackRequested_(normalizedQuestion);
             const questionSubject = getQuestionSubject(userMessage);
             const allDrugs = getRagDrugIndex_(sourceList);
-            const activeIngredientMatchesForContext = getActiveIngredientMatchesForQuestion_(userMessage, allDrugs);
-            const exactResolutionForContext = resolveDrugNameFromQuestion_(userMessage, allDrugs);
+            const strictShortBrandMatchesForContext = getStrictShortBrandMatches_(userMessage, allDrugs);
+            const activeIngredientMatchesForContext = strictShortBrandMatchesForContext.length > 0 ? [] : getActiveIngredientMatchesForQuestion_(userMessage, allDrugs);
+            const exactResolutionForContext = strictShortBrandMatchesForContext.length > 0
+                ? { type: 'exact_drug', drugs: strictShortBrandMatchesForContext, confidence: 0.99, reason: 'strict_short_brand_exact', subject: getDrugSubjectForMatching_(userMessage) }
+                : resolveDrugNameFromQuestion_(userMessage, allDrugs);
             const queryBase = (identityQuery || singleDrugInfoQuestion) ? removeAccents(questionSubject) : normalizedQuestion;
             const queryWords = getRagQueryWords_(queryBase);
             const includeDetailFields = identityQuery && !broadQuery;
@@ -8893,7 +9072,9 @@ body.medplus-aux-open .new-badge::after{
             if (broadQuery && !identityQuery) return "";
 
             let matchedDrugs = [];
-            if (activeIngredientMatchesForContext.length > 1) {
+            if (strictShortBrandMatchesForContext.length > 0) {
+                matchedDrugs = strictShortBrandMatchesForContext;
+            } else if (activeIngredientMatchesForContext.length > 1) {
                 matchedDrugs = activeIngredientMatchesForContext;
             } else if (exactResolutionForContext && exactResolutionForContext.type === 'exact_drug') {
                 matchedDrugs = dedupeDrugs_(exactResolutionForContext.drugs || []);
