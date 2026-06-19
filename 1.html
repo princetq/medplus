@@ -8541,27 +8541,136 @@ body.medplus-aux-open .new-badge::after{
             return parts.join('\n').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
         }
 
+        function hdsdKnownSubheadingNorms_() {
+            return new Set([
+                'hap thu', 'phan bo', 'chuyen hoa', 'thai tru', 'bai tiet', 'dao thai',
+                'duoc luc hoc', 'duoc dong hoc', 'co che tac dung',
+                'chi dinh', 'cong dung', 'cong nang', 'chu tri',
+                'chong chi dinh', 'lieu dung', 'cach dung', 'duong dung',
+                'than trong', 'canh bao', 'luu y',
+                'tac dung khong mong muon', 'tac dung phu', 'adr',
+                'tuong tac', 'tuong tac thuoc', 'qua lieu', 'quen lieu',
+                'bao quan', 'han dung', 'han su dung',
+                'phu nu co thai', 'phu nu mang thai', 'mang thai', 'thai ky', 'cho con bu', 'phu nu cho con bu',
+                'lai xe', 'van hanh may',
+                'quy cach dong goi', 'quy cach', 'dong goi',
+                'nha san xuat', 'co so san xuat', 'cong ty san xuat', 'noi san xuat', 'xuat xu', 'nuoc san xuat',
+                'so dang ky', 'sdk', 'tieu chuan', 'tieu chuan chat luong',
+                'chu so huu', 'don vi dang ky', 'co so dang ky'
+            ]);
+        }
+
+        function hdsdNormalizeSubheadingLine_(text) {
+            return removeAccents(text || '')
+                .replace(/[：:]+$/g, '')
+                .replace(/^[-–—•*\s]+|[-–—•*\s]+$/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function isHDSDKnownSubheadingText_(text) {
+            const norm = hdsdNormalizeSubheadingLine_(text || '');
+            if (!norm || norm.length > 80) return false;
+            return hdsdKnownSubheadingNorms_().has(norm);
+        }
+
+        function hdsdBlockOwnContentOnly_(block) {
+            if (!block) return '';
+            const type = block.type || '';
+            const isImage = type === 'image' || !!(block.image);
+            if (isImage) {
+                const imgs = hdsdBlockImageItems_(block).map(function(img) {
+                    return { src: img.src || '', caption: hdsdCleanImageCaptionForChat_(img.caption || '') };
+                });
+                return hdsdImagesToChatTokens_(imgs);
+            }
+            return hdsdBlockOwnPlainText_(block);
+        }
+
+        function expandHDSDSubsectionsFromText_(sections) {
+            const expanded = [];
+            const seen = new Set();
+
+            function pushSection(sec) {
+                if (!sec) return;
+                const title = cleanDrugFieldForChat_(sec.title || 'Nội dung HDSD');
+                const body = String(sec.text || '').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
+                const key = removeAccents(title + '\n' + body).replace(/\s+/g, ' ').slice(0, 500);
+                if (!body && !(sec.images || []).length) return;
+                if (seen.has(key)) return;
+                seen.add(key);
+                expanded.push({ title: title, text: body, images: sec.images || [] });
+            }
+
+            (sections || []).forEach(function(sec) {
+                pushSection(sec);
+                const lines = String((sec && sec.text) || '').split(/\n+/).map(function(line) { return line.trim(); }).filter(Boolean);
+                let current = null;
+                lines.forEach(function(line) {
+                    if (isHDSDKnownSubheadingText_(line)) {
+                        if (current) pushSection(current);
+                        current = { title: cleanDrugFieldForChat_(line.replace(/[：:]+$/g, '')), text: '', images: [] };
+                        return;
+                    }
+                    if (current) current.text = (String(current.text || '').trim() + '\n' + line).trim();
+                });
+                if (current) pushSection(current);
+            });
+
+            return expanded;
+        }
+
         function buildHDSDTextSections_(jsonData) {
             const blocks = (jsonData && Array.isArray(jsonData.blocks)) ? jsonData.blocks : [];
             let sections = [];
             let general = [];
             let currentSection = null;
-            blocks.forEach(function(block) {
-                const type = block && block.type;
-                const own = hdsdBlockOwnPlainText_(block);
-                const content = hdsdBlockContentWithImageTokens_(block);
-                if (!content) return;
-                if (/^heading_|^toggle$/.test(type || '')) {
-                    currentSection = { title: own || 'Nội dung HDSD', text: content || own || '', images: [] };
-                    sections.push(currentSection);
-                } else if (currentSection) {
-                    currentSection.text = (String(currentSection.text || '').trim() + '\n' + content).trim();
-                } else {
-                    general.push(content);
-                }
-            });
+
+            function appendToCurrentOrGeneral_(content) {
+                const clean = String(content || '').trim();
+                if (!clean) return;
+                if (currentSection) currentSection.text = (String(currentSection.text || '').trim() + '\n' + clean).trim();
+                else general.push(clean);
+            }
+
+            function walk_(blockList) {
+                (blockList || []).forEach(function(block) {
+                    const type = block && block.type;
+                    const own = hdsdBlockOwnPlainText_(block);
+                    const ownContent = hdsdBlockOwnContentOnly_(block);
+                    const children = hdsdBlockChildren_(block);
+                    const isStructuralHeading = /^heading_|^toggle$/.test(type || '');
+                    const isKnownSubheading = !isStructuralHeading && isHDSDKnownSubheadingText_(own);
+
+                    if (isStructuralHeading) {
+                        // Giữ section cha với toàn bộ nội dung để câu hỏi rộng như "dược động học"
+                        // vẫn trả được đầy đủ; đồng thời đi sâu vào children để tạo section con như "Hấp thu".
+                        const fullContent = hdsdBlockContentWithImageTokens_(block);
+                        const parentSection = { title: own || 'Nội dung HDSD', text: fullContent || '', images: [] };
+                        sections.push(parentSection);
+                        currentSection = parentSection;
+                        if (children.length) {
+                            walk_(children);
+                            currentSection = parentSection;
+                        }
+                        return;
+                    }
+
+                    if (isKnownSubheading) {
+                        currentSection = { title: own || 'Nội dung HDSD', text: '', images: [] };
+                        sections.push(currentSection);
+                        if (children.length) walk_(children);
+                        return;
+                    }
+
+                    appendToCurrentOrGeneral_(ownContent);
+                    if (children.length) walk_(children);
+                });
+            }
+
+            walk_(blocks);
             if (general.length) sections.unshift({ title: 'Nội dung chung', text: general.join('\n'), images: [] });
-            return sections;
+            return expandHDSDSubsectionsFromText_(sections);
         }
 
         function isNoisyHDSDSectionAlias_(alias) {
