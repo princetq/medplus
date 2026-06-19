@@ -8598,13 +8598,13 @@ body.medplus-aux-open .new-badge::after{
             const lines = String(body || '')
                 .replace(/\r/g, '')
                 .split(/\n+/)
-                .map(function(line) { return line.trim(); })
+                .map(function(line) { return cleanDrugFieldForChat_(line).trim(); })
                 .filter(Boolean);
             const cleaned = [];
             lines.forEach(function(line) {
                 const lineNorm = hdsdNormalizeSubheadingLine_(line || '');
                 // Bỏ dòng tiêu đề bị lặp lại trong thân section, ví dụ section title "Hấp thu"
-                // nhưng body chỉ chứa lại đúng dòng "Hấp thu". Đây là nguyên nhân trả về "Hấp thu:" rỗng.
+                // nhưng body chỉ chứa lại đúng dòng "Hấp thu".
                 if (titleNorm && lineNorm === titleNorm) return;
                 cleaned.push(line);
             });
@@ -8989,7 +8989,7 @@ body.medplus-aux-open .new-badge::after{
         function buildHDSDExcerptFromSections_(sections, indexes, hasClearTopic) {
             if (!Array.isArray(sections) || !sections.length || !Array.isArray(indexes) || !indexes.length) return '';
             let excerpt = '';
-            const maxChars = hasClearTopic ? 2600 : 7000;
+            const maxChars = Number.POSITIVE_INFINITY;
             const seen = new Set();
             indexes.forEach(function(rawIndex) {
                 if (excerpt.length >= maxChars) return;
@@ -9249,10 +9249,135 @@ body.medplus-aux-open .new-badge::after{
         }
 
 
+
+        function extractHDSDStrictSiblingSubsectionV2_(jsonData, userMessage) {
+            const targets = hdsdExactSubsectionTargetsFromQuestion_(userMessage);
+            if (!targets.length || !jsonData) return '';
+
+            const rootBlocks = Array.isArray(jsonData.blocks) ? jsonData.blocks
+                : (jsonData && jsonData.data && Array.isArray(jsonData.data.blocks) ? jsonData.data.blocks : []);
+            if (!rootBlocks.length) return '';
+
+            function getChildren(block) {
+                if (!block) return [];
+                const type = block.type || '';
+                const typed = type ? (block[type] || {}) : {};
+                if (Array.isArray(block._children)) return block._children;
+                if (Array.isArray(block.children)) return block.children;
+                if (Array.isArray(typed._children)) return typed._children;
+                if (Array.isArray(typed.children)) return typed.children;
+                return [];
+            }
+
+            function ownText(block) {
+                return cleanDrugFieldForChat_(hdsdBlockOwnPlainText_(block || {}) || '').trim();
+            }
+
+            function matchesTarget(text, target) {
+                if (!target) return false;
+                const norm = hdsdNormalizeSubheadingLine_(text || '');
+                if (!norm) return false;
+                const titleNorm = hdsdNormalizeSubheadingLine_(target.title || '');
+                if (titleNorm && norm === titleNorm) return true;
+                return (target.terms || []).some(function(term) {
+                    const termNorm = hdsdNormalizeSubheadingLine_(term || '');
+                    return !!termNorm && norm === termNorm;
+                });
+            }
+
+            function richTextAllBold(block) {
+                const rt = hdsdBlockRichTextArray_(block);
+                const nonEmpty = (rt || []).filter(function(r) { return String((r && r.plain_text) || '').trim(); });
+                if (!nonEmpty.length) return false;
+                return nonEmpty.every(function(r) { return !!(r.annotations && r.annotations.bold); });
+            }
+
+            function isBoundary(block, target) {
+                if (!block) return false;
+                const type = block.type || '';
+                const text = ownText(block);
+                if (!text) return /^heading_|^toggle$/.test(type || '');
+                if (matchesTarget(text, target)) return false;
+                if (/^heading_|^toggle$/.test(type || '')) return true;
+                if (isHDSDKnownSubheadingText_(text)) return true;
+
+                // Một số HDSD dùng paragraph in đậm làm tiêu đề con cùng cấp.
+                // Chỉ dừng khi đó là dòng ngắn, không giống câu văn nội dung.
+                const norm = hdsdNormalizeSubheadingLine_(text || '');
+                if (type === 'paragraph' && richTextAllBold(block) && norm.length <= 90 && !/[.!?]$/.test(text)) return true;
+                return false;
+            }
+
+            function contentOf(block) {
+                if (!block) return '';
+                return hdsdBlockContentWithImageTokens_(block);
+            }
+
+            function cleanBody(title, raw) {
+                return hdsdCleanSectionBody_(title || '', String(raw || '')
+                    .replace(/\r/g, '')
+                    .replace(/[ \t]+/g, ' ')
+                    .replace(/\n{3,}/g, '\n\n')
+                    .trim());
+            }
+
+            function collectAfter(list, index, target) {
+                const parts = [];
+                for (let j = index + 1; j < list.length; j++) {
+                    const block = list[j];
+                    if (isBoundary(block, target)) break;
+                    const content = contentOf(block);
+                    if (content) parts.push(content);
+                }
+                return cleanBody(target.title || '', parts.join('\n'));
+            }
+
+            function collectChildren(block, target) {
+                const children = getChildren(block);
+                if (!children.length) return '';
+                // Nếu bên trong children có đúng tiểu mục được hỏi, ưu tiên trích theo sibling trong children.
+                const nested = scanList(children);
+                if (nested) return nested;
+                // Nếu chính block là mục được hỏi, lấy toàn bộ children.
+                const body = cleanBody(target.title || ownText(block), children.map(contentOf).filter(Boolean).join('\n'));
+                return body ? ('### ' + (target.title || ownText(block) || 'Nội dung HDSD') + '\n' + body) : '';
+            }
+
+            function scanList(list) {
+                list = Array.isArray(list) ? list : [];
+                for (let t = 0; t < targets.length; t++) {
+                    const target = targets[t];
+                    for (let i = 0; i < list.length; i++) {
+                        const block = list[i];
+                        const text = ownText(block);
+                        if (!matchesTarget(text, target)) continue;
+
+                        let body = collectAfter(list, i, target);
+                        if (!body) {
+                            const childResult = collectChildren(block, target);
+                            if (childResult) return childResult;
+                        }
+                        if (body) return '### ' + (target.title || text || 'Nội dung HDSD') + '\n' + body;
+                    }
+                }
+
+                for (let i = 0; i < list.length; i++) {
+                    const childResult = scanList(getChildren(list[i]));
+                    if (childResult) return childResult;
+                }
+                return '';
+            }
+
+            return scanList(rootBlocks);
+        }
+
         async function selectHDSDExcerptForQuestionWithAI_(jsonData, userMessage) {
-            // Ưu tiên đọc trực tiếp thứ tự block JSON Notion.
-            // Cấu trúc thực tế của NOVELCIN: "Hấp thu" là một paragraph in đậm,
-            // còn nội dung là paragraph kế tiếp cùng cấp trong _children của toggle "CÁC ĐẶC TÍNH DƯỢC ĐỘNG HỌC".
+            // Ưu tiên cực sớm: trích trực tiếp theo cấu trúc sibling trong JSON Notion.
+            // Dùng cho trường hợp như NOVELCIN: "Hấp thu" là một block riêng, nội dung là block kế tiếp cùng cấp.
+            const strictSiblingV2Excerpt = extractHDSDStrictSiblingSubsectionV2_(jsonData, userMessage);
+            if (strictSiblingV2Excerpt) return strictSiblingV2Excerpt;
+
+            // Fallback cũ theo thứ tự block JSON Notion.
             const siblingJsonExcerpt = extractHDSDJsonSiblingSubsectionExcerpt_(jsonData, userMessage);
             if (siblingJsonExcerpt) return siblingJsonExcerpt;
 
@@ -9341,7 +9466,7 @@ body.medplus-aux-open .new-badge::after{
             }
 
             let excerpt = '';
-            const maxChars = hasClearTopic ? 2400 : 7000;
+            const maxChars = Number.POSITIVE_INFINITY;
             selected.forEach(function(item) {
                 if (excerpt.length >= maxChars) return;
                 let title = cleanDrugFieldForChat_(item.section.title || 'Nội dung HDSD');
@@ -9427,12 +9552,7 @@ body.medplus-aux-open .new-badge::after{
             });
             text = cleaned.join('\n\n').replace(/\n{3,}/g, '\n\n').trim();
 
-            // Giới hạn để khung chat không quá dài; vẫn không gọi AI.
-            const maxChars = 5200;
-            if (text.length > maxChars) {
-                text = text.slice(0, maxChars).replace(/\s+\S*$/, '').trim()
-                    + '\n\n*Nội dung HDSD còn dài; hãy bấm nút XEM HDSD bên dưới để xem đầy đủ tờ gốc.*';
-            }
+            // Không cắt ngắn nội dung HDSD trực tiếp từ JSON: phần này không tốn token AI.
             return text;
         }
 
