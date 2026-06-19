@@ -8639,15 +8639,37 @@ body.medplus-aux-open .new-badge::after{
         }
 
         async function selectHDSDExcerptForQuestionWithMeta_(jsonData, userMessage) {
+            const sections = buildHDSDTextSections_(jsonData);
+
+            // Với các câu hỏi mục nhỏ thuộc một mục lớn (ví dụ Hấp thu thuộc Dược động học),
+            // vẫn lấy nguyên mục lớn để trả lời ngắn gọn, nhưng truyền cả mục lớn + mục nhỏ
+            // sang nút XEM HDSD để bôi đỏ đúng tiêu đề mục nhỏ trong đúng phạm vi mục lớn.
             const focusMeta = getHDSDSubsectionFocusForQuestion_(userMessage);
             if (focusMeta) {
-                const sections = buildHDSDTextSections_(jsonData);
                 const parentIndexes = findHDSDParentSectionIndexesForFocus_(sections, focusMeta);
                 const excerpt = parentIndexes.length ? buildHDSDExcerptFromSections_(sections, parentIndexes, true) : '';
                 return { excerpt: excerpt || '', focusMeta: focusMeta };
             }
 
-            const excerpt = await selectHDSDExcerptForQuestionWithAI_(jsonData, userMessage);
+            if (!sections.length) return { excerpt: '', focusMeta: null };
+
+            // Giao AI chọn ĐÚNG index/tiêu đề mục HDSD từ danh sách tiêu đề có sẵn.
+            // AI không được tự viết nội dung và không tự tạo nút. Web dùng index/tiêu đề này
+            // để lấy nguyên văn từ JSON và bôi đỏ chính tiêu đề mục đã chọn khi mở tờ HDSD.
+            const aiIndexes = await chooseHDSDSectionsWithAI_(userMessage, sections);
+            if (aiIndexes.length) {
+                const excerpt = buildHDSDExcerptFromSections_(sections, aiIndexes, true);
+                const firstSection = sections[aiIndexes[0]] || null;
+                const title = firstSection && firstSection.title ? cleanDrugFieldForChat_(firstSection.title) : '';
+                return {
+                    excerpt: excerpt || '',
+                    focusMeta: title ? { parentLabel: '', focusLabel: title, source: 'ai-section-title', sectionIndex: aiIndexes[0] } : null
+                };
+            }
+
+            // Nếu AI/API lỗi, dùng bộ luật cũ để vẫn có câu trả lời. Trường hợp này không truyền focus
+            // để tránh bôi đỏ nhầm; chỉ mở HDSD bình thường.
+            const excerpt = selectHDSDExcerptForQuestion_(jsonData, userMessage);
             return { excerpt: excerpt || '', focusMeta: null };
         }
 
@@ -10762,13 +10784,15 @@ body.medplus-aux-open .new-badge::after{
             let target = findHDSDChatFocusElement_(searchRoot, focus);
 
             // Nếu đã xác định được mục lớn nhưng mục con chưa render kịp, chờ render trong chính mục lớn.
-            // Không fallback ngay ra toàn văn, vì có thể bắt nhầm đoạn văn ở mục khác có cùng chữ "hấp thu".
+            // Tuyệt đối không fallback ra toàn văn khi đã có mục lớn, vì sẽ bắt nhầm các đoạn văn ở mục khác
+            // có cùng từ khóa như "hấp thu", "phân bố", "chuyển hóa", "thải trừ".
             if (!target && searchRoot !== root && attempt < 8) {
                 setTimeout(function() { applyPendingHDSDChatFocus_(root, attempt + 1); }, 180);
                 return;
             }
 
-            if (!target && searchRoot !== root) target = findHDSDChatFocusElement_(root, focus);
+            // Nếu không tìm được mục con trong mục lớn, chỉ bôi đỏ mục lớn thay vì bôi đỏ nhầm nơi khác.
+            if (!target && searchRoot !== root) target = parentTarget || null;
 
             if (!target && attempt < 5) {
                 setTimeout(function() { applyPendingHDSDChatFocus_(root, attempt + 1); }, 180);
