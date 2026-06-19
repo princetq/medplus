@@ -9358,17 +9358,24 @@ body.medplus-aux-open .new-badge::after{
         }
 
 
+        // PATCH: AI hậu kiểm danh mục tổng thể trước khi hiển thị kết quả cho người dùng.
         async function verifyDrugFinalChunkWithAI_(userMessage, chunkDrugs, offsetIndex) {
             if (!chunkDrugs || chunkDrugs.length === 0) return { ok: true, drugs: [] };
             const candidateText = chunkDrugs.map(function(d, i) {
                 return formatDrugLineForRagCompact_(d, i + 1, false);
             }).join('\n');
-            const verifierPrompt = 'Bạn là bước KIỂM TRA CUỐI CÙNG trước khi trả lời dữ liệu thuốc y khoa cho người dùng.\n'
-                + 'Nhiệm vụ: đọc câu hỏi người dùng và danh sách thuốc ứng viên đã được đánh số, sau đó GIỮ LẠI CHỈ những thuốc thật sự phù hợp với câu hỏi.\n'
-                + 'Phải loại thuốc lọt nhầm do trùng chữ trong tên biệt dược hoặc mô tả, ví dụ tên có chữ gần giống nhưng không đúng nhóm điều trị.\n'
-                + 'Dựa trên Hoạt chất và Nhóm thuốc là chính; tên biệt dược chỉ dùng để nhận diện, không dùng riêng tên biệt dược để kết luận nhóm thuốc.\n'
-                + 'Nếu không chắc một thuốc có đúng nhóm được hỏi hay không, hãy loại thuốc đó khỏi ids.\n'
-                + 'Không thêm thuốc mới ngoài danh sách. Không giải thích. Không markdown. Chỉ trả về JSON hợp lệ đúng mẫu: {"ids":[1,2,3]}\n\n'
+            const verifierPrompt = 'Bạn là bộ lọc KIỂM TRA CUỐI CÙNG trước khi trả lời dữ liệu thuốc y khoa cho người dùng.\n'
+                + 'Nhiệm vụ: đọc câu hỏi người dùng, xác định chính xác đối tượng cần tìm, rồi GIỮ LẠI CHỈ những thuốc thật sự phù hợp trong danh sách ứng viên.\n'
+                + 'Bạn chỉ được chọn từ danh sách ứng viên, tuyệt đối không thêm thuốc mới ngoài danh sách.\n'
+                + 'Trước khi chọn, hãy tự bỏ qua các từ nhiễu trong câu hỏi như: bệnh viện, có, không, thuốc, gì, nào, tại, ở, của, cho tôi, xin hỏi. Không giữ thuốc chỉ vì trùng các từ nhiễu này.\n'
+                + 'Không giữ thuốc chỉ vì trùng từ quá chung như: vitamin, acid, natri, sodium, hydroclorid, hydrochlorid, dung dịch, tiêm, truyền, viên, nang, mg, ml.\n'
+                + 'Nếu người dùng hỏi một hoạt chất/tên hoạt chất cụ thể, chỉ giữ thuốc có đúng hoạt chất đó hoặc tên đồng nghĩa hợp lý; thuốc phối hợp chỉ được giữ khi thật sự có chứa hoạt chất được hỏi.\n'
+                + 'Nếu người dùng hỏi biệt dược cụ thể, chỉ giữ đúng biệt dược đó hoặc dạng/hàm lượng tương ứng, không mở rộng sang thuốc khác chỉ vì cùng nhóm điều trị.\n'
+                + 'Nếu người dùng hỏi nhóm thuốc/nhóm dược lý/bệnh cảnh, hãy dựa chủ yếu vào Hoạt chất và Nhóm thuốc để giữ các thuốc đúng nhóm; nếu không chắc thì loại.\n'
+                + 'Ví dụ quy tắc phân biệt: Vitamin B1/Thiamin khác Vitamin B12, Vitamin K1 và Vitamin D3; thuốc phối hợp B1-B6-B12 được giữ khi hỏi Vitamin B1 vì có chứa B1, nhưng Vitamin B12 đơn chất hoặc Vitamin K1 phải loại.\n'
+                + 'Ví dụ quy tắc phân biệt: nếu câu hỏi có chữ "không", không được giữ thuốc chỉ vì hoạt chất/mô tả có chữ "không".\n'
+                + 'Nếu sau khi kiểm tra không còn thuốc phù hợp, trả về {"ids":[]}.\n'
+                + 'Không giải thích. Không markdown. Không code fence. Chỉ trả về JSON hợp lệ đúng mẫu: {"ids":[1,2,3]}\n\n'
                 + 'Câu hỏi người dùng: ' + userMessage + '\n\n'
                 + '<danh_sach_can_kiem_tra>\n' + candidateText + '\n</danh_sach_can_kiem_tra>';
 
@@ -12315,8 +12322,26 @@ body.medplus-aux-open .new-badge::after{
                         return;
                     }
 
+                    let finalAiScanDrugs = aiScan.drugs || [];
+                    // KIỂM TRA LẠI DANH MỤC BẰNG AI TRƯỚC KHI TRẢ RA:
+                    // AI full scan/MiniRAG chỉ tạo danh sách ứng viên. Bước này rà lại lần cuối để loại thuốc lọt nhầm
+                    // do trùng chữ chung như vitamin/acid/natri hoặc từ nhiễu như "không" trong câu hỏi.
+                    if (finalAiScanDrugs.length > 0) {
+                        document.getElementById('typing-text').innerText = "MedPlus AI đang kiểm tra lại danh mục thuốc...";
+                        const verifiedScan = await verifyDrugFinalListWithAI_(userMessage, finalAiScanDrugs);
+                        if (!verifiedScan.ok) {
+                            clearInterval(timerInterval);
+                            typingIndicator.style.display = 'none';
+                            displayMessage('Tôi đã tìm được danh sách ứng viên, nhưng chưa kiểm tra lại được bằng AI nên chưa trả kết quả để tránh sai sót dữ liệu y khoa. Bạn vui lòng thử lại sau ít giây hoặc hỏi hẹp hơn theo hoạt chất/nhóm thuốc.', 'ai');
+                            sendButton.disabled = false;
+                            return;
+                        }
+                        finalAiScanDrugs = verifiedScan.drugs || [];
+                    }
+                    aiScan.drugs = finalAiScanDrugs;
+
                     document.getElementById('typing-text').innerText = "MedPlus AI đang viết câu trả lời...";
-                    const aiReply = await composeDrugAnswerWithAI_(userMessage, aiScan.drugs || [], aiScan);
+                    const aiReply = await composeDrugAnswerWithAI_(userMessage, finalAiScanDrugs, aiScan);
                     clearInterval(timerInterval);
                     typingIndicator.style.display = 'none';
                     displayMessage(aiReply, 'ai');
