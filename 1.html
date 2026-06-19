@@ -8619,6 +8619,84 @@ body.medplus-aux-open .new-badge::after{
             return null;
         }
 
+        function getHDSDRequestedFocusCandidates_(userMessage) {
+            const q = removeAccents(userMessage || '');
+            const groups = [
+                { label: 'Hạn dùng', aliases: ['han dung', 'han su dung', 'han su dung cua', 'thoi han su dung', 'thoi han dung', 'expiry', 'expiration', 'shelf life'] },
+                { label: 'Điều kiện bảo quản', aliases: ['dieu kien bao quan', 'bao quan', 'giu thuoc', 'cach bao quan'] },
+                { label: 'Quy cách đóng gói', aliases: ['quy cach dong goi', 'quy cach', 'dong goi', 'bao bi'] },
+                { label: 'Tiêu chuẩn chất lượng', aliases: ['tieu chuan chat luong', 'tieu chuan', 'usp', 'bp', 'duoc dien'] },
+                { label: 'Nhà sản xuất', aliases: ['nha san xuat', 'noi san xuat', 'co so san xuat', 'cong ty san xuat', 'xuat xu', 'nuoc san xuat'] },
+                { label: 'Số đăng ký', aliases: ['so dang ky', 'sdk', 'dang ky'] },
+                { label: 'Chủ sở hữu/đơn vị đăng ký', aliases: ['chu so huu', 'don vi dang ky', 'co so dang ky', 'nha dang ky', 'thuong nhan'] },
+                { label: 'Thành phần', aliases: ['thanh phan', 'hoat chat', 'ta duoc', 'chua gi', 'cong thuc', 'ham luong'] },
+                { label: 'Chỉ định', aliases: ['chi dinh', 'cong dung', 'dung de lam gi', 'tri benh gi', 'dieu tri gi'] },
+                { label: 'Liều dùng', aliases: ['lieu dung', 'lieu', 'cach dung', 'cach su dung', 'duong dung'] },
+                { label: 'Cách pha/truyền', aliases: ['cach pha', 'pha truyen', 'tiem truyen', 'toc do truyen', 'truyen tinh mach'] },
+                { label: 'Chống chỉ định', aliases: ['chong chi dinh', 'khong duoc dung', 'ai khong dung', 'khong nen dung'] },
+                { label: 'Cảnh báo và thận trọng', aliases: ['canh bao', 'than trong', 'luu y', 'than trong khi dung', 'khuyen cao'] },
+                { label: 'Tác dụng không mong muốn', aliases: ['tac dung khong mong muon', 'tac dung phu', 'adr', 'phan ung phu', 'khong mong muon'] },
+                { label: 'Tương tác thuốc', aliases: ['tuong tac', 'tuong tac thuoc', 'dung chung', 'phoi hop'] },
+                { label: 'Tương hợp, tương kỵ', aliases: ['tuong hop', 'tuong ky', 'tuong ki'] },
+                { label: 'Quá liều và xử trí', aliases: ['qua lieu', 'xu tri qua lieu', 'qua lieu lam gi'] },
+                { label: 'Quên liều', aliases: ['quen lieu', 'bo lieu'] },
+                { label: 'Phụ nữ có thai', aliases: ['phu nu co thai', 'phu nu mang thai', 'mang thai', 'thai ky', 'co thai'] },
+                { label: 'Phụ nữ cho con bú', aliases: ['phu nu cho con bu', 'cho con bu', 'bu me', 'me cho con bu'] },
+                { label: 'Lái xe và vận hành máy móc', aliases: ['lai xe', 'van hanh may', 'may moc'] },
+                { label: 'Dược lực học', aliases: ['duoc luc hoc', 'co che tac dung'] },
+                { label: 'Dược động học', aliases: ['duoc dong hoc', 'dac tinh duoc dong hoc'] },
+                { label: 'Hấp thu', aliases: ['hap thu', 'su hap thu', 'qua trinh hap thu'] },
+                { label: 'Phân bố', aliases: ['phan bo', 'su phan bo', 'the tich phan bo'] },
+                { label: 'Chuyển hóa', aliases: ['chuyen hoa', 'chuyen hoá', 'chuyen hoa thuoc', 'chuyen hoá thuốc'] },
+                { label: 'Thải trừ', aliases: ['thai tru', 'bai tiet', 'dao thai', 'thoi gian ban thai', 'nua doi thai tru'] }
+            ];
+
+            return groups.filter(function(g) {
+                return (g.aliases || []).some(function(alias) {
+                    return hasNormalizedPhrase_(q, removeAccents(alias || ''));
+                });
+            });
+        }
+
+        function cleanHDSDSubheadingCandidateLine_(value) {
+            return cleanDrugFieldForChat_(String(value || '')
+                .replace(/\{\{HDSD_IMAGE:[^}]+\}\}/g, ' ')
+                .replace(/^[\s#•\-*–—]+/g, '')
+                .replace(/[：:;。\.\s]+$/g, '')
+                .replace(/\s+/g, ' ')
+                .trim());
+        }
+
+        function findHDSDSubFocusLabelInSection_(section, userMessage) {
+            if (!section) return '';
+            const candidates = getHDSDRequestedFocusCandidates_(userMessage);
+            if (!candidates.length) return '';
+
+            const rawTitle = cleanHDSDSubheadingCandidateLine_(section.title || '');
+            const rawText = String(section.text || '').replace(/\r/g, '\n');
+            const lines = rawText.split(/\n+/)
+                .map(function(line) { return cleanHDSDSubheadingCandidateLine_(line); })
+                .filter(Boolean);
+            const searchableLines = [rawTitle].concat(lines);
+
+            for (let c = 0; c < candidates.length; c++) {
+                const cand = candidates[c];
+                const aliases = (cand.aliases || []).map(function(a) { return removeAccents(a || '').trim(); }).filter(Boolean);
+                for (let i = 0; i < searchableLines.length; i++) {
+                    const line = searchableLines[i];
+                    const lineNorm = removeAccents(line || '').replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+                    if (!lineNorm) continue;
+                    const shortEnoughToBeHeading = lineNorm.length <= 90;
+                    const matched = aliases.some(function(alias) { return alias && hdsdAliasPhraseHit_(lineNorm, alias); });
+                    if (matched && shortEnoughToBeHeading) return cand.label;
+                }
+            }
+
+            // Nếu người dùng hỏi rõ một tiểu mục nhưng trong JSON không tách riêng dòng tiêu đề,
+            // vẫn truyền nhãn tiểu mục để web tìm trong đúng mục lớn; nếu không tìm thấy thì chỉ bôi đỏ mục lớn.
+            return candidates[0].label || '';
+        }
+
         function findHDSDParentSectionIndexesForFocus_(sections, focusMeta) {
             if (!Array.isArray(sections) || !sections.length || !focusMeta) return [];
             const parentAliases = [focusMeta.parentLabel].concat(focusMeta.parentAliases || [])
@@ -8661,9 +8739,18 @@ body.medplus-aux-open .new-badge::after{
                 const excerpt = buildHDSDExcerptFromSections_(sections, aiIndexes, true);
                 const firstSection = sections[aiIndexes[0]] || null;
                 const title = firstSection && firstSection.title ? cleanDrugFieldForChat_(firstSection.title) : '';
+                const subFocusLabel = firstSection ? findHDSDSubFocusLabelInSection_(firstSection, userMessage) : '';
+                const titleNorm = normalizeHDSDChatFocusText_(title);
+                const subNorm = normalizeHDSDChatFocusText_(subFocusLabel);
+                let focusMeta = null;
+                if (title && subFocusLabel && subNorm && subNorm !== titleNorm) {
+                    focusMeta = { parentLabel: title, focusLabel: subFocusLabel, source: 'ai-section-subfocus', sectionIndex: aiIndexes[0] };
+                } else if (title) {
+                    focusMeta = { parentLabel: '', focusLabel: title, source: 'ai-section-title', sectionIndex: aiIndexes[0] };
+                }
                 return {
                     excerpt: excerpt || '',
-                    focusMeta: title ? { parentLabel: '', focusLabel: title, source: 'ai-section-title', sectionIndex: aiIndexes[0] } : null
+                    focusMeta: focusMeta
                 };
             }
 
@@ -8941,11 +9028,17 @@ body.medplus-aux-open .new-badge::after{
                 const focus = item.hdsdFocus || null;
                 let body = '';
 
-                if (focus && focus.parentLabel && focus.focusLabel) {
-                    body = 'Mục cần xem: **' + focus.parentLabel + '**.\n\n'
-                        + 'Trong mục **' + focus.parentLabel + '** có phần **' + focus.focusLabel + '**. '
-                        + 'Anh/chị tham khảo chi tiết ở mục **' + focus.focusLabel + '** trong phần sau của tờ HDSD. '
-                        + 'Khi bấm **XEM HDSD**, phần **' + focus.focusLabel + '** sẽ được bôi đỏ để dễ nhận biết.';
+                if (focus && focus.focusLabel) {
+                    if (focus.parentLabel && normalizeHDSDChatFocusText_(focus.parentLabel) !== normalizeHDSDChatFocusText_(focus.focusLabel)) {
+                        body = 'Mục cần xem: **' + focus.parentLabel + '**.\n\n'
+                            + 'Trong mục **' + focus.parentLabel + '** có phần **' + focus.focusLabel + '**. '
+                            + 'Anh/chị tham khảo chi tiết ở mục **' + focus.focusLabel + '** trong phần sau của tờ HDSD. '
+                            + 'Khi bấm **XEM HDSD**, phần **' + focus.focusLabel + '** sẽ được bôi đỏ để dễ nhận biết.';
+                    } else {
+                        body = 'Mục cần xem: **' + focus.focusLabel + '**.\n\n'
+                            + 'Anh/chị tham khảo chi tiết ở mục **' + focus.focusLabel + '** trong phần sau của tờ HDSD. '
+                            + 'Khi bấm **XEM HDSD**, mục **' + focus.focusLabel + '** sẽ được mở và bôi đỏ để dễ nhận biết.';
+                    }
                 } else {
                     body = formatDirectHDSDExcerptForChat_(item.excerpt || '');
                 }
