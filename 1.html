@@ -6736,6 +6736,8 @@ body.medplus-aux-open .new-badge::after{
             const drugs = allDrugs || [];
             const strictShortBrandMatches = getStrictShortBrandMatches_(userMessage, drugs);
             if (strictShortBrandMatches.length > 0) return strictShortBrandMatches;
+            const exactBrandNameMatches = getExactBrandNameMatches_(userMessage, drugs);
+            if (exactBrandNameMatches.length > 0) return exactBrandNameMatches;
             // CHẾ ĐỘ AI LÀM TẤT CẢ:
             // Không dùng mini-RAG/prefilter để thu hẹp danh mục trước khi AI quét,
             // trừ trường hợp tên biệt dược ngắn có số đã được khóa tuyệt đối ở trên.
@@ -7317,6 +7319,86 @@ body.medplus-aux-open .new-badge::after{
             });
         }
 
+        function getBrandAliasesForExactMatching_(drug) {
+            const brand = normalizeDrugMatchText_(drug && drug.brand);
+            if (!brand) return [];
+            const aliases = [brand];
+
+            const noStrength = brand
+                .replace(/\b\d+(?:[\s\/.-]*(?:mg|ml|g|mcg|ui|iu|%)?)\b/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+            if (noStrength && noStrength !== brand && noStrength.length >= 4) aliases.push(noStrength);
+
+            const manual = MEDPLUS_DRUG_ALIAS_MAP_[brand];
+            if (manual && manual.length) aliases.push.apply(aliases, manual);
+
+            const riskyShortAliases = getRiskyShortBrandAliases_(drug);
+            if (riskyShortAliases && riskyShortAliases.length) aliases.push.apply(aliases, riskyShortAliases);
+
+            return uniqueStrings_(aliases).filter(function(alias) {
+                if (!alias || MEDPLUS_GENERIC_DRUG_SUBJECTS_.indexOf(alias) !== -1) return false;
+                if (isProtectedShortBrandBaseAlias_(alias)) return true;
+                if (hasAlphaNumberShortPattern_(alias)) return true;
+                return alias.length >= 4;
+            });
+        }
+
+        function getExactBrandNameMatches_(userMessage, allDrugs) {
+            const source = allDrugs || [];
+            if (!userMessage || !source.length) return [];
+
+            const q = normalizeDrugMatchText_(userMessage);
+            const subject = getDrugSubjectForMatching_(userMessage);
+            const subjectCompact = compactDrugMatchText_(subject);
+            const matches = [];
+
+            source.forEach(function(d) {
+                const brand = normalizeDrugMatchText_(d && d.brand);
+                if (!brand) return;
+
+                const aliases = getBrandAliasesForExactMatching_(d);
+                let bestScore = 0;
+                aliases.forEach(function(alias) {
+                    if (!alias) return;
+                    const aliasCompact = compactDrugMatchText_(alias);
+                    const aliasWords = drugMatchWords_(alias);
+                    let score = 0;
+
+                    if (subject && subject === alias) {
+                        score = 12000;
+                    } else if (q === alias) {
+                        score = 11800;
+                    } else if (subjectCompact && aliasCompact && subjectCompact === aliasCompact) {
+                        score = 11600;
+                    } else if (q && hasNormalizedPhrase_(q, alias)) {
+                        // Chỉ khớp khi câu hỏi chứa TRỌN tên/alias biệt dược.
+                        // Không khớp bằng từng từ lẻ để tránh "entecavir" kéo mọi biệt dược Entecavir,
+                        // hoặc "vik" kéo sang chữ "vị" trong thuốc khác.
+                        score = 11200 + Math.min(alias.length, 300);
+                    } else if (subject && aliasWords.length >= 2) {
+                        const hit = tokenHitScore_(aliasWords, subject);
+                        if (hit >= aliasWords.length) score = 10800 + hit;
+                    }
+
+                    if (score > bestScore) bestScore = score;
+                });
+
+                if (bestScore > 0) matches.push({ drug: d, score: bestScore, len: brand.length });
+            });
+
+            matches.sort(function(a, b) {
+                if (b.score !== a.score) return b.score - a.score;
+                if (b.len !== a.len) return b.len - a.len;
+                return String(a.drug.brand || '').localeCompare(String(b.drug.brand || ''), 'vi');
+            });
+
+            if (!matches.length) return [];
+            const best = matches[0];
+            const close = matches.filter(function(x) { return best.score - x.score <= 30; });
+            return sortDrugsByBrand_(dedupeDrugs_(close.map(function(x) { return x.drug; })));
+        }
+
 
         const MEDPLUS_SHORT_NAME_FORM_WORDS_ = [
             'inj', 'injection', 'tiem', 'ong', 'amp', 'ampoule', 'vial', 'lo',
@@ -7844,15 +7926,20 @@ body.medplus-aux-open .new-badge::after{
             const identityQuery = isDrugIdentityQuery(normalizedQuestion);
             const allDrugs = getRagDrugIndex_(sourceList);
             const strictShortBrandMatches = getStrictShortBrandMatches_(userMessage, allDrugs);
-            const activeIngredientMatches = strictShortBrandMatches.length > 0 ? [] : getActiveIngredientMatchesForQuestion_(userMessage, allDrugs);
+            const exactBrandNameMatches = strictShortBrandMatches.length > 0 ? [] : getExactBrandNameMatches_(userMessage, allDrugs);
+            const activeIngredientMatches = (strictShortBrandMatches.length > 0 || exactBrandNameMatches.length > 0) ? [] : getActiveIngredientMatchesForQuestion_(userMessage, allDrugs);
             const drugNameResolution = strictShortBrandMatches.length > 0
                 ? { type: 'exact_drug', drugs: strictShortBrandMatches, confidence: 0.99, reason: 'strict_short_brand_exact', subject: getDrugSubjectForMatching_(userMessage) }
-                : resolveDrugNameFromQuestion_(userMessage, allDrugs);
+                : (exactBrandNameMatches.length > 0
+                    ? { type: 'exact_drug', drugs: exactBrandNameMatches, confidence: 1, reason: 'exact_brand_before_active', subject: getDrugSubjectForMatching_(userMessage) }
+                    : resolveDrugNameFromQuestion_(userMessage, allDrugs));
             const exactNameMatches = strictShortBrandMatches.length > 0
                 ? strictShortBrandMatches
-                : (activeIngredientMatches.length > 0
-                    ? activeIngredientMatches
-                    : ((drugNameResolution && drugNameResolution.type === 'exact_drug') ? dedupeDrugs_(drugNameResolution.drugs || []) : []));
+                : (exactBrandNameMatches.length > 0
+                    ? exactBrandNameMatches
+                    : (activeIngredientMatches.length > 0
+                        ? activeIngredientMatches
+                        : ((drugNameResolution && drugNameResolution.type === 'exact_drug') ? dedupeDrugs_(drugNameResolution.drugs || []) : [])));
             const queryBase = identityQuery ? removeAccents(getQuestionSubject(userMessage)) : normalizedQuestion;
             const queryWords = getRagQueryWords_(queryBase);
             const candidateQueryWords = getCandidateScopeWords_(queryBase, queryWords);
@@ -7891,6 +7978,8 @@ body.medplus-aux-open .new-badge::after{
                 allDrugs: allDrugs,
                 strictShortBrandMatches: strictShortBrandMatches,
                 strictShortBrandMatch: strictShortBrandMatches.length > 0,
+                exactBrandNameMatches: exactBrandNameMatches,
+                exactBrandNameMatch: exactBrandNameMatches.length > 0,
                 exactNameMatches: exactNameMatches,
                 exactNameMatch: exactNameMatches.length > 0,
                 activeIngredientMatches: activeIngredientMatches,
@@ -9013,6 +9102,17 @@ body.medplus-aux-open .new-badge::after{
                     exactNameMatch: true,
                     strictShortBrandMatch: true,
                     scannedCount: strictShortBrandMatches.length
+                };
+            }
+
+            const exactBrandNameMatches = getExactBrandNameMatches_(userMessage, allDrugs);
+            if (exactBrandNameMatches.length > 0) {
+                return {
+                    ok: true,
+                    drugs: exactBrandNameMatches,
+                    exactNameMatch: true,
+                    exactBrandNameMatch: true,
+                    scannedCount: exactBrandNameMatches.length
                 };
             }
 
