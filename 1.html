@@ -11796,9 +11796,74 @@ body.medplus-aux-open .new-badge::after{
             if (typingText) typingText.innerText = 'MedPlus AI đang phân tích';
         }
 
+        // BẢO ĐẢM HIỂN THỊ HƯỚNG DẪN HDSD Ở DOM CUỐI CÙNG.
+        // Một số nhánh cũ có thể tạo đúng header HDSD và cả metadata bôi đỏ, nhưng làm rơi
+        // phần câu chữ trong quá trình ghép/format HTML. Vì vậy lớp này kiểm tra chính NỘI DUNG
+        // ĐÃ RENDER trong bubble chat; nếu thấy header HDSD nhưng chưa có hướng dẫn, nó chèn
+        // một đoạn hướng dẫn ngay sau header. Không phụ thuộc AI, outline, JSON hay nhánh trả lời.
+        function buildVisibleHDSDGuideText_(userMessage) {
+            const meta = buildQuestionOnlyHDSDGuideMeta_(userMessage) || {};
+            let focusLabel = cleanDrugFieldForChat_(meta.focusLabel || '');
+            let parentLabel = cleanDrugFieldForChat_(meta.parentLabel || focusLabel || '');
+
+            if (removeAccents(focusLabel) === 'dang cap nhat') focusLabel = '';
+            if (removeAccents(parentLabel) === 'dang cap nhat') parentLabel = '';
+            if (!focusLabel && parentLabel) focusLabel = parentLabel;
+            if (!parentLabel && focusLabel) parentLabel = focusLabel;
+
+            if (focusLabel && parentLabel) {
+                return {
+                    focusLabel: focusLabel,
+                    parentLabel: parentLabel,
+                    plain: 'Hãy xem chi tiết ở phần ' + focusLabel + ' trong mục ' + parentLabel + '. Khi bấm XEM HDSD, phần đó được bôi đỏ để bạn dễ nhận biết.'
+                };
+            }
+            return {
+                focusLabel: '',
+                parentLabel: '',
+                plain: 'Hãy xem phần nội dung liên quan trong tờ HDSD. Khi bấm XEM HDSD, hệ thống sẽ mở tờ HDSD để bạn tra cứu.'
+            };
+        }
+
+        function insertVisibleHDSDGuideAfterRenderedHeader_(wrapper, userMessage) {
+            if (!wrapper || !userMessage || !isHDSDContentQuestion_(userMessage)) return;
+
+            const guideData = buildVisibleHDSDGuideText_(userMessage);
+            const paragraphs = Array.prototype.slice.call(wrapper.querySelectorAll('p'));
+            paragraphs.forEach(function(p) {
+                const headerText = removeAccents(p.textContent || '');
+                if (headerText.indexOf('theo noi dung to hdsd') === -1) return;
+
+                // Nếu phần ngay sau header đã là hướng dẫn, không chèn lặp.
+                const next = p.nextElementSibling;
+                const nextText = next ? removeAccents(next.textContent || '') : '';
+                if (nextText.indexOf('hay xem chi tiet o phan') !== -1 || nextText.indexOf('hay xem phan noi dung lien quan') !== -1) return;
+
+                const guide = document.createElement('p');
+                guide.className = 'hdsd-chat-guide';
+                if (guideData.focusLabel && guideData.parentLabel) {
+                    guide.appendChild(document.createTextNode('Hãy xem chi tiết ở phần '));
+                    const focus = document.createElement('b');
+                    focus.textContent = guideData.focusLabel;
+                    guide.appendChild(focus);
+                    guide.appendChild(document.createTextNode(' trong mục '));
+                    const parent = document.createElement('b');
+                    parent.textContent = guideData.parentLabel;
+                    guide.appendChild(parent);
+                    guide.appendChild(document.createTextNode('. Khi bấm '));
+                    const hdsd = document.createElement('b');
+                    hdsd.textContent = 'XEM HDSD';
+                    guide.appendChild(hdsd);
+                    guide.appendChild(document.createTextNode(', phần đó được bôi đỏ để bạn dễ nhận biết.'));
+                } else {
+                    guide.textContent = guideData.plain;
+                }
+                p.insertAdjacentElement('afterend', guide);
+            });
+        }
+
         function displayMessage(text, sender) {
-            // Cổng render cuối: bảo đảm mọi nhánh trả lời HDSD đều hiển thị hướng dẫn xem mục.
-            // Đây là lớp cuối cùng sau AI/miniRAG/outline, nên không còn phụ thuộc nhánh nào đã tạo text.
+            // Cổng render chuỗi: bảo đảm mọi nhánh trả lời HDSD đều cố gắng có hướng dẫn xem mục.
             if (sender !== 'user') {
                 text = ensureHDSDGuideVisibleInFinalAnswer_(text, window.__medplusLastUserQuestion || '');
             }
@@ -11807,6 +11872,13 @@ body.medplus-aux-open .new-badge::after{
             div.classList.add('message', sender === 'user' ? 'user-message' : 'ai-message');
             const c = document.createElement('div'); c.classList.add('message-content');
             c.innerHTML = (sender === 'user' ? USER_ICON : AI_ICON) + "<div class=\"text-wrapper\">" + (sender === 'user' ? text : formatResponse(text)) + "</div>";
+
+            // Cổng render DOM: kiểm tra sau formatResponse để chặn dứt điểm trường hợp header HDSD
+            // hiển thị nhưng nội dung hướng dẫn bị mất ở bất kỳ nhánh nào.
+            if (sender !== 'user') {
+                insertVisibleHDSDGuideAfterRenderedHeader_(c.querySelector('.text-wrapper'), window.__medplusLastUserQuestion || '');
+            }
+
             div.appendChild(c); cm.appendChild(div);
             setTimeout(function() { cm.scrollTo({ top: cm.scrollHeight, behavior: 'smooth' }); }, 100);
         }
