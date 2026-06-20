@@ -14637,5 +14637,697 @@ updateNavbarSearchVisibility(id);
 
 
 <!-- HDSD_GUIDE_FINAL_RENDER_GUARD: added -->
+
+<script id="medplus-hdsd-actual-outline-patch">
+/* ================================================================
+   MEDPLUS HDSD — GIẢI PHÁP TỔNG THỂ THEO OUTLINE THỰC TẾ CỦA TỪNG TỜ
+   - Không dùng nhãn hard-code để hiển thị cho người dùng.
+   - Chỉ hiển thị parent/focus thật có trong JSON HDSD của chính thuốc đó.
+   - AI chỉ chọn ID trong outline phẳng; JavaScript tự render/bôi đỏ.
+   ================================================================ */
+
+function medplusHDSDActualLabel_(rawText, type) {
+    const raw = String(rawText || '').replace(/\r/g, '\n').trim();
+    if (!raw) return '';
+    const isHeading = /^heading_|^toggle$/.test(String(type || ''));
+    let first = raw.split(/\n+/)[0].replace(/\s+/g, ' ').trim();
+    if (!first) return '';
+
+    // Dòng kiểu "HẠN DÙNG: 24 tháng..." là một tiêu đề con thật; chỉ lấy phần trước dấu :.
+    const colon = first.match(/^(.{3,100}?)[\s]*[:：][\s]*(?:.*)$/);
+    if (colon && hdsdLooksLikeSubHeading_(colon[1] + ':')) first = colon[1].trim();
+
+    const clean = normalizeHDSDFocusLabel_(first);
+    if (!clean) return '';
+    if (isHeading) return clean;
+
+    // Với block paragraph cùng cấp, chỉ nhận khi có dấu hiệu tiêu đề đủ mạnh.
+    // Không biến câu văn ngắn như 'Thuốc được hấp thu...' thành một tiêu đề giả.
+    const norm = normalizeHDSDFocusNorm_(clean);
+    const letters = clean.replace(/[^A-Za-zÀ-ỹ]/g, '');
+    const upper = letters.replace(/[a-zà-ỹ]/g, '');
+    const upperRatio = letters.length ? (upper.length / letters.length) : 0;
+    const hasColon = /[:：]\s*$/.test(first);
+    if (hdsdIsKnownMajorHDSDTitle_(clean) || hdsdIsKnownChildHDSDTitle_(clean) || hasColon || upperRatio >= 0.55) return clean;
+    return '';
+}
+
+function medplusFlattenHDSDBlocks_(blocks, output, depth) {
+    const list = output || [];
+    const currentDepth = Number(depth || 0);
+    (Array.isArray(blocks) ? blocks : []).forEach(function(block, siblingIndex) {
+        if (!block) return;
+        const type = String(block.type || '');
+        const own = hdsdBlockOwnPlainText_(block);
+        const label = medplusHDSDActualLabel_(own, type);
+        const level = hdsdHeadingLevelFromType_(type);
+        const node = {
+            flatIndex: list.length,
+            siblingIndex: siblingIndex,
+            depth: currentDepth,
+            blockId: block.id ? String(block.id) : '',
+            type: type,
+            level: level,
+            rawText: own || '',
+            label: label,
+            labelNorm: normalizeHDSDFocusNorm_(label)
+        };
+        list.push(node);
+        const children = hdsdBlockChildren_(block);
+        if (children && children.length) medplusFlattenHDSDBlocks_(children, list, currentDepth + 1);
+    });
+    return list;
+}
+
+function medplusBuildActualHDSDOutline_(jsonData) {
+    const nodes = medplusFlattenHDSDBlocks_(jsonData && jsonData.blocks ? jsonData.blocks : [], [], 0);
+    const parents = [];
+    let currentParent = null;
+    let currentVersion = '';
+
+    nodes.forEach(function(node) {
+        if (!node.label || !node.labelNorm) return;
+        const label = node.label;
+        const isVersion = hdsdIsVersionHeading_(label);
+        if (isVersion) {
+            currentVersion = label;
+            currentParent = null;
+            return;
+        }
+
+        const isKnownChild = hdsdIsKnownChildHDSDTitle_(label);
+        const isKnownMajor = hdsdIsKnownMajorHDSDTitle_(label);
+        const isStructuralMajor = /^heading_|^toggle$/.test(node.type) && Number(node.level || 9) <= 2;
+        const startsOwnRegion = !currentParent;
+        const parentNorm = currentParent ? normalizeHDSDFocusNorm_(currentParent.parentLabel) : '';
+        const isSemanticChildOfCurrent = !!(currentParent && node.labelNorm && parentNorm
+            && hdsdFocusTextHasPhrase_(parentNorm, node.labelNorm)
+            && node.labelNorm !== parentNorm);
+
+        // Mục con đã biết luôn thuộc vùng logic của mục lớn trước đó, kể cả khi Notion trả block cùng cấp.
+        // Ví dụ 'Liều dùng:' là phần con thực tế của mục 'Liều dùng và cách dùng'.
+        const isMajor = startsOwnRegion || (!isKnownChild && !isSemanticChildOfCurrent && (isKnownMajor || isStructuralMajor));
+        if (isMajor) {
+            currentParent = {
+                id: 'p' + parents.length,
+                parentLabel: label,
+                parentIndex: node.flatIndex,
+                versionLabel: currentVersion,
+                children: []
+            };
+            parents.push(currentParent);
+            return;
+        }
+
+        const duplicated = currentParent.children.some(function(child) {
+            return child.labelNorm === node.labelNorm;
+        });
+        if (!duplicated) {
+            currentParent.children.push({
+                id: currentParent.id + 'c' + currentParent.children.length,
+                label: label,
+                labelNorm: node.labelNorm,
+                flatIndex: node.flatIndex,
+                blockId: node.blockId || '',
+                type: node.type || '',
+                level: node.level || 9
+            });
+        }
+    });
+
+    // Không trả một outline rỗng nếu HDSD chỉ có paragraph: dùng tiêu đề section thật đã có trong hàm cũ.
+    if (!parents.length && typeof buildHDSDTextSections_ === 'function') {
+        const sections = buildHDSDTextSections_(jsonData);
+        sections.forEach(function(sec, index) {
+            const label = normalizeHDSDFocusLabel_(sec && sec.title ? sec.title : '');
+            if (!label) return;
+            parents.push({
+                id: 'p' + parents.length,
+                parentLabel: label,
+                parentIndex: Number.isFinite(Number(sec.sourceBlockIndex)) ? Number(sec.sourceBlockIndex) : index,
+                versionLabel: '',
+                children: []
+            });
+        });
+    }
+
+    return { nodes: nodes, parents: parents };
+}
+
+function medplusHDSDQuestionAliases_(userMessage) {
+    const aliases = (typeof getHDSDQuestionAliases_ === 'function' ? getHDSDQuestionAliases_(userMessage) : []) || [];
+    const seen = new Set();
+    return aliases.map(function(value) {
+        return normalizeHDSDFocusNorm_(value);
+    }).filter(function(value) {
+        if (!value || value.length < 3 || seen.has(value)) return false;
+        seen.add(value);
+        return true;
+    });
+}
+
+function medplusScoreActualHDSDLabel_(label, questionNorm, aliases, isChild, versionLabel) {
+    const labelNorm = normalizeHDSDFocusNorm_(label);
+    if (!labelNorm) return -1;
+    let score = 0;
+    if (hdsdFocusTextHasPhrase_(questionNorm, labelNorm)) score += 1200;
+    (aliases || []).forEach(function(alias) {
+        if (!alias) return;
+        if (labelNorm === alias) score += 1500;
+        else if (hdsdFocusTextHasPhrase_(labelNorm, alias)) score += 1050;
+        else if (hdsdFocusTextHasPhrase_(alias, labelNorm)) score += 650;
+
+        const aliasWords = alias.split(/\s+/).filter(function(word) { return word.length >= 3; });
+        const hit = aliasWords.filter(function(word) {
+            return hdsdFocusTextHasPhrase_(labelNorm, word);
+        }).length;
+        score += hit * 90;
+    });
+    if (isChild) score += 35;
+    if (versionLabel && /can bo y te|professional|healthcare/i.test(removeAccents(versionLabel))) score += 20;
+    return score;
+}
+
+function medplusChooseActualHDSDFocusLocally_(userMessage, actualOutline) {
+    const outline = actualOutline || { parents: [] };
+    const questionNorm = normalizeHDSDFocusNorm_(userMessage || '');
+    const aliases = medplusHDSDQuestionAliases_(userMessage);
+    let best = null;
+    let bestScore = -1;
+
+    (outline.parents || []).forEach(function(parent) {
+        const candidates = [{
+            id: parent.id,
+            label: parent.parentLabel,
+            flatIndex: parent.parentIndex,
+            isChild: false
+        }].concat((parent.children || []).map(function(child) {
+            return {
+                id: child.id,
+                label: child.label,
+                flatIndex: child.flatIndex,
+                isChild: true
+            };
+        }));
+
+        candidates.forEach(function(candidate) {
+            const score = medplusScoreActualHDSDLabel_(candidate.label, questionNorm, aliases, candidate.isChild, parent.versionLabel);
+            if (score > bestScore) {
+                bestScore = score;
+                best = {
+                    parentId: parent.id,
+                    focusId: candidate.id,
+                    parentLabel: parent.parentLabel,
+                    parentIndex: parent.parentIndex,
+                    focusLabel: candidate.label,
+                    focusIndex: candidate.flatIndex,
+                    versionLabel: parent.versionLabel || '',
+                    confidence: Math.min(0.95, 0.45 + Math.max(0, score) / 2200),
+                    source: 'local-actual-flat-outline'
+                };
+            }
+        });
+    });
+
+    return bestScore >= 420 ? best : null;
+}
+
+function medplusParseActualHDSDAIPick_(rawText, outline) {
+    const text = String(rawText || '').replace(/```(?:json)?/gi, '').replace(/```/g, '').trim();
+    const match = text.match(/\{[\s\S]*\}/);
+    if (!match) return null;
+    let payload = null;
+    try { payload = JSON.parse(match[0]); } catch (e) { return null; }
+    const parentId = String(payload.parentId || payload.parent || '').trim();
+    const focusId = String(payload.focusId || payload.focus || '').trim();
+    const parent = (outline.parents || []).find(function(item) { return item.id === parentId; }) || null;
+    if (!parent) return null;
+    const focus = [{ id: parent.id, label: parent.parentLabel, flatIndex: parent.parentIndex }]
+        .concat((parent.children || []).map(function(child) {
+            return { id: child.id, label: child.label, flatIndex: child.flatIndex };
+        }))
+        .find(function(item) { return item.id === focusId; }) || null;
+    if (!focus) return null;
+    return {
+        parentId: parent.id,
+        focusId: focus.id,
+        parentLabel: parent.parentLabel,
+        parentIndex: parent.parentIndex,
+        focusLabel: focus.label,
+        focusIndex: focus.flatIndex,
+        versionLabel: parent.versionLabel || '',
+        confidence: Number(payload.confidence || 0.9),
+        source: 'ai-actual-flat-outline'
+    };
+}
+
+async function medplusChooseActualHDSDFocusWithAI_(userMessage, actualOutline) {
+    const outline = actualOutline || { parents: [] };
+    if (!outline.parents || !outline.parents.length) return null;
+
+    const outlineText = outline.parents.map(function(parent) {
+        let line = parent.id + ' | MỤC: "' + parent.parentLabel + '"';
+        if (parent.versionLabel) line += ' | PHIÊN BẢN/VÙNG: "' + parent.versionLabel + '"';
+        (parent.children || []).forEach(function(child) {
+            line += '\n  ' + child.id + ' | PHẦN: "' + child.label + '"';
+        });
+        return line;
+    }).join('\n');
+
+    const prompt = 'Bạn là bộ hậu kiểm vị trí trong tờ HDSD thuốc.\n'
+        + 'Danh sách dưới đây là OUTLINE PHẲNG được trích từ CHÍNH tờ HDSD đang tra cứu. Các nhãn là tên thật của mục/phần trong tài liệu.\n'
+        + 'Chọn đúng 1 MỤC (parentId) và đúng 1 PHẦN (focusId) liên quan nhất với câu hỏi.\n'
+        + 'Chỉ được trả ID xuất hiện trong danh sách, không tạo nhãn mới, không giải thích, không trả nội dung thuốc.\n'
+        + 'Nếu phần hỏi chính là mục lớn, focusId phải bằng parentId. Nếu có phiên bản cho cán bộ y tế và bệnh nhân, ưu tiên phiên bản chuyên môn đầy đủ khi phù hợp.\n'
+        + 'Trả duy nhất JSON: {"parentId":"p0","focusId":"p0c0","confidence":0.95}\n\n'
+        + 'Câu hỏi: ' + String(userMessage || '') + '\n\n'
+        + 'OUTLINE HDSD THỰC TẾ:\n' + outlineText;
+
+    for (let m = 0; m < AI_MODELS.length; m++) {
+        for (let k = 0; k < API_KEYS.length; k++) {
+            try {
+                const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/' + AI_MODELS[m] + ':generateContent?key=' + API_KEYS[k];
+                const payload = {
+                    contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                    generationConfig: { temperature: 0, maxOutputTokens: 100 }
+                };
+                const res = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) continue;
+                const data = await res.json();
+                const picked = medplusParseActualHDSDAIPick_(extractGeminiText_(data), outline);
+                if (picked && picked.confidence >= 0.45) return picked;
+            } catch (e) {}
+        }
+    }
+    return null;
+}
+
+async function medplusResolveActualHDSDFocusForDrug_(drug, userMessage) {
+    if (!drug || !drug.link) return null;
+    const json = await loadHDSDJsonForDrug_(drug);
+    if (!json) return null;
+    const outline = medplusBuildActualHDSDOutline_(json);
+    if (!outline.parents || !outline.parents.length) return null;
+
+    // AI chỉ có quyền CHỌN ID trong outline thật. Nếu API không phản hồi, local score cũng chỉ chọn
+    // trong đúng các nhãn thực tế, tuyệt đối không hiển thị nhãn hard-code.
+    let meta = await medplusChooseActualHDSDFocusWithAI_(userMessage, outline);
+    if (!meta) meta = medplusChooseActualHDSDFocusLocally_(userMessage, outline);
+    if (!meta || !meta.focusLabel || !meta.parentLabel) return null;
+    return meta;
+}
+
+function medplusBuildActualHDSDGuideText_(meta) {
+    if (!meta || !meta.focusLabel || !meta.parentLabel) return '';
+    return 'Hãy xem chi tiết ở phần **' + cleanDrugFieldForChat_(meta.focusLabel)
+        + '** trong mục **' + cleanDrugFieldForChat_(meta.parentLabel)
+        + '**. Khi bấm **XEM HDSD**, phần đó được bôi đỏ để bạn dễ nhận biết.';
+}
+
+// Ghi đè nhánh trả lời HDSD: chỉ dùng nhãn mục/phần lấy từ tờ HDSD của CHÍNH thuốc đó.
+async function composeHDSDGroundedAnswerWithAI_(userMessage, selectedDrugs) {
+    let drugs = dedupeDrugs_(selectedDrugs || []).filter(function(d) { return d && d.link; });
+    const explicitBrandMatches = getExplicitBrandMatchesInQuestion_(userMessage, drugs);
+    if (explicitBrandMatches.length === 1) drugs = explicitBrandMatches;
+    drugs = drugs.slice(0, 3);
+    if (!drugs.length || !isHDSDContentQuestion_(userMessage)) return '';
+
+    const items = [];
+    for (let i = 0; i < drugs.length; i++) {
+        const drug = drugs[i];
+        const meta = await medplusResolveActualHDSDFocusForDrug_(drug, userMessage);
+        items.push({ drug: drug, meta: meta });
+    }
+
+    let answer = '';
+    const outputDrugs = [];
+    items.forEach(function(item, index) {
+        const brand = cleanDrugFieldForChat_(item.drug && item.drug.brand ? item.drug.brand : ('Thuốc ' + (index + 1)));
+        const guide = medplusBuildActualHDSDGuideText_(item.meta);
+        if (answer) answer += '\n\n---\n\n';
+        answer += '**Theo nội dung tờ HDSD ' + brand + ':**\n\n';
+        answer += guide || 'Hãy bấm **XEM HDSD** để mở tờ HDSD. Hệ thống chưa xác định được chắc chắn tên mục nên không hiển thị tên mục để tránh hướng dẫn sai.';
+
+        const resultDrug = Object.assign({}, item.drug);
+        if (item.meta && item.meta.focusLabel) {
+            resultDrug._hdsdChatFocus = item.meta.focusLabel;
+            resultDrug._hdsdChatFocusParent = item.meta.parentLabel || '';
+        }
+        outputDrugs.push(resultDrug);
+    });
+
+    return appendDeterministicDrugListToAnswer_(answer, outputDrugs);
+}
+
+// Tắt các fallback cũ theo từ khóa câu hỏi. Chúng là nguyên nhân làm hiện tên mục không đúng với tờ HDSD.
+function ensureHDSDGuideVisibleInFinalAnswer_(answerText, userMessage) {
+    return String(answerText || '');
+}
+function insertVisibleHDSDGuideAfterRenderedHeader_(wrapper, userMessage) {
+    // Guide được bổ sung lại phía dưới bằng dữ liệu outline thực tế sau khi bubble chat đã render.
+}
+
+function medplusDecodeHDSDToken_(value) {
+    try { return decodeURIComponent(String(value || '')); }
+    catch (e) { return String(value || ''); }
+}
+
+function medplusUpgradeLegacyHDSDChatButton_(button) {
+    if (!button || button.dataset.medplusActualHdsdBound === '1') return;
+    const raw = String(button.getAttribute('onclick') || '');
+    const match = raw.match(/openHDSDFromChat\('([^']*)'\s*,\s*event\s*,\s*'([^']*)'\s*,\s*'([^']*)'\)/i);
+    if (!match) return;
+    button.dataset.medplusHdsdUrl = match[1] || '';
+    button.dataset.medplusHdsdFocus = match[2] || '';
+    button.dataset.medplusHdsdParent = match[3] || '';
+    button.dataset.medplusActualHdsdBound = '1';
+    button.removeAttribute('onclick');
+    button.onclick = function(evt) {
+        return openHDSDFromChat(
+            button.dataset.medplusHdsdUrl || '',
+            evt,
+            button.dataset.medplusHdsdFocus || '',
+            button.dataset.medplusHdsdParent || ''
+        );
+    };
+}
+
+function medplusSetActualHDSDFocusOnButton_(button, meta) {
+    if (!button || !meta || !meta.focusLabel || !meta.parentLabel) return;
+    medplusUpgradeLegacyHDSDChatButton_(button);
+    button.dataset.medplusHdsdFocus = encodeURIComponent(String(meta.focusLabel));
+    button.dataset.medplusHdsdParent = encodeURIComponent(String(meta.parentLabel));
+}
+
+function medplusRenderActualHDSDGuide_(headerParagraph, meta) {
+    if (!headerParagraph || !meta || !meta.focusLabel || !meta.parentLabel) return;
+    let guide = headerParagraph.nextElementSibling;
+    if (!guide || !guide.classList || !guide.classList.contains('hdsd-chat-guide')) {
+        guide = document.createElement('p');
+        guide.className = 'hdsd-chat-guide';
+        headerParagraph.insertAdjacentElement('afterend', guide);
+    }
+    guide.innerHTML = '';
+    guide.appendChild(document.createTextNode('Hãy xem chi tiết ở phần '));
+    const focus = document.createElement('b');
+    focus.textContent = meta.focusLabel;
+    guide.appendChild(focus);
+    guide.appendChild(document.createTextNode(' trong mục '));
+    const parent = document.createElement('b');
+    parent.textContent = meta.parentLabel;
+    guide.appendChild(parent);
+    guide.appendChild(document.createTextNode('. Khi bấm '));
+    const hdsd = document.createElement('b');
+    hdsd.textContent = 'XEM HDSD';
+    guide.appendChild(hdsd);
+    guide.appendChild(document.createTextNode(', phần đó được bôi đỏ để bạn dễ nhận biết.'));
+}
+
+async function medplusResolveRenderedHDSDGuides_(wrapper, userMessage) {
+    if (!wrapper || !userMessage || !isHDSDContentQuestion_(userMessage)) return;
+    const headers = Array.prototype.slice.call(wrapper.querySelectorAll('p')).filter(function(p) {
+        return removeAccents(p.textContent || '').indexOf('theo noi dung to hdsd') !== -1;
+    });
+    if (!headers.length) return;
+
+    const buttons = Array.prototype.slice.call(wrapper.querySelectorAll('button.hdsd-btn'));
+    headers.forEach(function(header, index) {
+        const button = buttons[index] || buttons[0] || null;
+        if (!button) return;
+        medplusUpgradeLegacyHDSDChatButton_(button);
+        const encodedUrl = button.dataset.medplusHdsdUrl || '';
+        const canonicalUrl = medplusDecodeHDSDToken_(encodedUrl);
+        const drug = findDrugByHDSDUrl_(canonicalUrl);
+        if (!drug) return;
+
+        medplusResolveActualHDSDFocusForDrug_(drug, userMessage).then(function(meta) {
+            if (!meta) return;
+            medplusSetActualHDSDFocusOnButton_(button, meta);
+            medplusRenderActualHDSDGuide_(header, meta);
+        }).catch(function() {});
+    });
+}
+
+// Bao ngoài displayMessage để xử lý cả những nhánh cũ/AI không đi qua composeHDSDGroundedAnswerWithAI_.
+var __medplusDisplayMessageBeforeActualHDSDPatch = window.displayMessage;
+if (typeof __medplusDisplayMessageBeforeActualHDSDPatch === 'function') {
+    window.displayMessage = function(text, sender) {
+        const result = __medplusDisplayMessageBeforeActualHDSDPatch.apply(this, arguments);
+        if (sender !== 'user') {
+            const question = window.__medplusLastUserQuestion || '';
+            const wrappers = document.querySelectorAll('#chat-messages .ai-message .text-wrapper');
+            const wrapper = wrappers.length ? wrappers[wrappers.length - 1] : null;
+            setTimeout(function() {
+                medplusResolveRenderedHDSDGuides_(wrapper, question);
+            }, 0);
+        }
+        return result;
+    };
+}
+
+/* ================================================================
+   BỔ SUNG PHIÊN BẢN HDSD (CÁN BỘ Y TẾ / BỆNH NHÂN) VÀ CACHE
+   ================================================================ */
+function medplusActualHDSDFocusCacheKey_(drug, userMessage) {
+    const page = drug && drug.link ? (getHDSDPageId_(drug.link) || normalizeHDSDUrl_(drug.link)) : '';
+    return String(page || '') + '|' + normalizeHDSDFocusNorm_(userMessage || '');
+}
+
+// Ghi đè resolver bằng cache để không gọi AI hai lần cho cùng một thuốc/câu hỏi
+var __medplusResolveActualHDSDFocusForDrugNoCache = medplusResolveActualHDSDFocusForDrug_;
+async function medplusResolveActualHDSDFocusForDrug_(drug, userMessage) {
+    if (!window._medplusActualHDSDFocusCache) window._medplusActualHDSDFocusCache = new Map();
+    const cache = window._medplusActualHDSDFocusCache;
+    const key = medplusActualHDSDFocusCacheKey_(drug, userMessage);
+    if (cache.has(key)) return cache.get(key);
+    const pending = __medplusResolveActualHDSDFocusForDrugNoCache(drug, userMessage)
+        .catch(function() { return null; });
+    cache.set(key, pending);
+    const result = await pending;
+    cache.set(key, result);
+    if (cache.size > 60) {
+        const first = cache.keys().next().value;
+        cache.delete(first);
+    }
+    return result;
+}
+
+// Ghi đè danh sách thuốc để mang theo cả nhãn phiên bản thật của tờ HDSD.
+function buildDeterministicDrugListForChat_(selectedDrugs) {
+    const drugs = dedupeDrugs_(selectedDrugs || []);
+    const hospital = 'Bệnh viện Đa khoa tỉnh Tuyên Quang';
+    let answer = '\n\n';
+    if (!drugs.length) {
+        answer += 'Tại **' + hospital + '** hiện chưa tìm thấy thuốc phù hợp trong danh mục.';
+        return answer;
+    }
+    if (drugs.length === 1) {
+        const oneBrand = cleanDrugFieldForChat_(drugs[0].brand);
+        answer += 'Tại **' + hospital + '** hiện có thuốc **"' + oneBrand + '"** phù hợp trong danh mục:\n\n';
+    } else {
+        answer += 'Tại **' + hospital + '** hiện có **' + drugs.length + '** thuốc phù hợp trong danh mục:\n\n';
+    }
+    const shouldNumber = drugs.length > 1;
+    drugs.forEach(function(d, i) {
+        const brand = cleanDrugFieldForChat_(d.brand);
+        const active = cleanDrugFieldForChat_(d.active);
+        const form = cleanDrugFieldForChat_(d.form);
+        let link = String(d.link || '').trim();
+        if (link && d._hdsdChatFocus) {
+            const focusParams = ['hdsd-focus=' + encodeURIComponent(String(d._hdsdChatFocus || ''))];
+            if (d._hdsdChatFocusParent) focusParams.push('hdsd-parent=' + encodeURIComponent(String(d._hdsdChatFocusParent || '')));
+            if (d._hdsdChatFocusVersion) focusParams.push('hdsd-version=' + encodeURIComponent(String(d._hdsdChatFocusVersion || '')));
+            link += (link.indexOf('#') >= 0 ? '&' : '#') + focusParams.join('&');
+        }
+        answer += (shouldNumber ? ((i + 1) + '. ') : '')
+            + '**' + brand + '**'
+            + ' — Hoạt chất: ' + active
+            + ' — Dạng bào chế: ' + form;
+        answer += link ? ' [XEM HDSD](' + link + ')' : ' 📄 HDSD đang cập nhật';
+        answer += '\n';
+    });
+    return answer.trimEnd();
+}
+
+// Phiên bản mới của compose để đưa versionLabel từ outline thật sang nút XEM HDSD.
+async function composeHDSDGroundedAnswerWithAI_(userMessage, selectedDrugs) {
+    let drugs = dedupeDrugs_(selectedDrugs || []).filter(function(d) { return d && d.link; });
+    const explicitBrandMatches = getExplicitBrandMatchesInQuestion_(userMessage, drugs);
+    if (explicitBrandMatches.length === 1) drugs = explicitBrandMatches;
+    drugs = drugs.slice(0, 3);
+    if (!drugs.length || !isHDSDContentQuestion_(userMessage)) return '';
+
+    const items = [];
+    for (let i = 0; i < drugs.length; i++) {
+        const drug = drugs[i];
+        const meta = await medplusResolveActualHDSDFocusForDrug_(drug, userMessage);
+        items.push({ drug: drug, meta: meta });
+    }
+
+    let answer = '';
+    const outputDrugs = [];
+    items.forEach(function(item, index) {
+        const brand = cleanDrugFieldForChat_(item.drug && item.drug.brand ? item.drug.brand : ('Thuốc ' + (index + 1)));
+        const guide = medplusBuildActualHDSDGuideText_(item.meta);
+        if (answer) answer += '\n\n---\n\n';
+        answer += '**Theo nội dung tờ HDSD ' + brand + ':**\n\n';
+        answer += guide || 'Hãy bấm **XEM HDSD** để mở tờ HDSD. Hệ thống chưa xác định được chắc chắn tên mục nên không hiển thị tên mục để tránh hướng dẫn sai.';
+
+        const resultDrug = Object.assign({}, item.drug);
+        if (item.meta && item.meta.focusLabel) {
+            resultDrug._hdsdChatFocus = item.meta.focusLabel;
+            resultDrug._hdsdChatFocusParent = item.meta.parentLabel || '';
+            resultDrug._hdsdChatFocusVersion = item.meta.versionLabel || '';
+        }
+        outputDrugs.push(resultDrug);
+    });
+    return appendDeterministicDrugListToAnswer_(answer, outputDrugs);
+}
+
+function medplusAllHDSDFocusNodes_(root) {
+    return Array.prototype.slice.call((root || document).querySelectorAll('h1,h2,h3,summary span,summary,strong,b,p'));
+}
+
+function medplusFindNodeIndex_(nodes, target) {
+    for (let i = 0; i < nodes.length; i++) {
+        if (nodes[i] === target || nodes[i].contains(target) || target.contains(nodes[i])) return i;
+    }
+    return -1;
+}
+
+function medplusFindBestHDSDNodeInRange_(nodes, fromIndex, toIndex, phrase, skipTarget) {
+    let best = null;
+    let bestScore = -1;
+    for (let i = Math.max(0, fromIndex); i < Math.min(nodes.length, toIndex); i++) {
+        const el = nodes[i];
+        if (skipTarget && (el === skipTarget || skipTarget.contains(el))) continue;
+        const score = scoreHDSDChatFocusElement_(el, normalizeHDSDChatFocusText_(phrase));
+        if (score > bestScore) {
+            bestScore = score;
+            best = el;
+        }
+    }
+    return bestScore >= 150 ? best : null;
+}
+
+// Ghi đè bôi đỏ để giới hạn đúng vùng phiên bản trước, rồi mới tìm parent/focus.
+function applyPendingHDSDChatFocus_(root, attempt) {
+    root = root || document.getElementById('hdsd-content');
+    if (!root) return;
+    attempt = attempt || 0;
+    clearHDSDChatFocusHighlights_(root);
+
+    const focus = window._pendingHDSDChatFocus || '';
+    const parentFocus = window._pendingHDSDChatParentFocus || '';
+    const versionFocus = window._pendingHDSDChatVersionFocus || '';
+    if (!focus) return;
+
+    const nodes = medplusAllHDSDFocusNodes_(root);
+    let rangeStart = 0;
+    let rangeEnd = nodes.length;
+    let versionTarget = null;
+    if (versionFocus) {
+        versionTarget = findHDSDChatFocusElement_(root, versionFocus);
+        if (versionTarget) {
+            openAncestorDetailsForHDSDFocus_(versionTarget);
+            const versionIndex = medplusFindNodeIndex_(nodes, versionTarget);
+            if (versionIndex >= 0) {
+                rangeStart = versionIndex + 1;
+                for (let i = rangeStart; i < nodes.length; i++) {
+                    if (hdsdIsVersionHeading_(nodes[i].textContent || '')) {
+                        rangeEnd = i;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    let parentTarget = null;
+    let target = null;
+    if (parentFocus) {
+        parentTarget = medplusFindBestHDSDNodeInRange_(nodes, rangeStart, rangeEnd, parentFocus, versionTarget);
+        if (!parentTarget && !versionFocus) parentTarget = findHDSDChatFocusElement_(root, parentFocus);
+        if (parentTarget) {
+            openAncestorDetailsForHDSDFocus_(parentTarget);
+            const parentNorm = hdsdChatElementTextNorm_(parentTarget);
+            const focusNorm = normalizeHDSDChatFocusText_(focus);
+            if (parentNorm && parentNorm === focusNorm) {
+                target = parentTarget;
+            } else {
+                const parentIndex = medplusFindNodeIndex_(nodes, parentTarget);
+                if (parentIndex >= 0) {
+                    let localEnd = rangeEnd;
+                    for (let i = parentIndex + 1; i < rangeEnd; i++) {
+                        if (hdsdChatFocusIsLogicalBoundary_(nodes[i])) {
+                            localEnd = i;
+                            break;
+                        }
+                    }
+                    target = medplusFindBestHDSDNodeInRange_(nodes, parentIndex + 1, localEnd, focus, parentTarget);
+                }
+            }
+        }
+    }
+
+    if (!target && !parentFocus) {
+        target = medplusFindBestHDSDNodeInRange_(nodes, rangeStart, rangeEnd, focus, versionTarget);
+    }
+
+    // Không được tìm ngoài vùng version/parent sau khi đã xác định một trong hai vùng đó.
+    if (!target && !versionFocus && !parentFocus) target = findHDSDChatFocusElement_(root, focus);
+    if (!target && parentTarget) target = parentTarget;
+
+    if (!target && attempt < 8) {
+        setTimeout(function() { applyPendingHDSDChatFocus_(root, attempt + 1); }, 180);
+        return;
+    }
+    if (!target) return;
+
+    openAncestorDetailsForHDSDFocus_(target);
+    const highlightTarget = target.closest('summary') ? (target.closest('summary').querySelector('span') || target.closest('summary')) : target;
+    highlightTarget.classList.add('hdsd-chat-focus-highlight');
+    setTimeout(function() {
+        try { highlightTarget.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        catch (e) { highlightTarget.scrollIntoView(); }
+    }, 220);
+}
+
+// Nâng cấp nút để giữ version thật và truyền version vào cơ chế bôi đỏ.
+function medplusUpgradeLegacyHDSDChatButton_(button) {
+    if (!button || button.dataset.medplusActualHdsdBound === '1') return;
+    const raw = String(button.getAttribute('onclick') || '');
+    const match = raw.match(/openHDSDFromChat\('([^']*)'\s*,\s*event\s*,\s*'([^']*)'\s*,\s*'([^']*)'\)/i);
+    if (!match) return;
+    button.dataset.medplusHdsdUrl = match[1] || '';
+    button.dataset.medplusHdsdFocus = match[2] || '';
+    button.dataset.medplusHdsdParent = match[3] || '';
+    button.dataset.medplusHdsdVersion = '';
+    button.dataset.medplusActualHdsdBound = '1';
+    button.removeAttribute('onclick');
+    button.onclick = function(evt) {
+        window._pendingHDSDChatVersionFocus = medplusDecodeHDSDToken_(button.dataset.medplusHdsdVersion || '');
+        return openHDSDFromChat(
+            button.dataset.medplusHdsdUrl || '',
+            evt,
+            button.dataset.medplusHdsdFocus || '',
+            button.dataset.medplusHdsdParent || ''
+        );
+    };
+}
+
+function medplusSetActualHDSDFocusOnButton_(button, meta) {
+    if (!button || !meta || !meta.focusLabel || !meta.parentLabel) return;
+    medplusUpgradeLegacyHDSDChatButton_(button);
+    button.dataset.medplusHdsdFocus = encodeURIComponent(String(meta.focusLabel));
+    button.dataset.medplusHdsdParent = encodeURIComponent(String(meta.parentLabel));
+    button.dataset.medplusHdsdVersion = encodeURIComponent(String(meta.versionLabel || ''));
+}
+
+</script>
 </body>
 </html>
