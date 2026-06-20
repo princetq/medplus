@@ -8617,18 +8617,36 @@ body.medplus-aux-open .new-badge::after{
             return parts.join('\n').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
         }
 
+        function hdsdHeadingLevelFromType_(type) {
+            type = String(type || '');
+            if (type === 'heading_1') return 1;
+            if (type === 'heading_2') return 2;
+            if (type === 'heading_3') return 3;
+            if (type === 'toggle') return 1;
+            return 9;
+        }
+
         function buildHDSDTextSections_(jsonData) {
             const blocks = (jsonData && Array.isArray(jsonData.blocks)) ? jsonData.blocks : [];
             let sections = [];
             let general = [];
             let currentSection = null;
-            blocks.forEach(function(block) {
+            blocks.forEach(function(block, blockIndex) {
                 const type = block && block.type;
                 const own = hdsdBlockOwnPlainText_(block);
                 const content = hdsdBlockContentWithImageTokens_(block);
                 if (!content) return;
                 if (/^heading_|^toggle$/.test(type || '')) {
-                    currentSection = { title: own || 'Nội dung HDSD', text: content || own || '', images: [] };
+                    currentSection = {
+                        index: sections.length,
+                        sourceBlockIndex: blockIndex,
+                        blockId: block && block.id ? String(block.id) : '',
+                        type: type || '',
+                        level: hdsdHeadingLevelFromType_(type),
+                        title: own || 'Nội dung HDSD',
+                        text: content || own || '',
+                        images: []
+                    };
                     sections.push(currentSection);
                 } else if (currentSection) {
                     currentSection.text = (String(currentSection.text || '').trim() + '\n' + content).trim();
@@ -8636,7 +8654,19 @@ body.medplus-aux-open .new-badge::after{
                     general.push(content);
                 }
             });
-            if (general.length) sections.unshift({ title: 'Nội dung chung', text: general.join('\n'), images: [] });
+            if (general.length) {
+                sections.unshift({
+                    index: 0,
+                    sourceBlockIndex: -1,
+                    blockId: '',
+                    type: 'general',
+                    level: 1,
+                    title: 'Nội dung chung',
+                    text: general.join('\n'),
+                    images: []
+                });
+                sections.forEach(function(sec, i) { sec.index = i; });
+            }
             return sections;
         }
 
@@ -8720,28 +8750,103 @@ body.medplus-aux-open .new-badge::after{
             return result.slice(0, 40);
         }
 
-        function buildHDSDFocusOutline_(sections) {
-            return (sections || []).map(function(sec, index) {
-                const title = normalizeHDSDFocusLabel_(sec && sec.title ? sec.title : ('Mục ' + (index + 1)));
-                return {
-                    index: index,
-                    title: title,
-                    children: extractHDSDSubHeadingCandidates_(sec || {})
-                };
-            });
+        function hdsdTitleNormForOutline_(value) {
+            return normalizeHDSDFocusNorm_(value || '');
         }
 
-        function findClosestHDSDFocusLabelInOutline_(outline, parentIndex, rawFocusLabel) {
-            const parent = (outline || []).find(function(item) { return item.index === parentIndex; }) || null;
-            if (!parent) return '';
-            const requested = normalizeHDSDFocusNorm_(rawFocusLabel || '');
-            const labels = [parent.title].concat(parent.children || []);
-            if (!requested) return parent.title || '';
+        function hdsdIsVersionHeading_(title) {
+            const n = hdsdTitleNormForOutline_(title);
+            return /(can bo y te|benh nhan|nguoi benh|nguoi su dung|patient|professional|healthcare|hdsd danh cho)/.test(n);
+        }
 
-            let best = '';
+        function hdsdIsKnownChildHDSDTitle_(title) {
+            const n = hdsdTitleNormForOutline_(title);
+            if (!n) return false;
+            return /^(hap thu|phan bo|chuyen hoa|thai tru|tuong tac thuoc|tuong ky cua thuoc|tuong hop tuong ky|tuong hop va tuong ky|tuong ky|tuong hop|han dung|han su dung|dieu kien bao quan|bao quan|quy cach dong goi|quy cach|dong goi|tieu chuan chat luong|tieu chuan|nha san xuat|co so san xuat|chu so huu|don vi dang ky|so dang ky|sdk|thanh phan hoat chat|ta duoc|du lieu an toan tien lam sang)$/.test(n);
+        }
+
+        function hdsdIsKnownMajorHDSDTitle_(title) {
+            const n = hdsdTitleNormForOutline_(title);
+            if (!n) return false;
+            return /(thanh phan|dang bao che|mo ta|quy cach|chi dinh|chong chi dinh|lieu dung|cach dung|canh bao|than trong|phu nu co thai|mang thai|cho con bu|lai xe|van hanh may|tac dung khong mong muon|adr|tuong tac|tuong ky|qua lieu|quen lieu|duoc luc|duoc dong|bao quan|han dung|thong tin them|tieu chuan|nha san xuat|so dang ky|chu so huu|don vi dang ky|dac tinh duoc|doc tinh|benh nhan|can bo y te)/.test(n);
+        }
+
+        function addHDSDOutlineChild_(parent, childLabel, childIndex, childLevel) {
+            if (!parent) return;
+            const clean = normalizeHDSDFocusLabel_(childLabel || '');
+            const norm = normalizeHDSDFocusNorm_(clean);
+            if (!norm || norm === normalizeHDSDFocusNorm_(parent.title)) return;
+            parent._childNorms = parent._childNorms || new Set();
+            if (parent._childNorms.has(norm)) return;
+            parent._childNorms.add(norm);
+            parent.children.push(clean);
+            parent.childSections = parent.childSections || [];
+            parent.childSections.push({ index: childIndex, title: clean, level: childLevel || 9 });
+        }
+
+        function buildHDSDFocusOutline_(sections) {
+            const outline = [];
+            let currentParent = null;
+            let currentVersion = '';
+
+            (sections || []).forEach(function(sec, index) {
+                const title = normalizeHDSDFocusLabel_(sec && sec.title ? sec.title : ('Mục ' + (index + 1)));
+                const level = Number.isFinite(Number(sec && sec.level)) ? Number(sec.level) : 9;
+                const type = String((sec && sec.type) || '');
+                const isVersion = hdsdIsVersionHeading_(title);
+                if (isVersion) currentVersion = title;
+
+                const knownChild = hdsdIsKnownChildHDSDTitle_(title);
+                const knownMajor = hdsdIsKnownMajorHDSDTitle_(title);
+                const lowerThanCurrent = !!(currentParent && level > Number(currentParent.level || 1));
+
+                // Notion/API thường trả block phẳng: mục con có thể là heading cùng cấp hoặc paragraph mạnh,
+                // không nằm trong DOM con của mục lớn. Vì vậy outline được dựng theo THỨ TỰ BLOCK:
+                // một tiêu đề con thuộc về mục lớn đứng ngay trước nó, cho tới khi gặp mục lớn tiếp theo.
+                const shouldAttachAsChild = !!(currentParent && !isVersion && (knownChild || (lowerThanCurrent && !knownMajor)));
+
+                if (shouldAttachAsChild) {
+                    addHDSDOutlineChild_(currentParent, title, index, level);
+                    extractHDSDSubHeadingCandidates_(sec || {}).forEach(function(c) {
+                        addHDSDOutlineChild_(currentParent, c, index, level + 0.1);
+                    });
+                    return;
+                }
+
+                currentParent = {
+                    index: index,
+                    title: title,
+                    level: level,
+                    type: type,
+                    versionLabel: currentVersion,
+                    children: [],
+                    childSections: [],
+                    _childNorms: new Set()
+                };
+                outline.push(currentParent);
+
+                extractHDSDSubHeadingCandidates_(sec || {}).forEach(function(c) {
+                    addHDSDOutlineChild_(currentParent, c, index, level + 0.1);
+                });
+            });
+
+            outline.forEach(function(item) { delete item._childNorms; });
+            return outline;
+        }
+
+        function findClosestHDSDFocusMatchInOutline_(outline, parentIndex, rawFocusLabel) {
+            const parent = (outline || []).find(function(item) { return item.index === parentIndex; }) || null;
+            if (!parent) return null;
+            const requested = normalizeHDSDFocusNorm_(rawFocusLabel || '');
+            const labels = [{ label: parent.title, sectionIndex: parent.index, isChild: false }]
+                .concat((parent.childSections || []).map(function(c) { return { label: c.title, sectionIndex: c.index, isChild: true }; }))
+                .concat((parent.children || []).map(function(c) { return { label: c, sectionIndex: parent.index, isChild: true }; }));
+            if (!requested) return labels[0] || null;
+
+            let best = null;
             let bestScore = -1;
-            labels.forEach(function(label) {
-                const norm = normalizeHDSDFocusNorm_(label);
+            labels.forEach(function(item) {
+                const norm = normalizeHDSDFocusNorm_(item.label);
                 if (!norm) return;
                 let score = 0;
                 if (norm === requested) score += 1000;
@@ -8749,13 +8854,19 @@ body.medplus-aux-open .new-badge::after{
                 const reqWords = requested.split(/\s+/).filter(Boolean);
                 const hit = reqWords.filter(function(w) { return w.length >= 3 && hdsdFocusTextHasPhrase_(norm, w); }).length;
                 score += hit * 80;
-                if ((parent.children || []).indexOf(label) >= 0) score += 45;
+                if (item.isChild) score += 45;
                 if (score > bestScore) {
                     bestScore = score;
-                    best = label;
+                    best = item;
                 }
             });
-            return bestScore >= 160 ? best : (parent.title || '');
+            if (bestScore >= 160) return best;
+            return labels[0] || null;
+        }
+
+        function findClosestHDSDFocusLabelInOutline_(outline, parentIndex, rawFocusLabel) {
+            const match = findClosestHDSDFocusMatchInOutline_(outline, parentIndex, rawFocusLabel);
+            return match ? match.label : '';
         }
 
         function parseHDSDFocusPickerResponse_(rawText, sections, outline) {
@@ -8771,21 +8882,34 @@ body.medplus-aux-open .new-badge::after{
                 : (Number.isFinite(Number(payload.index)) ? Number(payload.index)
                 : (Number.isFinite(Number(payload.sectionIndex)) ? Number(payload.sectionIndex) : -1));
             parentIndex = parseInt(parentIndex, 10);
-            if (!Number.isFinite(parentIndex) || parentIndex < 0 || parentIndex >= sections.length) return null;
 
-            const parent = (outline || []).find(function(item) { return item.index === parentIndex; }) || { title: cleanDrugFieldForChat_(sections[parentIndex].title || '') };
+            // Nếu AI trả focusIndex theo outline phẳng, tự suy ra mục lớn chứa focusIndex.
+            const focusIndexFromAI = Number.isFinite(Number(payload.focusIndex)) ? parseInt(payload.focusIndex, 10) : -1;
+            if ((!Number.isFinite(parentIndex) || parentIndex < 0) && Number.isFinite(focusIndexFromAI) && focusIndexFromAI >= 0) {
+                const owner = (outline || []).find(function(item) {
+                    if (item.index === focusIndexFromAI) return true;
+                    return (item.childSections || []).some(function(c) { return c.index === focusIndexFromAI; });
+                });
+                if (owner) parentIndex = owner.index;
+            }
+
+            const parent = (outline || []).find(function(item) { return item.index === parentIndex; }) || null;
+            if (!parent || parentIndex < 0 || parentIndex >= sections.length) return null;
+
             const rawFocus = payload.focusLabel || payload.childLabel || payload.heading || payload.title || parent.title || '';
-            const focusLabel = findClosestHDSDFocusLabelInOutline_(outline, parentIndex, rawFocus) || parent.title || '';
+            const focusMatch = findClosestHDSDFocusMatchInOutline_(outline, parentIndex, rawFocus) || { label: parent.title, sectionIndex: parent.index };
             const confidence = Number(payload.confidence || payload.score || 0.75);
-            if (!focusLabel || confidence < 0.45) return null;
+            if (!focusMatch || !focusMatch.label || confidence < 0.45) return null;
 
             const parentLabel = parent.title || cleanDrugFieldForChat_(sections[parentIndex].title || '');
             return {
                 parentIndex: parentIndex,
                 parentLabel: parentLabel,
-                focusLabel: focusLabel,
+                focusLabel: focusMatch.label,
+                focusIndex: Number.isFinite(Number(focusMatch.sectionIndex)) ? parseInt(focusMatch.sectionIndex, 10) : parentIndex,
+                versionLabel: parent.versionLabel || '',
                 confidence: confidence,
-                source: 'ai-outline-picker'
+                source: 'ai-flat-outline-picker'
             };
         }
 
@@ -8793,21 +8917,23 @@ body.medplus-aux-open .new-badge::after{
             if (!Array.isArray(sections) || !sections.length) return null;
             const outline = buildHDSDFocusOutline_(sections);
             const outlineText = outline.map(function(item) {
-                let line = '[' + item.index + '] ' + item.title;
+                let line = '[parentIndex=' + item.index + '] ' + item.title;
+                if (item.versionLabel) line += ' | phiên bản/vùng: ' + item.versionLabel;
                 if (item.children && item.children.length) {
-                    line += '\n  Tiêu đề con: ' + item.children.map(function(c) { return '"' + c + '"'; }).join('; ');
+                    line += '\n  Các phần/tiêu đề cùng vùng: ' + item.children.map(function(c) { return '"' + c + '"'; }).join('; ');
                 }
                 return line;
             }).join('\n');
 
-            const pickerPrompt = 'Bạn là bộ chọn vị trí trong tờ HDSD thuốc.\n'
-                + 'Nhiệm vụ: chọn đúng MỤC LỚN và nếu có thì chọn đúng TIÊU ĐỀ CON đang có thật trong danh sách dưới đây để website mở HDSD và bôi đỏ.\n'
+            const pickerPrompt = 'Bạn là bộ HẬU KIỂM vị trí trong tờ HDSD thuốc.\n'
+                + 'Dữ liệu HDSD được render từ Notion/API có dạng OUTLINE PHẲNG: mục con có thể nằm cùng cấp block với mục lớn, không nhất thiết là DOM con.\n'
+                + 'Nhiệm vụ: chọn đúng parentIndex là MỤC LỚN logic, và focusLabel là phần/tiêu đề cần bôi đỏ thật sự có trong danh sách.\n'
                 + 'Chỉ được dùng tiêu đề xuất hiện trong DANH SÁCH. Không tự bịa tiêu đề mới. Không trả lời nội dung thuốc.\n'
-                + 'Nếu câu hỏi hỏi một phần nằm trong mục lớn, ví dụ hấp thu nằm trong dược động học, hạn dùng nằm trong thông tin thêm, tương kỵ nằm trong tương tác/tương kỵ, hãy trả focusLabel là đúng tiêu đề con.\n'
-                + 'Nếu câu hỏi hỏi cả mục lớn, trả focusLabel bằng tiêu đề mục lớn.\n'
+                + 'Ví dụ: hỏi hấp thu => parent là Dược động học, focusLabel là Hấp thu; hỏi hạn dùng => parent là Thông tin thêm, focusLabel là Hạn dùng; hỏi liều dùng nếu đó là mục lớn riêng => parent và focusLabel đều là Liều dùng/cách dùng.\n'
+                + 'Nếu tờ có vùng Dành cho cán bộ y tế và Dành cho bệnh nhân, ưu tiên vùng phù hợp với câu hỏi; nếu không rõ, ưu tiên phần dành cho cán bộ y tế hoặc phần chuyên môn đầy đủ.\n'
                 + 'Trả duy nhất JSON hợp lệ dạng: {"parentIndex":0,"focusLabel":"Hấp thu","confidence":0.95}\n\n'
                 + 'Câu hỏi người dùng: ' + String(userMessage || '') + '\n\n'
-                + 'DANH SÁCH MỤC/TIÊU ĐỀ HDSD:\n' + outlineText;
+                + 'DANH SÁCH OUTLINE PHẲNG HDSD:\n' + outlineText;
 
             for (let m = 0; m < AI_MODELS.length; m++) {
                 for (let k = 0; k < API_KEYS.length; k++) {
@@ -8815,7 +8941,7 @@ body.medplus-aux-open .new-badge::after{
                         const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/' + AI_MODELS[m] + ':generateContent?key=' + API_KEYS[k];
                         const payload = {
                             contents: [{ role: 'user', parts: [{ text: pickerPrompt }] }],
-                            generationConfig: { temperature: 0, maxOutputTokens: 120 }
+                            generationConfig: { temperature: 0, maxOutputTokens: 140 }
                         };
                         const res = await fetch(apiUrl, {
                             method: 'POST',
@@ -8843,7 +8969,9 @@ body.medplus-aux-open .new-badge::after{
             let bestScore = -1;
 
             outline.forEach(function(item) {
-                const labels = [{ label: item.title, isChild: false }].concat((item.children || []).map(function(c) { return { label: c, isChild: true }; }));
+                const labels = [{ label: item.title, isChild: false, sectionIndex: item.index }]
+                    .concat((item.childSections || []).map(function(c) { return { label: c.title, isChild: true, sectionIndex: c.index }; }))
+                    .concat((item.children || []).map(function(c) { return { label: c, isChild: true, sectionIndex: item.index }; }));
                 labels.forEach(function(candidate) {
                     const labelNorm = normalizeHDSDFocusNorm_(candidate.label);
                     if (!labelNorm) return;
@@ -8856,15 +8984,18 @@ body.medplus-aux-open .new-badge::after{
                         if (labelNorm.indexOf(alias) === 0) score += 80;
                     });
                     if (candidate.isChild) score += 140;
-                    if (labelNorm.length <= 32) score += 45;
+                    if (labelNorm.length <= 40) score += 45;
+                    if (item.versionLabel && /can bo y te/i.test(removeAccents(item.versionLabel))) score += 15;
                     if (score > bestScore) {
                         bestScore = score;
                         best = {
                             parentIndex: item.index,
                             parentLabel: item.title,
                             focusLabel: candidate.label,
-                            confidence: Math.min(0.92, 0.45 + score / 1800),
-                            source: 'local-outline-picker'
+                            focusIndex: Number.isFinite(Number(candidate.sectionIndex)) ? parseInt(candidate.sectionIndex, 10) : item.index,
+                            versionLabel: item.versionLabel || '',
+                            confidence: Math.min(0.94, 0.45 + score / 1800),
+                            source: 'local-flat-outline-picker'
                         };
                     }
                 });
@@ -8911,10 +9042,13 @@ body.medplus-aux-open .new-badge::after{
 
             if (focusMeta && Number.isFinite(Number(focusMeta.parentIndex))) {
                 const idx = parseInt(focusMeta.parentIndex, 10);
-                const excerpt = buildHDSDExcerptFromSections_(sections, [idx], true);
+                const focusIdx = Number.isFinite(Number(focusMeta.focusIndex)) ? parseInt(focusMeta.focusIndex, 10) : idx;
+                const excerptIndexes = [idx];
+                if (focusIdx !== idx) excerptIndexes.push(focusIdx);
+                const excerpt = buildHDSDExcerptFromSections_(sections, excerptIndexes, true);
                 // Giữ parentLabel kể cả khi trùng focusLabel để chatbot luôn có thể
                 // diễn giải: "Hãy xem chi tiết ở phần ... trong mục ...".
-                // Việc bôi đỏ vẫn dùng focusLabel, còn mở đúng mục vẫn dùng parentIndex.
+                // Dữ liệu là outline phẳng: focusIndex có thể là block cùng cấp với parentIndex.
                 return { excerpt: excerpt || '', focusMeta: focusMeta };
             }
 
@@ -9129,6 +9263,76 @@ body.medplus-aux-open .new-badge::after{
             return dedupeDrugs_(matches);
         }
 
+
+        function getFirstHDSDExcerptTitle_(excerpt) {
+            const m = String(excerpt || '').match(/^###\s*([^\n]+)/m);
+            return m ? cleanDrugFieldForChat_(m[1]) : '';
+        }
+
+        function inferHDSDGuideLabelFromQuestion_(userMessage) {
+            const q = removeAccents(userMessage || '');
+            const pairs = [
+                { label: 'Liều dùng/cách dùng', tests: ['lieu dung', 'cach dung', 'cach su dung', 'duong dung', 'cach pha', 'pha truyen', 'toc do truyen'] },
+                { label: 'Chỉ định/công dụng', tests: ['chi dinh', 'cong dung', 'dung de lam gi', 'tri benh gi', 'dieu tri gi'] },
+                { label: 'Thành phần/hoạt chất', tests: ['thanh phan', 'hoat chat', 'ta duoc', 'chua gi', 'cong thuc', 'ham luong'] },
+                { label: 'Chống chỉ định', tests: ['chong chi dinh', 'khong duoc dung', 'ai khong dung', 'khong nen dung'] },
+                { label: 'Thận trọng/cảnh báo', tests: ['than trong', 'canh bao', 'luu y', 'khuyen cao'] },
+                { label: 'Tác dụng không mong muốn', tests: ['tac dung khong mong muon', 'tac dung phu', 'adr', 'phan ung phu', 'khong mong muon'] },
+                { label: 'Tương tác, tương kỵ của thuốc', tests: ['tuong tac', 'tuong tac thuoc', 'dung chung', 'phoi hop', 'tuong hop', 'tuong ky'] },
+                { label: 'Quá liều/quên liều', tests: ['qua lieu', 'xu tri qua lieu', 'quen lieu', 'bo lieu'] },
+                { label: 'Bảo quản/hạn dùng', tests: ['bao quan', 'dieu kien bao quan', 'han dung', 'han su dung', 'giu thuoc'] },
+                { label: 'Phụ nữ có thai/cho con bú', tests: ['phu nu co thai', 'phu nu mang thai', 'mang thai', 'thai ky', 'cho con bu', 'bu me', 'me cho con bu'] },
+                { label: 'Lái xe/vận hành máy', tests: ['lai xe', 'van hanh may', 'may moc'] },
+                { label: 'Dược lực học', tests: ['duoc luc hoc', 'co che tac dung'] },
+                { label: 'Dược động học', tests: ['duoc dong hoc', 'hap thu', 'phan bo', 'chuyen hoa', 'thai tru'] },
+                { label: 'Quy cách đóng gói', tests: ['quy cach', 'quy cach dong goi', 'dong goi', 'bao bi'] },
+                { label: 'Nhà sản xuất/xuất xứ', tests: ['nha san xuat', 'noi san xuat', 'co so san xuat', 'cong ty san xuat', 'xuat xu', 'nuoc san xuat'] },
+                { label: 'Số đăng ký/tiêu chuẩn', tests: ['so dang ky', 'sdk', 'tieu chuan', 'tieu chuan chat luong'] },
+                { label: 'Chủ sở hữu/đơn vị đăng ký', tests: ['chu so huu', 'don vi dang ky', 'co so dang ky', 'nha dang ky', 'thuong nhan'] },
+                { label: 'Phân loại thuốc', tests: ['phan loai', 'nhom thuoc', 'thuoc ke don', 'ke don', 'otc'] },
+                { label: 'Tên thuốc/mô tả', tests: ['ten thuoc', 'mo ta', 'dang bao che', 'dang trinh bay', 'nhan dang'] }
+            ];
+            for (let i = 0; i < pairs.length; i++) {
+                if (pairs[i].tests.some(function(t) { return hasNormalizedPhrase_(q, t); })) return pairs[i].label;
+            }
+            return '';
+        }
+
+        function buildHDSDGuideBodyForChat_(userMessage, focus, excerpt) {
+            let focusLabel = cleanDrugFieldForChat_((focus && focus.focusLabel) || '');
+            let parentLabel = cleanDrugFieldForChat_((focus && focus.parentLabel) || '');
+            const inferred = inferHDSDGuideLabelFromQuestion_(userMessage);
+            const firstTitle = getFirstHDSDExcerptTitle_(excerpt);
+
+            if (!focusLabel || removeAccents(focusLabel) === 'dang cap nhat') focusLabel = inferred || firstTitle || parentLabel;
+            if (!parentLabel || removeAccents(parentLabel) === 'dang cap nhat') parentLabel = firstTitle || focusLabel;
+            if (!focusLabel && parentLabel) focusLabel = parentLabel;
+            if (!parentLabel && focusLabel) parentLabel = focusLabel;
+            if (!focusLabel || !parentLabel) return '';
+
+            return 'Hãy xem chi tiết ở phần **' + focusLabel + '** trong mục **' + parentLabel + '**. '
+                + 'Khi bấm **XEM HDSD**, phần đó được bôi đỏ để bạn dễ nhận biết.';
+        }
+
+        function ensureHDSDFocusMetaForGuide_(userMessage, selected) {
+            const original = (selected && selected.focusMeta) ? Object.assign({}, selected.focusMeta) : {};
+            let focusLabel = cleanDrugFieldForChat_(original.focusLabel || '');
+            let parentLabel = cleanDrugFieldForChat_(original.parentLabel || '');
+            const inferred = inferHDSDGuideLabelFromQuestion_(userMessage);
+            const firstTitle = getFirstHDSDExcerptTitle_(selected && selected.excerpt ? selected.excerpt : '');
+
+            if (!focusLabel || removeAccents(focusLabel) === 'dang cap nhat') focusLabel = inferred || firstTitle || parentLabel;
+            if (!parentLabel || removeAccents(parentLabel) === 'dang cap nhat') parentLabel = firstTitle || focusLabel;
+            if (!focusLabel && parentLabel) focusLabel = parentLabel;
+            if (!parentLabel && focusLabel) parentLabel = focusLabel;
+            if (!focusLabel && !parentLabel) return (selected && selected.focusMeta) || null;
+
+            original.focusLabel = focusLabel;
+            original.parentLabel = parentLabel;
+            if (!original.source) original.source = 'fallback-guide-inference';
+            return original;
+        }
+
         async function buildHDSDInternalContextForDrugs_(userMessage, selectedDrugs) {
             let drugs = dedupeDrugs_(selectedDrugs || []).filter(function(d) { return d && d.link; });
             const explicitBrandMatches = getExplicitBrandMatchesInQuestion_(userMessage, drugs);
@@ -9142,7 +9346,8 @@ body.medplus-aux-open .new-badge::after{
                 if (!json) continue;
                 const selected = await selectHDSDExcerptForQuestionWithMeta_(json, userMessage);
                 if (!selected || (!selected.excerpt && !selected.focusMeta)) continue;
-                items.push({ drug: d, excerpt: selected.excerpt || '', hdsdFocus: selected.focusMeta || null });
+                const ensuredFocus = ensureHDSDFocusMetaForGuide_(userMessage, selected);
+                items.push({ drug: d, excerpt: selected.excerpt || '', hdsdFocus: ensuredFocus || null });
             }
             if (!items.length) return null;
             return items;
@@ -9185,12 +9390,8 @@ body.medplus-aux-open .new-badge::after{
                 const focus = item.hdsdFocus || null;
                 let body = '';
 
-                if (focus && (focus.parentLabel || focus.focusLabel)) {
-                    const focusLabel = cleanDrugFieldForChat_(focus.focusLabel || focus.parentLabel || 'phù hợp');
-                    const parentLabel = cleanDrugFieldForChat_(focus.parentLabel || focus.focusLabel || 'phù hợp');
-                    body = 'Hãy xem chi tiết ở phần **' + focusLabel + '** trong mục **' + parentLabel + '**. '
-                        + 'Khi bấm **XEM HDSD**, phần đó được bôi đỏ để bạn dễ nhận biết.';
-                } else {
+                body = buildHDSDGuideBodyForChat_(userMessage, focus, item.excerpt || '');
+                if (!body) {
                     body = formatDirectHDSDExcerptForChat_(item.excerpt || '');
                 }
 
@@ -11046,6 +11247,59 @@ body.medplus-aux-open .new-badge::after{
             }
         }
 
+        function hdsdChatElementTextNorm_(el) {
+            return normalizeHDSDChatFocusText_(el && el.textContent ? el.textContent : '');
+        }
+
+        function hdsdChatFocusElementTagLevel_(el) {
+            const tag = String(el && el.tagName || '').toUpperCase();
+            if (tag === 'H1') return 1;
+            if (tag === 'H2') return 2;
+            if (tag === 'H3') return 3;
+            if (tag === 'SUMMARY') return 1;
+            if (el && el.closest && el.closest('summary')) return 1;
+            return 9;
+        }
+
+        function hdsdChatFocusIsLogicalBoundary_(el) {
+            const tag = String(el && el.tagName || '').toUpperCase();
+            const inSummary = !!(el && el.closest && el.closest('summary'));
+            if (!/^H[1-3]$/.test(tag) && !inSummary) return false;
+            const text = el && el.textContent ? el.textContent : '';
+            if (hdsdIsKnownChildHDSDTitle_(text)) return false;
+            return hdsdIsKnownMajorHDSDTitle_(text) || inSummary || tag === 'H1' || tag === 'H2';
+        }
+
+        function findHDSDChatFocusElementInLogicalRange_(root, parentTarget, phrase) {
+            const phraseNorm = normalizeHDSDChatFocusText_(phrase);
+            if (!root || !parentTarget || !phraseNorm) return null;
+            const nodes = Array.from(root.querySelectorAll('h1,h2,h3,summary span,summary,strong,b,p'));
+            let parentIdx = -1;
+            for (let i = 0; i < nodes.length; i++) {
+                if (nodes[i] === parentTarget || nodes[i].contains(parentTarget) || parentTarget.contains(nodes[i])) {
+                    parentIdx = i;
+                    break;
+                }
+            }
+            if (parentIdx < 0) return null;
+
+            const parentNorm = hdsdChatElementTextNorm_(parentTarget);
+            if (parentNorm && parentNorm === phraseNorm) return parentTarget;
+
+            let best = null;
+            let bestScore = -1;
+            for (let i = parentIdx + 1; i < nodes.length; i++) {
+                const el = nodes[i];
+                if (hdsdChatFocusIsLogicalBoundary_(el)) break;
+                const score = scoreHDSDChatFocusElement_(el, phraseNorm);
+                if (score > bestScore) {
+                    bestScore = score;
+                    best = el;
+                }
+            }
+            return bestScore >= 150 ? best : null;
+        }
+
         function applyPendingHDSDChatFocus_(root, attempt) {
             root = root || document.getElementById('hdsd-content');
             if (!root) return;
@@ -11059,16 +11313,23 @@ body.medplus-aux-open .new-badge::after{
 
             let searchRoot = root;
             let parentTarget = null;
+            let flatRangeTarget = null;
             if (parentFocus) {
                 parentTarget = findHDSDChatFocusElement_(root, parentFocus);
                 if (parentTarget) {
                     openAncestorDetailsForHDSDFocus_(parentTarget);
                     const parentDetails = parentTarget.closest ? parentTarget.closest('details') : null;
-                    if (parentDetails) searchRoot = parentDetails;
+                    if (parentDetails) {
+                        searchRoot = parentDetails;
+                    } else {
+                        // Với dữ liệu Notion/API dạng block phẳng, mục con thường là block cùng cấp
+                        // nằm SAU mục lớn, không phải DOM con. Tìm focus trong vùng logic sau parent.
+                        flatRangeTarget = findHDSDChatFocusElementInLogicalRange_(root, parentTarget, focus);
+                    }
                 }
             }
 
-            let target = findHDSDChatFocusElement_(searchRoot, focus, { excludeRootSummary: searchRoot !== root });
+            let target = flatRangeTarget || findHDSDChatFocusElement_(searchRoot, focus, { excludeRootSummary: searchRoot !== root });
 
             // Nếu đã xác định được mục lớn nhưng mục con chưa render kịp, chờ render trong chính mục lớn.
             // Tuyệt đối không fallback ra toàn văn khi đã có mục lớn, vì sẽ bắt nhầm các đoạn văn ở mục khác
