@@ -9361,6 +9361,49 @@ body.medplus-aux-open .new-badge::after{
             return 'Hãy xem phần nội dung liên quan trong tờ HDSD. Khi bấm **XEM HDSD**, hệ thống sẽ mở tờ HDSD để bạn tra cứu.';
         }
 
+        // LỚP BẢO ĐẢM CUỐI CÙNG Ở ĐẦU RA CHAT:
+        // Một số nhánh cũ/AI có thể trả về đúng header “Theo nội dung tờ HDSD ...:”
+        // nhưng làm rơi phần hướng dẫn khi ghép câu trả lời. Không dựa vào outline, DOM hay
+        // thời điểm tải JSON ở lớp này: trước khi render, nếu đã có header HDSD mà chưa có
+        // câu hướng dẫn, tự chèn hướng dẫn theo ý định câu hỏi. Nhờ vậy không thể còn header trống.
+        function ensureHDSDGuideVisibleInFinalAnswer_(answerText, userMessage) {
+            let text = String(answerText || '');
+            const question = String(userMessage || '').trim();
+            if (!text || !question || !isHDSDContentQuestion_(question)) return text;
+
+            // Chỉ can thiệp vào câu trả lời HDSD thực sự; không chèn vào câu trả lời kiến thức chung.
+            if (!/theo\s+noi\s+dung\s+to\s+hdsd/i.test(removeAccents(text))) return text;
+            if (/hay\s+xem\s+chi\s+tiet\s+o\s+phan/i.test(removeAccents(text))) return text;
+
+            const fallback = buildQuestionOnlyHDSDGuideMeta_(question) || {};
+            const inferred = inferHDSDGuideLabelFromQuestion_(question) || '';
+            let focusLabel = cleanDrugFieldForChat_(fallback.focusLabel || inferred || '');
+            let parentLabel = cleanDrugFieldForChat_(fallback.parentLabel || focusLabel || '');
+
+            if (removeAccents(focusLabel) === 'dang cap nhat') focusLabel = '';
+            if (removeAccents(parentLabel) === 'dang cap nhat') parentLabel = '';
+            if (!focusLabel && parentLabel) focusLabel = parentLabel;
+            if (!parentLabel && focusLabel) parentLabel = focusLabel;
+
+            const guide = (focusLabel && parentLabel)
+                ? 'Hãy xem chi tiết ở phần **' + focusLabel + '** trong mục **' + parentLabel + '**. '
+                    + 'Khi bấm **XEM HDSD**, phần đó được bôi đỏ để bạn dễ nhận biết.'
+                : 'Hãy xem phần nội dung liên quan trong tờ HDSD. Khi bấm **XEM HDSD**, hệ thống sẽ mở tờ HDSD để bạn tra cứu.';
+
+            // Chèn ngay sau MỖI header HDSD. Hỗ trợ cả header markdown in đậm lẫn header thường.
+            const headerPattern = /(\*\*Theo\s+nội\s+dung\s+tờ\s+HDSD[^\n]*?:\*\*|Theo\s+nội\s+dung\s+tờ\s+HDSD[^\n]*?:)(?=\s*(?:\n|$))/gi;
+            let inserted = false;
+            text = text.replace(headerPattern, function(header) {
+                inserted = true;
+                return header + '\n\n' + guide;
+            });
+
+            // Không có header markdown chuẩn nhưng vẫn là đáp án HDSD: đặt guide ngay đầu để
+            // người dùng luôn biết phần cần tra cứu, thay vì nhìn một tiêu đề trống.
+            if (!inserted) text = guide + '\n\n' + text;
+            return text;
+        }
+
         function ensureHDSDFocusMetaForGuide_(userMessage, selected) {
             const original = (selected && selected.focusMeta) ? Object.assign({}, selected.focusMeta) : {};
             let focusLabel = cleanDrugFieldForChat_(original.focusLabel || '');
@@ -11754,6 +11797,11 @@ body.medplus-aux-open .new-badge::after{
         }
 
         function displayMessage(text, sender) {
+            // Cổng render cuối: bảo đảm mọi nhánh trả lời HDSD đều hiển thị hướng dẫn xem mục.
+            // Đây là lớp cuối cùng sau AI/miniRAG/outline, nên không còn phụ thuộc nhánh nào đã tạo text.
+            if (sender !== 'user') {
+                text = ensureHDSDGuideVisibleInFinalAnswer_(text, window.__medplusLastUserQuestion || '');
+            }
             const cm = document.getElementById('chat-messages');
             const div = document.createElement('div');
             div.classList.add('message', sender === 'user' ? 'user-message' : 'ai-message');
@@ -12592,6 +12640,10 @@ body.medplus-aux-open .new-badge::after{
                 setTimeout(function() { chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' }); }, 100); 
             }
             
+            // Lưu câu hỏi hiện tại để lớp render cuối vẫn có thể dựng hướng dẫn HDSD
+            // ngay cả khi một nhánh AI cũ chỉ trả header HDSD mà làm rơi phần body.
+            if (userMessage) window.__medplusLastUserQuestion = userMessage;
+
             // Với câu hỏi danh sách/thống kê theo nhóm thuốc, không trả lời bằng bộ lọc cứng trong HTML.
             // HTML chỉ gom thuốc liên quan, sau đó để AI lọc nhóm con và trả lời ngắn theo tên/số lượng.
 
@@ -14511,5 +14563,7 @@ updateNavbarSearchVisibility(id);
 })();
 </script>
 
+
+<!-- HDSD_GUIDE_FINAL_RENDER_GUARD: added -->
 </body>
 </html>
