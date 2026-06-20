@@ -9298,38 +9298,86 @@ body.medplus-aux-open .new-badge::after{
             return '';
         }
 
+        // Lớp dự phòng bắt buộc cho câu hướng dẫn HDSD.
+        // Dùng khi JSON/AI outline chưa tải kịp hoặc không trả được focusMeta. Mục tiêu là
+        // không bao giờ để câu trả lời dừng ở dòng “Theo nội dung tờ HDSD ...:” mà không
+        // nói rõ người dùng cần xem phần nào. Khi outline có dữ liệu thật, focusMeta thật
+        // vẫn luôn được ưu tiên ở các hàm bên dưới.
+        function buildQuestionOnlyHDSDGuideMeta_(userMessage) {
+            const q = removeAccents(userMessage || '');
+            const has = function(term) { return hasNormalizedPhrase_(q, term); };
+
+            // Các phần nhỏ có mục lớn chuẩn, áp dụng được cho hầu hết tờ HDSD.
+            if (has('hap thu')) return { focusLabel: 'Hấp thu', parentLabel: 'Dược động học', source: 'question-guide-fallback' };
+            if (has('phan bo')) return { focusLabel: 'Phân bố', parentLabel: 'Dược động học', source: 'question-guide-fallback' };
+            if (has('chuyen hoa')) return { focusLabel: 'Chuyển hóa', parentLabel: 'Dược động học', source: 'question-guide-fallback' };
+            if (has('thai tru')) return { focusLabel: 'Thải trừ', parentLabel: 'Dược động học', source: 'question-guide-fallback' };
+            if (has('tuong ky')) return { focusLabel: 'Tương kỵ của thuốc', parentLabel: 'Tương tác, tương kỵ của thuốc', source: 'question-guide-fallback' };
+            if (has('tuong hop')) return { focusLabel: 'Tương hợp, tương kỵ', parentLabel: 'Tương tác, tương kỵ của thuốc', source: 'question-guide-fallback' };
+            if (has('han su dung') || has('han dung')) return { focusLabel: 'Hạn dùng', parentLabel: 'Thông tin thêm', source: 'question-guide-fallback' };
+            if (has('dieu kien bao quan') || has('bao quan') || has('giu thuoc')) return { focusLabel: 'Điều kiện bảo quản', parentLabel: 'Thông tin thêm', source: 'question-guide-fallback' };
+            if (has('quy cach dong goi') || has('quy cach') || has('dong goi')) return { focusLabel: 'Quy cách đóng gói', parentLabel: 'Thông tin thêm', source: 'question-guide-fallback' };
+            if (has('nha san xuat') || has('co so san xuat') || has('xuat xu')) return { focusLabel: 'Nhà sản xuất', parentLabel: 'Thông tin thêm', source: 'question-guide-fallback' };
+
+            // Liều dùng là lỗi đang gặp: dùng nhãn ngắn, ổn định để cả câu hướng dẫn và
+            // bộ bôi đỏ có thể tìm được heading “Liều dùng” hoặc “Liều dùng và cách dùng”.
+            if (has('lieu dung') || has('lieu')) return { focusLabel: 'Liều dùng', parentLabel: 'Liều dùng', source: 'question-guide-fallback' };
+            if (has('cach dung') || has('cach su dung') || has('duong dung')) return { focusLabel: 'Cách dùng', parentLabel: 'Liều dùng/cách dùng', source: 'question-guide-fallback' };
+            if (has('chi dinh') || has('cong dung') || has('dung de lam gi') || has('tri benh gi')) return { focusLabel: 'Chỉ định', parentLabel: 'Chỉ định', source: 'question-guide-fallback' };
+            if (has('chong chi dinh')) return { focusLabel: 'Chống chỉ định', parentLabel: 'Chống chỉ định', source: 'question-guide-fallback' };
+            if (has('than trong') || has('canh bao')) return { focusLabel: 'Thận trọng/cảnh báo', parentLabel: 'Thận trọng/cảnh báo', source: 'question-guide-fallback' };
+            if (has('tac dung khong mong muon') || has('tac dung phu') || has('adr')) return { focusLabel: 'Tác dụng không mong muốn', parentLabel: 'Tác dụng không mong muốn', source: 'question-guide-fallback' };
+            if (has('tuong tac') || has('dung chung') || has('phoi hop')) return { focusLabel: 'Tương tác thuốc', parentLabel: 'Tương tác, tương kỵ của thuốc', source: 'question-guide-fallback' };
+            if (has('qua lieu') || has('quen lieu')) return { focusLabel: has('quen lieu') ? 'Quên liều' : 'Quá liều', parentLabel: has('quen lieu') ? 'Quên liều' : 'Quá liều', source: 'question-guide-fallback' };
+            if (has('phu nu co thai') || has('mang thai') || has('cho con bu') || has('bu me')) return { focusLabel: has('cho con bu') || has('bu me') ? 'Phụ nữ cho con bú' : 'Phụ nữ có thai', parentLabel: 'Phụ nữ có thai/cho con bú', source: 'question-guide-fallback' };
+            if (has('duoc luc hoc') || has('co che tac dung')) return { focusLabel: 'Dược lực học', parentLabel: 'Dược lực học', source: 'question-guide-fallback' };
+            if (has('duoc dong hoc')) return { focusLabel: 'Dược động học', parentLabel: 'Dược động học', source: 'question-guide-fallback' };
+            if (has('thanh phan') || has('hoat chat') || has('ta duoc') || has('chua gi') || has('ham luong')) return { focusLabel: 'Thành phần/hoạt chất', parentLabel: 'Thành phần/hoạt chất', source: 'question-guide-fallback' };
+
+            const inferred = inferHDSDGuideLabelFromQuestion_(userMessage);
+            return inferred ? { focusLabel: inferred, parentLabel: inferred, source: 'question-guide-fallback' } : null;
+        }
+
         function buildHDSDGuideBodyForChat_(userMessage, focus, excerpt) {
             let focusLabel = cleanDrugFieldForChat_((focus && focus.focusLabel) || '');
             let parentLabel = cleanDrugFieldForChat_((focus && focus.parentLabel) || '');
+            const fallbackMeta = buildQuestionOnlyHDSDGuideMeta_(userMessage) || {};
             const inferred = inferHDSDGuideLabelFromQuestion_(userMessage);
             const firstTitle = getFirstHDSDExcerptTitle_(excerpt);
 
-            if (!focusLabel || removeAccents(focusLabel) === 'dang cap nhat') focusLabel = inferred || firstTitle || parentLabel;
-            if (!parentLabel || removeAccents(parentLabel) === 'dang cap nhat') parentLabel = firstTitle || focusLabel;
+            // Thứ tự ưu tiên: outline/AI đã chọn đúng > fallback theo câu hỏi > heading thực > nhãn khái quát.
+            // Nhờ vậy không còn trường hợp đã bôi đỏ đúng “Liều dùng” nhưng câu chatbot chỉ còn dòng tiêu đề.
+            if (!focusLabel || removeAccents(focusLabel) === 'dang cap nhat') focusLabel = fallbackMeta.focusLabel || inferred || firstTitle || parentLabel;
+            if (!parentLabel || removeAccents(parentLabel) === 'dang cap nhat') parentLabel = fallbackMeta.parentLabel || firstTitle || focusLabel;
             if (!focusLabel && parentLabel) focusLabel = parentLabel;
             if (!parentLabel && focusLabel) parentLabel = focusLabel;
-            if (!focusLabel || !parentLabel) return '';
 
-            return 'Hãy xem chi tiết ở phần **' + focusLabel + '** trong mục **' + parentLabel + '**. '
-                + 'Khi bấm **XEM HDSD**, phần đó được bôi đỏ để bạn dễ nhận biết.';
+            if (focusLabel && parentLabel) {
+                return 'Hãy xem chi tiết ở phần **' + focusLabel + '** trong mục **' + parentLabel + '**. '
+                    + 'Khi bấm **XEM HDSD**, phần đó được bôi đỏ để bạn dễ nhận biết.';
+            }
+
+            // Cổng an toàn cuối: không trả header HDSD trống ngay cả khi dữ liệu nguồn tạm thời chưa tải xong.
+            return 'Hãy xem phần nội dung liên quan trong tờ HDSD. Khi bấm **XEM HDSD**, hệ thống sẽ mở tờ HDSD để bạn tra cứu.';
         }
 
         function ensureHDSDFocusMetaForGuide_(userMessage, selected) {
             const original = (selected && selected.focusMeta) ? Object.assign({}, selected.focusMeta) : {};
             let focusLabel = cleanDrugFieldForChat_(original.focusLabel || '');
             let parentLabel = cleanDrugFieldForChat_(original.parentLabel || '');
+            const fallbackMeta = buildQuestionOnlyHDSDGuideMeta_(userMessage) || {};
             const inferred = inferHDSDGuideLabelFromQuestion_(userMessage);
             const firstTitle = getFirstHDSDExcerptTitle_(selected && selected.excerpt ? selected.excerpt : '');
 
-            if (!focusLabel || removeAccents(focusLabel) === 'dang cap nhat') focusLabel = inferred || firstTitle || parentLabel;
-            if (!parentLabel || removeAccents(parentLabel) === 'dang cap nhat') parentLabel = firstTitle || focusLabel;
+            if (!focusLabel || removeAccents(focusLabel) === 'dang cap nhat') focusLabel = fallbackMeta.focusLabel || inferred || firstTitle || parentLabel;
+            if (!parentLabel || removeAccents(parentLabel) === 'dang cap nhat') parentLabel = fallbackMeta.parentLabel || firstTitle || focusLabel;
             if (!focusLabel && parentLabel) focusLabel = parentLabel;
             if (!parentLabel && focusLabel) parentLabel = focusLabel;
             if (!focusLabel && !parentLabel) return (selected && selected.focusMeta) || null;
 
             original.focusLabel = focusLabel;
             original.parentLabel = parentLabel;
-            if (!original.source) original.source = 'fallback-guide-inference';
+            if (!original.source) original.source = fallbackMeta.source || 'fallback-guide-inference';
             return original;
         }
 
@@ -9377,25 +9425,33 @@ body.medplus-aux-open .new-badge::after{
         }
 
         async function composeHDSDGroundedAnswerWithAI_(userMessage, selectedDrugs) {
-            // Giữ nguyên tên hàm để không phải sửa lan rộng, nhưng nhánh HDSD rõ ràng
-            // sẽ trả trực tiếp từ JSON nội bộ và KHÔNG gọi API AI, nhằm tiết kiệm token
-            // và bám sát nội dung tờ HDSD gốc.
-            const hdsdItems = await buildHDSDInternalContextForDrugs_(userMessage, selectedDrugs);
+            // HDSD không được phép rơi xuống nhánh AI viết tự do. Dù JSON/outline tạm tải lỗi,
+            // vẫn phải trả câu hướng dẫn xác định theo câu hỏi để người dùng biết cần xem mục nào.
+            const fallbackFocus = buildQuestionOnlyHDSDGuideMeta_(userMessage) || null;
+            let hdsdItems = await buildHDSDInternalContextForDrugs_(userMessage, selectedDrugs);
+
+            // Cổng dự phòng cuối: giữ đúng thuốc đã được hệ thống chọn và gắn focus theo ý định câu hỏi.
+            // Điều này chặn tình trạng “Theo nội dung tờ HDSD ...:” xuất hiện một mình khi JSON chưa trả về.
+            if (!hdsdItems || !hdsdItems.length) {
+                hdsdItems = dedupeDrugs_(selectedDrugs || []).filter(function(d) { return d && d.link; }).slice(0, 3)
+                    .map(function(d) { return { drug: d, excerpt: '', hdsdFocus: fallbackFocus }; });
+            }
             if (!hdsdItems || !hdsdItems.length) return '';
 
             let answer = '';
             hdsdItems.forEach(function(item, index) {
                 const d = item.drug || {};
                 const brand = cleanDrugFieldForChat_(d.brand || ('Thuốc ' + (index + 1)));
-                const focus = item.hdsdFocus || null;
-                let body = '';
+                const selectedForGuide = { focusMeta: item.hdsdFocus || null, excerpt: item.excerpt || '' };
+                const focus = ensureHDSDFocusMetaForGuide_(userMessage, selectedForGuide) || fallbackFocus || null;
 
-                body = buildHDSDGuideBodyForChat_(userMessage, focus, item.excerpt || '');
-                if (!body) {
-                    body = formatDirectHDSDExcerptForChat_(item.excerpt || '');
-                }
-
+                // Hàm này có cổng an toàn nên luôn trả câu hướng dẫn, không dùng trích đoạn HDSD
+                // thay cho chỉ dẫn xem mục. Trích đoạn chỉ là dự phòng rất hiếm nếu cần.
+                let body = buildHDSDGuideBodyForChat_(userMessage, focus, item.excerpt || '');
+                if (!body) body = formatDirectHDSDExcerptForChat_(item.excerpt || '');
                 if (!body) return;
+
+                item.hdsdFocus = focus || item.hdsdFocus || fallbackFocus || null;
                 if (answer) answer += '\n\n---\n\n';
                 answer += '**Theo nội dung tờ HDSD ' + brand + ':**\n\n' + body;
             });
