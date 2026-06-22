@@ -12007,6 +12007,24 @@ body.medplus-aux-open .new-badge::after{
             const isStandalone = window.navigator.standalone === true
                               || window.matchMedia('(display-mode: standalone)').matches;
             const hasNotifAPI = 'Notification' in window;
+
+            // Chỉ hiển thị số chưa đọc khi người dùng đã có thể nhận thông báo.
+            // Trên iPhone/iPad, Web Push chỉ hoạt động sau khi thêm PWA vào Màn hình chính,
+            // nên không được hiển thị badge trước thời điểm đó.
+            function canShowUnreadNotificationBadge() {
+                if (!hasNotifAPI || Notification.permission !== 'granted') return false;
+                if (isIOS && !isStandalone) return false;
+                return true;
+            }
+
+            function clearNotificationAppBadge() {
+                if ('clearAppBadge' in navigator) {
+                    navigator.clearAppBadge().catch(function(err) {
+                        console.warn('Lỗi Clear Badge:', err);
+                    });
+                }
+            }
+
             const NOTIF_KEY = 'medplus_notifications_v1';
             const NOTIF_CLEARED_AT_KEY = 'medplus_notifications_cleared_at_v1';
             const NOTIF_DELETED_IDS_KEY = 'medplus_notifications_deleted_ids_v1';
@@ -12174,15 +12192,23 @@ body.medplus-aux-open .new-badge::after{
             }
 
             function updateNotificationBadge() {
+                // Không hiển thị badge trên chuông hoặc icon app khi chưa bật thông báo.
+                // iOS còn yêu cầu phải mở website dưới dạng PWA đã thêm vào Màn hình chính.
+                if (!canShowUnreadNotificationBadge()) {
+                    bellBtn.setAttribute('data-unread', '0');
+                    clearNotificationAppBadge();
+                    return;
+                }
+
                 const unread = getVisibleNotifications().filter(function(n) { return !n.read; }).length;
                 bellBtn.setAttribute('data-unread', unread > 99 ? '99+' : String(unread));
 
-                // THÊM MỚI: Đồng bộ số đếm ra Icon ngoài màn hình chính (PWA)
+                // Đồng bộ số đếm ra icon app chỉ khi điều kiện nhận thông báo đã được đáp ứng.
                 if ('setAppBadge' in navigator) {
                     if (unread > 0) {
                         navigator.setAppBadge(unread).catch(function(err) { console.warn('Lỗi Badge:', err); });
                     } else {
-                        navigator.clearAppBadge().catch(function(err) { console.warn('Lỗi Clear Badge:', err); });
+                        clearNotificationAppBadge();
                     }
                 }
             }
