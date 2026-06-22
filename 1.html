@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<!-- MEDPLUS_FINAL_AI_REVIEW_VIK1 -->
+<!-- MEDPLUS_HYBRID_COMBO_RELATED_ACTIVE_3B | SMOOTH_AI_TIMER_RAF -->
 <link rel="manifest" href="/manifest.json">
 <!-- Khi điện thoại ở Light Mode -->
 <meta name="theme-color" content="#eef2f0" media="(prefers-color-scheme: light)">
@@ -1199,6 +1199,7 @@ body.medplus-aux-open .medplus-aux-frame-wrap{
         .chat-widget-container .send-button:disabled{background:#78909c;cursor:not-allowed;box-shadow:none}
         .chat-widget-container .typing-indicator{display:none;align-self:flex-start;background:rgba(255,255,255,0.88);padding:10px 14px;border-radius:18px;border-bottom-left-radius:5px;color:#666;font-style:italic;margin-bottom:8px;font-size:.88rem;animation:tp 1.5s infinite;margin-left:10px;cursor:pointer;border-left:3px solid var(--green-l);box-shadow:0 2px 8px rgba(0,0,0,0.06)}
         @keyframes tp{0%{opacity:.6}50%{opacity:1}100%{opacity:.6}}
+        /* TIMER AI: số có độ rộng cố định, tránh giật do thay đổi chiều ngang khi thời gian tăng. */
         .chat-widget-container .typing-dots{display:inline-block}
         .chat-widget-container .typing-dots::after{content:'';animation:typing 1.5s infinite}
         @keyframes typing{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}100%{content:''}}
@@ -6244,7 +6245,7 @@ body.medplus-aux-open .new-badge::after{
                     </div>
                 </div>
                 <div class="typing-indicator" id="typing-indicator">
-                    <span id="typing-text">MedPlus AI đang phân tích</span> <span id="timer-display"></span><span class="typing-dots"></span>
+                    <span id="typing-text">MedPlus AI đang suy nghĩ</span> <span id="timer-display"></span><span class="typing-dots"></span>
                 </div>
             </div>
             <div class="chat-input-container">
@@ -6625,6 +6626,338 @@ body.medplus-aux-open .new-badge::after{
         const MAX_DETAILED_DRUG_RESULTS = 80;
         let currentKeyIndex = 0, currentModelIndex = 0, timerInterval, startTime, activeModelName = "";
 
+
+        // =====================================================================
+        // CHAT UI SESSION + CATALOG WORKER
+        // ---------------------------------------------------------------------
+        // Một phiên chat chỉ có MỘT mốc thời gian. Mọi retry API/model, hậu kiểm
+        // và dựng danh mục đều dùng lại phiên này, vì vậy đồng hồ không reset.
+        // Các công việc lặp trên danh mục được đưa sang Worker để main thread
+        // luôn ưu tiên vẽ trạng thái và đồng hồ.
+        // =====================================================================
+        let medplusChatUiSession_ = null;
+        let medplusChatUiSequence_ = 0;
+
+        function nextUiPaint_() {
+            return new Promise(function(resolve) {
+                requestAnimationFrame(function() { setTimeout(resolve, 0); });
+            });
+        }
+
+        function formatChatElapsed_(startedAt) {
+            return '(' + ((Date.now() - startedAt) / 1000).toFixed(1) + 's)';
+        }
+
+        function setChatUiStatus_(session, status) {
+            if (!session || !session.active) return;
+            const textEl = document.getElementById('typing-text');
+            const indicator = document.getElementById('typing-indicator');
+            const message = status === 'writing'
+                ? 'MedPlus AI đang viết câu trả lời'
+                : 'MedPlus AI đang suy nghĩ';
+            session.status = status === 'writing' ? 'writing' : 'thinking';
+            if (indicator) indicator.style.display = 'block';
+            if (textEl && textEl.textContent !== message) textEl.textContent = message;
+        }
+
+        function startChatUiSession_() {
+            if (medplusChatUiSession_ && medplusChatUiSession_.active) {
+                medplusChatUiSession_.active = false;
+                clearInterval(medplusChatUiSession_.timerId);
+            }
+            const session = {
+                id: ++medplusChatUiSequence_,
+                startedAt: Date.now(),
+                timerId: null,
+                active: true,
+                status: 'thinking',
+                lastElapsedText: ''
+            };
+            medplusChatUiSession_ = session;
+            const indicator = document.getElementById('typing-indicator');
+            const timerEl = document.getElementById('timer-display');
+            if (indicator) indicator.style.display = 'block';
+            setChatUiStatus_(session, 'thinking');
+            const paintTimer = function() {
+                if (!session.active || medplusChatUiSession_ !== session) return;
+                const next = formatChatElapsed_(session.startedAt);
+                if (next !== session.lastElapsedText && timerEl) {
+                    session.lastElapsedText = next;
+                    timerEl.textContent = next;
+                }
+            };
+            paintTimer();
+            session.timerId = setInterval(paintTimer, 100);
+            // Giữ tương thích với các phần cũ không còn được gọi trực tiếp.
+            timerInterval = session.timerId;
+            startTime = session.startedAt;
+            return session;
+        }
+
+        function finishChatUiSession_(session, keepVisible) {
+            if (!session || !session.active) return;
+            session.active = false;
+            clearInterval(session.timerId);
+            if (medplusChatUiSession_ === session) medplusChatUiSession_ = null;
+            const indicator = document.getElementById('typing-indicator');
+            const timerEl = document.getElementById('timer-display');
+            if (!keepVisible && indicator) indicator.style.display = 'none';
+            if (!keepVisible && timerEl) timerEl.textContent = '';
+        }
+
+        async function renderChatFinalAnswer_(session, answerText, sendButton) {
+            if (!session || !session.active) return;
+            setChatUiStatus_(session, 'writing');
+            // Bảo đảm browser có một frame để vẽ trạng thái "đang viết" trước
+            // khi format/append HTML của câu trả lời.
+            await nextUiPaint_();
+            if (!session.active) return;
+            displayMessage(answerText, 'ai');
+            await nextUiPaint_();
+            finishChatUiSession_(session, false);
+            if (sendButton) sendButton.disabled = false;
+        }
+
+        const MEDPLUS_CATALOG_WORKER_ = {
+            worker: null,
+            sourceRef: null,
+            sourceLength: -1,
+            pending: new Map(),
+            nextId: 1,
+            priming: null,
+            supported: typeof Worker !== 'undefined' && typeof Blob !== 'undefined' && typeof URL !== 'undefined'
+        };
+
+        function buildMedplusCatalogWorkerSource_() {
+            return String.raw`
+                let catalog = [];
+                let aliases = [];
+                let overrides = [];
+                let combos = [];
+                let allHybridText = '';
+                let allImageText = '';
+
+                function norm(v) {
+                    return String(v || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'd').toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+                }
+                function phrase(text, value) {
+                    text = String(text || ' ').trim(); value = String(value || ' ').trim();
+                    if (!text || !value) return false;
+                    return (' ' + text + ' ').indexOf(' ' + value + ' ') >= 0;
+                }
+                function clean(v) { return String(v || 'Đang cập nhật').replace(/\s+/g, ' ').trim() || 'Đang cập nhật'; }
+                function activeFamilies(active, brand) {
+                    const found = new Set();
+                    const a = norm(active), b = norm(brand), compact = b.replace(/\s+/g, '');
+                    for (const group of aliases) {
+                        const canonical = norm(group && group[0]);
+                        if (!canonical) continue;
+                        for (const alias of (group || [])) {
+                            const k = norm(alias);
+                            if (k && phrase(a, k)) { found.add(canonical); break; }
+                        }
+                    }
+                    for (const rule of overrides) {
+                        const canonical = norm(rule && rule.family);
+                        for (const name of ((rule && rule.brands) || [])) {
+                            const k = norm(name);
+                            if (k && (b === k || compact === k.replace(/\s+/g, ''))) { if (canonical) found.add(canonical); }
+                        }
+                    }
+                    for (const profile of combos) {
+                        let hit = false;
+                        for (const name of ((profile && profile.brandOverrides) || [])) {
+                            const k = norm(name);
+                            if (k && (b === k || compact === k.replace(/\s+/g, ''))) { hit = true; break; }
+                        }
+                        if (hit) for (const family of ((profile && profile.families) || [])) found.add(norm(family));
+                    }
+                    // Fallback: giữ nguyên active khi không có alias để vẫn có thể match
+                    // chính xác theo chuỗi với các hoạt chất không nằm trong alias list.
+                    if (!found.size && a) found.add(a);
+                    return Array.from(found);
+                }
+                function makeHybridLine(row, position) {
+                    return position + '. Tên: ' + clean(row.brand) + ' | Hoạt chất: ' + clean(row.active) + ' | Nhóm dược lý: ' + clean(row.group);
+                }
+                function makeImageLine(row, position) {
+                    let line = position + '. Biệt dược: ' + clean(row.brand) + ' | Hoạt chất: ' + clean(row.active);
+                    if (row.group) line += ' | Nhóm: ' + clean(row.group);
+                    line += ' | Hàm lượng: ' + clean(row.strength) + ' | Dạng: ' + clean(row.form);
+                    if (row.link) line += ' | HDSD: ' + row.link;
+                    return line;
+                }
+                function textFor(indices, format) {
+                    const rows = Array.isArray(indices) ? indices.map(i => catalog[i]).filter(Boolean) : catalog;
+                    return rows.map((row, pos) => format === 'image' ? makeImageLine(row, pos + 1) : makeHybridLine(row, pos + 1)).join('\n');
+                }
+                function init(payload) {
+                    aliases = payload.aliases || [];
+                    overrides = payload.overrides || [];
+                    combos = payload.combos || [];
+                    catalog = (payload.catalog || []).map(function(d, index) {
+                        const row = {
+                            index: index,
+                            brand: d && (d.brand || d.name) || '', active: d && d.active || '', group: d && d.group || '',
+                            strength: d && d.strength || '', form: d && d.form || '', link: d && d.link || ''
+                        };
+                        row.brandNorm = norm(row.brand); row.activeNorm = norm(row.active);
+                        row.families = activeFamilies(row.active, row.brand);
+                        row.isCombo = row.families.length >= 2;
+                        return row;
+                    });
+                    allHybridText = textFor(null, 'hybrid');
+                    allImageText = textFor(null, 'image');
+                }
+                function questionFamily(question) {
+                    const q = norm(question);
+                    let best = null;
+                    for (const group of aliases) {
+                        const canonical = norm(group && group[0]);
+                        for (const alias of (group || [])) {
+                            const k = norm(alias);
+                            if (k && phrase(q, k) && (!best || k.length > best.alias.length)) best = { family: canonical, alias: k };
+                        }
+                    }
+                    return best && best.family;
+                }
+                function matchingProfile(question) {
+                    const q = norm(question);
+                    for (const profile of combos) {
+                        for (const alias of ((profile && profile.aliases) || [])) {
+                            const k = norm(alias);
+                            if (k && phrase(q, k)) return profile;
+                        }
+                    }
+                    return null;
+                }
+                function expand(payload) {
+                    const selected = Array.isArray(payload.selectedIndexes) ? payload.selectedIndexes.filter(i => Number.isInteger(i) && catalog[i]) : [];
+                    if (!payload.directIntent) return { indexes: Array.from(new Set(selected)), mode: 'selected' };
+                    const profile = matchingProfile(payload.question);
+                    if (profile) {
+                        const required = (profile.families || []).map(norm).filter(Boolean);
+                        const indexes = catalog.filter(row => row.isCombo && required.every(f => row.families.indexOf(f) >= 0))
+                            .sort((a,b) => String(a.brand).localeCompare(String(b.brand), 'vi')).map(row => row.index);
+                        return { indexes: indexes, mode: 'combination' };
+                    }
+                    const family = questionFamily(payload.question);
+                    if (!family) return { indexes: Array.from(new Set(selected)), mode: 'selected' };
+                    const singles = [], relatedCombos = [];
+                    for (const row of catalog) {
+                        if (row.families.indexOf(family) < 0) continue;
+                        (row.isCombo ? relatedCombos : singles).push(row);
+                    }
+                    const sorter = (a,b) => String(a.brand).localeCompare(String(b.brand), 'vi');
+                    singles.sort(sorter); relatedCombos.sort(sorter);
+                    return { indexes: singles.concat(relatedCombos).map(row => row.index), mode: 'active-family', family: family };
+                }
+                self.onmessage = function(event) {
+                    const msg = event.data || {};
+                    try {
+                        if (msg.type === 'prime') { init(msg.payload || {}); self.postMessage({ id: msg.id, ok: true, result: { count: catalog.length } }); return; }
+                        if (msg.type === 'catalogText') {
+                            const p = msg.payload || {}; const result = p.format === 'image' && !Array.isArray(p.indexes) ? allImageText : (p.format === 'hybrid' && !Array.isArray(p.indexes) ? allHybridText : textFor(p.indexes, p.format));
+                            self.postMessage({ id: msg.id, ok: true, result: result }); return;
+                        }
+                        if (msg.type === 'expand') { self.postMessage({ id: msg.id, ok: true, result: expand(msg.payload || {}) }); return; }
+                        self.postMessage({ id: msg.id, ok: false, error: 'UNKNOWN_WORKER_TASK' });
+                    } catch (error) { self.postMessage({ id: msg.id, ok: false, error: String(error && error.message || error) }); }
+                };
+            `;
+        }
+
+        function ensureMedplusCatalogWorker_() {
+            const state = MEDPLUS_CATALOG_WORKER_;
+            if (!state.supported) return null;
+            if (state.worker) return state.worker;
+            try {
+                const blob = new Blob([buildMedplusCatalogWorkerSource_()], { type: 'application/javascript' });
+                const worker = new Worker(URL.createObjectURL(blob));
+                worker.onmessage = function(event) {
+                    const msg = event.data || {}; const pending = state.pending.get(msg.id);
+                    if (!pending) return;
+                    state.pending.delete(msg.id);
+                    msg.ok ? pending.resolve(msg.result) : pending.reject(new Error(msg.error || 'WORKER_ERROR'));
+                };
+                worker.onerror = function(error) {
+                    state.pending.forEach(function(p) { p.reject(error instanceof Error ? error : new Error('CATALOG_WORKER_ERROR')); });
+                    state.pending.clear();
+                };
+                state.worker = worker;
+                return worker;
+            } catch (error) { state.supported = false; return null; }
+        }
+
+        function callMedplusCatalogWorker_(type, payload) {
+            const state = MEDPLUS_CATALOG_WORKER_; const worker = ensureMedplusCatalogWorker_();
+            if (!worker) return Promise.reject(new Error('WORKER_UNAVAILABLE'));
+            const id = state.nextId++;
+            return new Promise(function(resolve, reject) {
+                state.pending.set(id, { resolve: resolve, reject: reject });
+                worker.postMessage({ id: id, type: type, payload: payload || {} });
+            });
+        }
+
+        async function primeMedplusCatalogWorker_(source) {
+            const state = MEDPLUS_CATALOG_WORKER_; const data = Array.isArray(source) ? source : [];
+            if (!state.supported || !data.length) return false;
+            if (state.sourceRef === data && state.sourceLength === data.length && state.priming) { await state.priming; return true; }
+            state.sourceRef = data; state.sourceLength = data.length;
+            const compact = data.map(function(d) { return { brand: d && d.brand, name: d && d.name, active: d && d.active, group: d && d.group, strength: d && d.strength, form: d && d.form, link: d && d.link }; });
+            state.priming = callMedplusCatalogWorker_('prime', {
+                catalog: compact,
+                aliases: MEDPLUS_ACTIVE_INGREDIENT_ALIAS_GROUPS_,
+                overrides: MEDPLUS_CATALOG_BRAND_ACTIVE_FAMILY_OVERRIDES_,
+                combos: MEDPLUS_COMBINATION_ALIAS_PROFILES_
+            }).catch(function(error) { console.warn('Catalog Worker prime failed:', error); return null; });
+            await state.priming;
+            return true;
+        }
+
+        function workerIndexesForCatalogSubset_(subset, source) {
+            const list = Array.isArray(subset) ? subset : []; const all = Array.isArray(source) ? source : [];
+            if (list.length === all.length && list.every(function(d, i) { return d === all[i]; })) return null;
+            const byRef = new Map(); all.forEach(function(d, i) { byRef.set(d, i); });
+            return list.map(function(d) { return byRef.get(d); }).filter(function(i) { return Number.isInteger(i); });
+        }
+
+        async function getWorkerCatalogText_(subset, source, format) {
+            const all = Array.isArray(source) ? source : [];
+            try {
+                await primeMedplusCatalogWorker_(all);
+                const indexes = workerIndexesForCatalogSubset_(subset, all);
+                return await callMedplusCatalogWorker_('catalogText', { indexes: indexes, format: format || 'hybrid' });
+            } catch (error) {
+                const rows = Array.isArray(subset) ? subset : [];
+                if ((format || 'hybrid') === 'image') {
+                    return rows.map(function(d, i) {
+                        let line = (i + 1) + '. Biệt dược: ' + (d.brand || d.name || '') + ' | Hoạt chất: ' + (d.active || '');
+                        if (d.group) line += ' | Nhóm: ' + d.group;
+                        line += ' | Hàm lượng: ' + (d.strength || 'Đang cập nhật') + ' | Dạng: ' + (d.form || 'Đang cập nhật');
+                        if (d.link) line += ' | HDSD: ' + d.link;
+                        return line;
+                    }).join('\n');
+                }
+                return rows.map(function(d, i) { return formatDrugLineForHybridOnePass_(d, i + 1); }).join('\n');
+            }
+        }
+
+        async function getHybridLocalFinalDrugsViaWorker_(userMessage, info, aiDrugs) {
+            const allDrugs = (info && info.allDrugs) || [];
+            if (!hasExactDrugOrActiveInfoIntent_(userMessage, info) || !allDrugs.length) return getHybridLocalFinalDrugs_(userMessage, info, aiDrugs);
+            try {
+                await primeMedplusCatalogWorker_(allDrugs);
+                const byRef = new Map(); allDrugs.forEach(function(d, i) { byRef.set(d, i); });
+                const selectedIndexes = (aiDrugs || []).map(function(d) { return byRef.get(d); }).filter(function(i) { return Number.isInteger(i); });
+                const result = await callMedplusCatalogWorker_('expand', { question: userMessage, selectedIndexes: selectedIndexes, directIntent: true });
+                if (result && Array.isArray(result.indexes) && result.indexes.length) return result.indexes.map(function(i) { return allDrugs[i]; }).filter(Boolean);
+            } catch (error) { console.warn('Catalog Worker expand fallback:', error); }
+            return getHybridLocalFinalDrugs_(userMessage, info, aiDrugs);
+        }
+
+        // GIỮ ĐÚNG CƠ CHẾ TRẠNG THÁI/ĐỒNG HỒ ỔN ĐỊNH CỦA BẢN HYBRID GỐC:
+        // TIMER BASELINE RESTORED + CATALOG FAMILY LOOKUP CACHED
         // Tích hợp Mini-RAG
         function removeAccents(str) {
             return String(str || "")
@@ -6688,8 +7021,9 @@ body.medplus-aux-open .new-badge::after{
         //    biến thể không dấu/dấu, dấu gạch, dạng muối thông dụng và tên generic.
         // 2) Các đồng nghĩa dược chất thực sự khác chuỗi (INN/USAN/BAN, tên vitamin...)
         //    được gom tại một bảng duy nhất, dùng lại cho toàn bộ chatbot.
-        // 3) Chỉ mở rộng thuốc đơn hoạt chất. Chế phẩm phối hợp luôn giữ riêng để
-        //    không kéo nhầm các thuốc có thành phần chỉ trùng một phần.
+        // 3) Khi người dùng hỏi trực tiếp một hoạt chất, mở rộng thuốc đơn hoạt chất
+        //    và chế phẩm phối hợp CÓ CHỨA hoạt chất đó; khi hỏi một tổ hợp (3B),
+        //    chỉ lấy chế phẩm có ĐỦ thành phần tổ hợp để không kéo nhầm thuốc đơn lẻ.
         // =====================================================================
         const MEDPLUS_ACTIVE_INGREDIENT_ALIAS_GROUPS_ = [
             // Vitamin, khoáng chất và chất dinh dưỡng thường có nhiều cách ghi.
@@ -6697,6 +7031,7 @@ body.medplus-aux-open .new-badge::after{
             ['vitamin b1', 'vitamin b 1', 'thiamin', 'thiamine', 'aneurin'],
             ['vitamin b2', 'vitamin b 2', 'riboflavin'],
             ['vitamin b6', 'vitamin b 6', 'pyridoxin', 'pyridoxine'],
+            ['vitamin b12', 'vitamin b 12', 'cyanocobalamin', 'cyanocobalamine', 'cobalamin', 'hydroxocobalamin', 'hydroxocobalamine'],
             ['vitamin c', 'ascorbic acid', 'acid ascorbic', 'ascorbate'],
             ['vitamin d2', 'vitamin d 2', 'ergocalciferol'],
             ['vitamin d3', 'vitamin d 3', 'cholecalciferol'],
@@ -6769,6 +7104,28 @@ body.medplus-aux-open .new-badge::after{
             { brands: ['vik 1 inj', 'vik 1 injection', 'vik 1'], family: 'vitamin k1' }
         ];
 
+        // BẢNG ALIAS CHẾ PHẨM PHỐI HỢP (TÊN/VIẾT TẮT → CÁC FAMILY HOẠT CHẤT)
+        // ----------------------------------------------------------------------
+        // Dùng cho các truy vấn mà người dùng gọi tên tổ hợp, ví dụ "3B". Website
+        // không đoán theo tên gần giống; chỉ nhận alias đã khai báo hoặc thành phần
+        // hoạt chất thực tế trong danh mục. Có thể bổ sung tổ hợp khác về sau.
+        const MEDPLUS_COMBINATION_ALIAS_PROFILES_ = [
+            {
+                key: 'vitamin-b1-b6-b12',
+                aliases: [
+                    '3b', 'vitamin 3b', 'vitamin b 3',
+                    'b1 b6 b12', 'b1 b 6 b 12',
+                    'vitamin b1 b6 b12', 'vitamin b1 b 6 b 12',
+                    'thiamin pyridoxin cyanocobalamin',
+                    'thiamine pyridoxine cyanocobalamin'
+                ],
+                families: ['vitamin b1', 'vitamin b6', 'vitamin b12'],
+                // Các dòng danh mục thiếu cột hoạt chất vẫn được nhận diện CHÍNH XÁC
+                // khi tên biệt dược là tổ hợp 3B.
+                brandOverrides: ['3b', '3b inj', '3b injection', 'vitamin 3b', 'vitamin 3b inj', 'vitamin 3b injection']
+            }
+        ];
+
         function getCatalogBrandActiveFamilyOverride_(drug) {
             const brand = normalizeDrugMatchText_(drug && drug.brand);
             if (!brand) return '';
@@ -6834,6 +7191,32 @@ body.medplus-aux-open .new-badge::after{
         let activeIngredientAliasIndex_ = null;
         let activeIngredientAliasIndexSourceRef_ = null;
         let activeIngredientAliasIndexSourceSize_ = 0;
+
+
+        // Cache local cho family hoạt chất/chế phẩm phối hợp.
+        // Mục tiêu: không quét lại toàn bộ danh mục và parse lại từng hoạt chất
+        // trong khi đồng hồ AI đang chạy.
+        const medplusDrugFamilySetCache_ = typeof WeakMap !== 'undefined' ? new WeakMap() : null;
+        const medplusCombinationLookupCache_ = typeof WeakMap !== 'undefined' ? new WeakMap() : null;
+
+        function getCachedDrugActiveFamilyArray_(drug) {
+            if (!drug || !medplusDrugFamilySetCache_) return null;
+            return medplusDrugFamilySetCache_.get(drug) || null;
+        }
+
+        function setCachedDrugActiveFamilyArray_(drug, values) {
+            if (drug && medplusDrugFamilySetCache_) medplusDrugFamilySetCache_.set(drug, values);
+        }
+
+        function getCombinationLookupCacheForCatalog_(catalog) {
+            if (!catalog || !medplusCombinationLookupCache_) return null;
+            let bucket = medplusCombinationLookupCache_.get(catalog);
+            if (!bucket) {
+                bucket = new Map();
+                medplusCombinationLookupCache_.set(catalog, bucket);
+            }
+            return bucket;
+        }
 
         function normalizeBrandCoreForSameActive_(value) {
             return normalizeDrugMatchText_(value)
@@ -6980,19 +7363,141 @@ body.medplus-aux-open .new-badge::after{
             return uniqueStrings_([normalizedSubject, brandCore]);
         }
 
+        // Trả về các family hoạt chất có mặt trong một dòng danh mục. Khác với
+        // getSingleActiveFamilyKey_(), hàm này GIỮ LẠI nhiều family để nhận diện
+        // chế phẩm phối hợp, ví dụ Vitamin B1 + B6 + B12.
+        function getDrugActiveFamilySet_(drug) {
+            const cached = getCachedDrugActiveFamilyArray_(drug);
+            if (cached) return new Set(cached);
+
+            const families = new Set();
+            const active = String(drug && drug.active || '').trim();
+
+            // Dòng đơn hoạt chất hoặc override danh mục đã xác minh.
+            const single = getSingleActiveFamilyKey_(drug);
+            if (single) families.add(single);
+
+            // Trích mọi active family đã biết trong cột hoạt chất; với chế phẩm
+            // phối hợp, kết quả có thể chứa từ hai family trở lên.
+            getKnownActiveFamiliesInText_(active).forEach(function(family) {
+                const key = normalizeActiveIngredientFamilyKey_(family);
+                if (key) families.add(key);
+            });
+
+            // Fallback cho một số dòng danh mục có hoạt chất thiếu/không chuẩn,
+            // nhưng tên biệt dược là tổ hợp đã được xác minh trong bảng override.
+            const brand = normalizeDrugMatchText_(drug && drug.brand);
+            const compactBrand = brand.replace(/\s+/g, '');
+            MEDPLUS_COMBINATION_ALIAS_PROFILES_.forEach(function(profile) {
+                const matched = (profile.brandOverrides || []).some(function(value) {
+                    const alias = normalizeDrugMatchText_(value);
+                    if (!alias) return false;
+                    const compactAlias = alias.replace(/\s+/g, '');
+                    return brand === alias
+                        || compactBrand === compactAlias
+                        || (alias.length >= 3 && (brand.indexOf(alias + ' ') === 0 || brand.endsWith(' ' + alias)));
+                });
+                if (matched) {
+                    (profile.families || []).forEach(function(family) {
+                        const key = normalizeActiveIngredientFamilyKey_(family);
+                        if (key) families.add(key);
+                    });
+                }
+            });
+
+            const values = Array.from(families);
+            setCachedDrugActiveFamilyArray_(drug, values);
+            return new Set(values);
+        }
+
+        function isCombinationDrug_(drug) {
+            const active = String(drug && drug.active || '');
+            const families = getDrugActiveFamilySet_(drug);
+            return isCombinationActiveIngredient_(active) || families.size >= 2;
+        }
+
+        function getCombinationDrugsContainingFamily_(family, catalog) {
+            const familyKey = normalizeActiveIngredientFamilyKey_(family);
+            const source = catalog || [];
+            if (!familyKey) return [];
+            const bucket = getCombinationLookupCacheForCatalog_(source);
+            const cacheKey = 'one:' + familyKey;
+            if (bucket && bucket.has(cacheKey)) return bucket.get(cacheKey).slice();
+
+            const result = sortDrugsByBrand_(dedupeDrugs_(source.filter(function(drug) {
+                const families = getDrugActiveFamilySet_(drug);
+                return isCombinationActiveIngredient_(String(drug && drug.active || '')) || families.size >= 2
+                    ? families.has(familyKey)
+                    : false;
+            })));
+            if (bucket) bucket.set(cacheKey, result.slice());
+            return result;
+        }
+
+        function getCombinationDrugsMatchingFamilies_(requiredFamilies, catalog) {
+            const required = uniqueStrings_(requiredFamilies || [])
+                .map(function(family) { return normalizeActiveIngredientFamilyKey_(family); })
+                .filter(Boolean)
+                .sort();
+            const source = catalog || [];
+            if (!required.length) return [];
+            const bucket = getCombinationLookupCacheForCatalog_(source);
+            const cacheKey = 'all:' + required.join('|');
+            if (bucket && bucket.has(cacheKey)) return bucket.get(cacheKey).slice();
+
+            const result = sortDrugsByBrand_(dedupeDrugs_(source.filter(function(drug) {
+                const families = getDrugActiveFamilySet_(drug);
+                const isCombo = isCombinationActiveIngredient_(String(drug && drug.active || '')) || families.size >= 2;
+                return isCombo && required.every(function(family) { return families.has(family); });
+            })));
+            if (bucket) bucket.set(cacheKey, result.slice());
+            return result;
+        }
+
+        function getQuestionExplicitCombinationProfile_(userMessage) {
+            const q = normalizeDrugMatchText_(userMessage);
+            const subject = normalizeDrugMatchText_(getDrugSubjectForMatching_(userMessage));
+            if (!q && !subject) return null;
+
+            for (const profile of MEDPLUS_COMBINATION_ALIAS_PROFILES_) {
+                const matched = (profile.aliases || []).some(function(value) {
+                    const alias = normalizeDrugMatchText_(value);
+                    return !!alias && (hasNormalizedPhrase_(subject, alias) || hasNormalizedPhrase_(q, alias));
+                });
+                if (matched) return profile;
+            }
+            return null;
+        }
+
+        function buildCompleteRelatedDrugSetForActiveFamily_(family, catalog) {
+            const familyKey = normalizeActiveIngredientFamilyKey_(family);
+            if (!familyKey) return [];
+            const index = getActiveIngredientAliasIndex_(catalog || []);
+            const singleActiveDrugs = sortDrugsByBrand_(dedupeDrugs_(index.familyToDrugs.get(familyKey) || []));
+            const relatedCombinationDrugs = getCombinationDrugsContainingFamily_(familyKey, catalog || []);
+            // Hiển thị thuốc đơn hoạt chất trước, sau đó là các chế phẩm phối hợp có chứa hoạt chất.
+            return dedupeDrugs_(singleActiveDrugs.concat(relatedCombinationDrugs));
+        }
+
         // Nhận diện khi người dùng hỏi thẳng hoạt chất hoặc một alias của hoạt chất,
         // ví dụ: "phytonadione", "phytomenadione", "vitamin K1", "acetaminophen".
+        // Khi hỏi một hoạt chất, trả đầy đủ thuốc đơn hoạt chất VÀ các chế phẩm phối hợp
+        // có chứa hoạt chất đó. Khi hỏi tên tổ hợp như "3B", chỉ trả các chế phẩm khớp
+        // đầy đủ thành phần tổ hợp, không kéo các thuốc B1/B6/B12 đơn lẻ.
         function getExactActiveAliasMatchesFromQuestion_(userMessage, allDrugs) {
             const catalog = allDrugs || [];
             if (!userMessage || !catalog.length) return [];
 
-            const index = getActiveIngredientAliasIndex_(catalog);
-            const matchedFamilies = getQuestionExplicitActiveFamilies_(userMessage, catalog);
+            const comboProfile = getQuestionExplicitCombinationProfile_(userMessage);
+            if (comboProfile) {
+                return getCombinationDrugsMatchingFamilies_(comboProfile.families, catalog);
+            }
 
+            const matchedFamilies = getQuestionExplicitActiveFamilies_(userMessage, catalog);
             // Không tự ý mở rộng nếu alias trỏ tới nhiều hoạt chất khác nhau.
             if (matchedFamilies.size !== 1) return [];
             const family = Array.from(matchedFamilies)[0];
-            return sortDrugsByBrand_(dedupeDrugs_(index.familyToDrugs.get(family) || []));
+            return buildCompleteRelatedDrugSetForActiveFamily_(family, catalog);
         }
 
         /*
@@ -7042,17 +7547,25 @@ body.medplus-aux-open .new-badge::after{
             const catalog = allDrugs || [];
             if (!catalog.length) return selected;
 
+            // Khi người dùng gọi tên một tổ hợp đã biết (ví dụ 3B), chỉ giữ đúng
+            // các chế phẩm chứa đầy đủ thành phần tổ hợp.
+            const comboProfile = getQuestionExplicitCombinationProfile_(userMessage);
+            if (comboProfile) {
+                const comboDrugs = getCombinationDrugsMatchingFamilies_(comboProfile.families, catalog);
+                return comboDrugs.length ? comboDrugs : selected;
+            }
+
             const families = getQuestionExplicitActiveFamilies_(userMessage, catalog);
             if (families.size !== 1) return selected;
 
             const family = Array.from(families)[0];
-            const index = getActiveIngredientAliasIndex_(catalog);
-            const familyDrugs = sortDrugsByBrand_(dedupeDrugs_(index.familyToDrugs.get(family) || []));
-            if (!familyDrugs.length) return selected;
+            const relatedDrugs = buildCompleteRelatedDrugSetForActiveFamily_(family, catalog);
+            if (!relatedDrugs.length) return selected;
 
-            // Một câu hỏi gọi trực tiếp active family phải hiển thị CHÍNH XÁC cả family,
-            // không giữ các thuốc khác do AI hoặc so khớp tên tình cờ đưa vào.
-            return familyDrugs;
+            // Một câu hỏi gọi trực tiếp active family phải hiển thị đầy đủ thuốc đơn
+            // hoạt chất và các chế phẩm phối hợp có chứa family đó, không giữ thuốc khác
+            // do AI hoặc so khớp tên tình cờ đưa vào.
+            return relatedDrugs;
         }
 
         function isDrugNameSameAsOwnActive_(drug, aliasIndex) {
@@ -7995,9 +8508,58 @@ body.medplus-aux-open .new-badge::after{
                 .trim();
         }
 
-        function buildDeterministicDrugListForChat_(selectedDrugs) {
+        function getActiveFamilyDisplayLabelForChat_(family, userMessage) {
+            const familyKey = normalizeActiveIngredientFamilyKey_(family);
+            if (!familyKey) return '';
+
+            // Ưu tiên cụm hoạt chất mà người dùng vừa gọi, miễn là nó quy về đúng family.
+            const subject = String(getDrugSubjectForMatching_(userMessage || '') || '').trim();
+            if (subject && normalizeActiveIngredientFamilyKey_(subject) === familyKey) {
+                return subject.replace(/\b([a-z])(?=\d)/gi, function(ch) { return ch.toUpperCase(); });
+            }
+
+            const aliasGroup = MEDPLUS_ACTIVE_INGREDIENT_ALIAS_GROUPS_.find(function(group) {
+                return normalizeActiveIngredientFamilyKey_(group && group[0]) === familyKey;
+            });
+            const canonical = String((aliasGroup && aliasGroup[0]) || familyKey).trim();
+            return canonical
+                .replace(/\b([a-z])(?=\d)/gi, function(ch) { return ch.toUpperCase(); })
+                .replace(/^./, function(ch) { return ch.toUpperCase(); });
+        }
+
+        function getExplicitSingleActiveFamilyForChat_(userMessage, catalogDrugs) {
+            // Người dùng gọi tên tổ hợp như 3B thì không được tách thuốc đơn và phối hợp.
+            if (getQuestionExplicitCombinationProfile_(userMessage)) return '';
+            const families = getQuestionExplicitActiveFamilies_(userMessage, catalogDrugs || []);
+            return families.size === 1 ? Array.from(families)[0] : '';
+        }
+
+        function buildDrugRowsForChat_(drugs, startNumber, shouldNumber) {
+            let output = '';
+            (drugs || []).forEach(function(d, i) {
+                const brand = cleanDrugFieldForChat_(d.brand);
+                const active = cleanDrugFieldForChat_(d.active);
+                const form = cleanDrugFieldForChat_(d.form);
+                const link = String(d.link || '').trim();
+
+                output += (shouldNumber ? ((startNumber + i) + '. ') : '')
+                    + '**' + brand + '**'
+                    + ' — Hoạt chất: ' + active
+                    + ' — Dạng bào chế: ' + form;
+                if (link) {
+                    output += ' [XEM HDSD](' + link + ')';
+                } else {
+                    output += ' 📄 HDSD đang cập nhật';
+                }
+                output += '\n';
+            });
+            return output;
+        }
+
+        function buildDeterministicDrugListForChat_(selectedDrugs, options) {
             const drugs = dedupeDrugs_(selectedDrugs || []);
             const hospital = 'Bệnh viện Đa khoa tỉnh Tuyên Quang';
+            const opts = options || {};
 
             let answer = '\n\n';
             if (!drugs.length) {
@@ -8009,32 +8571,34 @@ body.medplus-aux-open .new-badge::after{
             answer += drugs.length === 1
                 ? ('**Tại ' + hospital + ' hiện có thuốc sau phù hợp trong danh mục:**\n\n')
                 : ('**Tại ' + hospital + ' hiện có ' + drugs.length + ' thuốc sau phù hợp trong danh mục:**\n\n');
-            const shouldNumber = drugs.length > 1;
-            drugs.forEach(function(d, i) {
-                const brand = cleanDrugFieldForChat_(d.brand);
-                const active = cleanDrugFieldForChat_(d.active);
-                const form = cleanDrugFieldForChat_(d.form);
-                const link = String(d.link || '').trim();
 
-                answer += (shouldNumber ? ((i + 1) + '. ') : '')
-                    + '**' + brand + '**'
-                    + ' — Hoạt chất: ' + active
-                    + ' — Dạng bào chế: ' + form;
-                if (link) {
-                    answer += ' [XEM HDSD](' + link + ')';
-                } else {
-                    answer += ' 📄 HDSD đang cập nhật';
-                }
-                answer += '\n';
-            });
+            const requestedFamily = getExplicitSingleActiveFamilyForChat_(opts.userMessage, opts.catalogDrugs || []);
+            const relatedCombinationDrugs = requestedFamily
+                ? drugs.filter(function(drug) {
+                    return isCombinationDrug_(drug) && getDrugActiveFamilySet_(drug).has(requestedFamily);
+                })
+                : [];
+            const primaryDrugs = relatedCombinationDrugs.length
+                ? drugs.filter(function(drug) { return relatedCombinationDrugs.indexOf(drug) === -1; })
+                : drugs;
+            const shouldSeparateRelatedCombinations = !!requestedFamily && primaryDrugs.length > 0 && relatedCombinationDrugs.length > 0;
+            const shouldNumber = drugs.length > 1;
+
+            answer += buildDrugRowsForChat_(primaryDrugs, 1, shouldNumber);
+
+            if (shouldSeparateRelatedCombinations) {
+                const familyLabel = getActiveFamilyDisplayLabelForChat_(requestedFamily, opts.userMessage) || 'hoạt chất được hỏi';
+                answer += '\n**Ngoài ra, bạn có thể tham khảo các thuốc phối hợp có thành phần ' + familyLabel + ':**\n\n';
+                answer += buildDrugRowsForChat_(relatedCombinationDrugs, primaryDrugs.length + 1, shouldNumber);
+            }
 
             return answer.trimEnd();
         }
 
 
-        function appendDeterministicDrugListToAnswer_(answerText, selectedDrugs) {
+        function appendDeterministicDrugListToAnswer_(answerText, selectedDrugs, options) {
             const cleaned = normalizeChatAnswerStyle_(stripAiGeneratedHDSDLinks_(answerText));
-            const listBlock = buildDeterministicDrugListForChat_(selectedDrugs || []);
+            const listBlock = buildDeterministicDrugListForChat_(selectedDrugs || [], options || {});
             return (cleaned ? cleaned : 'Tôi đã đối chiếu câu hỏi với kiến thức tổng hợp và danh mục thuốc hiện có.') + listBlock;
         }
 
@@ -8858,6 +9422,7 @@ body.medplus-aux-open .new-badge::after{
                 });
                 
                 rawData = data;
+                setTimeout(function() { primeMedplusCatalogWorker_(rawData); }, 0);
                 filteredData = [].concat(rawData);
                 buildGroupFilter(rawData);
                 document.getElementById('skeletonLoader').style.display = 'none';
@@ -9964,6 +10529,7 @@ body.medplus-aux-open .new-badge::after{
                 ragDrugIndex = buildRagDrugIndex_(aiMedicines);
                 ragDrugIndexSourceSize = aiMedicines.length;
                 resetAiFullScanCache_();
+                setTimeout(function() { primeMedplusCatalogWorker_(aiMedicines && aiMedicines.length ? aiMedicines : rawData); }, 0);
             } catch (e) { console.error("Không thể tải dữ liệu y khoa:", e); }
         }
 
@@ -10283,6 +10849,7 @@ body.medplus-aux-open .new-badge::after{
             const imageUpload = document.getElementById('image-upload');
 
             captureInitialChatMessages_();
+            finishChatUiSession_(medplusChatUiSession_, false);
             clearInterval(timerInterval);
 
             if (cm) {
@@ -10294,7 +10861,7 @@ body.medplus-aux-open .new-badge::after{
             if (sendButton) sendButton.disabled = false;
             if (typingIndicator) typingIndicator.style.display = 'none';
             if (timerDisplay) timerDisplay.innerText = '';
-            if (typingText) typingText.innerText = 'MedPlus AI đang phân tích';
+            if (typingText) typingText.innerText = 'MedPlus AI đang suy nghĩ';
         }
 
         function displayMessage(text, sender) {
@@ -10318,7 +10885,7 @@ body.medplus-aux-open .new-badge::after{
             reader.readAsDataURL(file);
         }
 
-        async function sendImageToAI(base64Data, mimeType, keyIdx, modelIdx) {
+        async function sendImageToAI(base64Data, mimeType, keyIdx, modelIdx, requestContext) {
             if (keyIdx === undefined) keyIdx = 0;
             if (modelIdx === undefined) modelIdx = 0;
             
@@ -10326,39 +10893,21 @@ body.medplus-aux-open .new-badge::after{
             const typingIndicator = document.getElementById('typing-indicator');
             const chatMessages = document.getElementById('chat-messages');
             
+            const imageContext = requestContext || { session: startChatUiSession_() };
+            const imageSession = imageContext.session;
             sendButton.disabled = true;
             typingIndicator.style.display = 'block';
             activeModelName = AI_MODELS[modelIdx];
-            document.getElementById('typing-text').innerText = "MedPlus AI đang phân tích ảnh...";
-            startTime = Date.now();
-            document.getElementById('timer-display').innerText = "(0.0s)";
-            clearInterval(timerInterval);
-            timerInterval = setInterval(function() {
-                document.getElementById('timer-display').innerText = "(" + ((Date.now() - startTime) / 1000).toFixed(1) + "s)";
-            }, 100);
+            setChatUiStatus_(imageSession, 'thinking');
             setTimeout(function() { chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' }); }, 100);
+            await nextUiPaint_();
 
             const modelName = String(AI_MODELS[modelIdx] || "");
             const isGemmaModel = modelName.indexOf("gemma-") === 0;
             const imageDrugSource = (aiMedicines && aiMedicines.length > 0) ? aiMedicines : rawData;
 
-            let allDrugsString = "\n<danh_muc_thuoc_benh_vien>\n";
-            imageDrugSource.forEach(function(d, i) {
-                const brand = d.brand || d.name || "";
-                const active = d.active || "";
-                const group = d.group || "";
-                const strength = d.strength || "Đang cập nhật";
-                const form = d.form || "Đang cập nhật";
-                const link = d.link || "";
-                allDrugsString += (i + 1) + ". Biệt dược: " + brand
-                    + " | Hoạt chất: " + active
-                    + (group ? " | Nhóm: " + group : "")
-                    + " | Hàm lượng: " + strength
-                    + " | Dạng: " + form
-                    + (link ? " | HDSD: " + link : "")
-                    + "\n";
-            });
-            allDrugsString += "</danh_muc_thuoc_benh_vien>";
+            const imageCatalogText = await getWorkerCatalogText_(imageDrugSource, imageDrugSource, 'image');
+            const allDrugsString = "\n<danh_muc_thuoc_benh_vien>\n" + imageCatalogText + "\n</danh_muc_thuoc_benh_vien>";
 
             const imagePromptText = "Bạn là MedPlus AI của Khoa Dược - Bệnh viện Đa khoa tỉnh Tuyên Quang. "
                 + "Hãy phân tích hình ảnh người dùng tải lên. Chỉ trả lời kết quả cuối cùng, không in nháp, không in Role/Goal/User says/Analysis/Thought.\n\n"
@@ -10454,27 +11003,21 @@ body.medplus-aux-open .new-badge::after{
                     throw new Error("EMPTY_IMAGE_RESPONSE_AFTER_SANITIZE");
                 }
 
-                clearInterval(timerInterval);
-                typingIndicator.style.display = 'none';
-                displayMessage(replyText, 'ai');
-                sendButton.disabled = false;
+                await renderChatFinalAnswer_(imageSession, replyText, sendButton);
                 currentKeyIndex = keyIdx;
                 
             } catch (error) {
                 console.error("Image AI error", error, "model=", modelName, "keyIdx=", keyIdx);
                 // Ưu tiên đổi key trước.
                 if (keyIdx < API_KEYS.length - 1) {
-                    await sendImageToAI(base64Data, mimeType, keyIdx + 1, modelIdx);
+                    await sendImageToAI(base64Data, mimeType, keyIdx + 1, modelIdx, imageContext);
                 }
                 // Nếu hết key, đổi model.
                 else if (modelIdx < AI_MODELS.length - 1) {
-                    await sendImageToAI(base64Data, mimeType, 0, modelIdx + 1);
+                    await sendImageToAI(base64Data, mimeType, 0, modelIdx + 1, imageContext);
                 }
                 else {
-                    clearInterval(timerInterval);
-                    typingIndicator.style.display = 'none';
-                    displayMessage("Hệ thống đã thử toàn bộ 3 API key cho các model Gemini và Gemma nhưng vẫn chưa xử lý được ảnh. Vui lòng thử lại sau hoặc gửi ảnh rõ hơn.", 'ai');
-                    sendButton.disabled = false;
+                    await renderChatFinalAnswer_(imageSession, "Hệ thống đã thử toàn bộ 3 API key cho các model Gemini và Gemma nhưng vẫn chưa xử lý được ảnh. Vui lòng thử lại sau hoặc gửi ảnh rõ hơn.", sendButton);
                 }
             }
         }
@@ -11214,11 +11757,18 @@ body.medplus-aux-open .new-badge::after{
         function hasExactDrugOrActiveInfoIntent_(userMessage, info) {
             if (!info || info.tooBroadWithoutTopic) return false;
             const q = String(info.normalizedQuestion || removeAccents(userMessage || '')).trim();
-            if (!isSingleDrugInfoQuestion_(q) && !isDrugIdentityQuery(q)) return false;
             const allDrugs = info.allDrugs || [];
             const exactNames = info.exactNameMatches || [];
             const activeAliases = getExactActiveAliasMatchesFromQuestion_(userMessage, allDrugs);
-            return exactNames.length > 0 || activeAliases.length > 0;
+            const hasExactLocalMatch = exactNames.length > 0 || activeAliases.length > 0;
+            if (!hasExactLocalMatch) return false;
+
+            // Cho phép "Bệnh viện có thuốc 3B/Vitamin B1/Vitamin K1 không?" đi theo
+            // danh sách khớp chắc cục bộ thay vì gửi toàn bộ catalog cho AI. Với câu
+            // hỏi nhóm thuốc thật sự, hasExactLocalMatch vẫn false nên luồng nhóm không đổi.
+            return isSingleDrugInfoQuestion_(q)
+                || isDrugIdentityQuery(q)
+                || hasExplicitFormularyIntent_(info);
         }
 
         function buildHybridLocalDrugSeeds_(userMessage, info) {
@@ -11236,14 +11786,18 @@ body.medplus-aux-open .new-badge::after{
             const allDrugs = (info && info.allDrugs) || [];
             if (!allDrugs.length) return [];
 
-            // Câu hỏi rõ danh mục/nhóm thuốc cần thấy toàn bộ danh mục để không bỏ sót.
+            // Ưu tiên tên thuốc/hoạt chất/tổ hợp đã khớp CHẮC tại trình duyệt, kể cả
+            // câu "Bệnh viện có ... không?". Nhờ đó các alias như 3B không bị chìm
+            // trong toàn bộ catalog và không phụ thuộc AI phải tự đoán tên viết tắt.
+            const localSeeds = buildHybridLocalDrugSeeds_(userMessage, info);
+            if (localSeeds.length && hasExactDrugOrActiveInfoIntent_(userMessage, info)) {
+                return localSeeds;
+            }
+
+            // Chỉ câu hỏi danh mục/nhóm thuốc thật sự mới cần thấy toàn bộ catalog.
             if (hasExplicitFormularyIntent_(info)) return allDrugs.slice();
 
-            // Câu hỏi đúng một thuốc/hoạt chất chỉ gửi các thuốc khớp chắc,
-            // đã gồm toàn bộ family hoạt chất nhờ alias + catalog override.
-            const localSeeds = buildHybridLocalDrugSeeds_(userMessage, info);
             if (localSeeds.length) return localSeeds;
-
             return [];
         }
 
@@ -11254,18 +11808,18 @@ body.medplus-aux-open .new-badge::after{
         }
 
         function buildHybridOnePassCacheKey_(userMessage, info, catalogDrugs) {
-            return 'hybrid-one-pass-v2|'
+            return 'hybrid-one-pass-v4-combo-separated-display|'
                 + removeAccents(userMessage || '')
                 + '|' + ((catalogDrugs && catalogDrugs.length) || 0)
                 + '|' + (medicineCount || 0)
                 + '|' + (hasExplicitFormularyIntent_(info) ? 'formulary' : 'other');
         }
 
-        function buildHybridOnePassPrompt_(userMessage, info, catalogDrugs) {
+        function buildHybridOnePassPrompt_(userMessage, info, catalogDrugs, preparedCatalogText) {
             const drugs = catalogDrugs || [];
-            const catalogText = drugs.length
+            const catalogText = preparedCatalogText || (drugs.length
                 ? drugs.map(function(d, i) { return formatDrugLineForHybridOnePass_(d, i + 1); }).join('\n')
-                : '(Không có danh sách thuốc cần đối chiếu cho câu hỏi này.)';
+                : '(Không có danh sách thuốc cần đối chiếu cho câu hỏi này.)');
             const formularyRequested = hasExplicitFormularyIntent_(info);
             const directDrugInfo = hasExactDrugOrActiveInfoIntent_(userMessage, info);
 
@@ -11281,7 +11835,7 @@ body.medplus-aux-open .new-badge::after{
                 + '- Chỉ được chọn số ID có trong <DANH_MUC>. Không tạo ID, tên thuốc, hoạt chất, URL hoặc HDSD.\n'
                 + '- Chỉ chọn thuốc nếu người dùng hỏi rõ danh mục bệnh viện/liệt kê thuốc hoặc hỏi trực tiếp một thuốc/hoạt chất đã có trong <DANH_MUC>. Với câu hỏi kiến thức bệnh học chung, ids phải là [].\n'
                 + '- Khi hỏi danh sách/nhóm thuốc, chỉ chọn thuốc tác dụng TRỰC TIẾP, ĐÚNG MỤC TIÊU và CÙNG CHIỀU. Loại thuốc cùng cơ quan/bệnh cảnh nhưng ngược tác dụng: cầm máu không chọn chống đông/tiêu sợi huyết; chống đông không chọn cầm máu; nhuận tràng không chọn cầm tiêu chảy; hạ áp không chọn thuốc làm tăng huyết áp.\n'
-                + '- Khi hỏi một hoạt chất hoặc alias, chọn mọi thuốc đơn hoạt chất tương đương cùng hoạt chất trong danh sách.\n'
+                + '- Khi hỏi một hoạt chất hoặc alias, chọn mọi thuốc đơn hoạt chất tương đương VÀ mọi chế phẩm phối hợp có CHỨA hoạt chất đó trong danh sách. Khi hỏi tên tổ hợp như 3B/B1-B6-B12, chỉ chọn chế phẩm có ĐỦ các thành phần của tổ hợp, không chọn thuốc đơn lẻ.\n'
                 + '- Nếu không có thuốc phù hợp, ids là [].\n\n'
                 + 'QUY TẮC ANSWER:\n'
                 + '- Trả lời câu hỏi trước bằng tiếng Việt, đúng trọng tâm, gọn, ưu tiên 3-6 ý.\n'
@@ -11408,8 +11962,12 @@ body.medplus-aux-open .new-badge::after{
             }
             if (keyIdx >= API_KEYS.length || modelIdx >= AI_MODELS.length) throw new Error('ALL_KEYS_EXHAUSTED');
             const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/' + AI_MODELS[modelIdx] + ':generateContent?key=' + API_KEYS[keyIdx];
+            const preparedCatalogText = catalogDrugs.length
+                ? await getWorkerCatalogText_(catalogDrugs, (info && info.allDrugs) || catalogDrugs, 'hybrid')
+                : '';
+            const hybridPrompt = buildHybridOnePassPrompt_(userMessage, info, catalogDrugs, preparedCatalogText);
             const payload = {
-                contents: [{ role: 'user', parts: [{ text: buildHybridOnePassPrompt_(userMessage, info, catalogDrugs) }] }],
+                contents: [{ role: 'user', parts: [{ text: hybridPrompt }] }],
                 generationConfig: { temperature: 0.05, maxOutputTokens: 2800, responseMimeType: 'application/json' }
             };
             const res = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -11435,7 +11993,7 @@ body.medplus-aux-open .new-badge::after{
         }
 
 
-        async function sendMessage(isRetry, keyIdx, modelIdx) {
+        async function sendMessage(isRetry, keyIdx, modelIdx, requestContext) {
             if (isRetry === undefined) isRetry = false;
             if (keyIdx === undefined) keyIdx = 0;
             if (modelIdx === undefined) modelIdx = 0;
@@ -11445,59 +12003,50 @@ body.medplus-aux-open .new-badge::after{
             const typingIndicator = document.getElementById('typing-indicator');
             const chatMessages = document.getElementById('chat-messages');
 
-            let userMessage = chatInput.value.trim();
-            if (isRetry) {
-                const msgs = document.querySelectorAll('.user-message .text-wrapper');
-                if (msgs.length > 0) userMessage = msgs[msgs.length - 1].innerText;
-            } else {
-                if (!userMessage) return;
-                displayMessage(userMessage, 'user');
+            let context = requestContext || null;
+            if (!context) {
+                const initialMessage = chatInput.value.trim();
+                if (!initialMessage) return;
+                displayMessage(initialMessage, 'user');
                 chatInput.value = '';
                 sendButton.disabled = true;
                 typingIndicator.style.display = 'block';
+                context = { userMessage: initialMessage, session: startChatUiSession_() };
                 setTimeout(function() { chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' }); }, 100);
+                // Cho browser vẽ ngay trạng thái + đồng hồ trước bất kỳ logic danh mục nào.
+                await nextUiPaint_();
             }
 
+            const userMessage = context.userMessage;
+            const session = context.session;
+            if (!session || !session.active) return;
             activeModelName = AI_MODELS[modelIdx];
-            document.getElementById('typing-text').innerText = 'MedPlus AI đang suy nghĩ...';
-            startTime = Date.now();
-            document.getElementById('timer-display').innerText = '(0.0s)';
-            clearInterval(timerInterval);
-            timerInterval = setInterval(function() {
-                document.getElementById('timer-display').innerText = '(' + ((Date.now() - startTime) / 1000).toFixed(1) + 's)';
-            }, 100);
+            setChatUiStatus_(session, 'thinking');
 
             try {
-                // Tầng miễn phí: lời chào/câu ngoài y tế rõ ràng không cần gọi AI.
-                let scope = getFastQuestionScope_(userMessage);
+                // Tầng miễn phí: không gọi AI, nhưng vẫn dùng cùng phiên UI duy nhất.
+                const scope = getFastQuestionScope_(userMessage);
                 if (scope === 'greeting') {
-                    clearInterval(timerInterval);
-                    typingIndicator.style.display = 'none';
-                    displayMessage(getGreetingReply_(), 'ai');
-                    sendButton.disabled = false;
+                    await renderChatFinalAnswer_(session, getGreetingReply_(), sendButton);
                     return;
                 }
                 if (scope === 'outside') {
-                    clearInterval(timerInterval);
-                    typingIndicator.style.display = 'none';
-                    displayMessage(buildOutOfScopeMedicalOnlyReply_(), 'ai');
-                    sendButton.disabled = false;
+                    await renderChatFinalAnswer_(session, buildOutOfScopeMedicalOnlyReply_(), sendButton);
                     return;
                 }
 
                 const dataForRag = getCurrentDrugSource_(rawData);
+                // Worker được prime song song; getDrugQueryInfo_ giữ nguyên logic y khoa/alias cũ.
+                const primePromise = primeMedplusCatalogWorker_(dataForRag);
                 const drugQueryInfo = getDrugQueryInfo_(userMessage, dataForRag);
+                await primePromise;
+                await nextUiPaint_();
 
-                // Chỉ một request AI chính: scope + intent + answer + drug IDs.
-                document.getElementById('typing-text').innerText = 'MedPlus AI đang xử lý câu hỏi...';
+                // Một request AI chính: scope + intent + answer + ID thuốc.
                 const onePass = await resolveMedicalQuestionHybridOnePassAI_(userMessage, drugQueryInfo, keyIdx, modelIdx);
-
                 if (onePass.scope !== 'medical') {
                     setCachedQuestionScope_(userMessage, 'outside');
-                    clearInterval(timerInterval);
-                    typingIndicator.style.display = 'none';
-                    displayMessage(buildOutOfScopeMedicalOnlyReply_(), 'ai');
-                    sendButton.disabled = false;
+                    await renderChatFinalAnswer_(session, buildOutOfScopeMedicalOnlyReply_(), sendButton);
                     return;
                 }
                 setCachedQuestionScope_(userMessage, 'medical');
@@ -11508,27 +12057,25 @@ body.medplus-aux-open .new-badge::after{
                 const shouldAppendFormulary = localCanShowFormulary
                     && (hasExplicitFormularyIntent_(drugQueryInfo) || aiIntent === 'DRUG_INFO' || aiIntent === 'FORMULARY_LIST' || hasExactDrugOrActiveInfoIntent_(userMessage, drugQueryInfo));
 
-                let finalDrugs = getHybridLocalFinalDrugs_(userMessage, drugQueryInfo, onePass.drugs || []);
+                let finalDrugs = await getHybridLocalFinalDrugsViaWorker_(userMessage, drugQueryInfo, onePass.drugs || []);
                 let didDrugReview = false;
                 if (shouldAppendFormulary && shouldRunConditionalDrugReview_(userMessage, drugQueryInfo, onePass, finalDrugs)) {
                     didDrugReview = true;
-                    document.getElementById('typing-text').innerText = 'MedPlus AI đang kiểm tra lại danh sách thuốc...';
+                    // Nội bộ vẫn hậu kiểm, giao diện chỉ duy trì trạng thái "đang suy nghĩ".
+                    setChatUiStatus_(session, 'thinking');
                     const verified = await verifyDrugFinalListWithAI_(userMessage, finalDrugs);
                     if (!verified.ok) {
-                        clearInterval(timerInterval);
-                        typingIndicator.style.display = 'none';
-                        displayMessage('Tôi chưa kiểm tra lại được danh sách thuốc phù hợp nên chưa trả kết quả để tránh sai sót dữ liệu y khoa. Bạn vui lòng thử lại sau ít giây.', 'ai');
-                        sendButton.disabled = false;
+                        await renderChatFinalAnswer_(session, 'Tôi chưa kiểm tra lại được danh sách thuốc phù hợp nên chưa trả kết quả để tránh sai sót dữ liệu y khoa. Bạn vui lòng thử lại sau ít giây.', sendButton);
                         return;
                     }
-                    finalDrugs = getHybridLocalFinalDrugs_(userMessage, drugQueryInfo, verified.drugs || []);
+                    finalDrugs = await getHybridLocalFinalDrugsViaWorker_(userMessage, drugQueryInfo, verified.drugs || []);
                 }
 
                 let replyText = sanitizeAiReply_(onePass.answer || '', userMessage);
                 if (!replyText) replyText = 'Tôi chưa tạo được phần trả lời đầy đủ ở lần này.';
 
                 if (shouldRunConditionalAnswerReview_(userMessage, replyText, drugQueryInfo, onePass, didDrugReview)) {
-                    document.getElementById('typing-text').innerText = 'MedPlus AI đang kiểm tra lại câu trả lời...';
+                    setChatUiStatus_(session, 'thinking');
                     const reviewPlan = buildFinalAnswerReviewPlan_(userMessage, dataForRag, null, {
                         mode: shouldAppendFormulary ? 'FORMULARY' : 'GENERAL_MEDICAL',
                         selectedDrugCount: finalDrugs.length,
@@ -11536,38 +12083,27 @@ body.medplus-aux-open .new-badge::after{
                     });
                     const reviewed = await reviewMedicalAnswerCoreBeforeDisplay_(userMessage, replyText, reviewPlan, keyIdx, modelIdx);
                     if (!reviewed.ok) {
-                        clearInterval(timerInterval);
-                        typingIndicator.style.display = 'none';
-                        displayMessage('Tôi chưa kiểm tra lại được phần trả lời trước khi hiển thị nên chưa trả kết quả để tránh sai sót. Bạn vui lòng thử lại sau ít giây.', 'ai');
-                        sendButton.disabled = false;
+                        await renderChatFinalAnswer_(session, 'Tôi chưa kiểm tra lại được phần trả lời trước khi hiển thị nên chưa trả kết quả để tránh sai sót. Bạn vui lòng thử lại sau ít giây.', sendButton);
                         return;
                     }
                     replyText = reviewed.answer;
                 }
 
-                let finalAnswer;
-                if (shouldAppendFormulary) {
-                    finalAnswer = appendDeterministicDrugListToAnswer_(replyText, finalDrugs);
-                } else {
-                    finalAnswer = normalizeChatAnswerStyle_(stripAiGeneratedHDSDLinks_(replyText));
-                }
-
-                clearInterval(timerInterval);
-                typingIndicator.style.display = 'none';
-                displayMessage(finalAnswer, 'ai');
-                sendButton.disabled = false;
+                // Nhường một frame trước khi format phần danh mục/HTML cuối.
+                await nextUiPaint_();
+                const finalAnswer = shouldAppendFormulary
+                    ? appendDeterministicDrugListToAnswer_(replyText, finalDrugs, { userMessage: userMessage, catalogDrugs: dataForRag })
+                    : normalizeChatAnswerStyle_(stripAiGeneratedHDSDLinks_(replyText));
+                await renderChatFinalAnswer_(session, finalAnswer, sendButton);
                 currentKeyIndex = keyIdx;
             } catch (error) {
                 console.warn('Hybrid one-pass chat failed:', error);
                 if (keyIdx < API_KEYS.length - 1) {
-                    await sendMessage(true, keyIdx + 1, modelIdx);
+                    await sendMessage(true, keyIdx + 1, modelIdx, context);
                 } else if (modelIdx < AI_MODELS.length - 1) {
-                    await sendMessage(true, 0, modelIdx + 1);
+                    await sendMessage(true, 0, modelIdx + 1, context);
                 } else {
-                    clearInterval(timerInterval);
-                    typingIndicator.style.display = 'none';
-                    displayMessage('Hệ thống chưa nhận được phản hồi AI hợp lệ. Bạn vui lòng thử lại sau.', 'ai');
-                    sendButton.disabled = false;
+                    await renderChatFinalAnswer_(session, 'Hệ thống chưa nhận được phản hồi AI hợp lệ. Bạn vui lòng thử lại sau.', sendButton);
                 }
             }
         }
