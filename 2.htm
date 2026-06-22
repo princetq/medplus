@@ -15284,7 +15284,7 @@ body.dark-mode .hdsd-parent-excerpt .hdsd-excerpt-focus-title{color:#ff7b7b}
         const parts = text.split(/(\{\{HDSD_IMAGE:[^{}]+\}\})/g);
         return parts.map(function(part) {
             return /^\{\{HDSD_IMAGE:[^{}]+\}\}$/.test(part) ? part : medplusExcerptEscapeHTML_(part);
-        }).join('').replace(/\r?\n/g, '<br>');
+        }).join('');
     }
 
     function medplusExcerptOwnContent_(block) {
@@ -15366,14 +15366,14 @@ body.dark-mode .hdsd-parent-excerpt .hdsd-excerpt-focus-title{color:#ff7b7b}
                 const trailing = firstLine.slice(m[0].length);
                 rendered = '<span class="hdsd-excerpt-focus-title">' + medplusExcerptEscapeHTML_(label) + '</span>';
                 if (trailing) rendered += ' ' + medplusExcerptEscapePreservingImageTokens_(trailing);
-                if (rest) rendered += '<br>' + medplusExcerptEscapePreservingImageTokens_(rest);
+                if (rest) rendered += '\n' + medplusExcerptEscapePreservingImageTokens_(rest);
                 return rendered;
             }
         }
 
         /* Nếu raw block không bắt đầu bằng nhãn (ví dụ heading render lạ), vẫn luôn tô đỏ đúng tiêu đề AI đã chọn. */
         rendered = '<span class="hdsd-excerpt-focus-title">' + medplusExcerptEscapeHTML_(focusLabel) + '</span>';
-        if (content) rendered += '<br>' + medplusExcerptEscapePreservingImageTokens_(content);
+        if (content) rendered += '\n' + medplusExcerptEscapePreservingImageTokens_(content);
         return rendered;
     }
 
@@ -15468,8 +15468,11 @@ body.dark-mode .hdsd-parent-excerpt .hdsd-excerpt-focus-title{color:#ff7b7b}
         anchor.insertAdjacentElement('afterend', excerptNode);
     }
 
+    const previousRenderedGuideResolver = window.medplusResolveRenderedHDSDGuides_;
     window.medplusResolveRenderedHDSDGuides_ = async function(wrapper, userMessage) {
-        /* Không gọi lại resolver cũ: tránh hai lượt AI chọn cùng một mục HDSD. */
+        if (typeof previousRenderedGuideResolver === 'function') {
+            try { await previousRenderedGuideResolver(wrapper, userMessage); } catch (e) {}
+        }
         if (!wrapper || !userMessage || !isHDSDContentQuestion_(userMessage)) return;
         const headers = Array.prototype.slice.call(wrapper.querySelectorAll('p')).filter(function(p) {
             return removeAccents(p.textContent || '').indexOf('theo noi dung to hdsd') !== -1;
@@ -15477,8 +15480,6 @@ body.dark-mode .hdsd-parent-excerpt .hdsd-excerpt-focus-title{color:#ff7b7b}
         const buttons = Array.prototype.slice.call(wrapper.querySelectorAll('button.hdsd-btn'));
         for (let i = 0; i < headers.length; i++) {
             const header = headers[i];
-            /* Câu trả lời đi qua compose mới đã có trích dẫn: không gọi AI lần hai. */
-            if (header.parentElement && header.parentElement.querySelector('.hdsd-parent-excerpt')) continue;
             const button = buttons[i] || buttons[0] || null;
             if (!button) continue;
             try {
@@ -15531,6 +15532,271 @@ body.dark-mode .hdsd-parent-excerpt .hdsd-excerpt-focus-title{color:#ff7b7b}
         button.dataset.medplusHdsdVersion = encodeURIComponent(String(meta.versionLabel || ''));
         button.dataset.medplusHdsdParentIndex = encodeURIComponent(String(meta.parentIndex == null ? '' : meta.parentIndex));
         button.dataset.medplusHdsdFocusIndex = encodeURIComponent(String(meta.focusIndex == null ? '' : meta.focusIndex));
+    };
+})();
+</script>
+
+
+<script id="medplus-hdsd-exact-parent-and-guide-cleanup-patch">
+/* ================================================================
+   MEDPLUS HDSD — NHÃN MỤC THỰC TẾ + MỘT HƯỚNG DẪN DUY NHẤT
+   - Giữ nguyên chính xác tên mục lớn từ JSON, bao gồm số thứ tự.
+   - Nhận diện tiêu đề con cùng cấp như “Liều dùng” nằm trong mục
+     “6. Cách dùng, liều dùng”, thay vì tách nhầm thành mục lớn mới.
+   - Chỉ hiển thị một câu hướng dẫn trước phần trích dẫn; bỏ bản lặp.
+   ================================================================ */
+(function(){
+    function isStructuralNode_(node) {
+        return !!(node && /^heading_|^toggle$/.test(String(node.type || '')));
+    }
+    function hasPhrase_(text, phrase) {
+        if (!text || !phrase || typeof hdsdFocusTextHasPhrase_ !== 'function') return false;
+        return hdsdFocusTextHasPhrase_(String(text), String(phrase));
+    }
+
+    /* Dựng lại outline phẳng nhưng giữ nguyên nhãn thực tế của tờ HDSD.
+       Điểm khác biệt quan trọng: một nhãn ngắn nằm trong nhãn mục lớn liền trước
+       (vd. “Liều dùng” trong “6. Cách dùng, liều dùng”) được xem là PHẦN CON. */
+    window.medplusBuildActualHDSDOutline_ = function(jsonData) {
+        const nodes = typeof medplusFlattenHDSDBlocks_ === 'function'
+            ? medplusFlattenHDSDBlocks_(jsonData && jsonData.blocks ? jsonData.blocks : [], [], 0)
+            : [];
+        const parents = [];
+        let currentParent = null;
+        let currentVersion = '';
+
+        nodes.forEach(function(node) {
+            if (!node || !node.label || !node.labelNorm) return;
+            const label = node.label;
+            const structural = isStructuralNode_(node);
+
+            if (typeof hdsdIsVersionHeading_ === 'function' && hdsdIsVersionHeading_(label)) {
+                currentVersion = label;
+                currentParent = null;
+                return;
+            }
+
+            const knownChild = typeof hdsdIsKnownChildHDSDTitle_ === 'function' && hdsdIsKnownChildHDSDTitle_(label);
+            const knownMajor = typeof hdsdIsKnownMajorHDSDTitle_ === 'function' && hdsdIsKnownMajorHDSDTitle_(label);
+            const parentNorm = currentParent && currentParent.parentNorm ? currentParent.parentNorm : '';
+            const labelNorm = node.labelNorm || '';
+            const labelIsInsideCurrentParent = !!(currentParent
+                && parentNorm
+                && labelNorm
+                && parentNorm !== labelNorm
+                && hasPhrase_(parentNorm, labelNorm));
+            const lowerHeadingLevel = !!(currentParent
+                && structural
+                && currentParent.structural
+                && Number(node.level || 9) > Number(currentParent.level || 9));
+            const deeperTreeLevel = !!(currentParent && Number(node.depth || 0) > Number(currentParent.depth || 0));
+
+            /* Nhãn con của một mục ghép hoặc heading cấp thấp hơn không mở vùng mới. */
+            const isSubPart = !!(currentParent && (
+                knownChild
+                || labelIsInsideCurrentParent
+                || lowerHeadingLevel
+                || (deeperTreeLevel && !knownMajor)
+            ));
+
+            let startsNewParent = !currentParent;
+            if (!startsNewParent && !isSubPart) {
+                if (structural) {
+                    /* Heading cùng/cao hơn mục hiện tại là mục lớn kế tiếp. */
+                    startsNewParent = !currentParent.structural
+                        || Number(node.level || 9) <= Number(currentParent.level || 9)
+                        || knownMajor;
+                } else {
+                    /* Paragraph dạng tiêu đề chỉ mở mục mới khi không phải nhãn con của mục ghép. */
+                    startsNewParent = !!knownMajor;
+                }
+            }
+
+            if (startsNewParent) {
+                currentParent = {
+                    id: 'p' + parents.length,
+                    parentLabel: label,
+                    parentNorm: labelNorm,
+                    parentIndex: node.flatIndex,
+                    versionLabel: currentVersion,
+                    children: [],
+                    level: Number(node.level || 9),
+                    depth: Number(node.depth || 0),
+                    structural: structural
+                };
+                parents.push(currentParent);
+                return;
+            }
+
+            const duplicated = currentParent.children.some(function(child) {
+                return child.labelNorm === labelNorm;
+            });
+            if (!duplicated) {
+                currentParent.children.push({
+                    id: currentParent.id + 'c' + currentParent.children.length,
+                    label: label,
+                    labelNorm: labelNorm,
+                    flatIndex: node.flatIndex,
+                    blockId: node.blockId || '',
+                    type: node.type || '',
+                    level: Number(node.level || 9),
+                    depth: Number(node.depth || 0)
+                });
+            }
+        });
+
+        if (!parents.length && typeof buildHDSDTextSections_ === 'function') {
+            const sections = buildHDSDTextSections_(jsonData);
+            sections.forEach(function(section, index) {
+                const title = typeof normalizeHDSDFocusLabel_ === 'function'
+                    ? normalizeHDSDFocusLabel_(section && section.title ? section.title : '')
+                    : String(section && section.title || '').trim();
+                if (!title) return;
+                parents.push({
+                    id: 'p' + parents.length,
+                    parentLabel: title,
+                    parentNorm: typeof normalizeHDSDFocusNorm_ === 'function' ? normalizeHDSDFocusNorm_(title) : title,
+                    parentIndex: Number.isFinite(Number(section && section.sourceBlockIndex)) ? Number(section.sourceBlockIndex) : index,
+                    versionLabel: '',
+                    children: [],
+                    level: Number(section && section.level || 9),
+                    depth: 0,
+                    structural: /^heading_|^toggle$/.test(String(section && section.type || ''))
+                });
+            });
+        }
+        return { nodes: nodes, parents: parents };
+    };
+
+    /* Tăng độ rõ của chỉ dẫn gửi AI nhưng vẫn chỉ cho phép chọn ID có thật trong outline. */
+    window.medplusChooseActualHDSDFocusWithAI_ = async function(userMessage, actualOutline) {
+        const outline = actualOutline || { parents: [] };
+        if (!outline.parents || !outline.parents.length) return null;
+        const outlineText = outline.parents.map(function(parent) {
+            let line = parent.id + ' | MỤC: "' + parent.parentLabel + '"';
+            if (parent.versionLabel) line += ' | PHIÊN BẢN/VÙNG: "' + parent.versionLabel + '"';
+            (parent.children || []).forEach(function(child) {
+                line += '\n  ' + child.id + ' | PHẦN: "' + child.label + '"';
+            });
+            return line;
+        }).join('\n');
+
+        const prompt = 'Bạn là bộ hậu kiểm vị trí trong tờ HDSD thuốc.\n'
+            + 'Danh sách dưới đây là OUTLINE PHẲNG lấy từ CHÍNH tờ HDSD. Chỉ được chọn ID có trong danh sách.\n'
+            + 'Chọn đúng 1 MỤC (parentId) và đúng 1 PHẦN (focusId) phù hợp nhất với câu hỏi.\n'
+            + 'PHẢI giữ nguyên tên mục thực tế, kể cả số thứ tự. Ví dụ nếu outline có MỤC “6. Cách dùng, liều dùng” và PHẦN “Liều dùng”, khi hỏi liều dùng phải chọn parentId của “6. Cách dùng, liều dùng” và focusId của “Liều dùng”; không được rút gọn mục thành “Liều dùng”.\n'
+            + 'Nếu nội dung hỏi chính là mục lớn, focusId phải bằng parentId. Không tạo nhãn mới, không giải thích, không trả nội dung thuốc.\n'
+            + 'Trả duy nhất JSON: {"parentId":"p0","focusId":"p0c0","confidence":0.95}\n\n'
+            + 'Câu hỏi: ' + String(userMessage || '') + '\n\n'
+            + 'OUTLINE HDSD THỰC TẾ:\n' + outlineText;
+
+        for (let m = 0; m < AI_MODELS.length; m++) {
+            for (let k = 0; k < API_KEYS.length; k++) {
+                try {
+                    const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/' + AI_MODELS[m] + ':generateContent?key=' + API_KEYS[k];
+                    const payload = {
+                        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                        generationConfig: { temperature: 0, maxOutputTokens: 100 }
+                    };
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) continue;
+                    const data = await response.json();
+                    const picked = typeof medplusParseActualHDSDAIPick_ === 'function'
+                        ? medplusParseActualHDSDAIPick_(extractGeminiText_(data), outline)
+                        : null;
+                    if (picked && picked.confidence >= 0.45) return picked;
+                } catch (e) {}
+            }
+        }
+        return null;
+    };
+
+    function guideText_(meta) {
+        if (!meta || !meta.focusLabel || !meta.parentLabel) return '';
+        return 'Hãy xem chi tiết ở phần ' + cleanDrugFieldForChat_(meta.focusLabel)
+            + ' trong mục ' + cleanDrugFieldForChat_(meta.parentLabel)
+            + '. Hoặc bấm xem ở trong tờ hướng dẫn sử dụng bên dưới.';
+    }
+    window.medplusBuildActualHDSDGuideText_ = guideText_;
+
+    function normalizedText_(node) {
+        return typeof removeAccents === 'function'
+            ? removeAccents(node && node.textContent || '').replace(/\s+/g, ' ').trim()
+            : String(node && node.textContent || '').toLowerCase().replace(/\s+/g, ' ').trim();
+    }
+    function isHDSDHeader_(node) {
+        const text = normalizedText_(node);
+        return text.indexOf('theo noi dung to hdsd') !== -1;
+    }
+    function isLegacyGuide_(node) {
+        if (!node || String(node.tagName || '').toLowerCase() !== 'p') return false;
+        const text = normalizedText_(node);
+        return text.indexOf('hay xem chi tiet o phan') === 0
+            || text.indexOf('hay doc phan') === 0
+            || (text.indexOf('xem hdsd') !== -1 && text.indexOf('boi do') !== -1)
+            || (text.indexOf('duoc trich dan duoi day') !== -1 && text.indexOf('trong muc') !== -1);
+    }
+    function collectSiblingsForHeader_(header) {
+        const entries = [];
+        let cursor = header ? header.nextElementSibling : null;
+        while (cursor) {
+            if (isHDSDHeader_(cursor)) break;
+            entries.push(cursor);
+            cursor = cursor.nextElementSibling;
+        }
+        return entries;
+    }
+    function moveOrCreateGuide_(headerParagraph, meta) {
+        if (!headerParagraph || !meta || !meta.focusLabel || !meta.parentLabel) return null;
+        const siblings = collectSiblingsForHeader_(headerParagraph);
+        let excerpt = null;
+        siblings.forEach(function(node) {
+            if (!excerpt && node.classList && node.classList.contains('hdsd-parent-excerpt')) excerpt = node;
+        });
+        siblings.filter(isLegacyGuide_).forEach(function(node) { node.remove(); });
+
+        const existingGuide = headerParagraph.nextElementSibling
+            && headerParagraph.nextElementSibling.classList
+            && headerParagraph.nextElementSibling.classList.contains('hdsd-chat-guide')
+            ? headerParagraph.nextElementSibling : null;
+        const guide = existingGuide || document.createElement('p');
+        guide.className = 'hdsd-chat-guide';
+        guide.textContent = guideText_(meta);
+        if (!existingGuide) headerParagraph.insertAdjacentElement('afterend', guide);
+        if (excerpt) guide.insertAdjacentElement('afterend', excerpt);
+        return guide;
+    }
+
+    /* Một câu hướng dẫn duy nhất, nằm ngay trước phần trích dẫn. */
+    window.medplusRenderActualHDSDGuide_ = function(headerParagraph, meta) {
+        return moveOrCreateGuide_(headerParagraph, meta);
+    };
+
+    /* Sau khi các nhánh cũ render xong, chỉ dọn/trình bày lại; không gọi AI thêm lần nữa. */
+    const previousResolver = window.medplusResolveRenderedHDSDGuides_;
+    window.medplusResolveRenderedHDSDGuides_ = async function(wrapper, userMessage) {
+        if (typeof previousResolver === 'function') {
+            try { await previousResolver(wrapper, userMessage); } catch (e) {}
+        }
+        if (!wrapper || !userMessage || !isHDSDContentQuestion_(userMessage)) return;
+        const headers = Array.prototype.slice.call(wrapper.querySelectorAll('p')).filter(isHDSDHeader_);
+        const buttons = Array.prototype.slice.call(wrapper.querySelectorAll('button.hdsd-btn'));
+        headers.forEach(function(header, index) {
+            const button = buttons[index] || buttons[0] || null;
+            if (!button) return;
+            const focusLabel = typeof medplusDecodeHDSDToken_ === 'function'
+                ? medplusDecodeHDSDToken_(button.dataset.medplusHdsdFocus || '')
+                : String(button.dataset.medplusHdsdFocus || '');
+            const parentLabel = typeof medplusDecodeHDSDToken_ === 'function'
+                ? medplusDecodeHDSDToken_(button.dataset.medplusHdsdParent || '')
+                : String(button.dataset.medplusHdsdParent || '');
+            if (!focusLabel || !parentLabel) return;
+            moveOrCreateGuide_(header, { focusLabel: focusLabel, parentLabel: parentLabel });
+        });
     };
 })();
 </script>
