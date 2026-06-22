@@ -13185,17 +13185,44 @@ body.medplus-aux-open .new-badge::after{
                 }
             }
 
+            /*
+             * Chỉ hiển thị số tin chưa đọc khi thông báo đã thực sự sẵn sàng.
+             * - iPhone/iPad: phải được thêm vào Màn hình chính (PWA) VÀ đã cấp quyền.
+             * - Trình duyệt khác: phải đã cấp quyền thông báo.
+             * Khi chưa sẵn sàng, chuông chỉ giữ trạng thái gợi ý mặc định (chấm đỏ),
+             * không hiển thị số tin và không đồng bộ badge hệ điều hành.
+             */
+            function canShowUnreadNotificationCount() {
+                if (!hasNotifAPI || Notification.permission !== 'granted') return false;
+                if (isIOS && !isStandalone) return false;
+                return true;
+            }
+
+            function clearAppBadgeSafely() {
+                if (!('clearAppBadge' in navigator)) return;
+                navigator.clearAppBadge().catch(function(err) { console.warn('Lỗi Clear Badge:', err); });
+            }
+
             function updateNotificationBadge() {
                 const unread = getVisibleNotifications().filter(function(n) { return !n.read; }).length;
-                bellBtn.setAttribute('data-unread', unread > 99 ? '99+' : String(unread));
+                const mayShowCount = canShowUnreadNotificationCount();
 
-                // THÊM MỚI: Đồng bộ số đếm ra Icon ngoài màn hình chính (PWA)
-                if ('setAppBadge' in navigator) {
+                if (mayShowCount) {
+                    bellBtn.setAttribute('data-unread', unread > 99 ? '99+' : String(unread));
+                } else {
+                    // Quan trọng: bỏ data-unread để CSS không thay chấm đỏ mặc định bằng số.
+                    bellBtn.removeAttribute('data-unread');
+                }
+
+                // Chỉ đồng bộ số ra icon PWA khi thông báo đã được bật đúng điều kiện.
+                if (mayShowCount && 'setAppBadge' in navigator) {
                     if (unread > 0) {
                         navigator.setAppBadge(unread).catch(function(err) { console.warn('Lỗi Badge:', err); });
                     } else {
-                        navigator.clearAppBadge().catch(function(err) { console.warn('Lỗi Clear Badge:', err); });
+                        clearAppBadgeSafely();
                     }
+                } else {
+                    clearAppBadgeSafely();
                 }
             }
             window.updateNotificationBadge = updateNotificationBadge;
