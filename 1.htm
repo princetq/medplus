@@ -6917,6 +6917,12 @@ body.medplus-aux-open .new-badge::after{
 
             // Đồng nghĩa INN/USAN/BAN và cách viết quốc tế thường gặp.
             ['paracetamol', 'acetaminophen'],
+            // Các thành phần thường gặp trong chế phẩm cảm cúm/phối hợp.
+            // Bao gồm cả cách ghi Việt hóa và biến thể HCl/HCI để nhận diện
+            // chính xác hoạt chất bị viết liền trong cùng một ô danh mục.
+            ['phenylephrine', 'phenylephrin', 'phenylephrine hcl', 'phenylephrine hci', 'phenylephrin hcl', 'phenylephrin hci'],
+            ['chlorpheniramine', 'chlorphenamine', 'chlorpheniramin', 'clorpheniramine', 'clorpheniramin',
+             'chlorpheniramine maleate', 'chlorpheniramin maleat', 'clorpheniramine maleat', 'clorpheniramin maleat'],
             ['acetylcysteine', 'n acetylcysteine', 'n-acetylcysteine'],
             ['aspirin', 'acetylsalicylic acid', 'acid acetylsalicylic'],
             ['adrenaline', 'epinephrine'],
@@ -7097,7 +7103,21 @@ body.medplus-aux-open .new-badge::after{
 
         function isCombinationActiveIngredient_(value) {
             const text = String(value || '');
-            return /(?:\+|;|\/|\bva\b|\band\b)/i.test(text);
+            if (/(?:\+|;|\/|\bva\b|\band\b)/i.test(text)) return true;
+
+            // Một số dữ liệu danh mục ghi các hoạt chất phối hợp liền nhau, không
+            // có dấu "+" hoặc "/". Ví dụ: "Paracetamol Phenylephrin HCI
+            // Clorpheniramin maleat". Nhận diện là phối hợp khi:
+            // - tìm được từ hai active-family đã biết; hoặc
+            // - có từ hai hậu tố muối riêng biệt, vốn là dấu hiệu rất mạnh của
+            //   nhiều hoạt chất được ghi nối tiếp. Một hoạt chất đơn thường chỉ
+            //   có tối đa một hậu tố muối.
+            const knownFamilies = getKnownActiveFamiliesInText_(text);
+            if (knownFamilies.size >= 2) return true;
+
+            const normalized = normalizeDrugMatchText_(text);
+            const saltHits = normalized.match(/\b(?:hydroclorid|hydrochloride|hydrochlorid|hcl|hci|sulfat|sulfate|sulphate|phosphat|phosphate|besylat|besilate|besylate|maleat|maleate|mesilat|mesylate|tartrat|tartrate|citrat|citrate|fumarat|fumarate|nitrat|nitrate|oxalat|oxalate|lactat|lactate|gluconat|gluconate|clorid|chloride|bromid|bromide|iodid|iodide)\b/g) || [];
+            return saltHits.length >= 2;
         }
 
         function normalizeActiveIngredientFamilyKey_(value) {
@@ -8465,10 +8485,53 @@ body.medplus-aux-open .new-badge::after{
         }
 
 
+        /*
+         * CỔNG BẮT BUỘC "TRẢ LỜI TRƯỚC – DANH MỤC SAU"
+         * Mọi nhánh gắn danh mục (AI chính, hậu kiểm, fallback, trả lời cấu trúc)
+         * đều phải đi qua hàm này. Danh mục không bao giờ được phép xuất hiện
+         * khi chưa có lõi trả lời y khoa hợp lệ đứng phía trước.
+         */
+        function stripGeneratedFormularyContentFromMedicalCore_(answerText) {
+            let text = String(answerText || '').replace(/\r/g, '').trim();
+            if (!text) return '';
+
+            // AI không được tạo phần danh mục; nếu vẫn tạo, bỏ toàn bộ block bắt đầu
+            // bằng tiêu đề danh mục để JavaScript dựng lại duy nhất một lần ở cuối.
+            const formularyStart = /(?:^|\n)\s*(?:\*\*)?(?:đối\s+chiếu\s+danh\s+mục\s+thuốc\s+tại|tại\s+bệnh\s+viện\s+đa\s+khoa\s+tỉnh\s+tuyên\s+quang\s+hiện\s+có|ngoài\s+ra,\s*bạn\s+có\s+thể\s+tham\s+khảo\s+các\s+thuốc\s+phối\s+hợp\s+có\s+thành\s+phần)[\s\S]*$/im;
+            text = text.replace(formularyStart, '\n');
+
+            // Xóa các dòng thuốc kiểu danh mục mà AI chèn lẻ tẻ trong phần lõi.
+            text = text.replace(/(?:^|\n)\s*(?:\d+\.\s*)?(?:\*\*)?[^*\n]{1,160}(?:\*\*)?\s*—\s*Hoạt\s+chất\s*:\s*[^\n]*(?:\n|$)/gim, '\n');
+            text = text.replace(/(?:^|\n)\s*(?:\d+\.\s*)?(?:\*\*)?[^*\n]{1,160}(?:\*\*)?\s*—\s*Dạng\s+bào\s+chế\s*:\s*[^\n]*(?:\n|$)/gim, '\n');
+            text = text.replace(/(?:^|\n)\s*(?:\d+\.\s*)?\[?XEM\s+HDSD\]?\s*(?:\([^)]*\))?\s*(?:\n|$)/gim, '\n');
+
+            return normalizeChatAnswerStyle_(stripAiGeneratedHDSDLinks_(text)).trim();
+        }
+
+        function getMedicalCoreAnswerUnits_(answerText) {
+            return String(answerText || '')
+                .split(/\n{2,}|[.!?](?:\s+|$)/)
+                .map(function(part) { return part.replace(/[*_`]/g, '').trim(); })
+                .filter(function(part) { return part.length >= 18; });
+        }
+
         function appendDeterministicDrugListToAnswer_(answerText, selectedDrugs, options) {
-            const cleaned = normalizeChatAnswerStyle_(stripAiGeneratedHDSDLinks_(answerText));
-            const listBlock = buildDeterministicDrugListForChat_(selectedDrugs || [], options || {});
-            return (cleaned ? cleaned : 'Tôi đã đối chiếu câu hỏi với kiến thức tổng hợp và danh mục thuốc hiện có.') + listBlock;
+            const opts = options || {};
+            const core = ensureSubstantiveMedicalCoreAnswer_(
+                stripGeneratedFormularyContentFromMedicalCore_(answerText),
+                String(opts.userMessage || ''),
+                opts.info || null,
+                selectedDrugs || []
+            );
+
+            // Hàng rào dự phòng cuối: kể cả khi một nhánh cũ gọi trực tiếp hàm này
+            // với answer rỗng, vẫn tạo hai ý an toàn trước khi danh mục được nối vào.
+            const safeCore = isSubstantiveMedicalCoreAnswer_(core)
+                ? core
+                : buildSafeMedicalCoreFallback_(String(opts.userMessage || ''), opts.info || null, selectedDrugs || []);
+
+            const listBlock = buildDeterministicDrugListForChat_(selectedDrugs || [], opts);
+            return safeCore.trim() + listBlock;
         }
 
 
@@ -8747,7 +8810,7 @@ body.medplus-aux-open .new-badge::after{
             if (scanMeta && scanMeta.exactNameMatch && isExactDrugCompositionQuestion_(userMessage)) {
                 return {
                     ok: true,
-                    answer: appendDeterministicDrugListToAnswer_(buildExactDrugCompositionAnswer_(drugs), drugs),
+                    answer: appendDeterministicDrugListToAnswer_(buildExactDrugCompositionAnswer_(drugs), drugs, { userMessage: userMessage, info: scanMeta || null }),
                     reviewed: false,
                     source: 'deterministic-composition'
                 };
@@ -8791,7 +8854,7 @@ body.medplus-aux-open .new-badge::after{
                             if (reviewed.ok) {
                                 return {
                                     ok: true,
-                                    answer: appendDeterministicDrugListToAnswer_(reviewed.answer, drugs),
+                                    answer: appendDeterministicDrugListToAnswer_(reviewed.answer, drugs, { userMessage: userMessage, info: scanMeta || null }),
                                     reviewed: true,
                                     verdict: reviewed.verdict || 'PASS'
                                 };
@@ -8808,7 +8871,7 @@ body.medplus-aux-open .new-badge::after{
             if (!reviewedFallback.ok) return { ok: false, answer: '', reviewed: false, source: 'review-unavailable' };
             return {
                 ok: true,
-                answer: appendDeterministicDrugListToAnswer_(reviewedFallback.answer, drugs),
+                answer: appendDeterministicDrugListToAnswer_(reviewedFallback.answer, drugs, { userMessage: userMessage, info: scanMeta || null }),
                 reviewed: true,
                 verdict: reviewedFallback.verdict || 'PASS'
             };
@@ -11677,7 +11740,7 @@ body.medplus-aux-open .new-badge::after{
         }
 
         function buildHybridOnePassCacheKey_(userMessage, info, catalogDrugs) {
-            return 'hybrid-one-pass-v4-combo-separated-display|'
+            return 'hybrid-one-pass-v6-answer-first-render-gate|'
                 + removeAccents(userMessage || '')
                 + '|' + ((catalogDrugs && catalogDrugs.length) || 0)
                 + '|' + (medicineCount || 0)
@@ -11707,6 +11770,8 @@ body.medplus-aux-open .new-badge::after{
                 + '- Khi hỏi một hoạt chất hoặc alias, chọn mọi thuốc đơn hoạt chất tương đương VÀ mọi chế phẩm phối hợp có CHỨA hoạt chất đó trong danh sách. Khi hỏi tên tổ hợp như 3B/B1-B6-B12, chỉ chọn chế phẩm có ĐỦ các thành phần của tổ hợp, không chọn thuốc đơn lẻ.\n'
                 + '- Nếu không có thuốc phù hợp, ids là [].\n\n'
                 + 'QUY TẮC ANSWER:\n'
+                + '- Trường answer là BẮT BUỘC khi scope = MEDICAL: phải có phần trả lời kiến thức thực sự, tối thiểu 2 câu/ý; không được để rỗng, không chỉ trả ids và không chỉ nhắc danh mục.\n'
+                + '- Khi intent là FORMULARY_LIST hoặc DRUG_INFO, answer vẫn phải trả lời câu hỏi trước danh sách: giải thích ngắn mục đích/điểm cần lưu ý của thuốc hoặc nhóm thuốc. Nếu không thể nêu chi tiết do thiếu dữ liệu, phải nói rõ giới hạn liên quan đúng câu hỏi và hướng dẫn dùng an toàn; tuyệt đối không để answer trống.\n'
                 + '- Trả lời câu hỏi trước bằng tiếng Việt, đúng trọng tâm, gọn, ưu tiên 3-6 ý.\n'
                 + '- Không tự liệt kê thuốc bệnh viện trong answer; website tự dựng danh sách và nút XEM HDSD từ ID hợp lệ.\n'
                 + '- Không tạo link/HDSD, không bịa dữ liệu danh mục, không tự thêm số lượng thuốc.\n'
@@ -11759,6 +11824,106 @@ body.medplus-aux-open .new-badge::after{
                 result = enforceSameActiveFamilyCoverage_(userMessage, result, allDrugs);
             }
             return result;
+        }
+
+        /*
+         * HÀNG RÀO TOÀN HỆ THỐNG CHO LÕI CÂU TRẢ LỜI
+         * Không chỉ kiểm tra answer có rỗng hay không. Nội dung phải có tối thiểu
+         * hai ý/câu có nghĩa, không chứa danh mục bệnh viện/HDSD và không phải
+         * một dòng dẫn danh mục bị AI sinh ra.
+         */
+        function isSubstantiveMedicalCoreAnswer_(answerText) {
+            const clean = stripGeneratedFormularyContentFromMedicalCore_(answerText);
+            if (!clean || clean.length < 72) return false;
+            if (/(?:đối\s+chiếu\s+danh\s+mục\s+thuốc\s+tại|tại\s+bệnh\s+viện\s+đa\s+khoa\s+tỉnh\s+tuyên\s+quang\s+hiện\s+có|hiện\s+có\s+\d+\s+thuốc\s+sau\s+phù\s+hợp|\[?xem\s+hdsd\]?|https?:\/\/)/i.test(clean)) return false;
+            const units = getMedicalCoreAnswerUnits_(clean);
+            return units.length >= 2 || clean.length >= 180;
+        }
+
+        function getSafeMedicalCoreSubject_(userMessage, selectedDrugs) {
+            return cleanDrugFieldForChat_(
+                getDrugSubjectForMatching_(userMessage)
+                || getQuestionSubject(userMessage)
+                || ((selectedDrugs || [])[0] && ((selectedDrugs || [])[0].brand || (selectedDrugs || [])[0].active))
+                || 'nội dung được hỏi'
+            );
+        }
+
+        function buildSafeMedicalCoreFallback_(userMessage, info, selectedDrugs) {
+            const q = removeAccents(userMessage || '');
+            const subject = getSafeMedicalCoreSubject_(userMessage, selectedDrugs);
+            const hasDoseQuestion = hasNormalizedPhrase_(q, 'lieu dung')
+                || hasNormalizedPhrase_(q, 'cach dung')
+                || hasNormalizedPhrase_(q, 'huong dan su dung');
+            const hasAdverseQuestion = hasNormalizedPhrase_(q, 'tac dung phu')
+                || hasNormalizedPhrase_(q, 'phan ung co hai')
+                || hasNormalizedPhrase_(q, 'adr');
+            const hasContraQuestion = hasNormalizedPhrase_(q, 'chong chi dinh')
+                || hasNormalizedPhrase_(q, 'khong dung duoc')
+                || hasNormalizedPhrase_(q, 'khong nen dung');
+            const hasInteractionQuestion = hasNormalizedPhrase_(q, 'tuong tac');
+            const hasIdentityQuestion = hasNormalizedPhrase_(q, 'la thuoc gi')
+                || hasNormalizedPhrase_(q, 'la gi')
+                || hasNormalizedPhrase_(q, 'thuoc gi');
+            const hasEffectQuestion = hasNormalizedPhrase_(q, 'tac dung')
+                || hasNormalizedPhrase_(q, 'cong dung')
+                || hasNormalizedPhrase_(q, 'chi dinh');
+            const formularyQuestion = hasExplicitFormularyIntent_(info);
+            const selectedCount = (selectedDrugs || []).length;
+
+            if (hasDoseQuestion) {
+                let answer = '**Liều dùng/cách dùng:** Liều của **' + subject + '** phải được xác định theo đúng hoạt chất, hàm lượng, dạng bào chế, đường dùng, tuổi, cân nặng và chức năng gan/thận; không thể áp dụng một liều chung cho mọi chế phẩm.\n\n';
+                if (hasNormalizedPhrase_(q, 'paracetamol') || hasNormalizedPhrase_(q, 'acetaminophen')) {
+                    answer += '**Lưu ý an toàn:** Không dùng đồng thời nhiều thuốc có chứa Paracetamol/Acetaminophen, kể cả thuốc cảm cúm phối hợp, vì có nguy cơ quá liều và độc tính gan. Với trẻ em, liều cần tính theo cân nặng và dùng đúng dụng cụ đo liều.';
+                } else {
+                    answer += '**Lưu ý an toàn:** Hãy đối chiếu tờ HDSD của đúng chế phẩm và dùng theo đơn/chỉ định của bác sĩ hoặc dược sĩ; không tự tăng liều, đổi đường dùng hay phối hợp thuốc có cùng hoạt chất.';
+                }
+                return answer;
+            }
+
+            if (hasAdverseQuestion) {
+                return '**Tác dụng không mong muốn:** Tác dụng phụ của **' + subject + '** phụ thuộc vào hoạt chất, liều, đường dùng và cơ địa người bệnh; cần xem đúng tờ HDSD của chế phẩm đang sử dụng để nhận diện các phản ứng thường gặp và dấu hiệu cần đi khám.\n\n'
+                    + '**Khi cần xử trí sớm:** Ngừng tự dùng và liên hệ nhân viên y tế nếu có dấu hiệu dị ứng, khó thở, phù mặt/môi, phát ban lan rộng, chảy máu bất thường hoặc triệu chứng nặng lên.';
+            }
+
+            if (hasContraQuestion) {
+                return '**Chống chỉ định/thận trọng:** Việc dùng **' + subject + '** cần được đánh giá theo tiền sử dị ứng, bệnh gan/thận, thai kỳ/cho con bú, tuổi, bệnh kèm và các thuốc đang dùng; không nên kết luận an toàn chỉ dựa vào tên thuốc.\n\n'
+                    + '**Cách dùng an toàn:** Hãy kiểm tra tờ HDSD đúng chế phẩm và hỏi bác sĩ/dược sĩ khi có bệnh nền, đang dùng nhiều thuốc hoặc có dấu hiệu bất thường.';
+            }
+
+            if (hasInteractionQuestion) {
+                return '**Tương tác thuốc:** Khả năng tương tác của **' + subject + '** phụ thuộc vào hoạt chất, liều và toàn bộ thuốc người bệnh đang sử dụng; cần đối chiếu tên hoạt chất thay vì chỉ dựa vào biệt dược.\n\n'
+                    + '**Lưu ý an toàn:** Không tự thêm hoặc ngừng thuốc khi chưa được tư vấn, đặc biệt với thuốc kê đơn, thuốc chống đông, thuốc tim mạch, thuốc hạ đường huyết hoặc kháng sinh.';
+            }
+
+            if (hasIdentityQuestion || hasEffectQuestion) {
+                return '**Thông tin chung:** Câu hỏi này liên quan đến **' + subject + '**. Công dụng, chỉ định và cách dùng cần được xác định theo đúng hoạt chất và dạng bào chế của từng chế phẩm, vì các thuốc có tên gần giống hoặc cùng thành phần có thể khác hàm lượng/đường dùng.\n\n'
+                    + '**Lưu ý sử dụng:** Không tự thay thế, phối hợp hoặc điều chỉnh liều chỉ dựa trên tên thuốc; hãy đối chiếu tờ HDSD và chỉ định của bác sĩ/dược sĩ trước khi dùng.';
+            }
+
+            if (formularyQuestion) {
+                return '**Thông tin chung:** Danh sách dưới đây là các thuốc được hệ thống đối chiếu từ danh mục bệnh viện theo câu hỏi của bạn. Mỗi thuốc có chỉ định, liều, đường dùng và mức độ phù hợp riêng; danh sách không thay thế cho quyết định kê đơn.\n\n'
+                    + '**Lưu ý sử dụng:** Việc lựa chọn thuốc cần dựa trên chẩn đoán, mức độ bệnh, người bệnh cụ thể và hướng dẫn chuyên môn; bạn nên xem tờ HDSD của đúng chế phẩm hoặc trao đổi với bác sĩ/dược sĩ khi cần dùng thuốc.';
+            }
+
+            const selectedHint = selectedCount
+                ? ' Các chế phẩm được đối chiếu dưới đây có thể khác nhau về hàm lượng, dạng bào chế và hướng dẫn sử dụng.'
+                : '';
+            return '**Thông tin cần lưu ý:** Câu hỏi của bạn liên quan đến **' + subject + '**. Để trả lời an toàn, cần xác định đúng mục đích dùng thuốc, hoạt chất, dạng bào chế và tình trạng người bệnh.' + selectedHint + '\n\n'
+                + '**Khuyến nghị:** Không tự thay đổi liều hoặc phối hợp thuốc khi chưa có hướng dẫn chuyên môn; hãy đối chiếu tờ HDSD của đúng chế phẩm và hỏi bác sĩ/dược sĩ khi thông tin chưa rõ.';
+        }
+
+        function ensureSubstantiveMedicalCoreAnswer_(answerText, userMessage, info, selectedDrugs) {
+            const cleaned = stripGeneratedFormularyContentFromMedicalCore_(answerText);
+            if (isSubstantiveMedicalCoreAnswer_(cleaned)) return cleaned;
+
+            const fallback = buildSafeMedicalCoreFallback_(userMessage, info, selectedDrugs);
+            if (isSubstantiveMedicalCoreAnswer_(fallback)) return fallback;
+
+            // Dự phòng tuyệt đối, để không có nhánh nào có thể render danh mục trống lõi.
+            const subject = getSafeMedicalCoreSubject_(userMessage, selectedDrugs);
+            return '**Thông tin cần lưu ý:** Cần xác định chính xác hoạt chất, dạng bào chế và mục đích dùng của **' + subject + '** trước khi sử dụng.\n\n'
+                + '**Khuyến nghị:** Danh mục dưới đây chỉ dùng để đối chiếu; bạn nên xem tờ HDSD của đúng chế phẩm và trao đổi với bác sĩ/dược sĩ để được hướng dẫn phù hợp.';
         }
 
         function questionHasHighRiskDirection_(userMessage) {
@@ -11940,8 +12105,12 @@ body.medplus-aux-open .new-badge::after{
                     finalDrugs = await getHybridLocalFinalDrugsViaWorker_(userMessage, drugQueryInfo, verified.drugs || []);
                 }
 
-                let replyText = sanitizeAiReply_(onePass.answer || '', userMessage);
-                if (!replyText) replyText = 'Tôi chưa tạo được phần trả lời đầy đủ ở lần này.';
+                let replyText = ensureSubstantiveMedicalCoreAnswer_(
+                    sanitizeAiReply_(onePass.answer || '', userMessage),
+                    userMessage,
+                    drugQueryInfo,
+                    finalDrugs
+                );
 
                 if (shouldRunConditionalAnswerReview_(userMessage, replyText, drugQueryInfo, onePass, didDrugReview)) {
                     setChatUiStatus_(session, 'thinking');
@@ -11955,13 +12124,20 @@ body.medplus-aux-open .new-badge::after{
                         await renderChatFinalAnswer_(session, 'Tôi chưa kiểm tra lại được phần trả lời trước khi hiển thị nên chưa trả kết quả để tránh sai sót. Bạn vui lòng thử lại sau ít giây.', sendButton);
                         return;
                     }
-                    replyText = reviewed.answer;
+                    replyText = ensureSubstantiveMedicalCoreAnswer_(
+                        reviewed.answer,
+                        userMessage,
+                        drugQueryInfo,
+                        finalDrugs
+                    );
                 }
 
+                // Cổng "trả lời trước – danh mục sau" được thực thi tập trung trong
+                // appendDeterministicDrugListToAnswer_(), áp dụng cho mọi nhánh trả danh mục.
                 // Nhường một frame trước khi format phần danh mục/HTML cuối.
                 await nextUiPaint_();
                 const finalAnswer = shouldAppendFormulary
-                    ? appendDeterministicDrugListToAnswer_(replyText, finalDrugs, { userMessage: userMessage, catalogDrugs: dataForRag })
+                    ? appendDeterministicDrugListToAnswer_(replyText, finalDrugs, { userMessage: userMessage, info: drugQueryInfo, catalogDrugs: dataForRag })
                     : normalizeChatAnswerStyle_(stripAiGeneratedHDSDLinks_(replyText));
                 await renderChatFinalAnswer_(session, finalAnswer, sendButton);
                 currentKeyIndex = keyIdx;
