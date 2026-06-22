@@ -10775,14 +10775,6 @@ body.medplus-aux-open .new-badge::after{
 
         async function openNotionPopup(notionUrl, itemImage, itemVersion) {
 
-            /* HDSD mở từ trang chủ/modal/share không được thừa trạng thái focus của chatbot.
-               Chỉ openHDSDFromChat mới đặt cờ này cho đúng một lượt mở hiện tại. */
-            const openedFromChatFocus = window._medplusOpeningHDSDFromChat === true;
-            window._medplusOpeningHDSDFromChat = false;
-            if (!openedFromChatFocus && typeof resetHDSDChatFocusState_ === 'function') {
-                resetHDSDChatFocusState_();
-            }
-
             // ── Validate + extract pageId SỚM — trước khi xóa bất kỳ thứ gì ──
             if (!notionUrl || typeof notionUrl !== 'string') {
                 const _m = document.getElementById('hdsd-modal');
@@ -11201,12 +11193,6 @@ body.medplus-aux-open .new-badge::after{
                 overlay.style.display = 'none';
                 document.body.classList.remove('chat-open');
                 unlockBodyScroll('chat');
-
-                /* Đóng chatbot = kết thúc hoàn toàn trạng thái điều hướng HDSD của lượt chat.
-                   Không để tờ HDSD khác kế thừa tiêu đề đang bôi đỏ hoặc toggle đã được tự mở. */
-                if (typeof resetHDSDChatFocusState_ === 'function') {
-                    resetHDSDChatFocusState_();
-                }
             }
         }
 
@@ -11300,27 +11286,6 @@ body.medplus-aux-open .new-badge::after{
             });
         }
 
-        /* Xóa hoàn toàn trạng thái tạm do chatbot tạo ra.
-           Chỉ đóng các toggle do chatbot tự mở, không đụng vào toggle người dùng đã tự mở. */
-        function resetHDSDChatFocusState_() {
-            window._pendingHDSDChatFocus = '';
-            window._pendingHDSDChatParentFocus = '';
-            window._pendingHDSDChatVersionFocus = '';
-            window._pendingHDSDChatParentIndex = '';
-            window._pendingHDSDChatFocusIndex = '';
-            window._medplusOpeningHDSDFromChat = false;
-            window._medplusHDSDFocusResetNonce = (Number(window._medplusHDSDFocusResetNonce) || 0) + 1;
-
-            const root = document.getElementById('hdsd-content');
-            if (!root) return;
-            clearHDSDChatFocusHighlights_(root);
-            root.querySelectorAll('details[data-medplus-chat-auto-open="1"]').forEach(function(details) {
-                details.open = false;
-                details.removeAttribute('data-medplus-chat-auto-open');
-            });
-        }
-        window.resetHDSDChatFocusState_ = resetHDSDChatFocusState_;
-
         function scoreHDSDChatFocusElement_(el, phraseNorm) {
             const textNorm = normalizeHDSDChatFocusText_(el && el.textContent ? el.textContent : '');
             if (!textNorm || !phraseNorm) return -1;
@@ -11385,10 +11350,7 @@ body.medplus-aux-open .new-badge::after{
             while (current) {
                 const det = current.closest ? current.closest('details') : null;
                 if (!det) break;
-                if (!det.open) {
-                    det.open = true;
-                    det.setAttribute('data-medplus-chat-auto-open', '1');
-                }
+                det.open = true;
                 current = det.parentElement;
             }
         }
@@ -11714,8 +11676,6 @@ body.medplus-aux-open .new-badge::after{
                 lockBodyScroll('chat');
             }
 
-            /* Cờ một lần: openNotionPopup chỉ được phép dùng pending focus cho đúng lượt mở từ chat này. */
-            window._medplusOpeningHDSDFromChat = true;
             openNotionPopup(item.link || url, item.image || '', item.lastUpdated || '');
         }
 
@@ -13185,44 +13145,17 @@ body.medplus-aux-open .new-badge::after{
                 }
             }
 
-            /*
-             * Chỉ hiển thị số tin chưa đọc khi thông báo đã thực sự sẵn sàng.
-             * - iPhone/iPad: phải được thêm vào Màn hình chính (PWA) VÀ đã cấp quyền.
-             * - Trình duyệt khác: phải đã cấp quyền thông báo.
-             * Khi chưa sẵn sàng, chuông chỉ giữ trạng thái gợi ý mặc định (chấm đỏ),
-             * không hiển thị số tin và không đồng bộ badge hệ điều hành.
-             */
-            function canShowUnreadNotificationCount() {
-                if (!hasNotifAPI || Notification.permission !== 'granted') return false;
-                if (isIOS && !isStandalone) return false;
-                return true;
-            }
-
-            function clearAppBadgeSafely() {
-                if (!('clearAppBadge' in navigator)) return;
-                navigator.clearAppBadge().catch(function(err) { console.warn('Lỗi Clear Badge:', err); });
-            }
-
             function updateNotificationBadge() {
                 const unread = getVisibleNotifications().filter(function(n) { return !n.read; }).length;
-                const mayShowCount = canShowUnreadNotificationCount();
+                bellBtn.setAttribute('data-unread', unread > 99 ? '99+' : String(unread));
 
-                if (mayShowCount) {
-                    bellBtn.setAttribute('data-unread', unread > 99 ? '99+' : String(unread));
-                } else {
-                    // Quan trọng: bỏ data-unread để CSS không thay chấm đỏ mặc định bằng số.
-                    bellBtn.removeAttribute('data-unread');
-                }
-
-                // Chỉ đồng bộ số ra icon PWA khi thông báo đã được bật đúng điều kiện.
-                if (mayShowCount && 'setAppBadge' in navigator) {
+                // THÊM MỚI: Đồng bộ số đếm ra Icon ngoài màn hình chính (PWA)
+                if ('setAppBadge' in navigator) {
                     if (unread > 0) {
                         navigator.setAppBadge(unread).catch(function(err) { console.warn('Lỗi Badge:', err); });
                     } else {
-                        clearAppBadgeSafely();
+                        navigator.clearAppBadge().catch(function(err) { console.warn('Lỗi Clear Badge:', err); });
                     }
-                } else {
-                    clearAppBadgeSafely();
                 }
             }
             window.updateNotificationBadge = updateNotificationBadge;
@@ -15653,9 +15586,8 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
        Điểm khác biệt quan trọng: một nhãn ngắn nằm trong nhãn mục lớn liền trước
        (vd. “Liều dùng” trong “6. Cách dùng, liều dùng”) được xem là PHẦN CON. */
     window.medplusBuildActualHDSDOutline_ = function(jsonData) {
-        const sourceBlocks = jsonData && jsonData.blocks ? jsonData.blocks : [];
         const nodes = typeof medplusFlattenHDSDBlocks_ === 'function'
-            ? medplusFlattenHDSDBlocks_(sourceBlocks, [], 0)
+            ? medplusFlattenHDSDBlocks_(jsonData && jsonData.blocks ? jsonData.blocks : [], [], 0)
             : [];
         const parents = [];
         let currentParent = null;
@@ -15718,10 +15650,7 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
                     children: [],
                     level: Number(node.level || 9),
                     depth: Number(node.depth || 0),
-                    structural: structural,
-                    isToggle: !!node.isToggle,
-                    titleBold: !!node.titleBold,
-                    type: String(node.type || '')
+                    structural: structural
                 };
                 parents.push(currentParent);
                 return;
@@ -15739,8 +15668,7 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
                     blockId: node.blockId || '',
                     type: node.type || '',
                     level: Number(node.level || 9),
-                    depth: Number(node.depth || 0),
-                    titleBold: !!node.titleBold
+                    depth: Number(node.depth || 0)
                 });
             }
         });
@@ -15768,7 +15696,7 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
         return { nodes: nodes, parents: parents };
     };
 
-    /* AI chỉ chọn parentId/focusId có thật trong outline; không nhận gợi ý cấu trúc cứng. */
+    /* Tăng độ rõ của chỉ dẫn gửi AI nhưng vẫn chỉ cho phép chọn ID có thật trong outline. */
     window.medplusChooseActualHDSDFocusWithAI_ = async function(userMessage, actualOutline) {
         const outline = actualOutline || { parents: [] };
         if (!outline.parents || !outline.parents.length) return null;
@@ -15783,7 +15711,7 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
 
         const prompt = 'Bạn là bộ hậu kiểm vị trí trong tờ HDSD thuốc.\n'
             + 'Danh sách dưới đây là OUTLINE PHẲNG lấy từ CHÍNH tờ HDSD. Chỉ được chọn ID có trong danh sách.\n'
-            + 'Chọn đúng 1 MỤC (parentId) và đúng 1 PHẦN (focusId) phù hợp nhất với câu hỏi, dựa trên ngữ nghĩa của câu hỏi và đúng tên mục/phần xuất hiện trong outline.\n'
+            + 'Chọn đúng 1 MỤC (parentId) và đúng 1 PHẦN (focusId) phù hợp nhất với câu hỏi.\n'
             + 'PHẢI giữ nguyên tên mục thực tế, kể cả số thứ tự. Ví dụ nếu outline có MỤC “6. Cách dùng, liều dùng” và PHẦN “Liều dùng”, khi hỏi liều dùng phải chọn parentId của “6. Cách dùng, liều dùng” và focusId của “Liều dùng”; không được rút gọn mục thành “Liều dùng”.\n'
             + 'Nếu nội dung hỏi chính là mục lớn, focusId phải bằng parentId. Không tạo nhãn mới, không giải thích, không trả nội dung thuốc.\n'
             + 'Trả duy nhất JSON: {"parentId":"p0","focusId":"p0c0","confidence":0.95}\n\n'
