@@ -15649,45 +15649,6 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
         return hdsdFocusTextHasPhrase_(String(text), String(phrase));
     }
 
-    /* Lấy tín hiệu cấu trúc thật từ JSON Notion:
-       - MỤC LỚN đa số là block toggle.
-       - PHẦN con thường là paragraph có toàn bộ tiêu đề được in đậm.
-       Các tín hiệu này chỉ hỗ trợ AI chọn đúng ID, không tự đặt tên mục/phần. */
-    function medplusCollectHDSDOutlineTraits_(blocks, output) {
-        const traits = output || Object.create(null);
-        (Array.isArray(blocks) ? blocks : []).forEach(function(block) {
-            if (!block) return;
-            const type = String(block.type || '');
-            const payload = block[type] || {};
-            const richText = Array.isArray(payload.rich_text) ? payload.rich_text : [];
-            const meaningful = richText.filter(function(item) {
-                const raw = item && (item.plain_text || (item.text && item.text.content) || '');
-                return String(raw || '').replace(/\s+/g, '').length > 0;
-            });
-            const titleBold = meaningful.length > 0 && meaningful.every(function(item) {
-                return !!(item && item.annotations && item.annotations.bold);
-            });
-            if (block.id) {
-                traits[String(block.id)] = {
-                    type: type,
-                    isToggle: type === 'toggle',
-                    titleBold: titleBold
-                };
-            }
-            const children = typeof hdsdBlockChildren_ === 'function' ? hdsdBlockChildren_(block) : [];
-            if (children && children.length) medplusCollectHDSDOutlineTraits_(children, traits);
-        });
-        return traits;
-    }
-
-    function medplusOutlineNodeKind_(node) {
-        const type = String(node && node.type || '');
-        if (type === 'toggle') return 'TOGGLE';
-        if (node && node.titleBold) return 'IN ĐẬM';
-        if (/^heading_/.test(type)) return 'TIÊU ĐỀ';
-        return 'BLOCK';
-    }
-
     /* Dựng lại outline phẳng nhưng giữ nguyên nhãn thực tế của tờ HDSD.
        Điểm khác biệt quan trọng: một nhãn ngắn nằm trong nhãn mục lớn liền trước
        (vd. “Liều dùng” trong “6. Cách dùng, liều dùng”) được xem là PHẦN CON. */
@@ -15696,12 +15657,6 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
         const nodes = typeof medplusFlattenHDSDBlocks_ === 'function'
             ? medplusFlattenHDSDBlocks_(sourceBlocks, [], 0)
             : [];
-        const traits = medplusCollectHDSDOutlineTraits_(sourceBlocks, Object.create(null));
-        nodes.forEach(function(node) {
-            const trait = node && node.blockId ? traits[String(node.blockId)] : null;
-            node.isToggle = !!(trait ? trait.isToggle : String(node && node.type || '') === 'toggle');
-            node.titleBold = !!(trait && trait.titleBold);
-        });
         const parents = [];
         let currentParent = null;
         let currentVersion = '';
@@ -15785,7 +15740,6 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
                     type: node.type || '',
                     level: Number(node.level || 9),
                     depth: Number(node.depth || 0),
-                    isToggle: !!node.isToggle,
                     titleBold: !!node.titleBold
                 });
             }
@@ -15814,24 +15768,22 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
         return { nodes: nodes, parents: parents };
     };
 
-    /* Tăng độ rõ của chỉ dẫn gửi AI nhưng vẫn chỉ cho phép chọn ID có thật trong outline. */
+    /* AI chỉ chọn parentId/focusId có thật trong outline; không nhận gợi ý cấu trúc cứng. */
     window.medplusChooseActualHDSDFocusWithAI_ = async function(userMessage, actualOutline) {
         const outline = actualOutline || { parents: [] };
         if (!outline.parents || !outline.parents.length) return null;
         const outlineText = outline.parents.map(function(parent) {
-            let line = parent.id + ' | MỤC [' + medplusOutlineNodeKind_(parent) + ']: "' + parent.parentLabel + '"';
+            let line = parent.id + ' | MỤC: "' + parent.parentLabel + '"';
             if (parent.versionLabel) line += ' | PHIÊN BẢN/VÙNG: "' + parent.versionLabel + '"';
             (parent.children || []).forEach(function(child) {
-                line += '\n  ' + child.id + ' | PHẦN [' + medplusOutlineNodeKind_(child) + ']: "' + child.label + '"';
+                line += '\n  ' + child.id + ' | PHẦN: "' + child.label + '"';
             });
             return line;
         }).join('\n');
 
         const prompt = 'Bạn là bộ hậu kiểm vị trí trong tờ HDSD thuốc.\n'
             + 'Danh sách dưới đây là OUTLINE PHẲNG lấy từ CHÍNH tờ HDSD. Chỉ được chọn ID có trong danh sách.\n'
-            + 'Chọn đúng 1 MỤC (parentId) và đúng 1 PHẦN (focusId) phù hợp nhất với câu hỏi.\n'
-            + 'QUY TẮC ĐỌC CẤU TRÚC: MỤC LỚN thường là block [TOGGLE] của tờ HDSD; PHẦN cần xem thường là block [IN ĐẬM] nằm trong vùng của TOGGLE đó. Vì vậy, khi có lựa chọn phù hợp, hãy ưu tiên parentId là [TOGGLE] và focusId là [IN ĐẬM]. Đây chỉ là tín hiệu hỗ trợ: nếu tờ HDSD dùng heading hoặc cấu trúc khác, hãy chọn đúng ID theo ngữ nghĩa và vị trí thực tế.\n'
-            + 'Không chọn một PHẦN [IN ĐẬM] làm parentId khi nó đang thuộc một MỤC [TOGGLE] đã có trong outline, trừ khi không tồn tại MỤC phù hợp.\n'
+            + 'Chọn đúng 1 MỤC (parentId) và đúng 1 PHẦN (focusId) phù hợp nhất với câu hỏi, dựa trên ngữ nghĩa của câu hỏi và đúng tên mục/phần xuất hiện trong outline.\n'
             + 'PHẢI giữ nguyên tên mục thực tế, kể cả số thứ tự. Ví dụ nếu outline có MỤC “6. Cách dùng, liều dùng” và PHẦN “Liều dùng”, khi hỏi liều dùng phải chọn parentId của “6. Cách dùng, liều dùng” và focusId của “Liều dùng”; không được rút gọn mục thành “Liều dùng”.\n'
             + 'Nếu nội dung hỏi chính là mục lớn, focusId phải bằng parentId. Không tạo nhãn mới, không giải thích, không trả nội dung thuốc.\n'
             + 'Trả duy nhất JSON: {"parentId":"p0","focusId":"p0c0","confidence":0.95}\n\n'
