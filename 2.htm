@@ -15233,7 +15233,7 @@ if (typeof __medplusDisplayMessageBeforeActualHDSDPatch === 'function') {
   font-weight:800;
 }
 .hdsd-chat-header .hdsd-chat-drug-name{
-  color:#d32f2f;
+  color:#fbc02d;
   font-weight:900;
 }
 .hdsd-chat-guide{
@@ -15242,13 +15242,13 @@ if (typeof __medplusDisplayMessageBeforeActualHDSDPatch === 'function') {
 }
 .hdsd-chat-guide .hdsd-guide-focus,
 .hdsd-parent-excerpt .hdsd-excerpt-focus-title{
-  color:#1976d2;
+  color:#2e7d32;
   font-weight:800;
 }
 .hdsd-chat-guide .hdsd-guide-parent,
 .hdsd-parent-excerpt .hdsd-excerpt-parent-title,
 .hdsd-parent-excerpt-label .hdsd-excerpt-parent-name{
-  color:#2e7d32;
+  color:#d32f2f;
   font-weight:800;
 }
 .hdsd-parent-excerpt{
@@ -15274,12 +15274,12 @@ if (typeof __medplusDisplayMessageBeforeActualHDSDPatch === 'function') {
 }
 .hdsd-parent-excerpt-line:last-child{margin-bottom:0}
 body.dark-mode .hdsd-chat-header{color:#ff7b7b}
-body.dark-mode .hdsd-chat-header .hdsd-chat-drug-name{color:#ff8a80}
+body.dark-mode .hdsd-chat-header .hdsd-chat-drug-name{color:#ffd95e}
 body.dark-mode .hdsd-chat-guide .hdsd-guide-focus,
-body.dark-mode .hdsd-parent-excerpt .hdsd-excerpt-focus-title{color:#6db7ff}
+body.dark-mode .hdsd-parent-excerpt .hdsd-excerpt-focus-title{color:#50dcb4}
 body.dark-mode .hdsd-chat-guide .hdsd-guide-parent,
 body.dark-mode .hdsd-parent-excerpt .hdsd-excerpt-parent-title,
-body.dark-mode .hdsd-parent-excerpt-label .hdsd-excerpt-parent-name{color:#72e0aa}
+body.dark-mode .hdsd-parent-excerpt-label .hdsd-excerpt-parent-name{color:#ff8a80}
 body.dark-mode .hdsd-parent-excerpt{
   background:rgba(80,220,180,.075);
   border-left-color:rgba(255,122,122,.82);
@@ -15428,7 +15428,9 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
             }
             return '<div class="hdsd-parent-excerpt-line' + extraClass + '">' + renderedLine + '</div>';
         }).join('');
+        const regionName = medplusExcerptEscapeHTML_(parent.parentLabel || meta.parentLabel || 'nội dung liên quan');
         return '<div class="hdsd-parent-excerpt" data-medplus-parent-id="' + medplusExcerptEscapeHTML_(parent.id) + '">'
+            + '<div class="hdsd-parent-excerpt-label">Trích dẫn toàn bộ mục <span class="hdsd-excerpt-parent-name">' + regionName + '</span></div>'
             + lines
             + '</div>';
     }
