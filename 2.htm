@@ -15227,11 +15227,34 @@ if (typeof __medplusDisplayMessageBeforeActualHDSDPatch === 'function') {
 
 
 <style id="medplus-hdsd-parent-excerpt-style">
-/* Trích dẫn mục lớn HDSD trong chatbot: nền nhẹ, không đổi giao diện ngoài phần trích dẫn. */
+/* Trích dẫn mục lớn HDSD trong chatbot: màu nhấn rõ hơn cho header, mục và phần. */
+.hdsd-chat-header{
+  color:#d32f2f;
+  font-weight:800;
+}
+.hdsd-chat-header .hdsd-chat-drug-name{
+  color:#fbc02d;
+  font-weight:900;
+}
+.hdsd-chat-guide{
+  margin:6px 0 10px;
+  line-height:1.62;
+}
+.hdsd-chat-guide .hdsd-guide-focus,
+.hdsd-parent-excerpt .hdsd-excerpt-focus-title{
+  color:#2e7d32;
+  font-weight:800;
+}
+.hdsd-chat-guide .hdsd-guide-parent,
+.hdsd-parent-excerpt .hdsd-excerpt-parent-title,
+.hdsd-parent-excerpt-label .hdsd-excerpt-parent-name{
+  color:#d32f2f;
+  font-weight:800;
+}
 .hdsd-parent-excerpt{
   margin:10px 0 12px;
   padding:12px 13px;
-  border-left:4px solid rgba(46,125,50,.72);
+  border-left:4px solid rgba(211,47,47,.72);
   border-radius:10px;
   background:rgba(46,125,50,.055);
   color:inherit;
@@ -15250,16 +15273,18 @@ if (typeof __medplusDisplayMessageBeforeActualHDSDPatch === 'function') {
   white-space:pre-line;
 }
 .hdsd-parent-excerpt-line:last-child{margin-bottom:0}
-.hdsd-parent-excerpt .hdsd-excerpt-focus-title{
-  color:#d32f2f;
-  font-weight:inherit;
-}
+body.dark-mode .hdsd-chat-header{color:#ff7b7b}
+body.dark-mode .hdsd-chat-header .hdsd-chat-drug-name{color:#ffd95e}
+body.dark-mode .hdsd-chat-guide .hdsd-guide-focus,
+body.dark-mode .hdsd-parent-excerpt .hdsd-excerpt-focus-title{color:#50dcb4}
+body.dark-mode .hdsd-chat-guide .hdsd-guide-parent,
+body.dark-mode .hdsd-parent-excerpt .hdsd-excerpt-parent-title,
+body.dark-mode .hdsd-parent-excerpt-label .hdsd-excerpt-parent-name{color:#ff8a80}
 body.dark-mode .hdsd-parent-excerpt{
   background:rgba(80,220,180,.075);
-  border-left-color:rgba(80,220,180,.8);
+  border-left-color:rgba(255,122,122,.82);
 }
-body.dark-mode .hdsd-parent-excerpt-label{color:#50dcb4}
-body.dark-mode .hdsd-parent-excerpt .hdsd-excerpt-focus-title{color:#ff7b7b}
+body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
 </style>
 
 <script id="medplus-hdsd-parent-excerpt-ai-patch">
@@ -15396,11 +15421,16 @@ body.dark-mode .hdsd-parent-excerpt .hdsd-excerpt-focus-title{color:#ff7b7b}
         if (!region.length) return '';
 
         const lines = region.map(function(node) {
-            return '<div class="hdsd-parent-excerpt-line">' + medplusRenderFocusInsideExcerptLine_(node, meta) + '</div>';
+            const extraClass = node.flatIndex === start ? ' hdsd-parent-excerpt-line-parent' : '';
+            let renderedLine = medplusRenderFocusInsideExcerptLine_(node, meta);
+            if (node.flatIndex === start) {
+                renderedLine = '<span class="hdsd-excerpt-parent-title">' + renderedLine + '</span>';
+            }
+            return '<div class="hdsd-parent-excerpt-line' + extraClass + '">' + renderedLine + '</div>';
         }).join('');
         const regionName = medplusExcerptEscapeHTML_(parent.parentLabel || meta.parentLabel || 'nội dung liên quan');
         return '<div class="hdsd-parent-excerpt" data-medplus-parent-id="' + medplusExcerptEscapeHTML_(parent.id) + '">'
-            + '<div class="hdsd-parent-excerpt-label">Trích dẫn toàn bộ mục ' + regionName + '</div>'
+            + '<div class="hdsd-parent-excerpt-label">Trích dẫn toàn bộ mục <span class="hdsd-excerpt-parent-name">' + regionName + '</span></div>'
             + lines
             + '</div>';
     }
@@ -15408,9 +15438,8 @@ body.dark-mode .hdsd-parent-excerpt .hdsd-excerpt-focus-title{color:#ff7b7b}
     /* Giữ câu hướng dẫn ngắn ở trước phần trích dẫn. Không bôi đậm nhãn nữa. */
     window.medplusBuildActualHDSDGuideText_ = function(meta) {
         if (!meta || !meta.focusLabel || !meta.parentLabel) return '';
-        return 'Hãy đọc phần ' + cleanDrugFieldForChat_(meta.focusLabel)
-            + ' trong mục ' + cleanDrugFieldForChat_(meta.parentLabel)
-            + ' được trích dẫn dưới đây. Khi bấm XEM HDSD, tiêu đề phần này được bôi đỏ để bạn dễ nhận biết.';
+        return 'Hãy xem chi tiết ở phần ' + cleanDrugFieldForChat_(meta.focusLabel)
+            + ' trong mục ' + cleanDrugFieldForChat_(meta.parentLabel) + '.';
     };
 
     /* AI vẫn là nguồn duy nhất quyết định parentId/focusId; chỉ thay cách trình bày bằng trích dẫn mục lớn. */
@@ -15457,6 +15486,7 @@ body.dark-mode .hdsd-parent-excerpt .hdsd-excerpt-focus-title{color:#ff7b7b}
     async function medplusRenderActualHDSDExcerpt_(headerParagraph, guideParagraph, drug, meta) {
         if (!headerParagraph || !drug || !meta) return;
         const existing = headerParagraph.parentElement && headerParagraph.parentElement.querySelector('.hdsd-parent-excerpt');
+        styleHeaderHTML_(headerParagraph);
         if (existing) return;
         const excerpt = await medplusBuildSelectedParentExcerpt_(drug, meta);
         if (!excerpt) return;
@@ -15718,10 +15748,31 @@ body.dark-mode .hdsd-parent-excerpt .hdsd-excerpt-focus-title{color:#ff7b7b}
     function guideText_(meta) {
         if (!meta || !meta.focusLabel || !meta.parentLabel) return '';
         return 'Hãy xem chi tiết ở phần ' + cleanDrugFieldForChat_(meta.focusLabel)
-            + ' trong mục ' + cleanDrugFieldForChat_(meta.parentLabel)
-            + '. Hoặc bấm xem ở trong tờ hướng dẫn sử dụng bên dưới.';
+            + ' trong mục ' + cleanDrugFieldForChat_(meta.parentLabel) + '.';
     }
     window.medplusBuildActualHDSDGuideText_ = guideText_;
+
+    function escapeGuideHTML_(value) {
+        const s = String(value == null ? '' : value);
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+    function buildGuideHTML_(meta) {
+        if (!meta || !meta.focusLabel || !meta.parentLabel) return '';
+        return 'Hãy xem chi tiết ở phần <span class="hdsd-guide-focus">'
+            + escapeGuideHTML_(cleanDrugFieldForChat_(meta.focusLabel))
+            + '</span> trong mục <span class="hdsd-guide-parent">'
+            + escapeGuideHTML_(cleanDrugFieldForChat_(meta.parentLabel))
+            + '</span>.';
+    }
+    function styleHeaderHTML_(node) {
+        if (!node || !node.textContent) return;
+        const raw = String(node.textContent || '').trim();
+        const m = raw.match(/^Theo nội dung tờ HDSD\s+(.+?):?$/i);
+        if (!m) return;
+        const drug = m[1].trim();
+        node.classList.add('hdsd-chat-header');
+        node.innerHTML = 'Theo nội dung tờ HDSD <span class="hdsd-chat-drug-name">' + escapeGuideHTML_(drug) + '</span>:';
+    }
 
     function normalizedText_(node) {
         return typeof removeAccents === 'function'
@@ -15765,7 +15816,8 @@ body.dark-mode .hdsd-parent-excerpt .hdsd-excerpt-focus-title{color:#ff7b7b}
             ? headerParagraph.nextElementSibling : null;
         const guide = existingGuide || document.createElement('p');
         guide.className = 'hdsd-chat-guide';
-        guide.textContent = guideText_(meta);
+        guide.innerHTML = buildGuideHTML_(meta);
+        styleHeaderHTML_(headerParagraph);
         if (!existingGuide) headerParagraph.insertAdjacentElement('afterend', guide);
         if (excerpt) guide.insertAdjacentElement('afterend', excerpt);
         return guide;
