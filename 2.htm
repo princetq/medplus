@@ -6961,52 +6961,6 @@ body.medplus-aux-open .new-badge::after{
             return sortDrugsByBrand_(dedupeDrugs_(matched));
         }
 
-        function isVitaminBComboQuestion_(userMessage) {
-            const q = normalizeDrugMatchText_(userMessage)
-                .replace(/\bvitamin\s+b\s*(\d)/g, 'vitamin b$1')
-                .replace(/\bvit\s+b\s*(\d)/g, 'vit b$1')
-                .replace(/\s*-\s*/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim();
-            if (!q) return false;
-            const hasB1 = hasNormalizedPhrase_(q, 'vitamin b1') || hasNormalizedPhrase_(q, 'vit b1') || /(^|\s)b1(\s|$)/.test(q);
-            const hasB6 = hasNormalizedPhrase_(q, 'vitamin b6') || hasNormalizedPhrase_(q, 'vit b6') || /(^|\s)b6(\s|$)/.test(q);
-            const hasB12 = hasNormalizedPhrase_(q, 'vitamin b12') || hasNormalizedPhrase_(q, 'vit b12') || /(^|\s)b12(\s|$)/.test(q);
-            return hasB1 && hasB6 && hasB12;
-        }
-
-        function getVitaminBComboCatalogMatches_(userMessage, allDrugs) {
-            const source = allDrugs || [];
-            if (!source.length || !isVitaminBComboQuestion_(userMessage)) return [];
-
-            const normalizeBText_ = function(value) {
-                return normalizeDrugMatchText_(value)
-                    .replace(/\bvitamin\s+b\s*(\d)/g, 'vitamin b$1')
-                    .replace(/\bvit\s+b\s*(\d)/g, 'vit b$1')
-                    .replace(/\s*-\s*/g, ' ')
-                    .replace(/\s+/g, ' ')
-                    .trim();
-            };
-
-            const b1Terms = ['vitamin b1', 'vit b1', 'thiamin', 'thiamine'];
-            const b6Terms = ['vitamin b6', 'vit b6', 'pyridoxin', 'pyridoxine'];
-            const b12Terms = ['vitamin b12', 'vit b12', 'cyanocobalamin', 'cobalamin', 'methylcobalamin'];
-
-            const matched = source.filter(function(d) {
-                if (!d) return false;
-                const active = normalizeBText_(d.active || '');
-                const brand  = normalizeBText_(d.brand || '');
-                const text = active + ' ' + brand;
-                // Chỉ lấy thuốc có đủ cả 3 thành phần B1 + B6 + B12 (phối hợp)
-                const hasB1  = b1Terms.some(function(t)  { return hasNormalizedPhrase_(text, t); });
-                const hasB6  = b6Terms.some(function(t)  { return hasNormalizedPhrase_(text, t); });
-                const hasB12 = b12Terms.some(function(t) { return hasNormalizedPhrase_(text, t); });
-                return hasB1 && hasB6 && hasB12;
-            });
-
-            return sortDrugsByBrand_(dedupeDrugs_(matched));
-        }
-
         function getActiveIngredientMatchesForQuestion_(userMessage, allDrugs) {
             const source = allDrugs || [];
             if (!userMessage || !source.length) return [];
@@ -8036,11 +7990,9 @@ body.medplus-aux-open .new-badge::after{
             const allDrugs = getRagDrugIndex_(sourceList);
             const forcedVitaminK1Matches = getVitaminK1CatalogMatches_(userMessage, allDrugs);
             const hasForcedVitaminK1Matches = forcedVitaminK1Matches.length > 0;
-            const forcedVitaminBComboMatches = hasForcedVitaminK1Matches ? [] : getVitaminBComboCatalogMatches_(userMessage, allDrugs);
-            const hasForcedVitaminBComboMatches = forcedVitaminBComboMatches.length > 0;
-            const strictShortBrandMatches = (hasForcedVitaminK1Matches || hasForcedVitaminBComboMatches) ? [] : getStrictShortBrandMatches_(userMessage, allDrugs);
-            const exactBrandNameMatches = (hasForcedVitaminK1Matches || hasForcedVitaminBComboMatches || strictShortBrandMatches.length > 0) ? [] : getExactBrandNameMatches_(userMessage, allDrugs);
-            const activeIngredientMatches = hasForcedVitaminK1Matches ? forcedVitaminK1Matches : (hasForcedVitaminBComboMatches ? forcedVitaminBComboMatches : ((strictShortBrandMatches.length > 0 || (exactBrandNameMatches.length > 0 && !broadQuery)) ? [] : getActiveIngredientMatchesForQuestion_(userMessage, allDrugs)));
+            const strictShortBrandMatches = hasForcedVitaminK1Matches ? [] : getStrictShortBrandMatches_(userMessage, allDrugs);
+            const exactBrandNameMatches = (hasForcedVitaminK1Matches || strictShortBrandMatches.length > 0) ? [] : getExactBrandNameMatches_(userMessage, allDrugs);
+            const activeIngredientMatches = hasForcedVitaminK1Matches ? forcedVitaminK1Matches : ((strictShortBrandMatches.length > 0 || (exactBrandNameMatches.length > 0 && !broadQuery)) ? [] : getActiveIngredientMatchesForQuestion_(userMessage, allDrugs));
             const drugNameResolution = strictShortBrandMatches.length > 0
                 ? { type: 'exact_drug', drugs: strictShortBrandMatches, confidence: 0.99, reason: 'strict_short_brand_exact', subject: getDrugSubjectForMatching_(userMessage) }
                 : (exactBrandNameMatches.length > 0
@@ -9301,15 +9253,6 @@ body.medplus-aux-open .new-badge::after{
              khớp “Entecavir STELLA 0.5 mg”.
            ============================================================ */
         function getStrictBrandMatchesForHDSD_(question, drugs) {
-            // Fallback đặc biệt: combo Vitamin B1-B6-B12 hỏi theo hoạt chất → dùng forced match
-            if (typeof isVitaminBComboQuestion_ === 'function' && isVitaminBComboQuestion_(question)) {
-                const comboDrugs = (drugs || []).filter(function(d) { return d && d.link; });
-                const comboMatched = typeof getVitaminBComboCatalogMatches_ === 'function'
-                    ? getVitaminBComboCatalogMatches_(question, comboDrugs.length > 0 ? comboDrugs : (drugs || []))
-                    : [];
-                if (comboMatched.length > 0) return comboMatched;
-            }
-
             const q = normalizeDrugMatchText_(question || '');
             const subject = normalizeDrugMatchText_(stripHDSDIntentTermsForDrugSubject_(question || ''));
             const compactQ = q.replace(/\s+/g, '');
@@ -9899,17 +9842,6 @@ body.medplus-aux-open .new-badge::after{
                     activeIngredientMatch: true,
                     forcedVitaminK1Match: true,
                     scannedCount: forcedVitaminK1Matches.length
-                };
-            }
-
-            const forcedVitaminBComboMatches = getVitaminBComboCatalogMatches_(userMessage, allDrugs);
-            if (forcedVitaminBComboMatches.length > 0) {
-                return {
-                    ok: true,
-                    drugs: forcedVitaminBComboMatches,
-                    activeIngredientMatch: true,
-                    forcedVitaminBComboMatch: true,
-                    scannedCount: forcedVitaminBComboMatches.length
                 };
             }
 
@@ -12868,6 +12800,165 @@ body.medplus-aux-open .new-badge::after{
             return rule;
         }
 
+        /* [MEDPLUS_DASHED_EXACT_REAL_RESULT_RAWDATA] */
+        /*
+         * Cổng xử lý trực tiếp HDSD cho biệt dược có dấu gạch nối.
+         * LƯU Ý: lấy dữ liệu từ rawData + aiMedicines, không dùng getCurrentDrugSource_()
+         * vì nguồn AI có thể cập nhật chậm hơn danh mục đang hiển thị trên trang.
+         */
+        function medplusDashedExactAllDrugSources_() {
+            const all = [];
+            if (Array.isArray(rawData)) all.push.apply(all, rawData);
+            if (Array.isArray(aiMedicines)) all.push.apply(all, aiMedicines);
+            return dedupeDrugs_(all);
+        }
+
+        function medplusDashedExactKey_(value) {
+            return removeAccents(String(value || ''))
+                .replace(/[\-‐‑‒–—−]/g, ' ')
+                .replace(/[^a-z0-9]+/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function medplusDashedExactCleanLabel_(value) {
+            return String(value || '')
+                .replace(/\s+/g, ' ')
+                .replace(/\s*[:：]\s*$/, '')
+                .trim();
+        }
+
+        function medplusFindDashedExactBrandForDirectHDSD_(question, allDrugs) {
+            if (!isHDSDContentQuestion_(question)) return null;
+            const q = medplusDashedExactKey_(question);
+            const subject = medplusDashedExactKey_(stripHDSDIntentTermsForDrugSubject_(question || ''));
+            if (!q || !subject) return null;
+
+            const matches = dedupeDrugs_(allDrugs || []).filter(function(drug) {
+                const originalBrand = String((drug && (drug.brand || drug.name)) || '');
+                if (!/[\-‐‑‒–—−]/.test(originalBrand)) return false;
+                const brandKey = medplusDashedExactKey_(originalBrand);
+                if (!brandKey || brandKey.length < 6) return false;
+                return subject === brandKey
+                    || q === brandKey
+                    || (' ' + q + ' ').indexOf(' ' + brandKey + ' ') !== -1
+                    || (' ' + subject + ' ').indexOf(' ' + brandKey + ' ') !== -1;
+            });
+            return matches.length === 1 ? matches[0] : null;
+        }
+
+        function medplusNumberedMajorLabel_(text) {
+            const raw = String(text || '').trim();
+            const m = raw.match(/^(\d+)\s*\.\s*(?!\d)(.+)$/);
+            if (!m) return null;
+            return { major: Number(m[1]), label: medplusDashedExactCleanLabel_(raw) };
+        }
+
+        function medplusNumberedChildLabel_(text) {
+            const raw = String(text || '').trim();
+            const m = raw.match(/^(\d+)\s*\.\s*(\d+)\s*\.?\s*(.+)$/);
+            if (!m) return null;
+            return { major: Number(m[1]), minor: Number(m[2]), label: medplusDashedExactCleanLabel_(raw) };
+        }
+
+        function medplusOwnAndChildrenText_(block) {
+            if (!block) return '';
+            const own = String(hdsdBlockOwnPlainText_(block) || '').replace(/\s+/g, ' ').trim();
+            const childText = (hdsdBlockChildren_(block) || []).map(medplusOwnAndChildrenText_).filter(Boolean).join('\n');
+            return [own, childText].filter(Boolean).join('\n').trim();
+        }
+
+        function medplusFindDirectNumberedHDSDSection_(jsonData, question) {
+            const q = medplusDashedExactKey_(question);
+            const askDose = /\blieu\s+dung\b/.test(q);
+            const askUse = /\bcach\s+(?:su\s+)?dung\b|\bduong\s+dung\b/.test(q);
+            if (!askDose && !askUse) return null;
+
+            const roots = (jsonData && Array.isArray(jsonData.blocks)) ? jsonData.blocks : [];
+            let best = null;
+            let bestScore = -1;
+            roots.forEach(function(parentBlock) {
+                const parentInfo = medplusNumberedMajorLabel_(hdsdBlockOwnPlainText_(parentBlock));
+                if (!parentInfo) return;
+                const children = hdsdBlockChildren_(parentBlock) || [];
+                if (!children.length) return;
+                const sections = [];
+                let current = null;
+                children.forEach(function(child) {
+                    const childInfo = medplusNumberedChildLabel_(hdsdBlockOwnPlainText_(child));
+                    if (childInfo && childInfo.major === parentInfo.major) {
+                        current = { label: childInfo.label, minor: childInfo.minor, bodyBlocks: [] };
+                        sections.push(current);
+                    } else if (current) {
+                        current.bodyBlocks.push(child);
+                    }
+                });
+                sections.forEach(function(section) {
+                    const key = medplusDashedExactKey_(section.label);
+                    let score = 0;
+                    if (askDose && /\blieu\s+dung\b/.test(key)) score += 1000;
+                    if (askUse && (/\bcach\s+dung\b/.test(key) || /\bduong\s+dung\b/.test(key))) score += 1000;
+                    if (score > bestScore) {
+                        bestScore = score;
+                        best = { parentLabel: parentInfo.label, parentMajor: parentInfo.major, sections: sections, focus: section };
+                    }
+                });
+            });
+            return bestScore > 0 ? best : null;
+        }
+
+        function medplusBuildDirectDashedExcerpt_(picked) {
+            if (!picked || !picked.parentLabel || !picked.focus) return '';
+            const chunks = ['**' + picked.parentLabel + '**'];
+            (picked.sections || []).forEach(function(section) {
+                chunks.push('**' + medplusDashedExactCleanLabel_(section.label) + '**');
+                const body = (section.bodyBlocks || []).map(medplusOwnAndChildrenText_).filter(Boolean).join('\n\n').trim();
+                if (body) chunks.push(body);
+            });
+            return chunks.join('\n\n').trim();
+        }
+
+        function medplusRenderDirectExactHDSDBubble_(answerText) {
+            const cm = document.getElementById('chat-messages');
+            if (!cm) return;
+            const message = document.createElement('div');
+            message.className = 'message ai-message';
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            messageContent.innerHTML = AI_ICON;
+            const wrapper = document.createElement('div');
+            wrapper.className = 'text-wrapper';
+            wrapper.dataset.medplusDirectExactDashedHdsd = '1';
+            wrapper.innerHTML = formatResponse(answerText);
+            messageContent.appendChild(wrapper);
+            message.appendChild(messageContent);
+            cm.appendChild(message);
+            setTimeout(function(){ cm.scrollTo({ top: cm.scrollHeight, behavior: 'smooth' }); }, 100);
+        }
+
+        async function medplusTryRenderDirectDashedHDSD_(question) {
+            const drug = medplusFindDashedExactBrandForDirectHDSD_(question, medplusDashedExactAllDrugSources_());
+            if (!drug || !drug.link) return false;
+            const json = await loadHDSDJsonForDrug_(drug);
+            if (!json) return false;
+            const picked = medplusFindDirectNumberedHDSDSection_(json, question);
+            if (!picked || !picked.focus || !picked.parentLabel) return false;
+            const excerpt = medplusBuildDirectDashedExcerpt_(picked);
+            if (!excerpt) return false;
+
+            const focusLabel = medplusDashedExactCleanLabel_(picked.focus.label);
+            const parentLabel = medplusDashedExactCleanLabel_(picked.parentLabel);
+            const resultDrug = Object.assign({}, drug, {
+                _hdsdChatFocus: focusLabel,
+                _hdsdChatFocusParent: parentLabel
+            });
+            const answer = '**Theo nội dung tờ HDSD ' + cleanDrugFieldForChat_(drug.brand) + ':**\n\n'
+                + 'Hãy xem chi tiết ở phần **' + focusLabel + '** trong mục **' + parentLabel + '**.\n\n'
+                + excerpt;
+            medplusRenderDirectExactHDSDBubble_(appendDeterministicDrugListToAnswer_(answer, [resultDrug]));
+            return true;
+        }
+
         async function sendMessage(isRetry, keyIdx, modelIdx) {
             if (isRetry === undefined) isRetry = false;
             if (keyIdx === undefined) keyIdx = 0;
@@ -12906,6 +12997,14 @@ body.medplus-aux-open .new-badge::after{
             timerInterval = setInterval(function() { document.getElementById('timer-display').innerText = "(" + ((Date.now()-startTime)/1000).toFixed(1) + "s)"; }, 100);
             
             try {
+                // Cổng này được gọi trước mọi API: tên thuốc khớp trọn vẹn sẽ có kết quả ngay cả khi AI lỗi.
+                if (await medplusTryRenderDirectDashedHDSD_(userMessage)) {
+                    clearInterval(timerInterval);
+                    typingIndicator.style.display = 'none';
+                    sendButton.disabled = false;
+                    return;
+                }
+
                 if (keyIdx >= API_KEYS.length) throw new Error("ALL_KEYS_EXHAUSTED");
                 const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/" + AI_MODELS[modelIdx] + ":generateContent?key=" + API_KEYS[keyIdx];
                 
@@ -16396,6 +16495,7 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
     }
 
     async function ensureExcerptInBubble(wrapper, question) {
+        if (wrapper && wrapper.dataset && wrapper.dataset.medplusDirectExactDashedHdsd === '1') return;
         if (!wrapper || !question || typeof isHDSDContentQuestion_ !== 'function' || !isHDSDContentQuestion_(question)) return;
         const headers = Array.prototype.slice.call(wrapper.querySelectorAll('p')).filter(function(p) {
             return norm(p.textContent || '').indexOf('theo noi dung to hdsd') !== -1;
