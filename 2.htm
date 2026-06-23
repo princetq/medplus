@@ -7258,6 +7258,22 @@ body.medplus-aux-open .new-badge::after{
             'brilinta': ['ticagrelor brilinta']
         };
 
+        // Bí danh CHỈ để khóa đúng tên biệt dược có dấu gạch nối trước AI.
+        // Không thay đổi nội dung HDSD, không tạo luồng riêng và không dùng để khớp hoạt chất.
+        // Ví dụ: mọi cách gõ "Vitamin B1-B6-B12", "Vitamin B1 - B6 -B12"... đều quy về đúng một biệt dược.
+        const MEDPLUS_DASHED_BRAND_EXPLICIT_ALIASES_ = {
+            'vitamin b1 - b6 - b12': [
+                'vitamin b1-b6-b12',
+                'vitamin b1 -b6-b12',
+                'vitamin b1-b6 -b12',
+                'vitamin b1-b6 - b12',
+                'vitamin b1 -b6 - b12',
+                'vitamin b1 - b6-b12',
+                'vitamin b1 -b6 -b12',
+                'vitamin b1 b6 b12'
+            ]
+        };
+
         const MEDPLUS_GENERIC_DRUG_SUBJECTS_ = [
             'hoat huyet', 'thuoc hoat huyet', 'tuan hoan nao', 'thuoc tuan hoan nao',
             'bo nao', 'duong nao', 'tang tuan hoan nao', 'thuoc bo nao',
@@ -7305,6 +7321,8 @@ body.medplus-aux-open .new-badge::after{
 
         function normalizeDrugMatchText_(value) {
             return removeAccents(String(value || ''))
+                // Chuẩn hóa các loại gạch nối Unicode về "-"; không đổi cấu trúc từ khác.
+                .replace(/[‐‑‒–—−]/g, '-')
                 .replace(/\b(bvdk|benh vien da khoa tinh tuyen quang|benh vien da khoa tuyen quang|benh vien|khoa duoc|tuyen quang)\b/g, ' ')
                 .replace(/\b(cho toi hoi|xin hoi|cho biet|giup toi|anh chi|bac si|duoc si)\b/g, ' ')
                 .replace(/\s+/g, ' ')
@@ -7356,6 +7374,10 @@ body.medplus-aux-open .new-badge::after{
         function getDrugAliasesForMatching_(drug) {
             const brand = normalizeDrugMatchText_(drug && drug.brand);
             const aliases = [brand];
+            // Dùng cùng bộ alias dấu gạch nối ở các nhánh dò tên còn lại,
+            // để thuốc có "-" được xử lý giống hoàn toàn thuốc tên thông thường.
+            const dashedAliases = getDashedBrandAliasesForExactMatching_(brand);
+            if (dashedAliases && dashedAliases.length) aliases.push.apply(aliases, dashedAliases);
             const noStrength = brand
                 .replace(/\b\d+(?:[\s\/.-]*(?:mg|ml|g|mcg|ui|iu|%)?)\b/g, ' ')
                 .replace(/\s+/g, ' ')
@@ -7382,10 +7404,44 @@ body.medplus-aux-open .new-badge::after{
             });
         }
 
+        function getDashedBrandAliasesForExactMatching_(brand) {
+            const normalizedBrand = normalizeDrugMatchText_(brand);
+            if (!normalizedBrand || normalizedBrand.indexOf('-') === -1) return [];
+
+            const aliases = [];
+            const manual = MEDPLUS_DASHED_BRAND_EXPLICIT_ALIASES_[normalizedBrand];
+            if (manual && manual.length) aliases.push.apply(aliases, manual);
+
+            // Tạo alias cho TẤT CẢ biệt dược có dấu "-", để không phải tạo fast-lane riêng cho từng thuốc.
+            // Chỉ biến đổi cách đặt khoảng trắng quanh dấu "-"; luôn cần khớp đủ cả tên thuốc.
+            const parts = normalizedBrand.split('-').map(function(part) { return part.trim(); }).filter(Boolean);
+            if (parts.length >= 2) {
+                const separatorCount = parts.length - 1;
+                const variants = ['-', ' - ', ' -', '- '];
+                const build = function(index, current) {
+                    if (index === separatorCount) {
+                        aliases.push(current);
+                        return;
+                    }
+                    variants.forEach(function(sep) {
+                        build(index + 1, current + sep + parts[index + 1]);
+                    });
+                };
+                build(0, parts[0]);
+                // Hỗ trợ trường hợp người dùng bỏ hoàn toàn dấu gạch nhưng vẫn viết đủ các thành phần.
+                aliases.push(parts.join(' '));
+            }
+
+            return uniqueStrings_(aliases);
+        }
+
         function getBrandAliasesForExactMatching_(drug) {
             const brand = normalizeDrugMatchText_(drug && drug.brand);
             if (!brand) return [];
             const aliases = [brand];
+
+            const dashedAliases = getDashedBrandAliasesForExactMatching_(brand);
+            if (dashedAliases && dashedAliases.length) aliases.push.apply(aliases, dashedAliases);
 
             const noStrength = brand
                 .replace(/\b\d+(?:[\s\/.-]*(?:mg|ml|g|mcg|ui|iu|%)?)\b/g, ' ')
