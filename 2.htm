@@ -12843,6 +12843,44 @@ body.medplus-aux-open .new-badge::after{
                 
                 const dataForRag = getCurrentDrugSource_(rawData);
                 const drugQueryInfo = getDrugQueryInfo_(userMessage, dataForRag);
+
+                /* FAST LANE HDSD CHO TÊN THUỐC ĐÍCH DANH
+                   Không để câu hỏi kiểu “liều dùng Vitamin B1 - B6 - B12” phải đi qua
+                   bộ phân loại/câu trả lời AI chung trước. Khi đã nhận đúng một biệt dược
+                   và đây là câu hỏi HDSD, dùng ngay luồng HDSD có outline thật của thuốc.
+                   Nhờ đó nếu Gemini/Gemma tạm không phản hồi, chatbot vẫn không rơi vào
+                   thông báo lỗi API chung. */
+                let exactHDSDFastLaneDrugs = [];
+                try {
+                    if (typeof isHDSDContentQuestion_ === 'function'
+                        && isHDSDContentQuestion_(userMessage)
+                        && typeof getStrictBrandMatchesForHDSD_ === 'function') {
+                        exactHDSDFastLaneDrugs = getStrictBrandMatchesForHDSD_(userMessage, drugQueryInfo.allDrugs || drugQueryInfo.matchedDrugs || []);
+                    }
+                } catch (e) {
+                    exactHDSDFastLaneDrugs = [];
+                }
+
+                if (exactHDSDFastLaneDrugs.length > 0 && typeof window.composeHDSDGroundedAnswerWithAI_ === 'function') {
+                    document.getElementById('typing-text').innerText = "MedPlus đang mở đúng nội dung tờ HDSD...";
+                    let exactHDSDReply = '';
+                    window.__medplusHDSDFastLaneActive = true;
+                    try {
+                        exactHDSDReply = await window.composeHDSDGroundedAnswerWithAI_(userMessage, exactHDSDFastLaneDrugs);
+                    } catch (e) {
+                        console.warn('HDSD fast lane failed; will continue with normal pipeline.', e);
+                    } finally {
+                        window.__medplusHDSDFastLaneActive = false;
+                    }
+                    if (exactHDSDReply) {
+                        clearInterval(timerInterval);
+                        typingIndicator.style.display = 'none';
+                        displayMessage(exactHDSDReply, 'ai');
+                        sendButton.disabled = false;
+                        return;
+                    }
+                }
+
                 const questionScope = await classifyQuestionScopeHybrid_(userMessage, drugQueryInfo);
                 const isHealthcareQuestion = questionScope && questionScope.scope === 'medical';
                 const shouldUseDrugCatalog = !!(questionScope && questionScope.drugCatalog);
@@ -16988,6 +17026,54 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
             window.__medplusReliableHDSDExcerptCache.clear();
         }
     } catch (e) {}
+})();
+</script>
+
+
+
+<!-- HDSD_EXACT_BRAND_FASTLANE_API_RESILIENT_FIX -->
+<script id="medplus-hdsd-exact-brand-fastlane-api-resilient-fix">
+/* =====================================================================
+   HDSD BIỆT DƯỢC: ĐƯỜNG ĐI DỰ PHÒNG KHI API AI KHÔNG PHẢN HỒI
+   - Chỉ áp dụng trong fast lane cho câu hỏi HDSD có khớp đúng tên thuốc.
+   - AI vẫn được dùng bình thường ở luồng chung.
+   - Khi fast lane được bật, nếu outline HDSD tự xác định được chắc chắn,
+     dùng đúng nhãn có thật trong outline thay vì để lỗi API chung chặn toàn bộ.
+   ===================================================================== */
+(function(){
+    if (typeof medplusResolveActualHDSDFocusForDrug_ !== 'function') return;
+    const originalResolver = medplusResolveActualHDSDFocusForDrug_;
+
+    async function resolveExactBrandFastLane_(drug, question) {
+        if (!window.__medplusHDSDFastLaneActive) {
+            return originalResolver.apply(this, arguments);
+        }
+
+        try {
+            if (!drug || !drug.link || typeof loadHDSDJsonForDrug_ !== 'function'
+                || typeof medplusBuildActualHDSDOutline_ !== 'function'
+                || typeof medplusChooseActualHDSDFocusLocally_ !== 'function') {
+                return originalResolver.apply(this, arguments);
+            }
+            const json = await loadHDSDJsonForDrug_(drug);
+            if (!json) return originalResolver.apply(this, arguments);
+            const outline = medplusBuildActualHDSDOutline_(json);
+            if (!outline || !Array.isArray(outline.parents) || !outline.parents.length) {
+                return originalResolver.apply(this, arguments);
+            }
+            const local = medplusChooseActualHDSDFocusLocally_(question, outline);
+            if (local && local.parentLabel && local.focusLabel) {
+                local.source = 'exact-brand-fast-lane-local-outline';
+                return local;
+            }
+        } catch (e) {
+            console.warn('Local exact-brand HDSD fallback failed:', e);
+        }
+        return originalResolver.apply(this, arguments);
+    }
+
+    medplusResolveActualHDSDFocusForDrug_ = resolveExactBrandFastLane_;
+    window.medplusResolveActualHDSDFocusForDrug_ = resolveExactBrandFastLane_;
 })();
 </script>
 
