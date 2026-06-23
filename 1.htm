@@ -1197,6 +1197,115 @@ body.medplus-aux-open .medplus-aux-frame-wrap{
         .chat-widget-container .send-button svg{width:18px;height:18px}
         .chat-widget-container .send-button:hover{background:linear-gradient(135deg,#2E7D32,#1B5E20);transform:translateY(-50%) scale(1.08);box-shadow:0 6px 20px rgba(46,125,50,0.5)}
         .chat-widget-container .send-button:disabled{background:#78909c;cursor:not-allowed;box-shadow:none}
+
+        /* ============================================================
+           SEND BUTTON — CHỈ MÁY BAY GIẤY, KHÔNG NỀN TRÒN XANH
+           ============================================================ */
+        .chat-widget-container .send-button{
+            width:44px !important;
+            height:44px !important;
+            padding:0 !important;
+            background:transparent !important;
+            border:none !important;
+            border-radius:0 !important;
+            box-shadow:none !important;
+            color:var(--green) !important;
+            overflow:visible !important;
+            isolation:isolate;
+            transition:none !important;
+        }
+        .chat-widget-container .send-button svg{
+            width:24px !important;
+            height:24px !important;
+            display:block;
+            position:relative;
+            z-index:2;
+            transform-origin:42% 58%;
+            filter:drop-shadow(0 2px 2px rgba(27,94,32,.20));
+            transition:transform .20s ease, color .20s ease, filter .20s ease;
+            will-change:transform,opacity;
+        }
+        .chat-widget-container .send-button::after{
+            content:'';
+            position:absolute;
+            right:50%;
+            top:50%;
+            z-index:1;
+            width:0;
+            height:2px;
+            border-radius:999px;
+            pointer-events:none;
+            opacity:0;
+            transform:translateY(-50%) rotate(-38deg);
+            transform-origin:right center;
+            background:linear-gradient(90deg,rgba(76,175,80,0),rgba(76,175,80,.55),rgba(46,125,50,.82));
+        }
+        .chat-widget-container .send-button:hover{
+            background:transparent !important;
+            box-shadow:none !important;
+            transform:translateY(-50%) !important;
+        }
+        .chat-widget-container .send-button:hover svg{
+            color:var(--green-d);
+            transform:translate3d(2px,-2px,0) rotate(-7deg) scale(1.10);
+            filter:drop-shadow(0 4px 4px rgba(27,94,32,.28));
+        }
+        .chat-widget-container .send-button:focus-visible{
+            outline:2px solid rgba(76,175,80,.75);
+            outline-offset:2px;
+        }
+        .chat-widget-container .send-button:disabled:not(.send-launching){
+            background:transparent !important;
+            box-shadow:none !important;
+            opacity:.46;
+            cursor:not-allowed;
+        }
+        .chat-widget-container .send-button.send-launching{
+            background:transparent !important;
+            box-shadow:none !important;
+            opacity:1 !important;
+        }
+        .chat-widget-container .send-button.send-launching svg{
+            animation:medplusSendPlaneLaunch .52s cubic-bezier(.18,.82,.25,1) both;
+            pointer-events:none;
+        }
+        .chat-widget-container .send-button.send-launching::after{
+            animation:medplusSendPlaneTrail .52s cubic-bezier(.18,.82,.25,1) both;
+        }
+        @keyframes medplusSendPlaneLaunch{
+            0%{transform:translate3d(0,0,0) rotate(0deg) scale(1);opacity:1}
+            18%{transform:translate3d(-2px,3px,0) rotate(-9deg) scale(.95);opacity:1}
+            58%{transform:translate3d(21px,-18px,0) rotate(-18deg) scale(.90);opacity:1}
+            100%{transform:translate3d(54px,-47px,0) rotate(-24deg) scale(.72);opacity:0}
+        }
+        @keyframes medplusSendPlaneTrail{
+            0%,15%{width:0;opacity:0}
+            34%{width:11px;opacity:.80}
+            82%{width:43px;opacity:.26}
+            100%{width:55px;opacity:0}
+        }
+        body.dark-mode .chat-widget-container .send-button{
+            background:transparent !important;
+            border:none !important;
+            box-shadow:none !important;
+            color:#50dcb4 !important;
+        }
+        body.dark-mode .chat-widget-container .send-button:hover{
+            background:transparent !important;
+            box-shadow:none !important;
+        }
+        body.dark-mode .chat-widget-container .send-button:hover svg{
+            color:#4df5c0 !important;
+            filter:drop-shadow(0 3px 5px rgba(80,220,180,.35));
+        }
+        body.dark-mode .chat-widget-container .send-button::after{
+            background:linear-gradient(90deg,rgba(80,220,180,0),rgba(80,220,180,.55),rgba(77,245,192,.90));
+        }
+        @media (prefers-reduced-motion:reduce){
+            .chat-widget-container .send-button.send-launching svg,
+            .chat-widget-container .send-button.send-launching::after{animation:none !important}
+        }
+
         .chat-widget-container .typing-indicator{display:none;align-self:flex-start;background:rgba(255,255,255,0.88);padding:10px 14px;border-radius:18px;border-bottom-left-radius:5px;color:#666;font-style:italic;margin-bottom:8px;font-size:.88rem;animation:tp 1.5s infinite;margin-left:10px;cursor:pointer;border-left:3px solid var(--green-l);box-shadow:0 2px 8px rgba(0,0,0,0.06)}
         @keyframes tp{0%{opacity:.6}50%{opacity:1}100%{opacity:.6}}
         /* TIMER AI: số có độ rộng cố định, tránh giật do thay đổi chiều ngang khi thời gian tăng. */
@@ -12115,6 +12224,25 @@ body.medplus-aux-open .new-badge::after{
         }
 
 
+
+
+        // Hiệu ứng máy bay giấy phóng đi khi người dùng thực sự gửi một tin nhắn.
+        // Không ảnh hưởng retry API/model và không thay đổi luồng xử lý chatbot.
+        function triggerSendPlaneLaunch_(button) {
+            if (!button) return;
+            if (button._medplusSendPlaneLaunchTimer) {
+                clearTimeout(button._medplusSendPlaneLaunchTimer);
+            }
+            button.classList.remove('send-launching');
+            // Buộc trình duyệt khởi động lại animation cho các lượt gửi liên tiếp.
+            void button.offsetWidth;
+            button.classList.add('send-launching');
+            button._medplusSendPlaneLaunchTimer = setTimeout(function() {
+                button.classList.remove('send-launching');
+                button._medplusSendPlaneLaunchTimer = null;
+            }, 580);
+        }
+
         async function sendMessage(isRetry, keyIdx, modelIdx, requestContext) {
             if (isRetry === undefined) isRetry = false;
             if (keyIdx === undefined) keyIdx = 0;
@@ -12129,6 +12257,7 @@ body.medplus-aux-open .new-badge::after{
             if (!context) {
                 const initialMessage = chatInput.value.trim();
                 if (!initialMessage) return;
+                triggerSendPlaneLaunch_(sendButton);
                 displayMessage(initialMessage, 'user');
                 chatInput.value = '';
                 sendButton.disabled = true;
