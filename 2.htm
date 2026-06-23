@@ -16362,5 +16362,286 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
     }
 })();
 </script>
+
+<style id="medplus-hdsd-same-active-options-style">
+/* Phần gợi ý thuốc cùng hoạt chất chỉ xuất hiện dưới câu trả lời HDSD của một biệt dược. */
+.medplus-same-active-options{
+  margin:12px 0 4px;
+  padding:10px 12px;
+  border:1px solid rgba(46,125,50,.22);
+  border-radius:10px;
+  background:rgba(46,125,50,.045);
+  line-height:1.55;
+}
+.medplus-same-active-options-title{
+  margin:0 0 7px;
+  font-weight:700;
+}
+.medplus-same-active-options-line{
+  margin:5px 0;
+}
+body.dark-mode .medplus-same-active-options{
+  border-color:rgba(80,220,180,.28);
+  background:rgba(80,220,180,.055);
+}
+</style>
+
+<script id="medplus-hdsd-same-active-options-patch">
+/* =====================================================================
+   MEDPLUS — THUỐC CÙNG HOẠT CHẤT DƯỚI CÂU TRẢ LỜI HDSD
+   Chỉ áp dụng khi người dùng hỏi đích danh MỘT biệt dược và chatbot đang
+   trích dẫn HDSD của chính biệt dược đó. Không áp dụng cho câu hỏi hoạt
+   chất, nhóm thuốc hoặc nhiều biệt dược để tránh hiển thị lặp/lan man.
+   ===================================================================== */
+(function(){
+    if (window.__medplusSameActiveOptionsPatchApplied__) return;
+    window.__medplusSameActiveOptionsPatchApplied__ = true;
+
+    const SAME_ACTIVE_SECTION_TEXT = 'Ngoài ra, Bệnh viện Đa khoa tỉnh Tuyên Quang còn có các thuốc sau có cùng hoạt chất';
+
+    function escapeSameActiveHTML_(value) {
+        return String(value == null ? '' : value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function toAsciiSubscripts_(value) {
+        const map = { '₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9' };
+        return String(value == null ? '' : value).replace(/[₀₁₂₃₄₅₆₇₈₉]/g, function(ch) { return map[ch] || ch; });
+    }
+
+    function normalizeSameActiveText_(value) {
+        let s = toAsciiSubscripts_(value);
+        s = typeof normalizeDrugMatchText_ === 'function'
+            ? normalizeDrugMatchText_(s)
+            : s.toLowerCase();
+        s = String(s || '').toLowerCase()
+            .replace(/\bvitamin\s+b\s*1\b/g, ' thiamin ')
+            .replace(/\bvit\s+b\s*1\b/g, ' thiamin ')
+            .replace(/\bthiamine\b/g, ' thiamin ')
+            .replace(/\bvitamin\s+b\s*6\b/g, ' pyridoxin ')
+            .replace(/\bvit\s+b\s*6\b/g, ' pyridoxin ')
+            .replace(/\bpyridoxine\b/g, ' pyridoxin ')
+            .replace(/\bvitamin\s+b\s*12\b/g, ' cyanocobalamin ')
+            .replace(/\bvit\s+b\s*12\b/g, ' cyanocobalamin ')
+            .replace(/\bcyanocobalamine\b/g, ' cyanocobalamin ')
+            .replace(/\bvitamin\s+k\s*1\b/g, ' phytomenadion ')
+            .replace(/\bvit\s+k\s*1\b/g, ' phytomenadion ')
+            .replace(/\bphytonadione\b/g, ' phytomenadion ')
+            .replace(/\bphytomenadione\b/g, ' phytomenadion ')
+            .replace(/\bphylloquinone\b/g, ' phytomenadion ')
+            .replace(/\bvitamin\s+d\s*3\b/g, ' cholecalciferol ')
+            .replace(/\bcolecalciferol\b/g, ' cholecalciferol ')
+            .replace(/\bvitamin\s+c\b/g, ' ascorbic ')
+            .replace(/\bascorbic\s+acid\b/g, ' ascorbic ')
+            .replace(/[+/,;|()\[\]{}]/g, ' ')
+            .replace(/\b(?:hydroclorid|hydrochloride|hydrochlorid|hcl|monohydrat|monohydrate|mononitrat|mononitrate|hemihydrat|dihydrat|trihydrat|sodium|natri|kali|potassium|calcium|magnesium|zinc|acid|muoi|salt)\b/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+        return s;
+    }
+
+    function getSameActiveCoreTokens_(active) {
+        const ignore = new Set([
+            'vitamin','thuoc','dung','dich','tieu','truyen','tiem','vien','nang','bot','ong','lo',
+            'mg','mcg','g','ml','ui','iu','film','bao','phim','solution','injection','tablet'
+        ]);
+        const tokens = normalizeSameActiveText_(active).split(/\s+/).filter(function(token) {
+            if (!token || ignore.has(token)) return false;
+            if (/^\d+(?:\.\d+)?$/.test(token)) return false;
+            return token.length >= 3 || /^[a-z]\d{1,2}$/.test(token);
+        });
+        return Array.from(new Set(tokens));
+    }
+
+    function isSameDrugRecord_(a, b) {
+        if (!a || !b) return false;
+        const aLink = String(a.link || '').split('#')[0].replace(/\/$/, '');
+        const bLink = String(b.link || '').split('#')[0].replace(/\/$/, '');
+        if (aLink && bLink && aLink === bLink) return true;
+        const aKey = typeof getDrugDedupeKey_ === 'function'
+            ? getDrugDedupeKey_(a)
+            : [a.brand, a.active, a.strength, a.form].join('|').toLowerCase();
+        const bKey = typeof getDrugDedupeKey_ === 'function'
+            ? getDrugDedupeKey_(b)
+            : [b.brand, b.active, b.strength, b.form].join('|').toLowerCase();
+        return aKey === bKey;
+    }
+
+    function isSameActiveDrug_(sourceDrug, candidateDrug) {
+        if (!sourceDrug || !candidateDrug || !sourceDrug.active || !candidateDrug.active) return false;
+        const sourceTokens = getSameActiveCoreTokens_(sourceDrug.active);
+        const candidateTokens = getSameActiveCoreTokens_(candidateDrug.active);
+        if (!sourceTokens.length || !candidateTokens.length) return false;
+
+        // Một hoạt chất đơn chất: giữ cả thuốc phối hợp có chứa hoạt chất đó.
+        // Hoạt chất phối hợp: phải chứa đầy đủ các thành phần hoạt chất chính của thuốc nguồn.
+        return sourceTokens.every(function(token) { return candidateTokens.indexOf(token) !== -1; });
+    }
+
+    function getCatalogForSameActive_() {
+        let raw = [];
+        try {
+            raw = typeof rawData !== 'undefined' && Array.isArray(rawData) ? rawData : [];
+        } catch (e) { raw = []; }
+        try {
+            if (typeof getRagDrugIndex_ === 'function') return getRagDrugIndex_(raw) || [];
+        } catch (e) {}
+        return raw || [];
+    }
+
+    function getRelatedSameActiveDrugs_(sourceDrug) {
+        const catalog = getCatalogForSameActive_();
+        const matched = catalog.filter(function(candidate) {
+            return candidate && !isSameDrugRecord_(sourceDrug, candidate) && isSameActiveDrug_(sourceDrug, candidate);
+        });
+        const deduped = typeof dedupeDrugs_ === 'function' ? dedupeDrugs_(matched) : matched;
+        const sorted = typeof sortDrugsByBrand_ === 'function'
+            ? sortDrugsByBrand_(deduped)
+            : deduped.slice().sort(function(a, b) { return String(a.brand || '').localeCompare(String(b.brand || ''), 'vi'); });
+        return sorted.slice(0, 15);
+    }
+
+    function buildSameActiveMarkdown_(sourceDrug) {
+        const related = getRelatedSameActiveDrugs_(sourceDrug);
+        if (!related.length) return '';
+        const sourceActive = typeof cleanDrugFieldForChat_ === 'function'
+            ? cleanDrugFieldForChat_(sourceDrug.active || '')
+            : String(sourceDrug.active || '');
+        let text = '\n\nNgoài ra, **Bệnh viện Đa khoa tỉnh Tuyên Quang** còn có các thuốc sau có cùng hoạt chất **' + sourceActive + '**:\n\n';
+        text += related.map(function(d) {
+            const brand = typeof cleanDrugFieldForChat_ === 'function' ? cleanDrugFieldForChat_(d.brand || '') : String(d.brand || '');
+            const active = typeof cleanDrugFieldForChat_ === 'function' ? cleanDrugFieldForChat_(d.active || '') : String(d.active || '');
+            const form = typeof cleanDrugFieldForChat_ === 'function' ? cleanDrugFieldForChat_(d.form || '') : String(d.form || '');
+            const link = String(d.link || '').trim();
+            return '**' + brand + '** — Hoạt chất: ' + active + ' — Dạng bào chế: ' + form
+                + (link ? ' [XEM HDSD](' + link + ')' : ' 📄 HDSD đang cập nhật');
+        }).join('\n');
+        return text;
+    }
+
+    function isSingleExactHDSDDrug_(question, drugs) {
+        if (!question || typeof getStrictBrandMatchesForHDSD_ !== 'function') return null;
+        const exact = getStrictBrandMatchesForHDSD_(question, drugs || []);
+        return exact && exact.length === 1 ? exact[0] : null;
+    }
+
+    function answerAlreadyHasSameActiveOptions_(answer) {
+        const plain = String(answer || '').toLowerCase();
+        return plain.indexOf(SAME_ACTIVE_SECTION_TEXT.toLowerCase()) !== -1;
+    }
+
+    // Luồng chính: thêm phần này sau danh sách thuốc của biệt dược đang được trích HDSD.
+    if (typeof window.composeHDSDGroundedAnswerWithAI_ === 'function') {
+        const previousComposer = window.composeHDSDGroundedAnswerWithAI_;
+        window.composeHDSDGroundedAnswerWithAI_ = async function(question, drugs) {
+            const answer = await previousComposer.apply(this, arguments);
+            if (!answer || answerAlreadyHasSameActiveOptions_(answer)) return answer;
+            const sourceDrug = isSingleExactHDSDDrug_(question, drugs || []);
+            if (!sourceDrug) return answer;
+            return answer + buildSameActiveMarkdown_(sourceDrug);
+        };
+    }
+
+    function canonicalUrlFromButton_(button) {
+        if (!button) return '';
+        try {
+            if (button.dataset && button.dataset.medplusHdsdUrl) return decodeURIComponent(String(button.dataset.medplusHdsdUrl));
+        } catch (e) {}
+        const raw = String(button.getAttribute('onclick') || '');
+        const match = raw.match(/openHDSDFromChat\('([^']*)'/i);
+        if (!match) return '';
+        try { return decodeURIComponent(match[1]); }
+        catch (e) { return match[1]; }
+    }
+
+    function wrapperAlreadyHasSameActiveOptions_(wrapper) {
+        if (!wrapper) return true;
+        if (wrapper.querySelector && wrapper.querySelector('.medplus-same-active-options')) return true;
+        return String(wrapper.textContent || '').toLowerCase().indexOf(SAME_ACTIVE_SECTION_TEXT.toLowerCase()) !== -1;
+    }
+
+    function renderSameActiveOptionsInBubble_(wrapper, question) {
+        if (!wrapper || !question || wrapperAlreadyHasSameActiveOptions_(wrapper)) return;
+        if (typeof shouldUseHDSDExcerptForExactBrand_ === 'function'
+            && !shouldUseHDSDExcerptForExactBrand_(question, getCatalogForSameActive_())) return;
+
+        const buttons = Array.prototype.slice.call(wrapper.querySelectorAll ? wrapper.querySelectorAll('button.hdsd-btn') : []);
+        const sourceDrugs = buttons.map(function(button) {
+            const url = canonicalUrlFromButton_(button);
+            return url && typeof findDrugByHDSDUrl_ === 'function' ? findDrugByHDSDUrl_(url) : null;
+        }).filter(Boolean);
+        const exactDrug = isSingleExactHDSDDrug_(question, sourceDrugs);
+        if (!exactDrug) return;
+        const related = getRelatedSameActiveDrugs_(exactDrug);
+        if (!related.length) return;
+
+        const sourceActive = typeof cleanDrugFieldForChat_ === 'function'
+            ? cleanDrugFieldForChat_(exactDrug.active || '')
+            : String(exactDrug.active || '');
+        const section = document.createElement('div');
+        section.className = 'medplus-same-active-options';
+        section.dataset.medplusSameActiveOptions = '1';
+        const title = document.createElement('p');
+        title.className = 'medplus-same-active-options-title';
+        title.innerHTML = 'Ngoài ra, <strong>Bệnh viện Đa khoa tỉnh Tuyên Quang</strong> còn có các thuốc sau có cùng hoạt chất <strong>' + escapeSameActiveHTML_(sourceActive) + '</strong>:';
+        section.appendChild(title);
+
+        related.forEach(function(d) {
+            const line = document.createElement('div');
+            line.className = 'medplus-same-active-options-line';
+            const brand = typeof cleanDrugFieldForChat_ === 'function' ? cleanDrugFieldForChat_(d.brand || '') : String(d.brand || '');
+            const active = typeof cleanDrugFieldForChat_ === 'function' ? cleanDrugFieldForChat_(d.active || '') : String(d.active || '');
+            const form = typeof cleanDrugFieldForChat_ === 'function' ? cleanDrugFieldForChat_(d.form || '') : String(d.form || '');
+            line.innerHTML = '<strong>' + escapeSameActiveHTML_(brand) + '</strong> — Hoạt chất: '
+                + escapeSameActiveHTML_(active) + ' — Dạng bào chế: ' + escapeSameActiveHTML_(form);
+            if (d.link) {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'hdsd-btn';
+                button.style.cssText = 'display:inline-flex;width:auto;padding:6px 16px;margin:2px 0 2px 4px;z-index:2;position:relative;vertical-align:middle;';
+                button.textContent = '📄 XEM HDSD';
+                button.addEventListener('click', function(evt) {
+                    return openHDSDFromChat(encodeURIComponent(String(d.link || '')), evt, '', '', '', '', '');
+                });
+                line.appendChild(document.createTextNode(' '));
+                line.appendChild(button);
+            }
+            section.appendChild(line);
+        });
+        wrapper.appendChild(section);
+    }
+
+    // Dự phòng cho những nhánh cũ tạo bubble HDSD ngoài composer chính.
+    const previousGuideResolver = window.medplusResolveRenderedHDSDGuides_;
+    window.medplusResolveRenderedHDSDGuides_ = async function(wrapper, question) {
+        const result = typeof previousGuideResolver === 'function'
+            ? await previousGuideResolver.apply(this, arguments)
+            : undefined;
+        try { renderSameActiveOptionsInBubble_(wrapper, question); } catch (e) {}
+        return result;
+    };
+
+    const previousDisplayMessage = window.displayMessage;
+    if (typeof previousDisplayMessage === 'function') {
+        window.displayMessage = function(text, sender) {
+            const result = previousDisplayMessage.apply(this, arguments);
+            if (sender !== 'user') {
+                const question = window.__medplusLastUserQuestion || '';
+                setTimeout(function() {
+                    const bubbles = document.querySelectorAll('#chat-messages .ai-message .text-wrapper');
+                    const wrapper = bubbles.length ? bubbles[bubbles.length - 1] : null;
+                    try { renderSameActiveOptionsInBubble_(wrapper, question); } catch (e) {}
+                }, 240);
+            }
+            return result;
+        };
+    }
+})();
+</script>
+
 </body>
 </html>
