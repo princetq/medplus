@@ -9280,19 +9280,7 @@ body.medplus-aux-open .new-badge::after{
                 });
                 if (hit) matches.push(d);
             });
-            const strictMatches = dedupeDrugs_(matches);
-            if (strictMatches.length) return strictMatches;
-
-            // Tên thuốc phối hợp như "Vitamin B1 - B6 - B12" có thể trông giống hoạt chất
-            // nên không vượt qua bộ lọc biệt dược cũ. Khi người dùng gõ trọn tên phối hợp,
-            // vẫn phải được phép đi thẳng vào HDSD của đúng thuốc đó.
-            try {
-                const compositeMatches = typeof medplusFindExactCompositeBrandHDSDMatches_ === 'function'
-                    ? medplusFindExactCompositeBrandHDSDMatches_(question, drugs || [])
-                    : [];
-                if (compositeMatches && compositeMatches.length) return compositeMatches;
-            } catch (e) {}
-            return strictMatches;
+            return dedupeDrugs_(matches);
         }
 
         function shouldUseHDSDExcerptForExactBrand_(question, drugs) {
@@ -12812,62 +12800,6 @@ body.medplus-aux-open .new-badge::after{
             return rule;
         }
 
-
-        /* =====================================================================
-           HDSD FAST LANE — TÊN THUỐC PHỐI HỢP CÓ NHIỀU THÀNH PHẦN
-           - Chỉ áp dụng khi người dùng gõ TRỌN tên một chế phẩm phối hợp cụ thể.
-           - Không gọi AI phân loại danh mục trước, vì HDSD và thuốc đã xác định rõ.
-           - Ví dụ: "liều dùng vitamin b1 - b6 - b12".
-           ===================================================================== */
-        function medplusFastLaneQuestionKey_(value) {
-            return normalizeDrugMatchText_(value || '').replace(/\s+/g, ' ').trim();
-        }
-
-        function medplusIsSpecificCompositeBrand_(drug) {
-            if (!drug || !drug.brand) return false;
-            const brand = normalizeDrugMatchText_(drug.brand || '');
-            const active = normalizeDrugMatchText_(drug.active || '');
-            const rawActive = String(drug.active || '');
-            const alphaNumberTokens = Array.from(new Set((brand.match(/\b[a-z]+\d{1,3}\b/g) || [])));
-            const hasMultipleNumberedComponents = alphaNumberTokens.length >= 2;
-            const hasCombinationActive = /\+|;|\//.test(rawActive) && active.split(/\s+/).filter(Boolean).length >= 2;
-            const hasExplicitStrength = /\b\d+(?:mg|ml|mcg|g|ui|iu|%)\b/.test(brand);
-            const genericOnly = (typeof isGenericDrugSubject_ === 'function') ? isGenericDrugSubject_(brand) : false;
-
-            // Cho phép các chế phẩm phối hợp như Vitamin B1-B6-B12,
-            // hoặc tên thuốc có hàm lượng/dạng định danh rõ. Không tự biến Vitamin B1 đơn chất
-            // thành câu hỏi HDSD khi người dùng thực chất hỏi hoạt chất Thiamin.
-            return hasMultipleNumberedComponents || hasCombinationActive || hasExplicitStrength || !genericOnly;
-        }
-
-        function medplusFindExactCompositeBrandHDSDMatches_(userMessage, dataList) {
-            if (!isHDSDContentQuestion_(userMessage)) return [];
-            const allDrugs = getRagDrugIndex_(getCurrentDrugSource_(dataList) || []);
-            if (!allDrugs.length) return [];
-
-            const q = medplusFastLaneQuestionKey_(userMessage);
-            const subject = medplusFastLaneQuestionKey_(getDrugSubjectForMatching_(userMessage));
-            const compactQuestion = compactDrugMatchText_(q);
-            const compactSubject = compactDrugMatchText_(subject);
-            if (!q && !subject) return [];
-
-            const matches = allDrugs.filter(function(drug) {
-                if (!medplusIsSpecificCompositeBrand_(drug)) return false;
-                const brand = medplusFastLaneQuestionKey_(drug.brand || '');
-                const compactBrand = compactDrugMatchText_(brand);
-                if (!brand || !compactBrand) return false;
-
-                return subject === brand
-                    || q === brand
-                    || compactSubject === compactBrand
-                    || compactQuestion === compactBrand
-                    || hasNormalizedPhrase_(q, brand)
-                    || hasNormalizedPhrase_(subject, brand);
-            });
-
-            return dedupeDrugs_(matches).slice(0, 3);
-        }
-
         async function sendMessage(isRetry, keyIdx, modelIdx) {
             if (isRetry === undefined) isRetry = false;
             if (keyIdx === undefined) keyIdx = 0;
@@ -12911,32 +12843,35 @@ body.medplus-aux-open .new-badge::after{
                 
                 const dataForRag = getCurrentDrugSource_(rawData);
 
-                // FAST LANE: Khi câu hỏi đã gõ trọn tên một thuốc phối hợp cụ thể có HDSD,
-                // không được đi qua AI phân loại/quét danh mục. Nếu API tạm lỗi, câu hỏi này
-                // vẫn phải trả được từ JSON HDSD nội bộ của đúng thuốc.
-                const fastLaneHDSDDrugs = medplusFindExactCompositeBrandHDSDMatches_(userMessage, dataForRag);
-                if (fastLaneHDSDDrugs.length > 0) {
-                    const fastLaneKey = medplusFastLaneQuestionKey_(userMessage);
-                    window.__medplusLocalHDSDFastLaneQuestions = window.__medplusLocalHDSDFastLaneQuestions || new Set();
-                    if (fastLaneKey) window.__medplusLocalHDSDFastLaneQuestions.add(fastLaneKey);
+                /* EXACT BRAND HDSD FAST LANE: chạy trước phân loại/call AI.
+                   Khớp canonical bỏ dấu gạch và khoảng trắng để không suy sai
+                   "Vitamin B1 - B6 - B12" thành Vitamin B1 đơn chất. */
+                const exactCompositeBrandHDSDDrugs = typeof medplusFindExactSpecificCompositeBrandHDSDMatches_ === 'function'
+                    ? medplusFindExactSpecificCompositeBrandHDSDMatches_(userMessage, dataForRag)
+                    : [];
+                if (exactCompositeBrandHDSDDrugs.length > 0) {
+                    window.__medplusExactBrandHDSDQuestionKeys = window.__medplusExactBrandHDSDQuestionKeys || new Set();
+                    const exactQuestionKey = typeof medplusCanonicalHDSDBrandKey_ === 'function'
+                        ? medplusCanonicalHDSDBrandKey_(userMessage)
+                        : String(userMessage || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                    if (exactQuestionKey) window.__medplusExactBrandHDSDQuestionKeys.add(exactQuestionKey);
 
                     document.getElementById('typing-text').innerText = "MedPlus đang tra cứu tờ HDSD...";
-                    const fastLaneReply = await composeHDSDGroundedAnswerWithAI_(userMessage, fastLaneHDSDDrugs);
-                    if (fastLaneReply) {
+                    const exactHDSDReply = await composeHDSDGroundedAnswerWithAI_(userMessage, exactCompositeBrandHDSDDrugs);
+                    if (exactHDSDReply) {
                         clearInterval(timerInterval);
                         typingIndicator.style.display = 'none';
-                        displayMessage(fastLaneReply, 'ai');
+                        displayMessage(exactHDSDReply, 'ai');
                         sendButton.disabled = false;
                         return;
                     }
 
-                    // JSON HDSD có thể đang đồng bộ chậm; vẫn trả đúng thuốc và nút HDSD,
-                    // tuyệt đối không chuyển sang lỗi toàn bộ API key.
-                    const fastLaneFallback = 'Theo nội dung tờ HDSD ' + cleanDrugFieldForChat_(fastLaneHDSDDrugs[0].brand || 'thuốc này')
+                    const exactDrug = exactCompositeBrandHDSDDrugs[0];
+                    const exactFallback = 'Theo nội dung tờ HDSD ' + cleanDrugFieldForChat_(exactDrug.brand || 'thuốc này')
                         + ':\n\nHãy bấm XEM HDSD để mở tờ hướng dẫn sử dụng của đúng thuốc.';
                     clearInterval(timerInterval);
                     typingIndicator.style.display = 'none';
-                    displayMessage(appendDeterministicDrugListToAnswer_(fastLaneFallback, fastLaneHDSDDrugs), 'ai');
+                    displayMessage(appendDeterministicDrugListToAnswer_(exactFallback, exactCompositeBrandHDSDDrugs), 'ai');
                     sendButton.disabled = false;
                     return;
                 }
@@ -16829,55 +16764,85 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
 </script>
 
 
-
-<script id="medplus-composite-brand-hdsd-api-resilience-patch">
-/* =====================================================================
-   Chống lỗi API với HDSD thuốc phối hợp có tên khớp chính xác.
-   Chỉ với các câu đã được FAST LANE đánh dấu, dùng bộ chọn outline cục bộ
-   thay cho AI. Các câu hỏi khác vẫn giữ cơ chế AI hiện có.
-   ===================================================================== */
+<script id="medplus-exact-composite-brand-authoritative-patch">
+/* Khớp tuyệt đối tên chế phẩm phối hợp trước mọi nhánh hoạt chất/AI. */
 (function(){
-    function keyOf_(value) {
+    function canonical_(value) {
+        var raw = String(value == null ? '' : value);
         try {
-            return typeof medplusFastLaneQuestionKey_ === 'function'
-                ? medplusFastLaneQuestionKey_(value)
-                : String(value || '').toLowerCase().replace(/\s+/g, ' ').trim();
-        } catch (e) {
-            return String(value || '').toLowerCase().replace(/\s+/g, ' ').trim();
-        }
+            raw = typeof removeAccents === 'function' ? removeAccents(raw) : raw;
+        } catch (e) {}
+        return String(raw).toLowerCase().replace(/[^a-z0-9]+/g, '');
     }
+    window.medplusCanonicalHDSDBrandKey_ = canonical_;
 
-    const previousPicker = window.medplusChooseActualHDSDFocusWithAI_;
-    if (typeof previousPicker === 'function') {
-        window.medplusChooseActualHDSDFocusWithAI_ = async function(question, outline) {
-            const cache = window.__medplusLocalHDSDFastLaneQuestions;
-            const key = keyOf_(question);
-            if (cache && cache.has(key)) {
-                try {
-                    if (typeof medplusChooseActualHDSDFocusLocally_ === 'function') {
-                        const local = medplusChooseActualHDSDFocusLocally_(question, outline);
-                        if (local) return local;
-                    }
-                } catch (e) {}
+    function subjectKey_(question) {
+        var raw = '';
+        try { raw = typeof getDrugSubjectForMatching_ === 'function' ? getDrugSubjectForMatching_(question) : question; }
+        catch (e) { raw = question; }
+        return canonical_(raw);
+    }
+    function isSpecificComposite_(drug) {
+        if (!drug || !drug.brand) return false;
+        var brandRaw = String(drug.brand || '');
+        var norm = '';
+        try { norm = typeof normalizeDrugMatchText_ === 'function' ? normalizeDrugMatchText_(brandRaw) : brandRaw.toLowerCase(); }
+        catch (e) { norm = brandRaw.toLowerCase(); }
+        var tokens = norm.match(/\b[a-z]+\d{1,3}\b/g) || [];
+        var unique = {};
+        tokens.forEach(function(token){ unique[token] = true; });
+        return Object.keys(unique).length >= 2 || /[+;/]/.test(String(drug.active || ''));
+    }
+    function directExactComposite_(question, dataList) {
+        if (typeof isHDSDContentQuestion_ === 'function' && !isHDSDContentQuestion_(question)) return [];
+        var list = [];
+        try { list = typeof getRagDrugIndex_ === 'function' ? getRagDrugIndex_(dataList || []) : (dataList || []); }
+        catch (e) { list = dataList || []; }
+        var questionKey = canonical_(question);
+        var targetKey = subjectKey_(question);
+        var hits = (list || []).map(function(drug) {
+            if (!isSpecificComposite_(drug)) return null;
+            var key = canonical_(drug.brand || '');
+            if (!key || key.length < 7) return null;
+            if (targetKey === key || questionKey === key || (targetKey && targetKey.indexOf(key) >= 0) || (questionKey && questionKey.indexOf(key) >= 0)) {
+                return { drug: drug, len: key.length };
             }
-            return previousPicker.apply(this, arguments);
+            return null;
+        }).filter(Boolean);
+        if (!hits.length) return [];
+        hits.sort(function(a,b){ return b.len - a.len; });
+        var max = hits[0].len;
+        var result = hits.filter(function(hit){ return hit.len === max; }).map(function(hit){ return hit.drug; });
+        return typeof dedupeDrugs_ === 'function' ? dedupeDrugs_(result) : result;
+    }
+    window.medplusFindExactSpecificCompositeBrandHDSDMatches_ = directExactComposite_;
+
+    var previousStrict = window.getStrictBrandMatchesForHDSD_;
+    if (typeof previousStrict === 'function') {
+        window.getStrictBrandMatchesForHDSD_ = function(question, drugs) {
+            var exact = directExactComposite_(question, drugs || []);
+            if (exact.length) return exact;
+            return previousStrict.apply(this, arguments) || [];
         };
     }
 
-    // getStrictBrandMatchesForHDSD_ có thể bỏ qua tên "Vitamin B1 - B6 - B12"
-    // vì tên này trông giống hoạt chất. Chỉ bổ sung trường hợp thuốc phối hợp khớp trọn tên.
-    const previousStrictMatch = window.getStrictBrandMatchesForHDSD_;
-    if (typeof previousStrictMatch === 'function') {
-        window.getStrictBrandMatchesForHDSD_ = function(question, drugs) {
-            const original = previousStrictMatch.apply(this, arguments) || [];
-            if (original.length) return original;
-            try {
-                if (typeof medplusFindExactCompositeBrandHDSDMatches_ !== 'function') return original;
-                const extra = medplusFindExactCompositeBrandHDSDMatches_(question, drugs || []);
-                return extra && extra.length ? extra : original;
-            } catch (e) {
-                return original;
+    /* Chỉ với câu exact-brand đã fast-lane: không gọi API để chọn mục HDSD.
+       Dùng outline thật của chính tờ HDSD, tránh lỗi hết API key. */
+    var previousChooser = window.medplusChooseActualHDSDFocusWithAI_;
+    if (typeof previousChooser === 'function') {
+        window.medplusChooseActualHDSDFocusWithAI_ = async function(question, outline) {
+            var set = window.__medplusExactBrandHDSDQuestionKeys;
+            var key = canonical_(question);
+            if (set && key && set.has(key) && typeof medplusChooseActualHDSDFocusLocally_ === 'function') {
+                try {
+                    var local = medplusChooseActualHDSDFocusLocally_(question, outline);
+                    if (local && local.parentLabel && local.focusLabel) {
+                        local.source = 'exact-composite-brand-local-outline';
+                        return local;
+                    }
+                } catch (e) {}
             }
+            return previousChooser.apply(this, arguments);
         };
     }
 })();
