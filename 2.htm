@@ -16729,281 +16729,155 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
 })();
 </script>
 
-<script id="medplus-dashed-brand-numeric-structure-patch">
-/* ============================================================
-   PATCH CHÍNH XÁC: HDSD thuốc có dấu gạch nối
-   - Không đi qua AI phân loại/quét danh mục/hậu kiểm.
-   - Chỉ kích hoạt khi người dùng gõ TRỌN tên một biệt dược có dấu gạch nối.
-   - Đọc trực tiếp JSON HDSD, hiểu quan hệ: mục 6 -> 6.1 / 6.2.
-   - Trả đủ: hướng dẫn, trích dẫn mục cha, và thẻ thuốc có XEM HDSD.
-   ============================================================ */
-(function () {
+<script id="medplus-dashed-brand-standard-hdsd-render-fixed">
+/* =====================================================================
+   DẤU GẠCH NỐI — CHỈ KHÓA ĐÚNG BIỆT DƯỢC, SAU ĐÓ DÙNG NGUYÊN LUỒNG HDSD
+   TIÊU CHUẨN CỦA CÁC THUỐC KHÁC.
+   Không tự dựng bubble/trích đoạn riêng, không xóa reliable excerpt, không
+   thay renderer. Vì vậy bố cục giữ giống các thuốc bình thường:
+   header → guide → trích dẫn HDSD chuẩn → thẻ thuốc + XEM HDSD.
+   ===================================================================== */
+(function(){
     'use strict';
 
-    function medplusDashCanonical_(value) {
-        var s = String(value || '');
+    function normalizeDashExact_(value) {
+        var raw = String(value == null ? '' : value);
         try {
-            if (typeof removeAccents === 'function') s = removeAccents(s);
-            else s = s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D');
+            raw = (typeof removeAccents === 'function') ? removeAccents(raw) : raw.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         } catch (e) {}
-        return String(s)
+        return raw
             .toLowerCase()
-            .replace(/[‐‑‒–—−]/g, '-')
-            .replace(/[^a-z0-9]+/g, '')
-            .trim();
+            .replace(/[‐‑‒–—−﹘﹣]/g, '-')
+            .replace(/[^a-z0-9]+/g, '');
     }
 
-    function medplusNormalizePlain_(value) {
-        var s = String(value || '');
+    function containsDash_(value) {
+        return /[-‐‑‒–—−﹘﹣]/.test(String(value || ''));
+    }
+
+    function removeHDSDIntent_(question) {
         try {
-            if (typeof removeAccents === 'function') s = removeAccents(s);
+            if (typeof stripHDSDIntentTermsForDrugSubject_ === 'function') {
+                return String(stripHDSDIntentTermsForDrugSubject_(question || '') || '');
+            }
         } catch (e) {}
-        return s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
-    }
-
-    function medplusIsDashedBrand_(drug) {
-        var brand = String((drug && (drug.brand || drug.name)) || '');
-        return /[-‐‑‒–—−]/.test(brand);
-    }
-
-    function medplusFindExactDashedBrand_(question, drugs) {
-        var qCanon = medplusDashCanonical_(question);
-        if (!qCanon) return null;
-
-        var candidates = (drugs || []).map(function (drug) {
-            var brand = String((drug && (drug.brand || drug.name)) || '').trim();
-            var canon = medplusDashCanonical_(brand);
-            if (!brand || !canon || canon.length < 8 || !medplusIsDashedBrand_(drug)) return null;
-            return { drug: drug, brand: brand, canon: canon };
-        }).filter(Boolean).filter(function (item) {
-            return qCanon.indexOf(item.canon) !== -1;
-        });
-
-        candidates.sort(function (a, b) { return b.canon.length - a.canon.length; });
-        return candidates.length ? candidates[0].drug : null;
-    }
-
-    function medplusIsHDSDTopicQuestion_(question) {
-        if (typeof isHDSDContentQuestion_ === 'function' && isHDSDContentQuestion_(question)) return true;
-        var q = medplusNormalizePlain_(question);
-        return /\b(lieu dung|cach dung|cach su dung|duong dung|chi dinh|cong dung|chong chi dinh|than trong|canh bao|tuong tac|tuong ky|tac dung phu|tac dung khong mong muon|qua lieu|bao quan|han dung|quy cach|thanh phan|duoc dong hoc|duoc luc hoc|hap thu|phan bo|chuyen hoa|thai tru)\b/.test(q);
-    }
-
-    function medplusBlockText_(block) {
-        try {
-            if (typeof hdsdBlockOwnPlainText_ === 'function') return String(hdsdBlockOwnPlainText_(block) || '').replace(/\s+/g, ' ').trim();
-        } catch (e) {}
-        return '';
-    }
-
-    function medplusBlockContent_(block) {
-        try {
-            if (typeof hdsdBlockContentWithImageTokens_ === 'function') return String(hdsdBlockContentWithImageTokens_(block) || '').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
-        } catch (e) {}
-        return medplusBlockText_(block);
-    }
-
-    function medplusChildren_(block) {
-        try {
-            if (typeof hdsdBlockChildren_ === 'function') return hdsdBlockChildren_(block) || [];
-        } catch (e) {}
-        return (block && (block._children || block.children)) || [];
-    }
-
-    function medplusCleanHeading_(value) {
-        return String(value || '')
-            .replace(/^\s*[•*\-–—]+\s*/, '')
-            .replace(/[\s:：]+$/g, '')
+        return String(question || '')
+            .replace(/\b(liều dùng|lieu dung|cách dùng|cach dung|cách sử dụng|cach su dung|hướng dẫn sử dụng|huong dan su dung|hdsd|hạn dùng|han dung|bảo quản|bao quan|chỉ định|chi dinh|chống chỉ định|chong chi dinh|tác dụng phụ|tac dung phu|tương tác|tuong tac|tương kỵ|tuong ky)\b/gi, ' ')
             .replace(/\s+/g, ' ')
             .trim();
     }
 
-    function medplusParentNumber_(title) {
-        var m = String(title || '').match(/^\s*(\d+)\.\s*/);
-        return m ? m[1] : '';
+    function getCatalog_() {
+        try {
+            var source = (typeof getCurrentDrugSource_ === 'function') ? getCurrentDrugSource_(rawData) : rawData;
+            return (typeof getRagDrugIndex_ === 'function') ? getRagDrugIndex_(source || []) : (source || []);
+        } catch (e) {
+            return [];
+        }
     }
 
-    function medplusSubheading_(text, parentNo) {
-        var raw = String(text || '').replace(/\s+/g, ' ').trim();
-        var m = raw.match(/^\s*(\d+)\.(\d+)(?:\.(\d+))?\.?\s*(.+?)\s*[:：]?\s*$/);
-        if (!m) return null;
-        if (parentNo && String(m[1]) !== String(parentNo)) return null;
-        return {
-            number: m[1] + '.' + m[2] + (m[3] ? '.' + m[3] : ''),
-            title: medplusCleanHeading_(m[1] + '.' + m[2] + (m[3] ? '.' + m[3] : '') + '. ' + m[4]),
-            label: medplusCleanHeading_(m[1] + '.' + m[2] + (m[3] ? '.' + m[3] : '') + '. ' + m[4])
+    function findExactDashedBrand_(question) {
+        if (!question || (typeof isHDSDContentQuestion_ === 'function' && !isHDSDContentQuestion_(question))) return null;
+        var subjectKey = normalizeDashExact_(removeHDSDIntent_(question));
+        var fullKey = normalizeDashExact_(question);
+        if (!subjectKey && !fullKey) return null;
+
+        var hits = getCatalog_().filter(function(drug) {
+            if (!drug || !drug.brand || !drug.link || !containsDash_(drug.brand)) return false;
+            var brandKey = normalizeDashExact_(drug.brand);
+            if (!brandKey || brandKey.length < 6) return false;
+            return subjectKey === brandKey || fullKey.indexOf(brandKey) >= 0;
+        });
+
+        var seen = new Set();
+        hits = hits.filter(function(drug) {
+            var key = String(drug.link || '') + '|' + String(drug.brand || '');
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+        return hits.length === 1 ? hits[0] : null;
+    }
+
+    /* Đưa alias vào đúng cổng HDSD chuẩn. Ngoài trường hợp khớp tuyệt đối
+       một thuốc có dấu gạch nối, tất cả hành vi cũ được giữ nguyên. */
+    var originalStrictBrandForHDSD_ = window.getStrictBrandMatchesForHDSD_;
+    if (typeof originalStrictBrandForHDSD_ === 'function') {
+        window.getStrictBrandMatchesForHDSD_ = function(question, drugs) {
+            var dashed = findExactDashedBrand_(question);
+            if (dashed) {
+                var available = (drugs || []).filter(function(d) {
+                    return d && String(d.link || '') === String(dashed.link || '');
+                });
+                if (available.length === 1) return available;
+            }
+            return originalStrictBrandForHDSD_.apply(this, arguments);
         };
     }
 
-    function medplusExtractNumericParents_(jsonData) {
-        var blocks = (jsonData && Array.isArray(jsonData.blocks)) ? jsonData.blocks : [];
-        return blocks.map(function (block, topIndex) {
-            var type = String((block && block.type) || '');
-            var title = medplusCleanHeading_(medplusBlockText_(block));
-            var children = medplusChildren_(block);
-            var parentNo = medplusParentNumber_(title);
-            if (!title || !children.length || !parentNo || !/^toggle$|^heading_/.test(type)) return null;
-
-            var parent = { title: title, parentNo: parentNo, topIndex: topIndex, children: [], preface: [] };
-            var currentChild = null;
-            children.forEach(function (child) {
-                var own = medplusBlockText_(child);
-                var sub = medplusSubheading_(own, parentNo);
-                if (sub) {
-                    currentChild = { label: sub.label, title: sub.title, content: [] };
-                    parent.children.push(currentChild);
-                    return;
-                }
-                var content = medplusBlockContent_(child);
-                if (!content) return;
-                if (currentChild) currentChild.content.push(content);
-                else parent.preface.push(content);
-            });
-            return parent;
-        }).filter(Boolean);
+    function buildFallback_(drug) {
+        var d = Object.assign({}, drug || {});
+        var answer = '**Theo nội dung tờ HDSD ' + String(d.brand || '') + ':**\n\n'
+            + 'Chưa tải được phần trích dẫn tương ứng. Bạn hãy bấm **XEM HDSD** để xem tờ hướng dẫn đầy đủ.';
+        if (typeof appendDeterministicDrugListToAnswer_ === 'function') {
+            return appendDeterministicDrugListToAnswer_(answer, [d]);
+        }
+        return answer;
     }
 
-    function medplusTopicTokens_(question) {
-        var q = medplusNormalizePlain_(question);
-        var pairs = [
-            { key: 'lieu dung', terms: ['lieu dung'] },
-            { key: 'cach dung', terms: ['cach dung', 'cach su dung', 'duong dung'] },
-            { key: 'han dung', terms: ['han dung', 'han su dung'] },
-            { key: 'bao quan', terms: ['bao quan', 'dieu kien bao quan', 'giu thuoc'] },
-            { key: 'quy cach dong goi', terms: ['quy cach dong goi', 'quy cach', 'dong goi'] },
-            { key: 'chi dinh', terms: ['chi dinh', 'cong dung', 'dung de lam gi', 'dieu tri gi'] },
-            { key: 'chong chi dinh', terms: ['chong chi dinh'] },
-            { key: 'tac dung khong mong muon', terms: ['tac dung khong mong muon', 'tac dung phu', 'adr'] },
-            { key: 'tuong ky', terms: ['tuong ky'] },
-            { key: 'tuong tac', terms: ['tuong tac', 'dung chung'] },
-            { key: 'hap thu', terms: ['hap thu'] },
-            { key: 'phan bo', terms: ['phan bo'] },
-            { key: 'chuyen hoa', terms: ['chuyen hoa'] },
-            { key: 'thai tru', terms: ['thai tru'] }
-        ];
-        var hits = [];
-        pairs.forEach(function (item) {
-            if (item.terms.some(function (term) { return q.indexOf(term) !== -1; })) hits.push(item.key);
-        });
-        return hits;
-    }
-
-    function medplusPickNumericFocus_(question, parents) {
-        var targets = medplusTopicTokens_(question);
-        if (!targets.length) return null;
-        var best = null;
-        var bestScore = -1;
-
-        (parents || []).forEach(function (parent) {
-            var parentNorm = medplusNormalizePlain_(parent.title);
-            (parent.children || []).forEach(function (child, childIndex) {
-                var childNorm = medplusNormalizePlain_(child.label);
-                var score = 0;
-                targets.forEach(function (topic) {
-                    if (childNorm.indexOf(topic) !== -1) score += 1200;
-                    if (parentNorm.indexOf(topic) !== -1) score += 160;
-                });
-                // Chỉ chọn heading con thật sự; không chọn dòng nội dung hay title mục cha.
-                if (score > bestScore) {
-                    bestScore = score;
-                    best = { parent: parent, child: child, childIndex: childIndex };
-                }
-            });
-        });
-        return bestScore >= 1000 ? best : null;
-    }
-
-    function medplusBuildParentExcerpt_(parent) {
-        if (!parent) return '';
-        var lines = ['**' + parent.title + '**'];
-        if (parent.preface && parent.preface.length) lines.push(parent.preface.join('\n'));
-        (parent.children || []).forEach(function (child) {
-            lines.push('**' + child.label + '**');
-            if (child.content && child.content.length) lines.push(child.content.join('\n'));
-        });
-        return lines.filter(Boolean).join('\n\n').replace(/\n{3,}/g, '\n\n').trim();
-    }
-
-    async function medplusBuildExactDashedHDSDAnswer_(question) {
-        var source = [];
-        try {
-            source = typeof getCurrentDrugSource_ === 'function' ? getCurrentDrugSource_(rawData) : (rawData || []);
-        } catch (e) { source = rawData || []; }
-        var drug = medplusFindExactDashedBrand_(question, source);
-        if (!drug || !medplusIsHDSDTopicQuestion_(question) || !drug.link) return null;
-
-        var jsonData = await loadHDSDJsonForDrug_(drug);
-        if (!jsonData) return null;
-
-        var parents = medplusExtractNumericParents_(jsonData);
-        var selection = medplusPickNumericFocus_(question, parents);
-        if (!selection) return null;
-
-        var parent = selection.parent;
-        var focus = selection.child;
-        var brand = String(drug.brand || drug.name || 'Thuốc').trim();
-        var excerpt = medplusBuildParentExcerpt_(parent);
-        if (!excerpt) return null;
-
-        var markedDrug = Object.assign({}, drug, {
-            _hdsdChatFocus: focus.label,
-            _hdsdChatFocusParent: parent.title
-        });
-        var drugList = buildDeterministicDrugListForChat_([markedDrug]);
-
-        return '**Theo nội dung tờ HDSD ' + brand + ':**\n\n'
-            + 'Hãy xem chi tiết ở phần **' + focus.label + '** trong mục **' + parent.title + '**.\n\n'
-            + excerpt + '\n\n'
-            + drugList;
-    }
-
-    var medplusOriginalSendMessage_ = window.sendMessage;
-    if (typeof medplusOriginalSendMessage_ !== 'function') return;
-
-    window.sendMessage = async function (isRetry, keyIdx, modelIdx) {
+    async function renderExactDashedThroughStandardFlow_(question, drug) {
         var input = document.getElementById('chat-input');
-        var userMessage = '';
-        if (isRetry) {
-            var previous = document.querySelectorAll('.user-message .text-wrapper');
-            if (previous.length) userMessage = String(previous[previous.length - 1].innerText || '').trim();
-        } else {
-            userMessage = String((input && input.value) || '').trim();
-        }
-
-        // Không chạm vào các câu hỏi khác và tuyệt đối không hiển thị trùng tin nhắn người dùng.
-        if (!userMessage) return medplusOriginalSendMessage_.apply(this, arguments);
-
-        var directAnswer = null;
-        try {
-            directAnswer = await medplusBuildExactDashedHDSDAnswer_(userMessage);
-        } catch (e) {
-            console.warn('Dashed-brand HDSD local path failed; using original flow.', e);
-            directAnswer = null;
-        }
-        if (!directAnswer) return medplusOriginalSendMessage_.apply(this, arguments);
-
-        var sendButton = document.getElementById('send-button');
-        var typingIndicator = document.getElementById('typing-indicator');
-        var chatMessages = document.getElementById('chat-messages');
-
-        if (!isRetry) {
-            displayMessage(userMessage, 'user');
-            if (input) input.value = '';
-        }
-        window.__medplusLastUserQuestion = userMessage;
-        if (sendButton) sendButton.disabled = true;
-        if (typingIndicator) typingIndicator.style.display = 'block';
+        var button = document.getElementById('send-button');
+        var typing = document.getElementById('typing-indicator');
         var typingText = document.getElementById('typing-text');
-        if (typingText) typingText.innerText = 'MedPlus AI đang trích nội dung tờ HDSD...';
-        if (chatMessages) setTimeout(function () { chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' }); }, 20);
+        var chat = document.getElementById('chat-messages');
 
-        clearInterval(timerInterval);
-        if (typingIndicator) typingIndicator.style.display = 'none';
-        displayMessage(directAnswer, 'ai');
-        if (sendButton) sendButton.disabled = false;
+        window.__medplusLastUserQuestion = question;
+        if (typeof displayMessage === 'function') displayMessage(question, 'user');
+        if (input) input.value = '';
+        if (button) button.disabled = true;
+        if (typing) typing.style.display = 'block';
+        if (typingText) typingText.innerText = 'MedPlus AI đang xác định đúng mục trong tờ HDSD...';
+        if (typeof clearInterval === 'function' && typeof timerInterval !== 'undefined') clearInterval(timerInterval);
+        if (chat) setTimeout(function() { chat.scrollTo({ top: chat.scrollHeight, behavior: 'smooth' }); }, 80);
+
+        try {
+            /* Đây là cùng hàm mà các thuốc khớp tên bình thường dùng để tạo:
+               - header HDSD;
+               - guide có parent/focus;
+               - focus cho nút HDSD;
+               - danh sách thuốc chuẩn.
+               Các patch reliable excerpt sẵn có sẽ tự gắn khối trích dẫn vào bubble. */
+            var reply = '';
+            if (typeof composeHDSDGroundedAnswerWithAI_ === 'function') {
+                reply = await composeHDSDGroundedAnswerWithAI_(question, [drug]);
+            }
+            if (!reply) reply = buildFallback_(drug);
+            if (typing) typing.style.display = 'none';
+            if (typeof displayMessage === 'function') displayMessage(reply, 'ai');
+        } catch (e) {
+            if (typing) typing.style.display = 'none';
+            if (typeof displayMessage === 'function') displayMessage(buildFallback_(drug), 'ai');
+        } finally {
+            if (button) button.disabled = false;
+            if (typeof clearInterval === 'function' && typeof timerInterval !== 'undefined') clearInterval(timerInterval);
+        }
+    }
+
+    var previousSendMessage_ = window.sendMessage;
+    if (typeof previousSendMessage_ !== 'function') return;
+
+    window.sendMessage = async function(isRetry) {
+        /* Retry phải tiếp tục dùng luồng cũ để tránh nhân đôi bubble người dùng. */
+        if (isRetry) return previousSendMessage_.apply(this, arguments);
+        var input = document.getElementById('chat-input');
+        var question = input ? String(input.value || '').trim() : '';
+        var dashed = findExactDashedBrand_(question);
+        if (dashed) return renderExactDashedThroughStandardFlow_(question, dashed);
+        return previousSendMessage_.apply(this, arguments);
     };
 })();
-
 </script>
+
 </body>
 </html>
