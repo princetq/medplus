@@ -16643,5 +16643,186 @@ body.dark-mode .medplus-same-active-options{
 })();
 </script>
 
+
+
+<script id="medplus-hdsd-active-ingredient-general-only-guard">
+/* =====================================================================
+   MEDPLUS — PHÂN BIỆT HOẠT CHẤT VÀ BIỆT DƯỢC KHI QUYẾT ĐỊNH TRÍCH HDSD
+
+   Quy tắc:
+   - Câu hỏi nhắm vào hoạt chất/generic: chỉ trả lời kiến thức tổng hợp + danh mục.
+   - Chỉ trích HDSD khi chủ thể câu hỏi có dấu hiệu là biệt dược/tên thuốc cụ thể,
+     không trùng với một hoạt chất có trong danh mục.
+   - Đặc biệt xử lý trường hợp tên biệt dược trùng với tên hoạt chất, như “Vitamin B1”.
+     Khi người dùng hỏi “Vitamin B1 có tác dụng gì?”, đây được hiểu là hoạt chất Thiamin,
+     không tự mở HDSD của biệt dược cùng tên.
+   ===================================================================== */
+(function(){
+    if (window.__medplusActiveIngredientGeneralOnlyGuardApplied__) return;
+    window.__medplusActiveIngredientGeneralOnlyGuardApplied__ = true;
+
+    function asciiSubscripts_(value) {
+        const map = { '₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9' };
+        return String(value == null ? '' : value).replace(/[₀₁₂₃₄₅₆₇₈₉]/g, function(ch) { return map[ch] || ch; });
+    }
+
+    function normalizeScopeText_(value) {
+        let s = asciiSubscripts_(value);
+        try {
+            s = typeof normalizeDrugMatchText_ === 'function'
+                ? normalizeDrugMatchText_(s)
+                : String(s || '').toLowerCase();
+        } catch (e) {
+            s = String(s || '').toLowerCase();
+        }
+        return String(s || '').toLowerCase().replace(/\s+/g, ' ').trim();
+    }
+
+    /* Chuẩn hóa các synonym thường gặp trước khi đối chiếu hoạt chất.
+       Các hoạt chất khác vẫn khớp bằng token tên thật trong cột hoạt chất. */
+    function canonicalizeActiveScope_(value) {
+        let s = normalizeScopeText_(value)
+            .replace(/\bvitamin\s+b\s*1\b/g, ' thiamin ')
+            .replace(/\bvit\s+b\s*1\b/g, ' thiamin ')
+            .replace(/\bthiamine\b/g, ' thiamin ')
+            .replace(/\bvitamin\s+b\s*6\b/g, ' pyridoxin ')
+            .replace(/\bvit\s+b\s*6\b/g, ' pyridoxin ')
+            .replace(/\bpyridoxine\b/g, ' pyridoxin ')
+            .replace(/\bvitamin\s+b\s*12\b/g, ' cyanocobalamin ')
+            .replace(/\bvit\s+b\s*12\b/g, ' cyanocobalamin ')
+            .replace(/\bcyanocobalamine\b/g, ' cyanocobalamin ')
+            .replace(/\bvitamin\s+k\s*1\b/g, ' phytomenadion ')
+            .replace(/\bvit\s+k\s*1\b/g, ' phytomenadion ')
+            .replace(/\bphytonadione\b/g, ' phytomenadion ')
+            .replace(/\bphytomenadione\b/g, ' phytomenadion ')
+            .replace(/\bphylloquinone\b/g, ' phytomenadion ')
+            .replace(/\bvitamin\s+d\s*3\b/g, ' cholecalciferol ')
+            .replace(/\bcolecalciferol\b/g, ' cholecalciferol ')
+            .replace(/\bvitamin\s+d\s*2\b/g, ' ergocalciferol ')
+            .replace(/\bacetaminophen\b/g, ' paracetamol ')
+            .replace(/[+/,;|()\[\]{}]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+        return s;
+    }
+
+    function getSubjectForActiveScope_(question) {
+        let subject = '';
+        try {
+            subject = typeof getDrugSubjectForMatching_ === 'function'
+                ? getDrugSubjectForMatching_(question || '')
+                : '';
+        } catch (e) {}
+        if (!subject) {
+            try {
+                subject = typeof stripHDSDIntentTermsForDrugSubject_ === 'function'
+                    ? stripHDSDIntentTermsForDrugSubject_(question || '')
+                    : String(question || '');
+            } catch (e) {
+                subject = String(question || '');
+            }
+        }
+        subject = canonicalizeActiveScope_(subject)
+            .replace(/\b(?:cua|ve|cho|toi|hoi|xin|giup|can|muon|xem|biet|la|co|khong|nao|vay|nhe|a|ha|thuoc|tai|o|benh|vien|bvdk|tuyen|quang)\b/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+        return subject;
+    }
+
+    function activeCoreTokens_(value) {
+        const ignore = new Set([
+            'thuoc','dung','dich','tieu','truyen','tiem','vien','nang','bot','ong','lo','hop','goi','chai',
+            'mg','mcg','g','ml','ui','iu','film','bao','phim','solution','injection','tablet',
+            'hydroclorid','hydrochloride','hydrochlorid','hcl','monohydrat','monohydrate','hemihydrat',
+            'dihydrat','trihydrat','hydrate','muoi','salt'
+        ]);
+        return Array.from(new Set(canonicalizeActiveScope_(value).split(/\s+/).filter(function(token) {
+            if (!token || ignore.has(token)) return false;
+            if (/^\d+(?:\.\d+)?$/.test(token)) return false;
+            return token.length >= 3 || /^[a-z]\d{1,2}$/.test(token);
+        })));
+    }
+
+    function currentCatalog_(fallback) {
+        if (Array.isArray(fallback) && fallback.length) return fallback;
+        try {
+            if (typeof rawData !== 'undefined' && Array.isArray(rawData) && rawData.length) return rawData;
+        } catch (e) {}
+        try {
+            if (typeof getRagDrugIndex_ === 'function') {
+                const all = typeof rawData !== 'undefined' && Array.isArray(rawData) ? rawData : [];
+                const index = getRagDrugIndex_(all);
+                if (Array.isArray(index) && index.length) return index;
+            }
+        } catch (e) {}
+        return [];
+    }
+
+    /* Trả true khi chủ thể người dùng hỏi khớp theo hoạt chất thật, không chỉ theo tên biệt dược.
+       Ví dụ:
+       - “Vitamin B1” -> thiamin -> Thiamin hydroclorid
+       - “imipenem” -> Imipenem/Cilastatin
+       - “entecavir” -> Entecavir
+       - “Entecavir STELLA” không khớp, vì “stella” không phải token hoạt chất. */
+    function questionTargetsActiveIngredient_(question, candidates) {
+        const subject = getSubjectForActiveScope_(question);
+        const targetTokens = activeCoreTokens_(subject);
+        if (!targetTokens.length) return false;
+
+        const catalog = currentCatalog_(candidates);
+        return catalog.some(function(drug) {
+            if (!drug || !drug.active) return false;
+            const activeTokens = activeCoreTokens_(drug.active);
+            if (!activeTokens.length) return false;
+            return targetTokens.every(function(token) { return activeTokens.indexOf(token) !== -1; });
+        });
+    }
+
+    window.medplusQuestionTargetsActiveIngredient_ = questionTargetsActiveIngredient_;
+
+    /* Chặn từ gốc để mọi nhánh dùng cùng quy tắc, gồm composer, excerpt DOM,
+       và phần “thuốc cùng hoạt chất”. */
+    const previousStrictBrandMatches = window.getStrictBrandMatchesForHDSD_;
+    if (typeof previousStrictBrandMatches === 'function') {
+        window.getStrictBrandMatchesForHDSD_ = function(question, drugs) {
+            if (questionTargetsActiveIngredient_(question, drugs)) return [];
+            return previousStrictBrandMatches.apply(this, arguments);
+        };
+    }
+
+    const previousShouldUseHDSD = window.shouldUseHDSDExcerptForExactBrand_;
+    if (typeof previousShouldUseHDSD === 'function') {
+        window.shouldUseHDSDExcerptForExactBrand_ = function(question, drugs) {
+            if (questionTargetsActiveIngredient_(question, drugs)) return false;
+            return previousShouldUseHDSD.apply(this, arguments);
+        };
+    }
+
+    const previousHDSDComposer = window.composeHDSDGroundedAnswerWithAI_;
+    if (typeof previousHDSDComposer === 'function') {
+        window.composeHDSDGroundedAnswerWithAI_ = async function(question, drugs) {
+            if (questionTargetsActiveIngredient_(question, drugs)) return '';
+            return previousHDSDComposer.apply(this, arguments);
+        };
+    }
+
+    const previousReliableExcerpt = window.medplusEnsureReliableHDSDExcerpt_;
+    if (typeof previousReliableExcerpt === 'function') {
+        window.medplusEnsureReliableHDSDExcerpt_ = async function(wrapper, question) {
+            if (questionTargetsActiveIngredient_(question, currentCatalog_())) return;
+            return previousReliableExcerpt.apply(this, arguments);
+        };
+    }
+
+    const previousGuideResolver = window.medplusResolveRenderedHDSDGuides_;
+    if (typeof previousGuideResolver === 'function') {
+        window.medplusResolveRenderedHDSDGuides_ = async function(wrapper, question) {
+            if (questionTargetsActiveIngredient_(question, currentCatalog_())) return;
+            return previousGuideResolver.apply(this, arguments);
+        };
+    }
+})();
+</script>
+
 </body>
 </html>
