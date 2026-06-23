@@ -11766,6 +11766,7 @@ body.medplus-aux-open .new-badge::after{
             openNotionPopup(item.link || url, item.image || '', item.lastUpdated || '');
         }
 
+        // FIX_DASHED_DRUG_RENDER: không coi dấu gạch trong tên thuốc/liều là danh sách.
         function formatResponse(text) {
             // 1. Tô màu các từ "biệt dược 1, 2, 3..."
             text = text.replace(/biệt dược (\d+)/gi, function(m, n) { 
@@ -11844,8 +11845,24 @@ body.medplus-aux-open .new-badge::after{
             paragraphs.forEach(function(p) { 
                 p = p.trim(); 
                 if (!p) return;
-                if (p.includes('- ') || p.includes('* ') || /^\d+\./.test(p)) {
-                    const items = p.split(/\n/).filter(function(x) { return x.trim(); }); 
+                // Chỉ coi là danh sách khi MỘT DÒNG thực sự bắt đầu bằng - , *  hoặc 1. .
+                // Không dùng p.includes('- '): tên thuốc như "VITAMIN B1 - B6 - B12"
+                // và liều "1 viên/lần x 2 - 3 lần/ngày" đều có "- " nhưng không phải danh sách.
+                const items = p.split(/\n/).filter(function(x) { return x.trim(); });
+                const hasUnorderedList = items.some(function(item) { return /^\s*[-*]\s+/.test(item); });
+                // Các nhãn HDSD kiểu "6. Cách dùng, liều dùng" hoặc "17. Điều kiện bảo quản..."
+                // là tiêu đề mục, không phải danh sách đánh số.
+                const isHDSDNumberedHeading = function(item) {
+                    const line = String(item || '').trim();
+                    if (/^\d+(?:\.\d+)+\.?\s+\S/.test(line)) return true;
+                    const n = removeAccents(line.replace(/^\d+\.\s+/, ''));
+                    return /^\d+\.\s+/.test(line)
+                        && /^(ten thuoc|cac dau hieu|thanh phan|dang bao che|mo ta|chi dinh|cach dung|lieu dung|chong chi dinh|canh bao|than trong|su dung thuoc|anh huong|tuong tac|tuong ky|tac dung|qua lieu|dac tinh|quy cach|dieu kien|han dung|ten dia chi|co so san xuat)\b/.test(n);
+                };
+                const hasOrderedList = items.some(function(item) {
+                    return /^\s*\d+\.\s+/.test(item) && !isHDSDNumberedHeading(item);
+                });
+                if (hasUnorderedList || hasOrderedList) { 
                     let list = ""; 
                     let ordered = false;
                     items.forEach(function(item) { 
@@ -12800,165 +12817,6 @@ body.medplus-aux-open .new-badge::after{
             return rule;
         }
 
-        /* [MEDPLUS_DASHED_EXACT_REAL_RESULT_RAWDATA] */
-        /*
-         * Cổng xử lý trực tiếp HDSD cho biệt dược có dấu gạch nối.
-         * LƯU Ý: lấy dữ liệu từ rawData + aiMedicines, không dùng getCurrentDrugSource_()
-         * vì nguồn AI có thể cập nhật chậm hơn danh mục đang hiển thị trên trang.
-         */
-        function medplusDashedExactAllDrugSources_() {
-            const all = [];
-            if (Array.isArray(rawData)) all.push.apply(all, rawData);
-            if (Array.isArray(aiMedicines)) all.push.apply(all, aiMedicines);
-            return dedupeDrugs_(all);
-        }
-
-        function medplusDashedExactKey_(value) {
-            return removeAccents(String(value || ''))
-                .replace(/[\-‐‑‒–—−]/g, ' ')
-                .replace(/[^a-z0-9]+/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim();
-        }
-
-        function medplusDashedExactCleanLabel_(value) {
-            return String(value || '')
-                .replace(/\s+/g, ' ')
-                .replace(/\s*[:：]\s*$/, '')
-                .trim();
-        }
-
-        function medplusFindDashedExactBrandForDirectHDSD_(question, allDrugs) {
-            if (!isHDSDContentQuestion_(question)) return null;
-            const q = medplusDashedExactKey_(question);
-            const subject = medplusDashedExactKey_(stripHDSDIntentTermsForDrugSubject_(question || ''));
-            if (!q || !subject) return null;
-
-            const matches = dedupeDrugs_(allDrugs || []).filter(function(drug) {
-                const originalBrand = String((drug && (drug.brand || drug.name)) || '');
-                if (!/[\-‐‑‒–—−]/.test(originalBrand)) return false;
-                const brandKey = medplusDashedExactKey_(originalBrand);
-                if (!brandKey || brandKey.length < 6) return false;
-                return subject === brandKey
-                    || q === brandKey
-                    || (' ' + q + ' ').indexOf(' ' + brandKey + ' ') !== -1
-                    || (' ' + subject + ' ').indexOf(' ' + brandKey + ' ') !== -1;
-            });
-            return matches.length === 1 ? matches[0] : null;
-        }
-
-        function medplusNumberedMajorLabel_(text) {
-            const raw = String(text || '').trim();
-            const m = raw.match(/^(\d+)\s*\.\s*(?!\d)(.+)$/);
-            if (!m) return null;
-            return { major: Number(m[1]), label: medplusDashedExactCleanLabel_(raw) };
-        }
-
-        function medplusNumberedChildLabel_(text) {
-            const raw = String(text || '').trim();
-            const m = raw.match(/^(\d+)\s*\.\s*(\d+)\s*\.?\s*(.+)$/);
-            if (!m) return null;
-            return { major: Number(m[1]), minor: Number(m[2]), label: medplusDashedExactCleanLabel_(raw) };
-        }
-
-        function medplusOwnAndChildrenText_(block) {
-            if (!block) return '';
-            const own = String(hdsdBlockOwnPlainText_(block) || '').replace(/\s+/g, ' ').trim();
-            const childText = (hdsdBlockChildren_(block) || []).map(medplusOwnAndChildrenText_).filter(Boolean).join('\n');
-            return [own, childText].filter(Boolean).join('\n').trim();
-        }
-
-        function medplusFindDirectNumberedHDSDSection_(jsonData, question) {
-            const q = medplusDashedExactKey_(question);
-            const askDose = /\blieu\s+dung\b/.test(q);
-            const askUse = /\bcach\s+(?:su\s+)?dung\b|\bduong\s+dung\b/.test(q);
-            if (!askDose && !askUse) return null;
-
-            const roots = (jsonData && Array.isArray(jsonData.blocks)) ? jsonData.blocks : [];
-            let best = null;
-            let bestScore = -1;
-            roots.forEach(function(parentBlock) {
-                const parentInfo = medplusNumberedMajorLabel_(hdsdBlockOwnPlainText_(parentBlock));
-                if (!parentInfo) return;
-                const children = hdsdBlockChildren_(parentBlock) || [];
-                if (!children.length) return;
-                const sections = [];
-                let current = null;
-                children.forEach(function(child) {
-                    const childInfo = medplusNumberedChildLabel_(hdsdBlockOwnPlainText_(child));
-                    if (childInfo && childInfo.major === parentInfo.major) {
-                        current = { label: childInfo.label, minor: childInfo.minor, bodyBlocks: [] };
-                        sections.push(current);
-                    } else if (current) {
-                        current.bodyBlocks.push(child);
-                    }
-                });
-                sections.forEach(function(section) {
-                    const key = medplusDashedExactKey_(section.label);
-                    let score = 0;
-                    if (askDose && /\blieu\s+dung\b/.test(key)) score += 1000;
-                    if (askUse && (/\bcach\s+dung\b/.test(key) || /\bduong\s+dung\b/.test(key))) score += 1000;
-                    if (score > bestScore) {
-                        bestScore = score;
-                        best = { parentLabel: parentInfo.label, parentMajor: parentInfo.major, sections: sections, focus: section };
-                    }
-                });
-            });
-            return bestScore > 0 ? best : null;
-        }
-
-        function medplusBuildDirectDashedExcerpt_(picked) {
-            if (!picked || !picked.parentLabel || !picked.focus) return '';
-            const chunks = ['**' + picked.parentLabel + '**'];
-            (picked.sections || []).forEach(function(section) {
-                chunks.push('**' + medplusDashedExactCleanLabel_(section.label) + '**');
-                const body = (section.bodyBlocks || []).map(medplusOwnAndChildrenText_).filter(Boolean).join('\n\n').trim();
-                if (body) chunks.push(body);
-            });
-            return chunks.join('\n\n').trim();
-        }
-
-        function medplusRenderDirectExactHDSDBubble_(answerText) {
-            const cm = document.getElementById('chat-messages');
-            if (!cm) return;
-            const message = document.createElement('div');
-            message.className = 'message ai-message';
-            const messageContent = document.createElement('div');
-            messageContent.className = 'message-content';
-            messageContent.innerHTML = AI_ICON;
-            const wrapper = document.createElement('div');
-            wrapper.className = 'text-wrapper';
-            wrapper.dataset.medplusDirectExactDashedHdsd = '1';
-            wrapper.innerHTML = formatResponse(answerText);
-            messageContent.appendChild(wrapper);
-            message.appendChild(messageContent);
-            cm.appendChild(message);
-            setTimeout(function(){ cm.scrollTo({ top: cm.scrollHeight, behavior: 'smooth' }); }, 100);
-        }
-
-        async function medplusTryRenderDirectDashedHDSD_(question) {
-            const drug = medplusFindDashedExactBrandForDirectHDSD_(question, medplusDashedExactAllDrugSources_());
-            if (!drug || !drug.link) return false;
-            const json = await loadHDSDJsonForDrug_(drug);
-            if (!json) return false;
-            const picked = medplusFindDirectNumberedHDSDSection_(json, question);
-            if (!picked || !picked.focus || !picked.parentLabel) return false;
-            const excerpt = medplusBuildDirectDashedExcerpt_(picked);
-            if (!excerpt) return false;
-
-            const focusLabel = medplusDashedExactCleanLabel_(picked.focus.label);
-            const parentLabel = medplusDashedExactCleanLabel_(picked.parentLabel);
-            const resultDrug = Object.assign({}, drug, {
-                _hdsdChatFocus: focusLabel,
-                _hdsdChatFocusParent: parentLabel
-            });
-            const answer = '**Theo nội dung tờ HDSD ' + cleanDrugFieldForChat_(drug.brand) + ':**\n\n'
-                + 'Hãy xem chi tiết ở phần **' + focusLabel + '** trong mục **' + parentLabel + '**.\n\n'
-                + excerpt;
-            medplusRenderDirectExactHDSDBubble_(appendDeterministicDrugListToAnswer_(answer, [resultDrug]));
-            return true;
-        }
-
         async function sendMessage(isRetry, keyIdx, modelIdx) {
             if (isRetry === undefined) isRetry = false;
             if (keyIdx === undefined) keyIdx = 0;
@@ -12997,14 +12855,6 @@ body.medplus-aux-open .new-badge::after{
             timerInterval = setInterval(function() { document.getElementById('timer-display').innerText = "(" + ((Date.now()-startTime)/1000).toFixed(1) + "s)"; }, 100);
             
             try {
-                // Cổng này được gọi trước mọi API: tên thuốc khớp trọn vẹn sẽ có kết quả ngay cả khi AI lỗi.
-                if (await medplusTryRenderDirectDashedHDSD_(userMessage)) {
-                    clearInterval(timerInterval);
-                    typingIndicator.style.display = 'none';
-                    sendButton.disabled = false;
-                    return;
-                }
-
                 if (keyIdx >= API_KEYS.length) throw new Error("ALL_KEYS_EXHAUSTED");
                 const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/" + AI_MODELS[modelIdx] + ":generateContent?key=" + API_KEYS[keyIdx];
                 
@@ -16495,7 +16345,6 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
     }
 
     async function ensureExcerptInBubble(wrapper, question) {
-        if (wrapper && wrapper.dataset && wrapper.dataset.medplusDirectExactDashedHdsd === '1') return;
         if (!wrapper || !question || typeof isHDSDContentQuestion_ !== 'function' || !isHDSDContentQuestion_(question)) return;
         const headers = Array.prototype.slice.call(wrapper.querySelectorAll('p')).filter(function(p) {
             return norm(p.textContent || '').indexOf('theo noi dung to hdsd') !== -1;
