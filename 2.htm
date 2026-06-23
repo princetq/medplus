@@ -16729,5 +16729,107 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
 })();
 </script>
 
+
+
+<!-- HDSD_COMPOSITE_BRAND_EXACT_MATCH_FIX: nhận diện tên thuốc có dấu gạch nối -->
+<script id="medplus-hdsd-composite-brand-exact-match-fix">
+/* =====================================================================
+   SỬA NHẬN DIỆN TÊN THUỐC CÓ DẤU PHÂN CÁCH
+   - Ví dụ: “Vitamin B1 - B6 - B12”, “Vitamin B1-B6-B12”,
+     “Vitamin B1 - B6 -b12” đều phải nhận là cùng một tên thuốc.
+   - Chỉ mở luồng HDSD khi người dùng có cụm tên thuốc đầy đủ.
+   - Không làm “Vitamin B1” đơn chất tự động thành câu hỏi HDSD,
+     vì đó thường là câu hỏi về hoạt chất/generic.
+   ===================================================================== */
+(function(){
+    function normalizeCompositeBrand_(value) {
+        const raw = typeof removeAccents === 'function'
+            ? removeAccents(String(value == null ? '' : value))
+            : String(value == null ? '' : value).toLowerCase();
+        return raw
+            .toLowerCase()
+            .replace(/[-‐‑‒–—−_\/\\|,+;:]+/g, ' ')
+            .replace(/[()\[\]{}]/g, ' ')
+            .replace(/[.]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    function phraseInCompositeText_(text, phrase) {
+        const haystack = ' ' + String(text || '').trim().replace(/\s+/g, ' ') + ' ';
+        const needle = ' ' + String(phrase || '').trim().replace(/\s+/g, ' ') + ' ';
+        return !!(needle.trim() && haystack.indexOf(needle) !== -1);
+    }
+
+    function isStandaloneGenericVitaminBrand_(brandFlexible) {
+        const words = String(brandFlexible || '').split(/\s+/).filter(Boolean);
+        const vitaminCodes = words.filter(function(w) { return /^[a-z]\d{1,2}$/.test(w); });
+        // “Vitamin B1”, “Vitamin B12”, “Vitamin K1” là các generic ngắn,
+        // không dùng fallback này để tránh phá nguyên tắc hỏi hoạt chất.
+        return words.length <= 2 && words[0] === 'vitamin' && vitaminCodes.length === 1;
+    }
+
+    function getSeparatorTolerantExactBrandMatches_(question, drugs) {
+        const source = Array.isArray(drugs) ? drugs : [];
+        if (!question || !source.length) return [];
+
+        const rawSubject = typeof stripHDSDIntentTermsForDrugSubject_ === 'function'
+            ? stripHDSDIntentTermsForDrugSubject_(question)
+            : String(question || '');
+        const q = normalizeCompositeBrand_(question);
+        const subject = normalizeCompositeBrand_(rawSubject);
+        const matches = [];
+
+        source.forEach(function(drug) {
+            if (!drug || !drug.brand) return;
+            const brand = normalizeCompositeBrand_(drug.brand);
+            if (!brand || brand.length < 6) return;
+            if (isStandaloneGenericVitaminBrand_(brand)) return;
+
+            // Khớp nguyên cụm tên biệt dược sau khi chuẩn hóa dấu gạch nối/khoảng trắng.
+            const hit = q === brand
+                || subject === brand
+                || phraseInCompositeText_(q, brand)
+                || phraseInCompositeText_(subject, brand);
+            if (hit) matches.push(drug);
+        });
+        return typeof dedupeDrugs_ === 'function' ? dedupeDrugs_(matches) : matches;
+    }
+
+    // Giữ toàn bộ logic cũ, chỉ bổ sung lớp khớp chính xác chịu được dấu gạch nối.
+    const previousStrictBrandMatcher = typeof getStrictBrandMatchesForHDSD_ === 'function'
+        ? getStrictBrandMatchesForHDSD_ : null;
+    if (previousStrictBrandMatcher) {
+        getStrictBrandMatchesForHDSD_ = function(question, drugs) {
+            const oldMatches = previousStrictBrandMatcher(question, drugs) || [];
+            const separatorMatches = getSeparatorTolerantExactBrandMatches_(question, drugs);
+            return typeof dedupeDrugs_ === 'function'
+                ? dedupeDrugs_([].concat(oldMatches, separatorMatches))
+                : [].concat(oldMatches, separatorMatches);
+        };
+    }
+
+    // Bổ sung cùng khả năng này cho bước chọn thuốc ban đầu, để không rơi vào
+    // câu hướng dẫn rời mà thiếu header, trích dẫn và nút XEM HDSD.
+    const previousExactBrandMatcher = typeof getExactBrandNameMatches_ === 'function'
+        ? getExactBrandNameMatches_ : null;
+    if (previousExactBrandMatcher) {
+        getExactBrandNameMatches_ = function(question, allDrugs) {
+            const oldMatches = previousExactBrandMatcher(question, allDrugs) || [];
+            const separatorMatches = getSeparatorTolerantExactBrandMatches_(question, allDrugs);
+            const combined = typeof dedupeDrugs_ === 'function'
+                ? dedupeDrugs_([].concat(oldMatches, separatorMatches))
+                : [].concat(oldMatches, separatorMatches);
+            return typeof sortDrugsByBrand_ === 'function' ? sortDrugsByBrand_(combined) : combined;
+        };
+    }
+
+    // Xóa cache có thể đã lưu kết quả không khớp trước khi patch chạy.
+    if (window.__medplusReliableHDSDExcerptCache && typeof window.__medplusReliableHDSDExcerptCache.clear === 'function') {
+        window.__medplusReliableHDSDExcerptCache.clear();
+    }
+})();
+</script>
+
 </body>
 </html>
