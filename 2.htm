@@ -15196,6 +15196,93 @@ async function medplusChooseActualHDSDFocusWithAI_(userMessage, actualOutline) {
     return null;
 }
 
+
+/* ============================================================
+   QUY TẮC BẮT BUỘC: TÁC DỤNG <-> CHỈ ĐỊNH TRÊN OUTLINE THẬT
+   - Chạy TRƯỚC AI ở mọi đường: composer, resolver và reliable excerpt.
+   - Không bao giờ xem "Đặc tính dược lực học" là "Tác dụng".
+   - Chỉ dùng fallback khi mục/phần trực tiếp không tồn tại trong chính HDSD.
+   ============================================================ */
+function medplusEffectIndicationIntentFromQuestion_(userMessage) {
+    const q = removeAccents(userMessage || '');
+    if (!q) return '';
+
+    // Không làm sai các câu hỏi chuyên biệt.
+    if (/(tac dung khong mong muon|tac dung phu|phan ung phu|\badr\b|co che tac dung|duoc luc hoc)/.test(q)) return '';
+
+    const asksEffect = /(^| )(tac dung|cong dung)( |$)/.test(q);
+    const asksIndication = /(^| )(chi dinh|dieu tri gi|tri benh gi|dung de lam gi)( |$)/.test(q);
+    if (asksEffect && !asksIndication) return 'effect';
+    if (asksIndication && !asksEffect) return 'indication';
+    return '';
+}
+
+function medplusIsActualEffectHeading_(label) {
+    const n = normalizeHDSDFocusNorm_(label || '');
+    if (!n) return false;
+    if (/(tac dung khong mong muon|tac dung phu|phan ung phu|co che tac dung|duoc luc)/.test(n)) return false;
+    return /(^| )(tac dung|cong dung)( |$)/.test(n);
+}
+
+function medplusIsActualIndicationHeading_(label) {
+    const n = normalizeHDSDFocusNorm_(label || '');
+    return !!n && /(^| )chi dinh( |$)/.test(n);
+}
+
+function medplusFindEffectIndicationFocusInActualOutline_(actualOutline, userMessage) {
+    const intent = medplusEffectIndicationIntentFromQuestion_(userMessage);
+    const parents = actualOutline && Array.isArray(actualOutline.parents) ? actualOutline.parents : [];
+    if (!intent || !parents.length) return null;
+
+    const directPredicate = intent === 'effect' ? medplusIsActualEffectHeading_ : medplusIsActualIndicationHeading_;
+    const fallbackPredicate = intent === 'effect' ? medplusIsActualIndicationHeading_ : medplusIsActualEffectHeading_;
+
+    function find(predicate, usedFallback) {
+        for (let p = 0; p < parents.length; p++) {
+            const parent = parents[p] || {};
+            const candidates = [{
+                id: parent.id,
+                label: parent.parentLabel,
+                flatIndex: parent.parentIndex,
+                isParent: true
+            }].concat((parent.children || []).map(function(child) {
+                return {
+                    id: child.id,
+                    label: child.label,
+                    flatIndex: child.flatIndex,
+                    isParent: false
+                };
+            }));
+
+            for (let i = 0; i < candidates.length; i++) {
+                const candidate = candidates[i];
+                if (!candidate || !predicate(candidate.label)) continue;
+                return {
+                    parentId: parent.id,
+                    focusId: candidate.id,
+                    parentLabel: parent.parentLabel,
+                    parentIndex: parent.parentIndex,
+                    focusLabel: candidate.label,
+                    focusIndex: candidate.flatIndex,
+                    versionLabel: parent.versionLabel || '',
+                    confidence: 1,
+                    source: usedFallback ? 'verified-effect-indication-fallback-actual-outline' : 'verified-effect-indication-actual-outline',
+                    effectIndicationIntent: intent,
+                    usedFallback: !!usedFallback
+                };
+            }
+        }
+        return null;
+    }
+
+    // Ví dụ: hỏi "tác dụng" -> Tác dụng/Công dụng thật nếu có.
+    const direct = find(directPredicate, false);
+    if (direct) return direct;
+
+    // Nếu không có Tác dụng/Công dụng -> Chỉ định; nếu không có Chỉ định -> Tác dụng/Công dụng.
+    return find(fallbackPredicate, true);
+}
+
 async function medplusResolveActualHDSDFocusForDrug_(drug, userMessage) {
     if (!drug || !drug.link) return null;
     const json = await loadHDSDJsonForDrug_(drug);
@@ -15203,9 +15290,11 @@ async function medplusResolveActualHDSDFocusForDrug_(drug, userMessage) {
     const outline = medplusBuildActualHDSDOutline_(json);
     if (!outline.parents || !outline.parents.length) return null;
 
-    // AI là nguồn quyết định DUY NHẤT cho tên mục lớn/phần con dùng để hiển thị và bôi đỏ.
-    // Không dùng local/fuzzy fallback ở đây: nếu AI chưa trả được ID hợp lệ, hệ thống không được
-    // tự nêu tên mục có thể sai. Nút XEM HDSD vẫn mở toàn bộ tờ HDSD để người dùng tra cứu.
+    // Quy tắc tác dụng/chỉ định phải thắng AI: AI không được phép đẩy "tác dụng"
+    // sang "Đặc tính dược lực học" khi HDSD không có mục/phần Tác dụng thật.
+    const verifiedEffectIndication = medplusFindEffectIndicationFocusInActualOutline_(outline, userMessage);
+    if (verifiedEffectIndication) return verifiedEffectIndication;
+
     const meta = await medplusChooseActualHDSDFocusWithAI_(userMessage, outline);
     if (!meta || !meta.focusLabel || !meta.parentLabel) return null;
     return meta;
@@ -16257,12 +16346,22 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
         const outline = state.outline;
         if (!outline.parents.length) return null;
 
+        // Reliable excerpt có đường chọn riêng nên cũng phải áp dụng cùng quy tắc
+        // Tác dụng <-> Chỉ định trước AI; nếu không, AI có thể ghi đè lại câu trả lời
+        // đúng thành mục Đặc tính dược lực học sau khi bubble đã hiển thị.
         let picked = null;
         try {
-            if (typeof medplusChooseActualHDSDFocusWithAI_ === 'function') {
-                picked = await medplusChooseActualHDSDFocusWithAI_(question, outline);
+            if (typeof medplusFindEffectIndicationFocusInActualOutline_ === 'function') {
+                picked = medplusFindEffectIndicationFocusInActualOutline_(outline, question);
             }
         } catch (e) {}
+        if (!picked) {
+            try {
+                if (typeof medplusChooseActualHDSDFocusWithAI_ === 'function') {
+                    picked = await medplusChooseActualHDSDFocusWithAI_(question, outline);
+                }
+            } catch (e) {}
+        }
         if (!picked && typeof medplusChooseActualHDSDFocusLocally_ === 'function') {
             try { picked = medplusChooseActualHDSDFocusLocally_(question, outline); } catch (e) {}
         }
@@ -16852,5 +16951,6 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
 })();
 </script>
 
+<!-- MEDPLUS_EFFECT_INDICATION_ACTUAL_PATH_FIX: 2026-06-23 -->
 </body>
 </html>
