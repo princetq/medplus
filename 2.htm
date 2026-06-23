@@ -16748,7 +16748,7 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
             : String(value == null ? '' : value).toLowerCase();
         return raw
             .toLowerCase()
-            .replace(/[-‐‑‒–—−_\/\\|,+;:]+/g, ' ')
+            .replace(/[‐‑‒–—−_\/\\|,+;:]+/g, ' ')
             .replace(/[()\[\]{}]/g, ' ')
             .replace(/[.]/g, ' ')
             .replace(/\s+/g, ' ')
@@ -16818,7 +16818,7 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
             const oldMatches = previousExactBrandMatcher(question, allDrugs) || [];
             const separatorMatches = getSeparatorTolerantExactBrandMatches_(question, allDrugs);
             const combined = typeof dedupeDrugs_ === 'function'
-                ? dedupeDrugs_([].concat(oldMatches, separatorMatches))
+                ? dedupeDrugs([].concat(oldMatches, separatorMatches))
                 : [].concat(oldMatches, separatorMatches);
             return typeof sortDrugsByBrand_ === 'function' ? sortDrugsByBrand_(combined) : combined;
         };
@@ -16828,6 +16828,166 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
     if (window.__medplusReliableHDSDExcerptCache && typeof window.__medplusReliableHDSDExcerptCache.clear === 'function') {
         window.__medplusReliableHDSDExcerptCache.clear();
     }
+})();
+</script>
+
+
+
+<!-- HDSD_COMPOSITE_BRAND_FULL_FLOW_FIX: bắt buộc đi vào luồng HDSD đầy đủ cho biệt dược phối hợp -->
+<script id="medplus-hdsd-composite-brand-full-flow-fix">
+/* =====================================================================
+   SỬA DỨT ĐIỂM NHÁNH HDSD CHO TÊN THUỐC PHỐI HỢP CÓ DẤU GẠCH NỐI
+
+   Lỗi cũ:
+   - Bộ nhận diện tên có thể nhận ra “Vitamin B1 - B6 - B12”, nhưng bộ
+     phân loại danh mục phía trước vẫn giữ kết quả theo hoạt chất/generic.
+   - Khi đó chatbot chỉ còn câu hướng dẫn mục/phần, không có header HDSD,
+     không có trích dẫn và không có thẻ thuốc + nút XEM HDSD.
+
+   Cách sửa:
+   - Nếu người dùng gõ trọn tên một BIỆT DƯỢC PHỐI HỢP, ép toàn bộ pipeline
+     dùng đúng thuốc đó làm matchedDrugs.
+   - Chốt lại ở composer HDSD và composer trả lời danh mục để mọi đường đi
+     đều trả câu trả lời HDSD đầy đủ.
+   ===================================================================== */
+(function(){
+    function safeNorm_(value) {
+        const raw = String(value == null ? '' : value);
+        let text = raw;
+        try {
+            text = typeof removeAccents === 'function' ? removeAccents(raw) : raw.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        } catch (e) {}
+        return String(text || '')
+            .toLowerCase()
+            .replace(/[-‐‑‒–—−_\/\\|,+;:]+/g, ' ')
+            .replace(/[()\[\]{}."'`]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    function isWholePhrase_(text, phrase) {
+        const haystack = ' ' + String(text || '').replace(/\s+/g, ' ').trim() + ' ';
+        const needle = ' ' + String(phrase || '').replace(/\s+/g, ' ').trim() + ' ';
+        return !!(needle.trim() && haystack.indexOf(needle) !== -1);
+    }
+
+    function getCatalog_(preferred) {
+        if (Array.isArray(preferred) && preferred.length) return preferred;
+        try {
+            if (typeof rawData !== 'undefined' && typeof getRagDrugIndex_ === 'function') {
+                const source = typeof getCurrentDrugSource_ === 'function' ? getCurrentDrugSource_(rawData) : rawData;
+                const catalog = getRagDrugIndex_(source);
+                if (Array.isArray(catalog) && catalog.length) return catalog;
+            }
+        } catch (e) {}
+        return [];
+    }
+
+    function isCompositeBrand_(brand) {
+        const normalized = safeNorm_(brand);
+        if (!normalized) return false;
+        const tokens = normalized.split(/\s+/).filter(Boolean);
+        const vitaminCodes = tokens.filter(function(token) { return /^[a-z]\d{1,2}$/.test(token); });
+        // Ví dụ: vitamin b1 b6 b12. Không áp dụng cho Vitamin B1 đơn chất.
+        if (tokens[0] === 'vitamin' && vitaminCodes.length >= 2) return true;
+        // Hỗ trợ các biệt dược phối hợp có nhiều thành phần trong tên.
+        return /(?:\bplus\b|\bwith\b|\s+and\s+)/.test(normalized) || vitaminCodes.length >= 2;
+    }
+
+    function findExactCompositeBrandMatches_(question, preferredCatalog) {
+        const query = safeNorm_(question);
+        if (!query) return [];
+        const catalog = getCatalog_(preferredCatalog);
+        const matches = catalog.filter(function(drug) {
+            if (!drug || !drug.brand) return false;
+            const brand = safeNorm_(drug.brand);
+            return !!brand && isCompositeBrand_(drug.brand) && isWholePhrase_(query, brand);
+        });
+        return typeof dedupeDrugs_ === 'function' ? dedupeDrugs_(matches) : matches;
+    }
+
+    function forceCompositeIntoInfo_(question, info) {
+        if (!info) return info;
+        const matches = findExactCompositeBrandMatches_(question, info.allDrugs || []);
+        if (!matches.length) return info;
+
+        info.matchedDrugs = matches;
+        info.exactNameMatches = matches;
+        info.exactNameMatch = true;
+        info.exactBrandNameMatches = matches;
+        info.exactBrandNameMatch = true;
+        info.strictShortBrandMatches = [];
+        info.strictShortBrandMatch = false;
+        info.activeIngredientMatches = [];
+        info.activeIngredientMatch = false;
+        info.drugNameResolution = {
+            type: 'exact_drug',
+            drugs: matches,
+            confidence: 1,
+            reason: 'separator_tolerant_composite_brand_exact',
+            subject: String(question || '')
+        };
+        return info;
+    }
+
+    // 1) Ép bước xác định thuốc ban đầu giữ đúng biệt dược phối hợp.
+    const previousGetDrugQueryInfo_ = typeof getDrugQueryInfo_ === 'function' ? getDrugQueryInfo_ : null;
+    if (previousGetDrugQueryInfo_) {
+        getDrugQueryInfo_ = function(userMessage, dataList) {
+            return forceCompositeIntoInfo_(userMessage, previousGetDrugQueryInfo_.apply(this, arguments));
+        };
+    }
+
+    // 2) Dù danh sách ứng viên ở nhánh trước bị sai/rỗng, tín hiệu HDSD vẫn phải được bật.
+    const previousShouldUseHDSDExcerpt_ = typeof shouldUseHDSDExcerptForExactBrand_ === 'function'
+        ? shouldUseHDSDExcerptForExactBrand_ : null;
+    if (previousShouldUseHDSDExcerpt_) {
+        shouldUseHDSDExcerptForExactBrand_ = function(question, drugs) {
+            if (previousShouldUseHDSDExcerpt_.apply(this, arguments)) return true;
+            try {
+                return typeof isHDSDContentQuestion_ === 'function'
+                    && isHDSDContentQuestion_(question)
+                    && findExactCompositeBrandMatches_(question, getCatalog_(drugs)).length > 0;
+            } catch (e) {
+                return false;
+            }
+        };
+    }
+
+    // 3) Composer HDSD luôn thay danh sách đầu vào bằng đúng biệt dược phối hợp nếu có.
+    const previousHDSDComposer_ = window.composeHDSDGroundedAnswerWithAI_;
+    if (typeof previousHDSDComposer_ === 'function') {
+        window.composeHDSDGroundedAnswerWithAI_ = async function(question, drugs) {
+            const forced = findExactCompositeBrandMatches_(question, getCatalog_(drugs));
+            if (forced.length) return previousHDSDComposer_.call(this, question, forced);
+            return previousHDSDComposer_.apply(this, arguments);
+        };
+        // Một số nhánh gọi trực tiếp biến hàm global thay vì window.
+        try { composeHDSDGroundedAnswerWithAI_ = window.composeHDSDGroundedAnswerWithAI_; } catch (e) {}
+    }
+
+    // 4) Backstop cuối: nếu luồng danh mục bỏ qua composer HDSD, không được trả guide rời.
+    const previousDrugAnswerComposer_ = typeof composeDrugAnswerWithAI_ === 'function' ? composeDrugAnswerWithAI_ : null;
+    if (previousDrugAnswerComposer_) {
+        composeDrugAnswerWithAI_ = async function(question, drugs, info) {
+            const forced = findExactCompositeBrandMatches_(question, getCatalog_((info && info.allDrugs) || drugs));
+            if (forced.length && typeof isHDSDContentQuestion_ === 'function' && isHDSDContentQuestion_(question)) {
+                const hdsdComposer = window.composeHDSDGroundedAnswerWithAI_;
+                if (typeof hdsdComposer === 'function') {
+                    const hdsdAnswer = await hdsdComposer(question, forced);
+                    if (hdsdAnswer) return hdsdAnswer;
+                }
+            }
+            return previousDrugAnswerComposer_.apply(this, arguments);
+        };
+    }
+
+    // Không dùng cache kết quả trước patch vì có thể đã lưu nhánh generic/guide rời.
+    try {
+        if (window.__medplusReliableHDSDExcerptCache && typeof window.__medplusReliableHDSDExcerptCache.clear === 'function') {
+            window.__medplusReliableHDSDExcerptCache.clear();
+        }
+    } catch (e) {}
 })();
 </script>
 
