@@ -16557,5 +16557,177 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
 })();
 </script>
 
+
+
+<!-- HDSD_OUTLINE_HIERARCHY_FIX: parent title must come from real major section -->
+<script id="medplus-hdsd-outline-hierarchy-fix">
+/* =====================================================================
+   HDSD OUTLINE — SỬA PHÂN CẤP MỤC/PHẦN TỪ BLOCK PHẲNG
+   - Không coi nội dung như “36 tháng kể từ ngày sản xuất” là tiêu đề.
+   - Giữ mục cha có số gốc, ví dụ “17. Điều kiện bảo quản, hạn dùng,
+     tiêu chuẩn chất lượng của thuốc”.
+   - Nhận “17.2. Hạn dùng” là phần nằm trong mục 17, không phải mục mới.
+   - Dùng tên thật trong HDSD cho parentLabel; focusLabel chỉ là tiêu đề
+     thật hoặc fallback của câu hỏi khi không đủ chắc chắn.
+   ===================================================================== */
+(function(){
+    function cleanLabel_(rawText, type) {
+        const raw = String(rawText || '').replace(/\r/g, '\n').trim();
+        if (!raw) return '';
+        const isHeading = /^heading_|^toggle$/.test(String(type || ''));
+        let first = raw.split(/\n+/)[0].replace(/\s+/g, ' ').trim();
+        if (!first) return '';
+
+        // “HẠN DÙNG: 36 tháng...” => giữ nhãn HẠN DÙNG.
+        const colon = first.match(/^(.{3,100}?)\s*[:：]\s*(?:.*)$/);
+        if (colon && typeof hdsdLooksLikeSubHeading_ === 'function'
+            && hdsdLooksLikeSubHeading_(colon[1] + ':')) {
+            first = colon[1].trim();
+        }
+
+        const clean = typeof normalizeHDSDFocusLabel_ === 'function'
+            ? normalizeHDSDFocusLabel_(first) : first;
+        if (!clean) return '';
+        if (isHeading) return clean;
+
+        const normalized = typeof normalizeHDSDFocusNorm_ === 'function'
+            ? normalizeHDSDFocusNorm_(clean) : clean.toLowerCase();
+        const words = normalized.split(/\s+/).filter(Boolean);
+        const numberedHeading = /^\s*\d+(?:\.\d+)+(?:\.)?\s+\D/.test(first)
+            || /^\s*\d+[.)]\s+\D/.test(first);
+        const colonHeading = /^.{3,100}?\s*[:：]\s*(?:.*)$/.test(raw);
+        const knownHeading = (typeof hdsdIsKnownChildHDSDTitle_ === 'function' && hdsdIsKnownChildHDSDTitle_(clean))
+            || (typeof hdsdIsKnownMajorHDSDTitle_ === 'function' && hdsdIsKnownMajorHDSDTitle_(clean));
+        const letters = clean.replace(/[^A-Za-zÀ-ỹ]/g, '');
+        const uppers = letters.replace(/[a-zà-ỹ]/g, '');
+        const mostlyUpper = letters.length >= 3 && (uppers.length / letters.length) >= 0.58;
+
+        // Paragraph chỉ là heading khi có bằng chứng rõ. Không nhận số liệu/dòng nội dung ngắn.
+        if (!numberedHeading && !colonHeading && !knownHeading && !mostlyUpper) return '';
+        if (/^\s*\d+(?:[.,]\d+)?\s*(?:thang|nam|ngay|gio|mg|mcg|g|ml|%|lan)\b/i.test(first)) return '';
+        if (words.length > 14) return '';
+        return clean;
+    }
+
+    function flatten_(blocks, out, depth) {
+        const list = out || [];
+        const currentDepth = Number(depth || 0);
+        (Array.isArray(blocks) ? blocks : []).forEach(function(block, siblingIndex) {
+            if (!block) return;
+            const type = String(block.type || '');
+            const own = typeof hdsdBlockOwnPlainText_ === 'function' ? hdsdBlockOwnPlainText_(block) : '';
+            const label = cleanLabel_(own, type);
+            const level = typeof hdsdHeadingLevelFromType_ === 'function' ? hdsdHeadingLevelFromType_(type) : 9;
+            list.push({
+                flatIndex: list.length,
+                siblingIndex: siblingIndex,
+                depth: currentDepth,
+                blockId: block.id ? String(block.id) : '',
+                type: type,
+                level: level,
+                rawText: own || '',
+                label: label,
+                labelNorm: typeof normalizeHDSDFocusNorm_ === 'function' ? normalizeHDSDFocusNorm_(label) : String(label || '').toLowerCase()
+            });
+            const children = typeof hdsdBlockChildren_ === 'function' ? hdsdBlockChildren_(block) : [];
+            if (children && children.length) flatten_(children, list, currentDepth + 1);
+        });
+        return list;
+    }
+
+    function numericPath_(label) {
+        const m = String(label || '').trim().match(/^(\d+(?:\.\d+)*)\s*[.)-]?\s+/);
+        return m ? m[1].split('.').map(function(v){ return Number(v); }) : [];
+    }
+
+    function titleNorm_(label) {
+        const clean = String(label || '').replace(/^\s*\d+(?:\.\d+)*(?:[.)-])?\s*/, '');
+        return typeof normalizeHDSDFocusNorm_ === 'function' ? normalizeHDSDFocusNorm_(clean) : clean.toLowerCase();
+    }
+
+    function childBelongsToParent_(parent, node) {
+        if (!parent || !node || !node.label) return false;
+        const pPath = numericPath_(parent.parentLabel);
+        const nPath = numericPath_(node.label);
+        if (pPath.length && nPath.length > pPath.length && pPath.every(function(v, i){ return nPath[i] === v; })) {
+            return true;
+        }
+        if (Number(node.depth) > Number(parent.parentDepth || 0)) return true;
+
+        // Các phần cùng cấp trong block phẳng: “Cách dùng”, “Liều dùng”,
+        // “Hạn dùng” thường là cụm nằm trong tên mục ghép ở phía trước.
+        const parentText = titleNorm_(parent.parentLabel);
+        const childText = titleNorm_(node.label);
+        if (parentText && childText && parentText !== childText) {
+            const paddedParent = ' ' + parentText + ' ';
+            const paddedChild = ' ' + childText + ' ';
+            if (paddedParent.indexOf(paddedChild) !== -1) return true;
+        }
+        return false;
+    }
+
+    window.medplusBuildActualHDSDOutline_ = function(jsonData) {
+        const blocks = jsonData && Array.isArray(jsonData.blocks) ? jsonData.blocks : [];
+        const nodes = flatten_(blocks, [], 0);
+        const parents = [];
+        let currentParent = null;
+        let currentVersion = '';
+
+        nodes.forEach(function(node) {
+            if (!node.label || !node.labelNorm) return;
+            const label = node.label;
+            if (typeof hdsdIsVersionHeading_ === 'function' && hdsdIsVersionHeading_(label)) {
+                currentVersion = label;
+                currentParent = null;
+                return;
+            }
+
+            const knownChild = typeof hdsdIsKnownChildHDSDTitle_ === 'function' && hdsdIsKnownChildHDSDTitle_(label);
+            const knownMajor = typeof hdsdIsKnownMajorHDSDTitle_ === 'function' && hdsdIsKnownMajorHDSDTitle_(label);
+            const structuralMajor = /^heading_|^toggle$/.test(node.type) && Number(node.level || 9) <= 2;
+            const belongsToCurrent = childBelongsToParent_(currentParent, node);
+            const startsOwnRegion = !currentParent;
+            const isMajor = startsOwnRegion || (!belongsToCurrent && !knownChild && (knownMajor || structuralMajor));
+
+            if (isMajor) {
+                currentParent = {
+                    id: 'p' + parents.length,
+                    parentLabel: label,
+                    parentIndex: node.flatIndex,
+                    parentDepth: node.depth,
+                    versionLabel: currentVersion,
+                    children: []
+                };
+                parents.push(currentParent);
+                return;
+            }
+
+            if (!currentParent) return;
+            const duplicate = currentParent.children.some(function(child) {
+                return child && child.labelNorm === node.labelNorm;
+            });
+            if (!duplicate) {
+                currentParent.children.push({
+                    id: currentParent.id + 'c' + currentParent.children.length,
+                    label: label,
+                    labelNorm: node.labelNorm,
+                    flatIndex: node.flatIndex,
+                    blockId: node.blockId || '',
+                    type: node.type || '',
+                    level: node.level || 9
+                });
+            }
+        });
+
+        return { nodes: nodes, parents: parents };
+    };
+
+    // Bỏ cache outline cũ được tạo theo logic sai trên cùng phiên tải trang.
+    if (window.__medplusReliableHDSDExcerptCache && typeof window.__medplusReliableHDSDExcerptCache.clear === 'function') {
+        window.__medplusReliableHDSDExcerptCache.clear();
+    }
+})();
+</script>
+
 </body>
 </html>
