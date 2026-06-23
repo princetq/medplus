@@ -7258,22 +7258,6 @@ body.medplus-aux-open .new-badge::after{
             'brilinta': ['ticagrelor brilinta']
         };
 
-        // Bí danh CHỈ để khóa đúng tên biệt dược có dấu gạch nối trước AI.
-        // Không thay đổi nội dung HDSD, không tạo luồng riêng và không dùng để khớp hoạt chất.
-        // Ví dụ: mọi cách gõ "Vitamin B1-B6-B12", "Vitamin B1 - B6 -B12"... đều quy về đúng một biệt dược.
-        const MEDPLUS_DASHED_BRAND_EXPLICIT_ALIASES_ = {
-            'vitamin b1 - b6 - b12': [
-                'vitamin b1-b6-b12',
-                'vitamin b1 -b6-b12',
-                'vitamin b1-b6 -b12',
-                'vitamin b1-b6 - b12',
-                'vitamin b1 -b6 - b12',
-                'vitamin b1 - b6-b12',
-                'vitamin b1 -b6 -b12',
-                'vitamin b1 b6 b12'
-            ]
-        };
-
         const MEDPLUS_GENERIC_DRUG_SUBJECTS_ = [
             'hoat huyet', 'thuoc hoat huyet', 'tuan hoan nao', 'thuoc tuan hoan nao',
             'bo nao', 'duong nao', 'tang tuan hoan nao', 'thuoc bo nao',
@@ -7321,8 +7305,6 @@ body.medplus-aux-open .new-badge::after{
 
         function normalizeDrugMatchText_(value) {
             return removeAccents(String(value || ''))
-                // Chuẩn hóa các loại gạch nối Unicode về "-"; không đổi cấu trúc từ khác.
-                .replace(/[‐‑‒–—−]/g, '-')
                 .replace(/\b(bvdk|benh vien da khoa tinh tuyen quang|benh vien da khoa tuyen quang|benh vien|khoa duoc|tuyen quang)\b/g, ' ')
                 .replace(/\b(cho toi hoi|xin hoi|cho biet|giup toi|anh chi|bac si|duoc si)\b/g, ' ')
                 .replace(/\s+/g, ' ')
@@ -7374,10 +7356,6 @@ body.medplus-aux-open .new-badge::after{
         function getDrugAliasesForMatching_(drug) {
             const brand = normalizeDrugMatchText_(drug && drug.brand);
             const aliases = [brand];
-            // Dùng cùng bộ alias dấu gạch nối ở các nhánh dò tên còn lại,
-            // để thuốc có "-" được xử lý giống hoàn toàn thuốc tên thông thường.
-            const dashedAliases = getDashedBrandAliasesForExactMatching_(brand);
-            if (dashedAliases && dashedAliases.length) aliases.push.apply(aliases, dashedAliases);
             const noStrength = brand
                 .replace(/\b\d+(?:[\s\/.-]*(?:mg|ml|g|mcg|ui|iu|%)?)\b/g, ' ')
                 .replace(/\s+/g, ' ')
@@ -7404,44 +7382,10 @@ body.medplus-aux-open .new-badge::after{
             });
         }
 
-        function getDashedBrandAliasesForExactMatching_(brand) {
-            const normalizedBrand = normalizeDrugMatchText_(brand);
-            if (!normalizedBrand || normalizedBrand.indexOf('-') === -1) return [];
-
-            const aliases = [];
-            const manual = MEDPLUS_DASHED_BRAND_EXPLICIT_ALIASES_[normalizedBrand];
-            if (manual && manual.length) aliases.push.apply(aliases, manual);
-
-            // Tạo alias cho TẤT CẢ biệt dược có dấu "-", để không phải tạo fast-lane riêng cho từng thuốc.
-            // Chỉ biến đổi cách đặt khoảng trắng quanh dấu "-"; luôn cần khớp đủ cả tên thuốc.
-            const parts = normalizedBrand.split('-').map(function(part) { return part.trim(); }).filter(Boolean);
-            if (parts.length >= 2) {
-                const separatorCount = parts.length - 1;
-                const variants = ['-', ' - ', ' -', '- '];
-                const build = function(index, current) {
-                    if (index === separatorCount) {
-                        aliases.push(current);
-                        return;
-                    }
-                    variants.forEach(function(sep) {
-                        build(index + 1, current + sep + parts[index + 1]);
-                    });
-                };
-                build(0, parts[0]);
-                // Hỗ trợ trường hợp người dùng bỏ hoàn toàn dấu gạch nhưng vẫn viết đủ các thành phần.
-                aliases.push(parts.join(' '));
-            }
-
-            return uniqueStrings_(aliases);
-        }
-
         function getBrandAliasesForExactMatching_(drug) {
             const brand = normalizeDrugMatchText_(drug && drug.brand);
             if (!brand) return [];
             const aliases = [brand];
-
-            const dashedAliases = getDashedBrandAliasesForExactMatching_(brand);
-            if (dashedAliases && dashedAliases.length) aliases.push.apply(aliases, dashedAliases);
 
             const noStrength = brand
                 .replace(/\b\d+(?:[\s\/.-]*(?:mg|ml|g|mcg|ui|iu|%)?)\b/g, ' ')
@@ -9308,11 +9252,67 @@ body.medplus-aux-open .new-badge::after{
            - Có cho phép bỏ hàm lượng trong tên biệt dược, ví dụ “Entecavir STELLA”
              khớp “Entecavir STELLA 0.5 mg”.
            ============================================================ */
+        /*
+         * CỔNG NHẬN DIỆN TÊN BIỆT DƯỢC DÙNG CHO HDSD.
+         *
+         * Lỗi cũ: alias dấu gạch nối chỉ được dùng ở bộ dò danh mục, nhưng nhánh HDSD
+         * lại dùng hàm riêng này và chỉ so sánh nguyên chuỗi. Vì thế "VITAMIN B1 - B6 - B12"
+         * có thể vào được danh mục nhưng không bao giờ được công nhận là biệt dược ở cổng HDSD.
+         *
+         * Quy tắc dưới đây tạo alias cục bộ CHỈ cho tên thuốc có dấu gạch nối:
+         *   VITAMIN B1 - B6 - B12 = vitamin b1-b6-b12 = vitamin b1 b6 b12.
+         * Phải khớp ĐỦ toàn bộ tên sau chuẩn hóa; "vitamin b1" đơn chất không thể khớp thuốc phối hợp.
+         */
+        function normalizeDashedBrandAliasForHDSD_(value) {
+            return removeAccents(String(value || ''))
+                .replace(/[‐‑‒–—−]/g, '-')
+                .replace(/\s*-\s*/g, '-')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function getStrictHDSDBrandAliasForms_(value) {
+            const raw = normalizeDrugMatchText_(value || '');
+            const dashed = normalizeDashedBrandAliasForHDSD_(value || '');
+            const forms = [];
+            if (raw) forms.push(raw);
+            if (dashed) forms.push(dashed);
+            if (dashed && dashed.indexOf('-') >= 0) {
+                // Alias không gạch: chỉ để đối chiếu tên đã gõ đầy đủ, không dùng theo token rời.
+                forms.push(dashed.replace(/-/g, ' ').replace(/\s+/g, ' ').trim());
+                forms.push(dashed.replace(/[^a-z0-9]/g, ''));
+            }
+            const seen = new Set();
+            return forms.filter(function(form) {
+                const v = String(form || '').trim();
+                if (!v || seen.has(v)) return false;
+                seen.add(v);
+                return true;
+            });
+        }
+
+        function hdsdStrictBrandFormHit_(questionForm, brandForm) {
+            const q = String(questionForm || '').trim();
+            const b = String(brandForm || '').trim();
+            if (!q || !b || b.length < 4) return false;
+            if (q === b) return true;
+            // Form compact chỉ được chấp nhận khi đúng toàn bộ chuỗi, không dùng includes để tránh B1 đơn chất.
+            const compactLike = /^[a-z0-9]+$/i.test(b);
+            if (compactLike) return q === b;
+            return hasNormalizedPhrase_(q, b);
+        }
+
         function getStrictBrandMatchesForHDSD_(question, drugs) {
             const q = normalizeDrugMatchText_(question || '');
             const subject = normalizeDrugMatchText_(stripHDSDIntentTermsForDrugSubject_(question || ''));
-            const compactQ = q.replace(/\s+/g, '');
-            const compactSubject = subject.replace(/\s+/g, '');
+            const questionForms = getStrictHDSDBrandAliasForms_(q)
+                .concat(getStrictHDSDBrandAliasForms_(subject));
+            const seenQuestionForms = new Set();
+            const uniqueQuestionForms = questionForms.filter(function(form) {
+                if (!form || seenQuestionForms.has(form)) return false;
+                seenQuestionForms.add(form);
+                return true;
+            });
             const matches = [];
 
             (drugs || []).forEach(function(d) {
@@ -9323,20 +9323,26 @@ body.medplus-aux-open .new-badge::after{
                     .replace(/\b\d+(?:[\s\/.-]*(?:mg|ml|g|mcg|ui|iu|%)?)\b/g, ' ')
                     .replace(/\s+/g, ' ')
                     .trim();
-                const variants = [brand];
-                if (brandNoStrength && brandNoStrength.length >= 4 && brandNoStrength !== brand) variants.push(brandNoStrength);
+                const variants = getStrictHDSDBrandAliasForms_(brand);
+                if (brandNoStrength && brandNoStrength.length >= 4 && brandNoStrength !== brand) {
+                    variants.push.apply(variants, getStrictHDSDBrandAliasForms_(brandNoStrength));
+                }
 
-                const hit = variants.some(function(variant) {
-                    const compact = variant.replace(/\s+/g, '');
-                    return q === variant
-                        || subject === variant
-                        || hasNormalizedPhrase_(q, variant)
-                        || hasNormalizedPhrase_(subject, variant)
-                        || (compact.length >= 6 && (compactQ.indexOf(compact) >= 0 || compactSubject.indexOf(compact) >= 0));
+                const hit = uniqueQuestionForms.some(function(questionForm) {
+                    return variants.some(function(variant) {
+                        return hdsdStrictBrandFormHit_(questionForm, variant);
+                    });
                 });
                 if (hit) matches.push(d);
             });
             return dedupeDrugs_(matches);
+        }
+
+        function getStrictDashedBrandMatchesForHDSD_(question, drugs) {
+            const strict = getStrictBrandMatchesForHDSD_(question, drugs || []);
+            return strict.filter(function(drug) {
+                return /[‐‑‒–—−-]/.test(String(drug && drug.brand || ''));
+            });
         }
 
         function shouldUseHDSDExcerptForExactBrand_(question, drugs) {
@@ -12899,6 +12905,29 @@ body.medplus-aux-open .new-badge::after{
                 
                 const dataForRag = getCurrentDrugSource_(rawData);
                 const drugQueryInfo = getDrugQueryInfo_(userMessage, dataForRag);
+
+                /*
+                 * CHỈ cho biệt dược có dấu gạch nối đã khớp đủ tên đi thẳng vào composer HDSD
+                 * vốn có. Trước đây alias chỉ giúp tạo danh sách ứng viên, sau đó câu hỏi vẫn
+                 * bị AI chung diễn giải lại thành "Vitamin B1". Ở đây không dùng AI chung để
+                 * thay đổi thuốc đã khóa; composer sẽ đọc JSON HDSD của đúng thuốc và tự dựng
+                 * header + trích dẫn + thẻ XEM HDSD.
+                 */
+                const dashedExactHDSDDrugs = isHDSDContentQuestion_(userMessage)
+                    ? getStrictDashedBrandMatchesForHDSD_(userMessage, getRagDrugIndex_(dataForRag))
+                    : [];
+                if (dashedExactHDSDDrugs.length === 1) {
+                    document.getElementById('typing-text').innerText = "MedPlus đang đọc tờ HDSD...";
+                    const dashedHDSDReply = await composeHDSDGroundedAnswerWithAI_(userMessage, dashedExactHDSDDrugs);
+                    if (dashedHDSDReply) {
+                        clearInterval(timerInterval);
+                        typingIndicator.style.display = 'none';
+                        displayMessage(dashedHDSDReply, 'ai');
+                        sendButton.disabled = false;
+                        return;
+                    }
+                }
+
                 const questionScope = await classifyQuestionScopeHybrid_(userMessage, drugQueryInfo);
                 const isHealthcareQuestion = questionScope && questionScope.scope === 'medical';
                 const shouldUseDrugCatalog = !!(questionScope && questionScope.drugCatalog);
@@ -15136,9 +15165,21 @@ async function medplusResolveActualHDSDFocusForDrug_(drug, userMessage) {
     const outline = medplusBuildActualHDSDOutline_(json);
     if (!outline.parents || !outline.parents.length) return null;
 
-    // AI là nguồn quyết định DUY NHẤT cho tên mục lớn/phần con dùng để hiển thị và bôi đỏ.
-    // Không dùng local/fuzzy fallback ở đây: nếu AI chưa trả được ID hợp lệ, hệ thống không được
-    // tự nêu tên mục có thể sai. Nút XEM HDSD vẫn mở toàn bộ tờ HDSD để người dùng tra cứu.
+    /* Với một biệt dược có dấu gạch nối đã khớp ĐỦ tên, dùng ngay outline thật của chính
+       thuốc đó. Đây không phải suy đoán theo từ khóa chung: chỉ chọn trong danh sách mục/phần
+       đã tải từ JSON HDSD. Nhờ vậy nhánh alias không bị phụ thuộc API và không thể rơi về
+       Vitamin B1 đơn chất khi hỏi VITAMIN B1 - B6 - B12. */
+    const isStrictDashedBrand = typeof getStrictDashedBrandMatchesForHDSD_ === 'function'
+        && getStrictDashedBrandMatchesForHDSD_(userMessage, [drug]).length === 1;
+    if (isStrictDashedBrand && typeof medplusChooseActualHDSDFocusLocally_ === 'function') {
+        const localMeta = medplusChooseActualHDSDFocusLocally_(userMessage, outline);
+        if (localMeta && localMeta.focusLabel && localMeta.parentLabel) {
+            localMeta.source = 'strict-dashed-brand-alias-local-outline';
+            return localMeta;
+        }
+    }
+
+    // Các thuốc khác giữ nguyên cơ chế AI hiện có.
     const meta = await medplusChooseActualHDSDFocusWithAI_(userMessage, outline);
     if (!meta || !meta.focusLabel || !meta.parentLabel) return null;
     return meta;
