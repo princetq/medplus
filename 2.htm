@@ -6961,52 +6961,6 @@ body.medplus-aux-open .new-badge::after{
             return sortDrugsByBrand_(dedupeDrugs_(matched));
         }
 
-        function isVitaminBComboQuestion_(userMessage) {
-            const q = normalizeDrugMatchText_(userMessage)
-                .replace(/\bvitamin\s+b\s*(\d)/g, 'vitamin b$1')
-                .replace(/\bvit\s+b\s*(\d)/g, 'vit b$1')
-                .replace(/\s*-\s*/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim();
-            if (!q) return false;
-            const hasB1 = hasNormalizedPhrase_(q, 'vitamin b1') || hasNormalizedPhrase_(q, 'vit b1') || /(^|\s)b1(\s|$)/.test(q);
-            const hasB6 = hasNormalizedPhrase_(q, 'vitamin b6') || hasNormalizedPhrase_(q, 'vit b6') || /(^|\s)b6(\s|$)/.test(q);
-            const hasB12 = hasNormalizedPhrase_(q, 'vitamin b12') || hasNormalizedPhrase_(q, 'vit b12') || /(^|\s)b12(\s|$)/.test(q);
-            return hasB1 && hasB6 && hasB12;
-        }
-
-        function getVitaminBComboCatalogMatches_(userMessage, allDrugs) {
-            const source = allDrugs || [];
-            if (!source.length || !isVitaminBComboQuestion_(userMessage)) return [];
-
-            const normalizeBText_ = function(value) {
-                return normalizeDrugMatchText_(value)
-                    .replace(/\bvitamin\s+b\s*(\d)/g, 'vitamin b$1')
-                    .replace(/\bvit\s+b\s*(\d)/g, 'vit b$1')
-                    .replace(/\s*-\s*/g, ' ')
-                    .replace(/\s+/g, ' ')
-                    .trim();
-            };
-
-            const b1Terms = ['vitamin b1', 'vit b1', 'thiamin', 'thiamine'];
-            const b6Terms = ['vitamin b6', 'vit b6', 'pyridoxin', 'pyridoxine'];
-            const b12Terms = ['vitamin b12', 'vit b12', 'cyanocobalamin', 'cobalamin', 'methylcobalamin'];
-
-            const matched = source.filter(function(d) {
-                if (!d) return false;
-                const active = normalizeBText_(d.active || '');
-                const brand  = normalizeBText_(d.brand || '');
-                const text = active + ' ' + brand;
-                // Chỉ lấy thuốc có đủ cả 3 thành phần B1 + B6 + B12 (phối hợp)
-                const hasB1  = b1Terms.some(function(t)  { return hasNormalizedPhrase_(text, t); });
-                const hasB6  = b6Terms.some(function(t)  { return hasNormalizedPhrase_(text, t); });
-                const hasB12 = b12Terms.some(function(t) { return hasNormalizedPhrase_(text, t); });
-                return hasB1 && hasB6 && hasB12;
-            });
-
-            return sortDrugsByBrand_(dedupeDrugs_(matched));
-        }
-
         function getActiveIngredientMatchesForQuestion_(userMessage, allDrugs) {
             const source = allDrugs || [];
             if (!userMessage || !source.length) return [];
@@ -8036,11 +7990,9 @@ body.medplus-aux-open .new-badge::after{
             const allDrugs = getRagDrugIndex_(sourceList);
             const forcedVitaminK1Matches = getVitaminK1CatalogMatches_(userMessage, allDrugs);
             const hasForcedVitaminK1Matches = forcedVitaminK1Matches.length > 0;
-            const forcedVitaminBComboMatches = hasForcedVitaminK1Matches ? [] : getVitaminBComboCatalogMatches_(userMessage, allDrugs);
-            const hasForcedVitaminBComboMatches = forcedVitaminBComboMatches.length > 0;
-            const strictShortBrandMatches = (hasForcedVitaminK1Matches || hasForcedVitaminBComboMatches) ? [] : getStrictShortBrandMatches_(userMessage, allDrugs);
-            const exactBrandNameMatches = (hasForcedVitaminK1Matches || hasForcedVitaminBComboMatches || strictShortBrandMatches.length > 0) ? [] : getExactBrandNameMatches_(userMessage, allDrugs);
-            const activeIngredientMatches = hasForcedVitaminK1Matches ? forcedVitaminK1Matches : (hasForcedVitaminBComboMatches ? forcedVitaminBComboMatches : ((strictShortBrandMatches.length > 0 || (exactBrandNameMatches.length > 0 && !broadQuery)) ? [] : getActiveIngredientMatchesForQuestion_(userMessage, allDrugs)));
+            const strictShortBrandMatches = hasForcedVitaminK1Matches ? [] : getStrictShortBrandMatches_(userMessage, allDrugs);
+            const exactBrandNameMatches = (hasForcedVitaminK1Matches || strictShortBrandMatches.length > 0) ? [] : getExactBrandNameMatches_(userMessage, allDrugs);
+            const activeIngredientMatches = hasForcedVitaminK1Matches ? forcedVitaminK1Matches : ((strictShortBrandMatches.length > 0 || (exactBrandNameMatches.length > 0 && !broadQuery)) ? [] : getActiveIngredientMatchesForQuestion_(userMessage, allDrugs));
             const drugNameResolution = strictShortBrandMatches.length > 0
                 ? { type: 'exact_drug', drugs: strictShortBrandMatches, confidence: 0.99, reason: 'strict_short_brand_exact', subject: getDrugSubjectForMatching_(userMessage) }
                 : (exactBrandNameMatches.length > 0
@@ -9890,17 +9842,6 @@ body.medplus-aux-open .new-badge::after{
                     activeIngredientMatch: true,
                     forcedVitaminK1Match: true,
                     scannedCount: forcedVitaminK1Matches.length
-                };
-            }
-
-            const forcedVitaminBComboMatches = getVitaminBComboCatalogMatches_(userMessage, allDrugs);
-            if (forcedVitaminBComboMatches.length > 0) {
-                return {
-                    ok: true,
-                    drugs: forcedVitaminBComboMatches,
-                    activeIngredientMatch: true,
-                    forcedVitaminBComboMatch: true,
-                    scannedCount: forcedVitaminBComboMatches.length
                 };
             }
 
@@ -12033,6 +11974,12 @@ body.medplus-aux-open .new-badge::after{
         }
 
         function displayMessage(text, sender) {
+            // Cờ này chỉ dùng cho câu trả lời HDSD tên thuốc có dấu gạch nối đã được dựng hoàn chỉnh
+            // ngay trong sendMessage(). Mục đích: không để patch trích dẫn DOM chạy muộn chèn/ghi đè
+            // thêm một excerpt khác lên bubble đã có đủ header, nội dung và thẻ XEM HDSD.
+            const skipReliableExcerpt = sender !== 'user' && window.__medplusSkipReliableExcerptNext === true;
+            if (skipReliableExcerpt) window.__medplusSkipReliableExcerptNext = false;
+
             // Cổng render chuỗi: bảo đảm mọi nhánh trả lời HDSD đều cố gắng có hướng dẫn xem mục.
             if (sender !== 'user') {
                 text = ensureHDSDGuideVisibleInFinalAnswer_(text, window.__medplusLastUserQuestion || '');
@@ -12049,6 +11996,10 @@ body.medplus-aux-open .new-badge::after{
                 insertVisibleHDSDGuideAfterRenderedHeader_(c.querySelector('.text-wrapper'), window.__medplusLastUserQuestion || '');
             }
 
+            if (skipReliableExcerpt) {
+                const directWrapper = c.querySelector('.text-wrapper');
+                if (directWrapper) directWrapper.dataset.medplusSkipReliableExcerpt = '1';
+            }
             div.appendChild(c); cm.appendChild(div);
             setTimeout(function() { cm.scrollTo({ top: cm.scrollHeight, behavior: 'smooth' }); }, 100);
         }
@@ -12859,6 +12810,190 @@ body.medplus-aux-open .new-badge::after{
             return rule;
         }
 
+        /* [MEDPLUS_DASHED_EXACT_STANDARD_RENDER] */
+        /*
+         * CỔNG TÊN BIỆT DƯỢC CÓ DẤU GẠCH NỐI
+         *
+         * Mục tiêu của cổng này chỉ là khóa đúng BIỆT DƯỢC trước luồng hoạt chất.
+         * Sau khi khóa được thuốc, câu trả lời vẫn dùng đúng bộ render chuẩn:
+         * header HDSD + hướng dẫn + trích dẫn + danh mục/ nút XEM HDSD.
+         * Không gọi AI, không dùng MiniRAG và không thay đổi luồng của thuốc khác.
+         */
+        function medplusDashedBrandKey_(value) {
+            return removeAccents(String(value || ''))
+                .replace(/[\-‐‑‒–—−]/g, ' ')
+                .replace(/[^a-z0-9]+/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function medplusDashedLabel_(value) {
+            return String(value || '')
+                .replace(/\s+/g, ' ')
+                .replace(/\s*[:：]\s*$/, '')
+                .trim();
+        }
+
+        function medplusFindExactDashedBrand_(question, sourceDrugs) {
+            if (!isHDSDContentQuestion_(question)) return null;
+            const q = medplusDashedBrandKey_(question);
+            const subject = medplusDashedBrandKey_(stripHDSDIntentTermsForDrugSubject_(question || ''));
+            if (!q || !subject) return null;
+
+            const matches = dedupeDrugs_(sourceDrugs || []).filter(function(drug) {
+                const original = String((drug && (drug.brand || drug.name)) || '');
+                // Cổng này chỉ giải quyết các tên có ít nhất một dấu gạch nối trong dữ liệu gốc.
+                if (!/[\-‐‑‒–—−]/.test(original)) return false;
+                const brandKey = medplusDashedBrandKey_(original);
+                if (!brandKey || brandKey.length < 6) return false;
+                return subject === brandKey || q === brandKey
+                    || (' ' + q + ' ').indexOf(' ' + brandKey + ' ') >= 0
+                    || (' ' + subject + ' ').indexOf(' ' + brandKey + ' ') >= 0;
+            });
+            return matches.length === 1 ? matches[0] : null;
+        }
+
+        function medplusPlainHDSDBlock_(block) {
+            if (!block) return '';
+            const own = String(hdsdBlockOwnPlainText_(block) || '').replace(/\s+/g, ' ').trim();
+            const children = hdsdBlockChildren_(block) || [];
+            const extra = children.map(medplusPlainHDSDBlock_).filter(Boolean).join('\n');
+            return [own, extra].filter(Boolean).join('\n').trim();
+        }
+
+        function medplusSectionPath_(label) {
+            const m = String(label || '').trim().match(/^(\d+)\.(\d+)\.?(?:\s|$)/);
+            return m ? { parent: Number(m[1]), child: Number(m[2]) } : null;
+        }
+
+        function medplusParentNumber_(label) {
+            const m = String(label || '').trim().match(/^(\d+)\.(?!\d)/);
+            return m ? Number(m[1]) : null;
+        }
+
+        function medplusQuestionSectionTerms_(question) {
+            const q = medplusDashedBrandKey_(question);
+            if (/\blieu\s+dung\b/.test(q)) return ['lieu dung'];
+            if (/\bcach\s+(?:su\s+)?dung\b|\bduong\s+dung\b/.test(q)) return ['cach dung', 'duong dung'];
+            if (/\bhan\s+(?:su\s+)?dung\b/.test(q)) return ['han dung'];
+            if (/\bdieu\s+kien\s+bao\s+quan\b|\bbao\s+quan\b/.test(q)) return ['dieu kien bao quan', 'bao quan'];
+            if (/\bquy\s+cach\b|\bdong\s+goi\b/.test(q)) return ['quy cach dong goi', 'quy cach'];
+            if (/\bchi\s+dinh\b|\bcong\s+dung\b/.test(q)) return ['chi dinh'];
+            if (/\bchong\s+chi\s+dinh\b/.test(q)) return ['chong chi dinh'];
+            if (/\btac\s+dung\s+(?:khong\s+mong\s+muon|phu)\b|\badr\b/.test(q)) return ['tac dung khong mong muon'];
+            if (/\btuong\s+ky\b/.test(q)) return ['tuong ky'];
+            if (/\btuong\s+tac\b/.test(q)) return ['tuong tac'];
+            return [];
+        }
+
+        /*
+         * Đọc cấu trúc số trong JSON:
+         * 6. Mục cha
+         * 6.1. Phần con -> mọi block sau nó cho đến 6.2. là nội dung của 6.1
+         * 6.2. Phần con -> mọi block sau nó cho đến mục mới 7. là nội dung của 6.2
+         */
+        function medplusBuildNumberedHDSDSections_(jsonData) {
+            const result = [];
+            const topBlocks = (jsonData && Array.isArray(jsonData.blocks)) ? jsonData.blocks : [];
+            topBlocks.forEach(function(parentBlock) {
+                const parentRaw = hdsdBlockOwnPlainText_(parentBlock);
+                const parentNo = medplusParentNumber_(parentRaw);
+                if (parentNo === null) return;
+                const children = hdsdBlockChildren_(parentBlock) || [];
+                if (!children.length) return;
+
+                const sections = [];
+                let current = null;
+                children.forEach(function(child) {
+                    const own = hdsdBlockOwnPlainText_(child);
+                    const path = medplusSectionPath_(own);
+                    if (path && path.parent === parentNo) {
+                        current = {
+                            label: medplusDashedLabel_(own),
+                            path: path,
+                            blocks: []
+                        };
+                        sections.push(current);
+                        return;
+                    }
+                    if (current) current.blocks.push(child);
+                });
+                if (sections.length) {
+                    result.push({
+                        label: medplusDashedLabel_(parentRaw),
+                        number: parentNo,
+                        sections: sections
+                    });
+                }
+            });
+            return result;
+        }
+
+        function medplusPickNumberedHDSDSection_(jsonData, question) {
+            const terms = medplusQuestionSectionTerms_(question);
+            if (!terms.length) return null;
+            const parents = medplusBuildNumberedHDSDSections_(jsonData);
+            let best = null;
+            let bestScore = -1;
+            parents.forEach(function(parent) {
+                const parentKey = medplusDashedBrandKey_(parent.label);
+                parent.sections.forEach(function(section) {
+                    const sectionKey = medplusDashedBrandKey_(section.label);
+                    let score = 0;
+                    terms.forEach(function(term) {
+                        if (sectionKey.indexOf(term) >= 0) score += 1000;
+                        if (parentKey.indexOf(term) >= 0) score += 100;
+                    });
+                    // Khi cả parent và section có cùng cụm (ví dụ mục 6 có "liều dùng"),
+                    // luôn ưu tiên section có số 6.1/6.2 vì đây mới là phần người dùng hỏi.
+                    if (score > bestScore) {
+                        bestScore = score;
+                        best = { parent: parent, section: section };
+                    }
+                });
+            });
+            return bestScore > 0 ? best : null;
+        }
+
+        function medplusRenderNumberedParentExcerpt_(picked) {
+            if (!picked || !picked.parent || !picked.section) return '';
+            const blocks = [];
+            blocks.push('**' + medplusDashedLabel_(picked.parent.label) + '**');
+            picked.parent.sections.forEach(function(section) {
+                blocks.push('**' + medplusDashedLabel_(section.label) + '**');
+                const body = (section.blocks || []).map(medplusPlainHDSDBlock_).filter(Boolean).join('\n\n').trim();
+                if (body) blocks.push(body);
+            });
+            return blocks.join('\n\n').trim();
+        }
+
+        async function medplusBuildExactDashedBrandStandardAnswer_(question, sourceDrugs) {
+            const drug = medplusFindExactDashedBrand_(question, sourceDrugs);
+            if (!drug || !drug.link) return '';
+            const json = await loadHDSDJsonForDrug_(drug);
+            if (!json) return '';
+            const picked = medplusPickNumberedHDSDSection_(json, question);
+            if (!picked) return '';
+
+            const parentLabel = medplusDashedLabel_(picked.parent.label);
+            const focusLabel = medplusDashedLabel_(picked.section.label);
+            const excerpt = medplusRenderNumberedParentExcerpt_(picked);
+            if (!parentLabel || !focusLabel || !excerpt) return '';
+
+            const resultDrug = Object.assign({}, drug, {
+                _hdsdChatFocus: focusLabel,
+                _hdsdChatFocusParent: parentLabel
+            });
+            const answer = '**Theo nội dung tờ HDSD ' + cleanDrugFieldForChat_(drug.brand) + ':**\n\n'
+                + 'Hãy xem chi tiết ở phần **' + focusLabel + '** trong mục **' + parentLabel + '**.\n\n'
+                + excerpt;
+            // Không dùng appendDeterministicDrugListToAnswer_ tại đây vì hàm đó chuẩn hóa
+            // lại từng dòng đáp án tự do; với mục HDSD đánh số (6., 6.1., 6.2.) nó có thể
+            // làm thay đổi bố cục đoạn trích. Dùng chính khối danh mục chuẩn, nhưng giữ nguyên
+            // toàn bộ câu trả lời HDSD đã dựng từ JSON.
+            return answer + buildDeterministicDrugListForChat_([resultDrug]);
+        }
+
         async function sendMessage(isRetry, keyIdx, modelIdx) {
             if (isRetry === undefined) isRetry = false;
             if (keyIdx === undefined) keyIdx = 0;
@@ -12901,6 +13036,20 @@ body.medplus-aux-open .new-badge::after{
                 const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/" + AI_MODELS[modelIdx] + ":generateContent?key=" + API_KEYS[keyIdx];
                 
                 const dataForRag = getCurrentDrugSource_(rawData);
+
+                // Khóa tên biệt dược có dấu gạch nối trước luồng hoạt chất.
+                // Câu trả lời vẫn đi qua displayMessage + render danh mục chuẩn,
+                // chỉ bỏ các patch trích dẫn DOM chạy muộn cho riêng bubble này.
+                const exactDashedStandardAnswer = await medplusBuildExactDashedBrandStandardAnswer_(userMessage, dataForRag);
+                if (exactDashedStandardAnswer) {
+                    window.__medplusSkipReliableExcerptNext = true;
+                    clearInterval(timerInterval);
+                    typingIndicator.style.display = 'none';
+                    displayMessage(exactDashedStandardAnswer, 'ai');
+                    sendButton.disabled = false;
+                    return;
+                }
+
                 const drugQueryInfo = getDrugQueryInfo_(userMessage, dataForRag);
                 const questionScope = await classifyQuestionScopeHybrid_(userMessage, drugQueryInfo);
                 const isHealthcareQuestion = questionScope && questionScope.scope === 'medical';
@@ -16387,6 +16536,7 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
     }
 
     async function ensureExcerptInBubble(wrapper, question) {
+        if (wrapper && wrapper.dataset && wrapper.dataset.medplusSkipReliableExcerpt === '1') return;
         if (!wrapper || !question || typeof isHDSDContentQuestion_ !== 'function' || !isHDSDContentQuestion_(question)) return;
         const headers = Array.prototype.slice.call(wrapper.querySelectorAll('p')).filter(function(p) {
             return norm(p.textContent || '').indexOf('theo noi dung to hdsd') !== -1;
