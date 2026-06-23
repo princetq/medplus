@@ -9243,6 +9243,51 @@ body.medplus-aux-open .new-badge::after{
 
         // Nếu người dùng đã gõ trúng rõ tên biệt dược trong câu hỏi,
         // chỉ dùng đúng biệt dược đó để trích HDSD. Tránh kéo nhầm thuốc có tên/hoạt chất gần giống.
+
+        /* ============================================================
+           CỔNG HDSD THEO TÊN BIỆT DƯỢC
+           - Chỉ cho phép trích dẫn HDSD khi người dùng gõ đúng tên thuốc/biệt dược.
+           - Không dùng tên hoạt chất để kích hoạt HDSD. Ví dụ: “imipenem” chỉ trả lời
+             kiến thức tổng hợp + danh sách thuốc chứa imipenem, không trích Cepemid/Raxadin/Kabi.
+           - Có cho phép bỏ hàm lượng trong tên biệt dược, ví dụ “Entecavir STELLA”
+             khớp “Entecavir STELLA 0.5 mg”.
+           ============================================================ */
+        function getStrictBrandMatchesForHDSD_(question, drugs) {
+            const q = normalizeDrugMatchText_(question || '');
+            const subject = normalizeDrugMatchText_(stripHDSDIntentTermsForDrugSubject_(question || ''));
+            const compactQ = q.replace(/\s+/g, '');
+            const compactSubject = subject.replace(/\s+/g, '');
+            const matches = [];
+
+            (drugs || []).forEach(function(d) {
+                if (!d || !d.brand) return;
+                const brand = normalizeDrugMatchText_(d.brand);
+                if (!brand || brand.length < 4) return;
+                const brandNoStrength = brand
+                    .replace(/\b\d+(?:[\s\/.-]*(?:mg|ml|g|mcg|ui|iu|%)?)\b/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+                const variants = [brand];
+                if (brandNoStrength && brandNoStrength.length >= 4 && brandNoStrength !== brand) variants.push(brandNoStrength);
+
+                const hit = variants.some(function(variant) {
+                    const compact = variant.replace(/\s+/g, '');
+                    return q === variant
+                        || subject === variant
+                        || hasNormalizedPhrase_(q, variant)
+                        || hasNormalizedPhrase_(subject, variant)
+                        || (compact.length >= 6 && (compactQ.indexOf(compact) >= 0 || compactSubject.indexOf(compact) >= 0));
+                });
+                if (hit) matches.push(d);
+            });
+            return dedupeDrugs_(matches);
+        }
+
+        function shouldUseHDSDExcerptForExactBrand_(question, drugs) {
+            if (!isHDSDContentQuestion_(question)) return false;
+            return getStrictBrandMatchesForHDSD_(question, drugs).length > 0;
+        }
+
         function getExplicitBrandMatchesInQuestion_(question, drugs) {
             const q = normalizeDrugMatchText_(question || '');
             const subject = stripHDSDIntentTermsForDrugSubject_(question || '');
@@ -9435,9 +9480,9 @@ body.medplus-aux-open .new-badge::after{
 
         async function buildHDSDInternalContextForDrugs_(userMessage, selectedDrugs) {
             let drugs = dedupeDrugs_(selectedDrugs || []).filter(function(d) { return d && d.link; });
-            const explicitBrandMatches = getExplicitBrandMatchesInQuestion_(userMessage, drugs);
-            if (explicitBrandMatches.length === 1) drugs = explicitBrandMatches;
-            drugs = drugs.slice(0, 3);
+            const explicitBrandMatches = getStrictBrandMatchesForHDSD_(userMessage, drugs);
+            if (!explicitBrandMatches.length) return null;
+            drugs = explicitBrandMatches.slice(0, 3);
             if (!drugs.length || !isHDSDContentQuestion_(userMessage)) return null;
             let items = [];
             for (let i = 0; i < drugs.length; i++) {
@@ -9479,13 +9524,15 @@ body.medplus-aux-open .new-badge::after{
         async function composeHDSDGroundedAnswerWithAI_(userMessage, selectedDrugs) {
             // HDSD không được phép rơi xuống nhánh AI viết tự do. Dù JSON/outline tạm tải lỗi,
             // vẫn phải trả câu hướng dẫn xác định theo câu hỏi để người dùng biết cần xem mục nào.
+            const exactBrandDrugs = getStrictBrandMatchesForHDSD_(userMessage, selectedDrugs || []);
+            if (!exactBrandDrugs.length) return '';
             const fallbackFocus = buildQuestionOnlyHDSDGuideMeta_(userMessage) || null;
-            let hdsdItems = await buildHDSDInternalContextForDrugs_(userMessage, selectedDrugs);
+            let hdsdItems = await buildHDSDInternalContextForDrugs_(userMessage, exactBrandDrugs);
 
             // Cổng dự phòng cuối: giữ đúng thuốc đã được hệ thống chọn và gắn focus theo ý định câu hỏi.
             // Điều này chặn tình trạng “Theo nội dung tờ HDSD ...:” xuất hiện một mình khi JSON chưa trả về.
             if (!hdsdItems || !hdsdItems.length) {
-                hdsdItems = dedupeDrugs_(selectedDrugs || []).filter(function(d) { return d && d.link; }).slice(0, 3)
+                hdsdItems = dedupeDrugs_(exactBrandDrugs || []).filter(function(d) { return d && d.link; }).slice(0, 3)
                     .map(function(d) { return { drug: d, excerpt: '', hdsdFocus: fallbackFocus }; });
             }
             if (!hdsdItems || !hdsdItems.length) return '';
@@ -9523,7 +9570,7 @@ body.medplus-aux-open .new-badge::after{
 
         async function composeDrugAnswerWithAI_(userMessage, selectedDrugs, scanMeta) {
             const drugs = selectedDrugs || [];
-            if (isHDSDContentQuestion_(userMessage) && drugs.length > 0 && drugs.length <= 3) {
+            if (shouldUseHDSDExcerptForExactBrand_(userMessage, drugs) && drugs.length > 0 && drugs.length <= 3) {
                 const hdsdGroundedAnswer = await composeHDSDGroundedAnswerWithAI_(userMessage, drugs);
                 if (hdsdGroundedAnswer) return hdsdGroundedAnswer;
             }
@@ -12841,7 +12888,7 @@ body.medplus-aux-open .new-badge::after{
                     // Câu hỏi về nội dung tờ HDSD không được đi thẳng sang đáp án danh mục tĩnh.
                     // Đây là đường đi trước đây làm mất phần hướng dẫn dù nút XEM HDSD vẫn có focus đúng.
                     // Tất cả thuốc đều phải qua bộ AI chọn MỤC/PHẦN thật của chính tờ HDSD trước khi render.
-                    if (isHDSDContentQuestion_(userMessage) && finalDrugs.length > 0) {
+                    if (shouldUseHDSDExcerptForExactBrand_(userMessage, finalDrugs) && finalDrugs.length > 0) {
                         document.getElementById('typing-text').innerText = "MedPlus AI đang xác định đúng mục trong tờ HDSD...";
                         const hdsdReply = await composeHDSDGroundedAnswerWithAI_(userMessage, finalDrugs);
                         if (hdsdReply) {
@@ -12853,7 +12900,9 @@ body.medplus-aux-open .new-badge::after{
                         }
                     }
 
-                    const localReply = buildStructuredDrugAnswer_(drugQueryInfo, finalDrugs);
+                    // Khi người dùng hỏi hoạt chất (không gõ đúng tên biệt dược), phải trả lời
+                    // kiến thức tổng hợp trước rồi JavaScript mới gắn danh sách thuốc trong danh mục.
+                    const localReply = await composeDrugAnswerWithAI_(userMessage, finalDrugs, drugQueryInfo);
                     clearInterval(timerInterval);
                     typingIndicator.style.display = 'none';
                     displayMessage(localReply, 'ai');
@@ -14979,9 +15028,9 @@ function medplusBuildActualHDSDGuideText_(meta) {
 // Ghi đè nhánh trả lời HDSD: chỉ dùng nhãn mục/phần lấy từ tờ HDSD của CHÍNH thuốc đó.
 async function composeHDSDGroundedAnswerWithAI_(userMessage, selectedDrugs) {
     let drugs = dedupeDrugs_(selectedDrugs || []).filter(function(d) { return d && d.link; });
-    const explicitBrandMatches = getExplicitBrandMatchesInQuestion_(userMessage, drugs);
-    if (explicitBrandMatches.length === 1) drugs = explicitBrandMatches;
-    drugs = drugs.slice(0, 3);
+    const explicitBrandMatches = getStrictBrandMatchesForHDSD_(userMessage, drugs);
+    if (!explicitBrandMatches.length) return '';
+    drugs = explicitBrandMatches.slice(0, 3);
     if (!drugs.length || !isHDSDContentQuestion_(userMessage)) return '';
 
     const items = [];
@@ -15443,9 +15492,9 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
     /* AI vẫn là nguồn duy nhất quyết định parentId/focusId; chỉ thay cách trình bày bằng trích dẫn mục lớn. */
     window.composeHDSDGroundedAnswerWithAI_ = async function(userMessage, selectedDrugs) {
         let drugs = dedupeDrugs_(selectedDrugs || []).filter(function(d) { return d && d.link; });
-        const explicitBrandMatches = getExplicitBrandMatchesInQuestion_(userMessage, drugs);
-        if (explicitBrandMatches.length === 1) drugs = explicitBrandMatches;
-        drugs = drugs.slice(0, 3);
+        const explicitBrandMatches = getStrictBrandMatchesForHDSD_(userMessage, drugs);
+        if (!explicitBrandMatches.length) return '';
+        drugs = explicitBrandMatches.slice(0, 3);
         if (!drugs.length || !isHDSDContentQuestion_(userMessage)) return '';
 
         const items = [];
@@ -15514,7 +15563,7 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
                 medplusUpgradeLegacyHDSDChatButton_(button);
                 const canonicalUrl = medplusDecodeHDSDToken_(button.dataset.medplusHdsdUrl || '');
                 const drug = findDrugByHDSDUrl_(canonicalUrl);
-                if (!drug) continue;
+                if (!drug || !shouldUseHDSDExcerptForExactBrand_(userMessage, [drug])) continue;
                 const meta = await medplusResolveActualHDSDFocusForDrug_(drug, userMessage);
                 if (!meta) continue;
                 medplusSetActualHDSDFocusOnButton_(button, meta);
@@ -16031,7 +16080,7 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
             const candidates = (outline.parents || []).map(function(item) {
                 return { parent: item, score: scoreFocusForQuestion(item.parentLabel, question) };
             }).sort(function(a, b) { return b.score - a.score; });
-            parent = candidates.length && candidates[0].score > 0 ? candidates[0].parent : null;
+            parent = candidates.length ? candidates[0].parent : null;
         }
         if (!parent) return null;
 
@@ -16157,24 +16206,7 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
         header.dataset.medplusReliableHeaderStyled = '1';
     }
 
-    function removeLegacyGuideParagraphs(header) {
-        if (!header) return;
-        let cursor = header.nextElementSibling;
-        while (cursor) {
-            const next = cursor.nextElementSibling;
-            if (cursor.classList && cursor.classList.contains('hdsd-parent-excerpt')) break;
-            if (cursor.tagName && String(cursor.tagName).toLowerCase() === 'p') {
-                const t = norm(cursor.textContent || '');
-                if (t.indexOf('hay xem chi tiet o phan') === 0 || t.indexOf('hay doc phan') === 0 || t.indexOf('hay xem chi tiet muc') === 0) {
-                    if (!(cursor.classList && cursor.classList.contains('hdsd-chat-guide'))) cursor.remove();
-                }
-            }
-            cursor = next;
-        }
-    }
-
     function createOrUpdateGuide(header, meta) {
-        removeLegacyGuideParagraphs(header);
         let guide = header.nextElementSibling;
         if (!guide || !guide.classList || !guide.classList.contains('hdsd-chat-guide')) {
             guide = document.createElement('p');
@@ -16192,12 +16224,10 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
     }
 
     function getButtonForHeader(header, allButtons, index) {
-        if (!header || !header.parentElement) return null;
-        const paragraphList = Array.prototype.slice.call(header.parentElement.querySelectorAll('p'));
-        const currentIndex = paragraphList.indexOf(header);
-        const nextHeader = paragraphList.slice(currentIndex + 1).find(function(p) {
-            return norm(p.textContent || '').indexOf('theo noi dung to hdsd') !== -1;
-        }) || null;
+        if (!header) return null;
+        const nextHeader = Array.prototype.slice.call(header.parentElement.querySelectorAll('p')).filter(function(p) {
+            return p !== header && p.compareDocumentPosition(header) & Node.DOCUMENT_POSITION_FOLLOWING;
+        })[0] || null;
         let cursor = header.nextElementSibling;
         while (cursor && cursor !== nextHeader) {
             const found = cursor.matches && cursor.matches('button.hdsd-btn') ? cursor : (cursor.querySelector ? cursor.querySelector('button.hdsd-btn') : null);
@@ -16236,12 +16266,12 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
         const buttons = Array.prototype.slice.call(wrapper.querySelectorAll('button.hdsd-btn'));
         for (let i = 0; i < headers.length; i++) {
             const header = headers[i];
-            if (header.dataset.medplusReliableExcerptDone === '1' || header.dataset.medplusReliableExcerptRunning === '1') continue;
-            header.dataset.medplusReliableExcerptRunning = '1';
+            if (header.dataset.medplusReliableExcerptDone === '1') continue;
+            header.dataset.medplusReliableExcerptDone = '1';
             const button = getButtonForHeader(header, buttons, i);
             const url = canonicalUrlFromButton(button);
             const drug = url && typeof findDrugByHDSDUrl_ === 'function' ? findDrugByHDSDUrl_(url) : null;
-            if (!drug) continue;
+            if (!drug || !shouldUseHDSDExcerptForExactBrand_(question, [drug])) continue;
             try {
                 const meta = await resolveReliableMeta(drug, question);
                 if (!meta) continue;
@@ -16250,10 +16280,6 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
                 applyMetaToButton(button, meta);
                 const existing = header.parentElement.querySelector('.hdsd-parent-excerpt[data-medplus-reliable-excerpt="1"]');
                 if (!existing) {
-                    // Bỏ bản trích dẫn cũ (nếu có) để tránh lặp nội dung; chỉ giữ bản được dựng theo outline thực tế.
-                    Array.prototype.slice.call(header.parentElement.querySelectorAll('.hdsd-parent-excerpt:not([data-medplus-reliable-excerpt="1"])')).forEach(function(oldNode) {
-                        oldNode.remove();
-                    });
                     const html = buildExcerptHtml(meta);
                     if (html) {
                         const holder = document.createElement('div');
@@ -16262,13 +16288,8 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
                         if (node) guide.insertAdjacentElement('afterend', node);
                     }
                 }
-                if (header.parentElement.querySelector('.hdsd-parent-excerpt[data-medplus-reliable-excerpt="1"]')) {
-                    header.dataset.medplusReliableExcerptDone = '1';
-                }
             } catch (e) {
                 // Không làm hỏng câu trả lời hiện có nếu tờ HDSD tải/parse lỗi.
-            } finally {
-                delete header.dataset.medplusReliableExcerptRunning;
             }
         }
     }
@@ -16304,5 +16325,42 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
 })();
 </script>
 
+
+<script id="medplus-hdsd-exact-brand-only-guard">
+/* Chốt cuối: trích dẫn HDSD chỉ dành cho câu hỏi có đúng tên biệt dược.
+   Hoạt chất/nhóm thuốc luôn đi qua câu trả lời kiến thức tổng hợp + danh mục. */
+(function(){
+    if (typeof window.composeHDSDGroundedAnswerWithAI_ === 'function') {
+        const previousHDSDComposer = window.composeHDSDGroundedAnswerWithAI_;
+        window.composeHDSDGroundedAnswerWithAI_ = async function(question, drugs) {
+            if (typeof shouldUseHDSDExcerptForExactBrand_ === 'function'
+                && !shouldUseHDSDExcerptForExactBrand_(question, drugs || [])) {
+                return '';
+            }
+            return previousHDSDComposer.apply(this, arguments);
+        };
+    }
+
+    const previousReliableExcerpt = window.medplusEnsureReliableHDSDExcerpt_;
+    if (typeof previousReliableExcerpt === 'function') {
+        window.medplusEnsureReliableHDSDExcerpt_ = async function(wrapper, question) {
+            if (typeof shouldUseHDSDExcerptForExactBrand_ === 'function') {
+                const buttons = wrapper && wrapper.querySelectorAll ? Array.prototype.slice.call(wrapper.querySelectorAll('button.hdsd-btn')) : [];
+                const hasExactBrandButton = buttons.some(function(btn) {
+                    try {
+                        const raw = String(btn.getAttribute('onclick') || '');
+                        const m = raw.match(/openHDSDFromChat\('([^']*)'/i);
+                        const url = m ? decodeURIComponent(m[1]) : String(btn.dataset && btn.dataset.medplusHdsdUrl || '');
+                        const drug = typeof findDrugByHDSDUrl_ === 'function' ? findDrugByHDSDUrl_(url) : null;
+                        return drug && shouldUseHDSDExcerptForExactBrand_(question, [drug]);
+                    } catch(e) { return false; }
+                });
+                if (!hasExactBrandButton) return;
+            }
+            return previousReliableExcerpt.apply(this, arguments);
+        };
+    }
+})();
+</script>
 </body>
 </html>
