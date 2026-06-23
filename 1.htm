@@ -6730,7 +6730,7 @@ body.medplus-aux-open .new-badge::after{
 
         // Worker tách riêng thành file tĩnh để hoạt động ổn định trên GitHub Pages/CSP.
         // Giữ file này cùng thư mục với file HTML khi deploy.
-        const MEDPLUS_CATALOG_WORKER_PATH_ = './medplus-catalog-worker.js';
+        const MEDPLUS_CATALOG_WORKER_PATH_ = './medplus-catalog-worker.js?v=active-component-coverage-v1';
 
 
         function ensureMedplusCatalogWorker_() {
@@ -6819,7 +6819,12 @@ body.medplus-aux-open .new-badge::after{
                 await primeMedplusCatalogWorker_(allDrugs);
                 const byRef = new Map(); allDrugs.forEach(function(d, i) { byRef.set(d, i); });
                 const selectedIndexes = (aiDrugs || []).map(function(d) { return byRef.get(d); }).filter(function(i) { return Number.isInteger(i); });
-                const result = await callMedplusCatalogWorker_('expand', { question: userMessage, selectedIndexes: selectedIndexes, directIntent: true });
+                const result = await callMedplusCatalogWorker_('expand', {
+                    question: userMessage,
+                    selectedIndexes: selectedIndexes,
+                    directIntent: true,
+                    activeComponentCandidates: getExplicitActiveComponentCandidates_(userMessage, allDrugs)
+                });
                 if (result && Array.isArray(result.indexes) && result.indexes.length) return result.indexes.map(function(i) { return allDrugs[i]; }).filter(Boolean);
             } catch (error) { console.warn('Catalog Worker expand fallback:', error); }
             return getHybridLocalFinalDrugs_(userMessage, info, aiDrugs);
@@ -7000,6 +7005,80 @@ body.medplus-aux-open .new-badge::after{
                 brandOverrides: ['3b', '3b inj', '3b injection', 'vitamin 3b', 'vitamin 3b inj', 'vitamin 3b injection']
             }
         ];
+
+        // =====================================================================
+        // MỞ RỘNG THEO THÀNH PHẦN HOẠT CHẤT TỪ CHÍNH DANH MỤC
+        // ---------------------------------------------------------------------
+        // Alias tĩnh rất hữu ích cho INN/USAN (Paracetamol/Acetaminophen,
+        // Vitamin K1/Phytonadione...), nhưng không thể liệt kê trước mọi hoạt
+        // chất xuất hiện trong các chế phẩm phối hợp. Ví dụ người dùng hỏi
+        // "Imipenem là thuốc gì?" trong khi cột hoạt chất ghi
+        // "Imipenem/Cilastatin". Các hàm dưới đây dùng đúng CỤM từ người dùng
+        // nhập để dò trực tiếp trong cột Hoạt chất của toàn danh mục.
+        // Không dò theo tên biệt dược, không fuzzy, không suy đoán.
+        // =====================================================================
+        const MEDPLUS_ACTIVE_COMPONENT_QUERY_NOISE_WORDS_ = new Set([
+            'thuoc', 'danh', 'muc', 'benh', 'vien', 'hien', 'co', 'khong',
+            'liet', 'ke', 'ten', 'cac', 'nhung', 'cho', 'toi', 'xin', 'hoi',
+            'giup', 'la', 'gi', 'nao', 'voi', 'trong', 'tai', 'cua', 've',
+            'dung', 'lieu', 'cach', 'tac', 'cong', 'chi', 'dinh', 'chong',
+            'than', 'tuong', 'hdsd', 'huong', 'dan', 'su', 'bao', 'quan',
+            'qua', 'the', 'nhu'
+        ]);
+
+        function normalizeExplicitActiveComponentSubject_(userMessage) {
+            let subject = normalizeDrugMatchText_(getDrugSubjectForMatching_(userMessage));
+            subject = subject
+                .split(/\s+/)
+                .filter(function(word) {
+                    return word && !MEDPLUS_ACTIVE_COMPONENT_QUERY_NOISE_WORDS_.has(word);
+                })
+                .join(' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+            return subject;
+        }
+
+        function isSafeExplicitActiveComponentCandidate_(candidate) {
+            const key = normalizeDrugMatchText_(candidate);
+            if (!key || key.length < 4) return false;
+            const words = key.split(/\s+/).filter(Boolean);
+            if (!words.length || words.length > 7) return false;
+            return words.some(function(word) {
+                return word.length >= 4 && !MEDPLUS_ACTIVE_COMPONENT_QUERY_NOISE_WORDS_.has(word);
+            });
+        }
+
+        function getExplicitActiveComponentCandidates_(userMessage, catalog) {
+            const source = catalog || [];
+            if (!source.length) return [];
+            const primary = normalizeExplicitActiveComponentSubject_(userMessage);
+            if (!isSafeExplicitActiveComponentCandidate_(primary)) return [];
+
+            // Chỉ chấp nhận candidate nếu nó xuất hiện nguyên cụm trong ít nhất
+            // một ô Hoạt chất. Nhờ đó "Imipenem" khớp Imipenem/Cilastatin,
+            // còn tên biệt dược hoặc từ bệnh học không bị biến thành hoạt chất.
+            const activeHit = source.some(function(drug) {
+                return hasNormalizedPhrase_(normalizeDrugMatchText_(drug && drug.active), primary);
+            });
+            return activeHit ? [primary] : [];
+        }
+
+        function getCatalogDrugsContainingExplicitActiveComponent_(userMessage, catalog) {
+            const source = catalog || [];
+            const candidates = getExplicitActiveComponentCandidates_(userMessage, source);
+            if (!candidates.length) return [];
+
+            const hits = [];
+            candidates.forEach(function(candidate) {
+                source.forEach(function(drug) {
+                    const active = normalizeDrugMatchText_(drug && drug.active);
+                    if (active && hasNormalizedPhrase_(active, candidate)) hits.push(drug);
+                });
+            });
+
+            return sortDrugsByBrand_(dedupeDrugs_(hits));
+        }
 
         function getCatalogBrandActiveFamilyOverride_(drug) {
             const brand = normalizeDrugMatchText_(drug && drug.brand);
@@ -7382,11 +7461,20 @@ body.medplus-aux-open .new-badge::after{
                 return getCombinationDrugsMatchingFamilies_(comboProfile.families, catalog);
             }
 
+            // Lớp 1: family/alias đã biết (Vitamin K1, Paracetamol...): giữ
+            // thứ tự thuốc đơn trước, thuốc phối hợp sau như cơ chế cũ.
             const matchedFamilies = getQuestionExplicitActiveFamilies_(userMessage, catalog);
-            // Không tự ý mở rộng nếu alias trỏ tới nhiều hoạt chất khác nhau.
-            if (matchedFamilies.size !== 1) return [];
-            const family = Array.from(matchedFamilies)[0];
-            return buildCompleteRelatedDrugSetForActiveFamily_(family, catalog);
+            const familyMatches = matchedFamilies.size === 1
+                ? buildCompleteRelatedDrugSetForActiveFamily_(Array.from(matchedFamilies)[0], catalog)
+                : [];
+
+            // Lớp 2: hoạt chất là một THÀNH PHẦN bên trong chế phẩm phối hợp mà
+            // không có alias tĩnh, như Imipenem trong Imipenem/Cilastatin. Dò
+            // nguyên cụm trong cột Hoạt chất để trả đủ mọi biệt dược cùng chứa
+            // thành phần người dùng hỏi. Đây là cơ chế chung cho toàn danh mục.
+            const componentMatches = getCatalogDrugsContainingExplicitActiveComponent_(userMessage, catalog);
+
+            return dedupeDrugs_(familyMatches.concat(componentMatches));
         }
 
         /*
@@ -11740,7 +11828,7 @@ body.medplus-aux-open .new-badge::after{
         }
 
         function buildHybridOnePassCacheKey_(userMessage, info, catalogDrugs) {
-            return 'hybrid-one-pass-v6-answer-first-render-gate|'
+            return 'hybrid-one-pass-v7-active-component-coverage|'
                 + removeAccents(userMessage || '')
                 + '|' + ((catalogDrugs && catalogDrugs.length) || 0)
                 + '|' + (medicineCount || 0)
@@ -11767,7 +11855,7 @@ body.medplus-aux-open .new-badge::after{
                 + '- Chỉ được chọn số ID có trong <DANH_MUC>. Không tạo ID, tên thuốc, hoạt chất, URL hoặc HDSD.\n'
                 + '- Chỉ chọn thuốc nếu người dùng hỏi rõ danh mục bệnh viện/liệt kê thuốc hoặc hỏi trực tiếp một thuốc/hoạt chất đã có trong <DANH_MUC>. Với câu hỏi kiến thức bệnh học chung, ids phải là [].\n'
                 + '- Khi hỏi danh sách/nhóm thuốc, chỉ chọn thuốc tác dụng TRỰC TIẾP, ĐÚNG MỤC TIÊU và CÙNG CHIỀU. Loại thuốc cùng cơ quan/bệnh cảnh nhưng ngược tác dụng: cầm máu không chọn chống đông/tiêu sợi huyết; chống đông không chọn cầm máu; nhuận tràng không chọn cầm tiêu chảy; hạ áp không chọn thuốc làm tăng huyết áp.\n'
-                + '- Khi hỏi một hoạt chất hoặc alias, chọn mọi thuốc đơn hoạt chất tương đương VÀ mọi chế phẩm phối hợp có CHỨA hoạt chất đó trong danh sách. Khi hỏi tên tổ hợp như 3B/B1-B6-B12, chỉ chọn chế phẩm có ĐỦ các thành phần của tổ hợp, không chọn thuốc đơn lẻ.\n'
+                + '- Khi hỏi một hoạt chất hoặc alias, chọn mọi thuốc đơn hoạt chất tương đương VÀ mọi chế phẩm phối hợp có CHỨA hoạt chất đó trong danh sách. Quy tắc này cũng áp dụng khi hoạt chất chỉ là MỘT THÀNH PHẦN của tên phối hợp, ví dụ Imipenem trong Imipenem/Cilastatin. Khi hỏi tên tổ hợp như 3B/B1-B6-B12, chỉ chọn chế phẩm có ĐỦ các thành phần của tổ hợp, không chọn thuốc đơn lẻ.\n'
                 + '- Nếu không có thuốc phù hợp, ids là [].\n\n'
                 + 'QUY TẮC ANSWER:\n'
                 + '- Trường answer là BẮT BUỘC khi scope = MEDICAL: phải có phần trả lời kiến thức thực sự, tối thiểu 2 câu/ý; không được để rỗng, không chỉ trả ids và không chỉ nhắc danh mục.\n'
