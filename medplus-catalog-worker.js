@@ -14,6 +14,14 @@ function phrase(text, value) {
     return (' ' + text + ' ').indexOf(' ' + value + ' ') >= 0;
 }
 function clean(v) { return String(v || 'Đang cập nhật').replace(/\s+/g, ' ').trim() || 'Đang cập nhật'; }
+function isLikelyConcatenatedCombination(active, families) {
+    const raw = String(active || '');
+    if (/(?:\+|;|\/|\bva\b|\band\b)/i.test(raw)) return true;
+    if ((families || []).length >= 2) return true;
+    const a = norm(raw);
+    const saltHits = a.match(/\b(?:hydroclorid|hydrochloride|hydrochlorid|hcl|hci|sulfat|sulfate|sulphate|phosphat|phosphate|besylat|besilate|besylate|maleat|maleate|mesilat|mesylate|tartrat|tartrate|citrat|citrate|fumarat|fumarate|nitrat|nitrate|oxalat|oxalate|lactat|lactate|gluconat|gluconate|clorid|chloride|bromid|bromide|iodid|iodide)\b/g) || [];
+    return saltHits.length >= 2;
+}
 function activeFamilies(active, brand) {
     const found = new Set();
     const a = norm(active), b = norm(brand), compact = b.replace(/\s+/g, '');
@@ -40,8 +48,9 @@ function activeFamilies(active, brand) {
         }
         if (hit) for (const family of ((profile && profile.families) || [])) found.add(norm(family));
     }
-    // Fallback: giữ nguyên active khi không có alias để vẫn có thể match
-    // chính xác theo chuỗi với các hoạt chất không nằm trong alias list.
+    // Fallback: giữ nguyên active khi không có alias để vẫn có thể
+    // đối chiếu nguyên văn. Việc mở rộng thành phần của chế phẩm phối hợp
+    // được xử lý riêng bởi indexesForExplicitActiveComponents().
     if (!found.size && a) found.add(a);
     return Array.from(found);
 }
@@ -71,7 +80,7 @@ function init(payload) {
         };
         row.brandNorm = norm(row.brand); row.activeNorm = norm(row.active);
         row.families = activeFamilies(row.active, row.brand);
-        row.isCombo = row.families.length >= 2;
+        row.isCombo = isLikelyConcatenatedCombination(row.active, row.families);
         return row;
     });
     allHybridText = textFor(null, 'hybrid');
@@ -99,6 +108,31 @@ function matchingProfile(question) {
     }
     return null;
 }
+
+// Khi người dùng gọi một hoạt chất là THÀNH PHẦN của chế phẩm phối hợp
+// (ví dụ "imipenem" trong "Imipenem/Cilastatin"), tên hoạt chất đó có
+// thể chưa nằm trong alias tĩnh. Các candidate do main thread xác minh
+// từ chính cột Hoạt chất được gửi vào đây; Worker mở rộng tất cả dòng
+// chứa đúng cụm hoạt chất đó, không suy đoán theo tên biệt dược.
+function indexesForExplicitActiveComponents(candidates) {
+    const values = Array.isArray(candidates) ? candidates.map(norm).filter(function(v) {
+        return v && v.length >= 4;
+    }) : [];
+    if (!values.length) return [];
+
+    const hitRows = [];
+    for (const candidate of values) {
+        const rows = catalog.filter(function(row) {
+            return phrase(row.activeNorm, candidate);
+        });
+        if (!rows.length) continue;
+        rows.forEach(function(row) { hitRows.push(row); });
+    }
+
+    return Array.from(new Map(hitRows.map(function(row) { return [row.index, row]; })).values())
+        .sort(function(a, b) { return String(a.brand).localeCompare(String(b.brand), 'vi'); })
+        .map(function(row) { return row.index; });
+}
 function expand(payload) {
     const selected = Array.isArray(payload.selectedIndexes) ? payload.selectedIndexes.filter(i => Number.isInteger(i) && catalog[i]) : [];
     if (!payload.directIntent) return { indexes: Array.from(new Set(selected)), mode: 'selected' };
@@ -110,7 +144,11 @@ function expand(payload) {
         return { indexes: indexes, mode: 'combination' };
     }
     const family = questionFamily(payload.question);
-    if (!family) return { indexes: Array.from(new Set(selected)), mode: 'selected' };
+    if (!family) {
+        const componentIndexes = indexesForExplicitActiveComponents(payload.activeComponentCandidates);
+        if (componentIndexes.length) return { indexes: componentIndexes, mode: 'active-component' };
+        return { indexes: Array.from(new Set(selected)), mode: 'selected' };
+    }
     const singles = [], relatedCombos = [];
     for (const row of catalog) {
         if (row.families.indexOf(family) < 0) continue;
