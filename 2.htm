@@ -16432,5 +16432,130 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
     }
 })();
 </script>
+
+<script id="medplus-hdsd-single-excerpt-owner-patch">
+/* =====================================================================
+   HDSD: chỉ giữ MỘT phần trích dẫn cho mỗi thuốc trong mỗi bubble chat.
+   Bản cũ có hai cơ chế cùng chạy:
+   1) composer cũ chèn .hdsd-parent-excerpt;
+   2) reliable excerpt patch chèn .hdsd-parent-excerpt[data-medplus-reliable-excerpt="1"].
+   Patch này để reliable excerpt là nguồn hiển thị cuối cùng và dọn excerpt cũ
+   sau khi reliable excerpt đã được chèn thành công.
+   ===================================================================== */
+(function(){
+    function normalizeText_(value) {
+        var raw = String(value == null ? '' : value);
+        if (typeof removeAccents === 'function') {
+            try { return removeAccents(raw).replace(/\s+/g, ' ').trim().toLowerCase(); } catch (e) {}
+        }
+        return raw.normalize ? raw.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim().toLowerCase() : raw.replace(/\s+/g, ' ').trim().toLowerCase();
+    }
+
+    function isHDSDHeader_(node) {
+        if (!node || !node.textContent) return false;
+        return normalizeText_(node.textContent).indexOf('theo noi dung to hdsd') !== -1;
+    }
+
+    function sectionNodes_(header) {
+        var nodes = [];
+        var cursor = header ? header.nextElementSibling : null;
+        while (cursor) {
+            if (isHDSDHeader_(cursor)) break;
+            nodes.push(cursor);
+            cursor = cursor.nextElementSibling;
+        }
+        return nodes;
+    }
+
+    function collectExcerptNodes_(nodes) {
+        var result = [];
+        (nodes || []).forEach(function(node) {
+            if (!node || !node.matches) return;
+            if (node.matches('.hdsd-parent-excerpt')) result.push(node);
+            if (node.querySelectorAll) {
+                Array.prototype.forEach.call(node.querySelectorAll('.hdsd-parent-excerpt'), function(el) {
+                    result.push(el);
+                });
+            }
+        });
+        return result.filter(function(node, index, array) { return array.indexOf(node) === index; });
+    }
+
+    function cleanupSection_(header) {
+        var excerpts = collectExcerptNodes_(sectionNodes_(header));
+        if (!excerpts.length) return;
+
+        var reliable = excerpts.filter(function(node) {
+            return node && node.dataset && node.dataset.medplusReliableExcerpt === '1';
+        });
+
+        /* Chỉ xóa bản cũ sau khi bản reliable đã tồn tại. Nếu reliable lỗi,
+           vẫn giữ trích dẫn cũ để người dùng không mất nội dung. */
+        if (!reliable.length) return;
+
+        /* Nếu callback/chạy lại tạo nhiều reliable excerpt, giữ đúng bản đầu tiên. */
+        reliable.slice(1).forEach(function(node) { node.remove(); });
+
+        excerpts.forEach(function(node) {
+            var isReliable = node && node.dataset && node.dataset.medplusReliableExcerpt === '1';
+            if (!isReliable) node.remove();
+        });
+    }
+
+    function cleanupBubble_(wrapper) {
+        if (!wrapper || !wrapper.querySelectorAll) return;
+        var headers = Array.prototype.slice.call(wrapper.querySelectorAll('p')).filter(isHDSDHeader_);
+        headers.forEach(cleanupSection_);
+    }
+
+    function scheduleCleanup_(wrapper) {
+        if (!wrapper) return;
+        [120, 350, 800, 1600, 2800].forEach(function(delay) {
+            setTimeout(function(){ cleanupBubble_(wrapper); }, delay);
+        });
+        if (wrapper.dataset && wrapper.dataset.medplusSingleExcerptObserved === '1') return;
+        if (wrapper.dataset) wrapper.dataset.medplusSingleExcerptObserved = '1';
+        if (typeof MutationObserver === 'undefined') return;
+        var observer = new MutationObserver(function(){ cleanupBubble_(wrapper); });
+        observer.observe(wrapper, { childList: true, subtree: true });
+        setTimeout(function(){ observer.disconnect(); }, 5000);
+    }
+
+    /* Đường render cuối: reliable patch có thể chèn excerpt muộn sau displayMessage. */
+    var previousDisplayMessage = window.displayMessage;
+    if (typeof previousDisplayMessage === 'function') {
+        window.displayMessage = function(text, sender) {
+            var result = previousDisplayMessage.apply(this, arguments);
+            if (sender !== 'user') {
+                setTimeout(function(){
+                    var wrappers = document.querySelectorAll('#chat-messages .ai-message .text-wrapper');
+                    var wrapper = wrappers.length ? wrappers[wrappers.length - 1] : null;
+                    if (wrapper) scheduleCleanup_(wrapper);
+                }, 40);
+            }
+            return result;
+        };
+    }
+
+    /* Đường resolver: chạy sau khi các patch HDSD cũ/reliable hoàn tất. */
+    var previousResolver = window.medplusResolveRenderedHDSDGuides_;
+    if (typeof previousResolver === 'function') {
+        window.medplusResolveRenderedHDSDGuides_ = async function(wrapper, userMessage) {
+            var result = await previousResolver.apply(this, arguments);
+            scheduleCleanup_(wrapper);
+            return result;
+        };
+    }
+
+    /* Cho trường hợp bubble đã tồn tại trước khi patch được nạp. */
+    window.medplusCleanupDuplicateHDSDExcerpt_ = cleanupBubble_;
+    document.addEventListener('DOMContentLoaded', function(){
+        document.querySelectorAll('#chat-messages .ai-message .text-wrapper').forEach(function(wrapper) {
+            scheduleCleanup_(wrapper);
+        });
+    });
+})();
+</script>
+
 </body>
 </html>
