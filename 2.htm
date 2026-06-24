@@ -15837,12 +15837,20 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
             const idx = Number(candidate && candidate.parentIndex);
             if (Number.isFinite(idx) && idx > parentStart && idx < parentEnd) parentEnd = idx;
         });
-        const siblingStarts = (parent.children || []).map(function(child) { return Number(child && child.flatIndex); })
+        /* Khi focus chính là MỤC cha, không được cắt tại PHẦN con đầu tiên.
+           MỤC thường chỉ chứa tiêu đề, còn nội dung thực tế nằm trong các block con.
+           Với focus là PHẦN con, vẫn giữ nguyên phạm vi chính xác như trước. */
+        const focusIsParent = focusIndex === parentStart
+            || (typeof normalizeHDSDFocusNorm_ === 'function'
+                && normalizeHDSDFocusNorm_(meta.focusLabel || '')
+                    === normalizeHDSDFocusNorm_(parent.label || ''));
+        const siblingStarts = focusIsParent ? [] : (parent.children || []).map(function(child) { return Number(child && child.flatIndex); })
             .filter(function(idx) { return Number.isFinite(idx) && idx > focusIndex && idx < parentEnd; })
             .sort(function(x, y) { return x - y; });
-        const focusEnd = siblingStarts.length ? siblingStarts[0] : parentEnd;
+        const focusEnd = focusIsParent ? parentEnd : (siblingStarts.length ? siblingStarts[0] : parentEnd);
+        const regionStart = focusIsParent ? parentStart : focusIndex;
         const region = nodes.filter(function(node) {
-            return Number(node.flatIndex) >= focusIndex && Number(node.flatIndex) < focusEnd && String(node.ownContent || '').trim();
+            return Number(node.flatIndex) >= regionStart && Number(node.flatIndex) < focusEnd && String(node.ownContent || '').trim();
         });
         if (!region.length) return '';
 
@@ -16217,6 +16225,7 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
         if (!node || String(node.tagName || '').toLowerCase() !== 'p') return false;
         const text = normalizedText_(node);
         return text.indexOf('hay xem chi tiet o phan') === 0
+            || text.indexOf('hay xem chi tiet o muc') === 0
             || text.indexOf('hay doc phan') === 0
             || (text.indexOf('xem hdsd') !== -1 && text.indexOf('boi do') !== -1)
             || (text.indexOf('duoc trich dan duoi day') !== -1 && text.indexOf('trong muc') !== -1);
@@ -16634,13 +16643,20 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
         if (!labelsAgree_(focusNode.label || focusNode.ownText || '', meta.focusLabel || '')) return null;
 
         const parentEnd = getParentEnd(meta.outline, parentStart);
-        const siblings = (parent.children || [])
+        /* focusId = parentId nghĩa là người dùng hỏi cả MỤC. MỤC dạng này thường
+           không có body trong chính heading, mà body nằm trong các block con.
+           Do đó phải lấy toàn bộ MỤC đến trước MỤC kế tiếp; chỉ PHẦN con mới
+           được cắt tại sibling tiếp theo. */
+        const focusIsParent = focusStart === parentStart
+            || labelsAgree_(meta.focusLabel || '', parent.label || '');
+        const siblings = focusIsParent ? [] : (parent.children || [])
             .map(function(child) { return Number(child && child.flatIndex); })
             .filter(function(index) { return Number.isFinite(index) && index > focusStart && index < parentEnd; })
             .sort(function(a, b) { return a - b; });
-        const focusEnd = siblings.length ? siblings[0] : parentEnd;
+        const focusEnd = focusIsParent ? parentEnd : (siblings.length ? siblings[0] : parentEnd);
+        const regionStart = focusIsParent ? parentStart : focusStart;
         const region = nodes.filter(function(node) {
-            return Number(node.flatIndex) >= focusStart
+            return Number(node.flatIndex) >= regionStart
                 && Number(node.flatIndex) < focusEnd
                 && String(node.ownContent || '').trim();
         });
@@ -16692,11 +16708,12 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
             header.insertAdjacentElement('afterend', guide);
         }
         const parentText = '<span class="hdsd-guide-parent">' + esc(formatHDSDParentTitleForCitation_(meta.parentLabel)) + '</span>';
-        if (meta.focusLabel) {
+        const focusIsParent = !!meta.focusLabel && labelsAgree_(meta.focusLabel, meta.parentLabel);
+        if (meta.focusLabel && !focusIsParent) {
             guide.innerHTML = 'Hãy xem chi tiết ở phần <span class="hdsd-guide-focus">' + esc(meta.focusLabel)
                 + '</span> trong mục ' + parentText + '.';
         } else {
-            guide.innerHTML = 'Hãy xem chi tiết mục ' + parentText + '.';
+            guide.innerHTML = 'Hãy xem chi tiết ở Mục ' + parentText + '.';
         }
         return guide;
     }
@@ -17153,101 +17170,5 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
 })();
 </script>
 
-
-<!-- MEDPLUS_DISPLAY_ONLY_DUPLICATE_SECTION_LABEL_FIX -->
-<script id="medplus-display-only-duplicate-section-label-fix">
-/*
-  Chỉ chỉnh phần HIỂN THỊ sau cùng của bubble chat.
-  Không sửa meta (focusId/focusLabel/focusIndex/parentId), không sửa hàm trích dẫn,
-  không sửa nút XEM HDSD và không sửa DOM .hdsd-parent-excerpt.
-*/
-(function(){
-    function normalizeGuideTitle_(value) {
-        var text = String(value == null ? '' : value);
-        try {
-            if (typeof removeAccents === 'function') text = removeAccents(text);
-            else if (text.normalize) text = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D');
-        } catch (e) {}
-        return text.toLowerCase()
-            .replace(/^\s*(?:muc|phan)\s*/i, '')
-            .replace(/^\s*\d+(?:\.\d+)*\s*[.)-]?\s*/, '')
-            .replace(/[^a-z0-9]+/g, ' ')
-            .replace(/\s+/g, ' ')
-            .trim();
-    }
-
-    function sameGuideTitle_(left, right) {
-        var a = normalizeGuideTitle_(left);
-        var b = normalizeGuideTitle_(right);
-        return !!a && !!b && a === b;
-    }
-
-    function guideLikeText_(node) {
-        if (!node || String(node.tagName || '').toLowerCase() !== 'p') return false;
-        var text = normalizeGuideTitle_(node.textContent || '');
-        return /^hay xem chi tiet/.test(text);
-    }
-
-    function replaceDuplicatePartLabelOnly_(guide) {
-        if (!guide || !guide.classList || !guide.classList.contains('hdsd-chat-guide')) return false;
-        var focus = guide.querySelector('.hdsd-guide-focus');
-        var parent = guide.querySelector('.hdsd-guide-parent');
-        if (!focus || !parent || !sameGuideTitle_(focus.textContent, parent.textContent)) return false;
-
-        /* Chỉ thay nội dung của chính câu hướng dẫn; không đụng đến trích dẫn HDSD. */
-        var parentText = String(parent.textContent || '').trim();
-        if (!parentText) return false;
-        var parentSpan = document.createElement('span');
-        parentSpan.className = 'hdsd-guide-parent';
-        parentSpan.textContent = parentText;
-        guide.replaceChildren(document.createTextNode('Hãy xem chi tiết ở Mục '), parentSpan, document.createTextNode('.'));
-        guide.dataset.medplusDisplayOnlyDuplicateTitleFixed = '1';
-        return true;
-    }
-
-    function removeOnlyRedundantGuideParagraphs_(wrapper) {
-        if (!wrapper) return;
-        var guides = Array.prototype.slice.call(wrapper.querySelectorAll('p.hdsd-chat-guide'));
-        if (!guides.length) return;
-
-        /*
-          Các nhánh cũ đôi khi còn để một <p> hướng dẫn khác phía sau block trích dẫn.
-          Chỉ xóa paragraph dạng hướng dẫn khi cùng bubble đã có .hdsd-chat-guide;
-          tuyệt đối không xóa .hdsd-parent-excerpt hoặc bất kỳ nội dung trích dẫn nào.
-        */
-        Array.prototype.slice.call(wrapper.querySelectorAll('p')).forEach(function(node) {
-            if (node.classList && node.classList.contains('hdsd-chat-guide')) return;
-            if (!guideLikeText_(node)) return;
-            var inSameBubble = guides.some(function(guide) { return guide.parentElement === node.parentElement; });
-            if (inSameBubble) node.remove();
-        });
-    }
-
-    function normalizeWrapper_(wrapper) {
-        if (!wrapper) return;
-        Array.prototype.slice.call(wrapper.querySelectorAll('p.hdsd-chat-guide')).forEach(replaceDuplicatePartLabelOnly_);
-        removeOnlyRedundantGuideParagraphs_(wrapper);
-    }
-
-    function normalizeAll_() {
-        document.querySelectorAll('#chat-messages .ai-message .text-wrapper').forEach(normalizeWrapper_);
-    }
-
-    var queued = false;
-    function scheduleNormalize_() {
-        if (queued) return;
-        queued = true;
-        setTimeout(function(){ queued = false; normalizeAll_(); }, 0);
-    }
-
-    document.addEventListener('DOMContentLoaded', function(){
-        [0, 80, 300, 900, 1600].forEach(function(delay){ setTimeout(normalizeAll_, delay); });
-        var root = document.getElementById('chat-messages');
-        if (!root || typeof MutationObserver === 'undefined') return;
-        var observer = new MutationObserver(scheduleNormalize_);
-        observer.observe(root, { childList:true, subtree:true });
-    });
-})();
-</script>
 </body>
 </html>
