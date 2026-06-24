@@ -16175,12 +16175,8 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
         return null;
     };
 
-    /*
-     * Chỉ dùng để quyết định câu chữ hiển thị.
-     * Không sửa meta.focusLabel, meta.parentLabel, focusId hoặc focusIndex:
-     * các giá trị gốc vẫn phục vụ trích dẫn và bôi đỏ HDSD.
-     */
-    function sameDisplayedHDSDTitle_(left, right) {
+    /* Chỉ dùng để tạo câu chữ hiển thị; không thay đổi meta, focus/index hay phần trích dẫn. */
+    function titlesSameForGuide_(left, right) {
         function normalizeTitle_(value) {
             let text = String(value == null ? '' : value);
             if (typeof removeAccents === 'function') {
@@ -16202,9 +16198,7 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
 
     function guideText_(meta) {
         if (!meta || !meta.focusLabel || !meta.parentLabel) return '';
-        // Chỉ đổi CÁCH HIỂN THỊ khi “Phần” và “Mục” là cùng một tiêu đề.
-        // Meta giữ nguyên để phần trích dẫn và bôi đỏ không bị ảnh hưởng.
-        if (sameDisplayedHDSDTitle_(meta.focusLabel, meta.parentLabel)) {
+        if (titlesSameForGuide_(meta.focusLabel, meta.parentLabel)) {
             return 'Hãy xem chi tiết ở Mục ' + cleanDrugFieldForChat_(meta.parentLabel) + '.';
         }
         return 'Hãy xem chi tiết ở phần ' + cleanDrugFieldForChat_(meta.focusLabel)
@@ -16218,8 +16212,7 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
     }
     function buildGuideHTML_(meta) {
         if (!meta || !meta.focusLabel || !meta.parentLabel) return '';
-        // Chỉ ẩn nhãn “Phần” bị trùng; không thay đổi dữ liệu focus bên trong meta.
-        if (sameDisplayedHDSDTitle_(meta.focusLabel, meta.parentLabel)) {
+        if (titlesSameForGuide_(meta.focusLabel, meta.parentLabel)) {
             return 'Hãy xem chi tiết ở Mục <span class="hdsd-guide-parent">'
                 + escapeGuideHTML_(cleanDrugFieldForChat_(meta.parentLabel))
                 + '</span>.';
@@ -16253,6 +16246,8 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
         if (!node || String(node.tagName || '').toLowerCase() !== 'p') return false;
         const text = normalizedText_(node);
         return text.indexOf('hay xem chi tiet o phan') === 0
+            || text.indexOf('hay xem chi tiet o muc') === 0
+            || text.indexOf('hay xem chi tiet muc') === 0
             || text.indexOf('hay doc phan') === 0
             || (text.indexOf('xem hdsd') !== -1 && text.indexOf('boi do') !== -1)
             || (text.indexOf('duoc trich dan duoi day') !== -1 && text.indexOf('trong muc') !== -1);
@@ -16720,16 +16715,6 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
         header.dataset.medplusReliableHeaderStyled = '1';
     }
 
-    /*
-     * So sánh chỉ phục vụ giao diện. Không sửa meta để giữ nguyên focus/index
-     * cho trích dẫn và thao tác bôi đỏ khi mở HDSD.
-     */
-    function sameDisplayedHDSDTitle_(left, right) {
-        const a = titleWithoutNumber(left).replace(/^\s*(?:muc|phan)\s*/i, '').replace(/\s+/g, ' ').trim();
-        const b = titleWithoutNumber(right).replace(/^\s*(?:muc|phan)\s*/i, '').replace(/\s+/g, ' ').trim();
-        return !!a && !!b && a === b;
-    }
-
     function createOrUpdateGuide(header, meta) {
         let guide = header.nextElementSibling;
         if (!guide || !guide.classList || !guide.classList.contains('hdsd-chat-guide')) {
@@ -16738,8 +16723,9 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
             header.insertAdjacentElement('afterend', guide);
         }
         const parentText = '<span class="hdsd-guide-parent">' + esc(formatHDSDParentTitleForCitation_(meta.parentLabel)) + '</span>';
-        // focusLabel trùng Mục cha: chỉ đổi câu dẫn, tuyệt đối không xóa/ghi đè meta.
-        if (meta.focusLabel && !sameDisplayedHDSDTitle_(meta.focusLabel, meta.parentLabel)) {
+        const focusTitle = titleWithoutNumber(meta.focusLabel || '');
+        const parentTitle = titleWithoutNumber(meta.parentLabel || '');
+        if (meta.focusLabel && focusTitle && parentTitle && focusTitle !== parentTitle) {
             guide.innerHTML = 'Hãy xem chi tiết ở phần <span class="hdsd-guide-focus">' + esc(meta.focusLabel)
                 + '</span> trong mục ' + parentText + '.';
         } else {
