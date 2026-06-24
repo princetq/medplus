@@ -16175,8 +16175,38 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
         return null;
     };
 
+    /*
+     * Chỉ dùng để quyết định câu chữ hiển thị.
+     * Không sửa meta.focusLabel, meta.parentLabel, focusId hoặc focusIndex:
+     * các giá trị gốc vẫn phục vụ trích dẫn và bôi đỏ HDSD.
+     */
+    function sameDisplayedHDSDTitle_(left, right) {
+        function normalizeTitle_(value) {
+            let text = String(value == null ? '' : value);
+            if (typeof removeAccents === 'function') {
+                try { text = removeAccents(text); } catch (e) {}
+            } else if (text.normalize) {
+                text = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D');
+            }
+            return text.toLowerCase()
+                .replace(/^\s*(?:muc|phan)\s*/i, '')
+                .replace(/^\s*\d+(?:\.\d+)*\s*[.)-]?\s*/, '')
+                .replace(/[^a-z0-9]+/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+        const a = normalizeTitle_(left);
+        const b = normalizeTitle_(right);
+        return !!a && !!b && a === b;
+    }
+
     function guideText_(meta) {
         if (!meta || !meta.focusLabel || !meta.parentLabel) return '';
+        // Chỉ đổi CÁCH HIỂN THỊ khi “Phần” và “Mục” là cùng một tiêu đề.
+        // Meta giữ nguyên để phần trích dẫn và bôi đỏ không bị ảnh hưởng.
+        if (sameDisplayedHDSDTitle_(meta.focusLabel, meta.parentLabel)) {
+            return 'Hãy xem chi tiết ở Mục ' + cleanDrugFieldForChat_(meta.parentLabel) + '.';
+        }
         return 'Hãy xem chi tiết ở phần ' + cleanDrugFieldForChat_(meta.focusLabel)
             + ' trong mục ' + cleanDrugFieldForChat_(meta.parentLabel) + '.';
     }
@@ -16188,6 +16218,12 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
     }
     function buildGuideHTML_(meta) {
         if (!meta || !meta.focusLabel || !meta.parentLabel) return '';
+        // Chỉ ẩn nhãn “Phần” bị trùng; không thay đổi dữ liệu focus bên trong meta.
+        if (sameDisplayedHDSDTitle_(meta.focusLabel, meta.parentLabel)) {
+            return 'Hãy xem chi tiết ở Mục <span class="hdsd-guide-parent">'
+                + escapeGuideHTML_(cleanDrugFieldForChat_(meta.parentLabel))
+                + '</span>.';
+        }
         return 'Hãy xem chi tiết ở phần <span class="hdsd-guide-focus">'
             + escapeGuideHTML_(cleanDrugFieldForChat_(meta.focusLabel))
             + '</span> trong mục <span class="hdsd-guide-parent">'
@@ -16684,6 +16720,16 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
         header.dataset.medplusReliableHeaderStyled = '1';
     }
 
+    /*
+     * So sánh chỉ phục vụ giao diện. Không sửa meta để giữ nguyên focus/index
+     * cho trích dẫn và thao tác bôi đỏ khi mở HDSD.
+     */
+    function sameDisplayedHDSDTitle_(left, right) {
+        const a = titleWithoutNumber(left).replace(/^\s*(?:muc|phan)\s*/i, '').replace(/\s+/g, ' ').trim();
+        const b = titleWithoutNumber(right).replace(/^\s*(?:muc|phan)\s*/i, '').replace(/\s+/g, ' ').trim();
+        return !!a && !!b && a === b;
+    }
+
     function createOrUpdateGuide(header, meta) {
         let guide = header.nextElementSibling;
         if (!guide || !guide.classList || !guide.classList.contains('hdsd-chat-guide')) {
@@ -16692,11 +16738,12 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
             header.insertAdjacentElement('afterend', guide);
         }
         const parentText = '<span class="hdsd-guide-parent">' + esc(formatHDSDParentTitleForCitation_(meta.parentLabel)) + '</span>';
-        if (meta.focusLabel) {
+        // focusLabel trùng Mục cha: chỉ đổi câu dẫn, tuyệt đối không xóa/ghi đè meta.
+        if (meta.focusLabel && !sameDisplayedHDSDTitle_(meta.focusLabel, meta.parentLabel)) {
             guide.innerHTML = 'Hãy xem chi tiết ở phần <span class="hdsd-guide-focus">' + esc(meta.focusLabel)
                 + '</span> trong mục ' + parentText + '.';
         } else {
-            guide.innerHTML = 'Hãy xem chi tiết mục ' + parentText + '.';
+            guide.innerHTML = 'Hãy xem chi tiết ở Mục ' + parentText + '.';
         }
         return guide;
     }
@@ -17153,281 +17200,5 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
 })();
 </script>
 
-
-
-
-<script id="medplus-hdsd-section-display-excerpt-v3">
-/* MedPlus v3: keep the REAL focus for HDSD excerpt, hide it only in presentation when it duplicates the parent title. */
-(function () {
-  'use strict';
-  var PATCH_NAME = 'medplus-hdsd-section-display-excerpt-v3';
-
-  function clean_(value) {
-    return String(value == null ? '' : value).replace(/\r/g, ' ').replace(/\s+/g, ' ').trim();
-  }
-  function norm_(value) {
-    var text = clean_(value);
-    try {
-      if (typeof window.removeAccents === 'function') text = window.removeAccents(text);
-      else text = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D');
-    } catch (e) {}
-    return text.toLowerCase()
-      .replace(/^\s*(?:muc|phan)\s*\d+(?:\.\d+)*\s*[\).:\-–—]?\s*/i, '')
-      .replace(/^\s*\d+(?:\.\d+)*\s*[\).:\-–—]?\s*/, '')
-      .replace(/[.:;…\-–—\s]+$/g, '')
-      .replace(/\s+/g, ' ').trim();
-  }
-  function sameTitle_(a, b) {
-    var na = norm_(a), nb = norm_(b);
-    return !!na && !!nb && na === nb;
-  }
-  function getOutlineParent_(outline, meta) {
-    var parents = outline && Array.isArray(outline.parents) ? outline.parents : [];
-    var id = clean_(meta && meta.parentId);
-    var idx = Number(meta && meta.parentIndex);
-    var label = norm_(meta && meta.parentLabel);
-    var parent = id ? parents.find(function (p) { return clean_(p && p.id) === id; }) : null;
-    if (!parent && Number.isFinite(idx)) parent = parents.find(function (p) { return Number(p && p.parentIndex) === idx; });
-    if (!parent && label) {
-      var hits = parents.filter(function (p) { return norm_(p && p.parentLabel) === label; });
-      parent = hits.length === 1 ? hits[0] : null;
-    }
-    return parent || null;
-  }
-  function getActualFocus_(parent, meta) {
-    if (!parent) return null;
-    var candidates = [{
-      id: clean_(parent.id), label: clean_(parent.parentLabel), flatIndex: parent.parentIndex, isParent: true
-    }].concat((Array.isArray(parent.children) ? parent.children : []).map(function (child) {
-      return { id: clean_(child && child.id), label: clean_(child && child.label), flatIndex: child && child.flatIndex, isParent: false };
-    }));
-    var wantedId = clean_(meta && meta.focusId);
-    var wantedIndex = Number(meta && meta.focusIndex);
-    var wantedLabel = norm_(meta && meta.focusLabel);
-    var found = wantedId ? candidates.find(function (item) { return item.id === wantedId; }) : null;
-    if (!found && Number.isFinite(wantedIndex)) found = candidates.find(function (item) { return Number(item.flatIndex) === wantedIndex; });
-    if (!found && wantedLabel) {
-      var hits = candidates.filter(function (item) { return norm_(item.label) === wantedLabel; });
-      found = hits.length === 1 ? hits[0] : null;
-    }
-    /* No valid child: focus the real parent internally so the excerpt function keeps working. */
-    return found || candidates[0];
-  }
-
-  /* Important: never erase focusId/focusLabel/focusIndex just because their visible label equals the parent.
-     The original excerpt function requires those three fields. */
-  function makeMetaSafeForExcerpt_(input) {
-    var meta = Object.assign({}, input || {});
-    var parent = getOutlineParent_(meta.outline, meta);
-    if (!parent) return meta;
-    var focus = getActualFocus_(parent, meta);
-    if (!focus) return meta;
-
-    meta.parentId = clean_(parent.id);
-    meta.parentLabel = clean_(parent.parentLabel);
-    meta.parentIndex = parent.parentIndex;
-    meta.focusId = clean_(focus.id);
-    meta.focusLabel = clean_(focus.label);
-    meta.focusIndex = focus.flatIndex;
-
-    var showChild = !focus.isParent && !!clean_(focus.label) && !sameTitle_(focus.label, parent.parentLabel);
-    meta._medplusDisplayFocusLabel = showChild ? clean_(focus.label) : '';
-    meta._medplusDisplayFocus = !!showChild;
-    meta._medplusDisplayWholeParent = !showChild;
-    meta.wholeParent = !showChild;
-    return meta;
-  }
-  window.medplusHDSDMetaForExcerpt_ = makeMetaSafeForExcerpt_;
-
-  var originalResolve = window.medplusResolveActualHDSDFocusForDrug_;
-  if (typeof originalResolve === 'function' && !originalResolve.__medplusExcerptSafeSectionPatch) {
-    var wrappedResolve = async function (drug, userMessage) {
-      var meta = await originalResolve.apply(this, arguments);
-      if (!meta) return meta;
-      var safe = Object.assign({}, meta);
-      if (!safe.outline && drug && typeof window.loadHDSDJsonForDrug_ === 'function' && typeof window.medplusBuildActualHDSDOutline_ === 'function') {
-        try {
-          var json = await window.loadHDSDJsonForDrug_(drug);
-          if (json) safe.outline = window.medplusBuildActualHDSDOutline_(json);
-        } catch (e) {}
-      }
-      return makeMetaSafeForExcerpt_(safe);
-    };
-    wrappedResolve.__medplusExcerptSafeSectionPatch = true;
-    window.medplusResolveActualHDSDFocusForDrug_ = wrappedResolve;
-  }
-
-  function parentText_(label) {
-    var clean = clean_(label);
-    try {
-      if (typeof window.formatHDSDParentTitleForCitation_ === 'function') return window.formatHDSDParentTitleForCitation_(clean);
-    } catch (e) {}
-    return clean;
-  }
-  function visibleFocus_(meta) {
-    return clean_(meta && meta._medplusDisplayFocusLabel);
-  }
-
-  /* Only the guide uses the display-only child label. The excerpt still receives the true focus. */
-  window.medplusBuildActualHDSDGuideText_ = function (rawMeta) {
-    var meta = makeMetaSafeForExcerpt_(rawMeta);
-    if (!meta || !clean_(meta.parentLabel)) return '';
-    var child = visibleFocus_(meta);
-    if (child) return 'Hãy xem chi tiết ở phần ' + child + ' trong mục ' + parentText_(meta.parentLabel) + '.';
-    return 'Hãy xem chi tiết ở mục ' + parentText_(meta.parentLabel) + '.';
-  };
-
-  window.medplusSetActualHDSDFocusOnButton_ = function (button, rawMeta) {
-    if (!button || !rawMeta) return;
-    var meta = makeMetaSafeForExcerpt_(rawMeta);
-    try {
-      if (typeof window.medplusUpgradeLegacyHDSDChatButton_ === 'function') window.medplusUpgradeLegacyHDSDChatButton_(button);
-    } catch (e) {}
-    if (!button.dataset) return;
-    /* Preserve the actual target for popup highlighting and excerpt reliability. */
-    button.dataset.medplusHdsdFocus = meta.focusLabel ? encodeURIComponent(clean_(meta.focusLabel)) : '';
-    button.dataset.medplusHdsdParent = meta.parentLabel ? encodeURIComponent(clean_(meta.parentLabel)) : '';
-    if (button.dataset.medplusExcerptSafeSectionBound !== '1') {
-      button.dataset.medplusExcerptSafeSectionBound = '1';
-      button.removeAttribute('onclick');
-      button.onclick = function (evt) {
-        if (typeof window.openHDSDFromChat !== 'function') return false;
-        return window.openHDSDFromChat(
-          button.dataset.medplusHdsdUrl || '', evt,
-          button.dataset.medplusHdsdFocus || '', button.dataset.medplusHdsdParent || ''
-        );
-      };
-    }
-  };
-
-  window.medplusRenderActualHDSDGuide_ = function (headerParagraph, rawMeta) {
-    if (!headerParagraph || !rawMeta) return;
-    var meta = makeMetaSafeForExcerpt_(rawMeta);
-    if (!clean_(meta.parentLabel)) return;
-    var guide = headerParagraph.nextElementSibling;
-    if (!guide || !guide.classList || !guide.classList.contains('hdsd-chat-guide')) {
-      guide = document.createElement('p');
-      guide.className = 'hdsd-chat-guide';
-      headerParagraph.insertAdjacentElement('afterend', guide);
-    }
-    guide.textContent = window.medplusBuildActualHDSDGuideText_(meta);
-  };
-
-  function escape_(value) {
-    return String(value == null ? '' : value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  }
-  function renderExcerptText_(value) {
-    try {
-      if (typeof window.medplusExcerptEscapePreservingImageTokens_ === 'function') return window.medplusExcerptEscapePreservingImageTokens_(String(value || ''));
-    } catch (e) {}
-    return escape_(value);
-  }
-
-  /* Fallback for parent-only answers. It runs only if the original precise extractor returns empty.
-     This makes a real parent heading remain a valid source of quotation instead of producing a blank answer. */
-  async function buildWholeParentExcerptFallback_(drug, rawMeta) {
-    var meta = makeMetaSafeForExcerpt_(rawMeta);
-    if (!drug || !meta || !meta.parentId || typeof window.loadHDSDJsonForDrug_ !== 'function' || typeof window.medplusBuildActualHDSDOutline_ !== 'function') return '';
-    try {
-      var json = await window.loadHDSDJsonForDrug_(drug);
-      if (!json || !Array.isArray(json.blocks)) return '';
-      var outline = window.medplusBuildActualHDSDOutline_(json);
-      var parent = getOutlineParent_(outline, meta);
-      if (!parent) return '';
-      var flatten = window.medplusFlattenHDSDExcerptNodes_;
-      if (typeof flatten !== 'function') return '';
-      var nodes = flatten(json.blocks, [], 0) || [];
-      var start = Number(parent.parentIndex);
-      var end = Infinity;
-      (outline.parents || []).forEach(function (candidate) {
-        var idx = Number(candidate && candidate.parentIndex);
-        if (Number.isFinite(idx) && idx > start && idx < end) end = idx;
-      });
-      var region = nodes.filter(function (node) {
-        return Number(node && node.flatIndex) >= start && Number(node && node.flatIndex) < end && clean_(node && node.ownContent);
-      });
-      if (!region.length) return '';
-      var lines = region.map(function (node) {
-        var text = renderExcerptText_(clean_(node.ownContent));
-        if (Number(node.flatIndex) === start) text = '<span class="hdsd-excerpt-parent-title">' + text + '</span>';
-        return '<div class="hdsd-parent-excerpt-line">' + text + '</div>';
-      }).join('');
-      return '<div class="hdsd-parent-excerpt" data-medplus-parent-id="' + escape_(parent.id) + '" data-medplus-parent-fallback="1">' + lines + '</div>';
-    } catch (e) {
-      return '';
-    }
-  }
-
-  var originalExcerpt = window.medplusBuildSelectedParentExcerpt_;
-  if (typeof originalExcerpt === 'function' && !originalExcerpt.__medplusExcerptSafeSectionPatch) {
-    var wrappedExcerpt = async function (drug, rawMeta) {
-      var meta = makeMetaSafeForExcerpt_(rawMeta);
-      var excerpt = '';
-      try { excerpt = await originalExcerpt.call(this, drug, meta); } catch (e) { excerpt = ''; }
-      if (excerpt) return excerpt;
-      if (!visibleFocus_(meta)) return buildWholeParentExcerptFallback_(drug, meta);
-      return '';
-    };
-    wrappedExcerpt.__medplusExcerptSafeSectionPatch = true;
-    window.medplusBuildSelectedParentExcerpt_ = wrappedExcerpt;
-  }
-
-  function parseGuide_(text) {
-    var value = clean_(text);
-    var match = value.match(/^Hãy xem chi tiết\s*(?:ở\s*)?(?:phần\s+(.+?)\s+trong\s+)?mục\s+(.+?)(?:\.|$)/i);
-    if (!match) return null;
-    return { focus: clean_(match[1] || ''), parent: clean_(match[2] || '') };
-  }
-  function scope_(node) {
-    return node && node.closest ? (node.closest('[data-message-id], .assistant-message, .bot-message, .ai-message, .chat-message, .message-content, .chat-bubble, .message') || node.parentElement) : (node && node.parentElement);
-  }
-  function isGuide_(node) {
-    if (!node || node.nodeType !== 1) return false;
-    if (node.classList && node.classList.contains('hdsd-chat-guide')) return true;
-    if (!/^(P|DIV|LI|SECTION)$/i.test(node.tagName || '')) return false;
-    if (node.querySelector && node.querySelector('p,div,li,section')) return false;
-    return /^Hãy xem chi tiết\b/i.test(clean_(node.textContent));
-  }
-  function score_(node) {
-    if (node && node.classList && node.classList.contains('hdsd-chat-guide')) return 100;
-    return /^Hãy xem chi tiết\s+ở\b/i.test(clean_(node && node.textContent)) ? 10 : 0;
-  }
-  var repairing_ = false;
-  function repairGuides_() {
-    if (repairing_) return;
-    repairing_ = true;
-    try {
-      var groups = [];
-      Array.prototype.forEach.call(document.querySelectorAll('.hdsd-chat-guide, p, div, li, section'), function (node) {
-        if (!isGuide_(node)) return;
-        var parsed = parseGuide_(node.textContent);
-        if (!parsed || !parsed.parent) return;
-        if (parsed.focus && sameTitle_(parsed.focus, parsed.parent)) {
-          node.textContent = 'Hãy xem chi tiết ở mục ' + parsed.parent + '.';
-          parsed.focus = '';
-        }
-        var key = norm_(parsed.parent) + '|' + norm_(parsed.focus);
-        var scope = scope_(node);
-        var group = groups.find(function (item) { return item.scope === scope && item.key === key; });
-        if (!group) { group = { scope: scope, key: key, items: [] }; groups.push(group); }
-        group.items.push({ node: node, score: score_(node) });
-      });
-      groups.forEach(function (group) {
-        if (group.items.length < 2) return;
-        var keep = group.items[0];
-        group.items.forEach(function (item) { if (item.score > keep.score) keep = item; });
-        group.items.forEach(function (item) {
-          if (item.node !== keep.node && item.node && item.node.parentNode) item.node.parentNode.removeChild(item.node);
-        });
-      });
-    } finally { repairing_ = false; }
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', repairGuides_);
-  else repairGuides_();
-  new MutationObserver(function () { repairGuides_(); }).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
-
-  console.info('[MedPlus] Applied ' + PATCH_NAME);
-}());
-</script>
 </body>
 </html>
