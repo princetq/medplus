@@ -15495,14 +15495,22 @@ function medplusApplyImplicitDoseFocusFromCombinedParent_(meta, userMessage, out
         return child && child.id && child.label && Number.isFinite(Number(child.flatIndex));
     }).slice().sort(function(a, b) { return Number(a.flatIndex) - Number(b.flatIndex); });
 
-    const keepWholeParent = function(reason) {
-        return Object.assign({}, meta, {
+    const keepWholeParent = function(reason, excerptEndIndex) {
+        const corrected = Object.assign({}, meta, {
             focusId: parent.id,
             focusLabel: parent.parentLabel,
             focusIndex: Number(parent.parentIndex),
             wholeParent: true,
             source: reason || 'dose-combined-parent-full-section'
         });
+        const end = Number(excerptEndIndex);
+        if (Number.isFinite(end) && end > Number(parent.parentIndex)) {
+            /* Chỉ là ranh giới hiển thị nội dung: không đổi focus/bôi đỏ của HDSD. */
+            corrected.excerptEndIndex = end;
+        } else {
+            delete corrected.excerptEndIndex;
+        }
+        return corrected;
     };
 
     // Không có cấu trúc đủ rõ để phân đôi Cách dùng/Liều dùng: trích cả Mục,
@@ -15525,13 +15533,25 @@ function medplusApplyImplicitDoseFocusFromCombinedParent_(meta, userMessage, out
     if (!usagePart) return keepWholeParent('dose-combined-parent-no-real-usage-heading');
 
     /*
-     * Chỉ suy ra “phần còn lại là liều dùng” khi cấu trúc thật sự có đúng một
-     * sibling hợp lệ sau Cách dùng. Có từ hai sibling trở lên (Curam: người cao
-     * tuổi/suy thận/suy gan...) nghĩa là đó là các tiểu mục của một vùng liều
-     * không có heading riêng; khi đó phải giữ toàn bộ Mục để không mất liều gốc.
+     * Curam và các HDSD cùng kiểu: Mục lớn là “Liều dùng và cách dùng”,
+     * còn “Cách dùng” là tiêu đề con ở CUỐI. Toàn bộ phần trước tiêu đề đó
+     * là vùng liều dùng (gồm liều cơ bản, người cao tuổi, suy thận, suy gan...).
+     * Cắt đúng trước heading Cách dùng, không chọn paragraph đầu tiên và không
+     * bỏ các tiểu mục liều nằm ở phía trước.
+     */
+    const parentStart = Number(parent.parentIndex);
+    const usageIndex = Number(usagePart.flatIndex);
+    if (Number.isFinite(parentStart) && Number.isFinite(usageIndex) && usageIndex > parentStart + 1) {
+        return keepWholeParent('dose-combined-parent-before-usage-heading', usageIndex);
+    }
+
+    /*
+     * Trường hợp ngược lại: “Cách dùng” đứng trước và có đúng một PHẦN CON
+     * thật ở sau. Phần sau đó được xem là vùng liều dùng. Nếu có nhiều phần
+     * hoặc cấu trúc mơ hồ, giữ toàn Mục thay vì đoán/cắt mất nội dung.
      */
     const afterUsage = realChildren.filter(function(child) {
-        return !isUsagePart(child.label) && Number(child.flatIndex) > Number(usagePart.flatIndex);
+        return !isUsagePart(child.label) && Number(child.flatIndex) > usageIndex;
     });
     if (afterUsage.length !== 1) return keepWholeParent('dose-combined-parent-ambiguous-siblings');
 
@@ -16008,6 +16028,68 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
         return rendered;
     }
 
+
+    /*
+     * Ranh giới cuối cùng cho câu hỏi chỉ hỏi LIỀU DÙNG ở Mục ghép
+     * “Liều dùng và cách dùng”. Một số HDSD (ví dụ Curam) không đánh dấu
+     * “Liều dùng” thành phần con, nhưng lại có heading độc lập “Cách dùng”
+     * ở cuối Mục. Khi đó mọi block trước heading này thuộc vùng liều dùng.
+     *
+     * Hàm này làm việc trực tiếp trên REGION đã được dựng, nên không phụ thuộc
+     * vào outline có nhận đúng “Cách dùng” là child hay không. Nó chỉ cắt khi:
+     *   1) câu hỏi hỏi riêng liều dùng, không hỏi cách dùng; và
+     *   2) Mục thật có cả “liều dùng” và “cách dùng”; và
+     *   3) gặp heading độc lập “Cách dùng” sau ít nhất một block nội dung.
+     */
+    window.medplusTrimDoseOnlyRegionBeforeUsageHeading_ = function(region, meta, parent) {
+        const list = Array.isArray(region) ? region.slice() : [];
+        if (list.length < 2) return list;
+
+        const normalize = function(value) {
+            const source = String(value || '');
+            try {
+                return typeof normalizeHDSDFocusNorm_ === 'function'
+                    ? normalizeHDSDFocusNorm_(source)
+                    : source.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                        .replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+            } catch (e) {
+                return source.toLowerCase().replace(/\s+/g, ' ').trim();
+            }
+        };
+        const hasPhrase = function(value, phrase) {
+            const a = normalize(value);
+            const b = normalize(phrase);
+            if (!a || !b) return false;
+            if (typeof hdsdFocusTextHasPhrase_ === 'function') {
+                try { return hdsdFocusTextHasPhrase_(a, b); } catch (e) {}
+            }
+            return (' ' + a + ' ').indexOf(' ' + b + ' ') !== -1;
+        };
+
+        const question = window.__medplusLastUserQuestion || '';
+        const asksDose = hasPhrase(question, 'liều dùng') || hasPhrase(question, 'liều lượng');
+        const asksUsage = hasPhrase(question, 'cách dùng')
+            || hasPhrase(question, 'cách sử dụng')
+            || hasPhrase(question, 'đường dùng');
+        if (!asksDose || asksUsage) return list;
+
+        const parentLabel = String((parent && (parent.parentLabel || parent.label)) || (meta && meta.parentLabel) || '');
+        if (!hasPhrase(parentLabel, 'liều dùng') || !hasPhrase(parentLabel, 'cách dùng')) return list;
+
+        for (let i = 1; i < list.length; i++) {
+            const content = String((list[i] && (list[i].ownContent || list[i].ownText || list[i].textContent)) || '').trim();
+            if (!content) continue;
+            const firstLine = String(content.split(/\n+/)[0] || '')
+                .replace(/^\s*\d+(?:\.\d+)*(?:[.)-])?\s*/, '')
+                .trim();
+            const heading = normalize(firstLine);
+            if (heading === 'cach dung' || heading === 'cach su dung' || heading === 'duong dung') {
+                return list.slice(0, i);
+            }
+        }
+        return list;
+    };
+
     async function medplusBuildSelectedParentExcerpt_(drug, meta) {
         /*
          * Trích đúng PHẦN được chọn, ngay trong luồng compose thực tế.
@@ -16057,11 +16139,21 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
         const siblingStarts = focusIsParent ? [] : (parent.children || []).map(function(child) { return Number(child && child.flatIndex); })
             .filter(function(idx) { return Number.isFinite(idx) && idx > focusIndex && idx < parentEnd; })
             .sort(function(x, y) { return x - y; });
-        const focusEnd = focusIsParent ? parentEnd : (siblingStarts.length ? siblingStarts[0] : parentEnd);
+        /* Meta có excerptEndIndex chỉ khi HDSD có một heading “Cách dùng” thật
+           nằm sau vùng liều. Focus vẫn là Mục cha; chỉ ranh giới TRÍCH DẪN dừng
+           ngay trước heading đó để không đưa phần Cách dùng vào câu hỏi Liều dùng. */
+        const requestedEnd = Number(meta.excerptEndIndex);
+        const parentExcerptEnd = focusIsParent && Number.isFinite(requestedEnd)
+            && requestedEnd > parentStart && requestedEnd < parentEnd
+            ? requestedEnd : parentEnd;
+        const focusEnd = focusIsParent ? parentExcerptEnd : (siblingStarts.length ? siblingStarts[0] : parentEnd);
         const regionStart = focusIsParent ? parentStart : focusIndex;
-        const region = nodes.filter(function(node) {
+        let region = nodes.filter(function(node) {
             return Number(node.flatIndex) >= regionStart && Number(node.flatIndex) < focusEnd && String(node.ownContent || '').trim();
         });
+        if (typeof window.medplusTrimDoseOnlyRegionBeforeUsageHeading_ === 'function') {
+            region = window.medplusTrimDoseOnlyRegionBeforeUsageHeading_(region, meta, parent);
+        }
         if (!region.length) return '';
 
         const rawFocus = String(focusNode.ownContent || '').trim();
@@ -16891,13 +16983,23 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
             .map(function(child) { return Number(child && child.flatIndex); })
             .filter(function(index) { return Number.isFinite(index) && index > focusStart && index < parentEnd; })
             .sort(function(a, b) { return a - b; });
-        const focusEnd = focusIsParent ? parentEnd : (siblings.length ? siblings[0] : parentEnd);
+        /* Với câu hỏi Liều dùng ở Mục ghép có heading “Cách dùng” tách riêng,
+           giữ toàn bộ vùng liều nhưng dừng trước heading Cách dùng. Meta vẫn trỏ
+           Mục cha để hướng dẫn/bôi đỏ không bị làm giả tên phần. */
+        const requestedEnd = Number(meta.excerptEndIndex);
+        const parentExcerptEnd = focusIsParent && Number.isFinite(requestedEnd)
+            && requestedEnd > parentStart && requestedEnd < parentEnd
+            ? requestedEnd : parentEnd;
+        const focusEnd = focusIsParent ? parentExcerptEnd : (siblings.length ? siblings[0] : parentEnd);
         const regionStart = focusIsParent ? parentStart : focusStart;
-        const region = nodes.filter(function(node) {
+        let region = nodes.filter(function(node) {
             return Number(node.flatIndex) >= regionStart
                 && Number(node.flatIndex) < focusEnd
                 && String(node.ownContent || '').trim();
         });
+        if (typeof window.medplusTrimDoseOnlyRegionBeforeUsageHeading_ === 'function') {
+            region = window.medplusTrimDoseOnlyRegionBeforeUsageHeading_(region, meta, parent);
+        }
         if (!region.length) return null;
 
         const headingAndInline = splitFocusHeading_(focusNode.ownContent || '', meta.focusLabel || focusNode.label || '');
@@ -17405,6 +17507,70 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
     if (window.__medplusReliableHDSDExcerptCache && typeof window.__medplusReliableHDSDExcerptCache.clear === 'function') {
         window.__medplusReliableHDSDExcerptCache.clear();
     }
+})();
+</script>
+
+
+<script id="medplus-dose-render-boundary-fix">
+/* Final display safeguard: never show the standalone Cách dùng segment in a dose-only answer. */
+(function(){
+    function norm(value) {
+        const source = String(value || '');
+        try {
+            return typeof normalizeHDSDFocusNorm_ === 'function'
+                ? normalizeHDSDFocusNorm_(source)
+                : source.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                    .replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+        } catch (e) { return source.toLowerCase().replace(/\s+/g, ' ').trim(); }
+    }
+    function has(value, phrase) {
+        const a = norm(value), b = norm(phrase);
+        return !!a && !!b && (' ' + a + ' ').indexOf(' ' + b + ' ') !== -1;
+    }
+    function isDoseOnly() {
+        const q = window.__medplusLastUserQuestion || '';
+        return (has(q, 'liều dùng') || has(q, 'liều lượng'))
+            && !has(q, 'cách dùng') && !has(q, 'cách sử dụng') && !has(q, 'đường dùng');
+    }
+    function trimExcerpt(excerpt) {
+        if (!excerpt || !isDoseOnly() || excerpt.dataset.medplusDoseUsageBoundaryDone === '1') return;
+        const lines = Array.prototype.slice.call(excerpt.querySelectorAll('.hdsd-parent-excerpt-line'));
+        if (lines.length < 2) return;
+        const all = norm(excerpt.textContent || '');
+        const nearbyGuide = excerpt.previousElementSibling && excerpt.previousElementSibling.classList
+            && excerpt.previousElementSibling.classList.contains('hdsd-chat-guide')
+            ? norm(excerpt.previousElementSibling.textContent || '') : '';
+        if (!((has(all, 'liều dùng') && has(all, 'cách dùng')) || (has(nearbyGuide, 'liều dùng') && has(nearbyGuide, 'cách dùng')))) return;
+        for (let i = 1; i < lines.length; i++) {
+            const first = String((lines[i].textContent || '').split(/\n+/)[0] || '')
+                .replace(/^\s*\d+(?:\.\d+)*(?:[.)-])?\s*/, '').trim();
+            const heading = norm(first);
+            if (heading === 'cach dung' || heading === 'cach su dung' || heading === 'duong dung') {
+                lines.slice(i).forEach(function(line){ line.remove(); });
+                break;
+            }
+        }
+        excerpt.dataset.medplusDoseUsageBoundaryDone = '1';
+    }
+    let queued = false;
+    function run() {
+        queued = false;
+        if (!isDoseOnly()) return;
+        document.querySelectorAll('.hdsd-parent-excerpt').forEach(trimExcerpt);
+    }
+    function schedule() {
+        if (queued) return;
+        queued = true;
+        Promise.resolve().then(run);
+    }
+    function observe() {
+        const target = document.getElementById('chat-messages') || document.body;
+        if (!target) return;
+        new MutationObserver(schedule).observe(target, { childList:true, subtree:true, characterData:true });
+        schedule();
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', observe, { once:true });
+    else observe();
 })();
 </script>
 
