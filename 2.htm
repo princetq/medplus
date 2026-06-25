@@ -6717,7 +6717,8 @@ body.dark-mode .chat-widget-container .send-button:disabled{
         // Thứ tự fallback: dùng hết 3 API key cho từng model Gemini trước, sau đó mới tới Gemma.
         const AI_MODELS = ["gemini-2.5-flash", "gemini-3.1-flash-lite", "gemini-3-flash", "gemma-4-26b-a4b-it", "gemma-4-31b-it"];
         const MAX_CHAT_OUTPUT_TOKENS = 8192;
-        const MAX_DETAILED_DRUG_RESULTS = 80;
+        const MAX_DETAILED_DRUG_RESULTS = 15;
+        const MAX_CHAT_DRUG_LIST_ITEMS = 15;
         let currentKeyIndex = 0, currentModelIndex = 0, timerInterval, startTime, activeModelName = "";
 
         // Tích hợp Mini-RAG
@@ -8294,8 +8295,9 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                 answer += 'Tại **' + hospital + '** hiện có **' + drugs.length + '** thuốc phù hợp trong danh mục:\n\n';
             }
 
-            const shouldNumber = drugs.length > 1;
-            drugs.forEach(function(d, i) {
+            const visibleDrugs = drugs.slice(0, MAX_CHAT_DRUG_LIST_ITEMS);
+            const shouldNumber = visibleDrugs.length > 1;
+            visibleDrugs.forEach(function(d, i) {
                 const brand = cleanDrugFieldForChat_(d.brand);
                 const active = cleanDrugFieldForChat_(d.active);
                 const form = cleanDrugFieldForChat_(d.form);
@@ -8330,6 +8332,9 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                 answer += '\n';
             });
 
+            if (drugs.length > visibleDrugs.length) {
+                answer += '\nCòn **' + (drugs.length - visibleDrugs.length) + '** thuốc phù hợp khác trong danh mục. Bạn có thể hỏi hẹp hơn theo phân nhóm hoặc hoạt chất để xem tiếp.';
+            }
             return answer.trimEnd();
         }
 
@@ -12953,6 +12958,43 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                 || isHemostaticQuery(q);
         }
 
+
+
+        // HÀNG RÀO LÂM SÀNG CHO CÂU HỎI DANH MỤC NHÓM RỘNG.
+        // AI full-scan tạo danh sách ứng viên, nhưng với những nhãn dân gian/chung như
+        // “thuốc khớp”, không được để thuốc cùng chữ NSAID hoặc thuốc xương/thận lọt vào.
+        function isGenericJointCatalogQuestion_(question) {
+            const q = removeAccents(String(question || '')).replace(/\s+/g, ' ').trim();
+            return /(^|\s)(thuoc\s+)?khop(\s|$)/.test(q)
+                && !/\b(khop\s+mat|mat\s+khop|tieu\s+khop|khop\s+thai\s+duong)\b/.test(q);
+        }
+
+        function getGroupQuerySafetyPrompt_(question) {
+            if (!isGenericJointCatalogQuestion_(question)) return '';
+            return '\\nQUY TẮC BẮT BUỘC RIÊNG CHO CÂU HỎI “THUỐC KHỚP”: chỉ chọn thuốc có vai trò trực tiếp trong điều trị bệnh cơ xương khớp/gout, như NSAID đường toàn thân, thuốc điều trị gout hoặc thuốc hỗ trợ thoái hóa khớp. Loại thuốc nhỏ mắt/nhỏ tai, thuốc dùng cho mắt, thuốc loãng xương/bisphosphonat, thuốc gắn phosphat, thuốc giãn cơ, opioid/codein và corticoid toàn thân nếu người dùng chỉ hỏi chung “thuốc khớp”. Không chọn thuốc chỉ vì hoạt chất là NSAID nhưng dạng bào chế là nhỏ mắt.';
+        }
+
+        function applyClinicalGroupSafetyFilter_(question, drugs) {
+            const source = Array.isArray(drugs) ? drugs : [];
+            if (!isGenericJointCatalogQuestion_(question)) return source.slice();
+
+            // Nhóm hoạt chất trực tiếp phù hợp với câu hỏi chung về khớp/gout.
+            // Không mở rộng sang thuốc xương, thận, mắt hoặc giảm co cứng cơ.
+            const allowedActive = /\b(colchicin|allopurinol|febuxostat|benzbromaron|probenecid|glucosamin(?:e)?|chondroitin|diacerein|etodolac|tenoxicam|piroxicam|ibuprofen|etoricoxib|celecoxib|meloxicam|diclofenac|aceclofenac|naproxen|ketoprofen|indometacin|indomethacin|lornoxicam|nimesulid|sulfasalazin(?:e)?|methotrexat(?:e)?|leflunomid(?:e)?|hydroxychloroquin(?:e)?|adalimumab|etanercept|tocilizumab)\b/i;
+            const excludedActive = /\b(risedronat(?:e)?|alendronat(?:e)?|zoledronic|pamidronat(?:e)?|ibandronat(?:e)?|denosumab|calci\s*acetat(?:e)?|tizanidin(?:e)?|codein(?:e)?|methylprednisolon(?:e)?|prednisolon(?:e)?|dexamethason(?:e)?)\b/i;
+            const excludedRoute = /\b(nho\s*mat|nho\s*tai|ophthalm|ocular|eye\s*drop)\b/i;
+
+            return source.filter(function(d) {
+                const active = String(d && d.active || '');
+                const form = String(d && d.form || '');
+                const group = String(d && d.group || '');
+                const text = active + ' | ' + form + ' | ' + group;
+                if (excludedRoute.test(removeAccents(form))) return false;
+                if (excludedActive.test(removeAccents(text))) return false;
+                return allowedActive.test(removeAccents(active));
+            });
+        }
+
         async function selectGroupCatalogSubsetWithAI_(userMessage, allDrugs) {
             if (!allDrugs || allDrugs.length === 0) return { ok: true, drugs: [] };
 
@@ -12984,6 +13026,7 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                     + 'Nhiệm vụ: đọc câu hỏi người dùng và QUÉT TRỰC TIẾP danh sách thuốc dưới đây theo Tên thuốc, Hoạt chất và Nhóm.\n'
                     + 'Áp dụng cho mọi câu hỏi dạng hỏi danh mục theo nhóm thuốc, phân nhóm, chỉ định, cơ quan/bệnh cảnh hoặc tác dụng dược lý, ví dụ: kháng sinh, tim mạch, huyết áp, tiểu đường, PPI/dạ dày, cầm máu, giảm đau, NSAID, chống viêm, chống dị ứng, hô hấp, thần kinh, dịch truyền...\n'
                     + 'Không dùng so khớp từ khóa cứng. Hãy dùng kiến thức dược lý để nhận diện thuốc phù hợp từ tên thuốc, hoạt chất và nhóm dược lý.\n'
+                    + getGroupQuerySafetyPrompt_(userMessage) + '\n'
                     + 'Chỉ chọn thuốc thật sự phù hợp với câu hỏi. Không thêm thuốc ngoài danh sách. Không chọn thuốc chỉ vì biệt dược trùng một chữ nhưng hoạt chất/nhóm không liên quan.\n'
                     + 'Nếu câu hỏi chỉ hỏi số lượng, vẫn chọn ids đúng để hệ thống đếm.\n'
                     + 'Chỉ trả về JSON hợp lệ, không giải thích, không markdown, không code fence, đúng mẫu: {"ids":[1,2,3]}\n\n'
@@ -13148,8 +13191,26 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                         return;
                     }
 
+                    // Danh sách nhóm thuốc phải được hậu kiểm trước khi hiển thị.
+                    // Với “thuốc khớp”, áp thêm hàng rào lâm sàng cục bộ để các thuốc mắt,
+                    // xương/thận hoặc giãn cơ không thể lọt qua dù AI trả nhầm ID.
+                    let groupFinalDrugs = applyClinicalGroupSafetyFilter_(userMessage, catalogScan.drugs || []);
+                    if (groupFinalDrugs.length > 0) {
+                        document.getElementById('typing-text').innerText = "MedPlus AI đang kiểm tra lại danh mục thuốc...";
+                        const verifiedGroup = await verifyDrugFinalListWithAI_(userMessage, groupFinalDrugs);
+                        if (!verifiedGroup.ok) {
+                            clearInterval(timerInterval);
+                            typingIndicator.style.display = 'none';
+                            displayMessage('Tôi đã tìm được danh sách ứng viên, nhưng chưa kiểm tra lại được bằng AI nên chưa trả kết quả để tránh sai sót dữ liệu y khoa. Bạn vui lòng thử lại sau ít giây hoặc hỏi hẹp hơn theo hoạt chất/nhóm thuốc.', 'ai');
+                            sendButton.disabled = false;
+                            return;
+                        }
+                        groupFinalDrugs = applyClinicalGroupSafetyFilter_(userMessage, verifiedGroup.drugs || []);
+                    }
+                    catalogScan.drugs = groupFinalDrugs;
+
                     document.getElementById('typing-text').innerText = "MedPlus AI đang viết câu trả lời...";
-                    const catalogReply = await composeDrugAnswerWithAI_(userMessage, catalogScan.drugs || [], catalogScan);
+                    const catalogReply = await composeDrugAnswerWithAI_(userMessage, groupFinalDrugs, catalogScan);
                     clearInterval(timerInterval);
                     typingIndicator.style.display = 'none';
                     displayMessage(catalogReply, 'ai');
