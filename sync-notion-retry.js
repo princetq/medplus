@@ -1,8 +1,14 @@
 const { Client } = require('@notionhq/client');
+const fetch = require('node-fetch'); // [VÁ LỖI 1] Import thư viện mạng ổn định
 const fs = require('fs');
 const path = require('path');
 
-const notion = new Client({ auth: process.env.NOTION_TOKEN });
+// [VÁ LỖI 1] Ghi đè phương thức fetch mặc định của hệ thống
+const notion = new Client({ 
+  auth: process.env.NOTION_TOKEN,
+  fetch: fetch 
+});
+
 const DATABASE_ID = process.env.NOTION_DATABASE_ID;
 const OUTPUT_DIR = './hdsd-data';
 
@@ -20,7 +26,9 @@ async function withRetry(fn, retries = 4, baseDelay = 1000) {
     } catch (err) {
       lastErr = err;
       const msg = String(err?.message || err);
-      const shouldRetry = /rate_limited|429|502|503|504|timeout|ECONNRESET/i.test(msg);
+      // [VÁ LỖI 2] Bổ sung bắt lỗi 'premature close', 'network', 'fetch'
+      const shouldRetry = /rate_limited|429|502|503|504|timeout|ECONNRESET|premature close|network|fetch/i.test(msg);
+      
       if (!shouldRetry || i === retries) throw err;
       const wait = baseDelay * Math.pow(2, i);
       console.log(`↪ retry ${i + 1}/${retries} sau ${wait}ms: ${msg}`);
@@ -37,7 +45,7 @@ async function fetchDeep(blockId) {
   do {
     const res = await withRetry(() => notion.blocks.children.list({
       block_id: blockId,
-      page_size: 100,
+      page_size: 50, // [VÁ LỖI 3] Giảm từ 100 xuống 50 để Notion nhả dữ liệu nhanh hơn
       ...(cursor && { start_cursor: cursor }),
     }));
     blocks.push(...res.results);
@@ -66,7 +74,7 @@ async function queryAllPages() {
   const pages = [];
   let cursor = null;
   do {
-    const payload = { database_id: DATABASE_ID, page_size: 100 };
+    const payload = { database_id: DATABASE_ID, page_size: 50 }; // [VÁ LỖI 3] Giảm xuống 50
     if (cursor) payload.start_cursor = cursor;
 
     const res = await withRetry(() => notion.databases.query(payload), 4, 1200);
@@ -113,12 +121,10 @@ async function main() {
     const lastEditedTime = page.last_edited_time;
     const filePath = path.join(OUTPUT_DIR, `${pageId}.json`);
     
-    // Kiểm tra xem trang có thay đổi gì so với file local không
     let needUpdate = true;
     if (fs.existsSync(filePath)) {
       try {
         const localData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-        // Nếu thời gian sửa đổi giống hệt nhau, không cần tải lại nội dung block
         if (localData.page && localData.page.last_edited_time === lastEditedTime) {
           needUpdate = false;
         }
@@ -144,7 +150,6 @@ async function main() {
       console.log('✅');
       success++;
       
-      // Nghỉ ngắn để tránh bị Notion giới hạn tốc độ
       await sleep(400);
     } catch (err) {
       console.log(`❌ Lỗi: ${err.message}`);
