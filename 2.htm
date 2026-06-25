@@ -15495,64 +15495,15 @@ function medplusApplyImplicitDoseFocusFromCombinedParent_(meta, userMessage, out
         return child && child.id && child.label && Number.isFinite(Number(child.flatIndex));
     }).slice().sort(function(a, b) { return Number(a.flatIndex) - Number(b.flatIndex); });
 
-    const findUsageBoundaryFromFlatNodes = function() {
-        /*
-         * Một số HDSD như Curam có dòng "Cách dùng" là heading trong nội dung phẳng
-         * của Mục, nhưng không được đưa vào parent.children. Nếu chỉ nhìn children,
-         * đoạn cắt trước Cách dùng sẽ không bao giờ chạy và chatbot lại trích cả Mục.
-         */
-        const parentStart = Number(parent.parentIndex);
-        if (!Number.isFinite(parentStart)) return null;
-        let parentEnd = Infinity;
-        (outline.parents || []).forEach(function(candidate) {
-            const idx = Number(candidate && candidate.parentIndex);
-            if (Number.isFinite(idx) && idx > parentStart && idx < parentEnd) parentEnd = idx;
-        });
-        const nodes = Array.isArray(outline.nodes) ? outline.nodes : [];
-        for (let i = 0; i < nodes.length; i++) {
-            const node = nodes[i] || {};
-            const idx = Number(node.flatIndex);
-            if (!Number.isFinite(idx) || idx <= parentStart || idx >= parentEnd) continue;
-            const firstLine = String(node.label || node.rawText || node.ownText || '')
-                .split(/\n+/)[0]
-                .replace(/\s+/g, ' ')
-                .trim();
-            if (!firstLine) continue;
-            const stripped = firstLine
-                .replace(/^\s*\d+(?:\.\d+)*(?:[.)\-])?\s+/, '')
-                .replace(/[:：\-–—]\s*$/, '')
-                .trim();
-            const n = normalize(stripped);
-            const words = n.split(/\s+/).filter(Boolean).length;
-            const looksLikePlainHeading = words > 0 && words <= 4
-                && (n === 'cach dung' || n === 'cach su dung' || n === 'duong dung');
-            if (looksLikePlainHeading) return idx;
-        }
-        return null;
-    };
-
-    const keepWholeParent = function(reason, excerptEndIndex) {
-        const corrected = Object.assign({}, meta, {
+    const keepWholeParent = function(reason) {
+        return Object.assign({}, meta, {
             focusId: parent.id,
             focusLabel: parent.parentLabel,
             focusIndex: Number(parent.parentIndex),
             wholeParent: true,
             source: reason || 'dose-combined-parent-full-section'
         });
-        const end = Number(excerptEndIndex);
-        if (Number.isFinite(end) && end > Number(parent.parentIndex)) {
-            /* Chỉ là ranh giới hiển thị nội dung: không đổi focus/bôi đỏ của HDSD. */
-            corrected.excerptEndIndex = end;
-        } else {
-            delete corrected.excerptEndIndex;
-        }
-        return corrected;
     };
-
-    const flatUsageBoundary = findUsageBoundaryFromFlatNodes();
-    if (Number.isFinite(Number(flatUsageBoundary)) && Number(flatUsageBoundary) > Number(parent.parentIndex) + 1) {
-        return keepWholeParent('dose-combined-parent-before-usage-flat-boundary', Number(flatUsageBoundary));
-    }
 
     // Không có cấu trúc đủ rõ để phân đôi Cách dùng/Liều dùng: trích cả Mục,
     // tuyệt đối không giữ focus paragraph cũ vì sẽ làm mất các dòng liều phía trước.
@@ -15574,25 +15525,13 @@ function medplusApplyImplicitDoseFocusFromCombinedParent_(meta, userMessage, out
     if (!usagePart) return keepWholeParent('dose-combined-parent-no-real-usage-heading');
 
     /*
-     * Curam và các HDSD cùng kiểu: Mục lớn là “Liều dùng và cách dùng”,
-     * còn “Cách dùng” là tiêu đề con ở CUỐI. Toàn bộ phần trước tiêu đề đó
-     * là vùng liều dùng (gồm liều cơ bản, người cao tuổi, suy thận, suy gan...).
-     * Cắt đúng trước heading Cách dùng, không chọn paragraph đầu tiên và không
-     * bỏ các tiểu mục liều nằm ở phía trước.
-     */
-    const parentStart = Number(parent.parentIndex);
-    const usageIndex = Number(usagePart.flatIndex);
-    if (Number.isFinite(parentStart) && Number.isFinite(usageIndex) && usageIndex > parentStart + 1) {
-        return keepWholeParent('dose-combined-parent-before-usage-heading', usageIndex);
-    }
-
-    /*
-     * Trường hợp ngược lại: “Cách dùng” đứng trước và có đúng một PHẦN CON
-     * thật ở sau. Phần sau đó được xem là vùng liều dùng. Nếu có nhiều phần
-     * hoặc cấu trúc mơ hồ, giữ toàn Mục thay vì đoán/cắt mất nội dung.
+     * Chỉ suy ra “phần còn lại là liều dùng” khi cấu trúc thật sự có đúng một
+     * sibling hợp lệ sau Cách dùng. Có từ hai sibling trở lên (Curam: người cao
+     * tuổi/suy thận/suy gan...) nghĩa là đó là các tiểu mục của một vùng liều
+     * không có heading riêng; khi đó phải giữ toàn bộ Mục để không mất liều gốc.
      */
     const afterUsage = realChildren.filter(function(child) {
-        return !isUsagePart(child.label) && Number(child.flatIndex) > usageIndex;
+        return !isUsagePart(child.label) && Number(child.flatIndex) > Number(usagePart.flatIndex);
     });
     if (afterUsage.length !== 1) return keepWholeParent('dose-combined-parent-ambiguous-siblings');
 
@@ -16118,14 +16057,7 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
         const siblingStarts = focusIsParent ? [] : (parent.children || []).map(function(child) { return Number(child && child.flatIndex); })
             .filter(function(idx) { return Number.isFinite(idx) && idx > focusIndex && idx < parentEnd; })
             .sort(function(x, y) { return x - y; });
-        /* Meta có excerptEndIndex chỉ khi HDSD có một heading “Cách dùng” thật
-           nằm sau vùng liều. Focus vẫn là Mục cha; chỉ ranh giới TRÍCH DẪN dừng
-           ngay trước heading đó để không đưa phần Cách dùng vào câu hỏi Liều dùng. */
-        const requestedEnd = Number(meta.excerptEndIndex);
-        const parentExcerptEnd = focusIsParent && Number.isFinite(requestedEnd)
-            && requestedEnd > parentStart && requestedEnd < parentEnd
-            ? requestedEnd : parentEnd;
-        const focusEnd = focusIsParent ? parentExcerptEnd : (siblingStarts.length ? siblingStarts[0] : parentEnd);
+        const focusEnd = focusIsParent ? parentEnd : (siblingStarts.length ? siblingStarts[0] : parentEnd);
         const regionStart = focusIsParent ? parentStart : focusIndex;
         const region = nodes.filter(function(node) {
             return Number(node.flatIndex) >= regionStart && Number(node.flatIndex) < focusEnd && String(node.ownContent || '').trim();
@@ -16959,14 +16891,7 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
             .map(function(child) { return Number(child && child.flatIndex); })
             .filter(function(index) { return Number.isFinite(index) && index > focusStart && index < parentEnd; })
             .sort(function(a, b) { return a - b; });
-        /* Với câu hỏi Liều dùng ở Mục ghép có heading “Cách dùng” tách riêng,
-           giữ toàn bộ vùng liều nhưng dừng trước heading Cách dùng. Meta vẫn trỏ
-           Mục cha để hướng dẫn/bôi đỏ không bị làm giả tên phần. */
-        const requestedEnd = Number(meta.excerptEndIndex);
-        const parentExcerptEnd = focusIsParent && Number.isFinite(requestedEnd)
-            && requestedEnd > parentStart && requestedEnd < parentEnd
-            ? requestedEnd : parentEnd;
-        const focusEnd = focusIsParent ? parentExcerptEnd : (siblings.length ? siblings[0] : parentEnd);
+        const focusEnd = focusIsParent ? parentEnd : (siblings.length ? siblings[0] : parentEnd);
         const regionStart = focusIsParent ? parentStart : focusStart;
         const region = nodes.filter(function(node) {
             return Number(node.flatIndex) >= regionStart
