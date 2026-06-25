@@ -8201,22 +8201,9 @@ body.dark-mode .chat-widget-container .send-button:disabled{
         }
 
         function buildAiFullCatalogScanAnswer_(info, finalDrugs) {
-            const drugs = finalDrugs || [];
-            const hospital = 'Bệnh viện Đa khoa tỉnh Tuyên Quang';
-
-            if (!drugs.length) {
-                return 'Tôi chưa tìm thấy thuốc phù hợp với yêu cầu này trong dữ liệu hiện có của **' + hospital + '**.';
-            }
-
-            const maxItems = 80;
-            let answer = 'Tại **Khoa Dược BVĐK Tuyên Quang**, hiện có **' + drugs.length + '** thuốc phù hợp với yêu cầu của bạn:\n\n';
-            drugs.slice(0, maxItems).forEach(function(d, i) {
-                answer += (i + 1) + '. **' + (d.brand || 'Đang cập nhật') + '** — Hoạt chất: ' + (d.active || 'Đang cập nhật') + '\n';
-            });
-            if (drugs.length > maxItems) {
-                answer += '\nDanh sách còn **' + (drugs.length - maxItems) + '** thuốc khác. Bạn có thể hỏi hẹp hơn theo phân nhóm hoặc hoạt chất để xem tiếp.';
-            }
-            return answer;
+            // Hàm tương thích cho các nhánh cũ: dùng cùng định dạng danh mục hiện hành.
+            // Không đánh số, không cắt danh sách và mỗi thuốc luôn là một hàng riêng.
+            return buildDeterministicDrugListForChat_(finalDrugs || []);
         }
 
 
@@ -8301,9 +8288,9 @@ body.dark-mode .chat-widget-container .send-button:disabled{
             }
 
             // Danh mục bệnh viện phải hiển thị ĐẦY ĐỦ mọi thuốc đã qua hậu kiểm.
-            // Không cắt còn 15 dòng hay để lại “Còn N thuốc khác”, vì mỗi dòng có HDSD riêng.
+            // Hiển thị đầy đủ mọi thuốc đã qua hậu kiểm; mỗi thuốc có HDSD riêng.
             const visibleDrugs = drugs;
-            const shouldNumber = false;
+            // Danh sách danh mục hiển thị tuần tự như bản trước: có số thứ tự, mỗi thuốc một hàng riêng.
             visibleDrugs.forEach(function(d, i) {
                 const brand = cleanDrugFieldForChat_(d.brand);
                 const active = cleanDrugFieldForChat_(d.active);
@@ -8328,8 +8315,9 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                     link += (link.indexOf('#') >= 0 ? '&' : '#') + focusParams.join('&');
                 }
 
-                answer += (shouldNumber ? ((i + 1) + '. ') : '')
-                    + '**' + brand + '**'
+                // Mỗi thuốc là một hàng hiển thị độc lập, có số thứ tự tuần tự; không gộp vào cùng đoạn.
+                answer += '{{MEDPLUS_DRUG_ROW}}'
+                    + (i + 1) + '. **' + brand + '**'
                     + ' — Hoạt chất: ' + active
                     + ' — Hàm lượng: ' + strength
                     + ' — Dạng bào chế: ' + form;
@@ -8338,7 +8326,7 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                 } else {
                     answer += ' 📄 HDSD đang cập nhật';
                 }
-                answer += '\n';
+                answer += '{{/MEDPLUS_DRUG_ROW}}\n\n';
             });
 
             return answer.trimEnd();
@@ -12059,6 +12047,11 @@ body.dark-mode .chat-widget-container .send-button:disabled{
             text = text.replace(/\{\{HDSD_IMAGE:([^|{}]+)\|\|([^{}]*)\}\}/g, function(match, url, cap) {
                 return buildHDSDChatImage_(url, cap);
             });
+
+            // 5b. Hàng thuốc do danh mục bệnh viện dựng sẵn phải luôn đứng riêng một dòng.
+            // Số thứ tự được đặt trong chính từng hàng, không dùng <ol>/<ul> để tránh Markdown/HTML gộp các thuốc thành một danh sách khác.
+            text = text.replace(/\{\{MEDPLUS_DRUG_ROW\}\}([\s\S]*?)\{\{\/MEDPLUS_DRUG_ROW\}\}/g,
+                '<div class="medplus-chat-drug-row" style="display:block;margin:8px 0;line-height:1.55;padding-left:0;">$1</div>');
             
             // 6. Xử lý chia đoạn (Paragraph) và Danh sách (List)
             let paragraphs = text.split('\n\n'); 
@@ -12091,7 +12084,7 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                     html += ordered ? "<ol>" + list + "</ol>" : "<ul>" + list + "</ul>";
                 } else { 
                     orderedCounter = 0;
-                    if (p.indexOf('hdsd-chat-image-wrap') >= 0 || p.indexOf('hdsd-parent-excerpt') >= 0 || p.indexOf('hdsd-chat-guide') >= 0) html += p;
+                    if (p.indexOf('hdsd-chat-image-wrap') >= 0 || p.indexOf('hdsd-parent-excerpt') >= 0 || p.indexOf('hdsd-chat-guide') >= 0 || p.indexOf('medplus-chat-drug-row') >= 0) html += p;
                     else html += "<p>" + p + "</p>"; 
                 }
             });
