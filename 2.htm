@@ -11977,7 +11977,7 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                     html += ordered ? "<ol>" + list + "</ol>" : "<ul>" + list + "</ul>";
                 } else { 
                     orderedCounter = 0;
-                    if (p.indexOf('hdsd-chat-image-wrap') >= 0 || p.indexOf('hdsd-parent-excerpt') >= 0) html += p;
+                    if (p.indexOf('hdsd-chat-image-wrap') >= 0 || p.indexOf('hdsd-parent-excerpt') >= 0 || p.indexOf('hdsd-chat-guide') >= 0) html += p;
                     else html += "<p>" + p + "</p>"; 
                 }
             });
@@ -12091,7 +12091,7 @@ body.dark-mode .chat-widget-container .send-button:disabled{
 
         function displayMessage(text, sender) {
             // Cổng render chuỗi: bảo đảm mọi nhánh trả lời HDSD đều cố gắng có hướng dẫn xem mục.
-            if (sender !== 'user') {
+            if (sender !== 'user' && !window.__medplusCanonicalHDSDOwner) {
                 text = ensureHDSDGuideVisibleInFinalAnswer_(text, window.__medplusLastUserQuestion || '');
             }
             const cm = document.getElementById('chat-messages');
@@ -12102,7 +12102,7 @@ body.dark-mode .chat-widget-container .send-button:disabled{
 
             // Cổng render DOM: kiểm tra sau formatResponse để chặn dứt điểm trường hợp header HDSD
             // hiển thị nhưng nội dung hướng dẫn bị mất ở bất kỳ nhánh nào.
-            if (sender !== 'user') {
+            if (sender !== 'user' && !window.__medplusCanonicalHDSDOwner) {
                 insertVisibleHDSDGuideAfterRenderedHeader_(c.querySelector('.text-wrapper'), window.__medplusLastUserQuestion || '');
             }
 
@@ -15006,6 +15006,9 @@ body.dark-mode #send-button svg,body.dark-mode .send-button svg{filter:drop-shad
    ===================================================================== */
 (function(){
   'use strict';
+  // The canonical engine is the only owner of HDSD guides/excerpts.
+  // Legacy fallback guide injection is disabled in displayMessage above.
+  window.__medplusCanonicalHDSDOwner = true;
   const PRECISE = true;
   const HDSD_HEADER = 'theo noi dung to hdsd';
   const MARKER_TYPES = /^(toggle|heading_1|heading_2|heading_3)$/;
@@ -15371,13 +15374,23 @@ body.dark-mode #send-button svg,body.dark-mode .send-button svg{filter:drop-shad
     button.dataset.medplusHdsdParentIndex=String(meta.parentIndex||'');
     button.dataset.medplusHdsdFocusIndex=String(meta.focusIndex||'');
   }
-  function removeOldGuideAfter(header){
+  function isGuideArtifact(node){
+    if(!node) return false;
+    try {
+      if(node.matches && node.matches('.hdsd-chat-guide, [data-medplus-canonical-guide="1"], .hdsd-parent-excerpt[data-medplus-canonical-excerpt="1"]')) return true;
+    } catch(e) {}
+    return n(node.textContent||'').indexOf('hay xem chi tiet')===0;
+  }
+  function removeGuideArtifactsAfter(header){
+    // formatResponse can leave empty <p> nodes around raw HTML blocks. Remove
+    // only guide/excerpt artifacts and those empty separators, stopping before
+    // ordinary explanatory text or the deterministic hospital-drug list.
     let node=header&&header.nextElementSibling;
     let limit=0;
-    while(node&&limit++<4){
+    while(node && limit++<14){
       const next=node.nextElementSibling;
-      const text=n(node.textContent||'');
-      if(node.matches&&node.matches('.hdsd-parent-excerpt[data-medplus-canonical-excerpt="1"], [data-medplus-canonical-guide="1"], .hdsd-chat-guide') || text.indexOf('hay xem chi tiet')===0){ node.remove(); node=next; continue; }
+      const emptyParagraph=node.tagName==='P' && !clean(node.textContent||'');
+      if(isGuideArtifact(node) || emptyParagraph){ node.remove(); node=next; continue; }
       break;
     }
   }
@@ -15390,7 +15403,7 @@ body.dark-mode #send-button svg,body.dark-mode .send-button svg{filter:drop-shad
       const url=decodeURIComponent(button.dataset.medplusHdsdUrl||'');
       const drug=typeof findDrugByHDSDUrl_==='function'?findDrugByHDSDUrl_(url):null; if(!drug) continue;
       const meta=await resolve(drug,question); if(!meta) continue;
-      removeOldGuideAfter(header);
+      removeGuideArtifactsAfter(header);
       const holder=document.createElement('div');
       holder.innerHTML='<p class="hdsd-chat-guide" data-medplus-canonical-guide="1">'+guideHtml(meta)+'</p>'+excerptHtml(meta);
       let ref=header; while(holder.firstElementChild){ const child=holder.firstElementChild; ref.insertAdjacentElement('afterend',child); ref=child; }
