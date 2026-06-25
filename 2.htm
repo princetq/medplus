@@ -15458,6 +15458,28 @@ function medplusApplyImplicitDoseFocusFromCombinedParent_(meta, userMessage, out
         return has(label, 'lieu dung') || has(label, 'lieu luong');
     };
 
+    /*
+     * Chỉ công nhận một PHẦN CON thật sự. Không được coi paragraph dài như
+     * “Không có dữ liệu lâm sàng...” là tiêu đề phần, dù block nguồn vô tình
+     * mang kiểu heading. Đây là điểm gây mất phần liều đầu tiên của Curam.
+     */
+    const isRealSiblingPart = function(child) {
+        if (!child || !child.label) return false;
+        const raw = String(child.label || '').replace(/\s+/g, ' ').trim();
+        const normalized = normalize(raw);
+        if (!raw || !normalized) return false;
+        const wordCount = normalized.split(/\s+/).filter(Boolean).length;
+        const structural = /^heading_|^toggle$/.test(String(child.type || ''));
+        const numbered = /^\s*\d+(?:\.\d+)*(?:[.)-])?\s+\S/.test(raw);
+        const known = (typeof hdsdIsKnownChildHDSDTitle_ === 'function' && hdsdIsKnownChildHDSDTitle_(raw))
+            || (typeof hdsdIsKnownMajorHDSDTitle_ === 'function' && hdsdIsKnownMajorHDSDTitle_(raw));
+        const compactUpper = /^[A-ZÀ-Ỵ0-9][A-ZÀ-Ỵ0-9\s/()\-]{2,}$/.test(raw);
+
+        // Tiêu đề phần phải ngắn; câu nội dung dài hoặc kết thúc như câu văn không hợp lệ.
+        if (wordCount > 10 || /[.!?;]$/.test(raw)) return false;
+        return !!(structural || numbered || known || compactUpper);
+    };
+
     const question = normalize(userMessage);
     const asksDose = has(question, 'lieu dung');
     const asksUsage = has(question, 'cach dung') || has(question, 'cach su dung') || has(question, 'duong dung');
@@ -15472,29 +15494,54 @@ function medplusApplyImplicitDoseFocusFromCombinedParent_(meta, userMessage, out
     const children = (parent.children || []).filter(function(child) {
         return child && child.id && child.label && Number.isFinite(Number(child.flatIndex));
     }).slice().sort(function(a, b) { return Number(a.flatIndex) - Number(b.flatIndex); });
-    if (children.length < 2) return meta;
 
-    // Nếu đã chọn đúng phần Liều dùng thật thì tuyệt đối không thay đổi.
-    if (meta.focusId && isDosePart(meta.focusLabel)) return meta;
+    const keepWholeParent = function(reason) {
+        return Object.assign({}, meta, {
+            focusId: parent.id,
+            focusLabel: parent.parentLabel,
+            focusIndex: Number(parent.parentIndex),
+            wholeParent: true,
+            source: reason || 'dose-combined-parent-full-section'
+        });
+    };
 
-    const namedDose = children.find(function(child) { return isDosePart(child.label); }) || null;
-    const usagePart = children.find(function(child) { return isUsagePart(child.label); }) || null;
-    if (!usagePart && !namedDose) return meta;
+    // Không có cấu trúc đủ rõ để phân đôi Cách dùng/Liều dùng: trích cả Mục,
+    // tuyệt đối không giữ focus paragraph cũ vì sẽ làm mất các dòng liều phía trước.
+    if (children.length < 2) return keepWholeParent('dose-combined-parent-no-sibling');
 
-    // Không có tiêu đề “Liều dùng”: phần con khác “Cách dùng”, ưu tiên phần
-    // nằm ngay sau “Cách dùng”, chính là vùng liều dùng theo quy ước HDSD này.
-    const nonUsageParts = children.filter(function(child) { return !isUsagePart(child.label); });
-    const implicitDose = namedDose || (usagePart
-        ? nonUsageParts.find(function(child) { return Number(child.flatIndex) > Number(usagePart.flatIndex); })
-        : null) || (nonUsageParts.length === 1 ? nonUsageParts[0] : null);
-    if (!implicitDose) return meta;
+    const realChildren = children.filter(isRealSiblingPart);
+    const namedDose = realChildren.find(function(child) { return isDosePart(child.label); }) || null;
+    if (namedDose) {
+        return Object.assign({}, meta, {
+            focusId: namedDose.id,
+            focusLabel: namedDose.label,
+            focusIndex: Number(namedDose.flatIndex),
+            wholeParent: false,
+            source: 'named-dose-sibling'
+        });
+    }
 
+    const usagePart = realChildren.find(function(child) { return isUsagePart(child.label); }) || null;
+    if (!usagePart) return keepWholeParent('dose-combined-parent-no-real-usage-heading');
+
+    /*
+     * Chỉ suy ra “phần còn lại là liều dùng” khi cấu trúc thật sự có đúng một
+     * sibling hợp lệ sau Cách dùng. Có từ hai sibling trở lên (Curam: người cao
+     * tuổi/suy thận/suy gan...) nghĩa là đó là các tiểu mục của một vùng liều
+     * không có heading riêng; khi đó phải giữ toàn bộ Mục để không mất liều gốc.
+     */
+    const afterUsage = realChildren.filter(function(child) {
+        return !isUsagePart(child.label) && Number(child.flatIndex) > Number(usagePart.flatIndex);
+    });
+    if (afterUsage.length !== 1) return keepWholeParent('dose-combined-parent-ambiguous-siblings');
+
+    const implicitDose = afterUsage[0];
     return Object.assign({}, meta, {
         focusId: implicitDose.id,
         focusLabel: implicitDose.label,
         focusIndex: Number(implicitDose.flatIndex),
         wholeParent: false,
-        source: 'implicit-dose-sibling-after-usage'
+        source: 'implicit-dose-single-real-sibling-after-usage'
     });
 }
 
