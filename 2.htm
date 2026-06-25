@@ -12940,6 +12940,104 @@ body.dark-mode .chat-widget-container .send-button:disabled{
             return rule;
         }
 
+
+        // =========================================================================
+        // DANH MỤC NHÓM THUỐC — KHÔI PHỤC LUỒNG AI FULL-SCAN TỪ BẢN THAM CHIẾU
+        // ========================================================================
+        function isReferenceStyleGroupCatalogQuestion_(info) {
+            if (!info || !info.isStructuredDrugQuery || info.identityQuery || info.tooBroadWithoutTopic) return false;
+            const q = String(info.normalizedQuestion || '').trim().replace(/\s+/g, ' ');
+            return isBroadGroupDrugQuestion_(info)
+                || isShortGroupDrugPhrase_(q)
+                || isBroadDrugListQuery(q)
+                || isHemostaticQuery(q);
+        }
+
+        async function selectGroupCatalogSubsetWithAI_(userMessage, allDrugs) {
+            if (!allDrugs || allDrugs.length === 0) return { ok: true, drugs: [] };
+
+            // Chỉ gọi từ cổng câu hỏi nhóm thuốc. Vì vậy không chạy bộ khớp tên
+            // biệt dược/hoạt chất trước: các cụm như “cầm máu”, “macrolid” không
+            // được phép bị hiểu nhầm thành tên thuốc rồi chặn AI full-scan.
+            const cacheKey = 'group|' + getAiFullScanCacheKey_(userMessage, allDrugs);
+            if (AI_FULL_SCAN_CACHE[cacheKey]) {
+                return {
+                    ok: true,
+                    drugs: AI_FULL_SCAN_CACHE[cacheKey].slice(),
+                    fromCache: true,
+                    scannedCount: AI_FULL_SCAN_CACHE[cacheKey].length
+                };
+            }
+
+            const candidateDrugs = buildAiFullScanCandidateList_(userMessage, allDrugs);
+            const usingReducedCatalog = candidateDrugs.length < allDrugs.length;
+            const chunkSize = AI_SCAN_CHUNK_SIZE;
+            let selectedAll = [];
+
+            for (let start = 0; start < candidateDrugs.length; start += chunkSize) {
+                const chunk = candidateDrugs.slice(start, start + chunkSize);
+                const catalogText = chunk.map(function(d, i) {
+                    return formatDrugLineForFullAiScan_(d, i + 1);
+                }).join('\n');
+
+                const scanPrompt = 'Bạn là bộ lọc danh mục thuốc của Khoa Dược BVĐK Tuyên Quang.\n'
+                    + 'Nhiệm vụ: đọc câu hỏi người dùng và QUÉT TRỰC TIẾP danh sách thuốc dưới đây theo Tên thuốc, Hoạt chất và Nhóm.\n'
+                    + 'Áp dụng cho mọi câu hỏi dạng hỏi danh mục theo nhóm thuốc, phân nhóm, chỉ định, cơ quan/bệnh cảnh hoặc tác dụng dược lý, ví dụ: kháng sinh, tim mạch, huyết áp, tiểu đường, PPI/dạ dày, cầm máu, giảm đau, NSAID, chống viêm, chống dị ứng, hô hấp, thần kinh, dịch truyền...\n'
+                    + 'Không dùng so khớp từ khóa cứng. Hãy dùng kiến thức dược lý để nhận diện thuốc phù hợp từ tên thuốc, hoạt chất và nhóm dược lý.\n'
+                    + 'Chỉ chọn thuốc thật sự phù hợp với câu hỏi. Không thêm thuốc ngoài danh sách. Không chọn thuốc chỉ vì biệt dược trùng một chữ nhưng hoạt chất/nhóm không liên quan.\n'
+                    + 'Nếu câu hỏi chỉ hỏi số lượng, vẫn chọn ids đúng để hệ thống đếm.\n'
+                    + 'Chỉ trả về JSON hợp lệ, không giải thích, không markdown, không code fence, đúng mẫu: {"ids":[1,2,3]}\n\n'
+                    + 'Câu hỏi người dùng: ' + userMessage + '\n'
+                    + 'Phạm vi quét: ' + (usingReducedCatalog ? 'danh sách đã được giảm bằng index nhanh, nếu không thấy phù hợp hãy trả ids rỗng' : 'toàn bộ danh mục thuốc') + '.\n\n'
+                    + '<danh_muc_thuoc_chunk>\n' + catalogText + '\n</danh_muc_thuoc_chunk>';
+
+                let chunkOk = false;
+                let chunkSelected = [];
+                for (let m = 0; m < AI_MODELS.length && !chunkOk; m++) {
+                    for (let k = 0; k < API_KEYS.length && !chunkOk; k++) {
+                        try {
+                            const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/' + AI_MODELS[m] + ':generateContent?key=' + API_KEYS[k];
+                            const payload = {
+                                contents: [{ role: 'user', parts: [{ text: scanPrompt }] }],
+                                generationConfig: { temperature: 0.0, maxOutputTokens: 768 }
+                            };
+                            const res = await fetch(apiUrl, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(payload)
+                            });
+                            if (!res.ok) continue;
+                            const data = await res.json();
+                            const responseText = extractGeminiText_(data);
+                            const ids = parseSelectedDrugIds_(responseText);
+                            if (ids.length > 0 || /"ids"\s*:\s*\[\s*\]/.test(String(responseText || ''))) {
+                                const seenIds = new Set();
+                                chunkSelected = ids
+                                    .filter(function(id) { return id >= 1 && id <= chunk.length; })
+                                    .filter(function(id) { if (seenIds.has(id)) return false; seenIds.add(id); return true; })
+                                    .map(function(id) { return chunk[id - 1]; });
+                                chunkOk = true;
+                            }
+                        } catch (e) {}
+                    }
+                }
+
+                if (!chunkOk) return { ok: false, drugs: [] };
+                selectedAll = selectedAll.concat(chunkSelected);
+            }
+
+            selectedAll = sortDrugsByBrand_(dedupeDrugs_(selectedAll));
+            AI_FULL_SCAN_CACHE[cacheKey] = selectedAll.slice();
+            return {
+                ok: true,
+                drugs: selectedAll,
+                fromCache: false,
+                scannedCount: candidateDrugs.length,
+                reducedCatalog: usingReducedCatalog,
+                groupCatalogScan: true
+            };
+        }
+
         async function sendMessage(isRetry, keyIdx, modelIdx) {
             if (isRetry === undefined) isRetry = false;
             if (keyIdx === undefined) keyIdx = 0;
@@ -13020,6 +13118,41 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                     clearInterval(timerInterval);
                     typingIndicator.style.display = 'none';
                     displayMessage(hdsdUnavailableReply, 'ai');
+                    sendButton.disabled = false;
+                    return;
+                }
+
+
+                // CỔNG DANH MỤC NHÓM THUỐC.
+                // Khôi phục đúng luồng của bản tham chiếu: AI full-scan chạy trước
+                // bộ phân loại phạm vi để các câu hỏi như “thuốc cầm máu” hoặc
+                // “kháng sinh nhóm macrolid” luôn đi vào bước chọn danh mục.
+                if (isReferenceStyleGroupCatalogQuestion_(drugQueryInfo)) {
+                    const fullCatalogSource = (Array.isArray(rawData) && rawData.length > 0) ? rawData : dataForRag;
+                    document.getElementById('typing-text').innerText = "MedPlus AI đang quét danh mục thuốc...";
+                    const catalogScan = await selectGroupCatalogSubsetWithAI_(userMessage, fullCatalogSource);
+
+                    if (!catalogScan || !catalogScan.ok) {
+                        clearInterval(timerInterval);
+                        typingIndicator.style.display = 'none';
+                        displayMessage('Tôi chưa quét được danh mục thuốc bằng AI nên chưa trả kết quả để tránh sai sót dữ liệu y khoa. Bạn vui lòng thử lại sau ít giây hoặc hỏi hẹp hơn theo hoạt chất/tên thuốc.', 'ai');
+                        sendButton.disabled = false;
+                        return;
+                    }
+
+                    if (catalogScan.ambiguousNameMatch) {
+                        clearInterval(timerInterval);
+                        typingIndicator.style.display = 'none';
+                        displayMessage(buildAmbiguousDrugNameAnswer_(catalogScan.drugNameResolution), 'ai');
+                        sendButton.disabled = false;
+                        return;
+                    }
+
+                    document.getElementById('typing-text').innerText = "MedPlus AI đang viết câu trả lời...";
+                    const catalogReply = await composeDrugAnswerWithAI_(userMessage, catalogScan.drugs || [], catalogScan);
+                    clearInterval(timerInterval);
+                    typingIndicator.style.display = 'none';
+                    displayMessage(catalogReply, 'ai');
                     sendButton.disabled = false;
                     return;
                 }
