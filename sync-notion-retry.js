@@ -1,3 +1,6 @@
+const dns = require('dns');
+dns.setDefaultResultOrder('ipv4first');
+
 const { Client } = require('@notionhq/client');
 const fetch = require('node-fetch'); // Bắt buộc phải có dòng này
 const fs = require('fs');
