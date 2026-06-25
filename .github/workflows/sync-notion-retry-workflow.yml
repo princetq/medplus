@@ -2,7 +2,8 @@ name: Sync Notion HDSD
 
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    # Đã đổi sang phút 17 và 47 để né "giờ cao điểm" của máy chủ GitHub
+    - cron: '17,47 * * * *'
   workflow_dispatch:
   repository_dispatch:
     types: [notion-sync]
@@ -25,7 +26,8 @@ jobs:
           node-version: '22'
 
       - name: 📦 Cài đặt thư viện
-        run: npm install @notionhq/client@2.2.15
+        # [QUAN TRỌNG] Đã thêm node-fetch@2 vào dòng này
+        run: npm install @notionhq/client@2.2.15 node-fetch@2
 
       - name: 🔄 Chạy script sync retry
         env:
