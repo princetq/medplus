@@ -1,18 +1,8 @@
-// Ép Node.js dùng IPv4 để tránh lỗi đứt kết nối mạng ngầm trên GitHub Actions
-const dns = require('dns');
-dns.setDefaultResultOrder('ipv4first'); 
-
 const { Client } = require('@notionhq/client');
-const fetch = require('node-fetch'); // Động cơ mạng mới
 const fs = require('fs');
 const path = require('path');
 
-// Ghi đè bộ máy mạng
-const notion = new Client({ 
-  auth: process.env.NOTION_TOKEN,
-  fetch: fetch 
-});
-
+const notion = new Client({ auth: process.env.NOTION_TOKEN });
 const DATABASE_ID = process.env.NOTION_DATABASE_ID;
 const OUTPUT_DIR = './hdsd-data';
 
@@ -21,6 +11,7 @@ if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
+// Hàm retry để xử lý lỗi mạng hoặc Rate Limit của Notion
 async function withRetry(fn, retries = 4, baseDelay = 1000) {
   let lastErr;
   for (let i = 0; i <= retries; i++) {
@@ -29,8 +20,7 @@ async function withRetry(fn, retries = 4, baseDelay = 1000) {
     } catch (err) {
       lastErr = err;
       const msg = String(err?.message || err);
-      const shouldRetry = /rate_limited|429|502|503|504|timeout|ECONNRESET|premature close|network|fetch/i.test(msg);
-      
+      const shouldRetry = /rate_limited|429|502|503|504|timeout|ECONNRESET/i.test(msg);
       if (!shouldRetry || i === retries) throw err;
       const wait = baseDelay * Math.pow(2, i);
       console.log(`↪ retry ${i + 1}/${retries} sau ${wait}ms: ${msg}`);
@@ -40,13 +30,14 @@ async function withRetry(fn, retries = 4, baseDelay = 1000) {
   throw lastErr;
 }
 
+// Tải chi tiết nội dung (blocks) của một trang
 async function fetchDeep(blockId) {
   const blocks = [];
   let cursor = null;
   do {
     const res = await withRetry(() => notion.blocks.children.list({
       block_id: blockId,
-      page_size: 50,
+      page_size: 100,
       ...(cursor && { start_cursor: cursor }),
     }));
     blocks.push(...res.results);
@@ -70,11 +61,12 @@ async function fetchDeep(blockId) {
   return blocks;
 }
 
+// Lấy toàn bộ danh sách trang hiện có trong Database
 async function queryAllPages() {
   const pages = [];
   let cursor = null;
   do {
-    const payload = { database_id: DATABASE_ID, page_size: 50 };
+    const payload = { database_id: DATABASE_ID, page_size: 100 };
     if (cursor) payload.start_cursor = cursor;
 
     const res = await withRetry(() => notion.databases.query(payload), 4, 1200);
@@ -93,6 +85,7 @@ function getTitle(page) {
 async function main() {
   console.log('🔄 Bắt đầu Full Sync Notion HDSD...');
   
+  // 1. Lấy tất cả trang từ Notion
   const pages = await queryAllPages();
   console.log(`📄 Notion hiện có ${pages.length} tờ`);
 
@@ -100,6 +93,7 @@ async function main() {
   const indexMap = new Map();
   let success = 0, skipped = 0, failed = 0, deleted = 0;
 
+  // 2. Dọn dẹp: Xóa file local nếu không còn trên Notion
   if (fs.existsSync(OUTPUT_DIR)) {
     const localFiles = fs.readdirSync(OUTPUT_DIR).filter(f => f.endsWith('.json') && f !== 'index.json');
     for (const file of localFiles) {
@@ -112,16 +106,19 @@ async function main() {
     }
   }
 
+  // 3. Cập nhật hoặc thêm mới trang
   for (let i = 0; i < pages.length; i++) {
     const page = pages[i];
     const pageId = page.id.replace(/-/g, '');
     const lastEditedTime = page.last_edited_time;
     const filePath = path.join(OUTPUT_DIR, `${pageId}.json`);
     
+    // Kiểm tra xem trang có thay đổi gì so với file local không
     let needUpdate = true;
     if (fs.existsSync(filePath)) {
       try {
         const localData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        // Nếu thời gian sửa đổi giống hệt nhau, không cần tải lại nội dung block
         if (localData.page && localData.page.last_edited_time === lastEditedTime) {
           needUpdate = false;
         }
@@ -147,6 +144,7 @@ async function main() {
       console.log('✅');
       success++;
       
+      // Nghỉ ngắn để tránh bị Notion giới hạn tốc độ
       await sleep(400);
     } catch (err) {
       console.log(`❌ Lỗi: ${err.message}`);
@@ -154,6 +152,7 @@ async function main() {
     }
   }
 
+  // 4. Lưu index.json (chỉ chứa các trang hiện đang tồn tại)
   const finalIndex = Array.from(indexMap.values()).sort((a, b) => 
     (b.last_edited_time || '').localeCompare(a.last_edited_time || '')
   );
