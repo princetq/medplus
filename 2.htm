@@ -8298,9 +8298,14 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                 answer += 'Tại **' + hospital + '** hiện có **' + drugs.length + '** thuốc phù hợp trong danh mục:\n\n';
             }
 
-            // Dựng <ol><li> trực tiếp ngay từ nguồn danh mục. Không dùng markdown/newline
-            // làm cấu trúc danh sách vì các lớp xử lý HDSD có thể làm gộp các dòng.
-            answer += '<ol class="medplus-chat-drug-list" style="display:block !important;list-style-type:decimal !important;list-style-position:outside !important;margin:10px 0 !important;padding-left:28px !important;">\n';
+            // Từ 2 thuốc trở lên dùng <ol><li>; chỉ 1 thuốc thì dựng một hàng độc lập, không có số "1.".
+            // Không dùng markdown/newline làm cấu trúc danh sách vì các lớp xử lý HDSD có thể làm gộp các dòng.
+            const singleDrugResult = drugs.length === 1;
+            if (singleDrugResult) {
+                answer += '<div class="medplus-chat-drug-list medplus-chat-drug-list-single" style="display:block !important;margin:10px 0 !important;padding-left:0 !important;">\n';
+            } else {
+                answer += '<ol class="medplus-chat-drug-list" style="display:block !important;list-style-type:decimal !important;list-style-position:outside !important;margin:10px 0 !important;padding-left:28px !important;">\n';
+            }
             drugs.forEach(function(d) {
                 const brand = cleanDrugFieldForChat_(d.brand);
                 const active = cleanDrugFieldForChat_(d.active);
@@ -8317,16 +8322,20 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                     link += (link.indexOf('#') >= 0 ? '&' : '#') + focusParams.join('&');
                 }
 
-                answer += '<li class="medplus-chat-drug-row" style="display:list-item !important;margin:9px 0 !important;padding-left:2px !important;line-height:1.55 !important;">'
+                const rowTag = singleDrugResult ? 'div' : 'li';
+                const rowStyle = singleDrugResult
+                    ? 'display:block !important;margin:9px 0 !important;padding-left:0 !important;line-height:1.55 !important;'
+                    : 'display:list-item !important;margin:9px 0 !important;padding-left:2px !important;line-height:1.55 !important;';
+                answer += '<' + rowTag + ' class="medplus-chat-drug-row" style="' + rowStyle + '">'
                     + '<b>' + escapeCatalogHtml_(brand) + '</b>'
                     + ' — Hoạt chất: ' + escapeCatalogHtml_(active)
                     + ' — Hàm lượng: ' + escapeCatalogHtml_(strength)
                     + ' — Dạng bào chế: ' + escapeCatalogHtml_(form);
                 if (link) answer += ' [XEM HDSD](' + link + ')';
                 else answer += ' 📄 HDSD đang cập nhật';
-                answer += '</li>\n';
+                answer += '</' + rowTag + '>\n';
             });
-            answer += '</ol>';
+            answer += singleDrugResult ? '</div>' : '</ol>';
             return answer.trimEnd();
         }
 
