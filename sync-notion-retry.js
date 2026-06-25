@@ -1,9 +1,9 @@
 const { Client } = require('@notionhq/client');
-const fetch = require('node-fetch'); // [VÁ LỖI 1] Import thư viện mạng ổn định
+const fetch = require('node-fetch'); // Bắt buộc phải có dòng này
 const fs = require('fs');
 const path = require('path');
 
-// [VÁ LỖI 1] Ghi đè phương thức fetch mặc định của hệ thống
+// Ghi đè bộ máy fetch mặc định
 const notion = new Client({ 
   auth: process.env.NOTION_TOKEN,
   fetch: fetch 
