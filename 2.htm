@@ -15423,6 +15423,81 @@ function medplusEffectIndicationMetaFromOutlineStrict_(userMessage, outline) {
     };
 }
 
+/*
+ * Trường hợp HDSD viết MỤC “Cách dùng, liều dùng” nhưng không đặt tiêu đề
+ * con “Liều dùng”: nếu người dùng HỎI RIÊNG liều dùng, phần con ngay sau
+ * “Cách dùng” (và khác “Cách dùng”) được xem là vùng liều dùng thực tế.
+ * Quy tắc chỉ áp dụng khi outline có bằng chứng cấu trúc đầy đủ; không tạo
+ * nhãn giả và không ảnh hưởng câu hỏi chỉ hỏi “Cách dùng” hoặc hỏi cả mục.
+ */
+function medplusApplyImplicitDoseFocusFromCombinedParent_(meta, userMessage, outline) {
+    if (!meta || !outline || !Array.isArray(outline.parents)) return meta;
+
+    const normalize = function(value) {
+        try {
+            return typeof normalizeHDSDFocusNorm_ === 'function'
+                ? normalizeHDSDFocusNorm_(String(value || ''))
+                : String(value || '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+        } catch (e) {
+            return String(value || '').toLowerCase().replace(/\s+/g, ' ').trim();
+        }
+    };
+    const has = function(text, phrase) {
+        const source = normalize(text);
+        const needle = normalize(phrase);
+        if (!source || !needle) return false;
+        if (typeof hdsdFocusTextHasPhrase_ === 'function') {
+            try { return hdsdFocusTextHasPhrase_(source, needle); } catch (e) {}
+        }
+        return (' ' + source + ' ').indexOf(' ' + needle + ' ') !== -1;
+    };
+    const isUsagePart = function(label) {
+        return has(label, 'cach dung') || has(label, 'cach su dung') || has(label, 'duong dung');
+    };
+    const isDosePart = function(label) {
+        return has(label, 'lieu dung') || has(label, 'lieu luong');
+    };
+
+    const question = normalize(userMessage);
+    const asksDose = has(question, 'lieu dung');
+    const asksUsage = has(question, 'cach dung') || has(question, 'cach su dung') || has(question, 'duong dung');
+    // Khi hỏi cả cách dùng và liều dùng, giữ hành vi trích cả Mục như cũ.
+    if (!asksDose || asksUsage) return meta;
+
+    const parent = outline.parents.find(function(item) {
+        return item && item.id === meta.parentId;
+    });
+    if (!parent || !has(parent.parentLabel, 'cach dung') || !has(parent.parentLabel, 'lieu dung')) return meta;
+
+    const children = (parent.children || []).filter(function(child) {
+        return child && child.id && child.label && Number.isFinite(Number(child.flatIndex));
+    }).slice().sort(function(a, b) { return Number(a.flatIndex) - Number(b.flatIndex); });
+    if (children.length < 2) return meta;
+
+    // Nếu đã chọn đúng phần Liều dùng thật thì tuyệt đối không thay đổi.
+    if (meta.focusId && isDosePart(meta.focusLabel)) return meta;
+
+    const namedDose = children.find(function(child) { return isDosePart(child.label); }) || null;
+    const usagePart = children.find(function(child) { return isUsagePart(child.label); }) || null;
+    if (!usagePart && !namedDose) return meta;
+
+    // Không có tiêu đề “Liều dùng”: phần con khác “Cách dùng”, ưu tiên phần
+    // nằm ngay sau “Cách dùng”, chính là vùng liều dùng theo quy ước HDSD này.
+    const nonUsageParts = children.filter(function(child) { return !isUsagePart(child.label); });
+    const implicitDose = namedDose || (usagePart
+        ? nonUsageParts.find(function(child) { return Number(child.flatIndex) > Number(usagePart.flatIndex); })
+        : null) || (nonUsageParts.length === 1 ? nonUsageParts[0] : null);
+    if (!implicitDose) return meta;
+
+    return Object.assign({}, meta, {
+        focusId: implicitDose.id,
+        focusLabel: implicitDose.label,
+        focusIndex: Number(implicitDose.flatIndex),
+        wholeParent: false,
+        source: 'implicit-dose-sibling-after-usage'
+    });
+}
+
 async function medplusResolveActualHDSDFocusForDrug_(drug, userMessage) {
     if (!drug || !drug.link) return null;
     const json = await loadHDSDJsonForDrug_(drug);
@@ -15449,7 +15524,7 @@ async function medplusResolveActualHDSDFocusForDrug_(drug, userMessage) {
         try { meta = medplusChooseActualHDSDFocusLocally_(userMessage, outline); } catch (e) { meta = null; }
     }
     if (!meta || !meta.focusLabel || !meta.parentLabel) return null;
-    return meta;
+    return medplusApplyImplicitDoseFocusFromCombinedParent_(meta, userMessage, outline);
 }
 
 function medplusBuildActualHDSDGuideText_(meta) {
@@ -16418,6 +16493,8 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
    ====================================================================== */
 (function(){
     const excerptCache = window.__medplusReliableHDSDExcerptCache || (window.__medplusReliableHDSDExcerptCache = new Map());
+    // Phiên bản chọn phần liều dùng đã thay đổi: không dùng lại metadata cũ trong phiên tải này.
+    if (excerptCache && typeof excerptCache.clear === 'function') excerptCache.clear();
 
     function esc(value) {
         return String(value == null ? '' : value)
@@ -16631,8 +16708,11 @@ body.dark-mode .hdsd-parent-excerpt-label{color:#9cebd1}
             focusIndex: focusIndex,
             wholeParent: wholeParent || !focusLabel
         };
-        excerptCache.set(cacheKey, result);
-        return result;
+        const correctedResult = typeof medplusApplyImplicitDoseFocusFromCombinedParent_ === 'function'
+            ? medplusApplyImplicitDoseFocusFromCombinedParent_(result, question, outline)
+            : result;
+        excerptCache.set(cacheKey, correctedResult);
+        return correctedResult;
     }
 
     function flattenWithContent(blocks, output, depth) {
