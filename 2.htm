@@ -8238,6 +8238,11 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                     // Không dùng kiểu đánh số 1. 2. 3. ở phần trả lời kiến thức; giữ nội dung từng ý.
                     s = s.replace(/^\s*\d+[\.)]\s+/, '');
 
+                    // Model đôi khi lặp "Ý chính:" ở đầu mọi dòng. Đây là nhãn thừa,
+                    // không phải nội dung y khoa, nên luôn bỏ trước khi định dạng câu trả lời.
+                    s = s.replace(/^\s*(?:[-*•]\s*)?\*\*\s*Ý\s*chính\s*:\s*\*\*\s*/i, '');
+                    s = s.replace(/^\s*(?:[-*•]\s*)?Ý\s*chính\s*:\s*/i, '');
+
                     // Bôi đậm cụm ý chính đứng trước dấu hai chấm: "Công dụng chính: ..." -> "**Công dụng chính:** ..."
                     if (!/^\*\*/.test(s)
                         && !/^[-*]\s+/.test(s)
@@ -8295,11 +8300,14 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                 answer += 'Tại **' + hospital + '** hiện có **' + drugs.length + '** thuốc phù hợp trong danh mục:\n\n';
             }
 
-            const visibleDrugs = drugs.slice(0, MAX_CHAT_DRUG_LIST_ITEMS);
-            const shouldNumber = visibleDrugs.length > 1;
+            // Danh mục bệnh viện phải hiển thị ĐẦY ĐỦ mọi thuốc đã qua hậu kiểm.
+            // Không cắt còn 15 dòng hay để lại “Còn N thuốc khác”, vì mỗi dòng có HDSD riêng.
+            const visibleDrugs = drugs;
+            const shouldNumber = false;
             visibleDrugs.forEach(function(d, i) {
                 const brand = cleanDrugFieldForChat_(d.brand);
                 const active = cleanDrugFieldForChat_(d.active);
+                const strength = cleanDrugFieldForChat_(d.strength);
                 const form = cleanDrugFieldForChat_(d.form);
                 let link = String(d.link || '').trim();
                 if (link && d._hdsdChatFocus) {
@@ -8323,6 +8331,7 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                 answer += (shouldNumber ? ((i + 1) + '. ') : '')
                     + '**' + brand + '**'
                     + ' — Hoạt chất: ' + active
+                    + ' — Hàm lượng: ' + strength
                     + ' — Dạng bào chế: ' + form;
                 if (link) {
                     answer += ' [XEM HDSD](' + link + ')';
@@ -8332,9 +8341,6 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                 answer += '\n';
             });
 
-            if (drugs.length > visibleDrugs.length) {
-                answer += '\nCòn **' + (drugs.length - visibleDrugs.length) + '** thuốc phù hợp khác trong danh mục. Bạn có thể hỏi hẹp hơn theo phân nhóm hoặc hoạt chất để xem tiếp.';
-            }
             return answer.trimEnd();
         }
 
@@ -9690,8 +9696,94 @@ body.dark-mode .chat-widget-container .send-button:disabled{
             return appendDeterministicDrugListToAnswer_(answer, hdsdAnswerDrugs);
         }
 
+        function isDirectHospitalCatalogListQuestion_(userMessage) {
+            const q = normalizeChatText_(userMessage);
+            if (!q) return false;
+            const asksHospitalCatalog = /\b(benh vien|bvdk|khoa duoc|danh muc)\b/.test(q);
+            const asksMedicineList = /\b(thuoc|danh sach|liet ke|ke ten|nhung thuoc|cac thuoc)\b/.test(q);
+            return asksHospitalCatalog && asksMedicineList;
+        }
+
+        function buildConciseHospitalCatalogIntroduction_(userMessage) {
+            const q = normalizeChatText_(userMessage);
+            let note = 'Dưới đây là toàn bộ thuốc phù hợp trong danh mục hiện có của Bệnh viện Đa khoa tỉnh Tuyên Quang.';
+            if (/\bkhang sinh\b/.test(q)) {
+                note = 'Kháng sinh chỉ dùng để điều trị nhiễm khuẩn do vi khuẩn và cần sử dụng theo chẩn đoán, chỉ định của bác sĩ. Dưới đây là toàn bộ thuốc phù hợp trong danh mục hiện có của Bệnh viện Đa khoa tỉnh Tuyên Quang.';
+            } else if (/\bhuyet ap\b/.test(q)) {
+                note = 'Thuốc điều trị tăng huyết áp cần được lựa chọn theo bệnh cảnh, huyết áp, chức năng thận và các bệnh kèm theo. Dưới đây là toàn bộ thuốc phù hợp trong danh mục hiện có của Bệnh viện Đa khoa tỉnh Tuyên Quang.';
+            } else if (/\bkhop\b/.test(q)) {
+                note = 'Việc lựa chọn thuốc cơ xương khớp cần dựa trên nguyên nhân như viêm, thoái hóa hay gout. Dưới đây là toàn bộ thuốc đã qua hậu kiểm phù hợp trong danh mục hiện có của Bệnh viện Đa khoa tỉnh Tuyên Quang.';
+            }
+            return note;
+        }
+
+        function stripCatalogIntroLabels_(value) {
+            return String(value || '')
+                .replace(/^\s*(?:[-*•]\s*)?\*\*\s*(?:Ý\s*chính|Bản\s*chất\s*bệnh\s*lý|Phân\s*loại\s*điều\s*trị|Lưu\s*ý\s*quan\s*trọng|Vai\s*trò\s*của\s*bác\s*sĩ|Lời\s*khuyên)\s*:\s*\*\*\s*/gim, '')
+                .replace(/^\s*(?:[-*•]\s*)?(?:Ý\s*chính|Bản\s*chất\s*bệnh\s*lý|Phân\s*loại\s*điều\s*trị|Lưu\s*ý\s*quan\s*trọng|Vai\s*trò\s*của\s*bác\s*sĩ|Lời\s*khuyên)\s*:\s*/gim, '');
+        }
+
+        function compactCatalogIntroForDisplay_(value, userMessage) {
+            let cleaned = sanitizeAiReply_(value, userMessage);
+            cleaned = stripCatalogIntroLabels_(cleaned);
+            const rawLines = cleaned.split('\n').map(function(line) { return String(line || '').trim(); }).filter(Boolean);
+            const kept = rawLines.filter(function(line) {
+                // Không để AI tự lặp lại danh mục hoặc tạo danh sách thuốc trước phần danh mục do web dựng.
+                if (/^(?:[-*•]|\d+[.)])\s+/.test(line)) return false;
+                if (/^tại\s+(?:bệnh viện|khoa dược).*?(?:hiện có|danh mục).*?thuốc/i.test(line)) return false;
+                return true;
+            });
+            if (!kept.length) return '';
+
+            // Nếu AI vẫn trả một chuỗi nhiều "Ý chính" ngắn, chỉ giữ tối đa 3 ý và gộp thành một đoạn tự nhiên.
+            // Đây chỉ là phần dẫn trước danh mục, không được lấn át danh sách thuốc phía sau.
+            const appearsLikeFormerBulletSeries = rawLines.length >= 3;
+            if (appearsLikeFormerBulletSeries) return kept.slice(0, 3).join(' ');
+            return kept.slice(0, 2).join('\n\n').trim();
+        }
+
+        async function composeConciseCatalogIntroductionWithAI_(userMessage, drugCount) {
+            const prompt = 'Bạn là MedPlus AI của Khoa Dược - Bệnh viện Đa khoa tỉnh Tuyên Quang.\n'
+                + 'Chỉ viết PHẦN GIẢI THÍCH NGẮN đứng trước danh mục thuốc bệnh viện cho câu hỏi dưới đây.\n'
+                + 'Viết bằng tiếng Việt, 2–3 câu ngắn, tối đa khoảng 450 ký tự, đúng trọng tâm và có lưu ý an toàn phù hợp.\n'
+                + 'Không dùng nhãn hoặc tiêu đề như "Ý chính:", "Bản chất bệnh lý:", "Phân loại điều trị:", "Lưu ý quan trọng:", "Vai trò bác sĩ:" hay "Lời khuyên:".\n'
+                + 'Không dùng gạch đầu dòng, không đánh số, không tự liệt kê tên thuốc, không nhắc số lượng thuốc, không viết danh mục, không tạo liên kết HDSD.\n'
+                + 'Không lặp lại câu hỏi và không thêm thông tin ngoài phạm vi. Danh sách thuốc đã được website kiểm tra và sẽ tự hiển thị sau phần này.\n\n'
+                + 'Câu hỏi người dùng: ' + userMessage + '\n'
+                + 'Số thuốc đã qua hậu kiểm: ' + Number(drugCount || 0) + '.';
+
+            for (let m = 0; m < AI_MODELS.length; m++) {
+                for (let k = 0; k < API_KEYS.length; k++) {
+                    try {
+                        const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/' + AI_MODELS[m] + ':generateContent?key=' + API_KEYS[k];
+                        const payload = {
+                            contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                            generationConfig: { temperature: 0.15, maxOutputTokens: 220 }
+                        };
+                        const res = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        if (!res.ok) continue;
+                        const data = await res.json();
+                        const intro = compactCatalogIntroForDisplay_(extractGeminiText_(data), userMessage);
+                        if (intro) return intro;
+                    } catch (e) {}
+                }
+            }
+            return '';
+        }
+
         async function composeDrugAnswerWithAI_(userMessage, selectedDrugs, scanMeta) {
             const drugs = selectedDrugs || [];
+            // Với câu hỏi rõ là “bệnh viện có thuốc ... nào”, AI vẫn trả lời ngắn trước,
+            // sau đó JavaScript mới dựng TOÀN BỘ danh mục và nút HDSD từ dữ liệu gốc.
+            if (drugs.length > 0 && isDirectHospitalCatalogListQuestion_(userMessage)) {
+                const aiIntro = await composeConciseCatalogIntroductionWithAI_(userMessage, drugs.length);
+                const fallbackIntro = buildConciseHospitalCatalogIntroduction_(userMessage);
+                return appendDeterministicDrugListToAnswer_(aiIntro || fallbackIntro, drugs);
+            }
             if (shouldUseHDSDExcerptForExactBrand_(userMessage, drugs) && drugs.length > 0 && drugs.length <= 3) {
                 const hdsdGroundedAnswer = await composeHDSDGroundedAnswerWithAI_(userMessage, drugs);
                 if (hdsdGroundedAnswer) return hdsdGroundedAnswer;
@@ -9711,7 +9803,7 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                 + 'Nếu câu hỏi là bệnh cảnh/triệu chứng/từ dân gian như khớp, đi ngoài, dạ dày, gout: giải thích theo hướng thông tin chung, phân biệt điều trị chính và hỗ trợ triệu chứng, không chẩn đoán, không hướng dẫn tự dùng thuốc kê đơn.\n'
                 + 'Nếu câu hỏi là tên thuốc/hoạt chất: nêu thuốc/hoạt chất là gì, công dụng/chỉ định thường gặp, lưu ý an toàn chính. Nếu là thuốc kê đơn hoặc kháng sinh, nhắc dùng theo chỉ định nhân viên y tế.\n'
                 + 'Nếu danh sách thuốc phù hợp bên dưới rỗng, vẫn trả lời kiến thức tổng hợp bình thường; website sẽ tự thêm câu thông báo danh mục bệnh viện chưa có thuốc này.\n'
-                + 'Giữ câu trả lời gọn, ưu tiên 3-6 ý, không quá dài. Không đánh số thứ tự 1, 2, 3 trong phần trả lời kiến thức. Mỗi ý viết trên một dòng/đoạn riêng, không viết liền các ý. Mỗi ý nên viết dạng **Ý chính:** nội dung.\n\n'
+                + 'Giữ phần trả lời kiến thức thật gọn: tối đa 2 câu hoặc 2 đoạn ngắn. Không dùng nhãn lặp như "Ý chính:", "Bản chất bệnh lý:", "Phân loại điều trị:", "Vai trò bác sĩ:". Không đánh số từng ý. Với câu hỏi chỉ yêu cầu danh mục thuốc bệnh viện, JavaScript sẽ dùng phần giới thiệu ngắn cố định và không cần AI viết phần kiến thức dài.\n\n'
                 + 'Câu hỏi người dùng: ' + userMessage + '\n'
                 + 'Số thuốc phù hợp đã được hệ thống quét trong danh mục: ' + drugs.length + '.\n'
                 + (drugs.length > maxLinesForPrompt ? 'Danh sách dưới đây chỉ hiển thị ' + maxLinesForPrompt + ' thuốc đầu để AI hiểu bối cảnh; tổng số đúng vẫn là ' + drugs.length + '.\n' : '')
