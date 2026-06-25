@@ -1175,6 +1175,9 @@ body.medplus-aux-open .medplus-aux-frame-wrap{
         .chat-widget-container .user-message .message-content{background:linear-gradient(135deg,#2E7D32,#1B5E20);color:#fff;border-bottom-right-radius:5px;flex-direction:row-reverse}
         .chat-widget-container .ai-message .message-content{background:rgba(255,255,255,0.95);color:#333;border-bottom-left-radius:5px;border-left:3px solid var(--green-l)}
         .chat-widget-container .text-wrapper{flex:1;min-width:0}
+        .chat-widget-container .medplus-chat-drug-list{display:block!important;list-style-type:decimal!important;list-style-position:outside!important;margin:10px 0!important;padding-left:28px!important}
+        .chat-widget-container .medplus-chat-drug-list>.medplus-chat-drug-row{display:list-item!important;margin:9px 0!important;line-height:1.55!important}
+
         .chat-widget-container .message-content p{margin:0 0 8px}
         .chat-widget-container .message-content p:last-child{margin-bottom:0}
         .chat-widget-container .message-content ul,.chat-widget-container .message-content ol{padding-left:20px;margin-bottom:8px;margin-top:0}
@@ -8273,6 +8276,14 @@ body.dark-mode .chat-widget-container .send-button:disabled{
         function buildDeterministicDrugListForChat_(selectedDrugs) {
             const drugs = dedupeDrugs_(selectedDrugs || []);
             const hospital = 'Bệnh viện Đa khoa tỉnh Tuyên Quang';
+            const escapeCatalogHtml_ = function(value) {
+                return String(value || 'Đang cập nhật')
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            };
 
             let answer = '\n\n';
             if (!drugs.length) {
@@ -8287,11 +8298,10 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                 answer += 'Tại **' + hospital + '** hiện có **' + drugs.length + '** thuốc phù hợp trong danh mục:\n\n';
             }
 
-            // Danh mục bệnh viện phải hiển thị ĐẦY ĐỦ mọi thuốc đã qua hậu kiểm.
-            // Hiển thị đầy đủ mọi thuốc đã qua hậu kiểm; mỗi thuốc có HDSD riêng.
-            const visibleDrugs = drugs;
-            // Danh sách danh mục hiển thị tuần tự như bản trước: có số thứ tự, mỗi thuốc một hàng riêng.
-            visibleDrugs.forEach(function(d, i) {
+            // Dựng <ol><li> trực tiếp ngay từ nguồn danh mục. Không dùng markdown/newline
+            // làm cấu trúc danh sách vì các lớp xử lý HDSD có thể làm gộp các dòng.
+            answer += '<ol class="medplus-chat-drug-list" style="display:block !important;list-style-type:decimal !important;list-style-position:outside !important;margin:10px 0 !important;padding-left:28px !important;">\n';
+            drugs.forEach(function(d) {
                 const brand = cleanDrugFieldForChat_(d.brand);
                 const active = cleanDrugFieldForChat_(d.active);
                 const strength = cleanDrugFieldForChat_(d.strength);
@@ -8300,35 +8310,23 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                 if (link && d._hdsdChatFocus) {
                     const focusParams = [];
                     focusParams.push('hdsd-focus=' + encodeURIComponent(String(d._hdsdChatFocus || '')));
-                    if (d._hdsdChatFocusParent) {
-                        focusParams.push('hdsd-parent=' + encodeURIComponent(String(d._hdsdChatFocusParent || '')));
-                    }
-                    if (d._hdsdChatVersion) {
-                        focusParams.push('hdsd-version=' + encodeURIComponent(String(d._hdsdChatVersion || '')));
-                    }
-                    if (d._hdsdChatFocusParentIndex !== undefined && d._hdsdChatFocusParentIndex !== '') {
-                        focusParams.push('hdsd-parent-index=' + encodeURIComponent(String(d._hdsdChatFocusParentIndex)));
-                    }
-                    if (d._hdsdChatFocusIndex !== undefined && d._hdsdChatFocusIndex !== '') {
-                        focusParams.push('hdsd-focus-index=' + encodeURIComponent(String(d._hdsdChatFocusIndex)));
-                    }
+                    if (d._hdsdChatFocusParent) focusParams.push('hdsd-parent=' + encodeURIComponent(String(d._hdsdChatFocusParent || '')));
+                    if (d._hdsdChatVersion) focusParams.push('hdsd-version=' + encodeURIComponent(String(d._hdsdChatVersion || '')));
+                    if (d._hdsdChatFocusParentIndex !== undefined && d._hdsdChatFocusParentIndex !== '') focusParams.push('hdsd-parent-index=' + encodeURIComponent(String(d._hdsdChatFocusParentIndex)));
+                    if (d._hdsdChatFocusIndex !== undefined && d._hdsdChatFocusIndex !== '') focusParams.push('hdsd-focus-index=' + encodeURIComponent(String(d._hdsdChatFocusIndex)));
                     link += (link.indexOf('#') >= 0 ? '&' : '#') + focusParams.join('&');
                 }
 
-                // Mỗi thuốc là một hàng hiển thị độc lập, có số thứ tự tuần tự; không gộp vào cùng đoạn.
-                answer += '{{MEDPLUS_DRUG_ROW}}'
-                    + (i + 1) + '. **' + brand + '**'
-                    + ' — Hoạt chất: ' + active
-                    + ' — Hàm lượng: ' + strength
-                    + ' — Dạng bào chế: ' + form;
-                if (link) {
-                    answer += ' [XEM HDSD](' + link + ')';
-                } else {
-                    answer += ' 📄 HDSD đang cập nhật';
-                }
-                answer += '{{/MEDPLUS_DRUG_ROW}}\n\n';
+                answer += '<li class="medplus-chat-drug-row" style="display:list-item !important;margin:9px 0 !important;padding-left:2px !important;line-height:1.55 !important;">'
+                    + '<b>' + escapeCatalogHtml_(brand) + '</b>'
+                    + ' — Hoạt chất: ' + escapeCatalogHtml_(active)
+                    + ' — Hàm lượng: ' + escapeCatalogHtml_(strength)
+                    + ' — Dạng bào chế: ' + escapeCatalogHtml_(form);
+                if (link) answer += ' [XEM HDSD](' + link + ')';
+                else answer += ' 📄 HDSD đang cập nhật';
+                answer += '</li>\n';
             });
-
+            answer += '</ol>';
             return answer.trimEnd();
         }
 
@@ -12084,7 +12082,7 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                     html += ordered ? "<ol>" + list + "</ol>" : "<ul>" + list + "</ul>";
                 } else { 
                     orderedCounter = 0;
-                    if (p.indexOf('hdsd-chat-image-wrap') >= 0 || p.indexOf('hdsd-parent-excerpt') >= 0 || p.indexOf('hdsd-chat-guide') >= 0 || p.indexOf('medplus-chat-drug-row') >= 0) html += p;
+                    if (p.indexOf('hdsd-chat-image-wrap') >= 0 || p.indexOf('hdsd-parent-excerpt') >= 0 || p.indexOf('hdsd-chat-guide') >= 0 || p.indexOf('medplus-chat-drug-row') >= 0 || p.indexOf('medplus-chat-drug-list') >= 0) html += p;
                     else html += "<p>" + p + "</p>"; 
                 }
             });
