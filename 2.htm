@@ -9362,17 +9362,34 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                 const variants = [brand];
                 if (brandNoStrength && brandNoStrength.length >= 4 && brandNoStrength !== brand) variants.push(brandNoStrength);
 
-                const hit = variants.some(function(variant) {
+                // A question can contain a short brand that is also a prefix of a longer
+                // brand (e.g. "PARACETAMOL" inside "Paracetamol Kabi"). Keep the
+                // best matching variant for this drug, then retain only the most specific
+                // match across the formulary. This happens before any HDSD route, AI call,
+                // guide, excerpt, or drug-list rendering.
+                let bestScore = -1;
+                variants.forEach(function(variant) {
                     const compact = variant.replace(/\s+/g, '');
-                    return q === variant
+                    const hit = q === variant
                         || subject === variant
                         || hasNormalizedPhrase_(q, variant)
                         || hasNormalizedPhrase_(subject, variant)
                         || (compact.length >= 6 && (compactQ.indexOf(compact) >= 0 || compactSubject.indexOf(compact) >= 0));
+                    if (!hit) return;
+                    const exact = (q === variant || subject === variant) ? 100000 : 0;
+                    const words = variant.split(/\s+/).filter(Boolean).length * 100;
+                    const score = exact + words + compact.length;
+                    if (score > bestScore) bestScore = score;
                 });
-                if (hit) matches.push(d);
+                if (bestScore >= 0) matches.push({ drug: d, score: bestScore });
             });
-            return dedupeDrugs_(matches);
+
+            if (!matches.length) return [];
+            const topScore = Math.max.apply(null, matches.map(function(x) { return x.score; }));
+            // Retain exact ties only. This preserves genuinely identical full brand labels,
+            // while excluding a shorter nested label such as PARACETAMOL when the user
+            // explicitly wrote Paracetamol Kabi.
+            return dedupeDrugs_(matches.filter(function(x) { return x.score === topScore; }).map(function(x) { return x.drug; }));
         }
 
         function shouldUseHDSDExcerptForExactBrand_(question, drugs) {
@@ -12966,6 +12983,47 @@ body.dark-mode .chat-widget-container .send-button:disabled{
                 
                 const dataForRag = getCurrentDrugSource_(rawData);
                 const drugQueryInfo = getDrugQueryInfo_(userMessage, dataForRag);
+
+                // CỔNG ƯU TIÊN HDSD THEO TÊN THUỐC CHÍNH XÁC.
+                // Cổng này phải chạy trước nhánh danh mục/AI chung. Nếu không, một câu như
+                // "chống chỉ định paracetamol" có thể rơi sang AI tổng hợp khi nhánh
+                // shouldUseStructuredDrugAnswer_ bị tắt, dẫn tới vừa không trích HDSD vừa
+                // báo sai là không có thuốc trong danh mục.
+                // HDSD theo tên thuốc chính xác luôn phải dò trong rawData — chính là danh mục
+                // đã được trang chủ tải và đang hiển thị. Không dùng aiMedicines tại đây vì
+                // nguồn phụ có thể tải muộn/không đầy đủ, khiến cùng một câu hỏi lúc khớp,
+                // lúc lại rơi xuống AI tổng hợp.
+                const deterministicHDSDSource = (Array.isArray(rawData) && rawData.length > 0)
+                    ? rawData
+                    : dataForRag;
+                const deterministicHDSDDrugs = (typeof getStrictBrandMatchesForHDSD_ === 'function')
+                    ? getStrictBrandMatchesForHDSD_(userMessage, deterministicHDSDSource).filter(function(d) { return d && d.link; })
+                    : [];
+                const isDeterministicHDSDRequest = deterministicHDSDDrugs.length > 0
+                    && (typeof isHDSDContentQuestion_ !== 'function' || isHDSDContentQuestion_(userMessage));
+
+                // Tên thuốc khớp chính xác + ý định hỏi HDSD là đường xác định.
+                // Phải trả lời trước bộ phân loại AI và mọi nhánh danh mục chung để không
+                // rơi sang kiến thức tổng hợp hoặc báo sai "không tìm thấy thuốc".
+                if (isDeterministicHDSDRequest) {
+                    document.getElementById('typing-text').innerText = "MedPlus AI đang xác định đúng mục trong tờ HDSD...";
+                    const hdsdReply = await composeHDSDGroundedAnswerWithAI_(userMessage, deterministicHDSDDrugs);
+                    if (hdsdReply) {
+                        clearInterval(timerInterval);
+                        typingIndicator.style.display = 'none';
+                        displayMessage(hdsdReply, 'ai');
+                        sendButton.disabled = false;
+                        return;
+                    }
+                    const hdsdUnavailableReply = 'Tôi đã xác định được thuốc phù hợp trong danh mục, nhưng chưa tải được nội dung tờ HDSD để trích dẫn. Vui lòng bấm **XEM HDSD** hoặc thử lại sau.'
+                        + appendDeterministicDrugListToAnswer_('', deterministicHDSDDrugs);
+                    clearInterval(timerInterval);
+                    typingIndicator.style.display = 'none';
+                    displayMessage(hdsdUnavailableReply, 'ai');
+                    sendButton.disabled = false;
+                    return;
+                }
+
                 const questionScope = await classifyQuestionScopeHybrid_(userMessage, drugQueryInfo);
                 const isHealthcareQuestion = questionScope && questionScope.scope === 'medical';
                 const shouldUseDrugCatalog = !!(questionScope && questionScope.drugCatalog);
@@ -15000,7 +15058,7 @@ body.dark-mode #send-button svg,body.dark-mode .send-button svg{filter:drop-shad
 
 <script id="medplus-hdsd-canonical-engine">
 /* =====================================================================
-   MEDPLUS HDSD CANONICAL ENGINE v3.3
+   MEDPLUS HDSD CANONICAL ENGINE v3.3 — stable deterministic route
    One owner: real document markers -> selection -> guide -> excerpt -> button.
    true is replaced at build time.
    ===================================================================== */
@@ -15414,8 +15472,11 @@ body.dark-mode #send-button svg,body.dark-mode .send-button svg{filter:drop-shad
   window.medplusResolveActualHDSDFocusForDrug_=resolve;
   window.medplusBuildActualHDSDGuideText_=function(meta){return meta?guideHtml(meta):'';};
   window.composeHDSDGroundedAnswerWithAI_=canonicalAnswer;
-  const previousDisplay=window.displayMessage;
-  if(typeof previousDisplay==='function') window.displayMessage=function(text,sender){ const result=previousDisplay.apply(this,arguments); if(sender!=='user'){ queueMicrotask(function(){ const list=[].slice.call(document.querySelectorAll('#chat-messages .ai-message .text-wrapper')); const wrapper=list[list.length-1]; if(wrapper) applyBubble(wrapper,window.__medplusLastUserQuestion||''); }); } return result; };
+  // Không resolve lại HDSD sau khi đã render. canonicalAnswer() đã tạo guide/excerpt
+  // từ đúng câu hỏi của lượt hiện tại. Resolver hậu render từng dùng biến toàn cục
+  // __medplusLastUserQuestion, nên có thể áp câu hỏi cũ/mới vào bubble sai khi các tác vụ
+  // bất đồng bộ hoàn thành khác thời điểm.
+  window.medplusResolveRenderedHDSDGuides_=function(){ return Promise.resolve(); };
 })();
 
 </script>
