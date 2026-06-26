@@ -5946,6 +5946,26 @@ body.dark-mode .medplus-duoc-thu-section{background:#0b1d38!important;border-col
 body.dark-mode .medplus-duoc-thu-section summary{background:#10284b!important}
 body.dark-mode .medplus-duoc-thu-subsection.duoc-thu-focus-sub{background:#3b1520!important;color:#ffdfe2!important}
 </style>
+
+<style id="medplus-duoc-thu-table-style">
+.medplus-duoc-thu-table-figure{margin:14px 0;padding:12px;border:1px solid rgba(106,27,154,.25);border-radius:10px;background:#fcfbff}
+.medplus-duoc-thu-table-figure figcaption{margin:0 0 9px;color:#4527a0;font-size:13px}
+.medplus-duoc-thu-table-scroll{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.medplus-duoc-thu-table{width:100%;border-collapse:collapse;min-width:420px;background:#fff;font-size:14px;line-height:1.35}
+.medplus-duoc-thu-table th,.medplus-duoc-thu-table td{border:1px solid #a79ab9;padding:7px 9px;vertical-align:top;text-align:left}
+.medplus-duoc-thu-table th{background:#eee9f7;color:#2d1550;font-weight:800;text-align:center;vertical-align:middle}
+.medplus-duoc-thu-table-source{margin-top:9px;border-top:1px dashed #bfb3ce;padding-top:8px;color:#57367c;font-size:13px}
+.medplus-duoc-thu-table-source summary{cursor:pointer;font-weight:700}
+.medplus-duoc-thu-table-source img{display:block;max-width:100%;height:auto;margin:10px auto 2px;border:1px solid #c9c0d5;background:#fff}
+.medplus-duoc-thu-table-appendix{margin-top:16px;padding-top:12px;border-top:2px dashed rgba(106,27,154,.35)}
+.medplus-duoc-thu-table-appendix-title{font-weight:800;color:#4527a0;margin-bottom:6px}
+body.dark-mode .medplus-duoc-thu-table-figure{background:#0e2240;border-color:#6c5d92}
+body.dark-mode .medplus-duoc-thu-table-figure figcaption,body.dark-mode .medplus-duoc-thu-table-appendix-title{color:#dfcaff}
+body.dark-mode .medplus-duoc-thu-table{background:#102646;color:#e8f2ff}
+body.dark-mode .medplus-duoc-thu-table th{background:#29315a;color:#f0e8ff}
+body.dark-mode .medplus-duoc-thu-table th,body.dark-mode .medplus-duoc-thu-table td{border-color:#61769a}
+body.dark-mode .medplus-duoc-thu-table-source{color:#dfcaff;border-color:#675883}
+</style>
 </head>
 <body>
 
@@ -13446,8 +13466,94 @@ function makeDuocThuViewToken_(record, focuses) {
     return '{{DUOC_THU_VIEW:' + encodeURIComponent(record.id) + '|' + encodeURIComponent(focusIds.join(',')) + '}}';
 }
 
+function findDuocThuTable_(record, tableId) {
+    if (!record || !tableId) return null;
+    return (record.tables || []).find(function(table) { return table && table.id === tableId; }) || null;
+}
+
+function renderDuocThuText_(value) {
+    return escapeDuocThuHtml_(value || '').replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+}
+
+function printedPageForDuocThuTable_(record, table) {
+    const source = record && record.source || {};
+    const pdf = source.pdf_pages || {};
+    const printed = source.printed_pages || {};
+    const n = Number(table && table.source_pdf_page);
+    if (Number.isFinite(n) && Number.isFinite(Number(pdf.start)) && Number.isFinite(Number(printed.start))) {
+        return Number(printed.start) + (n - Number(pdf.start));
+    }
+    return n || '';
+}
+
+function renderDuocThuStructuredTable_(record, table, options) {
+    if (!table || !Array.isArray(table.rows)) return '';
+    const opts = options || {};
+    const printedPage = printedPageForDuocThuTable_(record, table);
+    let html = '<figure class="medplus-duoc-thu-table-figure" data-duoc-table-id="' + escapeDuocThuHtml_(table.id || '') + '">'
+        + '<figcaption><b>Bảng từ Dược thư</b>' + (printedPage ? ' - tr. ' + escapeDuocThuHtml_(printedPage) : '') + '</figcaption>'
+        + '<div class="medplus-duoc-thu-table-scroll"><table class="medplus-duoc-thu-table"><tbody>';
+    (table.rows || []).forEach(function(row) {
+        html += '<tr>';
+        (row || []).forEach(function(cell) {
+            if (!cell) return;
+            const tag = cell.header ? 'th' : 'td';
+            const rs = Math.max(1, Number(cell.rowspan) || 1);
+            const cs = Math.max(1, Number(cell.colspan) || 1);
+            html += '<' + tag + (tag === 'th' ? ' scope="col"' : '')
+                + (rs > 1 ? ' rowspan="' + rs + '"' : '')
+                + (cs > 1 ? ' colspan="' + cs + '"' : '') + '>'
+                + renderDuocThuText_(cell.text || '') + '</' + tag + '>';
+        });
+        html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    if (opts.showSnapshot && table.image_path) {
+        const src = encodeURI(String(table.image_path));
+        html += '<details class="medplus-duoc-thu-table-source"><summary>Kiểm tra bảng gốc từ PDF</summary>'
+            + '<img loading="lazy" alt="Bảng gốc từ Dược thư" src="' + escapeDuocThuHtml_(src) + '"></details>';
+    }
+    html += '</figure>';
+    return html;
+}
+
+function renderDuocThuNodeContent_(record, node, options) {
+    if (!node) return '';
+    const opts = options || {};
+    const source = String(node.content || '');
+    const replacements = (node.table_replacements || []).map(function(item) {
+        return Object.assign({}, item, { table: findDuocThuTable_(record, item && item.table_id) });
+    }).filter(function(item) {
+        return item.table && Number.isFinite(Number(item.start)) && Number.isFinite(Number(item.end))
+            && Number(item.start) >= 0 && Number(item.end) >= Number(item.start);
+    }).sort(function(a, b) { return Number(a.start) - Number(b.start); });
+    let html = '';
+    let cursor = 0;
+    replacements.forEach(function(item) {
+        const start = Math.max(cursor, Math.min(source.length, Number(item.start)));
+        const end = Math.max(start, Math.min(source.length, Number(item.end)));
+        if (start > cursor) html += renderDuocThuText_(source.slice(cursor, start));
+        if (item.inline) html += renderDuocThuStructuredTable_(record, item.table, { showSnapshot: !!opts.showSnapshot });
+        cursor = end;
+    });
+    html += renderDuocThuText_(source.slice(cursor));
+
+    const appendixIds = Array.isArray(node.table_appendix_ids) ? node.table_appendix_ids : [];
+    const appendices = appendixIds.map(function(id) { return findDuocThuTable_(record, id); }).filter(Boolean);
+    if (appendices.length) {
+        html += '<div class="medplus-duoc-thu-table-appendix"><div class="medplus-duoc-thu-table-appendix-title">Bảng khôi phục từ PDF</div>';
+        appendices.forEach(function(table) {
+            html += renderDuocThuStructuredTable_(record, table, { showSnapshot: !!opts.showSnapshot });
+        });
+        html += '</div>';
+    }
+    return html;
+}
+
 function composeDuocThuExactAnswer_(record, passages) {
-    const sections = (passages || []).filter(function(item) { return item && item.section && item.section.content; });
+    const sections = (passages || []).filter(function(item) {
+        return item && item.section && (item.section.content || (item.section.table_replacements || []).length || (item.section.table_appendix_ids || []).length);
+    });
     if (!sections.length) return null;
     const focus = sections[0];
     let reply = '<span class="duoc-thu-chat-kicker">Theo nội dung <b>Dược thư Quốc gia Việt Nam</b>, mục <b>'
@@ -13463,7 +13569,8 @@ function composeDuocThuExactAnswer_(record, passages) {
     }
     sections.forEach(function(item, index) {
         if (index) reply += '\n\n';
-        reply += '<b>' + escapeDuocThuHtml_(item.section.title) + ':</b>\n' + escapeDuocThuHtml_(item.section.content);
+        reply += '<b>' + escapeDuocThuHtml_(item.section.title) + ':</b>\n'
+            + renderDuocThuNodeContent_(record, item.section, { showSnapshot: false });
     });
     reply += '\n\n<span class="duoc-thu-chat-source">Nguồn: ' + escapeDuocThuHtml_(buildDuocThuSourceLabel_(record)) + '</span> '
         + makeDuocThuViewToken_(record, sections);
@@ -13526,13 +13633,13 @@ async function openDuocThuFromChat_(id, focusId, event) {
         const isFocusedSection = focusIds.indexOf(section.id) >= 0 || (section.subsections || []).some(function(sub) { return focusIds.indexOf(sub.id) >= 0; });
         body += '<details class="medplus-duoc-thu-section' + (isFocusedSection ? ' duoc-thu-focus' : '') + '"' + (isFocusedSection ? ' open' : '') + '>'
             + '<summary>' + escapeDuocThuHtml_(section.title) + '</summary>'
-            + '<div class="detail-content">' + escapeDuocThuHtml_(section.content || '').replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>') + '</div>';
+            + '<div class="detail-content">' + renderDuocThuNodeContent_(record, section, { showSnapshot: true }) + '</div>';
         if (Array.isArray(section.subsections) && section.subsections.length) {
             body += '<div class="medplus-duoc-thu-subsections">';
             section.subsections.forEach(function(sub) {
                 const isFocusSub = focusIds.indexOf(sub.id) >= 0;
                 body += '<div class="medplus-duoc-thu-subsection' + (isFocusSub ? ' duoc-thu-focus-sub' : '') + '"><b>'
-                    + escapeDuocThuHtml_(sub.title) + '</b><br>' + escapeDuocThuHtml_(sub.content || '').replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>') + '</div>';
+                    + escapeDuocThuHtml_(sub.title) + '</b><br>' + renderDuocThuNodeContent_(record, sub, { showSnapshot: true }) + '</div>';
             });
             body += '</div>';
         }
