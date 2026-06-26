@@ -13691,42 +13691,52 @@ function duocThuAssetUrl_(path) {
     catch (e) { return encodeURI(raw); }
 }
 
+function firstDuocThuAlphabetic_(value) {
+    const match = String(value || '').match(/[A-Za-zÀ-ỹ]/u);
+    return match ? match[0] : '';
+}
+
+function isDuocThuTableFootnote_(value) {
+    return /^(?:[a-z]\.|\(\*+\)|\[\*+\])\s*/iu.test(String(value || '').trim());
+}
+
+function endsDuocThuSentence_(value) {
+    let tail = String(value || '').trim();
+    while (tail && /[\"'”’»\)\]]/.test(tail.charAt(tail.length - 1))) tail = tail.slice(0, -1).trim();
+    return /[.!?…]$/.test(tail);
+}
+
 function splitDuocThuParagraphs_(value) {
-    // Source JSON stores visual-layout-derived readable paragraphs (\n\n). Preserve those exact boundaries; only long individual paragraphs are grouped for reading.
-    let text = String(value == null ? '' : value).replace(/\r/g, '').replace(/[ \t]+\n/g, '\n').trim();
+    // Paragraph boundaries in the source JSON were determined from PDF layout.
+    // Preserve only those blank-line boundaries. Never split inside a phrase merely
+    // because it contains a label such as “Trẻ em:” or “Người lớn:”.
+    let text = String(value == null ? '' : value)
+        .replace(/\r/g, '')
+        .replace(/[ \t]+\n/g, '\n')
+        .replace(/\n[ \t]+/g, '\n')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
     if (!text) return [];
-    text = text.replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n');
-    const anchors = [
-        'Cơ chế tác dụng','Phổ tác dụng','Tác dụng hiệp đồng','Kháng thuốc',
-        'Hấp thu','Phân bố','Chuyển hóa','Thải trừ','Bài tiết',
-        'Đường uống','Đường tĩnh mạch','Tiêm tĩnh mạch','Tiêm bắp','Truyền tĩnh mạch',
-        'Người lớn','Trẻ em','Người cao tuổi','Suy giảm chức năng thận','Suy thận','Suy gan',
-        'Rất thường gặp','Thường gặp','Ít gặp','Hiếm gặp','Không rõ tần suất',
-        'Xử trí','Chú ý','Lưu ý','Cảnh báo','Theo dõi',
-        'Dự phòng','Điều trị','Liều khởi đầu','Liều duy trì','Liều tối đa',
-        'Khi dùng đường uống','Khi truyền tĩnh mạch','Khi dùng đường tĩnh mạch'
-    ];
-    const escaped = anchors.map(function(x){ return x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }).join('|');
-    if (escaped) {
-        const marker = new RegExp('\\s+(?=(' + escaped + ')\\s*:)', 'gi');
-        text = text.replace(marker, '\n\n');
-    }
-    let blocks = text.split(/\n{2,}/).map(function(x){ return x.replace(/\s*\n\s*/g, ' ').replace(/\s{2,}/g, ' ').trim(); }).filter(Boolean);
-    const out = [];
-    blocks.forEach(function(block){
-        if (block.length <= 760) { out.push(block); return; }
-        // Very long source paragraphs are grouped into reading-sized chunks of several sentences,
-        // not one line per sentence. This keeps the wording intact while making modal reading practical.
-        const sentences = block.split(/(?<=[.!?…])\s+(?=[A-ZÀ-Ỵ0-9])/u) || [block];
-        let bucket = '';
-        sentences.forEach(function(sentence){
-            const clean = sentence.trim(); if (!clean) return;
-            if (bucket && bucket.length + clean.length + 1 > 620) { out.push(bucket); bucket = clean; }
-            else bucket += (bucket ? ' ' : '') + clean;
-        });
-        if (bucket) out.push(bucket);
+
+    const rawBlocks = text.split(/\n{2,}/).map(function(block) {
+        return block.replace(/\s*\n\s*/g, ' ').replace(/\s{2,}/g, ' ').trim();
+    }).filter(Boolean);
+
+    const paragraphs = [];
+    rawBlocks.forEach(function(block) {
+        const first = firstDuocThuAlphabetic_(block);
+        const startsLowerCase = !!first && first === first.toLocaleLowerCase('vi-VN') && first !== first.toLocaleUpperCase('vi-VN');
+        const previous = paragraphs.length ? paragraphs[paragraphs.length - 1] : '';
+        // A lower-case visual continuation is never a fresh clinical paragraph
+        // unless it is a table footnote. Merge only where the preceding chunk
+        // has not already completed a sentence.
+        if (previous && startsLowerCase && !isDuocThuTableFootnote_(block) && !endsDuocThuSentence_(previous)) {
+            paragraphs[paragraphs.length - 1] = previous + ' ' + block;
+            return;
+        }
+        paragraphs.push(block);
     });
-    return out;
+    return paragraphs;
 }
 
 function renderDuocThuText_(value) {
