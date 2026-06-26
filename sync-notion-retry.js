@@ -1,4 +1,4 @@
-.const { Client } = require('@notionhq/client');
+const { Client } = require('@notionhq/client');
 const fs = require('fs');
 const path = require('path');
 
