@@ -25,7 +25,25 @@ jobs:
           node-version: '22'
 
       - name: 📦 Cài đặt thư viện
-        run: npm install @notionhq/client@2.2.15
+        run: npm install @notionhq/client@5
+
+      - name: 🔍 Debug Secrets
+        env:
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: |
+          echo "DB ID length: ${#NOTION_DATABASE_ID}"
+          echo "DB ID value:  ${NOTION_DATABASE_ID:0:8}..."
+          echo "Token length: ${#NOTION_TOKEN}"
+          if [ "${#NOTION_DATABASE_ID}" -ne 32 ]; then
+            echo "❌ NOTION_DATABASE_ID không hợp lệ! Cần đúng 32 ký tự."
+            exit 1
+          fi
+          if [ "${#NOTION_TOKEN}" -lt 10 ]; then
+            echo "❌ NOTION_TOKEN có vẻ bị trống hoặc sai!"
+            exit 1
+          fi
+          echo "✅ Secrets hợp lệ, tiến hành sync..."
 
       - name: 🔄 Chạy script sync retry
         env:
