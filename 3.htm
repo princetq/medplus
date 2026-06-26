@@ -13692,8 +13692,7 @@ function duocThuAssetUrl_(path) {
 }
 
 function splitDuocThuParagraphs_(value) {
-    // Source JSON intentionally stores the complete text without visual PDF line breaks.
-    // Reintroduce only semantic paragraph boundaries; never add a line break after every sentence.
+    // Source JSON stores visual-layout-derived readable paragraphs (\n\n). Preserve those exact boundaries; only long individual paragraphs are grouped for reading.
     let text = String(value == null ? '' : value).replace(/\r/g, '').replace(/[ \t]+\n/g, '\n').trim();
     if (!text) return [];
     text = text.replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n');
@@ -13718,7 +13717,7 @@ function splitDuocThuParagraphs_(value) {
         if (block.length <= 760) { out.push(block); return; }
         // Very long source paragraphs are grouped into reading-sized chunks of several sentences,
         // not one line per sentence. This keeps the wording intact while making modal reading practical.
-        const sentences = block.match(/[^.!?]+[.!?]+(?:\s+|$)|[^.!?]+$/g) || [block];
+        const sentences = block.split(/(?<=[.!?…])\s+(?=[A-ZÀ-Ỵ0-9])/u) || [block];
         let bucket = '';
         sentences.forEach(function(sentence){
             const clean = sentence.trim(); if (!clean) return;
