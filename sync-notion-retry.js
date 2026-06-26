@@ -2,16 +2,22 @@ const { Client } = require('@notionhq/client');
 const fs = require('fs');
 const path = require('path');
 
-const notion = new Client({ auth: process.env.NOTION_TOKEN });
-const DATABASE_ID = process.env.NOTION_DATABASE_ID;
+const notion = new Client({ auth: process.env.NOTION_TOKEN, timeoutMs: 60_000 });
+const DATABASE_ID = process.env.NOTION_DATABASE_ID?.trim();
 const OUTPUT_DIR = './hdsd-data';
 
+// ✅ FIX 1: Validate kỹ DATABASE_ID trước khi chạy
 if (!DATABASE_ID) throw new Error('Missing NOTION_DATABASE_ID');
+if (!/^[0-9a-f]{32}$/i.test(DATABASE_ID)) {
+  throw new Error(`NOTION_DATABASE_ID không hợp lệ: "${DATABASE_ID}" (length: ${DATABASE_ID.length}). Cần đúng 32 ký tự hex.`);
+}
+if (!process.env.NOTION_TOKEN) throw new Error('Missing NOTION_TOKEN');
+
 if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
-// Hàm retry để xử lý lỗi mạng hoặc Rate Limit của Notion
+// ✅ FIX 2: Retry bổ sung thêm "Premature close" và invalid_request_url
 async function withRetry(fn, retries = 4, baseDelay = 1000) {
   let lastErr;
   for (let i = 0; i <= retries; i++) {
@@ -20,9 +26,18 @@ async function withRetry(fn, retries = 4, baseDelay = 1000) {
     } catch (err) {
       lastErr = err;
       const msg = String(err?.message || err);
-      const shouldRetry = /rate_limited|429|502|503|504|timeout|ECONNRESET/i.test(msg);
+      const code = err?.code || err?.status || '';
+      const shouldRetry =
+        /rate_limited|429|502|503|504|timeout|ECONNRESET|Premature close/i.test(msg) ||
+        code === 429 || code >= 500;
       if (!shouldRetry || i === retries) throw err;
-      const wait = baseDelay * Math.pow(2, i);
+      // ✅ FIX 3: Đọc đúng header RateLimit-Reset (giờ là số giây delta, không phải timestamp)
+      let wait = baseDelay * Math.pow(2, i);
+      const resetHeader = err?.headers?.['x-ratelimit-reset'] || err?.headers?.['retry-after'];
+      if (resetHeader) {
+        const delta = parseFloat(resetHeader);
+        if (delta > 0 && delta < 300) wait = delta * 1000;
+      }
       console.log(`↪ retry ${i + 1}/${retries} sau ${wait}ms: ${msg}`);
       await sleep(wait);
     }
@@ -84,7 +99,8 @@ function getTitle(page) {
 
 async function main() {
   console.log('🔄 Bắt đầu Full Sync Notion HDSD...');
-  
+  console.log(`   DATABASE_ID: ${DATABASE_ID.slice(0, 8)}... (${DATABASE_ID.length} ký tự)`);
+
   // 1. Lấy tất cả trang từ Notion
   const pages = await queryAllPages();
   console.log(`📄 Notion hiện có ${pages.length} tờ`);
@@ -112,18 +128,16 @@ async function main() {
     const pageId = page.id.replace(/-/g, '');
     const lastEditedTime = page.last_edited_time;
     const filePath = path.join(OUTPUT_DIR, `${pageId}.json`);
-    
-    // Kiểm tra xem trang có thay đổi gì so với file local không
+
     let needUpdate = true;
     if (fs.existsSync(filePath)) {
       try {
         const localData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-        // Nếu thời gian sửa đổi giống hệt nhau, không cần tải lại nội dung block
         if (localData.page && localData.page.last_edited_time === lastEditedTime) {
           needUpdate = false;
         }
       } catch (e) {
-        needUpdate = true; 
+        needUpdate = true;
       }
     }
 
@@ -138,31 +152,37 @@ async function main() {
       process.stdout.write(` [${i + 1}/${pages.length}] ${pageId}... 📥 Tải nội dung... `);
       const blocks = await withRetry(() => fetchDeep(page.id), 3, 1500);
       const synced_at = new Date().toISOString();
-      
+
       fs.writeFileSync(filePath, JSON.stringify({ page, blocks, synced_at }, null, 2), 'utf-8');
       indexMap.set(pageId, { id: pageId, title: getTitle(page), last_edited_time: lastEditedTime });
       console.log('✅');
       success++;
-      
-      // Nghỉ ngắn để tránh bị Notion giới hạn tốc độ
+
       await sleep(400);
     } catch (err) {
-      console.log(`❌ Lỗi: ${err.message}`);
+      // ✅ FIX 4: Log chi tiết lỗi từng trang (status, code, message) thay vì chỉ message
+      const detail = [err?.status, err?.code, err?.message].filter(Boolean).join(' | ');
+      console.log(`❌ Lỗi: ${detail}`);
       failed++;
     }
   }
 
-  // 4. Lưu index.json (chỉ chứa các trang hiện đang tồn tại)
-  const finalIndex = Array.from(indexMap.values()).sort((a, b) => 
+  // 4. Lưu index.json
+  const finalIndex = Array.from(indexMap.values()).sort((a, b) =>
     (b.last_edited_time || '').localeCompare(a.last_edited_time || '')
   );
   fs.writeFileSync(path.join(OUTPUT_DIR, 'index.json'), JSON.stringify(finalIndex, null, 2), 'utf-8');
-  
+
   console.log(`\n✨ HOÀN THÀNH TỔNG KẾT:`);
   console.log(`- Cập nhật/Mới: ${success}`);
   console.log(`- Không thay đổi: ${skipped}`);
   console.log(`- Đã xóa: ${deleted}`);
   console.log(`- Thất bại: ${failed}`);
+
+  // ✅ Nếu tất cả đều thất bại thì exit 1 để GitHub Actions báo lỗi
+  if (failed > 0 && success === 0 && skipped === 0) {
+    throw new Error(`Toàn bộ ${failed} trang đều thất bại.`);
+  }
 }
 
 main().catch(err => {
