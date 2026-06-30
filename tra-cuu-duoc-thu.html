@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tra cứu Dược thư Quốc gia Việt Nam</title>
-<meta name="medplus-duoc-thu-version" content="v9.0-redesign">
+<meta name="medplus-duoc-thu-version" content="v10.4.12-mobile-az-inline-no-border">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Nunito+Sans:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════
    DESIGN TOKENS — MedPlus Dược Thư v9
@@ -65,8 +65,8 @@
   --trans: 180ms cubic-bezier(.16,1,.3,1);
 
   /* Typography */
-  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
-  --font-body:    'DM Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Nunito Sans', 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-body:    'Inter', 'Segoe UI', system-ui, sans-serif;
 
   /* Fluid type */
   --text-xs:   clamp(0.875rem, 0.82rem + 0.25vw, 0.9375rem);
@@ -108,12 +108,13 @@ html {
 }
 body {
   min-height: 100dvh;
-  font-family: 'DM Sans','Segoe UI',Arial,sans-serif;
+  font-family: var(--font-body);
   font-size: var(--text-base);
   color: var(--color-text);
   background: var(--color-bg);
   line-height: 1.6;
   transition: background var(--trans), color var(--trans);
+  overflow-x: hidden;
 }
 button, input { font: inherit; color: inherit; cursor: pointer; }
 button { border: none; background: none; }
@@ -131,7 +132,7 @@ mark {
 .duoc-page {
   max-width: 1320px;
   margin: 0 auto;
-  padding: 38px 20px 56px;
+  padding: 19px 20px 56px;
 }
 
 /* ═══════════════════════════════
@@ -143,7 +144,7 @@ mark {
   justify-content: center;
   gap: 20px;
   padding: 14px 16px;
-  margin: 14px 0 22px;
+  margin: 0 0 16px;
   background: var(--color-surface);
   border: 1px solid var(--color-border-strong);
   border-radius: var(--rad-xl);
@@ -197,18 +198,20 @@ mark {
 }
 
 .duoc-header-title {
-  font-family: 'Playfair Display','Times New Roman',serif;
+  font-family: var(--font-display);
   font-size: var(--text-xl);
-  font-weight: 400;
+  font-weight: 900;
   color: var(--color-text);
   line-height: 1.2;
   margin: 0 0 4px;
   text-align: center;
+  letter-spacing: -.02em;
+  text-shadow: none;
 }
 
 .duoc-header-title strong {
   color: var(--color-accent);
-  font-style: italic;
+  font-style: normal;
 }
 
 .duoc-header-subtitle {
@@ -250,7 +253,7 @@ mark {
   width: 132px;
   height: 40px;
   border-radius: 9px;
-  box-shadow: 0 4px 14px rgba(46,125,50,.32), inset 0 1px 0 rgba(255,255,255,.12);
+  box-shadow: none;
   display: block;
 }
 
@@ -271,8 +274,6 @@ mark {
   padding-right: 280px;
   min-height: 40px;
 }
-.duoc-search-wrapper > * { flex-shrink: 0; }
-.duoc-search-wrapper > * { flex-shrink: 0; }
 .duoc-search-wrapper > * { flex-shrink: 0; }
 .duoc-search-wrapper > * {
   flex-shrink: 0;
@@ -319,9 +320,9 @@ mark {
   color: var(--color-accent);
   font-size: var(--text-sm);
   font-weight: 700;
-  transition: background var(--trans), color var(--trans), border-color var(--trans), box-shadow var(--trans);
+  transition: right var(--trans), background var(--trans), color var(--trans), border-color var(--trans), box-shadow var(--trans);
   position: absolute;
-  right: 206px;
+  right: 218px;
   top: 0;
   letter-spacing: .02em;
   white-space: nowrap;
@@ -350,10 +351,11 @@ body.dark-mode .duoc-abc-toggle.active { background: var(--color-accent); }
   order: 1;
   animation: duocFade .22s ease;
   position: absolute;
-  right: 272px;
+  right: 284px;
   top: 0;
-  max-width: calc(100% - 340px);
-  overflow-x: auto;
+  left: 0;
+  max-width: none;
+  overflow-x: visible;
   overflow-y: hidden;
   flex-wrap: nowrap;
   justify-content: flex-end;
@@ -370,7 +372,7 @@ body.dark-mode .duoc-abc-toggle.active { background: var(--color-accent); }
   to   { opacity: 1; transform: translateX(0); }
 }
 .duoc-letter {
-  width: 36px; height: 36px;
+  width: 30px; height: 30px;
   flex: 0 0 30px;
   display: flex; align-items: center; justify-content: center;
   background: var(--color-surface);
@@ -399,23 +401,26 @@ body.dark-mode .duoc-abc-toggle.active { background: var(--color-accent); }
   align-items: center;
   padding: 0 4px 0 12px;
   height: 40px;
-  width: 200px;
-  min-width: 200px;
-  max-width: 200px;
-  flex: 0 0 200px;
+  width: 210px;
+  min-width: 210px;
+  max-width: 210px;
+  flex: 0 0 210px;
   position: absolute;
   right: 0;
   top: 0;
   border-radius: var(--rad-md);
   border: 1px solid var(--color-border-strong);
   background: var(--color-surface-2);
-  transition: border-color var(--trans), box-shadow var(--trans), background var(--trans), transform var(--trans);
+  transition: width var(--trans), min-width var(--trans), max-width var(--trans), flex-basis var(--trans), border-color var(--trans), box-shadow var(--trans), background var(--trans), transform var(--trans);
   box-shadow: var(--shadow-xs);
 }
 .duoc-search-box:focus-within {
-  max-width: 250px;
+  width: 260px;
+  min-width: 260px;
+  max-width: 260px;
+  flex: 0 0 260px;
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(46,125,50,.12);
+  box-shadow: 0 0 0 3px rgba(46,125,50,.12), var(--shadow-sm);
   background: var(--color-surface);
 }
 .duoc-search-box input {
@@ -428,8 +433,7 @@ body.dark-mode .duoc-abc-toggle.active { background: var(--color-accent); }
   font-weight: 500;
   min-width: 0;
 }
-.duoc-search-box input::placeholder { color: var(--color-text-muted); font-weight: 400; }.duoc-search-hint.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
+.duoc-search-box input::placeholder { color: var(--color-text-muted); font-weight: 400; }
 .duoc-search-icon-btn {
   flex-shrink: 0;
   width: 32px; height: 32px;
@@ -474,10 +478,12 @@ body.dark-mode .duoc-abc-toggle.active { background: var(--color-accent); }
   display: flex;
   flex-direction: column;
   padding: 0;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background: rgba(248,255,247,0.82);
+  backdrop-filter: blur(12px) saturate(145%);
+  -webkit-backdrop-filter: blur(12px) saturate(145%);
+  border: 1px solid rgba(46,125,50,0.28);
   border-radius: var(--rad-lg);
-  box-shadow: var(--shadow-xs);
+  box-shadow: 0 8px 28px rgba(27,94,32,0.14);
   overflow: hidden;
   cursor: pointer;
   opacity: 0;
@@ -492,8 +498,8 @@ body.dark-mode .duoc-abc-toggle.active { background: var(--color-accent); }
 .duoc-card.is-visible { opacity: 1; transform: translateY(0) scale(1); }
 .duoc-card:hover {
   transform: translateY(-6px) scale(1.005);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--color-border-strong);
+  box-shadow: 0 18px 42px rgba(27,94,32,.23), 0 0 0 1px rgba(255,255,255,.72);
+  border-color: rgba(46,125,50,.42);
   z-index: 2;
 }
 .duoc-card:active { transform: scale(.97) !important; transition: .08s; }
@@ -504,8 +510,8 @@ body.dark-mode .duoc-abc-toggle.active { background: var(--color-accent); }
   width: 100%;
   height: 140px;
   overflow: hidden;
-  background: linear-gradient(180deg, var(--mp-700) 0%, var(--mp-700) 55%, #f7fbf8 55%, #f7fbf8 100%);
-  
+  background: linear-gradient(145deg, #ffffff, #f7fbf8);
+  border-bottom: 1px solid rgba(27,94,32,.14);
   flex-shrink: 0;
 }
 
@@ -707,18 +713,18 @@ body.dark-mode .duoc-open:hover {
 
 .duoc-modal-box {
   width: 100%;
-  max-width: 840px;
+  max-width: 860px;
   max-height: 90vh;
   overflow-y: auto;
-  padding: 32px;
+  padding: 24px;
   position: relative;
   background: var(--color-surface);
   border: 1px solid var(--color-border-strong);
   border-radius: 24px;
-  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,.06);
+  box-shadow: var(--shadow-lg);
   animation: duocModalIn .38s cubic-bezier(.25,1,.5,1) forwards;
   color: var(--color-text);
-  font-family: 'DM Sans','Segoe UI',Arial,sans-serif;
+  font-family: var(--font-body);
   font-size: var(--text-base);
   -webkit-font-smoothing: antialiased;
   touch-action: auto;
@@ -736,7 +742,7 @@ body.dark-mode .duoc-open:hover {
   top: 14px; right: 14px;
   width: 34px; height: 34px;
   display: flex; align-items: center; justify-content: center;
-  
+  border-radius: var(--rad-md);
   background: var(--color-surface-2);
   border: 1px solid var(--color-border);
   color: var(--color-text-muted);
@@ -754,13 +760,14 @@ body.dark-mode .duoc-open:hover {
 /* Modal drug header */
 .duoc-modal-drug-header {
   display: flex;
-  gap: 18px;
+  gap: 14px;
   align-items: center;
-  margin-bottom: 22px;
-  padding: 18px 22px;
-  border-radius: var(--rad-lg);
-  background: linear-gradient(135deg, var(--mp-50), #ecf7f2);
+  margin-bottom: 16px;
+  padding: 14px 46px 14px 16px;
+  border-radius: 18px;
+  background: var(--color-surface-2);
   border: 1px solid var(--color-border-strong);
+  box-shadow: var(--shadow-xs);
 }
 body.dark-mode .duoc-modal-drug-header {
   background: linear-gradient(135deg, rgba(74,170,114,.10), rgba(30,107,64,.08));
@@ -786,24 +793,14 @@ body.dark-mode .duoc-modal-drug-header {
 .duoc-modal-book .duoc-book-year   { font-size: 9px; }
 
 .duoc-modal-head { min-width: 0; flex: 1; }
-.duoc-modal-badge {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: var(--rad-sm);
-  background: var(--color-accent);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .07em;
-  text-transform: uppercase;
-}
 .duoc-modal-head h2 {
-  font-family: 'Playfair Display','Times New Roman',serif;
-  color: var(--color-accent);
+  font-family: var(--font-display);
+  color: var(--color-text);
   font-size: var(--text-2xl);
-  font-weight: 400;
-  margin: 7px 0 4px;
-  line-height: 1.2;
+  font-weight: 900;
+  margin: 0 0 4px;
+  line-height: 1.18;
+  letter-spacing: -.02em;
 }
 .duoc-modal-head p { margin: 0; color: var(--color-text-muted); font-size: var(--text-xs); }
 
@@ -917,6 +914,135 @@ body.dark-mode .duoc-table-figure { background: rgba(74,170,114,.05); border-col
 body.dark-mode .duoc-table-image { background: #fff; }
 body.dark-mode .duoc-modal-head h2 { color: var(--color-accent); }
 
+
+/* ═══════════════════════════════
+   v10.4.10 — Clean pill logo + adjacent A-Z + full desktop alphabet
+════════════════════════════════ */
+body.dark-mode .duoc-header-main {
+  background: var(--color-surface);
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-md);
+}
+body.dark-mode .duoc-header-main::after {
+  background: radial-gradient(circle, rgba(74,170,114,.10) 0%, transparent 70%);
+}
+body.dark-mode .duoc-header-title { color: var(--color-text); }
+body.dark-mode .duoc-header-title strong { color: var(--color-accent); }
+body.dark-mode .duoc-header-subtitle { color: var(--color-text-muted); }
+body.dark-mode .duoc-search-box,
+body.dark-mode .duoc-abc-toggle,
+body.dark-mode .duoc-letter,
+body.dark-mode .duoc-footer-badge {
+  background: var(--color-surface-2);
+  border-color: var(--color-border-strong);
+  color: var(--color-accent);
+  box-shadow: var(--shadow-xs);
+}
+body.dark-mode .duoc-search-box:focus-within {
+  background: var(--color-surface);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(74,170,114,.16), var(--shadow-sm);
+}
+body.dark-mode .duoc-search-box input { color: var(--color-text); }
+body.dark-mode .duoc-search-box input::placeholder { color: var(--color-text-muted); }
+body.dark-mode .duoc-search-icon-btn:hover,
+body.dark-mode .duoc-abc-toggle:hover,
+body.dark-mode .duoc-letter:hover {
+  background: rgba(74,170,114,.10);
+  border-color: var(--color-accent);
+}
+body.dark-mode .duoc-count {
+  background: var(--color-accent);
+  color: #061408;
+  box-shadow: var(--shadow-xs);
+}
+body.dark-mode .duoc-card {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  box-shadow: var(--shadow-xs);
+}
+body.dark-mode .duoc-card:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-lg);
+}
+body.dark-mode .duoc-card .img-wrap {
+  background: var(--color-surface-2);
+  border-bottom-color: var(--color-border);
+}
+body.dark-mode .duoc-book-emblem {
+  background: rgba(74,170,114,.10);
+  border-color: var(--color-border-strong);
+}
+body.dark-mode .duoc-book-kicker,
+body.dark-mode .duoc-book-year { color: var(--color-text-muted); }
+body.dark-mode .duoc-loading,
+body.dark-mode .duoc-empty,
+body.dark-mode .duoc-empty-inline {
+  background: var(--color-surface);
+  border-color: var(--color-border-strong);
+  color: var(--color-text-muted);
+}
+body.dark-mode .duoc-close {
+  background: var(--color-surface-2);
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
+}
+body.dark-mode .duoc-modal-book {
+  background: linear-gradient(145deg, #2e9158, #0c2e1c);
+  box-shadow: none;
+}
+body.dark-mode .duoc-brand-open-btn,
+body.dark-mode .duoc-hdsd-source-btn,
+body.dark-mode .duoc-hdsd-back-btn {
+  background: var(--color-accent);
+  color: #061408;
+  border-color: rgba(255,255,255,.12);
+  box-shadow: var(--shadow-xs);
+}
+body.dark-mode .duoc-brand-count {
+  background: rgba(6,20,8,.18);
+  color: #061408;
+}
+body.dark-mode .duoc-brand-panel-title,
+body.dark-mode .duoc-hdsd-head h2,
+body.dark-mode .duoc-modal-head h2,
+body.dark-mode .duoc-brand-title,
+body.dark-mode .duoc-hdsd-section-title,
+body.dark-mode .duoc-hdsd-pill {
+  color: var(--color-text);
+}
+body.dark-mode .duoc-brand-panel-sub,
+body.dark-mode .duoc-brand-desc,
+body.dark-mode .duoc-hdsd-head p,
+body.dark-mode .duoc-hdsd-section-body {
+  color: var(--color-text-mid);
+}
+body.dark-mode .duoc-brand-card,
+body.dark-mode .duoc-hdsd-header,
+body.dark-mode .duoc-hdsd-section {
+  background: var(--color-surface-2);
+  border-color: var(--color-border);
+  box-shadow: var(--shadow-xs);
+}
+body.dark-mode .duoc-hdsd-pill {
+  background: rgba(74,170,114,.10);
+  border-color: var(--color-border-strong);
+}
+body.dark-mode .duoc-section > summary {
+  background: var(--color-surface-2);
+  color: var(--color-text);
+}
+body.dark-mode .duoc-section[open] > summary,
+body.dark-mode .duoc-section > summary:hover {
+  background: rgba(74,170,114,.10);
+  color: var(--color-accent);
+}
+body.dark-mode .duoc-section-body,
+body.dark-mode .duoc-subsection {
+  background: var(--color-surface);
+  color: var(--color-text-mid);
+}
+
 /* ═══════════════════════════════
    RESPONSIVE
 ═══════════════════════════════ */
@@ -932,7 +1058,7 @@ body.dark-mode .duoc-modal-head h2 { color: var(--color-accent); }
   .duoc-alphabet { order: 3; max-width: 100%; width: 100%; }
 }
 @media (max-width: 650px) {
-  .duoc-page { padding: 44px 12px 32px; }
+  .duoc-page { padding: 25px 12px 32px; }
   .duoc-header-main {
     flex-wrap: wrap;
     padding: 16px 18px 16px 22px;
@@ -954,7 +1080,7 @@ body.dark-mode .duoc-modal-head h2 { color: var(--color-accent); }
   .duoc-abc-toggle { height: 38px; font-size: var(--text-xs); }
   .duoc-modal { padding: 10px; }
   .duoc-modal-box { max-height: 88dvh; padding: 18px; border-radius: var(--rad-xl); }
-  .duoc-modal-drug-header { flex-direction: column; text-align: center; padding: 16px; }
+  .duoc-modal-drug-header { flex-direction: row; text-align: left; padding: 12px 42px 12px 12px; gap: 10px; }
   .duoc-modal-book { width: 70px; height: 70px; }
   .duoc-modal-head h2 { font-size: var(--text-xl); }
   .duoc-section > summary { padding: 11px 14px; font-size: var(--text-xs); }
@@ -963,18 +1089,269 @@ body.dark-mode .duoc-modal-head h2 { color: var(--color-accent); }
 }
 
 @media (min-width: 1024px) {
-  .duoc-search-wrapper { padding-right: 222px; }
-  .duoc-search-box { right: 0; left: auto; }
+  .duoc-search-wrapper { padding-right: 334px; }
+  .duoc-search-box { right: 0; left: auto; width: 210px; min-width: 210px; max-width: 210px; flex: 0 0 210px; }
+  .duoc-search-box:focus-within { width: 260px; min-width: 260px; max-width: 260px; flex: 0 0 260px; }
+  .duoc-abc-toggle { right: 218px; }
+  .duoc-search-wrapper:has(.duoc-search-box:focus-within) .duoc-abc-toggle { right: 268px; }
+  .duoc-alphabet {
+    left: 0;
+    right: 284px;
+    max-width: none;
+    overflow: visible;
+    justify-content: flex-end;
+    gap: clamp(1px, .22vw, 4px);
+  }
+  .duoc-search-wrapper:has(.duoc-search-box:focus-within) .duoc-alphabet { right: 334px; }
+  .duoc-alphabet.show { display: flex; flex-wrap: nowrap; }
+  .duoc-letter,
+  .duoc-letter:first-child {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 18px;
+    max-width: 28px;
+    height: 30px;
+    padding: 0;
+    font-size: clamp(10px, .86vw, 12px);
+    letter-spacing: 0;
+  }
 }
 
 
+
+/* ═══════════════════════════════
+   MedPlus sync: Dược thư → Biệt dược/HDSD
+════════════════════════════════ */
+.duoc-modal-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
+.duoc-brand-open-btn,.duoc-hdsd-source-btn,.duoc-hdsd-back-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  min-height:36px;padding:8px 12px;border-radius:999px;
+  background:linear-gradient(135deg,#43a047,#1b5e20);color:#fff;
+  border:1px solid rgba(255,255,255,.35);box-shadow:0 6px 18px rgba(27,94,32,.22);
+  font-weight:900;font-size:12px;letter-spacing:.04em;text-transform:uppercase;
+  text-decoration:none;transition:transform .18s ease,box-shadow .18s ease,filter .18s ease;
+}
+.duoc-brand-open-btn:hover,.duoc-hdsd-source-btn:hover,.duoc-hdsd-back-btn:hover{transform:translateY(-1px);filter:brightness(1.05);box-shadow:0 9px 24px rgba(27,94,32,.28)}
+.duoc-brand-open-btn[disabled]{opacity:.60;cursor:not-allowed;filter:grayscale(.2)}
+.duoc-brand-count{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:rgba(255,255,255,.22);font-size:11px}
+.duoc-section > summary{font-weight:900;letter-spacing:.025em;text-transform:uppercase;color:var(--color-text)}
+.duoc-section[open] > summary{color:var(--color-accent);background:var(--mp-50)}
+.duoc-brand-modal-box{max-width:920px}
+.duoc-brand-panel-title{font-family:var(--font-display);font-weight:900;color:#1b5e20;font-size:clamp(1.25rem,1.04rem + .8vw,1.75rem);line-height:1.15;margin:0 42px 4px 0}
+.duoc-brand-panel-sub{font-size:13px;color:#476052;margin:0 42px 14px 0}
+.duoc-brand-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
+.duoc-brand-card{display:flex;align-items:center;gap:12px;text-align:left;padding:12px;border-radius:16px;background:rgba(248,255,247,.88);border:1px solid rgba(46,125,50,.22);box-shadow:0 5px 18px rgba(27,94,32,.10);transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
+.duoc-brand-card:hover{transform:translateY(-1px);box-shadow:0 10px 26px rgba(27,94,32,.16);border-color:rgba(46,125,50,.38)}
+.duoc-brand-thumb{width:52px;height:52px;border-radius:14px;object-fit:contain;background:#fff;border:1px solid rgba(46,125,50,.18);flex-shrink:0;padding:3px}
+.duoc-brand-meta{min-width:0;flex:1}.duoc-brand-title{font-weight:900;color:#1b5e20;font-size:14px;line-height:1.25;margin-bottom:3px}.duoc-brand-desc{font-size:12px;color:#476052;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.duoc-hdsd-header{display:flex;gap:14px;align-items:center;margin-bottom:14px;padding:14px 44px 14px 14px;border-radius:18px;background:rgba(242,252,239,.92);border:1px solid rgba(46,125,50,.30);box-shadow:0 8px 24px rgba(27,94,32,.12)}
+.duoc-hdsd-img{width:82px;height:82px;border-radius:18px;object-fit:contain;background:#fff;border:1px solid rgba(46,125,50,.22);padding:4px;flex-shrink:0}.duoc-hdsd-head{min-width:0;flex:1}.duoc-hdsd-head h2{font-family:var(--font-display);font-weight:900;color:#1b5e20;font-size:clamp(1.25rem,1.04rem + .8vw,1.75rem);line-height:1.15;margin:0 0 5px}.duoc-hdsd-head p{font-size:13px;color:#476052;margin:0 0 8px}.duoc-hdsd-pill-row{display:flex;flex-wrap:wrap;gap:6px}.duoc-hdsd-pill{display:inline-flex;padding:5px 9px;border-radius:999px;background:rgba(46,125,50,.09);color:#1b5e20;border:1px solid rgba(46,125,50,.18);font-size:12px;font-weight:800}.duoc-hdsd-section{border:1px solid rgba(46,125,50,.16);border-radius:14px;margin:8px 0;overflow:hidden;background:#fff}.duoc-hdsd-section-title{padding:10px 13px;background:rgba(248,255,247,.92);font-size:13px;font-weight:900;color:#1b5e20;text-transform:uppercase;letter-spacing:.035em;border-bottom:1px solid rgba(46,125,50,.12)}.duoc-hdsd-section-body{padding:12px 13px;font-size:15px;line-height:1.65;color:#365a47}.duoc-empty-inline{padding:18px;border:1px dashed rgba(46,125,50,.28);border-radius:16px;color:#476052;background:rgba(248,255,247,.76)}
+body.dark-mode .duoc-modal-box{background:rgba(14,32,24,.98);border-color:rgba(74,170,114,.32)}body.dark-mode .duoc-modal-drug-header,body.dark-mode .duoc-hdsd-header{background:rgba(74,170,114,.10);border-color:rgba(74,170,114,.28)}body.dark-mode .duoc-modal-head h2,body.dark-mode .duoc-brand-panel-title,body.dark-mode .duoc-hdsd-head h2{color:#dff0e6}body.dark-mode .duoc-brand-card,body.dark-mode .duoc-hdsd-section{background:rgba(255,255,255,.035);border-color:rgba(74,170,114,.18)}body.dark-mode .duoc-brand-title,body.dark-mode .duoc-hdsd-pill,body.dark-mode .duoc-hdsd-section-title{color:#dff0e6}body.dark-mode .duoc-brand-desc,body.dark-mode .duoc-brand-panel-sub,body.dark-mode .duoc-hdsd-head p,body.dark-mode .duoc-hdsd-section-body{color:#a8ccb7}
+@media(max-width:650px){.duoc-brand-grid{grid-template-columns:1fr}.duoc-modal-actions{margin-top:8px}.duoc-brand-open-btn{min-height:34px;padding:7px 10px}.duoc-hdsd-header{padding:12px 42px 12px 12px;gap:10px}.duoc-hdsd-img{width:64px;height:64px}.duoc-brand-card{padding:10px}.duoc-brand-thumb{width:46px;height:46px}}
+
+
+
+/* ═══════════════════════════════
+   v10.4.12 final — logo pill + inline mobile A-Z arrows, no strip border
+════════════════════════════════ */
+.duoc-logo-svg { box-shadow: none !important; filter: none !important; }
+.duoc-alphabet-shell {
+  display: none;
+  align-items: center;
+  position: absolute;
+  right: 272px;
+  top: 0;
+  height: 40px;
+  max-width: calc(100% - 340px);
+  min-width: 0;
+  z-index: 2;
+}
+.duoc-alphabet-shell.show { display: flex; }
+.duoc-alphabet-shell .duoc-alphabet {
+  position: static !important;
+  right: auto !important;
+  top: auto !important;
+  display: flex;
+  width: 100%;
+  max-width: none !important;
+  height: 40px;
+  min-width: 0;
+  align-items: center;
+  flex-wrap: nowrap !important;
+  overflow: hidden;
+}
+.duoc-alpha-arrow { display: none; }
+
+@media (min-width: 1024px) {
+  .duoc-search-wrapper { padding-right: 334px; }
+  .duoc-search-box {
+    right: 0;
+    left: auto;
+    width: 210px;
+    min-width: 210px;
+    max-width: 210px;
+    flex: 0 0 210px;
+    transition: width var(--trans), min-width var(--trans), max-width var(--trans), border-color var(--trans), box-shadow var(--trans), background var(--trans);
+  }
+  .duoc-search-box:focus-within {
+    width: 260px;
+    min-width: 260px;
+    max-width: 260px;
+    flex: 0 0 260px;
+  }
+  .duoc-abc-toggle { right: 218px; }
+  .duoc-search-wrapper:has(.duoc-search-box:focus-within) .duoc-abc-toggle { right: 268px; }
+  .duoc-alphabet-shell {
+    left: 0;
+    right: 284px;
+    max-width: none;
+    overflow: visible;
+  }
+  .duoc-search-wrapper:has(.duoc-search-box:focus-within) .duoc-alphabet-shell { right: 334px; }
+  .duoc-alphabet-shell .duoc-alphabet {
+    justify-content: flex-end;
+    gap: clamp(1px, .22vw, 4px);
+    overflow: visible;
+  }
+  .duoc-alphabet-shell .duoc-letter,
+  .duoc-alphabet-shell .duoc-letter:first-child {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 18px;
+    max-width: 28px;
+    height: 30px;
+    padding: 0;
+    font-size: clamp(10px, .86vw, 12px);
+    letter-spacing: 0;
+  }
+}
+
 @media (max-width: 767px) {
-  .duoc-search-wrapper { flex-wrap: wrap; justify-content: flex-start; padding-right: 0; }
-  .duoc-abc-toggle { position: static; order: 1; width: auto; min-width: 54px; }
-  .duoc-search-box { position: static; order: 2; width: calc(100% - 62px); min-width: 0; max-width: none; flex: 1 1 auto; }
-  .duoc-alphabet { position: static; order: 3; width: 100%; max-width: 100%; overflow: visible; flex-wrap: wrap; justify-content: flex-start; }
-  .duoc-count-below { display: block; width: fit-content; }
-  .duoc-header-main { padding: 12px 10px; }
+  .duoc-search-wrapper {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+    padding-right: 0 !important;
+    min-height: 40px;
+    overflow: visible;
+  }
+  .duoc-abc-toggle {
+    position: static !important;
+    right: auto !important;
+    top: auto !important;
+    grid-column: 1;
+    grid-row: 1;
+    order: initial;
+    width: 54px;
+    min-width: 54px;
+    height: 40px;
+  }
+  .duoc-search-box {
+    position: static !important;
+    right: auto !important;
+    top: auto !important;
+    grid-column: 2;
+    grid-row: 1;
+    order: initial;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    flex: none;
+  }
+  .duoc-search-box:focus-within { width: 100%; max-width: none; transform: none; }
+  .duoc-alphabet-shell {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    order: initial;
+    position: relative !important;
+    right: auto !important;
+    top: auto !important;
+    width: 100%;
+    max-width: 100%;
+    height: 40px;
+    margin-top: 0;
+    overflow: visible;
+    display: none;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+  }
+  .duoc-alphabet-shell.show { display: flex; }
+  .duoc-alphabet-shell .duoc-alphabet {
+    position: static !important;
+    display: flex;
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    height: 40px;
+    max-width: none !important;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: nowrap !important;
+    gap: 6px;
+    padding: 2px 0;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-behavior: smooth;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  .duoc-alphabet-shell .duoc-alphabet::-webkit-scrollbar { width: 0; height: 0; }
+  .duoc-alphabet-shell .duoc-letter,
+  .duoc-alphabet-shell .duoc-letter:first-child {
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    max-width: 34px;
+    padding: 0;
+    scroll-snap-align: start;
+    font-size: 12px;
+  }
+  .duoc-alpha-arrow {
+    display: flex;
+    flex: 0 0 18px;
+    width: 18px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+    z-index: 4;
+    background: transparent !important;
+    border: 0 !important;
+    color: var(--color-accent);
+    box-shadow: none !important;
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--trans), transform var(--trans), color var(--trans);
+  }
+  .duoc-alpha-arrow-left { order: 1; }
+  .duoc-alphabet-shell .duoc-alphabet { order: 2; }
+  .duoc-alpha-arrow-right { order: 3; }
+  .duoc-alphabet-shell.can-left .duoc-alpha-arrow-left,
+  .duoc-alphabet-shell.can-right .duoc-alpha-arrow-right {
+    opacity: .92;
+    pointer-events: auto;
+  }
+  .duoc-alphabet-shell.can-left .duoc-alpha-arrow-left { transform: translateX(-1px); }
+  .duoc-alphabet-shell.can-right .duoc-alpha-arrow-right { transform: translateX(1px); }
+  .duoc-alphabet-shell::before,
+  .duoc-alphabet-shell::after { display: none; }
+  body.dark-mode .duoc-alphabet-shell .duoc-alphabet {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+  body.dark-mode .duoc-alpha-arrow { color: var(--color-accent); }
 }
 
 </style>
@@ -988,38 +1365,29 @@ body.dark-mode .duoc-modal-head h2 { color: var(--color-accent); }
     <!-- Logo MedPlus = nút toggle sáng/tối -->
     <div class="duoc-header-brand">
       <button class="duoc-logo-btn" id="duoc-theme-btn" type="button" aria-label="Chuyển chế độ tối/sáng" title="Chuyển chế độ sáng / tối">
-      <svg class="duoc-logo-svg" viewBox="0 0 132 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="duoc-logo-svg" viewBox="0 0 132 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
           <linearGradient id="lgGrad" x1="0" y1="0" x2="132" y2="40" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#4caf50"/>
+            <stop offset="0%" stop-color="#43a047"/>
             <stop offset="100%" stop-color="#1b5e20"/>
           </linearGradient>
-          <pattern id="logoGrid" width="12" height="12" patternUnits="userSpaceOnUse">
-            <path d="M0 0H12M0 0V12" stroke="rgba(255,255,255,0.11)" stroke-width="0.8"/>
-            <circle cx="6" cy="6" r="0.8" fill="rgba(255,255,255,0.12)"/>
-          </pattern>
-          <pattern id="logoLeaf" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M6 14c4-7 9-7 11-4-3 1-4 4-6 8-3-1-4-2-5-4z" fill="rgba(255,255,255,0.06)"/>
-          </pattern>
         </defs>
-        <rect width="132" height="40" rx="8" fill="url(#lgGrad)"/>
-        <rect width="132" height="40" rx="8" fill="url(#logoGrid)" opacity="0.38"/>
-        <rect width="132" height="40" rx="8" fill="url(#logoLeaf)" opacity="0.9"/>
-        <path d="M0 29 C16 23 26 31 40 25 C56 18 67 28 80 22 C95 16 106 20 132 12" stroke="rgba(255,255,255,0.08)" stroke-width="1.1" fill="none"/>
-        <rect x="8" y="12.8" width="4" height="14.4" rx="2" fill="white" opacity="0.95"/>
-        <rect x="4" y="16.8" width="12" height="4" rx="2" fill="white" opacity="0.95"/>
-        <path d="M17 7.2 Q23 4.6 21 12.5 Q14.2 11.6 17 7.2Z" fill="rgba(180,255,200,0.33)"/>
-        <line x1="24" y1="9.2" x2="24" y2="31.2" stroke="white" stroke-width="0.8" opacity="0.25"/>
-        <text x="30" y="25.2" font-family="'DM Sans','Segoe UI',system-ui,sans-serif" font-size="15.2" font-weight="800" fill="white" opacity="0.97" letter-spacing="-0.22">Med</text>
-        <text x="59" y="25.2" font-family="'DM Sans','Segoe UI',system-ui,sans-serif" font-size="15.2" font-weight="400" fill="white" opacity="0.80" letter-spacing="-0.22">Plus</text>
-        <line x1="95" y1="9.2" x2="95" y2="31.2" stroke="white" stroke-width="0.8" opacity="0.28"/>
-        <g id="logo-theme-icon" transform="translate(103,10.5)">
-          <path d="M11 2.5a8 8 0 1 0 8 9.5A6 6 0 0 1 11 2.5z" fill="white" opacity="0.85"/>
+        <rect x="0.5" y="0.5" width="131" height="39" rx="8" fill="url(#lgGrad)" stroke="rgba(255,255,255,.22)"/>
+        <g aria-hidden="true">
+          <rect x="6.5" y="6.5" width="18" height="27" rx="9" fill="rgba(255,255,255,.96)"/>
+          <rect x="8.2" y="8.2" width="14.6" height="23.6" rx="7.3" stroke="rgba(27,94,32,.18)" stroke-width="1"/>
+          <line x1="15.5" y1="14.6" x2="15.5" y2="25.4" stroke="#1b5e20" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="10.1" y1="20" x2="20.9" y2="20" stroke="#1b5e20" stroke-width="2.2" stroke-linecap="round"/>
+        </g>
+        <line x1="31" y1="10" x2="31" y2="30" stroke="rgba(255,255,255,.30)"/>
+        <text x="39" y="25.4" font-family="'Inter','Segoe UI',system-ui,sans-serif" font-size="15.2" font-weight="850" fill="white" letter-spacing="-0.35">Med</text>
+        <text x="68" y="25.4" font-family="'Inter','Segoe UI',system-ui,sans-serif" font-size="15.2" font-weight="500" fill="rgba(255,255,255,.82)" letter-spacing="-0.35">Plus</text>
+        <line x1="97" y1="10" x2="97" y2="30" stroke="rgba(255,255,255,.26)"/>
+        <g id="logo-theme-icon" transform="translate(105,11)">
+          <path d="M10.5 2.2a7.4 7.4 0 1 0 7.2 8.9A5.5 5.5 0 0 1 10.5 2.2z" fill="white" opacity="0.86"/>
         </g>
       </svg>
     </button>
-
-      </button>
 
       <!-- Title block -->
       <div class="duoc-header-content">
@@ -1041,11 +1409,15 @@ body.dark-mode .duoc-modal-head h2 { color: var(--color-accent); }
       A-Z
     </button>
 
-    <div class="duoc-alphabet" id="duoc-alphabet" aria-label="Lọc chuyên luận theo vần"></div>
+    <div class="duoc-alphabet-shell" id="duoc-alphabet-shell" aria-label="Thanh lọc chuyên luận theo vần">
+      <button class="duoc-alpha-arrow duoc-alpha-arrow-left" id="duoc-alpha-left" type="button" aria-label="Cuộn bảng chữ cái sang trái">‹</button>
+      <div class="duoc-alphabet" id="duoc-alphabet" aria-label="Lọc chuyên luận theo vần"></div>
+      <button class="duoc-alpha-arrow duoc-alpha-arrow-right" id="duoc-alpha-right" type="button" aria-label="Cuộn bảng chữ cái sang phải">›</button>
+    </div>
 
     <div class="duoc-search-box" role="search">
       <input id="duoc-q" type="search" autocomplete="off"
-             placeholder="Tìm kiếm…"
+             placeholder="Tìm hoạt chất, biệt dược, từ khóa…"
              aria-label="Tìm chuyên luận Dược thư">
       <button class="duoc-search-icon-btn" id="duoc-clear" type="button" aria-label="Tìm kiếm" title="Tìm kiếm hướng dẫn">
         <svg id="duoc-search-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
@@ -1082,6 +1454,9 @@ body.dark-mode .duoc-modal-head h2 { color: var(--color-accent); }
 <!-- ═══════ MODAL ═══════ -->
 <div class="duoc-modal" id="duoc-modal" role="dialog" aria-modal="true" aria-label="Chuyên luận Dược thư">
   <div class="duoc-modal-box" id="duoc-modal-box"></div>
+</div>
+<div class="duoc-modal duoc-brand-modal" id="duoc-brand-modal" role="dialog" aria-modal="true" aria-label="Biệt dược và tờ HDSD liên quan">
+  <div class="duoc-modal-box duoc-brand-modal-box" id="duoc-brand-modal-box"></div>
 </div>
 
 <script>
@@ -1128,12 +1503,33 @@ body.dark-mode .duoc-modal-head h2 { color: var(--color-accent); }
 <script>
 (function(){
 'use strict';
-const INDEX_URL='./duoc-thu-data/index.json', DATA_BASE='./duoc-thu-data/';
+const INDEX_URL='./duoc-thu-data/index.json?v=10.4.12-mobile-az-inline-no-border', DATA_BASE='./duoc-thu-data/', MEDPLUS_JSON_URL='./medplus.json';
 const PAGE_SIZE=36, LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 let indexRecords=[],recordCache=new Map(),filteredResults=[],visibleCount=0,activeLetter='',lastQuery='',appendBusy=false,revealObserver=null,loadObserver=null;
-const q=document.getElementById('duoc-q'),clear=document.getElementById('duoc-clear'),list=document.getElementById('duoc-results'),count=document.getElementById('duoc-count'),modal=document.getElementById('duoc-modal'),modalBox=document.getElementById('duoc-modal-box'),abcToggle=document.getElementById('duoc-abc-toggle'),alphabet=document.getElementById('duoc-alphabet');
-function norm(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase().replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim()}
+const q=document.getElementById('duoc-q'),clear=document.getElementById('duoc-clear'),list=document.getElementById('duoc-results'),count=document.getElementById('duoc-count'),modal=document.getElementById('duoc-modal'),modalBox=document.getElementById('duoc-modal-box'),brandModal=document.getElementById('duoc-brand-modal'),brandModalBox=document.getElementById('duoc-brand-modal-box'),abcToggle=document.getElementById('duoc-abc-toggle'),alphabet=document.getElementById('duoc-alphabet'),alphabetShell=document.getElementById('duoc-alphabet-shell'),alphaLeft=document.getElementById('duoc-alpha-left'),alphaRight=document.getElementById('duoc-alpha-right');
+function asciiDigits(v){const m={'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};return String(v||'').replace(/[₀₁₂₃₄₅₆₇₈₉⁰¹²³⁴⁵⁶⁷⁸⁹]/g,function(ch){return m[ch]||ch}).replace(/µ/g,'mc').replace(/μ/g,'mc')}
+function norm(v){return asciiDigits(String(v||'')).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase().replace(/&/g,' va ').replace(/[^a-z0-9\s]/g,' ').replace(/\bva\b/g,' va ').replace(/\s+/g,' ').trim()}
 function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+function setAlphabetOpen(open){
+  alphabet.classList.toggle('show', !!open);
+  if(alphabetShell)alphabetShell.classList.toggle('show', !!open);
+  abcToggle.classList.toggle('active', !!open);
+  abcToggle.setAttribute('aria-expanded', String(!!open));
+  setTimeout(updateAlphabetOverflow, 30);
+}
+function updateAlphabetOverflow(){
+  if(!alphabetShell||!alphabet)return;
+  if(!alphabet.classList.contains('show')){
+    alphabetShell.classList.remove('can-left','can-right');
+    return;
+  }
+  const max=Math.max(0, alphabet.scrollWidth-alphabet.clientWidth);
+  const left=alphabet.scrollLeft>2;
+  const right=alphabet.scrollLeft<max-2;
+  alphabetShell.classList.toggle('can-left', left);
+  alphabetShell.classList.toggle('can-right', right);
+}
+
 function fieldScore(field,query,weight){
   if(!field)return 0;
   if(field===query)return weight+900000+query.length;
@@ -1187,7 +1583,7 @@ function updateProgress(){const p=list.querySelector('.duoc-progress');if(p)p.te
 function appendNextPage(){if(appendBusy||visibleCount>=filteredResults.length)return;appendBusy=true;const next=filteredResults.slice(visibleCount,visibleCount+PAGE_SIZE);const sentinel=list.querySelector('.duoc-sentinel');if(sentinel)sentinel.remove();const progress=list.querySelector('.duoc-progress');if(progress)progress.remove();const holder=document.createElement('div');holder.innerHTML=next.map(function(r){return cardHtml(r,lastQuery)}).join('');while(holder.firstElementChild)list.appendChild(holder.firstElementChild);visibleCount+=next.length;const meta=document.createElement('div');meta.className='duoc-progress';list.appendChild(meta);const nextSentinel=document.createElement('div');nextSentinel.className='duoc-sentinel';list.appendChild(nextSentinel);updateProgress();installRevealObserver();installLoadObserver();appendBusy=false}
 function renderResults(){if(!filteredResults.length){list.innerHTML='<div class="duoc-empty">Không tìm thấy chuyên luận phù hợp. Hãy thử tên tiếng Anh, tiếng Việt hoặc một tên đồng nghĩa của hoạt chất.</div>';return}visibleCount=0;list.innerHTML='';appendNextPage()}
 function runSearch(){const query=norm(q.value);lastQuery=query;var _sb=document.getElementById('duoc-search-svg'),_cb=document.getElementById('duoc-clear-svg');if(_sb&&_cb){_sb.style.display=query?'none':'';_cb.style.display=query?'':'none';}const found=indexRecords.map(function(r){return{r:r,s:score(r,query)}}).filter(function(x){return x.s>0&&(!activeLetter||initialOf(x.r)===activeLetter)}).sort(function(a,b){return b.s-a.s||String(a.r.title).localeCompare(String(b.r.title),'vi')}).map(function(x){return x.r});filteredResults=found;const label=activeLetter?(' · Vần '+activeLetter):'';count.textContent=found.length+' chuyên luận'+label;renderResults()}
-function drawAlphabet(){alphabet.innerHTML=LETTERS.map(function(l){return '<button class="duoc-letter" type="button" data-letter="'+l+'">'+l+'</button>'}).join('');alphabet.addEventListener('click',function(e){const b=e.target.closest('[data-letter]');if(!b)return;const letter=b.dataset.letter||'';if(activeLetter===letter){activeLetter='';b.classList.remove('active');alphabet.classList.remove('show');abcToggle.classList.remove('active');abcToggle.setAttribute('aria-expanded','false')}else{activeLetter=letter;alphabet.querySelectorAll('.duoc-letter').forEach(function(x){x.classList.remove('active')});b.classList.add('active');}runSearch()})}
+function drawAlphabet(){alphabet.innerHTML=LETTERS.map(function(l){return '<button class="duoc-letter" type="button" data-letter="'+l+'">'+l+'</button>'}).join('');alphabet.addEventListener('click',function(e){const b=e.target.closest('[data-letter]');if(!b)return;const letter=b.dataset.letter||'';if(activeLetter===letter){activeLetter='';b.classList.remove('active');setAlphabetOpen(false);}else{activeLetter=letter;alphabet.querySelectorAll('.duoc-letter').forEach(function(x){x.classList.remove('active')});b.classList.add('active');setAlphabetOpen(true);}runSearch();updateAlphabetOverflow();})}
 function firstAlphabetic(v){const m=String(v||'').match(/[A-Za-zÀ-ỹ]/u);return m?m[0]:''}
 function isTableFootnote(v){return /^(?:[a-z]\.|\(\*+\)|\[\*+\])\s*/iu.test(String(v||'').trim())}
 function endsSentence(v){let t=String(v||'').trim();while(t&&/[\"'"'»\)\]]/.test(t.charAt(t.length-1)))t=t.slice(0,-1).trim();return/[.!?…]$/.test(t)}
@@ -1212,23 +1608,159 @@ function printedPage(rec,t){const pdf=(rec.source||{}).pdf_pages||{},printed=(re
 function assetUrl(path){const raw=String(path||'').replace(/\\/g,'/').replace(/^\.\//,'');try{return new URL(raw,document.baseURI).href}catch(e){return encodeURI(raw)}}
 function renderTable(rec,t){if(!t||!t.image_path)return '';const src=assetUrl(t.image_path);return '<figure class="duoc-table-figure" data-duoc-table-id="'+esc(t.id||'')+'"><figcaption><b>Bảng gốc từ Dược thư</b>'+(printedPage(rec,t)?' - tr. '+esc(printedPage(rec,t)):'')+'</figcaption><img class="duoc-table-image" loading="lazy" decoding="async" alt="Bảng gốc từ Dược thư" src="'+esc(src)+'" onerror="var f=this.closest(\'figure\');if(f)f.classList.add(\'duoc-table-image-error\');this.remove();"><div class="duoc-table-image-error-text">Không tải được ảnh bảng. Hãy kiểm tra thư mục duoc-thu-assets.</div></figure>'}
 function renderNode(rec,node){if(!node)return '';const blocks=Array.isArray(node.blocks)&&node.blocks.length?node.blocks:(String(node.content||'').trim()?[{type:'text',text:String(node.content||'')}]:[]);return blocks.map(function(b){if(!b)return '';if(b.type==='table')return renderTable(rec,findTable(rec,b.table_id));if(b.type==='text')return '<div class="duoc-text">'+renderText(b.text||'')+'</div>';return ''}).join('')}
-function renderRecord(rec){const source=rec.source||{},p=source.printed_pages||{},pages=p.start?('tr. '+p.start+(p.end&&p.end!==p.start?'–'+p.end:'')):'trang chưa xác định';let h='<button type="button" class="duoc-close" aria-label="Đóng">×</button><div class="duoc-modal-drug-header"><div class="duoc-modal-book"><span class="duoc-book-emblem">📚</span><span class="duoc-book-kicker">Dược thư</span><span class="duoc-book-year">2023</span></div><div class="duoc-modal-head"><span class="duoc-modal-badge">DƯỢC THƯ QUỐC GIA</span><h2>'+esc(rec.title)+'</h2><p>'+esc((source.book||'Dược thư Quốc gia Việt Nam')+', '+(source.edition||'2023')+', '+pages+'.')+'</p></div></div><div class="duoc-modal-body">';(rec.sections||[]).forEach(function(sec,i){const parent=renderNode(rec,sec),children=sec.render_mode==='children_only'&&Array.isArray(sec.subsections)&&sec.subsections.length;h+='<details class="duoc-section"'+(i===0?' open':'')+'><summary>'+esc(sec.title)+'</summary>';if(parent)h+='<div class="duoc-section-body">'+parent+'</div>';if(children){h+='<div class="duoc-subsections">';sec.subsections.forEach(function(sub){h+='<div class="duoc-subsection"><b>'+esc(sub.title)+'</b>'+renderNode(rec,sub)+'</div>'});h+='</div>'}h+='</details>'});return h+'</div>'}
-async function openRecord(id){try{modalBox.innerHTML='<div class="duoc-loading">Đang tải chuyên luận...</div>';modal.classList.add('show');const rec=await getRecord(id);modalBox.innerHTML=renderRecord(rec);modalBox.querySelector('.duoc-close').addEventListener('click',closeModal)}catch(e){modalBox.innerHTML='<button type="button" class="duoc-close" aria-label="Đóng">×</button><div class="duoc-empty">Không tải được chuyên luận. Hãy kiểm tra thư mục <b>duoc-thu-data</b> và thử lại.</div>';modalBox.querySelector('.duoc-close').addEventListener('click',closeModal)}}
+
+let medplusDrugPromise=null, lastBrandMatches=[], lastBrandContext=null;
+function uniqueText(arr){const seen=new Set();return (arr||[]).map(function(x){return String(x||'').trim()}).filter(function(x){const k=norm(x);if(!k||seen.has(k))return false;seen.add(k);return true})}
+function expandAliasVariants(value){
+  const base=norm(value); if(!base)return[];
+  const out=new Set([base]);
+  const pairs=[['hydroclorid','hydrochloride'],['clorid','chloride'],['sulfat','sulfate'],['sulfat','sulphate'],['natri','sodium'],['kali','potassium'],['calci','calcium'],['magnesi','magnesium'],['tartrat','tartrate'],['phosphat','phosphate'],['acetat','acetate'],['citrat','citrate'],['ampicilin','ampicillin'],['amoxicilin','amoxicillin'],['cefalexin','cephalexin'],['pyridoxin','pyridoxine'],['thiamin','thiamine']];
+  Array.from(out).forEach(function(s){pairs.forEach(function(p){if(s.indexOf(p[0])>=0)out.add(s.replaceAll(p[0],p[1]));if(s.indexOf(p[1])>=0)out.add(s.replaceAll(p[1],p[0]));});});
+  const s=base;
+  if(/\b(epinephrin|epinephrine|adrenalin|adrenaline)\b/.test(s)){['epinephrin','epinephrine','adrenalin','adrenaline'].forEach(function(x){out.add(x)});}
+  if(/\b(norepinephrin|norepinephrine|noradrenalin|noradrenaline|nor adrenalin|nor adrenaline)\b/.test(s)){['norepinephrin','norepinephrine','noradrenalin','noradrenaline','nor adrenalin','nor adrenaline'].forEach(function(x){out.add(x)});}
+  if(/\b(vitamin b1|b1|thiamin|thiamine)\b/.test(s)){['vitamin b1','b1','thiamin','thiamine','thiamin mononitrat','thiamine hydrochloride','thiamin hydroclorid'].forEach(function(x){out.add(norm(x))});}
+  if(/\b(vitamin b6|b6|pyridoxin|pyridoxine)\b/.test(s)){['vitamin b6','b6','pyridoxin','pyridoxine','pyridoxin hydroclorid','pyridoxine hydrochloride','pyridoxin hcl'].forEach(function(x){out.add(norm(x))});}
+  if(/\b(vitamin b12|b12|cyanocobalamin|hydroxocobalamin|mecobalamin|methylcobalamin)\b/.test(s)){['vitamin b12','b12','cyanocobalamin','hydroxocobalamin','mecobalamin','methylcobalamin'].forEach(function(x){out.add(norm(x))});}
+  // Salt/base relaxation for sufficiently specific active names.
+  Array.from(out).forEach(function(x){
+    const relaxed=x.replace(/\b(hydroclorid|hydrochloride|hcl|sulfat|sulfate|sulphate|tartrat|tartrate|phosphat|phosphate|acetat|acetate|dihydrat|trihydrat)\b/g,'').replace(/\s+/g,' ').trim();
+    if(relaxed.length>=7 && !/^(natri|sodium|kali|potassium|calci|calcium|magnesi|magnesium)$/.test(relaxed))out.add(relaxed);
+  });
+  return Array.from(out).filter(function(x){return x && x.length>=2});
+}
+function getIndexRecordForId(id){return indexRecords.find(function(r){return r&&r.id===id})||null}
+function getAliasCandidatesForRecord(rec){
+  const idx=getIndexRecordForId(rec&&rec.id);
+  let raw=[];
+  [rec,idx].forEach(function(r){if(!r)return;raw.push(r.id,r.title);raw=raw.concat(r.aliases||[],r.search_aliases||[]);});
+  // Read short name-like content from first section when available.
+  (rec.sections||[]).slice(0,2).forEach(function(sec){
+    if(sec&&sec.title)raw.push(sec.title);
+    const blocks=(sec&&sec.blocks)||[];
+    blocks.slice(0,3).forEach(function(b){
+      const t=String((b&&b.text)||'').split(/\n/).slice(0,4).join(' ');
+      if(t.length<260)raw.push(t);
+    });
+  });
+  let expanded=[]; uniqueText(raw).forEach(function(x){expanded=expanded.concat(expandAliasVariants(x));});
+  return Array.from(new Set(expanded)).filter(function(a){return a && a.length>=2 && !/^(duoc thu|quoc gia|thong tin dau chuyen luan|ten chung quoc te|loai thuoc)$/.test(a)}).sort(function(a,b){return b.length-a.length});
+}
+function containsAlias(haystack,alias){
+  if(!haystack||!alias)return false;
+  if(alias.length<=2){return (' '+haystack+' ').indexOf(' '+alias+' ')>=0;}
+  return haystack===alias || (' '+haystack+' ').indexOf(' '+alias+' ')>=0 || haystack.startsWith(alias+' ') || haystack.endsWith(' '+alias);
+}
+function comboPartsForRecord(rec){
+  const t=norm((rec&&rec.title)||'');
+  if(t.indexOf(' va ')<0)return[];
+  const parts=t.split(/\s+va\s+/).map(function(x){return x.trim()}).filter(function(x){return x.length>=4});
+  return parts.length>=2&&parts.length<=5?parts:[];
+}
+function partMatches(text,part){return expandAliasVariants(part).some(function(a){return containsAlias(text,a)});}
+function isDrugRelatedToRecord(drug,rec){
+  if(!drug||!rec)return false;
+  const active=norm(drug.active||''), brand=norm(drug.brand||''), form=norm(drug.form||''), usage=norm(drug.usage||'');
+  const recId=String(rec.id||'');
+  const activeText=[active,form,usage].join(' ');
+  if(recId==='epinephrin' && /\b(nor\s*adrenalin|nor\s*adrenaline|noradrenalin|noradrenaline|norepinephrin|norepinephrine)\b/.test(activeText))return false;
+  const parts=comboPartsForRecord(rec);
+  if(parts.length){return parts.every(function(p){return partMatches(activeText,p)});}
+  const aliases=getAliasCandidatesForRecord(rec);
+  if(aliases.some(function(a){return containsAlias(activeText,a)}))return true;
+  // Brand fallback only for generic-named products: exact or prefix before dose/company suffix.
+  return aliases.some(function(a){return a.length>=4 && (brand===a || brand.startsWith(a+' ') || brand.startsWith(a+' inj') || brand.startsWith(a+' injection'))});
+}
+function loadMedplusDrugs(){
+  if(medplusDrugPromise)return medplusDrugPromise;
+  medplusDrugPromise=fetch(MEDPLUS_JSON_URL,{cache:'force-cache'}).then(function(res){if(!res.ok)throw new Error('MEDPLUS_JSON');return res.json();}).then(function(data){return Array.isArray(data)?data:[];}).catch(function(){return[];});
+  return medplusDrugPromise;
+}
+function summarizeDrug(d){return [d.active,d.strength,d.form].filter(Boolean).join(' · ')}
+function renderDrugRows(drugs){
+  return drugs.map(function(d,i){return '<button type="button" class="duoc-brand-card" data-duoc-hdsd-index="'+i+'">'
+    + (d.image?'<img class="duoc-brand-thumb" src="'+esc(d.image)+'" alt="" loading="lazy">':'<span class="duoc-brand-thumb" aria-hidden="true">💊</span>')
+    + '<span class="duoc-brand-meta"><span class="duoc-brand-title">'+esc(d.brand||'Biệt dược')+'</span><span class="duoc-brand-desc">'+esc(summarizeDrug(d)||'Tờ hướng dẫn sử dụng liên quan')+'</span></span>'
+    + '</button>';}).join('')
+}
+async function findRelatedBrandsForRecord(rec){
+  const drugs=await loadMedplusDrugs();
+  const found=drugs.filter(function(d){return isDrugRelatedToRecord(d,rec)});
+  const seen=new Set();
+  return found.filter(function(d){const k=norm((d.brand||'')+'|'+(d.link||'')+'|'+(d.active||''));if(seen.has(k))return false;seen.add(k);return true;}).sort(function(a,b){return String(a.brand||'').localeCompare(String(b.brand||''),'vi')});
+}
+async function updateBrandButtonForRecord(rec){
+  const btn=modalBox.querySelector('[data-duoc-brand-record]'); if(!btn)return;
+  const matches=await findRelatedBrandsForRecord(rec); if(!modal.classList.contains('show'))return;
+  btn.disabled=false; btn.dataset.duocBrandCount=String(matches.length);
+  const countEl=btn.querySelector('.duoc-brand-count'); if(countEl)countEl.textContent=String(matches.length);
+  if(!matches.length){btn.title='Không tìm thấy biệt dược/HDSD liên quan trong medplus.json';}
+}
+async function openRelatedBrandChooser(recordId){
+  const rec=await getRecord(recordId);
+  lastBrandContext=rec;
+  brandModalBox.innerHTML='<button type="button" class="duoc-close" aria-label="Đóng">×</button><div class="duoc-loading">Đang tìm biệt dược liên quan...</div>';
+  brandModal.classList.add('show');
+  brandModalBox.querySelector('.duoc-close').addEventListener('click',closeBrandModal);
+  const matches=await findRelatedBrandsForRecord(rec);
+  lastBrandMatches=matches;
+  if(!matches.length){
+    brandModalBox.innerHTML='<button type="button" class="duoc-close" aria-label="Đóng">×</button><h2 class="duoc-brand-panel-title">Biệt dược liên quan</h2><p class="duoc-brand-panel-sub">'+esc(rec.title||'Chuyên luận')+'</p><div class="duoc-empty-inline">Không tìm thấy biệt dược/HDSD liên quan trong <b>medplus.json</b>. Hãy kiểm tra file medplus.json có đặt cùng cấp với trang tra cứu này hay không.</div>';
+    brandModalBox.querySelector('.duoc-close').addEventListener('click',closeBrandModal); return;
+  }
+  brandModalBox.innerHTML='<button type="button" class="duoc-close" aria-label="Đóng">×</button><h2 class="duoc-brand-panel-title">Biệt dược liên quan</h2><p class="duoc-brand-panel-sub">'+esc(rec.title||'Chuyên luận')+' · '+matches.length+' tờ HDSD phù hợp</p><div class="duoc-brand-grid">'+renderDrugRows(matches)+'</div>';
+  brandModalBox.querySelector('.duoc-close').addEventListener('click',closeBrandModal);
+}
+function closeBrandModal(){brandModal.classList.remove('show');brandModalBox.innerHTML='';lastBrandMatches=[];}
+function renderFieldSection(title,value){if(!String(value||'').trim())return'';return '<div class="duoc-hdsd-section"><div class="duoc-hdsd-section-title">'+esc(title)+'</div><div class="duoc-hdsd-section-body">'+renderText(String(value||''))+'</div></div>'}
+function openHDSDDrug(drug){
+  if(!drug)return;
+  const sourceBtn=drug.link?'<a class="duoc-hdsd-source-btn" href="'+esc(drug.link)+'" target="_blank" rel="noopener">Xem HDSD gốc</a>':'';
+  brandModalBox.innerHTML='<button type="button" class="duoc-close" aria-label="Đóng">×</button><button type="button" class="duoc-hdsd-back-btn" data-duoc-brand-back>← Biệt dược</button>'
+    +'<div class="duoc-hdsd-header">'+(drug.image?'<img class="duoc-hdsd-img" src="'+esc(drug.image)+'" alt="" loading="lazy">':'<div class="duoc-hdsd-img" aria-hidden="true">💊</div>')
+    +'<div class="duoc-hdsd-head"><h2>'+esc(drug.brand||'Biệt dược')+'</h2><p>'+esc(drug.active||'')+'</p><div class="duoc-hdsd-pill-row">'+(drug.strength?'<span class="duoc-hdsd-pill">'+esc(drug.strength)+'</span>':'')+(drug.form?'<span class="duoc-hdsd-pill">'+esc(drug.form)+'</span>':'')+(drug.group?'<span class="duoc-hdsd-pill">'+esc(drug.group)+'</span>':'')+'</div><div class="duoc-modal-actions">'+sourceBtn+'</div></div></div>'
+    +renderFieldSection('Chỉ định',drug.indication)+renderFieldSection('Liều dùng',drug.dosage)+renderFieldSection('Cách dùng',drug.usage)+renderFieldSection('Chống chỉ định / thận trọng',drug.sideEffects)+renderFieldSection('Tương tác',drug.interaction)+renderFieldSection('ADR',drug.adr)+renderFieldSection('Dược lực học / Dược động học',drug.pkpd)+renderFieldSection('Ghi chú',drug.notes);
+  brandModalBox.querySelector('.duoc-close').addEventListener('click',closeBrandModal);
+}
+
+function renderRecord(rec){
+  const source=rec.source||{},p=source.printed_pages||{},pages=p.start?('tr. '+p.start+(p.end&&p.end!==p.start?'–'+p.end:'')):'trang chưa xác định';
+  let h='<button type="button" class="duoc-close" aria-label="Đóng">×</button>'
+    +'<div class="duoc-modal-drug-header">'
+    +'<div class="duoc-modal-book"><span class="duoc-book-emblem">📚</span><span class="duoc-book-kicker">Dược thư</span><span class="duoc-book-year">2023</span></div>'
+    +'<div class="duoc-modal-head"><h2>'+esc(rec.title)+'</h2><p>'+esc((source.book||'Dược thư Quốc gia Việt Nam')+', '+(source.edition||'2023')+', '+pages+'.')+'</p>'
+    +'<div class="duoc-modal-actions"><button type="button" class="duoc-brand-open-btn" data-duoc-brand-record="'+esc(rec.id||'')+'" title="Mở biệt dược/HDSD liên quan"><span>BIỆT DƯỢC</span><span class="duoc-brand-count">…</span></button></div>'
+    +'</div></div><div class="duoc-modal-body">';
+  (rec.sections||[]).forEach(function(sec,i){
+    const parent=renderNode(rec,sec),children=sec.render_mode==='children_only'&&Array.isArray(sec.subsections)&&sec.subsections.length;
+    const title=String(sec.title||'').toLocaleUpperCase('vi-VN');
+    h+='<details class="duoc-section"><summary>'+esc(title)+'</summary>';
+    if(parent)h+='<div class="duoc-section-body">'+parent+'</div>';
+    if(children){h+='<div class="duoc-subsections">';sec.subsections.forEach(function(sub){h+='<div class="duoc-subsection"><b>'+esc(String(sub.title||'').toLocaleUpperCase('vi-VN'))+'</b>'+renderNode(rec,sub)+'</div>'});h+='</div>'}
+    h+='</details>'
+  });
+  return h+'</div>'
+}
+async function openRecord(id){try{modalBox.innerHTML='<div class="duoc-loading">Đang tải chuyên luận...</div>';modal.classList.add('show');const rec=await getRecord(id);modalBox.innerHTML=renderRecord(rec);modalBox.querySelector('.duoc-close').addEventListener('click',closeModal);updateBrandButtonForRecord(rec)}catch(e){modalBox.innerHTML='<button type="button" class="duoc-close" aria-label="Đóng">×</button><div class="duoc-empty">Không tải được chuyên luận. Hãy kiểm tra thư mục <b>duoc-thu-data</b> và thử lại.</div>';modalBox.querySelector('.duoc-close').addEventListener('click',closeModal)}}
 function closeModal(){modal.classList.remove('show');modalBox.innerHTML=''}
+modalBox.addEventListener('click',function(e){const b=e.target.closest('[data-duoc-brand-record]');if(!b)return;e.preventDefault();openRelatedBrandChooser(b.dataset.duocBrandRecord)});
+if(brandModal){brandModal.addEventListener('click',function(e){if(e.target===brandModal)closeBrandModal();const card=e.target.closest('[data-duoc-hdsd-index]');if(card){const idx=Number(card.dataset.duocHdsdIndex);openHDSDDrug(lastBrandMatches[idx]);return;}if(e.target.closest('[data-duoc-brand-back]')){if(lastBrandContext)openRelatedBrandChooser(lastBrandContext.id);}});}
 list.addEventListener('click',function(e){const b=e.target.closest('[data-duoc-id]');if(b)openRecord(b.dataset.duocId)});
 list.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target&&e.target.classList&&e.target.classList.contains('duoc-card')){e.preventDefault();openRecord(e.target.dataset.duocId)}});
 modal.addEventListener('click',function(e){if(e.target===modal)closeModal()});
-document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('show'))closeModal()});
-q.addEventListener('focus',function(){ if(!q.value) q.placeholder='Tìm kiếm…'; });
-q.addEventListener('blur',function(){ if(!q.value) q.placeholder='Tìm kiếm…'; });
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(brandModal&&brandModal.classList.contains('show')){closeBrandModal();return;}if(modal.classList.contains('show'))closeModal();}});
+q.addEventListener('focus',function(){ if(!q.value) q.placeholder='Tìm hoạt chất, biệt dược, từ khóa…'; });
+q.addEventListener('blur',function(){ if(!q.value) q.placeholder='Tìm hoạt chất, biệt dược, từ khóa…'; });
 q.addEventListener('input',runSearch);
 clear.addEventListener('click',function(){q.value='';q.focus();runSearch()});
-abcToggle.addEventListener('click',function(){const open=!alphabet.classList.contains('show');alphabet.classList.toggle('show',open);abcToggle.classList.toggle('active',open);abcToggle.setAttribute('aria-expanded',String(open));if(!open){activeLetter='';alphabet.querySelectorAll('.duoc-letter').forEach(function(x){x.classList.remove('active')});runSearch();}});
+abcToggle.addEventListener('click',function(){const open=!alphabet.classList.contains('show');setAlphabetOpen(open);if(!open){activeLetter='';alphabet.querySelectorAll('.duoc-letter').forEach(function(x){x.classList.remove('active')});runSearch();}});
+alphabet.addEventListener('scroll', updateAlphabetOverflow, {passive:true});
+window.addEventListener('resize', updateAlphabetOverflow);
+if(alphaLeft)alphaLeft.addEventListener('click',function(e){e.stopPropagation();alphabet.scrollBy({left:-Math.max(120,alphabet.clientWidth*.72),behavior:'smooth'});setTimeout(updateAlphabetOverflow,220);});
+if(alphaRight)alphaRight.addEventListener('click',function(e){e.stopPropagation();alphabet.scrollBy({left:Math.max(120,alphabet.clientWidth*.72),behavior:'smooth'});setTimeout(updateAlphabetOverflow,220);});
 async function init(){drawAlphabet();try{const res=await fetch(INDEX_URL,{cache:'force-cache'});if(!res.ok)throw new Error('INDEX');const data=await res.json();indexRecords=Array.isArray(data.records)?data.records:[];runSearch();const deepId=new URLSearchParams(location.search).get('duoc');if(deepId&&indexRecords.some(function(x){return x.id===deepId}))openRecord(deepId)}catch(e){count.textContent='Không tải được chỉ mục Dược thư';list.innerHTML='<div class="duoc-empty">Không tải được dữ liệu. Hãy kiểm tra rằng <b>tra-cuu-duoc-thu.html</b> và thư mục <b>duoc-thu-data</b> nằm cùng cấp trên máy chủ web.</div>'}}
 init();
 })();
 </script>
 </body>
 </html>
-
-
