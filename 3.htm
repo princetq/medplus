@@ -13437,7 +13437,7 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section{background:#0b1
    Route priority (installed inside sendMessage):
      exact-brand HDSD -> Dược thư active ingredient -> group catalog -> AI.
    ================================================================ */
-const MEDPLUS_DUOC_THU_INDEX_URL = './duoc-thu-data/index.json';
+const MEDPLUS_DUOC_THU_INDEX_URL = './duoc-thu-data/index.json?v=10.3.1';
 const MEDPLUS_DUOC_THU_DATA_BASE = './duoc-thu-data/';
 let __medplusDuocThuIndexPromise = null;
 const __medplusDuocThuRecordCache = new Map();
@@ -13912,97 +13912,250 @@ async function openDuocThuFromChat_(id, focusId, event) {
 }
 window.openDuocThuFromChat_ = openDuocThuFromChat_;
 
-/* MEDPLUS_HDSD_DUOC_THU_LINKING_V4 */
+/* MEDPLUS_HDSD_DUOC_THU_ALIAS_COMPOSITION_V10_3_FORM_CONTEXT */
+/*
+   HDSD -> Dược thư resolver:
+   1) Find active-ingredient aliases.
+   2) If the formulary contains route-specific monographs with the same active ingredient,
+      inspect the hospital formulary dosage form before resolving.
+   3) If dosage form does not distinguish them safely, retain the choices and ask the user.
+*/
+const DUOC_THU_UNSAFE_STANDALONE_ALIASES_ = new Set([
+    'hydroclorid','hydrochloride','sulfat','sulfate','phosphat','phosphate','natri','sodium','kali','potassium',
+    'calci','calcium','clorid','chloride','acetat','acetate','pamoat','pamoate','mesilat','mesylate','tartrat',
+    'tartrate','besylat','besylate','fumarat','fumarate','maleat','maleate','citrat','citrate','nitrat','nitrate',
+    'mononitrat','mononitrate','succinat','succinate','lactat','lactate','bromid','bromide','iodid','iodide',
+    'oxyd','oxide','hydrat','hydrate','dinatri','disodium','uong','dung','trong','toan','than','nhan','khoa',
+    'ho','hap','san','vitamin','thuoc','acid','muoi','salt'
+]);
+function isSafeDuocThuAliasForHDSD_(value) {
+    const alias = normalizeDuocThuText_(value);
+    if (!alias || alias.length < 3) return false;
+    const words = alias.split(' ').filter(Boolean);
+    if (!words.length) return false;
+    const core = words.filter(function(word) { return !DUOC_THU_UNSAFE_STANDALONE_ALIASES_.has(word) && !/^\d+$/.test(word); });
+    return core.length > 0;
+}
+function phraseInDuocThuText_(haystack, phrase) {
+    const h = ' ' + normalizeDuocThuText_(haystack) + ' ';
+    const p = normalizeDuocThuText_(phrase);
+    return !!p && h.indexOf(' ' + p + ' ') >= 0;
+}
 function isDuocThuCombinationRecordForHDSD_(record) {
     const rawTitle = String(record && record.title || '');
-    const title = normalizeDuocThuText_(rawTitle);
-    // In the Dược thư, a number of fixed combinations use an en dash/hyphen
-    // between two independent ingredients (e.g. Piperacilin - Tazobactam).
-    // A hyphen inside one word such as Co-trimoxazol is deliberately not treated as a combination.
-    return /\b(va|and|plus|with)\b/.test(title) || /\s[-–+]\s/.test(rawTitle);
+    // Salt alternatives inside parentheses (e.g. Hydroxyzin (Hydroclorid và Pamoat)) are one active ingredient.
+    const outsideParentheses = rawTitle.replace(/\([^)]*\)/g, ' ');
+    const normalized = normalizeDuocThuText_(outsideParentheses);
+    if (/\bva cac thuoc\b/.test(normalized)) return false;
+    return /\b(va|and|plus|with)\b/.test(normalized) || /\s[-–+]\s/.test(outsideParentheses);
 }
-
-function hasHDSDCombinationMarker_(rawText) {
-    const raw = String(rawText || '').toLowerCase();
-    const normalized = normalizeDuocThuText_(raw);
-    return /[+\/;]|\b(and|va|with|plus|phoi hop)\b/.test(raw) || /\b(and|va|with|plus|phoi hop)\b/.test(normalized);
-}
-
-function scoreDuocThuRecordForHDSD_(record, activeText) {
-    const rawActive = String(activeText || '').trim();
-    const active = normalizeDuocThuText_(rawActive);
-    if (!active || active.length < 3 || !record) return 0;
-    const title = normalizeDuocThuText_(record.title || '');
-    const isCombo = isDuocThuCombinationRecordForHDSD_(record);
-    const activeIsCombo = hasHDSDCombinationMarker_(rawActive);
-
-    // A monograph for a combination must never be attached to a one-ingredient HDSD
-    // merely because its alias list also contains a component name.
-    if (isCombo && !activeIsCombo) return 0;
-
-    let score = 0;
-    if (title === active) score = Math.max(score, 100000);
-    const aliases = Array.isArray(record.aliases) ? record.aliases : [];
+function getDuocThuAliasMatchesForActive_(record, activeText) {
+    const active = normalizeDuocThuText_(activeText);
+    if (!active || !record) return [];
+    const aliases = [record.title].concat(Array.isArray(record.aliases) ? record.aliases : []);
+    const found = [];
+    const seen = new Set();
     aliases.forEach(function(aliasValue) {
         const alias = normalizeDuocThuText_(aliasValue);
-        if (!alias || alias.length < 3) return;
-        if (alias === active) {
-            score = Math.max(score, 80000 + alias.length);
-            return;
-        }
-        if ((' ' + active + ' ').indexOf(' ' + alias + ' ') >= 0) {
-            score = Math.max(score, 36000 + alias.split(' ').length * 700 + alias.length);
-            return;
-        }
-        if (!isCombo && (' ' + alias + ' ').indexOf(' ' + active + ' ') >= 0) {
-            score = Math.max(score, 26000 + active.length);
-            return;
+        if (!isSafeDuocThuAliasForHDSD_(alias) || seen.has(alias)) return;
+        seen.add(alias);
+        if (phraseInDuocThuText_(active, alias)) {
+            found.push({ alias: alias, words: alias.split(' ').length, chars: alias.length });
         }
     });
-
-    // Prefer the dedicated fixed-combination monograph when the HDSD itself
-    // clearly contains a combination. Some older index alias lists intentionally
-    // include component names, so without this preference Piperacilin could win
-    // over Piperacilin - Tazobactam on a tie.
-    if (score > 0 && isCombo && activeIsCombo) score += 3500;
-
-    // Avoid accepting an alias that is too vague; a usable result has to carry a
-    // clinically meaningful word/phrase from the recorded HDSD active ingredient.
-    return score;
+    found.sort(function(a, b) { return b.words - a.words || b.chars - a.chars || a.alias.localeCompare(b.alias, 'vi'); });
+    return found;
+}
+function getDuocThuDisplayTitleForHDSD_(record) {
+    const meta = record && record.hdsd_match;
+    return String((meta && meta.display_title) || (record && record.title) || (record && record.id) || 'Chuyên luận Dược thư');
 }
 
+/* MEDPLUS_DUOC_THU_PRODUCT_ROUTE_OVERRIDE_V10_3_1
+   This table is intentionally small and only holds product names whose marketed form is
+   unequivocally route-specific. It is a fallback when the hospital catalog gives only a
+   generic form such as "Dung dịch". It does not replace dosage-form matching.
+*/
+const DUOC_THU_PRODUCT_ROUTE_OVERRIDES_ = [
+    { aliases: ['uni atropin'], scope: 'ophthalmic' }
+];
+function getHDSDProductNameForDuocThu_(drug) {
+    if (!drug) return '';
+    return [drug.brand, drug.name, drug.title, drug.tenThuoc, drug.ten_thuoc, drug.productName, drug.product_name]
+        .filter(function(value) { return value != null && String(value).trim(); })
+        .join(' ');
+}
+function getExplicitDuocThuProductRoute_(drug) {
+    const product = normalizeDuocThuText_(getHDSDProductNameForDuocThu_(drug));
+    if (!product) return '';
+    for (const row of DUOC_THU_PRODUCT_ROUTE_OVERRIDES_) {
+        const aliases = Array.isArray(row.aliases) ? row.aliases : [];
+        if (aliases.some(function(alias) { return phraseInDuocThuText_(product, alias); })) {
+            return String(row.scope || '');
+        }
+    }
+    return '';
+}
+
+function getHDSDFormTextForDuocThu_(drug) {
+    if (!drug) return '';
+    // The hospital catalog mainly uses `form`; fallbacks protect data variants without using brand name.
+    return [drug.form, drug.dosageForm, drug.dosage_form, drug.dangBaoChe, drug.dang_bao_che, drug.route, drug.duongDung, drug.duong_dung]
+        .filter(function(value) { return value != null && String(value).trim(); })
+        .join(' ');
+}
+function getHDSDFormSignalsForDuocThu_(drug) {
+    const text = normalizeDuocThuText_(getHDSDFormTextForDuocThu_(drug));
+    const has = function(pattern) { return pattern.test(text); };
+    return {
+        raw: text,
+        ophthalmic: has(/\b(nho mat|thuoc nho mat|dung dich nho mat|tra mat|thuoc mo mat|nhan khoa|ophthalmic|eye drops?|eye ointment)\b/),
+        respiratory: has(/\b(khi dung|binh xit|xit|phun khi dung|hit|inhal|nebul|aerosol)\b/),
+        obstetric: has(/\b(san khoa|tocolytic|co tu cung|doa sinh non|giam co tu cung)\b/),
+        oral: has(/\b(uong|vien|vien nen|vien nang|nang mem|siro|syrup|goi|oral|nhai)\b/),
+        topical: has(/\b(thuoc boi|dung dich boi|boi|kem|gel|cream|ointment|thuoc mo da|da lieu)\b/),
+        intrauterine: has(/\b(dung cu tu cung|vong tranh thai|iud|ius|dat tu cung|intrauterine)\b/),
+        injection: has(/\b(thuoc tiem|dung dich tiem|tiem|truyen|ong tiem|injection|injectable|ampoule)\b/)
+    };
+}
+function getDuocThuFormCompatibility_(record, drug) {
+    const meta = record && record.hdsd_match;
+    if (!meta || !meta.scope) return { score: 0, status: 'neutral', label: '' };
+    const s = getHDSDFormSignalsForDuocThu_(drug);
+    const scope = meta.scope;
+    // A verified product-specific route is used only as a fallback/guard for catalog rows
+    // whose form is absent or too generic. Example: UNI-ATROPIN is an ophthalmic product.
+    const productScope = getExplicitDuocThuProductRoute_(drug);
+    const none = !(s.ophthalmic || s.respiratory || s.obstetric || s.oral || s.topical || s.intrauterine || s.injection);
+    const yes = function() { return { score: 500000, status: 'match', label: meta.scope_label || '' }; };
+    const unknown = function() { return { score: 0, status: none ? 'unknown' : 'neutral', label: meta.scope_label || '' }; };
+    const no = function() { return { score: -10000000, status: 'conflict', label: meta.scope_label || '' }; };
+
+    if (productScope) {
+        if (scope === productScope) return yes();
+        return no();
+    }
+
+    if (scope === 'ophthalmic') {
+        if (s.ophthalmic) return yes();
+        if (s.injection || s.oral || s.topical || s.respiratory || s.intrauterine) return no();
+        return unknown();
+    }
+    if (scope === 'systemic') {
+        if (s.ophthalmic) return no();
+        if (s.injection || s.oral) return yes();
+        if (s.topical || s.respiratory || s.intrauterine) return no();
+        return unknown();
+    }
+    if (scope === 'respiratory') {
+        if (s.respiratory) return yes();
+        // Salbutamol injection may be used for either respiratory or obstetric indications;
+        // do not guess from injection alone.
+        if (s.ophthalmic || s.topical || s.intrauterine) return no();
+        return unknown();
+    }
+    if (scope === 'obstetric') {
+        if (s.obstetric) return yes();
+        // An injection without an obstetric indication is not enough to choose this monograph.
+        if (s.ophthalmic || s.topical || s.intrauterine || s.respiratory || s.oral) return no();
+        return unknown();
+    }
+    if (scope === 'oral') {
+        if (s.oral) return yes();
+        if (s.ophthalmic || s.topical || s.intrauterine || s.injection || s.respiratory) return no();
+        return unknown();
+    }
+    if (scope === 'topical') {
+        if (s.topical) return yes();
+        if (s.ophthalmic || s.oral || s.intrauterine || s.injection || s.respiratory) return no();
+        return unknown();
+    }
+    if (scope === 'intrauterine') {
+        if (s.intrauterine) return yes();
+        if (s.ophthalmic || s.topical || s.oral || s.injection || s.respiratory) return no();
+        return unknown();
+    }
+    return unknown();
+}
+function scoreDuocThuRecordForHDSD_(record, activeText) {
+    const matches = getDuocThuAliasMatchesForActive_(record, activeText);
+    if (!matches.length) return 0;
+    const best = matches[0];
+    const isCombo = isDuocThuCombinationRecordForHDSD_(record);
+    // Full fixed-combination aliases win over independent component monographs.
+    return (isCombo ? 1000000 : 100000) + best.words * 1000 + best.chars;
+}
+function sameDuocThuRouteGroup_(recordA, recordB) {
+    const a = recordA && recordA.hdsd_match && recordA.hdsd_match.group;
+    const b = recordB && recordB.hdsd_match && recordB.hdsd_match.group;
+    return !!a && !!b && a === b;
+}
+function isLessSpecificDuocThuRow_(row, selectedRows) {
+    return selectedRows.some(function(selected) {
+        if (sameDuocThuRouteGroup_(row.record, selected.record)) return false;
+        const a = String(row.bestAlias || '');
+        const b = String(selected.bestAlias || '');
+        return a && b && a !== b && phraseInDuocThuText_(b, a) && b.split(' ').length > a.split(' ').length;
+    });
+}
 async function findDuocThuRecordsForHDSD_(drug) {
     const active = String(drug && drug.active || '').trim();
     if (!active) return [];
     const index = await ensureDuocThuIndex_();
     const rows = (index.records || []).map(function(record) {
-        return { record: record, score: scoreDuocThuRecordForHDSD_(record, active) };
-    }).filter(function(item) { return item.score > 0; });
+        const matches = getDuocThuAliasMatchesForActive_(record, active);
+        const best = matches[0];
+        const formFit = best ? getDuocThuFormCompatibility_(record, drug) : { score: 0, status: 'neutral', label: '' };
+        return {
+            record: record,
+            matches: matches,
+            bestAlias: best ? best.alias : '',
+            score: best ? scoreDuocThuRecordForHDSD_(record, active) + formFit.score : 0,
+            isCombo: isDuocThuCombinationRecordForHDSD_(record),
+            formFit: formFit
+        };
+    }).filter(function(item) { return item.score > 0 && item.formFit.status !== 'conflict'; });
+    if (!rows.length) return [];
     rows.sort(function(a, b) {
         if (b.score !== a.score) return b.score - a.score;
+        if ((b.bestAlias || '').length !== (a.bestAlias || '').length) return (b.bestAlias || '').length - (a.bestAlias || '').length;
         return String(a.record.title || '').localeCompare(String(b.record.title || ''), 'vi');
     });
 
-    // If an exact or a strongly specific result is available, open only that monograph.
-    // Otherwise retain at most three well-matched independent monographs for a combined HDSD.
-    if (!rows.length) return [];
-    const best = rows[0];
-    const activeIsCombo = hasHDSDCombinationMarker_(active);
-    if (!activeIsCombo || best.score >= 80000 || (rows[1] && best.score - rows[1].score >= 12000)) {
-        return [best.record];
-    }
-    const seen = new Set();
-    return rows.filter(function(item) {
-        const key = item.record.id || item.record.title;
-        if (seen.has(key)) return false;
-        seen.add(key);
-        return true;
-    }).slice(0, 3).map(function(item) { return item.record; });
+    // A complete fixed-combination match (A/B, A+B, A and B, or “A B”) is authoritative.
+    const exactCombos = rows.filter(function(row) { return row.isCombo; });
+    if (exactCombos.length) return [exactCombos[0].record];
+
+    // Keep route-specific monographs that remain ambiguous; the chooser is safer than choosing a route
+    // merely because an alias has more words (e.g. atropin sulfat eye vs atropin systemic).
+        const selected = [];
+    const seenIds = new Set();
+    const normalizedActive = normalizeDuocThuText_(active);
+    rows.filter(function(row) { return !row.isCombo; }).forEach(function(row) {
+        const key = row.record.id || row.record.title;
+        if (seenIds.has(key) || isLessSpecificDuocThuRow_(row, selected)) return;
+        seenIds.add(key);
+        row.activeOrder = normalizedActive.indexOf(String(row.bestAlias || ''));
+        if (row.activeOrder < 0) row.activeOrder = 999999;
+        selected.push(row);
+    });
+    // When one HDSD has several independently matched ingredients, show them in the
+    // order written in the HDSD active-ingredient field, not by the longest alias.
+    // Route/form compatibility has already been applied above; it remains the first tie-breaker.
+    selected.sort(function(a, b) {
+        const aRoute = a.formFit && a.formFit.status === 'match' ? 1 : 0;
+        const bRoute = b.formFit && b.formFit.status === 'match' ? 1 : 0;
+        if (bRoute !== aRoute) return bRoute - aRoute;
+        if (a.activeOrder !== b.activeOrder) return a.activeOrder - b.activeOrder;
+        if (b.score !== a.score) return b.score - a.score;
+        return String(a.record.title || '').localeCompare(String(b.record.title || ''), 'vi');
+    });
+    return selected.slice(0, 8).map(function(row) { return row.record; });
 }
 
 function encodeHDSDDuocThuRecords_(records) {
     return encodeURIComponent(JSON.stringify((records || []).map(function(record) {
-        return { id: record.id, title: record.title };
+        return { id: record.id, title: getDuocThuDisplayTitleForHDSD_(record) };
     })));
 }
 
