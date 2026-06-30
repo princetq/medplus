@@ -5877,6 +5877,22 @@ body.medplus-aux-open.dark-mode.medplus-nav-duocthu-sync .medplus-app-nav::befor
   border-color:rgba(102,210,140,.62) !important;
 }
 
+/* v10.4.5.12 — Khi đang dark mode nhưng chuyển sang các tab iframe ngoài Tra cứu thuốc/Dược thư, navbar phải về light mode */
+body.medplus-aux-open.dark-mode.medplus-nav-light-only .medplus-app-nav{
+  color:#1b5e20 !important;
+  background:linear-gradient(135deg,#eef6ea 0,#e8f2e6 55%,#dfeedd 100%) !important;
+  box-shadow:0 3px 18px rgba(27,94,32,.15) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+body.medplus-aux-open.dark-mode.medplus-nav-light-only .medplus-app-nav::before{
+  background:linear-gradient(135deg,#f4fbef 0,#edf7ea 55%,#e5f2e2 100%) !important;
+  border-color:rgba(46,125,50,.34) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.72), inset 0 -1px 0 rgba(46,125,50,.12), 0 8px 24px rgba(27,94,32,.12) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
 
 /* v10.4.5.7 — mobile ABC arrows like Dược thư */
 .medplus-alpha-shell{display:contents;}
@@ -15783,8 +15799,9 @@ window.bindHDSDDuocThuButtons = bindHDSDDuocThuButtons;
         window.dispatchEvent(new CustomEvent('medplus-theme-applied', { detail: { dark: dark } }));
       } catch(e) {}
     }
-    document.body.classList.remove('medplus-nav-light-only');
-    document.body.classList.toggle('medplus-nav-duocthu-sync', activeAuxId === 'duocthu' || currentNav === 'duocthu');
+    const forceLightNav = currentNav !== 'medplus' && currentNav !== 'duocthu';
+    document.body.classList.toggle('medplus-nav-light-only', forceLightNav);
+    document.body.classList.toggle('medplus-nav-duocthu-sync', !forceLightNav && (activeAuxId === 'duocthu' || currentNav === 'duocthu'));
     setTimeout(syncActiveMedplusDuocthuTheme, 0);
   }
 
@@ -15801,7 +15818,7 @@ window.bindHDSDDuocThuButtons = bindHDSDDuocThuButtons;
     });
     const forceLightNav = id !== 'medplus' && id !== 'duocthu';
     document.body.classList.toggle('medplus-nav-light-only', forceLightNav);
-    document.body.classList.toggle('medplus-nav-duocthu-sync', id === 'duocthu');
+    document.body.classList.toggle('medplus-nav-duocthu-sync', !forceLightNav && id === 'duocthu');
     if (id === 'duocthu') syncActiveMedplusDuocthuTheme();
   }
 
