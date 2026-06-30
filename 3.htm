@@ -17153,17 +17153,30 @@ body.dark-mode #send-button svg,body.dark-mode .send-button svg{filter:drop-shad
     } catch(e) {}
     return '';
   }
+  function hdsdEscExcerptTextPreserveStars_(text){
+    let html=esc(text);
+    // Leading * / ** / *** footnote markers must survive the chat Markdown
+    // formatter. Raw asterisks at the beginning of a line can be interpreted as
+    // emphasis/list markers, causing the visible number of stars to change.
+    html=html.replace(/^(\*{1,6})(\s*)/,function(_,stars,space){return stars.replace(/\*/g,'&#42;')+space;});
+    html=html.replace(/(\n)(\*{1,6})(\s*)/g,function(_,br,stars,space){return br+stars.replace(/\*/g,'&#42;')+space;});
+    return html;
+  }
+
   function linesFor(nodes,start,end,focusIndex){
     const lines=[];
     for(let i=start;i<end;i++){
       const node=nodes[i];
       if(!node) continue;
-      // Render Notion table blocks as real tables inside the chat excerpt, then
-      // skip their table_row children so the table is not duplicated as plain text.
+      // Render Notion table blocks as real tables inside the chat excerpt.
+      // Only skip table_row descendants; do NOT skip non-table footnotes/captions
+      // that may be stored as children right after the table.
       if(node.type==='table'){
         const tableToken=hdsdCanonicalTableTokenForNode_(node);
         if(tableToken) lines.push('<div class="hdsd-parent-excerpt-line hdsd-excerpt-table">'+tableToken+'</div>');
-        while(i+1<end && nodes[i+1] && nodes[i+1].depth>node.depth) i++;
+        let j=i+1;
+        while(j<end && nodes[j] && nodes[j].depth>node.depth && nodes[j].type==='table_row') j++;
+        i=j-1;
         continue;
       }
       if(node.type==='table_row') continue;
@@ -17173,7 +17186,8 @@ body.dark-mode #send-button svg,body.dark-mode .send-button svg{filter:drop-shad
         continue;
       }
       const footnote=isHDSDTableFootnoteText_(text);
-      lines.push('<div class="hdsd-parent-excerpt-line'+(footnote?' hdsd-excerpt-footnote':'')+'">'+(focus?'<span class="hdsd-excerpt-focus-title">':'')+esc(text)+(focus?'</span>':'')+'</div>');
+      const safeText=footnote?hdsdEscExcerptTextPreserveStars_(text):esc(text);
+      lines.push('<div class="hdsd-parent-excerpt-line'+(footnote?' hdsd-excerpt-footnote':'')+'">'+(focus?'<span class="hdsd-excerpt-focus-title">':'')+safeText+(focus?'</span>':'')+'</div>');
     }
     return lines;
   }
@@ -17195,13 +17209,43 @@ body.dark-mode #send-button svg,body.dark-mode .send-button svg{filter:drop-shad
     const parent='<span class="hdsd-guide-parent">'+esc(meta.parentLabel)+'</span>';
     return same ? 'Hãy xem chi tiết ở Mục '+parent+'.' : 'Hãy xem chi tiết ở phần <span class="hdsd-guide-focus">'+esc(meta.focusLabel)+'</span> trong Mục '+parent+'.';
   }
+  function hdsdIsAdministrationBoundary_(m){
+    if(!m) return false;
+    if(m.kind==='administration') return true;
+    if((m.kinds||[]).indexOf('administration')!==-1) return true;
+    return /(^| )(cach dung|cach su dung|duong dung)( |$)/.test(m.norm||'');
+  }
+  function hdsdFindDoseOnlyEndBeforeAdministration_(outline,selection,start,fallbackEnd){
+    const nodes=(outline&&outline.nodes)||[];
+    const markers=(outline&&outline.markers)||[];
+    let boundary=Number.isFinite(Number(fallbackEnd))?parseInt(fallbackEnd,10):nodes.length;
+    // For questions asking only “liều dùng”, keep every dosage-related block
+    // until the real “Cách dùng/Đường dùng” boundary. This prevents the
+    // excerpt from stopping early at subheadings such as Suy gan, Béo phì,
+    // Người cao tuổi, Theo dõi nồng độ... while still cutting before Cách dùng.
+    for(let i=0;i<markers.length;i++){
+      const m=markers[i];
+      if(!m || m.start<=start) continue;
+      if(hdsdIsAdministrationBoundary_(m)) { boundary=m.start; break; }
+    }
+    if(!(boundary>start)) boundary=nodes.length;
+    return boundary;
+  }
+
   function excerptHtml(meta){
     const s=meta.selection,o=meta.outline; if(!s||!o) return '';
     let start=s.focus.start,end=s.focus.end,focusIndex=s.focus.start,seed=s.focus;
-    if(!PRECISE){ start=s.parent.start; end=s.parent.end; focusIndex=s.focus.start; seed={kind:s.parent.kind,kinds:s.parent.kinds||[],start:s.parent.start}; }
+    const doseOnly=s.intent==='dose';
+    if(doseOnly){
+      start=(s.focus&&s.focus.start>0)?s.focus.start:s.parent.start;
+      focusIndex=start;
+      seed=s.focus||s.parent;
+      end=hdsdFindDoseOnlyEndBeforeAdministration_(o,s,start,(s.parent&&s.parent.end)||s.focus.end);
+    }
+    else if(!PRECISE){ start=s.parent.start; end=s.parent.end; focusIndex=s.focus.start; seed={kind:s.parent.kind,kinds:s.parent.kinds||[],start:s.parent.start}; }
     else if(s.focus.kind==='parent'){ start=s.parent.start; end=s.parent.end; focusIndex=s.parent.start; seed={kind:s.parent.kind,kinds:s.parent.kinds||[],start:s.parent.start}; }
     else if(s.focus.kind==='dose-parent'){ start=s.parent.start; end=s.focus.end; focusIndex=s.parent.start; seed={kind:s.parent.kind,kinds:s.parent.kinds||[],start:s.parent.start}; }
-    if(!(PRECISE && s.focus.kind==='dose-parent')) end=extendContiguousSpan(o,seed,end);
+    if(!doseOnly && !(PRECISE && s.focus.kind==='dose-parent')) end=extendContiguousSpan(o,seed,end);
     const body=linesFor(o.nodes,start,end,focusIndex); if(!body.length) return '';
     return '<div class="hdsd-parent-excerpt" data-medplus-canonical-excerpt="1" data-medplus-excerpt-mode="'+(PRECISE?'focus':'parent')+'">'+body.join('')+'</div>';
   }
