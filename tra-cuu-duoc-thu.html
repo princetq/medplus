@@ -108,7 +108,7 @@ html {
 }
 body {
   min-height: 100dvh;
-  font-family: var(--font-body);
+  font-family: 'DM Sans','Segoe UI',Arial,sans-serif;
   font-size: var(--text-base);
   color: var(--color-text);
   background: var(--color-bg);
@@ -197,7 +197,7 @@ mark {
 }
 
 .duoc-header-title {
-  font-family: var(--font-display);
+  font-family: 'Playfair Display','Times New Roman',serif;
   font-size: var(--text-xl);
   font-weight: 400;
   color: var(--color-text);
@@ -370,7 +370,7 @@ body.dark-mode .duoc-abc-toggle.active { background: var(--color-accent); }
   to   { opacity: 1; transform: translateX(0); }
 }
 .duoc-letter {
-  width: 30px; height: 30px;
+  width: 36px; height: 36px;
   flex: 0 0 30px;
   display: flex; align-items: center; justify-content: center;
   background: var(--color-surface);
@@ -428,8 +428,7 @@ body.dark-mode .duoc-abc-toggle.active { background: var(--color-accent); }
   font-weight: 500;
   min-width: 0;
 }
-.duoc-search-box input::placeholder { color: var(--color-text-muted); font-weight: 400; }
-.duoc-search-hint{position:fixed;left:50%;top:110px;transform:translateX(-50%) translateY(-8px);background:#fff;border:1px solid rgba(27,94,32,.18);box-shadow:0 8px 24px rgba(0,0,0,.10);border-radius:12px;padding:8px 12px;font-size:13px;color:#365a47;opacity:0;pointer-events:none;transition:.2s ease;z-index:9999}.duoc-search-hint.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.duoc-search-box input::placeholder { color: var(--color-text-muted); font-weight: 400; }.duoc-search-hint.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 .duoc-search-icon-btn {
   flex-shrink: 0;
@@ -505,8 +504,8 @@ body.dark-mode .duoc-abc-toggle.active { background: var(--color-accent); }
   width: 100%;
   height: 140px;
   overflow: hidden;
-  background: linear-gradient(145deg, #ffffff, #f7fbf8);
-  border-bottom: 1px solid rgba(27,94,32,.14);
+  background: linear-gradient(180deg, var(--mp-700) 0%, var(--mp-700) 55%, #f7fbf8 55%, #f7fbf8 100%);
+  
   flex-shrink: 0;
 }
 
@@ -719,7 +718,7 @@ body.dark-mode .duoc-open:hover {
   box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,.06);
   animation: duocModalIn .38s cubic-bezier(.25,1,.5,1) forwards;
   color: var(--color-text);
-  font-family: var(--font-body);
+  font-family: 'DM Sans','Segoe UI',Arial,sans-serif;
   font-size: var(--text-base);
   -webkit-font-smoothing: antialiased;
   touch-action: auto;
@@ -737,7 +736,7 @@ body.dark-mode .duoc-open:hover {
   top: 14px; right: 14px;
   width: 34px; height: 34px;
   display: flex; align-items: center; justify-content: center;
-  border-radius: var(--rad-md);
+  
   background: var(--color-surface-2);
   border: 1px solid var(--color-border);
   color: var(--color-text-muted);
@@ -799,7 +798,7 @@ body.dark-mode .duoc-modal-drug-header {
   text-transform: uppercase;
 }
 .duoc-modal-head h2 {
-  font-family: var(--font-display);
+  font-family: 'Playfair Display','Times New Roman',serif;
   color: var(--color-accent);
   font-size: var(--text-2xl);
   font-weight: 400;
@@ -968,6 +967,16 @@ body.dark-mode .duoc-modal-head h2 { color: var(--color-accent); }
   .duoc-search-box { right: 0; left: auto; }
 }
 
+
+@media (max-width: 767px) {
+  .duoc-search-wrapper { flex-wrap: wrap; justify-content: flex-start; padding-right: 0; }
+  .duoc-abc-toggle { position: static; order: 1; width: auto; min-width: 54px; }
+  .duoc-search-box { position: static; order: 2; width: calc(100% - 62px); min-width: 0; max-width: none; flex: 1 1 auto; }
+  .duoc-alphabet { position: static; order: 3; width: 100%; max-width: 100%; overflow: visible; flex-wrap: wrap; justify-content: flex-start; }
+  .duoc-count-below { display: block; width: fit-content; }
+  .duoc-header-main { padding: 12px 10px; }
+}
+
 </style>
 </head>
 <body>
@@ -1036,7 +1045,7 @@ body.dark-mode .duoc-modal-head h2 { color: var(--color-accent); }
 
     <div class="duoc-search-box" role="search">
       <input id="duoc-q" type="search" autocomplete="off"
-             placeholder="Tìm kiếm"
+             placeholder="Tìm kiếm…"
              aria-label="Tìm chuyên luận Dược thư">
       <button class="duoc-search-icon-btn" id="duoc-clear" type="button" aria-label="Tìm kiếm" title="Tìm kiếm hướng dẫn">
         <svg id="duoc-search-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
@@ -1210,10 +1219,8 @@ list.addEventListener('click',function(e){const b=e.target.closest('[data-duoc-i
 list.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target&&e.target.classList&&e.target.classList.contains('duoc-card')){e.preventDefault();openRecord(e.target.dataset.duocId)}});
 modal.addEventListener('click',function(e){if(e.target===modal)closeModal()});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('show'))closeModal()});
-const searchHint=document.createElement('div');searchHint.className='duoc-search-hint';searchHint.textContent='Nhập tên hoạt chất, biệt dược hoặc từ khóa liên quan';document.body.appendChild(searchHint);
-function showHint(){searchHint.classList.add('show');clearTimeout(showHint._t);showHint._t=setTimeout(function(){searchHint.classList.remove('show')},1600)}
-q.addEventListener('focus',function(){q.value=q.value; if(!q.value){q.placeholder='Tìm kiếm'; showHint()} });
-q.addEventListener('blur',function(){ if(!q.value) q.placeholder='Tìm kiếm'; });
+q.addEventListener('focus',function(){ if(!q.value) q.placeholder='Tìm kiếm…'; });
+q.addEventListener('blur',function(){ if(!q.value) q.placeholder='Tìm kiếm…'; });
 q.addEventListener('input',runSearch);
 clear.addEventListener('click',function(){q.value='';q.focus();runSearch()});
 abcToggle.addEventListener('click',function(){const open=!alphabet.classList.contains('show');alphabet.classList.toggle('show',open);abcToggle.classList.toggle('active',open);abcToggle.setAttribute('aria-expanded',String(open));if(!open){activeLetter='';alphabet.querySelectorAll('.duoc-letter').forEach(function(x){x.classList.remove('active')});runSearch();}});
