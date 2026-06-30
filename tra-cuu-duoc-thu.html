@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tra cứu Dược thư Quốc gia Việt Nam</title>
-<meta name="medplus-duoc-thu-version" content="v10.4.14-vertical-brands-medplus-hdsd-modal">
+<meta name="medplus-duoc-thu-version" content="v10.4.18-header-hdsd-drive-image-search">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Nunito+Sans:wght@700;800;900&display=swap" rel="stylesheet">
@@ -116,6 +116,22 @@ body {
   transition: background var(--trans), color var(--trans);
   overflow-x: hidden;
 }
+html.duoc-scroll-locked-root,
+body.duoc-scroll-locked {
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+body.duoc-scroll-locked {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
+  touch-action: none;
+}
+body.duoc-scroll-locked .duoc-modal,
+body.duoc-scroll-locked .duoc-modal-box {
+  touch-action: auto;
+}
 button, input { font: inherit; color: inherit; cursor: pointer; }
 button { border: none; background: none; }
 img { display: block; max-width: 100%; height: auto; }
@@ -132,7 +148,7 @@ mark {
 .duoc-page {
   max-width: 1320px;
   margin: 0 auto;
-  padding: 19px 20px 56px;
+  padding: 8px 20px 56px;
 }
 
 /* ═══════════════════════════════
@@ -145,7 +161,7 @@ mark {
   gap: 20px;
   padding: 14px 16px;
   margin: 0 0 16px;
-  background: var(--color-surface);
+  background: linear-gradient(135deg, rgba(232,245,233,.96), rgba(255,255,255,.90));
   border: 1px solid var(--color-border-strong);
   border-radius: var(--rad-xl);
   box-shadow: var(--shadow-md);
@@ -162,7 +178,7 @@ mark {
   position: absolute;
   right: -20px; top: -20px;
   width: 180px; height: 180px;
-  background: radial-gradient(circle, rgba(30,107,64,.07) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(46,125,50,.10) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -1064,7 +1080,7 @@ body.dark-mode .duoc-subsection {
   .duoc-alphabet { order: 3; max-width: 100%; width: 100%; }
 }
 @media (max-width: 650px) {
-  .duoc-page { padding: 25px 12px 32px; }
+  .duoc-page { padding: 14px 12px 32px; }
   .duoc-header-main {
     flex-wrap: wrap;
     padding: 16px 18px 16px 22px;
@@ -1187,6 +1203,36 @@ body.dark-mode .duoc-empty-inline{background:rgba(74,170,114,.06);border-color:r
 body.dark-mode #hdsd-content{background:rgba(14,32,24,.98)!important;color:#e8f2ec!important}body.dark-mode #hdsd-content h1{border-bottom-color:rgba(74,170,114,.30)}body.dark-mode #hdsd-content h1,body.dark-mode #hdsd-content h2,body.dark-mode #hdsd-content h3{color:#66d28c!important}body.dark-mode #hdsd-content details{background:rgba(255,255,255,.025);border-color:rgba(74,170,114,.34)!important}body.dark-mode #hdsd-content details > summary{background:rgba(74,170,114,.10)!important;color:#66d28c!important}body.dark-mode #hdsd-content details[open] > summary{background:rgba(74,170,114,.18)!important}body.dark-mode #hdsd-content details .content,body.dark-mode #hdsd-content details > div:not(summary){background:rgba(255,255,255,.028)!important;border-top-color:rgba(255,255,255,.08);color:#dbece2!important}body.dark-mode .basic-info-box,body.dark-mode .hdsd-fallback-note,body.dark-mode .hdsd-callout{background:rgba(74,170,114,.08);border-color:rgba(74,170,114,.22);color:#cfe6d8}body.dark-mode .info-value{color:#dbece2}body.dark-mode .info-label{color:#66d28c}body.dark-mode #hdsd-content blockquote{background:rgba(74,170,114,.08)!important;color:#c4d7cb!important;border-left-color:#66d28c!important}
 @media(max-width:650px){.duoc-brand-modal-box{width:calc(100vw - 20px);padding:18px}.duoc-brand-modal-box.duoc-hdsd-modal-box{padding:16px}.duoc-modal-actions{margin-top:8px}.duoc-brand-open-btn{min-height:34px;padding:7px 10px}.duoc-brand-card{padding:10px}.duoc-brand-thumb{width:46px;height:46px}.duoc-brand-desc{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.duoc-hdsd-back-row{margin-right:42px}#hdsd-content{max-height:calc(88dvh - 78px);font-size:16px}#hdsd-content h1{font-size:21px}.info-row{flex-wrap:wrap;gap:4px}.info-label{width:100%;min-width:0}.hdsd-action-row{align-items:flex-start}.hdsd-primary-actions{width:100%}}
 
+
+
+/* v10.4.18 — compact HDSD image area + Google Drive source button */
+#hdsd-content .hdsd-img-container{
+  text-align:center!important;
+  margin:6px 0 10px!important;
+  padding:0!important;
+  line-height:0;
+}
+#hdsd-content .hdsd-img-container img,
+#hdsd-content img.hdsd-product-image{
+  display:block!important;
+  width:auto!important;
+  height:auto!important;
+  max-width:min(320px,100%)!important;
+  max-height:220px!important;
+  object-fit:contain!important;
+  margin:0 auto!important;
+  border-radius:12px!important;
+  box-shadow:none!important;
+  background:#fff;
+}
+#hdsd-content .hdsd-img-container:first-child{margin-top:0!important;}
+#hdsd-content .hdsd-img-container small{display:block;line-height:1.35;margin-top:6px;}
+body.dark-mode #hdsd-content .hdsd-img-container img,
+body.dark-mode #hdsd-content img.hdsd-product-image{background:#fff;}
+@media (max-width:650px){
+  #hdsd-content .hdsd-img-container img,
+  #hdsd-content img.hdsd-product-image{max-width:min(260px,100%)!important;max-height:190px!important;}
+}
 
 /* ═══════════════════════════════
    v10.4.12 final — logo pill + inline mobile A-Z arrows, no strip border
@@ -1481,8 +1527,8 @@ body.dark-mode .duoc-open:hover {
 }
 @media (max-width: 767px) {
   .duoc-header-main {
-    min-height: 70px;
-    padding: 12px 12px !important;
+    min-height: 76px;
+    padding: 14px 12px 10px !important;
     display: flex;
     align-items: center !important;
     justify-content: center !important;
@@ -1493,6 +1539,7 @@ body.dark-mode .duoc-open:hover {
     align-items: center !important;
     justify-content: center;
     gap: 10px;
+    transform: translateY(8px);
   }
   .duoc-logo-btn { display: flex; align-items: center; justify-content: center; }
   .duoc-logo-svg { width: 108px !important; height: 33px !important; }
@@ -1501,13 +1548,15 @@ body.dark-mode .duoc-open:hover {
     justify-content: center;
     transform: none !important;
   }
-  .duoc-header-title { line-height: 1.18; margin: 0 0 3px !important; }
-  .duoc-header-subtitle { line-height: 1.2; margin: 0; }
+  .duoc-header-title { line-height: 1.16; margin: 0 0 2px !important; }
+  .duoc-header-subtitle { line-height: 1.18; margin: 0; }
   .duoc-card .img-wrap { height: 118px; }
   .duoc-card .duoc-book-cover { justify-content: center; padding-top: 8px; padding-bottom: 8px; }
   .duoc-card .duoc-book-emblem { width: 44px; height: 44px; font-size: 22px; margin-bottom: 6px; }
-  .duoc-card .duoc-book-kicker { font-size: 11px; line-height: 1.1; }
-  .duoc-card .duoc-book-year { font-size: 12px; line-height: 1.1; margin-top: 2px; }
+  .duoc-card .duoc-book-kicker { font-size: 12px; line-height: 1.1; }
+  .duoc-card .duoc-book-year { font-size: 13px; line-height: 1.1; margin-top: 2px; }
+  .duoc-card .p-title { font-size: calc(var(--text-xs) + 1px) !important; }
+  .duoc-card .p-info { font-size: 14px !important; }
   .duoc-modal-book {
     width: 70px;
     height: 70px;
@@ -1527,6 +1576,54 @@ body.dark-mode .duoc-open:hover {
   .duoc-search-icon-btn { width: 30px; height: 30px; }
 }
 
+
+/* ═══════════════════════════════
+   v10.4.16 — Logo clean-up + desktop typography tuning
+════════════════════════════════ */
+@media (min-width: 768px) {
+  /* Trang chủ: giảm 2px, giữ nguyên header */
+  .duoc-search-box input,
+  .duoc-abc-toggle,
+  .duoc-letter,
+  .duoc-count,
+  .duoc-card .p-info,
+  .duoc-open,
+  .duoc-progress,
+  .duoc-loading,
+  .duoc-empty,
+  .duoc-footer-badge {
+    font-size: calc(var(--text-xs) - 2px);
+  }
+  .duoc-card .p-title {
+    font-size: calc(var(--text-sm) - 2px);
+  }
+  .duoc-card .duoc-book-kicker {
+    font-size: 10px;
+  }
+  .duoc-card .duoc-book-year {
+    font-size: 11px;
+  }
+
+  /* Chi tiết chuyên luận Dược thư: giảm 2px chỉ trên PC */
+  #duoc-modal .duoc-modal-box {
+    font-size: calc(var(--text-base) - 2px);
+  }
+  #duoc-modal .duoc-modal-head h2 {
+    font-size: calc(var(--text-2xl) - 2px);
+  }
+  #duoc-modal .duoc-modal-head p,
+  #duoc-modal .duoc-section > summary,
+  #duoc-modal .duoc-subsection > b,
+  #duoc-modal .duoc-table-figure figcaption {
+    font-size: calc(var(--text-sm) - 2px);
+  }
+  #duoc-modal .duoc-section-body,
+  #duoc-modal .duoc-subsection,
+  #duoc-modal .duoc-paragraph {
+    font-size: calc(var(--text-base) - 2px);
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1542,10 +1639,17 @@ body.dark-mode .duoc-open:hover {
         <defs>
           <linearGradient id="lgGrad" x1="0" y1="0" x2="132" y2="40" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stop-color="#43a047"/>
+            <stop offset="72%" stop-color="#2e7d32"/>
             <stop offset="100%" stop-color="#1b5e20"/>
           </linearGradient>
+          <radialGradient id="lgRightBright" cx="100%" cy="0%" r="74%" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stop-color="#d7ffd9" stop-opacity="0.52"/>
+            <stop offset="38%" stop-color="#a5d6a7" stop-opacity="0.24"/>
+            <stop offset="100%" stop-color="#a5d6a7" stop-opacity="0"/>
+          </radialGradient>
         </defs>
         <rect x="0.5" y="0.5" width="131" height="39" rx="8" fill="url(#lgGrad)" stroke="rgba(255,255,255,.22)"/>
+        <rect x="0.5" y="0.5" width="131" height="39" rx="8" fill="url(#lgRightBright)"/>
         <g aria-hidden="true">
           <rect x="6.5" y="6.5" width="18" height="27" rx="9" fill="rgba(255,255,255,.96)"/>
           <rect x="8.2" y="8.2" width="14.6" height="23.6" rx="7.3" stroke="rgba(27,94,32,.18)" stroke-width="1"/>
@@ -1553,11 +1657,11 @@ body.dark-mode .duoc-open:hover {
           <line x1="10.1" y1="20" x2="20.9" y2="20" stroke="#1b5e20" stroke-width="2.2" stroke-linecap="round"/>
         </g>
         <line x1="31" y1="10" x2="31" y2="30" stroke="rgba(255,255,255,.30)"/>
-        <text x="39" y="25.4" font-family="'Inter','Segoe UI',system-ui,sans-serif" font-size="15.2" font-weight="850" fill="white" letter-spacing="-0.35">Med</text>
-        <text x="68" y="25.4" font-family="'Inter','Segoe UI',system-ui,sans-serif" font-size="15.2" font-weight="500" fill="rgba(255,255,255,.82)" letter-spacing="-0.35">Plus</text>
-        <line x1="97" y1="10" x2="97" y2="30" stroke="rgba(255,255,255,.26)"/>
-        <g id="logo-theme-icon" transform="translate(105,11)">
-          <path d="M10.5 2.2a7.4 7.4 0 1 0 7.2 8.9A5.5 5.5 0 0 1 10.5 2.2z" fill="white" opacity="0.86"/>
+        <text x="39" y="25.1" font-family="'Inter','Segoe UI',system-ui,sans-serif" font-size="15.2" font-weight="850" fill="white" letter-spacing="-0.35">Med</text>
+        <text x="68" y="25.1" font-family="'Inter','Segoe UI',system-ui,sans-serif" font-size="15.2" font-weight="500" fill="rgba(255,255,255,.88)" letter-spacing="-0.35">Plus</text>
+        <line x1="104" y1="10" x2="104" y2="30" stroke="rgba(255,255,255,.26)"/>
+        <g id="logo-theme-icon" transform="translate(110,11)">
+          <path d="M10.5 2.2a7.4 7.4 0 1 0 7.2 8.9A5.5 5.5 0 0 1 10.5 2.2z" fill="white" opacity="0.88"/>
         </g>
       </svg>
     </button>
@@ -1590,7 +1694,7 @@ body.dark-mode .duoc-open:hover {
 
     <div class="duoc-search-box" role="search">
       <input id="duoc-q" type="search" autocomplete="off"
-             placeholder="Tìm hoạt chất, biệt dược, từ khóa…"
+             placeholder="Tìm hoạt chất"
              aria-label="Tìm chuyên luận Dược thư">
       <button class="duoc-search-icon-btn" id="duoc-clear" type="button" aria-label="Tìm kiếm" title="Tìm kiếm hướng dẫn">
         <svg id="duoc-search-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
@@ -1676,10 +1780,30 @@ body.dark-mode .duoc-open:hover {
 <script>
 (function(){
 'use strict';
-const INDEX_URL='./duoc-thu-data/index.json?v=10.4.14-vertical-brands-medplus-hdsd-modal', DATA_BASE='./duoc-thu-data/', MEDPLUS_JSON_URL='./medplus.json';
+const INDEX_URL='./duoc-thu-data/index.json?v=10.4.16-logo-brightness-typography', DATA_BASE='./duoc-thu-data/', MEDPLUS_JSON_URL='./medplus.json';
 const PAGE_SIZE=36, LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 let indexRecords=[],recordCache=new Map(),filteredResults=[],visibleCount=0,activeLetter='',lastQuery='',appendBusy=false,revealObserver=null,loadObserver=null;
 const q=document.getElementById('duoc-q'),clear=document.getElementById('duoc-clear'),list=document.getElementById('duoc-results'),count=document.getElementById('duoc-count'),modal=document.getElementById('duoc-modal'),modalBox=document.getElementById('duoc-modal-box'),brandModal=document.getElementById('duoc-brand-modal'),brandModalBox=document.getElementById('duoc-brand-modal-box'),abcToggle=document.getElementById('duoc-abc-toggle'),alphabet=document.getElementById('duoc-alphabet'),alphabetShell=document.getElementById('duoc-alphabet-shell'),alphaLeft=document.getElementById('duoc-alpha-left'),alphaRight=document.getElementById('duoc-alpha-right');
+let duocPageScrollY=0;
+function isAnyDuocModalOpen(){return !!((modal&&modal.classList.contains('show'))||(brandModal&&brandModal.classList.contains('show')))}
+function lockDuocPageScroll(){
+  if(document.body.classList.contains('duoc-scroll-locked'))return;
+  duocPageScrollY=window.scrollY||document.documentElement.scrollTop||0;
+  document.documentElement.classList.add('duoc-scroll-locked-root');
+  document.body.classList.add('duoc-scroll-locked');
+  document.body.style.top='-'+duocPageScrollY+'px';
+  document.body.style.width='100%';
+}
+function unlockDuocPageScroll(){
+  if(!document.body.classList.contains('duoc-scroll-locked'))return;
+  const y=Math.abs(parseInt(document.body.style.top||'0',10))||duocPageScrollY||0;
+  document.body.classList.remove('duoc-scroll-locked');
+  document.documentElement.classList.remove('duoc-scroll-locked-root');
+  document.body.style.top='';
+  document.body.style.width='';
+  window.scrollTo(0,y);
+}
+function syncDuocPageScrollLock(){if(isAnyDuocModalOpen())lockDuocPageScroll();else unlockDuocPageScroll()}
 function asciiDigits(v){const m={'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};return String(v||'').replace(/[₀₁₂₃₄₅₆₇₈₉⁰¹²³⁴⁵⁶⁷⁸⁹]/g,function(ch){return m[ch]||ch}).replace(/µ/g,'mc').replace(/μ/g,'mc')}
 function norm(v){return asciiDigits(String(v||'')).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase().replace(/&/g,' va ').replace(/[^a-z0-9\s]/g,' ').replace(/\bva\b/g,' va ').replace(/\s+/g,' ').trim()}
 function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
@@ -1875,6 +1999,7 @@ async function openRelatedBrandChooser(recordId){
   brandModalBox.classList.remove('duoc-hdsd-modal-box');
   brandModalBox.innerHTML='<button type="button" class="duoc-close" aria-label="Đóng">×</button><div class="duoc-loading">Đang tìm biệt dược liên quan...</div>';
   brandModal.classList.add('show');
+  syncDuocPageScrollLock();
   brandModalBox.querySelector('.duoc-close').addEventListener('click',closeBrandModal);
   const matches=await findRelatedBrandsForRecord(rec);
   lastBrandMatches=matches;
@@ -1885,7 +2010,7 @@ async function openRelatedBrandChooser(recordId){
   brandModalBox.innerHTML='<button type="button" class="duoc-close" aria-label="Đóng">×</button><h2 class="duoc-brand-panel-title">Biệt dược liên quan</h2><p class="duoc-brand-panel-sub">'+esc(rec.title||'Chuyên luận')+' · '+matches.length+' tờ HDSD phù hợp</p><div class="duoc-brand-grid">'+renderDrugRows(matches)+'</div>';
   brandModalBox.querySelector('.duoc-close').addEventListener('click',closeBrandModal);
 }
-function closeBrandModal(){brandModal.classList.remove('show');brandModalBox.innerHTML='';brandModalBox.classList.remove('duoc-hdsd-modal-box');lastBrandMatches=[];}
+function closeBrandModal(){brandModal.classList.remove('show');brandModalBox.innerHTML='';brandModalBox.classList.remove('duoc-hdsd-modal-box');lastBrandMatches=[];syncDuocPageScrollLock();}
 function renderFieldSection(title,value){if(!String(value||'').trim())return'';return '<details><summary><span>'+esc(title)+'</span></summary><div class="content">'+renderText(String(value||''))+'</div></details>'}
 function extractPageId(url){
   if(!url)return null;
@@ -1942,7 +2067,7 @@ function renderBlocks(blocks,version){
       case 'equation':html+='<p class="hdsd-simple-equation">'+hdsdRenderSimpleMath_(hdsdEscapeText_(b.expression||''))+'</p>';if(ch)html+='<div style="margin-left:16px">'+ch+'</div>';break;
       case 'divider':html+='<hr>';break;
       case 'code':html+='<pre><code>'+esc((b.rich_text||[]).map(function(r){return r.plain_text||''}).join(''))+'</code></pre>';break;
-      case 'image':{let src='';if(b._proxy&&b._blockId){src=NOTION_WORKER+'/image-proxy/'+b._blockId+'?v='+(version||Date.now());}else{src=(b.file&&b.file.url)||(b.external&&b.external.url)||'';}const cap=rt(b.caption);html+='<div class="hdsd-img-container" style="text-align:center;margin:14px 0"><img src="'+src+'" loading="lazy" style="max-width:100%;border-radius:10px" onerror="this.parentElement.style.display=\'none\'">'+(cap?'<br><small style="color:var(--color-text-muted);font-size:13px">'+cap+'</small>':'')+'</div>';break;}
+      case 'image':{let src='';if(b._proxy&&b._blockId){src=NOTION_WORKER+'/image-proxy/'+b._blockId+'?v='+(version||Date.now());}else{src=(b.file&&b.file.url)||(b.external&&b.external.url)||'';}const cap=rt(b.caption);html+='<div class="hdsd-img-container"><img class="hdsd-product-image" src="'+src+'" loading="lazy" onerror="this.parentElement.style.display=\'none\'">'+(cap?'<small style="color:var(--color-text-muted);font-size:13px">'+cap+'</small>':'')+'</div>';break;}
       case 'bookmark':case 'link_preview':case 'embed':{const url=b.url||'';const cap=rt(b.caption);if(url)html+='<a href="'+url+'" target="_blank" rel="noopener" style="display:block;padding:10px 14px;border:1px solid rgba(76,175,80,.3);border-radius:8px;margin:8px 0;background:rgba(76,175,80,.05)">🔗 '+(cap||url)+'</a>';break;}
       case 'table':{const rows=block._children||[];if(rows.length){html+='<div style="overflow-x:auto;margin:12px 0"><table>';rows.forEach(function(row,ri){const cells=(row.table_row&&row.table_row.cells)||[];html+='<tr>';cells.forEach(function(cell){const tag=ri===0?'th':'td';html+='<'+tag+'>'+rt(cell)+'</'+tag+'>';});html+='</tr>';});html+='</table></div>';}break;}
       case 'column_list':html+='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:10px 0">'+ch+'</div>';break;
@@ -1968,8 +2093,10 @@ function getDriveFromPage_(pageRes,blocks){
   if(pageRes&&pageRes.properties){const prop=pageRes.properties.hdsd||pageRes.properties.HDSD||pageRes.properties.Hdsd||pageRes.properties.drive||pageRes.properties.Drive;if(prop){if(prop.type==='url'&&prop.url)driveLink=prop.url;else if(prop.type==='rich_text'&&prop.rich_text&&prop.rich_text[0])driveLink=prop.rich_text[0].href||prop.rich_text[0].plain_text;else if(prop.type==='files'&&prop.files&&prop.files[0])driveLink=(prop.files[0].external&&prop.files[0].external.url)||(prop.files[0].file&&prop.files[0].file.url);}}
   return driveLink||findDriveLink(blocks);
 }
+function isGoogleDriveUrl_(url){return !!url&&/https?:\/\/(?:[^\s/]+\.)?drive\.google\.com\//i.test(String(url));}
 function hdsdActionRow_(drug,driveLink){
-  const href=drug.link||driveLink||'';
+  const candidates=[driveLink,drug&&drug.driveLink,drug&&drug.hdsdDrive,drug&&drug.hdsd,drug&&drug.link].filter(Boolean);
+  const href=candidates.find(isGoogleDriveUrl_)||'';
   return href?'<div class="hdsd-action-row"><div class="hdsd-primary-actions"><a href="'+esc(href)+'" target="_blank" rel="noopener" class="hdsd-orig-btn">XEM HDSD GỐC</a></div></div><hr>':'';
 }
 function renderBasicInfo_(drug){
@@ -1999,7 +2126,7 @@ async function openHDSDDrug(drug){
           const driveLink=getDriveFromPage_(pageRes,blocks);
           let bodyHtml=renderBlocks(blocks,drug.lastUpdated||'');
           if(drug.image&&String(drug.image).trim()){
-            bodyHtml=bodyHtml.replace(/<img\s[^>]*src="https:\/\/ngocanh\.princetq\.workers\.dev\/image-proxy\/[^\"]*"[^>]*>/,'<img src="'+esc(drug.image)+'" style="max-width:100%;border-radius:10px;display:block;margin:14px auto">');
+            bodyHtml=bodyHtml.replace(/<img\s[^>]*src="https:\/\/ngocanh\.princetq\.workers\.dev\/image-proxy\/[^\"]*"[^>]*>/,'<img class="hdsd-product-image" src="'+esc(drug.image)+'" loading="lazy" alt="Ảnh biệt dược">');
           }
           const firstImgEnd=bodyHtml.indexOf('</div>',bodyHtml.indexOf('<img '));
           const actionHtml=hdsdActionRow_(drug,driveLink);
@@ -2031,16 +2158,16 @@ function renderRecord(rec){
   });
   return h+'</div>'
 }
-async function openRecord(id){try{modalBox.innerHTML='<div class="duoc-loading">Đang tải chuyên luận...</div>';modal.classList.add('show');const rec=await getRecord(id);modalBox.innerHTML=renderRecord(rec);modalBox.querySelector('.duoc-close').addEventListener('click',closeModal);updateBrandButtonForRecord(rec)}catch(e){modalBox.innerHTML='<button type="button" class="duoc-close" aria-label="Đóng">×</button><div class="duoc-empty">Không tải được chuyên luận. Hãy kiểm tra thư mục <b>duoc-thu-data</b> và thử lại.</div>';modalBox.querySelector('.duoc-close').addEventListener('click',closeModal)}}
-function closeModal(){modal.classList.remove('show');modalBox.innerHTML=''}
+async function openRecord(id){try{modalBox.innerHTML='<div class="duoc-loading">Đang tải chuyên luận...</div>';modal.classList.add('show');syncDuocPageScrollLock();const rec=await getRecord(id);modalBox.innerHTML=renderRecord(rec);modalBox.querySelector('.duoc-close').addEventListener('click',closeModal);updateBrandButtonForRecord(rec)}catch(e){modalBox.innerHTML='<button type="button" class="duoc-close" aria-label="Đóng">×</button><div class="duoc-empty">Không tải được chuyên luận. Hãy kiểm tra thư mục <b>duoc-thu-data</b> và thử lại.</div>';modalBox.querySelector('.duoc-close').addEventListener('click',closeModal)}}
+function closeModal(){modal.classList.remove('show');modalBox.innerHTML='';syncDuocPageScrollLock()}
 modalBox.addEventListener('click',function(e){const b=e.target.closest('[data-duoc-brand-record]');if(!b)return;e.preventDefault();openRelatedBrandChooser(b.dataset.duocBrandRecord)});
 if(brandModal){brandModal.addEventListener('click',function(e){if(e.target===brandModal)closeBrandModal();const card=e.target.closest('[data-duoc-hdsd-index]');if(card){const idx=Number(card.dataset.duocHdsdIndex);openHDSDDrug(lastBrandMatches[idx]);return;}if(e.target.closest('[data-duoc-brand-back]')){if(lastBrandContext)openRelatedBrandChooser(lastBrandContext.id);}});}
 list.addEventListener('click',function(e){const b=e.target.closest('[data-duoc-id]');if(b)openRecord(b.dataset.duocId)});
 list.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target&&e.target.classList&&e.target.classList.contains('duoc-card')){e.preventDefault();openRecord(e.target.dataset.duocId)}});
 modal.addEventListener('click',function(e){if(e.target===modal)closeModal()});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(brandModal&&brandModal.classList.contains('show')){closeBrandModal();return;}if(modal.classList.contains('show'))closeModal();}});
-q.addEventListener('focus',function(){ if(!q.value) q.placeholder='Tìm hoạt chất, biệt dược, từ khóa…'; });
-q.addEventListener('blur',function(){ if(!q.value) q.placeholder='Tìm hoạt chất, biệt dược, từ khóa…'; });
+q.addEventListener('focus',function(){ if(!q.value) q.placeholder='Tìm hoạt chất'; });
+q.addEventListener('blur',function(){ if(!q.value) q.placeholder='Tìm hoạt chất'; });
 q.addEventListener('input',runSearch);
 clear.addEventListener('click',function(){q.value='';q.focus();runSearch()});
 abcToggle.addEventListener('click',function(){const open=!alphabet.classList.contains('show');setAlphabetOpen(open);if(!open){activeLetter='';alphabet.querySelectorAll('.duoc-letter').forEach(function(x){x.classList.remove('active')});runSearch();}});
