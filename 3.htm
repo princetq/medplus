@@ -5877,7 +5877,7 @@ body.medplus-aux-open.dark-mode.medplus-nav-duocthu-sync .medplus-app-nav::befor
   border-color:rgba(102,210,140,.62) !important;
 }
 
-/* v10.4.5.12 — Khi đang dark mode nhưng chuyển sang các tab iframe ngoài Tra cứu thuốc/Dược thư, navbar phải về light mode */
+/* v10.4.5.13 — Khi đang dark mode nhưng chuyển sang các tab iframe ngoài Tra cứu thuốc/Dược thư, navbar phải về light mode */
 body.medplus-aux-open.dark-mode.medplus-nav-light-only .medplus-app-nav{
   color:#1b5e20 !important;
   background:linear-gradient(135deg,#eef6ea 0,#e8f2e6 55%,#dfeedd 100%) !important;
@@ -13846,14 +13846,44 @@ function findDuocThuIndexMatch_(question, index) {
 
 function sectionByTitle_(record, title) {
     const expected = normalizeDuocThuText_(title);
-    return (record.sections || []).find(function(section) {
+    const sections = record && Array.isArray(record.sections) ? record.sections : [];
+    const exact = sections.find(function(section) {
         return normalizeDuocThuText_(section.title) === expected;
+    });
+    if (exact) return exact;
+
+    const hasAllWords = function(sectionTitle, target) {
+        const words = normalizeDuocThuText_(target).split(/\s+/).filter(function(w) {
+            return w.length >= 4 && ['trong','thuoc','dung','cach'].indexOf(w) < 0;
+        });
+        return words.length >= 2 && words.every(function(w) { return sectionTitle.indexOf(w) >= 0; });
+    };
+    return sections.find(function(section) {
+        const t = normalizeDuocThuText_(section && section.title || '');
+        if (!t) return false;
+        if (expected === 'lieu luong va cach dung') {
+            return !/\bqua\s+lieu\b/.test(t) && (/\blieu\s+(luong|dung)\b/.test(t) || (/\blieu\b/.test(t) && /\bcach\s+dung\b/.test(t)));
+        }
+        if (expected === 'qua lieu va xu tri') return /\bqua\s+lieu\b/.test(t);
+        if (expected === 'tac dung khong mong muon adr') return /\b(tac dung khong mong muon|adr)\b/.test(t);
+        if (expected === 'huong dan cach xu tri adr') return /\b(xu tri|xu ly|huong dan).{0,40}\badr\b|\badr\b.{0,40}\b(xu tri|xu ly)\b/.test(t);
+        return hasAllWords(t, expected);
     }) || null;
 }
 
 function chooseDuocThuPassages_(question, record) {
     const q = normalizeDuocThuText_(question);
     const pick = function(title) { return sectionByTitle_(record, title); };
+    const titleNormOf = function(node) { return normalizeDuocThuText_(node && node.title || ''); };
+    const isOverdoseTitle = function(titleNorm) { return /\bqua\s+lieu\b/.test(titleNorm); };
+    const isDoseTitle = function(titleNorm) {
+        return !isOverdoseTitle(titleNorm) && (/\blieu\s+(dung|luong)\b/.test(titleNorm) || (/\blieu\b/.test(titleNorm) && !/\bqua\b/.test(titleNorm)));
+    };
+    const isAdministrationTitle = function(titleNorm) { return /\b(cach\s+dung|duong\s+dung|cach\s+su\s+dung)\b/.test(titleNorm); };
+    const hasOverdoseIntent = /\b(qua\s+lieu|xu\s+tri\s+qua\s+lieu|xu\s+ly\s+qua\s+lieu|ngo\s+doc|overdose)\b/.test(q);
+    const hasDoseIntent = !hasOverdoseIntent && /\b(lieu\s+dung|lieu\s+luong|lieu\b|dose|dosage)\b/.test(q);
+    const hasAdministrationIntent = !hasOverdoseIntent && /\b(cach\s+dung|cach\s+su\s+dung|duong\s+dung|dung\s+nhu\s+the\s+nao|administration)\b/.test(q);
+
     const chooseSub = function(parentTitle, childTitle) {
         const parent = pick(parentTitle);
         if (!parent) return null;
@@ -13863,7 +13893,12 @@ function chooseDuocThuPassages_(question, record) {
         });
         if (!child && expected === 'lieu dung') {
             child = (parent.subsections || []).find(function(item) {
-                return /\blieu\s*(dung|luong)\b/.test(normalizeDuocThuText_(item.title));
+                return isDoseTitle(titleNormOf(item));
+            });
+        }
+        if (!child && expected === 'cach dung') {
+            child = (parent.subsections || []).find(function(item) {
+                return isAdministrationTitle(titleNormOf(item));
             });
         }
         return child ? { parent: parent, section: child, isSubsection: true } : { parent: parent, section: parent, isSubsection: false };
@@ -13888,6 +13923,36 @@ function chooseDuocThuPassages_(question, record) {
         return dedupe(out);
     };
 
+    const findDoseParent = function() {
+        const sections = record && Array.isArray(record.sections) ? record.sections : [];
+        return sections.find(function(sec) {
+            const t = titleNormOf(sec);
+            return isDoseTitle(t) || (!isOverdoseTitle(t) && /\blieu\b/.test(t) && isAdministrationTitle(t));
+        }) || pick('Liều lượng và cách dùng') || null;
+    };
+    const findChildByIntent = function(parent, matcher) {
+        if (!parent || !Array.isArray(parent.subsections)) return null;
+        return parent.subsections.find(function(sub) { return matcher(titleNormOf(sub)); }) || null;
+    };
+
+    // Strong intent routing, modeled after the HDSD citation router:
+    // match the requested toggle/sub-toggle title first, and only then scan body text.
+    // This prevents “liều dùng” questions from falling into “Quá liều và xử trí” just because both contain the token “liều”.
+    if (hasDoseIntent || hasAdministrationIntent) {
+        const parent = findDoseParent();
+        if (parent) {
+            if (hasDoseIntent && hasAdministrationIntent && /\b(lieu\s+luong\s+va\s+cach\s+dung|lieu\s+dung\s+va\s+cach\s+dung)\b/.test(q)) {
+                return [{ parent: parent, section: parent, isSubsection: false }];
+            }
+            if (hasAdministrationIntent && !hasDoseIntent) {
+                const adminChild = findChildByIntent(parent, isAdministrationTitle);
+                return [adminChild ? { parent: parent, section: adminChild, isSubsection: true } : { parent: parent, section: parent, isSubsection: false }];
+            }
+            const doseChild = findChildByIntent(parent, isDoseTitle);
+            return [doseChild ? { parent: parent, section: doseChild, isSubsection: true } : { parent: parent, section: parent, isSubsection: false }];
+        }
+    }
+
     const rules = [
         { re: /\b(ma atc|atc)\b/, titles: ['Mã ATC'] },
         { re: /\b(ten chung quoc te|ten quoc te|ten khac|inn)\b/, titles: ['Tên chung quốc tế'] },
@@ -13898,7 +13963,7 @@ function chooseDuocThuPassages_(question, record) {
         { re: /\b(than trong|canh bao|luu y|than trong khi dung)\b/, titles: ['Thận trọng'] },
         { re: /\b(tuong ky|khong tuong hop)\b/, titles: ['Tương kỵ'] },
         { re: /\b(tuong tac|tuong tac thuoc|dung chung|phoi hop)\b/, titles: ['Tương tác thuốc'] },
-        { re: /\b(qua lieu|xu tri qua lieu|qua lieu lam gi)\b/, titles: ['Quá liều và xử trí'] },
+        { re: /\b(qua lieu|xu tri qua lieu|xu ly qua lieu|qua lieu lam gi)\b/, titles: ['Quá liều và xử trí'] },
         { re: /\b(bao quan|dieu kien bao quan|giu thuoc)\b/, titles: ['Bảo quản'] },
         { re: /\b(mang thai|thai ky|phu nu co thai)\b/, titles: ['Thời kỳ mang thai'] },
         { re: /\b(cho con bu|bu me|phu nu cho con bu)\b/, titles: ['Thời kỳ cho con bú'] },
@@ -13942,12 +14007,18 @@ function chooseDuocThuPassages_(question, record) {
     const titleHits = [];
     (record.sections || []).forEach(function(sec) {
         const titleNorm = normalizeDuocThuText_(sec.title || '');
-        if (titleNorm && titleNorm.length >= 4 && ((' ' + q + ' ').indexOf(' ' + titleNorm + ' ') >= 0 || titleNorm.split(' ').filter(function(w){return w.length >= 4;}).every(function(w){return q.indexOf(w) >= 0;}))) {
+        const titleWords = titleNorm.split(' ').filter(function(w){ return w.length >= 4; });
+        const titleExact = titleNorm && (' ' + q + ' ').indexOf(' ' + titleNorm + ' ') >= 0;
+        const titleAllWords = titleWords.length >= 2 && titleWords.every(function(w){ return q.indexOf(w) >= 0; });
+        if (!(isOverdoseTitle(titleNorm) && !hasOverdoseIntent) && titleNorm && titleNorm.length >= 4 && (titleExact || titleAllWords)) {
             titleHits.push({ parent: sec, section: sec, isSubsection: false });
         }
         (sec.subsections || []).forEach(function(sub) {
             const subNorm = normalizeDuocThuText_(sub.title || '');
-            if (subNorm && subNorm.length >= 4 && ((' ' + q + ' ').indexOf(' ' + subNorm + ' ') >= 0 || subNorm.split(' ').filter(function(w){return w.length >= 4;}).every(function(w){return q.indexOf(w) >= 0;}))) {
+            const subWords = subNorm.split(' ').filter(function(w){ return w.length >= 4; });
+            const subExact = subNorm && (' ' + q + ' ').indexOf(' ' + subNorm + ' ') >= 0;
+            const subAllWords = subWords.length >= 2 && subWords.every(function(w){ return q.indexOf(w) >= 0; });
+            if (!(isOverdoseTitle(subNorm) && !hasOverdoseIntent) && subNorm && subNorm.length >= 4 && (subExact || subAllWords)) {
                 titleHits.push({ parent: sec, section: sub, isSubsection: true });
             }
         });
@@ -13970,6 +14041,8 @@ function chooseDuocThuPassages_(question, record) {
             nodes.forEach(function(item) {
                 const node = item.section || {};
                 const title = normalizeDuocThuText_(node.title || '');
+                if (isOverdoseTitle(title) && !hasOverdoseIntent) return;
+                if (hasOverdoseIntent && isDoseTitle(title)) return;
                 const content = normalizeDuocThuText_((node.content || '') + ' ' + (Array.isArray(node.blocks) ? node.blocks.map(function(b){ return b && (b.text || b.content || ''); }).join(' ') : ''));
                 let score = 0;
                 terms.forEach(function(t) {
