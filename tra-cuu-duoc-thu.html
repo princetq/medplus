@@ -1897,10 +1897,38 @@ function score(r,query){
 }
 function initialOf(r){const n=norm(r.title);return n?n.charAt(0).toUpperCase():''}
 function highlight(v,query){const t=esc(v);if(!query)return t;const words=Array.from(new Set(query.split(' ').filter(x=>x.length>=3))).sort((a,b)=>b.length-a.length);if(!words.length)return t;const re=new RegExp('('+words.map(x=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','ig');return t.replace(re,'<mark>$1</mark>')}
+function cardDrugTypeFromRecord(rec){
+  const sections=Array.isArray(rec&&rec.sections)?rec.sections:[];
+  const parts=[];
+  sections.forEach(function(sec){
+    if(!sec)return;
+    if(sec.content)parts.push(String(sec.content));
+    if(Array.isArray(sec.blocks))sec.blocks.forEach(function(b){if(b&&b.type==='text'&&b.text)parts.push(String(b.text))});
+    if(Array.isArray(sec.subsections))sec.subsections.forEach(function(sub){
+      if(sub&&sub.content)parts.push(String(sub.content));
+      if(sub&&Array.isArray(sub.blocks))sub.blocks.forEach(function(b){if(b&&b.type==='text'&&b.text)parts.push(String(b.text))});
+    });
+  });
+  const text=parts.join('\n').replace(/\r/g,'');
+  const m=text.match(/(?:^|\n)\s*Loại\s+thuốc\s*:\s*([^\n]+)/i);
+  if(!m)return 'Chuyên luận thuốc';
+  return m[1].replace(/\s+/g,' ').trim().replace(/[;,.\s]+$/,'')||'Chuyên luận thuốc';
+}
+function hydrateCardDrugTypes(){
+  list.querySelectorAll('.duoc-card-type[data-duoc-id]').forEach(function(el){
+    if(el.dataset.loaded==='1')return;
+    const id=el.dataset.duocId;
+    el.dataset.loaded='1';
+    getRecord(id).then(function(rec){
+      el.innerHTML='<b>Loại thuốc:</b> '+esc(cardDrugTypeFromRecord(rec));
+    }).catch(function(){
+      el.innerHTML='<b>Loại thuốc:</b> Chuyên luận thuốc';
+    });
+  });
+}
 function cardHtml(r,query){
   const p=(r.source&&r.source.printed_pages)||{};
   const page=p.start?('tr. '+p.start+(p.end&&p.end!==p.start?'–'+p.end:'')):'';
-  const aliases=(r.search_aliases||r.aliases||[]).slice(0,5).join(' · ')||'Chuyên luận thuốc';
   return '<article class="duoc-card" data-duoc-id="'+esc(r.id)+'" tabindex="0" role="button" aria-label="Xem chuyên luận '+esc(r.title)+'">'
     +'<div class="img-wrap duoc-book-cover">'
     +'<span class="duoc-book-emblem">📚</span>'
@@ -1910,7 +1938,7 @@ function cardHtml(r,query){
     +'<div class="duoc-card-content">'
     +'<h2 class="p-title">'+highlight(r.title,query)+'</h2>'
     +'<div class="card-info">'
-    +'<p class="p-info"><b>Tên khác:</b> '+highlight(aliases,query)+'</p>'
+    +'<p class="p-info duoc-card-type" data-duoc-id="'+esc(r.id)+'"><b>Loại thuốc:</b> Đang tải...</p>'
     +'<p class="p-info"><b>Nguồn:</b> '+esc(page||'Dược thư Quốc gia Việt Nam')+'</p>'
     +'</div>'
     +'<button type="button" class="duoc-open" data-duoc-id="'+esc(r.id)+'">'
@@ -1923,7 +1951,7 @@ function cardHtml(r,query){
 function installRevealObserver(){if(revealObserver)revealObserver.disconnect();revealObserver=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-visible');revealObserver.unobserve(e.target)}})},{root:null,rootMargin:'0px 0px -8% 0px',threshold:.02});list.querySelectorAll('.duoc-card:not(.is-visible)').forEach(function(card){revealObserver.observe(card)})}
 function installLoadObserver(){if(loadObserver)loadObserver.disconnect();const sentinel=list.querySelector('.duoc-sentinel');if(!sentinel)return;loadObserver=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)appendNextPage()})},{root:null,rootMargin:'420px 0px',threshold:0});loadObserver.observe(sentinel)}
 function updateProgress(){const p=list.querySelector('.duoc-progress');if(p)p.textContent=visibleCount<filteredResults.length?('Đã hiển thị '+visibleCount+'/'+filteredResults.length+' chuyên luận · Cuộn xuống để tải thêm'):'Đã hiển thị đủ '+filteredResults.length+' chuyên luận'}
-function appendNextPage(){if(appendBusy||visibleCount>=filteredResults.length)return;appendBusy=true;const next=filteredResults.slice(visibleCount,visibleCount+PAGE_SIZE);const sentinel=list.querySelector('.duoc-sentinel');if(sentinel)sentinel.remove();const progress=list.querySelector('.duoc-progress');if(progress)progress.remove();const holder=document.createElement('div');holder.innerHTML=next.map(function(r){return cardHtml(r,lastQuery)}).join('');while(holder.firstElementChild)list.appendChild(holder.firstElementChild);visibleCount+=next.length;const meta=document.createElement('div');meta.className='duoc-progress';list.appendChild(meta);const nextSentinel=document.createElement('div');nextSentinel.className='duoc-sentinel';list.appendChild(nextSentinel);updateProgress();installRevealObserver();installLoadObserver();appendBusy=false}
+function appendNextPage(){if(appendBusy||visibleCount>=filteredResults.length)return;appendBusy=true;const next=filteredResults.slice(visibleCount,visibleCount+PAGE_SIZE);const sentinel=list.querySelector('.duoc-sentinel');if(sentinel)sentinel.remove();const progress=list.querySelector('.duoc-progress');if(progress)progress.remove();const holder=document.createElement('div');holder.innerHTML=next.map(function(r){return cardHtml(r,lastQuery)}).join('');while(holder.firstElementChild)list.appendChild(holder.firstElementChild);visibleCount+=next.length;const meta=document.createElement('div');meta.className='duoc-progress';list.appendChild(meta);const nextSentinel=document.createElement('div');nextSentinel.className='duoc-sentinel';list.appendChild(nextSentinel);updateProgress();installRevealObserver();installLoadObserver();hydrateCardDrugTypes();appendBusy=false}
 function renderResults(){if(!filteredResults.length){list.innerHTML='<div class="duoc-empty">Không tìm thấy chuyên luận phù hợp. Hãy thử tên tiếng Anh, tiếng Việt hoặc một tên đồng nghĩa của hoạt chất.</div>';return}visibleCount=0;list.innerHTML='';appendNextPage()}
 function runSearch(){const query=norm(q.value);lastQuery=query;var _sb=document.getElementById('duoc-search-svg'),_cb=document.getElementById('duoc-clear-svg');if(_sb&&_cb){_sb.style.display=query?'none':'';_cb.style.display=query?'':'none';}const found=indexRecords.map(function(r){return{r:r,s:score(r,query)}}).filter(function(x){return x.s>0&&(!activeLetter||initialOf(x.r)===activeLetter)}).sort(function(a,b){return b.s-a.s||String(a.r.title).localeCompare(String(b.r.title),'vi')}).map(function(x){return x.r});filteredResults=found;const label=activeLetter?(' · Vần '+activeLetter):'';count.textContent=found.length+' chuyên luận'+label;renderResults()}
 function drawAlphabet(){alphabet.innerHTML=LETTERS.map(function(l){return '<button class="duoc-letter" type="button" data-letter="'+l+'">'+l+'</button>'}).join('');alphabet.addEventListener('click',function(e){const b=e.target.closest('[data-letter]');if(!b)return;const letter=b.dataset.letter||'';if(activeLetter===letter){activeLetter='';b.classList.remove('active');setAlphabetOpen(false);}else{activeLetter=letter;alphabet.querySelectorAll('.duoc-letter').forEach(function(x){x.classList.remove('active')});b.classList.add('active');setAlphabetOpen(true);}runSearch();updateAlphabetOverflow();})}
