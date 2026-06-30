@@ -9076,7 +9076,11 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section{background:#0b1
         function hdsdChatTableCellHtml_(value) {
             const raw = cleanDrugFieldForChat_(String(value || '').replace(/\s+/g, ' ').trim());
             if (!raw) return '&nbsp;';
-            return hdsdRenderSimpleMath_(hdsdEscapeText_(raw)).replace(/<br\s*\/?\s*>/gi, ' ');
+            // Trong ô bảng HDSD, các ký hiệu chú thích *, **, *** là nội dung dữ liệu,
+            // không phải Markdown. Mã hóa dấu sao thành entity để không bị lớp formatter
+            // phía sau hiểu nhầm thành bold/list làm mất số lượng sao.
+            const escaped = hdsdEscapeText_(raw).replace(/\*/g, '&#42;');
+            return hdsdRenderSimpleMath_(escaped).replace(/<br\s*\/?\s*>/gi, ' ');
         }
 
         function hdsdTableToChatToken_(block) {
