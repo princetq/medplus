@@ -6818,6 +6818,9 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section{background:#0b1
             if (changed && !options.noTransition) body.classList.add('dm-transitioning');
             body.classList.toggle('dark-mode', isDark);
             syncThemeBackgrounds(isDark);
+            try {
+                window.dispatchEvent(new CustomEvent('medplus-theme-applied', { detail: { dark: !!isDark } }));
+            } catch (e) {}
             if (changed && !options.noTransition) {
                 setTimeout(() => body.classList.remove('dm-transitioning'), 420);
             }
@@ -15435,11 +15438,42 @@ window.bindHDSDDuocThuButtons = bindHDSDDuocThuButtons;
   let lastIndexNavClickAt = 0;
   let preloadedAuxFrames = false;
 
+  function isMedplusDuocthuThemeDark(){
+    return document.body.classList.contains('dark-mode');
+  }
+
+  function syncMedplusDuocthuIframeTheme(frame){
+    if (!frame || frame.dataset.navId !== 'duocthu') return;
+    const isDark = isMedplusDuocthuThemeDark();
+    frame.style.colorScheme = isDark ? 'dark' : 'light';
+    try {
+      if (frame.contentWindow) {
+        frame.contentWindow.postMessage({ type: 'MEDPLUS_THEME_SYNC', darkMode: isDark, source: 'medplus-parent' }, '*');
+      }
+    } catch(e) {}
+    try {
+      const doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+      if (!doc || !doc.documentElement) return;
+      doc.documentElement.classList.toggle('dark-mode', isDark);
+      if (doc.body) {
+        doc.body.classList.toggle('dark-mode', isDark);
+        doc.body.dataset.medplusParentTheme = isDark ? 'dark' : 'light';
+      }
+    } catch(e) {}
+  }
+
+  function syncActiveMedplusDuocthuTheme(){
+    if (auxFrames.duocthu) syncMedplusDuocthuIframeTheme(auxFrames.duocthu);
+  }
+
   function setActiveNav(id){
     document.querySelectorAll('[data-medplus-nav]').forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-medplus-nav') === id);
     });
-    document.body.classList.toggle('medplus-nav-light-only', id !== 'medplus');
+    const forceLightNav = id !== 'medplus' && id !== 'duocthu';
+    document.body.classList.toggle('medplus-nav-light-only', forceLightNav);
+    document.body.classList.toggle('medplus-nav-duocthu-sync', id === 'duocthu');
+    if (id === 'duocthu') syncActiveMedplusDuocthuTheme();
   }
 
   function closeMedplusMobileMenu(){
@@ -15512,6 +15546,7 @@ window.bindHDSDDuocThuButtons = bindHDSDDuocThuButtons;
 
     frame.addEventListener('load', () => {
       hardenMedplusAuxIframeScroll(frame);
+      syncMedplusDuocthuIframeTheme(frame);
       if (frame.dataset.navId === activeAuxId) loadingFromIndexNav = false;
     });
 
@@ -15533,7 +15568,10 @@ window.bindHDSDDuocThuButtons = bindHDSDDuocThuButtons;
     const currentSrc = frame.getAttribute('src');
     if (!currentSrc || currentSrc === 'about:blank') frame.src = expected;
 
-    setTimeout(() => hardenMedplusAuxIframeScroll(frame), 120);
+    setTimeout(() => {
+      hardenMedplusAuxIframeScroll(frame);
+      syncMedplusDuocthuIframeTheme(frame);
+    }, 120);
   }
 
   function closeMedplusAuxFrames(){
@@ -16310,6 +16348,19 @@ updateNavbarSearchVisibility(id);
       }, 0);
   });
 
+
+  window.addEventListener('medplus-theme-applied', syncActiveMedplusDuocthuTheme);
+  if (window.MutationObserver && document.body) {
+    const medplusDuocthuThemeObserver = new MutationObserver(function(mutations){
+      for (const m of mutations) {
+        if (m.type === 'attributes' && m.attributeName === 'class') {
+          syncActiveMedplusDuocthuTheme();
+          break;
+        }
+      }
+    });
+    medplusDuocthuThemeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  }
 
 })();
 </script>
