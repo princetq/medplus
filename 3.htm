@@ -5833,6 +5833,37 @@ body.medplus-aux-open .new-badge::after{
   }
 }
 
+
+
+/* v10.4.5.6 — Navbar của các trang iframe dùng nền kín; riêng Dược thư dark mode dùng nền đen + viền xanh lá giống trang Dược thư. */
+body.medplus-aux-open:not(.dark-mode) .medplus-app-nav{
+  background:linear-gradient(135deg,#eef6ea 0,#e8f2e6 55%,#dfeedd 100%) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+body.medplus-aux-open:not(.dark-mode) .medplus-app-nav::before{
+  background:linear-gradient(135deg,#f4fbef 0,#edf7ea 55%,#e5f2e2 100%) !important;
+  border-color:rgba(46,125,50,.34) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+body.medplus-aux-open.dark-mode .medplus-app-nav{
+  background:#050807 !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+body.medplus-aux-open.dark-mode .medplus-app-nav::before{
+  background:linear-gradient(135deg,#050807 0,#07110c 55%,#030504 100%) !important;
+  border-color:rgba(102,210,140,.52) !important;
+  box-shadow:0 8px 28px rgba(0,0,0,.42),0 0 0 1px rgba(102,210,140,.10) inset !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+body.medplus-aux-open.dark-mode.medplus-nav-duocthu-sync .medplus-app-nav,
+body.medplus-aux-open.dark-mode.medplus-nav-duocthu-sync .medplus-app-nav::before{
+  background:linear-gradient(135deg,#030504 0,#07110c 52%,#020302 100%) !important;
+  border-color:rgba(102,210,140,.62) !important;
+}
 </style>
 
 <!-- MEDPLUS_PRECISE_EFFECT_SECTION_CAPS_SEND_PLANE_STYLE -->
@@ -6874,6 +6905,18 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section{background:#0b1
             const nextChange = getNextThemeBoundary(now);
             autoThemeTimer = setTimeout(scheduleAutoTheme, Math.max(1000, nextChange.getTime() - now.getTime()));
         }
+
+        function applyThemeFromDuocthuChild(isDark) {
+            const now = new Date();
+            const win = getThemeWindow(now);
+            saveThemeOverride(win.id, !!isDark);
+            applyTheme(!!isDark);
+            clearTimeout(autoThemeTimer);
+            const nextChange = getNextThemeBoundary(now);
+            autoThemeTimer = setTimeout(scheduleAutoTheme, Math.max(1000, nextChange.getTime() - now.getTime()));
+        }
+
+        window.medplusApplyThemeFromDuocthuChild = applyThemeFromDuocthuChild;
 
         initAutoTheme();
 
@@ -15465,6 +15508,28 @@ window.bindHDSDDuocThuButtons = bindHDSDDuocThuButtons;
   function syncActiveMedplusDuocthuTheme(){
     if (auxFrames.duocthu) syncMedplusDuocthuIframeTheme(auxFrames.duocthu);
   }
+
+  function applyMedplusThemeFromDuocthuMessage(isDark){
+    const dark = !!isDark;
+    if (typeof window.medplusApplyThemeFromDuocthuChild === 'function') {
+      window.medplusApplyThemeFromDuocthuChild(dark);
+    } else {
+      document.body.classList.toggle('dark-mode', dark);
+      try {
+        window.dispatchEvent(new CustomEvent('medplus-theme-applied', { detail: { dark: dark } }));
+      } catch(e) {}
+    }
+    document.body.classList.remove('medplus-nav-light-only');
+    document.body.classList.toggle('medplus-nav-duocthu-sync', activeAuxId === 'duocthu' || currentNav === 'duocthu');
+    setTimeout(syncActiveMedplusDuocthuTheme, 0);
+  }
+
+  window.addEventListener('message', function(event){
+    const data = event && event.data ? event.data : null;
+    if (!data || data.type !== 'MEDPLUS_DUOCTHU_THEME_CHANGE') return;
+    if (auxFrames.duocthu && event.source && event.source !== auxFrames.duocthu.contentWindow) return;
+    applyMedplusThemeFromDuocthuMessage(data.darkMode);
+  });
 
   function setActiveNav(id){
     document.querySelectorAll('[data-medplus-nav]').forEach(btn => {
