@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tra cứu Dược thư Quốc gia Việt Nam</title>
-<meta name="medplus-duoc-thu-version" content="v10.4.18-header-hdsd-drive-image-search">
+<meta name="medplus-duoc-thu-version" content="v10.4.19-layout-card-image-tuning">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Nunito+Sans:wght@700;800;900&display=swap" rel="stylesheet">
@@ -148,7 +148,7 @@ mark {
 .duoc-page {
   max-width: 1320px;
   margin: 0 auto;
-  padding: 8px 20px 56px;
+  padding: 16px 20px 56px;
 }
 
 /* ═══════════════════════════════
@@ -1080,7 +1080,7 @@ body.dark-mode .duoc-subsection {
   .duoc-alphabet { order: 3; max-width: 100%; width: 100%; }
 }
 @media (max-width: 650px) {
-  .duoc-page { padding: 14px 12px 32px; }
+  .duoc-page { padding: 22px 12px 32px; }
   .duoc-header-main {
     flex-wrap: wrap;
     padding: 16px 18px 16px 22px;
@@ -1205,10 +1205,10 @@ body.dark-mode #hdsd-content{background:rgba(14,32,24,.98)!important;color:#e8f2
 
 
 
-/* v10.4.18 — compact HDSD image area + Google Drive source button */
+/* v10.4.19 — MedPlus-like HDSD product image size + Google Drive source button */
 #hdsd-content .hdsd-img-container{
   text-align:center!important;
-  margin:6px 0 10px!important;
+  margin:8px 0 12px!important;
   padding:0!important;
   line-height:0;
 }
@@ -1217,8 +1217,8 @@ body.dark-mode #hdsd-content{background:rgba(14,32,24,.98)!important;color:#e8f2
   display:block!important;
   width:auto!important;
   height:auto!important;
-  max-width:min(320px,100%)!important;
-  max-height:220px!important;
+  max-width:min(520px,100%)!important;
+  max-height:420px!important;
   object-fit:contain!important;
   margin:0 auto!important;
   border-radius:12px!important;
@@ -1231,7 +1231,7 @@ body.dark-mode #hdsd-content .hdsd-img-container img,
 body.dark-mode #hdsd-content img.hdsd-product-image{background:#fff;}
 @media (max-width:650px){
   #hdsd-content .hdsd-img-container img,
-  #hdsd-content img.hdsd-product-image{max-width:min(260px,100%)!important;max-height:190px!important;}
+  #hdsd-content img.hdsd-product-image{max-width:min(92vw,100%)!important;max-height:320px!important;}
 }
 
 /* ═══════════════════════════════
@@ -1553,10 +1553,10 @@ body.dark-mode .duoc-open:hover {
   .duoc-card .img-wrap { height: 118px; }
   .duoc-card .duoc-book-cover { justify-content: center; padding-top: 8px; padding-bottom: 8px; }
   .duoc-card .duoc-book-emblem { width: 44px; height: 44px; font-size: 22px; margin-bottom: 6px; }
-  .duoc-card .duoc-book-kicker { font-size: 12px; line-height: 1.1; }
-  .duoc-card .duoc-book-year { font-size: 13px; line-height: 1.1; margin-top: 2px; }
-  .duoc-card .p-title { font-size: calc(var(--text-xs) + 1px) !important; }
-  .duoc-card .p-info { font-size: 14px !important; }
+  .duoc-card .duoc-book-kicker { font-size: 14px; line-height: 1.1; }
+  .duoc-card .duoc-book-year { font-size: 15px; line-height: 1.1; margin-top: 2px; }
+  .duoc-card .p-title { font-size: calc(var(--text-xs) + 3px) !important; }
+  .duoc-card .p-info { font-size: 16px !important; }
   .duoc-modal-book {
     width: 70px;
     height: 70px;
@@ -1582,11 +1582,9 @@ body.dark-mode .duoc-open:hover {
 ════════════════════════════════ */
 @media (min-width: 768px) {
   /* Trang chủ: giảm 2px, giữ nguyên header */
-  .duoc-search-box input,
   .duoc-abc-toggle,
   .duoc-letter,
   .duoc-count,
-  .duoc-card .p-info,
   .duoc-open,
   .duoc-progress,
   .duoc-loading,
@@ -1594,14 +1592,23 @@ body.dark-mode .duoc-open:hover {
   .duoc-footer-badge {
     font-size: calc(var(--text-xs) - 2px);
   }
+  .duoc-search-box input {
+    font-size: var(--text-xs);
+  }
+  .duoc-search-box input::placeholder {
+    font-size: var(--text-xs);
+  }
   .duoc-card .p-title {
-    font-size: calc(var(--text-sm) - 2px);
+    font-size: var(--text-sm);
+  }
+  .duoc-card .p-info {
+    font-size: var(--text-xs);
   }
   .duoc-card .duoc-book-kicker {
-    font-size: 10px;
+    font-size: 12px;
   }
   .duoc-card .duoc-book-year {
-    font-size: 11px;
+    font-size: 13px;
   }
 
   /* Chi tiết chuyên luận Dược thư: giảm 2px chỉ trên PC */
