@@ -4,96 +4,1063 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tra cứu Dược thư Quốc gia Việt Nam</title>
-<meta name="medplus-duoc-thu-version" content="v8.1-search-fix">
+<meta name="medplus-duoc-thu-version" content="v9.0-redesign">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 <style>
+/* ═══════════════════════════════════════════════════
+   DESIGN TOKENS — MedPlus Dược Thư v9
+   Palette: Clinical Green — deep forest tones, 
+   warm white surfaces, precise type
+═══════════════════════════════════════════════════ */
+:root {
+  /* Primary palette */
+  --mp-900: #1b5e20;
+  --mp-800: #1b5e20;
+  --mp-700: #2e7d32;
+  --mp-600: #2e7d32;
+  --mp-500: #388e3c;
+  --mp-400: #43a047;
+  --mp-300: #66bb6a;
+  --mp-200: #a5d6a7;
+  --mp-100: #c8e6c9;
+  --mp-50:  #e8f5e9;
 
-:root{
-  --green:#2e7d32;--green-d:#1b5e20;--green-l:#43a047;
-  --g-bg:rgba(255,255,255,.82);--g-bg-h:rgba(239,249,241,.95);--g-border:rgba(46,125,50,.30);
-  --g-blur:blur(18px) saturate(165%);--rad:18px;--ink:#183126;--muted:#607066;
-  --surface:#fff;--surface-soft:#fafafa;--shadow:0 8px 32px rgba(0,0,0,.10),0 0 20px rgba(76,175,80,.22),inset 0 0 12px rgba(76,175,80,.08);
+  /* Neutrals */
+  --n-900: #111815;
+  --n-800: #1e2721;
+  --n-700: #2e3c34;
+  --n-500: #566860;
+  --n-400: #7a9188;
+  --n-300: #aec2b8;
+  --n-200: #d4e4da;
+  --n-100: #eaf2ed;
+  --n-50:  #f5faf7;
+  --n-0:   #ffffff;
+
+  /* Semantic */
+  --color-bg:         #f4f9f6;
+  --color-surface:    #ffffff;
+  --color-surface-2:  #f8fcfa;
+  --color-border:     rgba(30,107,64,.15);
+  --color-border-strong: rgba(30,107,64,.30);
+  --color-text:       #183126;
+  --color-text-mid:   #476052;
+  --color-text-muted: #607066;
+  --color-accent:     #2e7d32;
+  --color-accent-h:   #1b5e20;
+  --color-accent-s:   #43a047;
+
+  /* UI tokens */
+  --rad-sm:  8px;
+  --rad-md:  12px;
+  --rad-lg:  16px;
+  --rad-xl:  20px;
+  --rad-full: 9999px;
+  --shadow-xs: 0 1px 3px rgba(13,35,24,.06);
+  --shadow-sm: 0 2px 8px rgba(13,35,24,.08);
+  --shadow-md: 0 6px 24px rgba(13,35,24,.10);
+  --shadow-lg: 0 16px 48px rgba(13,35,24,.14);
+  --trans: 180ms cubic-bezier(.16,1,.3,1);
+
+  /* Typography */
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body:    'DM Sans', 'Segoe UI', system-ui, sans-serif;
+
+  /* Fluid type */
+  --text-xs:   clamp(0.875rem, 0.82rem + 0.25vw, 0.9375rem);
+  --text-sm:   clamp(0.9375rem,0.90rem + 0.2vw,  1.0625rem);
+  --text-base: clamp(1.0625rem,1.02rem + 0.2vw,  1.125rem);
+  --text-lg:   clamp(1.1875rem,1.12rem + 0.3vw,  1.3125rem);
+  --text-xl:   clamp(1.375rem, 1.22rem + 0.7vw,  1.625rem);
+  --text-2xl:  clamp(1.5rem,   1.2rem  + 1.5vw,  2rem);
 }
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:'Inter','Segoe UI',Roboto,Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4faf5 0%,#edf6f0 100%)}
-button,input{font:inherit}button{cursor:pointer}
-.duoc-page{max-width:1300px;margin:0 auto;padding:0 20px 42px;position:relative;z-index:1}
-.duoc-header-main{display:flex;align-items:center;justify-content:center;gap:15px;margin:0 0 30px;padding:22px 25px;position:relative;background:transparent;border:none;box-shadow:none;user-select:none;-webkit-user-select:none}
-.duoc-header-main::before{content:'';position:absolute;inset:0;background:var(--g-bg);backdrop-filter:var(--g-blur);-webkit-backdrop-filter:var(--g-blur);border:1px solid rgba(76,175,80,.60);box-shadow:var(--shadow);border-radius:var(--rad);z-index:0}
-.duoc-zen-logo{position:relative;z-index:1;display:flex;align-items:center;justify-content:center}
-.duoc-zen-logo img{width:62px;height:62px;object-fit:contain;border-radius:50%;box-shadow:0 4px 15px rgba(0,0,0,.15)}
-.duoc-header-content{text-align:center;position:relative;z-index:1}
-.duoc-header-title{margin:0;color:var(--green);font-size:clamp(20px,4.5vw,28px);font-weight:900;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:10px;line-height:1.2}
-.duoc-medplus-badge{background:linear-gradient(135deg,#43a047,#2e7d32);color:#fff;padding:5px 14px;border-radius:10px;font-weight:900;font-size:18px;display:inline-block;box-shadow:0 3px 10px rgba(46,125,50,.30)}
-.duoc-header-subtitle{margin:4px 0 0;color:var(--green);font-size:13px;opacity:.85;font-weight:600;letter-spacing:.5px}
-.duoc-search-wrapper,.duoc-results,.duoc-footer{position:relative;z-index:1}
-.duoc-search-wrapper{display:flex;justify-content:flex-end;align-items:center;width:100%;margin-bottom:22px;gap:10px;flex-wrap:nowrap}
-.duoc-count{background:var(--green-d);color:#fff;padding:6px 14px;border-radius:10px;font-weight:900;font-size:15px;display:inline-flex;align-items:center;box-shadow:0 4px 12px rgba(0,0,0,.15);order:0;margin-right:auto;white-space:nowrap}
-.duoc-abc-toggle{background:var(--g-bg);border:1px solid var(--g-border);border-radius:12px;padding:0 12px;height:42px;cursor:pointer;display:flex;align-items:center;color:var(--green);font-weight:900;transition:.2s;order:2}
-.duoc-abc-toggle:hover{background:var(--g-bg-h)}.duoc-abc-toggle.active{background:var(--green-l);color:#fff;border-color:var(--green-l);box-shadow:0 2px 8px rgba(76,175,80,.4)}
-.duoc-abc-toggle span{font-size:20px;line-height:1}.duoc-abc-toggle small{font-size:13px;margin-left:1px}
-.duoc-alphabet{display:none;gap:4px;align-items:center;order:3;animation:duocFade .25s ease;max-width:calc(100% - 400px);overflow-x:auto;overflow-y:hidden;padding-bottom:5px}
-.duoc-alphabet.show{display:flex}@keyframes duocFade{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
-.duoc-letter{width:32px;height:32px;flex:0 0 32px;display:flex;align-items:center;justify-content:center;background:var(--g-bg);border:1px solid var(--g-border);border-radius:8px;cursor:pointer;font-weight:800;color:var(--green);font-size:14px;transition:.2s}
-.duoc-letter:first-child{width:auto;flex-basis:auto;padding:0 9px;font-size:12px}.duoc-letter:hover{background:var(--g-bg-h)}.duoc-letter.active{background:linear-gradient(135deg,#43a047,#2e7d32);color:#fff;border-color:#2e7d32;font-weight:900;box-shadow:0 3px 10px rgba(46,125,50,.35)}
-.duoc-search-box{display:flex;align-items:center;padding:8px 15px;width:100%;max-width:280px;height:42px;transition:.3s ease;background:var(--g-bg);border:1px solid var(--g-border);border-radius:12px;order:5}
-.duoc-search-box:focus-within{max-width:320px;transform:scale(1.02);border-color:var(--green-l);background:rgba(255,255,255,.55);box-shadow:0 0 0 3px rgba(76,175,80,.15)}
-.duoc-search-box svg{width:19px;height:19px;color:var(--green);margin-right:9px;flex:0 0 auto}.duoc-search-box input{flex:1;border:none;background:transparent;outline:none;font-size:16px;color:var(--green);font-weight:600;margin:0;padding:0;line-height:normal;height:auto;min-width:0}.duoc-search-box input::placeholder{color:rgba(27,94,32,.56);font-weight:500}
-.duoc-clear{display:none;border:0;background:transparent;color:var(--green);font-size:24px;line-height:1;padding:0 0 0 8px}.duoc-clear.show{display:block}
-.duoc-tip{font-size:13px;color:#66766b;margin:0 0 14px;font-weight:600}
-.duoc-results{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
-.duoc-card{padding:14px;display:flex;flex-direction:column;cursor:pointer;position:relative;overflow:hidden;opacity:0;transform:translateY(18px) scale(.97);transition:opacity .42s ease,transform .42s cubic-bezier(.4,0,.2,1),box-shadow .28s ease,background .28s ease;contain:content;background:var(--g-bg);border:1px solid var(--g-border);border-radius:var(--rad);box-shadow:0 8px 28px rgba(27,94,32,.12)}
-.duoc-card.is-visible{opacity:1;transform:translateY(0) scale(1)}.duoc-card:hover{transform:translateY(-8px);background:var(--g-bg-h);box-shadow:0 20px 45px rgba(0,0,0,.13),0 0 0 1px rgba(255,255,255,.5)}.duoc-card:active{transform:scale(.96)!important;transition:.1s}
-.duoc-card .img-wrap{position:relative;width:100%;height:150px;margin-bottom:10px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,rgba(76,175,80,.18),rgba(27,94,32,.10));border:1.5px solid rgba(46,125,50,.55);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),0 3px 12px rgba(27,94,32,.12);transition:.25s}
-.duoc-card:hover .img-wrap{border-color:rgba(46,125,50,.82);box-shadow:inset 0 0 0 1px rgba(255,255,255,.82),0 5px 18px rgba(27,94,32,.18)}
-.duoc-book-cover{display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;color:var(--green-d);isolation:isolate}
-.duoc-book-cover::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.70),rgba(220,242,224,.36));z-index:-1}
-.duoc-book-emblem{display:flex;align-items:center;justify-content:center;width:58px;height:58px;border-radius:14px;border:1px solid rgba(46,125,50,.28);background:rgba(255,255,255,.85);box-shadow:0 6px 16px rgba(27,94,32,.14);font-size:28px;line-height:1;margin-bottom:8px}
-.duoc-book-kicker{font-size:11px;font-weight:900;letter-spacing:.75px;text-transform:uppercase}.duoc-book-year{font-size:12px;font-weight:800;opacity:.78;margin-top:3px}
-.duoc-card-content{display:flex;flex-direction:column;flex:1;min-width:0;overflow:hidden}.duoc-card .p-title{font-size:16px;color:var(--green-d);font-weight:800;margin:0 0 4px;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word}.duoc-card .card-info{margin-bottom:2px;flex:1}.duoc-card .p-info{margin:0 0 4px;font-size:12px;line-height:1.42;color:#52635a;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.duoc-card .p-info b{color:var(--green);font-weight:800}.duoc-open{display:flex;align-items:center;justify-content:center;gap:4px;width:100%;padding:7px;background:linear-gradient(135deg,#2e7d32,#388e3c);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;margin-top:auto;padding-top:7px;transition:.25s;font-family:inherit;flex-shrink:0}.duoc-open:hover{background:linear-gradient(135deg,#1b5e20,#2e7d32);transform:translateY(-1px);box-shadow:0 4px 12px rgba(46,125,50,.3)}
-mark{background:rgba(255,212,74,.52);padding:0 2px;border-radius:3px}.duoc-loading,.duoc-empty{grid-column:1/-1;background:var(--g-bg);border:1px dashed rgba(46,125,50,.35);border-radius:14px;padding:22px;color:#52635a;line-height:1.6}.duoc-sentinel{height:1px;grid-column:1/-1}.duoc-progress{grid-column:1/-1;min-height:38px;display:flex;align-items:center;justify-content:center;color:#557060;font-size:13px;font-weight:700}
-.duoc-footer{margin:28px 0 0;text-align:center}.duoc-footer-badge{display:inline-block;padding:8px 16px;border-radius:20px;background:var(--g-bg);border:1px solid var(--g-border);color:var(--green);font-weight:700;font-size:12px;box-shadow:0 4px 14px rgba(27,94,32,.08)}
-/* Modal: same proportions, typeface and accordions as the HDSD viewer on the drug-search page. */
-.duoc-modal{position:fixed;inset:0;z-index:10050;background:rgba(0,0,0,.75);padding:15px;display:none;align-items:center;justify-content:center;transform:translateZ(0);touch-action:none}.duoc-modal.show{display:flex}.duoc-modal-box{width:100%;max-width:820px;max-height:90vh;overflow-y:auto;padding:28px;position:relative;background:rgba(255,255,255,.96);border:1px solid #fff;border-radius:20px;box-shadow:0 25px 60px rgba(0,0,0,.2);animation:duocModalIn .45s cubic-bezier(.25,1,.5,1) forwards;transform:translateZ(0);touch-action:auto;color:#333;font-family:'Inter','Segoe UI',Roboto,Arial,sans-serif;font-size:15px;font-weight:400;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}@keyframes duocModalIn{0%{opacity:0;transform:translateY(40px) scale(.95)}100%{opacity:1;transform:translateY(0) scale(1)}}
-.duoc-close{position:absolute;top:4px;right:4px;font-size:30px;cursor:pointer;color:#d32f2f;font-weight:bold;transition:.2s;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;z-index:20;background:rgba(255,255,255,.85);box-shadow:0 2px 8px rgba(0,0,0,.1);flex-shrink:0;box-sizing:border-box;line-height:0;padding-bottom:2px;border:0}.duoc-close:hover{background:rgba(211,47,47,.10)}
-.duoc-modal-drug-header{display:flex;gap:20px;align-items:center;margin-bottom:20px;padding:18px 22px;border-radius:16px;background:linear-gradient(135deg,rgba(76,175,80,.15),rgba(46,125,50,.10));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(76,175,80,.25);box-shadow:0 4px 20px rgba(46,125,50,.10)}
-.duoc-modal-book{width:100px;height:100px;display:flex;align-items:center;justify-content:center;flex-direction:column;flex-shrink:0;background:#fff;border-radius:14px;padding:8px;border:1px solid rgba(76,175,80,.20);box-shadow:0 4px 15px rgba(0,0,0,.06);color:var(--green-d);text-align:center}.duoc-modal-book .duoc-book-emblem{width:48px;height:48px;font-size:23px;margin-bottom:5px}.duoc-modal-book .duoc-book-kicker{font-size:9px}.duoc-modal-book .duoc-book-year{font-size:10px}
-.duoc-modal-head{min-width:0;flex:1}.duoc-modal-badge{display:inline-block;padding:5px 10px;border-radius:10px;background:linear-gradient(135deg,#43a047,#2e7d32);color:#fff;font-size:11px;font-weight:900;letter-spacing:.65px}.duoc-modal-head h2{color:var(--green-d);font-size:22px;font-weight:900;margin:6px 0 4px;line-height:1.25}.duoc-modal-head p{margin:0;color:#476052;line-height:1.45;font-size:13px;font-weight:600}.duoc-modal-body{padding:0}
-.duoc-section{margin:0 0 8px;border-radius:10px;border:1px solid #e0e0e0;background:#fff;overflow:hidden;transition:.2s}.duoc-section[open]{box-shadow:0 2px 8px rgba(0,0,0,.04)}.duoc-section>summary{padding:13px 16px;font-weight:600;font-size:14px;letter-spacing:.5px;color:var(--green-d);cursor:pointer;outline:none;list-style:none;display:flex;align-items:center;gap:8px;transition:.2s;font-family:'Inter','Segoe UI',sans-serif;text-transform:none}.duoc-section>summary::-webkit-details-marker{display:none}.duoc-section>summary::before{content:'▸';font-size:14px;transition:.2s;color:var(--green-l)}.duoc-section[open]>summary::before{transform:rotate(90deg)}.duoc-section>summary:hover{background:rgba(46,125,50,.04)}.duoc-section-body{padding:14px 16px;font-size:16px;line-height:1.7;white-space:normal;border-top:1px solid #eee;background:#fafafa}.duoc-text{margin:0;overflow-wrap:anywhere}.duoc-paragraph{color:inherit;line-height:1.70;margin:0 0 12px;font-size:16px}.duoc-paragraph:last-child{margin-bottom:0}.duoc-subsections{margin:0;padding:0}.duoc-subsection{padding:14px 16px;font-size:16px;line-height:1.70;color:inherit;background:#fafafa;border-top:1px solid #eee}.duoc-subsection>b{display:block;color:var(--green);font-size:16px;font-weight:800;margin:0 0 7px}.duoc-table-figure{margin:14px 0;padding:12px;border:1px solid rgba(46,125,50,.28);border-radius:10px;background:#fff}.duoc-table-figure figcaption{margin:0 0 9px;color:var(--green);font-size:13px;font-weight:700}.duoc-table-image{display:block;width:100%;height:auto;max-width:100%;border:1px solid rgba(46,125,50,.3);border-radius:10px;background:#fff;box-shadow:0 4px 15px rgba(0,0,0,.1);margin:0 auto;cursor:zoom-in}.duoc-table-image-error-text{display:none;color:#a40000;font-size:13px;margin-top:8px}.duoc-table-figure.duoc-table-image-error .duoc-table-image-error-text{display:block}
-body.dark-mode{--surface:#07172e;--ink:#e7f3ed;--muted:#b5c9bc;--g-bg:rgba(11,29,56,.92);--g-bg-h:rgba(16,40,75,.95);--g-border:rgba(80,220,180,.27);background:linear-gradient(180deg,#06182b 0%,#0a1b34 100%)}body.dark-mode .duoc-header-main::before{background:linear-gradient(135deg,rgba(10,32,53,.97),rgba(12,42,44,.95));border-color:rgba(80,220,180,.22);box-shadow:0 12px 34px rgba(0,0,0,.28)}body.dark-mode .duoc-header-title,body.dark-mode .duoc-header-subtitle{color:#72ebbc}body.dark-mode .duoc-card{background:#0b1d38;border-color:rgba(80,220,180,.22);box-shadow:0 6px 16px rgba(0,0,0,.18)}body.dark-mode .duoc-card .img-wrap{background:linear-gradient(135deg,#112a4f,#0c223c);border-color:rgba(80,220,180,.34);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}body.dark-mode .duoc-book-cover::before{background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(80,220,180,.08))}body.dark-mode .duoc-book-emblem{background:#102646;border-color:rgba(80,220,180,.28);color:#72ebbc}body.dark-mode .duoc-card .p-title{color:#72ebbc}body.dark-mode .duoc-card .p-info{color:#bfd5c7}body.dark-mode .duoc-card .p-info b{color:#72e0aa}body.dark-mode .duoc-search-box{background:#07172e;color:#e7f3ed;border-color:rgba(80,220,180,.32)}body.dark-mode .duoc-search-box input{color:#72ebbc}body.dark-mode .duoc-search-box input::placeholder{color:#99cbb2}body.dark-mode .duoc-loading,body.dark-mode .duoc-empty,body.dark-mode .duoc-footer-badge{color:#bfd5c7}body.dark-mode .duoc-modal{background:rgba(0,5,15,.90)}body.dark-mode .duoc-modal-box{background:#07172e;border-color:#446;color:#e8f2ff}body.dark-mode .duoc-close{background:rgba(7,23,46,.85);color:#ff8a80}body.dark-mode .duoc-modal-drug-header{background:rgba(76,175,80,.16);border-color:rgba(80,220,180,.25)}body.dark-mode .duoc-modal-book{background:#102646;border-color:rgba(80,220,180,.28);color:#72e0aa}body.dark-mode .duoc-modal-head h2{color:#72e0aa}body.dark-mode .duoc-modal-head p{color:#bfd5c7}.dark-mode .duoc-section{background:#0b1d38;border-color:#293f69}.dark-mode .duoc-section>summary{background:#10284b;color:#72e0aa}.dark-mode .duoc-section[open]>summary{background:#173854}.dark-mode .duoc-section-body,.dark-mode .duoc-subsection{background:#0b1d38;border-top-color:#293f69;color:#d8e7f2}.dark-mode .duoc-subsection>b{color:#72e0aa}.dark-mode .duoc-table-figure{background:#102646;border-color:#61769a}.dark-mode .duoc-table-figure figcaption{color:#72e0aa}.dark-mode .duoc-table-image{border-color:#61769a;background:#fff}
-@media(max-width:1100px){.duoc-results{grid-template-columns:repeat(3,minmax(0,1fr))}.duoc-alphabet{max-width:calc(100% - 330px)}}
-@media(max-width:900px){.duoc-results{grid-template-columns:repeat(2,minmax(0,1fr))}.duoc-search-wrapper{flex-wrap:wrap}.duoc-count{order:0}.duoc-alphabet{order:3;max-width:100%;width:100%}.duoc-search-box{order:2;margin-left:auto}}
-@media(max-width:650px){.duoc-page{padding:0 13px 32px}.duoc-header-main{padding:19px 16px;margin-bottom:20px;border-radius:17px;gap:11px}.duoc-header-title{font-size:20px;display:block}.duoc-medplus-badge{font-size:15px;margin-right:5px}.duoc-zen-logo img{width:47px;height:47px}.duoc-header-subtitle{font-size:11px}.duoc-search-wrapper{gap:8px;margin-bottom:13px}.duoc-count{font-size:13px;padding:6px 10px}.duoc-search-box{max-width:100%;width:100%;height:44px;order:4}.duoc-search-box:focus-within{max-width:100%;transform:none}.duoc-abc-toggle{height:40px}.duoc-results{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.duoc-card{padding:10px}.duoc-card .img-wrap{height:110px;margin-bottom:8px}.duoc-book-emblem{width:44px;height:44px;font-size:21px;margin-bottom:5px}.duoc-book-kicker{font-size:9px}.duoc-book-year{font-size:10px}.duoc-card .p-title{font-size:14px}.duoc-card .p-info{font-size:11px}.duoc-open{font-size:12px;padding:7px 5px}.duoc-modal{padding:15px}.duoc-modal-box{max-height:85dvh;border-radius:20px;padding:14px}.duoc-close{top:4px;right:4px}.duoc-modal-drug-header{gap:12px;padding:14px 42px 14px 14px;margin-bottom:14px}.duoc-modal-book{width:64px;height:64px;padding:4px;border-radius:10px}.duoc-modal-book .duoc-book-emblem{width:34px;height:34px;font-size:17px;margin-bottom:3px}.duoc-modal-book .duoc-book-kicker{font-size:7px}.duoc-modal-book .duoc-book-year{display:none}.duoc-modal-head h2{font-size:19px}.duoc-modal-head p{font-size:12px}.duoc-section-body,.duoc-subsection{padding:12px;font-size:16px;line-height:1.65}.duoc-section>summary{padding:12px 13px}.duoc-paragraph{font-size:16px;line-height:1.65}.duoc-table-figure{padding:8px}}
 
+/* DARK MODE */
+body.dark-mode {
+  --color-bg:         #0a1810;
+  --color-surface:    #0e2018;
+  --color-surface-2:  #122518;
+  --color-border:     rgba(74,170,114,.18);
+  --color-border-strong: rgba(74,170,114,.32);
+  --color-text:       #dff0e6;
+  --color-text-mid:   #a8ccb7;
+  --color-text-muted: #7aaa8f;
+  --color-accent:     #4aaa72;
+  --color-accent-h:   #2e9158;
+  --color-accent-s:   #60bc85;
+  --shadow-xs: 0 1px 3px rgba(0,0,0,.20);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,.28);
+  --shadow-md: 0 6px 24px rgba(0,0,0,.36);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,.48);
+}
+
+/* ═══════════════════════════════
+   BASE RESET
+═══════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+body {
+  min-height: 100dvh;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.6;
+  transition: background var(--trans), color var(--trans);
+}
+button, input { font: inherit; color: inherit; cursor: pointer; }
+button { border: none; background: none; }
+img { display: block; max-width: 100%; height: auto; }
+mark {
+  background: rgba(255,204,0,.40);
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 3px;
+}
+
+/* ═══════════════════════════════
+   PAGE WRAPPER
+═══════════════════════════════ */
+.duoc-page {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 38px 20px 56px;
+}
+
+/* ═══════════════════════════════
+   HEADER — New design
+═══════════════════════════════ */
+.duoc-header-main {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 28px;
+  margin: 20px 0 28px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--rad-xl);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+
+/* Subtle background watermark */
+.duoc-header-main::after {
+  content: '';
+  position: absolute;
+  right: -20px; top: -20px;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(30,107,64,.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.duoc-header-brand {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: center;
+  min-width: 0;
+}
+
+
+
+/* Header text block */
+.duoc-header-content {
+  flex: 0 1 auto;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.duoc-header-eyebrow {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  opacity: .80;
+  margin-bottom: 3px;
+}
+
+.duoc-header-title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  color: var(--color-text);
+  line-height: 1.2;
+  margin: 0 0 4px;
+  text-align: center;
+}
+
+.duoc-header-title strong {
+  color: var(--color-accent);
+  font-style: italic;
+}
+
+.duoc-header-subtitle {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-weight: 400;
+  text-align: center;
+}
+
+/* Right side of header: badge + dark toggle */
+.duoc-header-right {
+  grid-column: 3;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.duoc-logo-btn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 9px;
+  transition: transform var(--trans), box-shadow var(--trans), filter var(--trans);
+}
+.duoc-logo-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+.duoc-logo-btn:active { transform: scale(.97); }
+.duoc-logo-svg {
+  width: 132px;
+  height: 40px;
+  border-radius: 9px;
+  box-shadow: 0 4px 14px rgba(46,125,50,.32), inset 0 1px 0 rgba(255,255,255,.12);
+  display: block;
+}
+
+
+
+/* ═══════════════════════════════
+   SEARCH TOOLBAR
+═══════════════════════════════ */
+.duoc-search-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: nowrap;
+}
+
+/* Count pill */
+.duoc-count {
+  background: var(--color-accent);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: var(--rad-full);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  white-space: nowrap;
+  order: 0;
+  margin-right: auto;
+  box-shadow: var(--shadow-xs);
+  letter-spacing: .01em;
+}
+
+/* ABC Toggle */
+.duoc-abc-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: var(--rad-md);
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  transition: background var(--trans), color var(--trans), border-color var(--trans), box-shadow var(--trans);
+  order: 2;
+  letter-spacing: .02em;
+}
+.duoc-abc-toggle svg { width: 16px; height: 16px; }
+.duoc-abc-toggle:hover {
+  background: var(--mp-50);
+  border-color: var(--color-accent);
+}
+.duoc-abc-toggle.active {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 3px 12px rgba(30,107,64,.28);
+}
+body.dark-mode .duoc-abc-toggle.active { background: var(--color-accent); }
+
+/* Alphabet bar */
+.duoc-alphabet {
+  display: none;
+  gap: 4px;
+  align-items: center;
+  order: 3;
+  animation: duocFade .22s ease;
+  max-width: calc(100% - 380px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+.duoc-alphabet.show { display: flex; }
+@keyframes duocFade {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.duoc-letter {
+  width: 30px; height: 30px;
+  flex: 0 0 30px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--rad-sm);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-accent);
+  transition: background var(--trans), color var(--trans), border-color var(--trans), box-shadow var(--trans);
+}
+.duoc-letter:first-child {
+  width: auto; flex-basis: auto; padding: 0 10px;
+  font-size: 12px; letter-spacing: .04em;
+}
+.duoc-letter:hover { background: var(--mp-50); border-color: var(--color-accent); }
+.duoc-letter.active {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(30,107,64,.30);
+}
+
+/* Search box */
+.duoc-search-box {
+  display: flex;
+  align-items: center;
+  padding: 0 4px 0 14px;
+  height: 40px;
+  max-width: 262px;
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--rad-md);
+  order: 5;
+  transition: max-width var(--trans), border-color var(--trans), box-shadow var(--trans), background var(--trans);
+}
+.duoc-search-box:focus-within {
+  max-width: 300px;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(46,125,50,.12);
+  background: var(--color-surface);
+}
+.duoc-search-box input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  font-weight: 500;
+  min-width: 0;
+}
+.duoc-search-box input::placeholder { color: var(--color-text-muted); font-weight: 400; }
+
+.duoc-search-icon-btn {
+  flex-shrink: 0;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--rad-sm);
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  transition: color var(--trans), background var(--trans);
+  cursor: pointer;
+}
+.duoc-search-icon-btn:hover { color: var(--color-accent); background: var(--mp-50); }
+.duoc-search-box:focus-within .duoc-search-icon-btn { color: var(--color-accent); }
+.duoc-search-icon-btn svg { width: 17px; height: 17px; pointer-events: none; }
+
+/* ═══════════════════════════════
+   TIP TEXT
+═══════════════════════════════ */
+.duoc-tip {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin: 0 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.duoc-tip svg { width: 13px; height: 13px; opacity: .6; }
+
+/* ═══════════════════════════════
+   RESULTS GRID
+═══════════════════════════════ */
+.duoc-results {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+/* ═══════════════════════════════
+   CARD
+═══════════════════════════════ */
+.duoc-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--rad-lg);
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(16px) scale(.97);
+  transition:
+    opacity .38s ease,
+    transform .38s cubic-bezier(.4,0,.2,1),
+    box-shadow .22s ease,
+    border-color .22s ease;
+  contain: content;
+}
+.duoc-card.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+.duoc-card:hover {
+  transform: translateY(-6px) scale(1.005);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-border-strong);
+  z-index: 2;
+}
+.duoc-card:active { transform: scale(.97) !important; transition: .08s; }
+
+/* Book cover area */
+.duoc-card .img-wrap {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+  background: linear-gradient(145deg, var(--mp-700), var(--mp-900));
+  flex-shrink: 0;
+}
+
+.duoc-book-cover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 12px;
+  color: rgba(255,255,255,.9);
+}
+
+/* Subtle crosshatch pattern on book covers */
+.duoc-book-cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(255,255,255,.025) 0px, rgba(255,255,255,.025) 1px, transparent 1px, transparent 16px),
+    repeating-linear-gradient(-45deg, rgba(255,255,255,.025) 0px, rgba(255,255,255,.025) 1px, transparent 1px, transparent 16px);
+  pointer-events: none;
+}
+
+.duoc-book-emblem {
+  width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--rad-md);
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.20);
+  font-size: 26px;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(4px);
+}
+
+.duoc-book-kicker {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  opacity: .80;
+  position: relative; z-index: 1;
+}
+.duoc-book-year {
+  font-size: 13px;
+  font-weight: 600;
+  opacity: .65;
+  margin-top: 2px;
+  position: relative; z-index: 1;
+}
+
+/* Card body */
+.duoc-card-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 14px;
+  min-width: 0;
+}
+
+.duoc-card .p-title {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 6px;
+  line-height: 1.35;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+}
+.duoc-card:hover .p-title { color: var(--color-accent); }
+
+.duoc-card .card-info { flex: 1; margin-bottom: 10px; }
+.duoc-card .p-info {
+  margin: 0 0 3px;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: var(--color-text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.duoc-card .p-info b { color: var(--color-accent); font-weight: 700; }
+
+/* CTA button */
+.duoc-open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--color-surface-2);
+  color: var(--color-accent);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--rad-sm);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  transition: background var(--trans), color var(--trans), border-color var(--trans), box-shadow var(--trans);
+  margin-top: auto;
+  flex-shrink: 0;
+}
+.duoc-open svg { width: 14px; height: 14px; }
+.duoc-open:hover {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(30,107,64,.28);
+}
+
+/* Dark mode card overrides */
+body.dark-mode .duoc-card {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+}
+body.dark-mode .duoc-card .img-wrap {
+  background: linear-gradient(145deg, #0c2e1c, #061408);
+}
+body.dark-mode .duoc-open {
+  background: rgba(74,170,114,.08);
+  border-color: var(--color-border-strong);
+  color: var(--color-accent);
+}
+body.dark-mode .duoc-open:hover {
+  background: var(--color-accent);
+  color: #0a1810;
+}
+
+/* ═══════════════════════════════
+   LOADING / EMPTY / PROGRESS
+═══════════════════════════════ */
+.duoc-loading, .duoc-empty {
+  grid-column: 1 / -1;
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--rad-lg);
+  padding: 28px;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  font-size: var(--text-sm);
+}
+.duoc-sentinel { height: 1px; grid-column: 1 / -1; }
+.duoc-progress {
+  grid-column: 1 / -1;
+  min-height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  gap: 6px;
+}
+
+/* ═══════════════════════════════
+   FOOTER
+═══════════════════════════════ */
+.duoc-footer { margin: 32px 0 0; text-align: center; }
+.duoc-footer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: var(--rad-full);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  box-shadow: var(--shadow-xs);
+}
+.duoc-footer-badge svg { width: 14px; height: 14px; color: var(--color-accent); }
+
+/* ═══════════════════════════════
+   MODAL
+═══════════════════════════════ */
+.duoc-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10050;
+  background: rgba(5,15,10,.72);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 16px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+}
+.duoc-modal.show { display: flex; }
+
+.duoc-modal-box {
+  width: 100%;
+  max-width: 840px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 32px;
+  position: relative;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--rad-xl);
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,.06);
+  animation: duocModalIn .38s cubic-bezier(.25,1,.5,1) forwards;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  -webkit-font-smoothing: antialiased;
+  touch-action: auto;
+}
+@keyframes duocModalIn {
+  0%   { opacity: 0; transform: translateY(32px) scale(.96); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.duoc-close {
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--rad-md);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 20px;
+  line-height: 1;
+  z-index: 20;
+  transition: background var(--trans), color var(--trans), border-color var(--trans);
+}
+.duoc-close:hover {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: rgba(220,38,38,.25);
+}
+
+/* Modal drug header */
+.duoc-modal-drug-header {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 22px;
+  padding: 18px 22px;
+  border-radius: var(--rad-lg);
+  background: linear-gradient(135deg, var(--mp-50), #ecf7f2);
+  border: 1px solid var(--color-border-strong);
+}
+body.dark-mode .duoc-modal-drug-header {
+  background: linear-gradient(135deg, rgba(74,170,114,.10), rgba(30,107,64,.08));
+}
+
+.duoc-modal-book {
+  width: 88px; height: 88px;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; flex-shrink: 0;
+  background: linear-gradient(145deg, var(--mp-700), var(--mp-900));
+  border-radius: var(--rad-lg);
+  color: rgba(255,255,255,.9);
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(13,51,32,.25);
+}
+.duoc-modal-book .duoc-book-emblem {
+  width: 42px; height: 42px;
+  font-size: 21px; margin-bottom: 4px;
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.18);
+}
+.duoc-modal-book .duoc-book-kicker { font-size: 8px; }
+.duoc-modal-book .duoc-book-year   { font-size: 9px; }
+
+.duoc-modal-head { min-width: 0; flex: 1; }
+.duoc-modal-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--rad-sm);
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+.duoc-modal-head h2 {
+  font-family: var(--font-display);
+  color: var(--color-accent);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  margin: 7px 0 4px;
+  line-height: 1.2;
+}
+.duoc-modal-head p { margin: 0; color: var(--color-text-muted); font-size: var(--text-xs); }
+
+.duoc-modal-body { padding: 0; }
+
+/* Modal sections (accordions) */
+.duoc-section {
+  border: 1px solid var(--color-border);
+  border-radius: var(--rad-md);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.duoc-section > summary {
+  padding: 13px 18px;
+  background: var(--color-surface-2);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background var(--trans), color var(--trans);
+}
+.duoc-section > summary::after {
+  content: '';
+  width: 18px; height: 18px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231e6b40' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: transform .22s ease;
+  flex-shrink: 0;
+}
+.duoc-section[open] > summary::after { transform: rotate(180deg); }
+.duoc-section > summary::-webkit-details-marker { display: none; }
+.duoc-section > summary:hover { background: var(--mp-50); color: var(--color-accent); }
+.duoc-section[open] > summary { background: var(--mp-50); color: var(--color-accent); }
+
+.duoc-section-body, .duoc-subsection {
+  padding: 16px 18px;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-size: var(--text-base);
+  line-height: 1.75;
+  color: var(--color-text-mid);
+}
+.duoc-subsection { border-top: 1px dashed var(--color-border); }
+.duoc-subsection > b {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-accent);
+  margin-bottom: 6px;
+}
+.duoc-paragraph { margin: 0 0 10px; }
+.duoc-paragraph:last-child { margin-bottom: 0; }
+
+/* Tables */
+.duoc-table-figure {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--rad-md);
+  padding: 12px;
+  margin: 14px 0;
+  overflow: hidden;
+}
+.duoc-table-figure figcaption {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-accent);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.duoc-table-image {
+  max-width: 100%;
+  border-radius: var(--rad-sm);
+  border: 1px solid var(--color-border);
+  background: #fff;
+}
+.duoc-table-figure.duoc-table-image-error .duoc-table-image-error-text {
+  display: block;
+  padding: 10px;
+  color: #dc2626;
+  font-size: var(--text-xs);
+}
+.duoc-table-image-error-text { display: none; }
+
+/* Dark modal */
+body.dark-mode .duoc-modal-box {
+  background: var(--color-surface);
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+body.dark-mode .duoc-close:hover { background: rgba(220,38,38,.15); color: #f87171; }
+body.dark-mode .duoc-section > summary { background: rgba(255,255,255,.03); }
+body.dark-mode .duoc-section[open] > summary,
+body.dark-mode .duoc-section > summary:hover {
+  background: rgba(74,170,114,.08);
+  color: var(--color-accent);
+}
+body.dark-mode .duoc-section > summary::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234aaa72' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+body.dark-mode .duoc-section-body,
+body.dark-mode .duoc-subsection { background: var(--color-surface); color: var(--color-text-mid); }
+body.dark-mode .duoc-table-figure { background: rgba(74,170,114,.05); border-color: var(--color-border); }
+body.dark-mode .duoc-table-image { background: #fff; }
+body.dark-mode .duoc-modal-head h2 { color: var(--color-accent); }
+
+/* ═══════════════════════════════
+   RESPONSIVE
+═══════════════════════════════ */
+@media (max-width: 1100px) {
+  .duoc-results { grid-template-columns: repeat(4, 1fr); }
+  .duoc-alphabet { max-width: calc(100% - 340px); }
+}
+@media (max-width: 900px) {
+  .duoc-results { grid-template-columns: repeat(3, 1fr); }
+  .duoc-search-wrapper { flex-wrap: wrap; }
+  .duoc-count  { order: 0; }
+  .duoc-abc-toggle { order: 1; }
+  .duoc-search-box { order: 2; }
+  .duoc-alphabet { order: 3; max-width: 100%; width: 100%; }
+}
+@media (max-width: 650px) {
+  .duoc-page { padding: 44px 12px 32px; }
+  .duoc-header-main {
+    flex-wrap: wrap;
+    padding: 16px 18px 16px 22px;
+    margin: 12px 0 20px;
+    gap: 14px;
+  }
+  .duoc-header-right { width: 100%; justify-content: flex-end; }
+  .duoc-logo-svg { width: 108px; height: 31px; }
+  .duoc-header-title { font-size: clamp(1rem, 4vw, 1.25rem); }
+  .duoc-header-subtitle { font-size: 13px; }
+  .duoc-results { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .duoc-card .img-wrap { height: 110px; }
+  .duoc-card-content { padding: 10px; }
+  .duoc-card .p-title { font-size: var(--text-xs); }
+  .duoc-card .p-info  { font-size: 13px; }
+  .duoc-open { font-size: 13px; padding: 6px 8px; }
+  .duoc-search-box { max-width: 100%; width: 100%; order: 4; }
+  .duoc-search-box:focus-within { max-width: 100%; transform: none; }
+  .duoc-abc-toggle { height: 38px; font-size: var(--text-xs); }
+  .duoc-modal { padding: 10px; }
+  .duoc-modal-box { max-height: 88dvh; padding: 18px; border-radius: var(--rad-xl); }
+  .duoc-modal-drug-header { flex-direction: column; text-align: center; padding: 16px; }
+  .duoc-modal-book { width: 70px; height: 70px; }
+  .duoc-modal-head h2 { font-size: var(--text-xl); }
+  .duoc-section > summary { padding: 11px 14px; font-size: var(--text-xs); }
+  .duoc-section-body, .duoc-subsection { padding: 12px 14px; font-size: 17px; }
+  .duoc-paragraph { font-size: 17px; }
+}
 </style>
 </head>
 <body>
-<main class="duoc-page">
-  <header class="duoc-header-main">
-    <div class="duoc-zen-logo">
-      <img src="/icons/medplus-logo.webp" alt="MedPlus Logo" onerror="this.onerror=null;this.src='/icons/medplus-logo-fallback.webp'">
+
+<div class="duoc-page">
+
+  <!-- ═══════ HEADER ═══════ -->
+  <header class="duoc-header-main" aria-label="Trang tra cứu Dược thư Quốc gia Việt Nam">
+    <!-- Logo MedPlus = nút toggle sáng/tối -->
+    <div class="duoc-header-brand">
+      <button class="duoc-logo-btn" id="duoc-theme-btn" type="button" aria-label="Chuyển chế độ tối/sáng" title="Chuyển chế độ sáng / tối">
+      <svg class="duoc-logo-svg" viewBox="0 0 132 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lgGrad" x1="0" y1="0" x2="132" y2="40" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#4caf50"/>
+            <stop offset="100%" stop-color="#1b5e20"/>
+          </linearGradient>
+          <pattern id="logoGrid" width="12" height="12" patternUnits="userSpaceOnUse">
+            <path d="M0 0H12M0 0V12" stroke="rgba(255,255,255,0.11)" stroke-width="0.8"/>
+            <circle cx="6" cy="6" r="0.8" fill="rgba(255,255,255,0.12)"/>
+          </pattern>
+          <pattern id="logoLeaf" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M6 14c4-7 9-7 11-4-3 1-4 4-6 8-3-1-4-2-5-4z" fill="rgba(255,255,255,0.06)"/>
+          </pattern>
+        </defs>
+        <rect width="132" height="40" rx="8" fill="url(#lgGrad)"/>
+        <rect width="132" height="40" rx="8" fill="url(#logoGrid)" opacity="0.38"/>
+        <rect width="132" height="40" rx="8" fill="url(#logoLeaf)" opacity="0.9"/>
+        <path d="M0 29 C16 23 26 31 40 25 C56 18 67 28 80 22 C95 16 106 20 132 12" stroke="rgba(255,255,255,0.08)" stroke-width="1.1" fill="none"/>
+        <rect x="8" y="12.8" width="4" height="14.4" rx="2" fill="white" opacity="0.95"/>
+        <rect x="4" y="16.8" width="12" height="4" rx="2" fill="white" opacity="0.95"/>
+        <path d="M17 7.2 Q23 4.6 21 12.5 Q14.2 11.6 17 7.2Z" fill="rgba(180,255,200,0.33)"/>
+        <line x1="24" y1="9.2" x2="24" y2="31.2" stroke="white" stroke-width="0.8" opacity="0.25"/>
+        <text x="30" y="25.2" font-family="'DM Sans','Segoe UI',system-ui,sans-serif" font-size="15.2" font-weight="800" fill="white" opacity="0.97" letter-spacing="-0.22">Med</text>
+        <text x="59" y="25.2" font-family="'DM Sans','Segoe UI',system-ui,sans-serif" font-size="15.2" font-weight="400" fill="white" opacity="0.80" letter-spacing="-0.22">Plus</text>
+        <line x1="95" y1="9.2" x2="95" y2="31.2" stroke="white" stroke-width="0.8" opacity="0.28"/>
+        <g id="logo-theme-icon" transform="translate(103,10.5)">
+          <path d="M11 2.5a8 8 0 1 0 8 9.5A6 6 0 0 1 11 2.5z" fill="white" opacity="0.85"/>
+        </g>
+      </svg>
+    </button>
+
+      </button>
+
+      <!-- Title block -->
+      <div class="duoc-header-content">
+      
+      <h1 class="duoc-header-title"><strong>Dược thư</strong> Quốc gia Việt Nam</h1>
+      <p class="duoc-header-subtitle">Lần xuất bản thứ ba – Năm 2023</p>
+      </div>
     </div>
-    <div class="duoc-header-content">
-      <h1 class="duoc-header-title"><span class="duoc-medplus-badge">DƯỢC THƯ</span> TRA CỨU CHUYÊN LUẬN</h1>
-      <p class="duoc-header-subtitle">Khoa Dược — BVĐK tỉnh Tuyên Quang</p>
+
+    <!-- Right side -->
+    <div class="duoc-header-right">
     </div>
   </header>
 
+  <!-- ═══════ SEARCH TOOLBAR ═══════ -->
   <div class="duoc-search-wrapper" aria-label="Công cụ tra cứu Dược thư">
-    <div class="duoc-count" id="duoc-count">Đang tải...</div>
-    <button class="duoc-abc-toggle" id="duoc-abc-toggle" type="button" aria-expanded="false" title="Lọc theo vần"><span>A<small>bc</small></span></button>
+    <span class="duoc-count" id="duoc-count" aria-live="polite">Đang tải...</span>
+
+    <button class="duoc-abc-toggle" id="duoc-abc-toggle" type="button"
+            aria-expanded="false" aria-controls="duoc-alphabet" title="Lọc theo chữ cái">
+      A-Z
+    </button>
+
     <div class="duoc-alphabet" id="duoc-alphabet" aria-label="Lọc chuyên luận theo vần"></div>
-    <div class="duoc-search-box">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.7-3.7"></path></svg>
-      <input id="duoc-q" type="search" autocomplete="off" placeholder="Tìm tên hoạt chất hoặc tên khác..." aria-label="Tìm chuyên luận Dược thư">
-      <button class="duoc-clear" id="duoc-clear" type="button" aria-label="Xóa từ khóa">×</button>
+
+    <div class="duoc-search-box" role="search">
+      <input id="duoc-q" type="search" autocomplete="off"
+             placeholder="Tìm tên hoạt chất hoặc tên khác..."
+             aria-label="Tìm chuyên luận Dược thư">
+      <button class="duoc-search-icon-btn" id="duoc-clear" type="button" aria-label="Tìm kiếm">
+        <svg id="duoc-search-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <svg id="duoc-clear-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="display:none">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
     </div>
   </div>
 
-  <p class="duoc-tip">Tìm theo tên tiếng Việt, tiếng Anh hoặc tên đồng nghĩa. Dữ liệu 743 chuyên luận được tải sẵn và hiển thị dần khi cuộn.</p>
-  <section class="duoc-results" id="duoc-results"><div class="duoc-loading">Đang tải dữ liệu tra cứu...</div></section>
-  <footer class="duoc-footer"><span class="duoc-footer-badge">📚 Dược thư Quốc gia Việt Nam — Lần xuất bản thứ ba, 2023</span></footer>
-</main>
-<div class="duoc-modal" id="duoc-modal" role="dialog" aria-modal="true" aria-label="Chuyên luận Dược thư"><div class="duoc-modal-box" id="duoc-modal-box"></div></div>
+
+  <!-- ═══════ RESULTS ═══════ -->
+  <main>
+    <div class="duoc-results" id="duoc-results" role="list" aria-label="Danh sách chuyên luận">
+      <div class="duoc-loading">Đang tải dữ liệu tra cứu...</div>
+    </div>
+  </main>
+
+  <!-- ═══════ FOOTER ═══════ -->
+  <footer class="duoc-footer">
+    <div class="duoc-footer-badge">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M8 1.5L2 5v4c0 3 2.7 5.5 6 6 3.3-.5 6-3 6-6V5L8 1.5z"/>
+        <path d="M5.5 8l1.8 1.8L10.5 6"/>
+      </svg>
+      MedPlus · Dược thư Quốc gia Việt Nam · Lần xuất bản 2023
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════ MODAL ═══════ -->
+<div class="duoc-modal" id="duoc-modal" role="dialog" aria-modal="true" aria-label="Chuyên luận Dược thư">
+  <div class="duoc-modal-box" id="duoc-modal-box"></div>
+</div>
+
+<script>
+/* Theme toggle — logo button */
+(function(){
+  const btn = document.getElementById('duoc-theme-btn');
+  const iconG = document.getElementById('logo-theme-icon');
+  /* SVG icon shapes bên trong logo (18×18 viewBox, offset translate(88,14)) */
+  const MOON_PATH = '<path d="M11 2.5a8 8 0 1 0 8 9.5A6 6 0 0 1 11 2.5z" fill="white" opacity="0.70"/>';
+  const SUN_PATH  = '<circle cx="9" cy="9" r="4" fill="white" opacity="0.85"/>'
+    + '<line x1="9" y1="1" x2="9" y2="3" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.70"/>'
+    + '<line x1="9" y1="15" x2="9" y2="17" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.70"/>'
+    + '<line x1="1" y1="9" x2="3" y2="9" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.70"/>'
+    + '<line x1="15" y1="9" x2="17" y2="9" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.70"/>'
+    + '<line x1="3.2" y1="3.2" x2="4.6" y2="4.6" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.70"/>'
+    + '<line x1="13.4" y1="13.4" x2="14.8" y2="14.8" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.70"/>'
+    + '<line x1="14.8" y1="3.2" x2="13.4" y2="4.6" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.70"/>'
+    + '<line x1="4.6" y1="13.4" x2="3.2" y2="14.8" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.70"/>';
+  function setTheme(dark){
+    document.body.classList.toggle('dark-mode', dark);
+    if(iconG) iconG.innerHTML = dark ? SUN_PATH : MOON_PATH;
+    if(btn) btn.setAttribute('aria-label', dark ? 'Chuyển sang chế độ sáng' : 'Chuyển sang chế độ tối');
+  }
+  function syncParent(){
+    try {
+      const pb = window.parent && window.parent.document && window.parent.document.body;
+      if(!pb) return false;
+      setTheme(pb.classList.contains('dark-mode'));
+      new MutationObserver(function(){setTheme(pb.classList.contains('dark-mode'));})
+        .observe(pb, {attributes:true, attributeFilter:['class']});
+      return true;
+    } catch(e){ return false; }
+  }
+  if(!syncParent()){
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setTheme(prefersDark);
+  }
+  if(btn) btn.addEventListener('click', function(){
+    setTheme(!document.body.classList.contains('dark-mode'));
+  });
+})();
+</script>
+
 <script>
 (function(){
 'use strict';
@@ -103,9 +1070,6 @@ let indexRecords=[],recordCache=new Map(),filteredResults=[],visibleCount=0,acti
 const q=document.getElementById('duoc-q'),clear=document.getElementById('duoc-clear'),list=document.getElementById('duoc-results'),count=document.getElementById('duoc-count'),modal=document.getElementById('duoc-modal'),modalBox=document.getElementById('duoc-modal-box'),abcToggle=document.getElementById('duoc-abc-toggle'),alphabet=document.getElementById('duoc-alphabet');
 function norm(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase().replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim()}
 function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
-function isWordPhrase(h,n){return (' '+h+' ').indexOf(' '+n+' ')>=0}
-/* v8.1: score only the text the user typed against a record's title/aliases.
-   Do not compare a record title with its own alias: that made every record match every search. */
 function fieldScore(field,query,weight){
   if(!field)return 0;
   if(field===query)return weight+900000+query.length;
@@ -128,19 +1092,41 @@ function score(r,query){
   aliases.forEach(function(alias){best=Math.max(best,fieldScore(alias,query,100000))});
   return best;
 }
-function initialOf(r){const n=norm(r.title);return n? n.charAt(0).toUpperCase():''}
+function initialOf(r){const n=norm(r.title);return n?n.charAt(0).toUpperCase():''}
 function highlight(v,query){const t=esc(v);if(!query)return t;const words=Array.from(new Set(query.split(' ').filter(x=>x.length>=3))).sort((a,b)=>b.length-a.length);if(!words.length)return t;const re=new RegExp('('+words.map(x=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','ig');return t.replace(re,'<mark>$1</mark>')}
-function cardHtml(r,query){const p=(r.source&&r.source.printed_pages)||{};const page=p.start?('tr. '+p.start+(p.end&&p.end!==p.start?'–'+p.end:'')):'';const aliases=(r.search_aliases||r.aliases||[]).slice(0,5).join(' · ')||'Chuyên luận thuốc';return '<article class="duoc-card" data-duoc-id="'+esc(r.id)+'" tabindex="0" role="button" aria-label="Xem chuyên luận '+esc(r.title)+'"><div class="img-wrap duoc-book-cover"><span class="duoc-book-emblem">📚</span><span class="duoc-book-kicker">Dược thư Quốc gia</span><span class="duoc-book-year">Lần xuất bản 2023</span></div><div class="duoc-card-content"><h2 class="p-title">'+highlight(r.title,query)+'</h2><div class="card-info"><p class="p-info"><b>Tên khác:</b> '+highlight(aliases,query)+'</p><p class="p-info"><b>Nguồn:</b> '+esc(page||'Dược thư Quốc gia Việt Nam')+'</p></div><button type="button" class="duoc-open" data-duoc-id="'+esc(r.id)+'">📚 XEM CHUYÊN LUẬN</button></div></article>'}
+function cardHtml(r,query){
+  const p=(r.source&&r.source.printed_pages)||{};
+  const page=p.start?('tr. '+p.start+(p.end&&p.end!==p.start?'–'+p.end:'')):'';
+  const aliases=(r.search_aliases||r.aliases||[]).slice(0,5).join(' · ')||'Chuyên luận thuốc';
+  return '<article class="duoc-card" data-duoc-id="'+esc(r.id)+'" tabindex="0" role="button" aria-label="Xem chuyên luận '+esc(r.title)+'">'
+    +'<div class="img-wrap duoc-book-cover">'
+    +'<span class="duoc-book-emblem">📚</span>'
+    +'<span class="duoc-book-kicker">Dược thư Quốc gia</span>'
+    +'<span class="duoc-book-year">Lần xuất bản 2023</span>'
+    +'</div>'
+    +'<div class="duoc-card-content">'
+    +'<h2 class="p-title">'+highlight(r.title,query)+'</h2>'
+    +'<div class="card-info">'
+    +'<p class="p-info"><b>Tên khác:</b> '+highlight(aliases,query)+'</p>'
+    +'<p class="p-info"><b>Nguồn:</b> '+esc(page||'Dược thư Quốc gia Việt Nam')+'</p>'
+    +'</div>'
+    +'<button type="button" class="duoc-open" data-duoc-id="'+esc(r.id)+'">'
+    +'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 4h12M2 8h12M2 12h7"/><path d="M11 10l4 2-4 2V10z"/></svg>'
+    +'XEM CHUYÊN LUẬN'
+    +'</button>'
+    +'</div>'
+    +'</article>';
+}
 function installRevealObserver(){if(revealObserver)revealObserver.disconnect();revealObserver=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-visible');revealObserver.unobserve(e.target)}})},{root:null,rootMargin:'0px 0px -8% 0px',threshold:.02});list.querySelectorAll('.duoc-card:not(.is-visible)').forEach(function(card){revealObserver.observe(card)})}
 function installLoadObserver(){if(loadObserver)loadObserver.disconnect();const sentinel=list.querySelector('.duoc-sentinel');if(!sentinel)return;loadObserver=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)appendNextPage()})},{root:null,rootMargin:'420px 0px',threshold:0});loadObserver.observe(sentinel)}
 function updateProgress(){const p=list.querySelector('.duoc-progress');if(p)p.textContent=visibleCount<filteredResults.length?('Đã hiển thị '+visibleCount+'/'+filteredResults.length+' chuyên luận · Cuộn xuống để tải thêm'):'Đã hiển thị đủ '+filteredResults.length+' chuyên luận'}
 function appendNextPage(){if(appendBusy||visibleCount>=filteredResults.length)return;appendBusy=true;const next=filteredResults.slice(visibleCount,visibleCount+PAGE_SIZE);const sentinel=list.querySelector('.duoc-sentinel');if(sentinel)sentinel.remove();const progress=list.querySelector('.duoc-progress');if(progress)progress.remove();const holder=document.createElement('div');holder.innerHTML=next.map(function(r){return cardHtml(r,lastQuery)}).join('');while(holder.firstElementChild)list.appendChild(holder.firstElementChild);visibleCount+=next.length;const meta=document.createElement('div');meta.className='duoc-progress';list.appendChild(meta);const nextSentinel=document.createElement('div');nextSentinel.className='duoc-sentinel';list.appendChild(nextSentinel);updateProgress();installRevealObserver();installLoadObserver();appendBusy=false}
 function renderResults(){if(!filteredResults.length){list.innerHTML='<div class="duoc-empty">Không tìm thấy chuyên luận phù hợp. Hãy thử tên tiếng Anh, tiếng Việt hoặc một tên đồng nghĩa của hoạt chất.</div>';return}visibleCount=0;list.innerHTML='';appendNextPage()}
-function runSearch(){const query=norm(q.value);lastQuery=query;clear.classList.toggle('show',!!query);const found=indexRecords.map(function(r){return {r:r,s:score(r,query)}}).filter(function(x){return x.s>0 && (!activeLetter || initialOf(x.r)===activeLetter)}).sort(function(a,b){return b.s-a.s||String(a.r.title).localeCompare(String(b.r.title),'vi')}).map(function(x){return x.r});filteredResults=found;const label=activeLetter?(' · Vần '+activeLetter):'';count.textContent=query?('Tìm thấy '+found.length+' chuyên luận'+label):('Hiển thị '+found.length+' trong tổng số '+indexRecords.length+' chuyên luận'+label);renderResults()}
-function drawAlphabet(){alphabet.innerHTML='<button class="duoc-letter active" type="button" data-letter="">TẤT CẢ</button>'+LETTERS.map(function(l){return '<button class="duoc-letter" type="button" data-letter="'+l+'">'+l+'</button>'}).join('');alphabet.addEventListener('click',function(e){const b=e.target.closest('[data-letter]');if(!b)return;activeLetter=b.dataset.letter||'';alphabet.querySelectorAll('.duoc-letter').forEach(function(x){x.classList.toggle('active',x===b)});runSearch()})}
+function runSearch(){const query=norm(q.value);lastQuery=query;var _sb=document.getElementById('duoc-search-svg'),_cb=document.getElementById('duoc-clear-svg');if(_sb&&_cb){_sb.style.display=query?'none':'';_cb.style.display=query?'':'none';}const found=indexRecords.map(function(r){return{r:r,s:score(r,query)}}).filter(function(x){return x.s>0&&(!activeLetter||initialOf(x.r)===activeLetter)}).sort(function(a,b){return b.s-a.s||String(a.r.title).localeCompare(String(b.r.title),'vi')}).map(function(x){return x.r});filteredResults=found;const label=activeLetter?(' · Vần '+activeLetter):'';count.textContent=found.length+' chuyên luận'+label;renderResults()}
+function drawAlphabet(){alphabet.innerHTML=LETTERS.map(function(l){return '<button class="duoc-letter" type="button" data-letter="'+l+'">'+l+'</button>'}).join('');alphabet.addEventListener('click',function(e){const b=e.target.closest('[data-letter]');if(!b)return;const letter=b.dataset.letter||'';if(activeLetter===letter){activeLetter='';b.classList.remove('active');alphabet.classList.remove('show');abcToggle.classList.remove('active');abcToggle.setAttribute('aria-expanded','false')}else{activeLetter=letter;alphabet.querySelectorAll('.duoc-letter').forEach(function(x){x.classList.remove('active')});b.classList.add('active');}runSearch()})}
 function firstAlphabetic(v){const m=String(v||'').match(/[A-Za-zÀ-ỹ]/u);return m?m[0]:''}
 function isTableFootnote(v){return /^(?:[a-z]\.|\(\*+\)|\[\*+\])\s*/iu.test(String(v||'').trim())}
-function endsSentence(v){let t=String(v||'').trim();while(t&&/[\"'”’»\)\]]/.test(t.charAt(t.length-1)))t=t.slice(0,-1).trim();return/[.!?…]$/.test(t)}
+function endsSentence(v){let t=String(v||'').trim();while(t&&/[\"'"'»\)\]]/.test(t.charAt(t.length-1)))t=t.slice(0,-1).trim();return/[.!?…]$/.test(t)}
 function splitParagraphs(v){
   let text=String(v==null?'':v).replace(/\r/g,'').replace(/[ \t]+\n/g,'\n').replace(/\n[ \t]+/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
   if(!text)return[];
@@ -155,16 +1141,24 @@ function splitParagraphs(v){
   });
   return out
 }
-
 function renderText(v){return splitParagraphs(v).map(function(p){return '<p class="duoc-paragraph">'+esc(p)+'</p>'}).join('')}
 async function getRecord(id){if(recordCache.has(id))return recordCache.get(id);const res=await fetch(DATA_BASE+encodeURIComponent(id)+'.json',{cache:'force-cache'});if(!res.ok)throw new Error('Không tải được chuyên luận');const rec=await res.json();recordCache.set(id,rec);return rec}
-function findTable(rec,id){return (rec.tables||[]).find(function(t){return t&&t.id===id})||null}function printedPage(rec,t){const pdf=(rec.source||{}).pdf_pages||{},printed=(rec.source||{}).printed_pages||{},n=Number(t&&t.source_pdf_page);return Number.isFinite(n)&&Number.isFinite(Number(pdf.start))&&Number.isFinite(Number(printed.start))?Number(printed.start)+(n-Number(pdf.start)):(n||'')}function assetUrl(path){const raw=String(path||'').replace(/\\/g,'/').replace(/^\.\//,'');try{return new URL(raw,document.baseURI).href}catch(e){return encodeURI(raw)}}function renderTable(rec,t){if(!t||!t.image_path)return '';const src=assetUrl(t.image_path);return '<figure class="duoc-table-figure" data-duoc-table-id="'+esc(t.id||'')+'"><figcaption><b>Bảng gốc từ Dược thư</b>'+(printedPage(rec,t)?' - tr. '+esc(printedPage(rec,t)):'')+'</figcaption><img class="duoc-table-image" loading="lazy" decoding="async" alt="Bảng gốc từ Dược thư" src="'+esc(src)+'" onerror="var f=this.closest(\'figure\');if(f)f.classList.add(\'duoc-table-image-error\');this.remove();"><div class="duoc-table-image-error-text">Không tải được ảnh bảng. Hãy kiểm tra thư mục duoc-thu-assets.</div></figure>'}
+function findTable(rec,id){return(rec.tables||[]).find(function(t){return t&&t.id===id})||null}
+function printedPage(rec,t){const pdf=(rec.source||{}).pdf_pages||{},printed=(rec.source||{}).printed_pages||{},n=Number(t&&t.source_pdf_page);return Number.isFinite(n)&&Number.isFinite(Number(pdf.start))&&Number.isFinite(Number(printed.start))?Number(printed.start)+(n-Number(pdf.start)):(n||'')}
+function assetUrl(path){const raw=String(path||'').replace(/\\/g,'/').replace(/^\.\//,'');try{return new URL(raw,document.baseURI).href}catch(e){return encodeURI(raw)}}
+function renderTable(rec,t){if(!t||!t.image_path)return '';const src=assetUrl(t.image_path);return '<figure class="duoc-table-figure" data-duoc-table-id="'+esc(t.id||'')+'"><figcaption><b>Bảng gốc từ Dược thư</b>'+(printedPage(rec,t)?' - tr. '+esc(printedPage(rec,t)):'')+'</figcaption><img class="duoc-table-image" loading="lazy" decoding="async" alt="Bảng gốc từ Dược thư" src="'+esc(src)+'" onerror="var f=this.closest(\'figure\');if(f)f.classList.add(\'duoc-table-image-error\');this.remove();"><div class="duoc-table-image-error-text">Không tải được ảnh bảng. Hãy kiểm tra thư mục duoc-thu-assets.</div></figure>'}
 function renderNode(rec,node){if(!node)return '';const blocks=Array.isArray(node.blocks)&&node.blocks.length?node.blocks:(String(node.content||'').trim()?[{type:'text',text:String(node.content||'')}]:[]);return blocks.map(function(b){if(!b)return '';if(b.type==='table')return renderTable(rec,findTable(rec,b.table_id));if(b.type==='text')return '<div class="duoc-text">'+renderText(b.text||'')+'</div>';return ''}).join('')}
 function renderRecord(rec){const source=rec.source||{},p=source.printed_pages||{},pages=p.start?('tr. '+p.start+(p.end&&p.end!==p.start?'–'+p.end:'')):'trang chưa xác định';let h='<button type="button" class="duoc-close" aria-label="Đóng">×</button><div class="duoc-modal-drug-header"><div class="duoc-modal-book"><span class="duoc-book-emblem">📚</span><span class="duoc-book-kicker">Dược thư</span><span class="duoc-book-year">2023</span></div><div class="duoc-modal-head"><span class="duoc-modal-badge">DƯỢC THƯ QUỐC GIA</span><h2>'+esc(rec.title)+'</h2><p>'+esc((source.book||'Dược thư Quốc gia Việt Nam')+', '+(source.edition||'2023')+', '+pages+'.')+'</p></div></div><div class="duoc-modal-body">';(rec.sections||[]).forEach(function(sec,i){const parent=renderNode(rec,sec),children=sec.render_mode==='children_only'&&Array.isArray(sec.subsections)&&sec.subsections.length;h+='<details class="duoc-section"'+(i===0?' open':'')+'><summary>'+esc(sec.title)+'</summary>';if(parent)h+='<div class="duoc-section-body">'+parent+'</div>';if(children){h+='<div class="duoc-subsections">';sec.subsections.forEach(function(sub){h+='<div class="duoc-subsection"><b>'+esc(sub.title)+'</b>'+renderNode(rec,sub)+'</div>'});h+='</div>'}h+='</details>'});return h+'</div>'}
-async function openRecord(id){try{modalBox.innerHTML='<div class="duoc-loading">Đang tải chuyên luận...</div>';modal.classList.add('show');const rec=await getRecord(id);modalBox.innerHTML=renderRecord(rec);modalBox.querySelector('.duoc-close').addEventListener('click',closeModal)}catch(e){modalBox.innerHTML='<button type="button" class="duoc-close" aria-label="Đóng">×</button><div class="duoc-empty">Không tải được chuyên luận. Hãy kiểm tra thư mục <b>duoc-thu-data</b> và thử lại.</div>';modalBox.querySelector('.duoc-close').addEventListener('click',closeModal)}}function closeModal(){modal.classList.remove('show');modalBox.innerHTML=''}
-list.addEventListener('click',function(e){const b=e.target.closest('[data-duoc-id]');if(b)openRecord(b.dataset.duocId)});list.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target&&e.target.classList&&e.target.classList.contains('duoc-card')){e.preventDefault();openRecord(e.target.dataset.duocId)}});modal.addEventListener('click',function(e){if(e.target===modal)closeModal()});document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('show'))closeModal()});q.addEventListener('input',runSearch);clear.addEventListener('click',function(){q.value='';q.focus();runSearch()});abcToggle.addEventListener('click',function(){const open=!alphabet.classList.contains('show');alphabet.classList.toggle('show',open);abcToggle.classList.toggle('active',open);abcToggle.setAttribute('aria-expanded',String(open))});
-function syncParentTheme(){try{const pb=window.parent&&window.parent.document&&window.parent.document.body;if(!pb)return;const apply=function(){document.body.classList.toggle('dark-mode',pb.classList.contains('dark-mode'))};apply();new MutationObserver(apply).observe(pb,{attributes:true,attributeFilter:['class']})}catch(e){if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)document.body.classList.add('dark-mode')}}
-async function init(){syncParentTheme();drawAlphabet();try{const res=await fetch(INDEX_URL,{cache:'force-cache'});if(!res.ok)throw new Error('INDEX');const data=await res.json();indexRecords=Array.isArray(data.records)?data.records:[];runSearch();const deepId=new URLSearchParams(location.search).get('duoc');if(deepId&&indexRecords.some(function(x){return x.id===deepId}))openRecord(deepId)}catch(e){count.textContent='Không tải được chỉ mục Dược thư';list.innerHTML='<div class="duoc-empty">Không tải được dữ liệu. Hãy kiểm tra rằng <b>tra-cuu-duoc-thu.html</b> và thư mục <b>duoc-thu-data</b> nằm cùng cấp trên máy chủ web.</div>'}}
+async function openRecord(id){try{modalBox.innerHTML='<div class="duoc-loading">Đang tải chuyên luận...</div>';modal.classList.add('show');const rec=await getRecord(id);modalBox.innerHTML=renderRecord(rec);modalBox.querySelector('.duoc-close').addEventListener('click',closeModal)}catch(e){modalBox.innerHTML='<button type="button" class="duoc-close" aria-label="Đóng">×</button><div class="duoc-empty">Không tải được chuyên luận. Hãy kiểm tra thư mục <b>duoc-thu-data</b> và thử lại.</div>';modalBox.querySelector('.duoc-close').addEventListener('click',closeModal)}}
+function closeModal(){modal.classList.remove('show');modalBox.innerHTML=''}
+list.addEventListener('click',function(e){const b=e.target.closest('[data-duoc-id]');if(b)openRecord(b.dataset.duocId)});
+list.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target&&e.target.classList&&e.target.classList.contains('duoc-card')){e.preventDefault();openRecord(e.target.dataset.duocId)}});
+modal.addEventListener('click',function(e){if(e.target===modal)closeModal()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('show'))closeModal()});
+q.addEventListener('input',runSearch);
+clear.addEventListener('click',function(){q.value='';q.focus();runSearch()});
+abcToggle.addEventListener('click',function(){const open=!alphabet.classList.contains('show');alphabet.classList.toggle('show',open);abcToggle.classList.toggle('active',open);abcToggle.setAttribute('aria-expanded',String(open));if(!open){activeLetter='';alphabet.querySelectorAll('.duoc-letter').forEach(function(x){x.classList.remove('active')});runSearch();}});
+async function init(){drawAlphabet();try{const res=await fetch(INDEX_URL,{cache:'force-cache'});if(!res.ok)throw new Error('INDEX');const data=await res.json();indexRecords=Array.isArray(data.records)?data.records:[];runSearch();const deepId=new URLSearchParams(location.search).get('duoc');if(deepId&&indexRecords.some(function(x){return x.id===deepId}))openRecord(deepId)}catch(e){count.textContent='Không tải được chỉ mục Dược thư';list.innerHTML='<div class="duoc-empty">Không tải được dữ liệu. Hãy kiểm tra rằng <b>tra-cuu-duoc-thu.html</b> và thư mục <b>duoc-thu-data</b> nằm cùng cấp trên máy chủ web.</div>'}}
 init();
 })();
 </script>
