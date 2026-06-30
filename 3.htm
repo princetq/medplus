@@ -5864,6 +5864,106 @@ body.medplus-aux-open.dark-mode.medplus-nav-duocthu-sync .medplus-app-nav::befor
   background:linear-gradient(135deg,#030504 0,#07110c 52%,#020302 100%) !important;
   border-color:rgba(102,210,140,.62) !important;
 }
+
+
+/* v10.4.5.7 — mobile ABC arrows like Dược thư */
+.medplus-alpha-shell{display:contents;}
+.medplus-alpha-arrow{display:none;}
+body.dark-mode .letter-btn.active,
+body.dark-mode .letter-btn.active:hover{
+  background:linear-gradient(135deg,#0d6f47,#073220)!important;
+  border-color:#50dcb4!important;
+  color:#ffffff!important;
+  box-shadow:0 0 12px rgba(80,220,180,.38), inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+body.dark-mode .abc-toggle-btn.active,
+body.dark-mode .abc-toggle-btn.active:hover{
+  background:linear-gradient(135deg,#0d6f47,#073220)!important;
+  border-color:#50dcb4!important;
+  color:#ffffff!important;
+  box-shadow:0 0 12px rgba(80,220,180,.36), inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+@media(max-width:600px){
+  .search-wrapper .medplus-alpha-shell{
+    grid-column:1 / -1!important;
+    grid-row:2!important;
+    order:unset!important;
+    width:100%!important;
+    min-width:0!important;
+    display:none!important;
+    align-items:center!important;
+    gap:4px!important;
+    margin-top:8px!important;
+    padding:0!important;
+    overflow:visible!important;
+  }
+  .search-wrapper .medplus-alpha-shell.show{display:flex!important;}
+  .search-wrapper .medplus-alpha-shell .alphabet-filter{
+    display:flex!important;
+    flex:1 1 auto!important;
+    width:auto!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:38px!important;
+    grid-column:auto!important;
+    grid-row:auto!important;
+    order:2!important;
+    margin:0!important;
+    padding:2px 0!important;
+    gap:6px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    justify-content:flex-start!important;
+    flex-wrap:nowrap!important;
+    scroll-behavior:smooth!important;
+    scroll-snap-type:x proximity!important;
+    scrollbar-width:none!important;
+    -ms-overflow-style:none!important;
+    background:transparent!important;
+    border:0!important;
+    box-shadow:none!important;
+  }
+  .search-wrapper .medplus-alpha-shell .alphabet-filter::-webkit-scrollbar{width:0!important;height:0!important;}
+  .search-wrapper .medplus-alpha-shell .letter-btn{
+    flex:0 0 32px!important;
+    width:32px!important;
+    min-width:32px!important;
+    max-width:32px!important;
+    height:32px!important;
+    padding:0!important;
+    scroll-snap-align:start!important;
+  }
+  .search-wrapper .medplus-alpha-arrow{
+    display:flex!important;
+    flex:0 0 18px!important;
+    width:18px!important;
+    height:32px!important;
+    align-items:center!important;
+    justify-content:center!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    color:var(--green-l)!important;
+    font-size:22px!important;
+    line-height:1!important;
+    font-weight:900!important;
+    opacity:0!important;
+    pointer-events:none!important;
+    transition:opacity .18s ease,transform .18s ease,color .18s ease!important;
+  }
+  .search-wrapper .medplus-alpha-arrow-left{order:1!important;}
+  .search-wrapper .medplus-alpha-arrow-right{order:3!important;}
+  .search-wrapper .medplus-alpha-shell.can-left .medplus-alpha-arrow-left,
+  .search-wrapper .medplus-alpha-shell.can-right .medplus-alpha-arrow-right{
+    opacity:.92!important;
+    pointer-events:auto!important;
+  }
+  .search-wrapper .medplus-alpha-shell.can-left .medplus-alpha-arrow-left{transform:translateX(-1px)!important;}
+  .search-wrapper .medplus-alpha-shell.can-right .medplus-alpha-arrow-right{transform:translateX(1px)!important;}
+  body.dark-mode .search-wrapper .medplus-alpha-arrow{color:#50dcb4!important;}
+}
+
 </style>
 
 <!-- MEDPLUS_PRECISE_EFFECT_SECTION_CAPS_SEND_PLANE_STYLE -->
@@ -10599,11 +10699,60 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section{background:#0b1
             return text;
         }
 
+
+
+        function installMobileAlphabetArrows() {
+            const alphaBox = document.getElementById('alphabetBox');
+            if (!alphaBox || document.getElementById('medplusAlphaShell')) return;
+            const shell = document.createElement('div');
+            shell.id = 'medplusAlphaShell';
+            shell.className = 'medplus-alpha-shell';
+            const left = document.createElement('button');
+            left.type = 'button';
+            left.className = 'medplus-alpha-arrow medplus-alpha-arrow-left';
+            left.setAttribute('aria-label', 'Cuộn bảng chữ cái sang trái');
+            left.textContent = '‹';
+            const right = document.createElement('button');
+            right.type = 'button';
+            right.className = 'medplus-alpha-arrow medplus-alpha-arrow-right';
+            right.setAttribute('aria-label', 'Cuộn bảng chữ cái sang phải');
+            right.textContent = '›';
+            alphaBox.parentNode.insertBefore(shell, alphaBox);
+            shell.appendChild(left);
+            shell.appendChild(alphaBox);
+            shell.appendChild(right);
+            function update() {
+                const open = alphaBox.style.display === 'flex' || shell.classList.contains('show');
+                if (!open) {
+                    shell.classList.remove('can-left','can-right');
+                    return;
+                }
+                const max = Math.max(0, alphaBox.scrollWidth - alphaBox.clientWidth);
+                shell.classList.toggle('can-left', alphaBox.scrollLeft > 2);
+                shell.classList.toggle('can-right', alphaBox.scrollLeft < max - 2);
+            }
+            alphaBox.addEventListener('scroll', update, {passive:true});
+            window.addEventListener('resize', update);
+            left.addEventListener('click', function(e){
+                e.stopPropagation();
+                alphaBox.scrollBy({left:-Math.max(110, alphaBox.clientWidth * .72), behavior:'smooth'});
+                setTimeout(update, 240);
+            });
+            right.addEventListener('click', function(e){
+                e.stopPropagation();
+                alphaBox.scrollBy({left:Math.max(110, alphaBox.clientWidth * .72), behavior:'smooth'});
+                setTimeout(update, 240);
+            });
+            alphaBox._medplusUpdateAlphaArrows = update;
+            setTimeout(update, 60);
+        }
+
         // =========================================================================
         // HÀM INIT
         // =========================================================================
         async function init() {
             const alphaBox = document.getElementById('alphabetBox');
+            installMobileAlphabetArrows();
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('').forEach(function(l) {
                 const btn = document.createElement('button');
                 btn.className = 'letter-btn'; btn.innerText = l;
@@ -10846,19 +10995,23 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section{background:#0b1
         function toggleAlphabet(e) {
             e.stopPropagation();
             const box = document.getElementById('alphabetBox');
+            const shell = document.getElementById('medplusAlphaShell');
             const wrapper = document.getElementById('groupFilterWrapper');
             const abcBtn = document.getElementById('abcBtn');
-            const isOpen = box.style.display === 'flex';
+            const isOpen = (box && box.style.display === 'flex') || (shell && shell.classList.contains('show'));
             if (isOpen) {
-                box.style.display = 'none';
-                wrapper.classList.remove('hidden');
-                abcBtn.classList.remove('active');
+                if (box) box.style.display = 'none';
+                if (shell) shell.classList.remove('show','can-left','can-right');
+                if (wrapper) wrapper.classList.remove('hidden');
+                if (abcBtn) abcBtn.classList.remove('active');
                 resetAlphabetFilter();
                 filterData();
             } else {
-                box.style.display = 'flex';
-                wrapper.classList.add('hidden');
-                abcBtn.classList.add('active');
+                if (box) box.style.display = 'flex';
+                if (shell) shell.classList.add('show');
+                if (wrapper) wrapper.classList.add('hidden');
+                if (abcBtn) abcBtn.classList.add('active');
+                setTimeout(function(){ if (box && box._medplusUpdateAlphaArrows) box._medplusUpdateAlphaArrows(); }, 40);
             }
         }
 
@@ -10867,7 +11020,13 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section{background:#0b1
             document.querySelectorAll('.letter-btn').forEach(function(b) { b.classList.remove('active'); });
             if (selectedLetter === letter) { selectedLetter = ''; }
             else { selectedLetter = letter; btn.classList.add('active'); }
+            const box = document.getElementById('alphabetBox');
+            const shell = document.getElementById('medplusAlphaShell');
+            if (shell) shell.classList.add('show');
+            const abcBtn = document.getElementById('abcBtn');
+            if (abcBtn) abcBtn.classList.add('active');
             filterData();
+            if (box && box._medplusUpdateAlphaArrows) setTimeout(box._medplusUpdateAlphaArrows, 40);
         }
 
         function buildGroupFilter(data) {
