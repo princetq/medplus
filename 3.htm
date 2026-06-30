@@ -456,6 +456,25 @@ body{
 
 .medplus-aux-frame.active{display:block}
 
+
+/* v10.4.5.1 — Mobile auxiliary iframe safe inset.
+   Keeps Dược thư iframe content below the fixed navbar, matching the safer
+   iframe behavior used by auxiliary professional-update pages. */
+@media (max-width:768px){
+  :root{--medplus-aux-mobile-top-gap:8px;}
+  .medplus-aux-frame-wrap{
+    top:calc(var(--medplus-nav-height) + var(--medplus-nav-safe-top) + var(--medplus-aux-mobile-top-gap))!important;
+    bottom:0!important;
+    height:auto!important;
+  }
+  .medplus-aux-frame{
+    height:100%!important;
+  }
+}
+@media (max-width:480px){
+  :root{--medplus-aux-mobile-top-gap:10px;}
+}
+
 html.medplus-aux-open,
 body.medplus-aux-open{
   overflow:hidden !important;
@@ -6109,9 +6128,10 @@ body.dark-mode .medplus-duoc-thu-table-image{border-color:#61769a!important;back
 #medplus-duoc-thu-modal .medplus-duoc-thu-modal-head::before{
   content:'📚\A DƯỢC THƯ\A 2023';white-space:pre;display:flex;align-items:center;justify-content:center;text-align:center;
   width:100px;height:100px;border-radius:14px;background:#fff;color:var(--green-d,#1b5e20);font-size:11px;line-height:1.45;font-weight:900;letter-spacing:.55px;
-  border:1px solid rgba(76,175,80,.20);box-shadow:0 4px 15px rgba(0,0,0,.06);
+  border:1px solid rgba(76,175,80,.20);box-shadow:0 4px 15px rgba(0,0,0,.06);align-self:center!important;
 }
-#medplus-duoc-thu-modal .medplus-duoc-thu-modal-head h2,#medplus-duoc-thu-modal .medplus-duoc-thu-modal-head p{grid-column:2!important}
+#medplus-duoc-thu-modal .medplus-duoc-thu-title-wrap{grid-column:2!important;min-width:0!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-self:center!important;height:100%!important}
+#medplus-duoc-thu-modal .medplus-duoc-thu-modal-head h2,#medplus-duoc-thu-modal .medplus-duoc-thu-modal-head p{grid-column:auto!important}
 #medplus-duoc-thu-modal .medplus-duoc-thu-modal-head h2{color:var(--green-d,#1b5e20)!important;font-size:22px!important;font-weight:900!important;line-height:1.25!important;margin:0 0 6px!important;padding:0!important;border:0!important}
 #medplus-duoc-thu-modal .medplus-duoc-thu-modal-head p{color:#476052!important;opacity:1!important;font-size:13px!important;line-height:1.45!important;font-weight:600!important;margin:0!important}
 #medplus-duoc-thu-modal .medplus-duoc-thu-body{padding:0!important}
@@ -6128,7 +6148,7 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-modal-head{background:r
 body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-modal-head::before{background:#102646!important;color:#72e0aa!important;border-color:rgba(80,220,180,.28)!important}
 body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-modal-head h2{color:#72e0aa!important}body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-modal-head p{color:#bfd5c7!important}
 body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section{background:#0b1d38!important;border-color:#293f69!important}body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section>summary{background:#10284b!important;color:#72e0aa!important}body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section[open]>summary{background:#173854!important}body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section .detail-content,body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-subsection{background:#0b1d38!important;border-top-color:#293f69!important;color:#d8e7f2!important}body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-subsection>b{color:#72e0aa!important}body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-table-figure{background:#102646!important;border-color:#61769a!important}
-@media(max-width:600px){#medplus-duoc-thu-modal .medplus-duoc-thu-content{max-height:85dvh!important;padding:14px!important}#medplus-duoc-thu-modal .medplus-duoc-thu-modal-head{grid-template-columns:64px minmax(0,1fr)!important;column-gap:12px!important;min-height:78px!important;padding:12px 42px 12px 12px!important;margin-bottom:12px!important}#medplus-duoc-thu-modal .medplus-duoc-thu-modal-head::before{width:64px;height:64px;border-radius:10px;font-size:8px;line-height:1.35}#medplus-duoc-thu-modal .medplus-duoc-thu-modal-head h2{font-size:19px!important}#medplus-duoc-thu-modal .medplus-duoc-thu-modal-head p{font-size:12px!important}#medplus-duoc-thu-modal .medplus-duoc-thu-section .detail-content,#medplus-duoc-thu-modal .medplus-duoc-thu-subsection{padding:12px!important;font-size:16px!important;line-height:1.65!important}#medplus-duoc-thu-modal .medplus-duoc-thu-paragraph{font-size:16px!important;line-height:1.65!important}}
+@media(max-width:600px){#medplus-duoc-thu-modal .medplus-duoc-thu-content{max-height:85dvh!important;padding:14px!important}#medplus-duoc-thu-modal .medplus-duoc-thu-modal-head{grid-template-columns:64px minmax(0,1fr)!important;column-gap:12px!important;min-height:82px!important;padding:12px 42px 12px 12px!important;margin-bottom:12px!important;align-items:center!important}#medplus-duoc-thu-modal .medplus-duoc-thu-modal-head::before{width:64px;height:64px;border-radius:10px;font-size:8px;line-height:1.35;align-self:center!important}#medplus-duoc-thu-modal .medplus-duoc-thu-title-wrap{grid-column:2!important;align-self:center!important;justify-content:center!important;height:64px!important}#medplus-duoc-thu-modal .medplus-duoc-thu-modal-head h2{font-size:19px!important}#medplus-duoc-thu-modal .medplus-duoc-thu-modal-head p{font-size:12px!important}#medplus-duoc-thu-modal .medplus-duoc-thu-section .detail-content,#medplus-duoc-thu-modal .medplus-duoc-thu-subsection{padding:12px!important;font-size:16px!important;line-height:1.65!important}#medplus-duoc-thu-modal .medplus-duoc-thu-paragraph{font-size:16px!important;line-height:1.65!important}}
 </style>
 
 </head>
@@ -13901,7 +13921,7 @@ async function openDuocThuFromChat_(id, focusId, event) {
     let body = '<div class="modal-content medplus-duoc-thu-content">'
         + '<button class="close-btn" aria-label="Đóng">×</button>'
         + '<div class="medplus-duoc-thu-modal-head">'
-        + '<h2>' + escapeDuocThuHtml_(record.title) + '</h2><p>' + escapeDuocThuHtml_(source) + '</p></div>'
+        + '<div class="medplus-duoc-thu-title-wrap"><h2>' + escapeDuocThuHtml_(record.title) + '</h2><p>' + escapeDuocThuHtml_(source) + '</p></div></div>'
         + '<div class="medplus-duoc-thu-body">';
     (record.sections || []).forEach(function(section, sectionIndex) {
         const isFocusedSection = focusIds.indexOf(section.id) >= 0 || (section.subsections || []).some(function(sub) { return focusIds.indexOf(sub.id) >= 0; });
@@ -15483,6 +15503,7 @@ window.bindHDSDDuocThuButtons = bindHDSDDuocThuButtons;
       const doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
       if (!doc || !doc.documentElement) return;
       doc.documentElement.style.overscrollBehavior = 'none';
+      doc.documentElement.style.scrollPaddingTop = '10px';
       if (doc.body){
         doc.body.style.overscrollBehavior = 'none';
         doc.body.style.overflowX = 'hidden';
