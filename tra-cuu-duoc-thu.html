@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f4f9f6" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0a1810" media="(prefers-color-scheme: dark)">
 <title>Tra cứu Dược thư Quốc gia Việt Nam</title>
-<meta name="medplus-duoc-thu-version" content="v10.4.26-logo-landscape-search">
+<meta name="medplus-duoc-thu-version" content="v10.4.27-logo-az-theme-position">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Nunito+Sans:wght@700;800;900&display=swap" rel="stylesheet">
@@ -189,7 +189,7 @@ body.dark-mode::-webkit-scrollbar-thumb:hover {
 .duoc-page {
   max-width: 1320px;
   margin: 0 auto;
-  padding: 16px 20px 56px;
+  padding: 10px 20px 56px;
 }
 
 /* ═══════════════════════════════
@@ -307,8 +307,8 @@ body.dark-mode::-webkit-scrollbar-thumb:hover {
 }
 .duoc-logo-btn:active { transform: scale(.97); }
 .duoc-logo-svg {
-  width: 142px;
-  height: 40px;
+  width: 143px;
+  height: 41px;
   border-radius: 12px;
   box-shadow: none;
   display: block;
@@ -1121,7 +1121,7 @@ body.dark-mode .duoc-subsection {
   .duoc-alphabet { order: 3; max-width: 100%; width: 100%; }
 }
 @media (max-width: 650px) {
-  .duoc-page { padding: 22px 12px 32px; }
+  .duoc-page { padding: 16px 12px 32px; }
   .duoc-header-main {
     flex-wrap: wrap;
     padding: 16px 18px 16px 22px;
@@ -1129,7 +1129,7 @@ body.dark-mode .duoc-subsection {
     gap: 14px;
   }
   .duoc-header-right { width: 100%; justify-content: flex-end; }
-  .duoc-logo-svg { width: 116px; height: 33px; }
+  .duoc-logo-svg { width: 117px; height: 34px; }
   .duoc-header-title { font-size: clamp(1rem, 4vw, 1.25rem); }
   .duoc-header-subtitle { font-size: 12px; }
   .duoc-results { grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -1640,7 +1640,7 @@ body.dark-mode .duoc-open:hover {
     transform: translateY(8px);
   }
   .duoc-logo-btn { display: flex; align-items: center; justify-content: center; }
-  .duoc-logo-svg { width: 116px !important; height: 33px !important; }
+  .duoc-logo-svg { width: 117px !important; height: 34px !important; }
   .duoc-header-content {
     align-self: center;
     justify-content: center;
@@ -1729,6 +1729,17 @@ body.dark-mode .duoc-open:hover {
   }
 }
 
+/* v10.4.27 — A-Z active state remains readable in dark mode */
+body.dark-mode .duoc-abc-toggle.active,
+body.dark-mode .duoc-abc-toggle.active:hover,
+body.dark-mode .duoc-abc-toggle.active:focus-visible {
+  background: #2e7d32 !important;
+  color: #ffffff !important;
+  border-color: rgba(165,214,167,.38) !important;
+  box-shadow: 0 3px 12px rgba(0,0,0,.26) !important;
+}
+body.dark-mode .duoc-abc-toggle.active * { color: #ffffff !important; }
+
 </style>
 </head>
 <body>
@@ -1740,9 +1751,9 @@ body.dark-mode .duoc-open:hover {
     <!-- Logo MedPlus = nút toggle sáng/tối -->
     <div class="duoc-header-brand">
       <button class="duoc-logo-btn" id="duoc-theme-btn" type="button" aria-label="Chuyển chế độ tối/sáng" title="Chuyển chế độ sáng / tối">
-      <svg class="duoc-logo-svg" viewBox="0 0 132 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <svg class="duoc-logo-svg" viewBox="0 0 142 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
-          <linearGradient id="lgGrad" x1="0" y1="0" x2="132" y2="40" gradientUnits="userSpaceOnUse">
+          <linearGradient id="lgGrad" x1="0" y1="0" x2="142" y2="40" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stop-color="#43a047"/>
             <stop offset="72%" stop-color="#2e7d32"/>
             <stop offset="100%" stop-color="#1b5e20"/>
@@ -1753,8 +1764,8 @@ body.dark-mode .duoc-open:hover {
             <stop offset="100%" stop-color="#a5d6a7" stop-opacity="0"/>
           </radialGradient>
         </defs>
-        <rect x="0.5" y="0.5" width="131" height="39" rx="10.5" fill="url(#lgGrad)" stroke="rgba(255,255,255,.22)"/>
-        <rect x="0.5" y="0.5" width="131" height="39" rx="10.5" fill="url(#lgRightBright)"/>
+        <rect x="0.5" y="0.5" width="141" height="39" rx="12" fill="url(#lgGrad)" stroke="rgba(255,255,255,.22)"/>
+        <rect x="0.5" y="0.5" width="141" height="39" rx="12" fill="url(#lgRightBright)"/>
         <g aria-hidden="true">
           <rect x="6.5" y="6.5" width="18" height="27" rx="9" fill="rgba(255,255,255,.96)"/>
           <rect x="8.2" y="8.2" width="14.6" height="23.6" rx="7.3" stroke="rgba(27,94,32,.18)" stroke-width="1"/>
@@ -1762,10 +1773,10 @@ body.dark-mode .duoc-open:hover {
           <line x1="10.1" y1="20" x2="20.9" y2="20" stroke="#1b5e20" stroke-width="2.2" stroke-linecap="round"/>
         </g>
         <line x1="31" y1="10" x2="31" y2="30" stroke="rgba(255,255,255,.30)"/>
-        <text x="39" y="25.1" font-family="'Inter','Segoe UI',system-ui,sans-serif" font-size="15.2" font-weight="850" fill="white" letter-spacing="-0.35">Med</text>
-        <text x="68" y="25.1" font-family="'Inter','Segoe UI',system-ui,sans-serif" font-size="15.2" font-weight="500" fill="rgba(255,255,255,.88)" letter-spacing="-0.35">Plus</text>
-        <line x1="104" y1="10" x2="104" y2="30" stroke="rgba(255,255,255,.26)"/>
-        <g id="logo-theme-icon" transform="translate(110,9.6)">
+        <text x="39" y="25.6" font-family="'Inter','Segoe UI',system-ui,sans-serif" font-size="17.2" font-weight="850" fill="white" letter-spacing="-0.35">Med</text>
+        <text x="72" y="25.6" font-family="'Inter','Segoe UI',system-ui,sans-serif" font-size="17.2" font-weight="500" fill="rgba(255,255,255,.88)" letter-spacing="-0.35">Plus</text>
+        <line x1="113" y1="10" x2="113" y2="30" stroke="rgba(255,255,255,.26)"/>
+        <g id="logo-theme-icon" transform="translate(119,10.8)">
           <path d="M10.5 2.2a7.4 7.4 0 1 0 7.2 8.9A5.5 5.5 0 0 1 10.5 2.2z" fill="white" opacity="0.88"/>
         </g>
       </svg>
