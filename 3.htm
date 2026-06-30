@@ -13437,13 +13437,17 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section{background:#0b1
    Route priority (installed inside sendMessage):
      exact-brand HDSD -> Dược thư active ingredient -> group catalog -> AI.
    ================================================================ */
-const MEDPLUS_DUOC_THU_INDEX_URL = './duoc-thu-data/index.json?v=10.3.1';
+const MEDPLUS_DUOC_THU_INDEX_URL = './duoc-thu-data/index.json?v=10.4';
 const MEDPLUS_DUOC_THU_DATA_BASE = './duoc-thu-data/';
 let __medplusDuocThuIndexPromise = null;
 const __medplusDuocThuRecordCache = new Map();
 
 function normalizeDuocThuText_(value) {
-    const raw = String(value || '');
+    const raw = String(value || '')
+        .replace(/[₀₁₂₃₄₅₆₇₈₉]/g, function(ch) { return '₀₁₂₃₄₅₆₇₈₉'.indexOf(ch); })
+        .replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]/g, function(ch) { return '⁰¹²³⁴⁵⁶⁷⁸⁹'.indexOf(ch); })
+        .replace(/[µμ]/g, 'mc')
+        .replace(/\bHCI\b/g, 'HCl');
     if (typeof removeAccents === 'function') {
         return removeAccents(raw).replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
     }
@@ -13912,7 +13916,7 @@ async function openDuocThuFromChat_(id, focusId, event) {
 }
 window.openDuocThuFromChat_ = openDuocThuFromChat_;
 
-/* MEDPLUS_HDSD_DUOC_THU_ALIAS_COMPOSITION_V10_3_FORM_CONTEXT */
+/* MEDPLUS_HDSD_DUOC_THU_ALIAS_COMPOSITION_V10_4_MAX_RECALL */
 /*
    HDSD -> Dược thư resolver:
    1) Find active-ingredient aliases.
@@ -14098,23 +14102,65 @@ function isLessSpecificDuocThuRow_(row, selectedRows) {
         return a && b && a !== b && phraseInDuocThuText_(b, a) && b.split(' ').length > a.split(' ').length;
     });
 }
+function getHDSDDuocThuCandidateTexts_(drug) {
+    if (!drug) return [];
+    const rows = [];
+    const add = function(text, source, weight) {
+        text = String(text || '').trim();
+        if (!text) return;
+        rows.push({ text: text, source: source, weight: weight || 0 });
+    };
+    // Primary: structured active ingredient field.
+    add(drug.active, 'active', 0);
+    add(drug.hoatChat || drug.hoat_chat || drug.ingredient || drug.ingredients || drug.thanhPhan || drug.thanh_phan, 'ingredient', -5000);
+    // Some rows carry active names inside strength or usage; use them only as fallback with lower weight.
+    add(drug.strength, 'strength', -30000);
+    add(drug.usage, 'usage', -40000);
+    // Brand fallback is intentionally low-priority and only helps generic-named products
+    // such as ADRENALIN, DIAZEPAM, LIDOCAIN, CEFTRIAXONE, etc. It cannot beat a structured active match.
+    add(getHDSDProductNameForDuocThu_(drug), 'brand', -80000);
+    // Merge active + brand so a generic brand can rescue rows whose active spelling is incomplete.
+    if (drug.active && getHDSDProductNameForDuocThu_(drug)) {
+        add(String(drug.active) + ' ' + getHDSDProductNameForDuocThu_(drug), 'active_brand', -10000);
+    }
+    const seen = new Set();
+    return rows.filter(function(row) {
+        const key = normalizeDuocThuText_(row.text);
+        if (!key || seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+}
 async function findDuocThuRecordsForHDSD_(drug) {
-    const active = String(drug && drug.active || '').trim();
-    if (!active) return [];
+    const candidates = getHDSDDuocThuCandidateTexts_(drug);
+    if (!candidates.length) return [];
     const index = await ensureDuocThuIndex_();
-    const rows = (index.records || []).map(function(record) {
-        const matches = getDuocThuAliasMatchesForActive_(record, active);
-        const best = matches[0];
-        const formFit = best ? getDuocThuFormCompatibility_(record, drug) : { score: 0, status: 'neutral', label: '' };
-        return {
+    const rows = [];
+    (index.records || []).forEach(function(record) {
+        let bestMatch = null;
+        let bestCandidate = null;
+        candidates.forEach(function(candidate) {
+            const matches = getDuocThuAliasMatchesForActive_(record, candidate.text);
+            const hit = matches[0];
+            if (!hit) return;
+            const candidateScore = scoreDuocThuRecordForHDSD_(record, candidate.text) + (candidate.weight || 0);
+            if (!bestMatch || candidateScore > bestMatch.candidateScore) {
+                bestMatch = Object.assign({}, hit, { candidateScore: candidateScore });
+                bestCandidate = candidate;
+            }
+        });
+        const formFit = bestMatch ? getDuocThuFormCompatibility_(record, drug) : { score: 0, status: 'neutral', label: '' };
+        if (!bestMatch || formFit.status === 'conflict') return;
+        rows.push({
             record: record,
-            matches: matches,
-            bestAlias: best ? best.alias : '',
-            score: best ? scoreDuocThuRecordForHDSD_(record, active) + formFit.score : 0,
+            matches: [bestMatch],
+            bestAlias: bestMatch.alias || '',
+            score: bestMatch.candidateScore + formFit.score,
             isCombo: isDuocThuCombinationRecordForHDSD_(record),
-            formFit: formFit
-        };
-    }).filter(function(item) { return item.score > 0 && item.formFit.status !== 'conflict'; });
+            formFit: formFit,
+            matchSource: bestCandidate ? bestCandidate.source : ''
+        });
+    });
     if (!rows.length) return [];
     rows.sort(function(a, b) {
         if (b.score !== a.score) return b.score - a.score;
