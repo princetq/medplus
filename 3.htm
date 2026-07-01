@@ -6215,6 +6215,196 @@ body.dark-mode .abc-toggle-btn.active:hover{
   .medplus-hdsd-image-resize-handle{display:none}
 }
 
+
+
+/* v10.4.5.23 — sửa bảng HDSD: có thanh cuộn ngang rõ, đóng viền phải, xuống dòng đẹp hơn */
+#hdsd-content .hdsd-table-scroll,
+#hdsd-content .medplus-hdsd-table-scroll,
+#hdsd-content div[style*="overflow-x:auto"],
+#hdsd-content div[style*="overflow-x: auto"] {
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  overflow-x:scroll!important;
+  overflow-y:auto!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-x pan-y!important;
+  overscroll-behavior:contain!important;
+  scrollbar-gutter:stable both-edges!important;
+  padding:0 0 10px 0!important;
+  margin:12px 0 16px 0!important;
+  border:1px solid rgba(76,175,80,.35)!important;
+  border-radius:10px!important;
+  background:#fff!important;
+  box-sizing:border-box!important;
+}
+#hdsd-content .hdsd-table-scroll::-webkit-scrollbar,
+#hdsd-content .medplus-hdsd-table-scroll::-webkit-scrollbar,
+#hdsd-content div[style*="overflow-x:auto"]::-webkit-scrollbar,
+#hdsd-content div[style*="overflow-x: auto"]::-webkit-scrollbar {
+  height:12px!important;
+}
+#hdsd-content .hdsd-table-scroll::-webkit-scrollbar-thumb,
+#hdsd-content .medplus-hdsd-table-scroll::-webkit-scrollbar-thumb,
+#hdsd-content div[style*="overflow-x:auto"]::-webkit-scrollbar-thumb,
+#hdsd-content div[style*="overflow-x: auto"]::-webkit-scrollbar-thumb {
+  background:rgba(46,125,50,.42)!important;
+  border-radius:999px!important;
+  border:3px solid rgba(255,255,255,.92)!important;
+}
+#hdsd-content .hdsd-table-scroll::-webkit-scrollbar-track,
+#hdsd-content .medplus-hdsd-table-scroll::-webkit-scrollbar-track,
+#hdsd-content div[style*="overflow-x:auto"]::-webkit-scrollbar-track,
+#hdsd-content div[style*="overflow-x: auto"]::-webkit-scrollbar-track {
+  background:rgba(46,125,50,.08)!important;
+  border-radius:999px!important;
+}
+#hdsd-content .hdsd-table-scroll > table,
+#hdsd-content .medplus-hdsd-table-scroll > table,
+#hdsd-content div[style*="overflow-x:auto"] > table,
+#hdsd-content div[style*="overflow-x: auto"] > table,
+#hdsd-content table.hdsd-table {
+  width:100%!important;
+  min-width:100%!important;
+  max-width:none!important;
+  table-layout:fixed!important;
+  border-collapse:separate!important;
+  border-spacing:0!important;
+  border:1px solid rgba(76,175,80,.34)!important;
+  border-right:1px solid rgba(76,175,80,.48)!important;
+  box-shadow:inset -1px 0 0 rgba(76,175,80,.48)!important;
+  background:#fff!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+}
+#hdsd-content .hdsd-table-scroll.hdsd-cols-5 > table,
+#hdsd-content .hdsd-table-scroll.hdsd-cols-5 table,
+#hdsd-content .medplus-hdsd-table-scroll.hdsd-cols-5 > table {min-width:680px!important}
+#hdsd-content .hdsd-table-scroll.hdsd-cols-6 > table,
+#hdsd-content .hdsd-table-scroll.hdsd-cols-6 table,
+#hdsd-content .medplus-hdsd-table-scroll.hdsd-cols-6 > table {min-width:780px!important}
+#hdsd-content .hdsd-table-scroll.hdsd-cols-7 > table,
+#hdsd-content .hdsd-table-scroll.hdsd-cols-7 table,
+#hdsd-content .medplus-hdsd-table-scroll.hdsd-cols-7 > table {min-width:900px!important}
+#hdsd-content .hdsd-table-scroll.hdsd-cols-8 > table,
+#hdsd-content .hdsd-table-scroll.hdsd-cols-8 table,
+#hdsd-content .medplus-hdsd-table-scroll.hdsd-cols-8 > table {min-width:1040px!important}
+#hdsd-content .hdsd-table-scroll.hdsd-cols-many > table,
+#hdsd-content .hdsd-table-scroll.hdsd-cols-many table,
+#hdsd-content .medplus-hdsd-table-scroll.hdsd-cols-many > table {min-width:1160px!important}
+#hdsd-content table th,
+#hdsd-content table td {
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  word-wrap:break-word!important;
+  word-break:break-word!important;
+  line-break:anywhere!important;
+  hyphens:auto!important;
+  vertical-align:top!important;
+  min-width:86px!important;
+  max-width:250px!important;
+  border-right:1px solid rgba(76,175,80,.32)!important;
+  border-bottom:1px solid rgba(76,175,80,.32)!important;
+  box-sizing:border-box!important;
+}
+#hdsd-content table tr > th:last-child,
+#hdsd-content table tr > td:last-child {
+  border-right:1px solid rgba(76,175,80,.50)!important;
+}
+#hdsd-content table tr:last-child > th,
+#hdsd-content table tr:last-child > td {
+  border-bottom:1px solid rgba(76,175,80,.38)!important;
+}
+body.dark-mode #hdsd-content .hdsd-table-scroll,
+body.dark-mode #hdsd-content .medplus-hdsd-table-scroll,
+body.dark-mode #hdsd-content div[style*="overflow-x:auto"],
+body.dark-mode #hdsd-content div[style*="overflow-x: auto"] {
+  background:#0b1d38!important;
+  border-color:rgba(80,220,180,.42)!important;
+}
+body.dark-mode #hdsd-content table {
+  background:#0b1d38!important;
+  border-color:rgba(80,220,180,.42)!important;
+  box-shadow:inset -1px 0 0 rgba(80,220,180,.48)!important;
+}
+body.dark-mode #hdsd-content table th,
+body.dark-mode #hdsd-content table td {
+  border-color:rgba(80,220,180,.34)!important;
+}
+@media(max-width:767px){
+  #hdsd-content table th,
+  #hdsd-content table td {
+    min-width:82px!important;
+    max-width:190px!important;
+  }
+  #hdsd-content .hdsd-table-scroll.hdsd-cols-4 > table,
+  #hdsd-content .hdsd-table-scroll.hdsd-cols-4 table,
+  #hdsd-content .medplus-hdsd-table-scroll.hdsd-cols-4 > table {min-width:540px!important}
+  #hdsd-content .hdsd-table-scroll.hdsd-cols-5 > table,
+  #hdsd-content .hdsd-table-scroll.hdsd-cols-5 table,
+  #hdsd-content .medplus-hdsd-table-scroll.hdsd-cols-5 > table {min-width:660px!important}
+  #hdsd-content .hdsd-table-scroll.hdsd-cols-6 > table,
+  #hdsd-content .hdsd-table-scroll.hdsd-cols-6 table,
+  #hdsd-content .medplus-hdsd-table-scroll.hdsd-cols-6 > table {min-width:780px!important}
+  #hdsd-content .hdsd-table-scroll.hdsd-cols-7 > table,
+  #hdsd-content .hdsd-table-scroll.hdsd-cols-7 table,
+  #hdsd-content .medplus-hdsd-table-scroll.hdsd-cols-7 > table {min-width:900px!important}
+  #hdsd-content .hdsd-table-scroll.hdsd-cols-8 > table,
+  #hdsd-content .hdsd-table-scroll.hdsd-cols-8 table,
+  #hdsd-content .medplus-hdsd-table-scroll.hdsd-cols-8 > table {min-width:1020px!important}
+  #hdsd-content .hdsd-table-scroll.hdsd-cols-many > table,
+  #hdsd-content .hdsd-table-scroll.hdsd-cols-many table,
+  #hdsd-content .medplus-hdsd-table-scroll.hdsd-cols-many > table {min-width:1140px!important}
+}
+
+
+/* v10.4.5.23 — logo Dược thư trong modal có thể bấm mở nguồn PDF */
+#medplus-duoc-thu-modal .medplus-duoc-thu-modal-head::before{
+  display:none!important;
+  content:none!important;
+}
+#medplus-duoc-thu-modal .medplus-duoc-thu-source-logo{
+  grid-column:1!important;
+  align-self:center!important;
+  justify-self:center!important;
+  width:100px!important;
+  height:100px!important;
+  border-radius:14px!important;
+  background:#fff!important;
+  color:var(--green-d,#1b5e20)!important;
+  font-size:11px!important;
+  line-height:1.45!important;
+  font-weight:900!important;
+  letter-spacing:.55px!important;
+  text-align:center!important;
+  white-space:pre-line!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:1px solid rgba(76,175,80,.24)!important;
+  box-shadow:0 4px 15px rgba(0,0,0,.08)!important;
+  cursor:pointer!important;
+  font-family:inherit!important;
+  padding:0!important;
+}
+#medplus-duoc-thu-modal .medplus-duoc-thu-source-logo:hover{
+  transform:translateY(-1px)!important;
+  box-shadow:0 7px 22px rgba(46,125,50,.18)!important;
+}
+#medplus-duoc-thu-modal .medplus-duoc-thu-source-logo .book-icon{font-size:22px!important;line-height:1!important;margin-bottom:4px!important}
+body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-source-logo{
+  background:#102646!important;
+  color:#72e0aa!important;
+  border-color:rgba(80,220,180,.32)!important;
+}
+@media(max-width:600px){
+  #medplus-duoc-thu-modal .medplus-duoc-thu-source-logo{
+    width:64px!important;height:64px!important;border-radius:10px!important;font-size:8px!important;line-height:1.35!important;
+  }
+  #medplus-duoc-thu-modal .medplus-duoc-thu-source-logo .book-icon{font-size:16px!important;margin-bottom:2px!important}
+}
+
 </style>
 
 <!-- MEDPLUS_PRECISE_EFFECT_SECTION_CAPS_SEND_PLANE_STYLE -->
@@ -14569,6 +14759,39 @@ async function tryDuocThuLocalAnswer_(userMessage, drugSource, strictBrandDrugs)
         : base;
 }
 
+
+/* v10.4.5.23 — nguồn PDF Dược thư cho modal Dược thư mở từ tờ HDSD/Tra cứu thuốc */
+const MEDPLUS_DUOC_THU_PDF_URL_ = (window.MEDPLUS_DUOC_THU_PDF_URL || 'https://drive.google.com/file/d/1jP3kPktKwSx4GYNHDxE05w3NyhFEFM0n/view?usp=drive_link');
+function normalizeMedPlusDuocThuPdfBaseUrl_(base){
+    base = String(base || '').trim();
+    if(!base) return '';
+    const driveMatch = base.match(/drive\.google\.com\/file\/d\/([^\/]+)/i) || base.match(/[?&]id=([^&#]+)/i);
+    if(driveMatch && driveMatch[1]) {
+        return 'https://drive.google.com/uc?export=download&id=' + encodeURIComponent(driveMatch[1]);
+    }
+    return base.split('#')[0];
+}
+function buildMedPlusDuocThuPdfUrl_(record){
+    const base = normalizeMedPlusDuocThuPdfBaseUrl_(MEDPLUS_DUOC_THU_PDF_URL_);
+    if(!base) return '';
+    const source = (record && record.source) || {};
+    const pdf = source.pdf_pages || {};
+    const printed = source.printed_pages || {};
+    const page = Number(pdf.start || pdf.page || printed.start || 0);
+    if(!Number.isFinite(page) || page <= 0) return base;
+    return base + '#page=' + encodeURIComponent(String(page));
+}
+function openMedPlusDuocThuPdfSource_(record, event){
+    if(event) { event.preventDefault(); event.stopPropagation(); }
+    const url = buildMedPlusDuocThuPdfUrl_(record);
+    if(!url) {
+        alert('Chưa cấu hình link PDF Dược thư.');
+        return;
+    }
+    window.open(url, '_blank', 'noopener');
+}
+
+
 async function openDuocThuFromChat_(id, focusId, event) {
     if (event) event.preventDefault();
     const record = await fetchDuocThuRecord_(decodeURIComponent(String(id || '')));
@@ -14587,6 +14810,7 @@ async function openDuocThuFromChat_(id, focusId, event) {
     let body = '<div class="modal-content medplus-duoc-thu-content">'
         + '<button class="close-btn" aria-label="Đóng">×</button>'
         + '<div class="medplus-duoc-thu-modal-head">'
+        + '<button type="button" class="medplus-duoc-thu-source-logo" title="Mở nguồn PDF Dược thư tại trang chuyên luận" aria-label="Mở nguồn PDF Dược thư"><span class="book-icon">📚</span><span>DƯỢC THƯ</span><span>2023</span></button>'
         + '<div class="medplus-duoc-thu-title-wrap"><h2>' + escapeDuocThuHtml_(record.title) + '</h2><p>' + escapeDuocThuHtml_(source) + '</p></div></div>'
         + '<div class="medplus-duoc-thu-body">';
     (record.sections || []).forEach(function(section, sectionIndex) {
@@ -14611,6 +14835,8 @@ async function openDuocThuFromChat_(id, focusId, event) {
     modal.innerHTML = body;
     const close = function() { modal.remove(); };
     modal.querySelector('.close-btn').addEventListener('click', close);
+    const medplusDuocThuSourceLogo = modal.querySelector('.medplus-duoc-thu-source-logo');
+    if (medplusDuocThuSourceLogo) medplusDuocThuSourceLogo.addEventListener('click', function(e) { openMedPlusDuocThuPdfSource_(record, e); });
     modal.addEventListener('click', function(e) { if (e.target === modal) close(); });
     document.body.appendChild(modal);
     const target = modal.querySelector('.duoc-thu-focus, .duoc-thu-focus-sub');
@@ -17925,5 +18151,71 @@ body.dark-mode #send-button svg,body.dark-mode .send-button svg{filter:drop-shad
         })();
 
 </script>
+
+
+<script>
+/* v10.4.5.23 — tự bọc và gắn class số cột cho mọi bảng trong modal HDSD */
+(function(){
+  if(window.__MEDPLUS_HDSD_TABLE_SCROLL_FIX_23__) return;
+  window.__MEDPLUS_HDSD_TABLE_SCROLL_FIX_23__ = true;
+  let scheduled = 0;
+  function colCount_(table){
+    let max = 0;
+    try {
+      Array.prototype.forEach.call(table.rows || [], function(row){
+        let count = 0;
+        Array.prototype.forEach.call(row.cells || [], function(cell){
+          count += Number(cell.colSpan || 1);
+        });
+        if(count > max) max = count;
+      });
+    } catch(e){}
+    return max || 1;
+  }
+  function classForCols_(cols){
+    if(cols >= 9) return 'hdsd-cols-many';
+    return 'hdsd-cols-' + Math.max(1, Math.min(8, cols));
+  }
+  function fixHDSDTables_(){
+    const root = document.getElementById('hdsd-content');
+    if(!root) return;
+    root.querySelectorAll('table').forEach(function(table){
+      if(table.closest('.hdsd-chat-table-wrap')) return;
+      let wrap = table.parentElement;
+      const style = wrap ? String(wrap.getAttribute('style') || '') : '';
+      const already = wrap && (wrap.classList.contains('hdsd-table-scroll') || wrap.classList.contains('medplus-hdsd-table-scroll'));
+      const inlineScroll = wrap && /overflow\s*-?x\s*:\s*auto/i.test(style);
+      if(!already && !inlineScroll){
+        const div = document.createElement('div');
+        div.className = 'hdsd-table-scroll';
+        table.parentNode.insertBefore(div, table);
+        div.appendChild(table);
+        wrap = div;
+      } else if(wrap) {
+        wrap.classList.add('hdsd-table-scroll');
+      }
+      if(wrap){
+        wrap.classList.remove('hdsd-cols-1','hdsd-cols-2','hdsd-cols-3','hdsd-cols-4','hdsd-cols-5','hdsd-cols-6','hdsd-cols-7','hdsd-cols-8','hdsd-cols-many');
+        wrap.classList.add(classForCols_(colCount_(table)));
+      }
+      table.classList.add('hdsd-table-fixed');
+    });
+  }
+  function schedule_(){
+    if(scheduled) return;
+    scheduled = setTimeout(function(){ scheduled = 0; fixHDSDTables_(); }, 80);
+  }
+  document.addEventListener('DOMContentLoaded', schedule_);
+  document.addEventListener('click', function(e){
+    if(e.target && e.target.closest && e.target.closest('#hdsd-content details, .hdsd-btn, .view-btn, .notion-btn')) schedule_();
+  }, true);
+  try {
+    const mo = new MutationObserver(schedule_);
+    mo.observe(document.documentElement, {childList:true, subtree:true});
+  } catch(e){}
+  window.fixMedPlusHDSDTables_ = fixHDSDTables_;
+})();
+</script>
+
 </body>
 </html>
