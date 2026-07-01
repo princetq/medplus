@@ -1199,7 +1199,36 @@ body.medplus-aux-open .medplus-aux-frame-wrap{
         .chat-widget-container .hdsd-chat-table{width:100%;min-width:420px;border-collapse:collapse;background:#fff;color:#263238;font-size:13px;line-height:1.35}
         .chat-widget-container .hdsd-chat-table th,.chat-widget-container .hdsd-chat-table td{border:1px solid rgba(46,125,50,.28);padding:7px 9px;vertical-align:top;text-align:left;white-space:pre-line}
         .chat-widget-container .hdsd-chat-table th{background:rgba(46,125,50,.10);color:#1b5e20;font-weight:800;text-align:center}
-        .chat-widget-container .hdsd-chat-table-caption{padding:7px 9px;border-top:1px dashed rgba(46,125,50,.25);color:#4c6357;font-size:12px;background:rgba(46,125,50,.035)}
+        .chat-widget-container .hdsd-chat-table-caption{padding:7px 9px;border-top:1px dashed rgba(46,125,50,.25);color:#4c6357;font-size:12px;background:rgba(46,125,50,.035);display:flex;align-items:center;justify-content:space-between;gap:8px}
+        .chat-widget-container .hdsd-chat-table-caption-text{min-width:0;font-weight:600}
+        .chat-widget-container .hdsd-chat-zoom-btn{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:4px 8px;border-radius:999px;border:1px solid rgba(46,125,50,.32);background:rgba(46,125,50,.08);color:#1b5e20;font-size:11px;font-weight:800;line-height:1;cursor:pointer;transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s ease}
+        .chat-widget-container .hdsd-chat-zoom-btn:hover{background:#2e7d32;color:#fff;border-color:#2e7d32;transform:translateY(-1px)}
+        .chat-widget-container .hdsd-chat-zoomable-image{cursor:zoom-in} 
+        .medplus-chat-zoom-backdrop{position:fixed;inset:0;z-index:2147483000;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.56);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+        .medplus-chat-zoom-backdrop.show{display:flex}
+        .medplus-chat-zoom-box{position:relative;box-sizing:border-box;max-width:50vw;max-height:80vh;padding:12px;border-radius:16px;background:#fff;border:1px solid rgba(46,125,50,.25);box-shadow:0 18px 55px rgba(0,0,0,.30);overflow:hidden;color:#263238}
+        .medplus-chat-zoom-close{position:absolute;top:7px;right:7px;z-index:3;width:30px;height:30px;border-radius:999px;border:1px solid rgba(46,125,50,.25);background:rgba(255,255,255,.94);color:#1b5e20;font-size:22px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.14)}
+        .medplus-chat-zoom-close:hover{background:#e8f5e9;color:#0f3d14}
+        .medplus-chat-zoom-content{max-width:calc(50vw - 24px);max-height:calc(80vh - 24px);overflow:auto;-webkit-overflow-scrolling:touch;padding:0;margin:0}
+        .medplus-chat-zoom-content>img{display:block;max-width:calc(50vw - 24px);max-height:calc(80vh - 24px);width:auto;height:auto;object-fit:contain;border-radius:10px;background:#fff;margin:0 auto}
+        .medplus-chat-zoom-content .hdsd-chat-table-wrap{width:auto;max-width:calc(50vw - 24px);max-height:calc(80vh - 24px);overflow:auto;margin:0;border-radius:12px;box-shadow:none}
+        .medplus-chat-zoom-content .hdsd-chat-table-scroll{overflow:visible;width:max-content;max-width:none}
+        .medplus-chat-zoom-content .hdsd-chat-table{width:max-content;min-width:420px;max-width:none;font-size:13.5px}
+        .medplus-chat-zoom-content .hdsd-chat-table-caption{display:block;text-align:left}
+        body.dark-mode .chat-widget-container .hdsd-chat-zoom-btn{border-color:rgba(114,224,170,.45);background:rgba(114,224,170,.10);color:#72e0aa}
+        body.dark-mode .chat-widget-container .hdsd-chat-zoom-btn:hover{background:#72e0aa;color:#071623;border-color:#72e0aa}
+        body.dark-mode .medplus-chat-zoom-box{background:#0b1d38;border-color:rgba(80,220,180,.35);color:#d8e7f2}
+        body.dark-mode .medplus-chat-zoom-close{background:#10284b;color:#72e0aa;border-color:rgba(80,220,180,.35)}
+        body.dark-mode .medplus-chat-zoom-close:hover{background:#173854;color:#d8fff0}
+        @media(max-width:767px){
+          .medplus-chat-zoom-backdrop{padding:12px}
+          .medplus-chat-zoom-box{max-width:85vw;max-height:70vh;padding:10px;border-radius:14px}
+          .medplus-chat-zoom-content{max-width:calc(85vw - 20px);max-height:calc(70vh - 20px)}
+          .medplus-chat-zoom-content>img{max-width:calc(85vw - 20px);max-height:calc(70vh - 20px)}
+          .medplus-chat-zoom-content .hdsd-chat-table-wrap{max-width:calc(85vw - 20px);max-height:calc(70vh - 20px)}
+          .chat-widget-container .hdsd-chat-table-caption{font-size:11.5px;padding:7px 8px}
+          .chat-widget-container .hdsd-chat-zoom-btn{font-size:10.5px;padding:4px 7px}
+        }
         body.dark-mode .chat-widget-container .hdsd-chat-table-wrap{background:#0b1d38;border-color:rgba(80,220,180,.35);box-shadow:none}
         body.dark-mode .chat-widget-container .hdsd-chat-table{background:#0b1d38;color:#d8e7f2}
         body.dark-mode .chat-widget-container .hdsd-chat-table th,body.dark-mode .chat-widget-container .hdsd-chat-table td{border-color:rgba(80,220,180,.25)}
@@ -9089,6 +9118,62 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section{background:#0b1
         }
 
 
+        function ensureMedPlusChatZoomLayer_() {
+            let layer = document.getElementById('medplus-chat-zoom-backdrop');
+            if (layer) return layer;
+            layer = document.createElement('div');
+            layer.id = 'medplus-chat-zoom-backdrop';
+            layer.className = 'medplus-chat-zoom-backdrop';
+            layer.innerHTML = '<div class="medplus-chat-zoom-box" role="dialog" aria-modal="true" aria-label="Phóng to nội dung"><button type="button" class="medplus-chat-zoom-close" aria-label="Đóng">×</button><div class="medplus-chat-zoom-content"></div></div>';
+            document.body.appendChild(layer);
+            layer.addEventListener('click', function(e) {
+                if (e.target === layer || e.target.closest('.medplus-chat-zoom-close')) closeMedPlusChatZoom_();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && layer.classList.contains('show')) closeMedPlusChatZoom_();
+            });
+            return layer;
+        }
+
+        function closeMedPlusChatZoom_() {
+            const layer = document.getElementById('medplus-chat-zoom-backdrop');
+            if (!layer) return;
+            layer.classList.remove('show');
+            const content = layer.querySelector('.medplus-chat-zoom-content');
+            if (content) content.innerHTML = '';
+        }
+
+        function openMedPlusChatZoomFromTable_(btn, event) {
+            if (event) { event.preventDefault(); event.stopPropagation(); }
+            const wrap = btn && btn.closest ? btn.closest('.hdsd-chat-table-wrap') : null;
+            if (!wrap) return;
+            const layer = ensureMedPlusChatZoomLayer_();
+            const content = layer.querySelector('.medplus-chat-zoom-content');
+            if (!content) return;
+            const clone = wrap.cloneNode(true);
+            clone.querySelectorAll('.hdsd-chat-zoom-btn').forEach(function(b) { b.remove(); });
+            content.innerHTML = '';
+            content.appendChild(clone);
+            layer.classList.add('show');
+        }
+
+        function openMedPlusChatZoomFromImage_(img, event) {
+            if (event) { event.preventDefault(); event.stopPropagation(); }
+            if (!img || !img.src) return;
+            const layer = ensureMedPlusChatZoomLayer_();
+            const content = layer.querySelector('.medplus-chat-zoom-content');
+            if (!content) return;
+            const clone = document.createElement('img');
+            clone.src = img.currentSrc || img.src;
+            clone.alt = img.alt || 'Ảnh trích từ tờ HDSD';
+            content.innerHTML = '';
+            content.appendChild(clone);
+            layer.classList.add('show');
+        }
+
+        window.openMedPlusChatZoomFromTable_ = openMedPlusChatZoomFromTable_;
+        window.openMedPlusChatZoomFromImage_ = openMedPlusChatZoomFromImage_;
+
         function hdsdChatTableCellHtml_(value) {
             const raw = cleanDrugFieldForChat_(String(value || '').replace(/\s+/g, ' ').trim());
             if (!raw) return '&nbsp;';
@@ -9117,7 +9202,7 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section{background:#0b1
                 });
                 html += '</tr>';
             });
-            html += '</table></div><div class="hdsd-chat-table-caption">Bảng trích từ tờ HDSD</div></div>';
+            html += '</table></div><div class="hdsd-chat-table-caption"><span class="hdsd-chat-table-caption-text">Bảng trích từ tờ HDSD</span><button type="button" class="hdsd-chat-zoom-btn" onclick="openMedPlusChatZoomFromTable_(this,event)" aria-label="Phóng to bảng">⛶ Phóng to</button></div></div>';
             return '{{HDSD_TABLE:' + encodeURIComponent(html) + '}}';
         }
 
@@ -12556,7 +12641,7 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section{background:#0b1
                 if (capNorm === 'dang cap nhat' || capNorm === 'loading' || capNorm === 'dang tai' || capNorm === 'cap nhat') cap = '';
                 const safeSrc = url.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                 const safeCap = cap.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                return '<div class="hdsd-chat-image-wrap"><img src="' + safeSrc + '" loading="lazy" onerror="this.parentElement.style.display=\'none\'">' + (safeCap ? '<small>' + safeCap + '</small>' : '') + '</div>';
+                return '<div class="hdsd-chat-image-wrap"><img class="hdsd-chat-zoomable-image" src="' + safeSrc + '" loading="lazy" alt="Ảnh trích từ tờ HDSD" onclick="openMedPlusChatZoomFromImage_(this,event)" onerror="this.parentElement.style.display=\'none\'">' + (safeCap ? '<small>' + safeCap + '</small>' : '') + '</div>';
             }
             function buildHDSDChatTable_(encodedHtml) {
                 try { return decodeURIComponent(String(encodedHtml || '')); }
