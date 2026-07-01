@@ -6066,6 +6066,155 @@ body.dark-mode .abc-toggle-btn.active:hover{
           .medplus-hdsd-image-zoom-hint{font-size:11px;bottom:10px;max-width:78vw;overflow:hidden;text-overflow:ellipsis;}
         }
 
+
+
+/* v10.4.5.22 — bảng dễ đọc hơn + ảnh phóng to tự do không bị bó trong khung */
+.chat-widget-container .hdsd-chat-table-wrap{
+  overflow:auto!important;
+  scrollbar-gutter:stable both-edges;
+}
+.chat-widget-container .hdsd-chat-table-scroll{
+  overflow-x:auto!important;
+  overflow-y:visible!important;
+  max-width:100%!important;
+  scrollbar-gutter:stable both-edges;
+  -webkit-overflow-scrolling:touch;
+}
+.chat-widget-container .hdsd-chat-table{
+  width:100%!important;
+  max-width:none!important;
+  table-layout:fixed!important;
+}
+.chat-widget-container .hdsd-chat-table th,
+.chat-widget-container .hdsd-chat-table td{
+  white-space:pre-wrap!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+  line-break:auto!important;
+  hyphens:auto!important;
+  max-width:260px;
+}
+.chat-widget-container .hdsd-chat-table-wrap.hdsd-chat-cols-1 .hdsd-chat-table,
+.chat-widget-container .hdsd-chat-table-wrap.hdsd-chat-cols-2 .hdsd-chat-table,
+.chat-widget-container .hdsd-chat-table-wrap.hdsd-chat-cols-3 .hdsd-chat-table,
+.chat-widget-container .hdsd-chat-table-wrap.hdsd-chat-cols-4 .hdsd-chat-table{min-width:100%!important}
+.chat-widget-container .hdsd-chat-table-wrap.hdsd-chat-cols-5 .hdsd-chat-table{min-width:620px!important}
+.chat-widget-container .hdsd-chat-table-wrap.hdsd-chat-cols-6 .hdsd-chat-table{min-width:720px!important}
+.chat-widget-container .hdsd-chat-table-wrap.hdsd-chat-cols-7 .hdsd-chat-table{min-width:820px!important}
+.chat-widget-container .hdsd-chat-table-wrap.hdsd-chat-cols-8 .hdsd-chat-table{min-width:920px!important}
+.chat-widget-container .hdsd-chat-table-wrap.hdsd-chat-cols-many .hdsd-chat-table{min-width:1040px!important}
+.medplus-chat-zoom-content .hdsd-chat-table-wrap{
+  overflow:auto!important;
+  scrollbar-gutter:stable both-edges;
+}
+.medplus-chat-zoom-content .hdsd-chat-table-scroll{overflow:visible!important}
+.medplus-chat-zoom-content .hdsd-chat-table{table-layout:fixed!important}
+.medplus-chat-zoom-content .hdsd-chat-table th,
+.medplus-chat-zoom-content .hdsd-chat-table td{
+  white-space:pre-wrap!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+  hyphens:auto!important;
+  max-width:300px;
+}
+#hdsd-content .hdsd-table-scroll{
+  display:block!important;
+  max-width:100%!important;
+  overflow-x:auto!important;
+  overflow-y:auto!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-x pan-y!important;
+  scrollbar-gutter:stable both-edges;
+}
+#hdsd-content .hdsd-table-scroll table,
+#hdsd-content table.hdsd-table{
+  width:100%!important;
+  min-width:100%!important;
+  max-width:none!important;
+  table-layout:fixed!important;
+  border-collapse:collapse!important;
+}
+#hdsd-content .hdsd-table-scroll.hdsd-cols-5 table{min-width:650px!important}
+#hdsd-content .hdsd-table-scroll.hdsd-cols-6 table{min-width:760px!important}
+#hdsd-content .hdsd-table-scroll.hdsd-cols-7 table{min-width:880px!important}
+#hdsd-content .hdsd-table-scroll.hdsd-cols-8 table{min-width:1000px!important}
+#hdsd-content .hdsd-table-scroll.hdsd-cols-many table{min-width:1120px!important}
+#hdsd-content .hdsd-table-scroll table th,
+#hdsd-content .hdsd-table-scroll table td,
+#hdsd-content table.hdsd-table th,
+#hdsd-content table.hdsd-table td{
+  white-space:pre-wrap!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+  hyphens:auto!important;
+  max-width:280px;
+}
+.medplus-hdsd-image-zoom-stage{
+  overflow:visible!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+  resize:none!important;
+}
+.medplus-hdsd-image-zoom-img{
+  border-radius:10px!important;
+  box-shadow:0 10px 38px rgba(0,0,0,.45)!important;
+}
+.medplus-hdsd-image-resize-handle{
+  position:absolute;
+  z-index:4;
+  display:block;
+  background:transparent;
+  touch-action:none;
+}
+.medplus-hdsd-image-resize-handle[data-hdsd-resize="n"],
+.medplus-hdsd-image-resize-handle[data-hdsd-resize="s"]{left:18px;right:18px;height:14px;cursor:ns-resize}
+.medplus-hdsd-image-resize-handle[data-hdsd-resize="n"]{top:-7px}
+.medplus-hdsd-image-resize-handle[data-hdsd-resize="s"]{bottom:-7px}
+.medplus-hdsd-image-resize-handle[data-hdsd-resize="e"],
+.medplus-hdsd-image-resize-handle[data-hdsd-resize="w"]{top:18px;bottom:18px;width:14px;cursor:ew-resize}
+.medplus-hdsd-image-resize-handle[data-hdsd-resize="e"]{right:-7px}
+.medplus-hdsd-image-resize-handle[data-hdsd-resize="w"]{left:-7px}
+.medplus-hdsd-image-resize-handle[data-hdsd-resize="ne"],
+.medplus-hdsd-image-resize-handle[data-hdsd-resize="sw"]{width:22px;height:22px;cursor:nesw-resize}
+.medplus-hdsd-image-resize-handle[data-hdsd-resize="nw"],
+.medplus-hdsd-image-resize-handle[data-hdsd-resize="se"]{width:22px;height:22px;cursor:nwse-resize}
+.medplus-hdsd-image-resize-handle[data-hdsd-resize="ne"]{right:-11px;top:-11px}
+.medplus-hdsd-image-resize-handle[data-hdsd-resize="nw"]{left:-11px;top:-11px}
+.medplus-hdsd-image-resize-handle[data-hdsd-resize="se"]{right:-11px;bottom:-11px}
+.medplus-hdsd-image-resize-handle[data-hdsd-resize="sw"]{left:-11px;bottom:-11px}
+.medplus-hdsd-image-resize-handle:hover::after{
+  content:'';
+  position:absolute;
+  inset:5px;
+  border-radius:999px;
+  background:rgba(255,255,255,.35);
+  box-shadow:0 0 0 1px rgba(46,125,50,.28);
+}
+@media (max-width:767px){
+  .chat-widget-container .hdsd-chat-table th,
+  .chat-widget-container .hdsd-chat-table td{max-width:190px}
+  .chat-widget-container .hdsd-chat-table-wrap.hdsd-chat-cols-1 .hdsd-chat-table,
+  .chat-widget-container .hdsd-chat-table-wrap.hdsd-chat-cols-2 .hdsd-chat-table,
+  .chat-widget-container .hdsd-chat-table-wrap.hdsd-chat-cols-3 .hdsd-chat-table{min-width:100%!important}
+  .chat-widget-container .hdsd-chat-table-wrap.hdsd-chat-cols-4 .hdsd-chat-table{min-width:520px!important}
+  .chat-widget-container .hdsd-chat-table-wrap.hdsd-chat-cols-5 .hdsd-chat-table{min-width:640px!important}
+  .chat-widget-container .hdsd-chat-table-wrap.hdsd-chat-cols-6 .hdsd-chat-table{min-width:760px!important}
+  .chat-widget-container .hdsd-chat-table-wrap.hdsd-chat-cols-7 .hdsd-chat-table{min-width:880px!important}
+  .chat-widget-container .hdsd-chat-table-wrap.hdsd-chat-cols-8 .hdsd-chat-table{min-width:1000px!important}
+  .chat-widget-container .hdsd-chat-table-wrap.hdsd-chat-cols-many .hdsd-chat-table{min-width:1120px!important}
+  #hdsd-content .hdsd-table-scroll table th,
+  #hdsd-content .hdsd-table-scroll table td{max-width:190px}
+  #hdsd-content .hdsd-table-scroll.hdsd-cols-4 table{min-width:540px!important}
+  #hdsd-content .hdsd-table-scroll.hdsd-cols-5 table{min-width:660px!important}
+  #hdsd-content .hdsd-table-scroll.hdsd-cols-6 table{min-width:780px!important}
+  #hdsd-content .hdsd-table-scroll.hdsd-cols-7 table{min-width:900px!important}
+  #hdsd-content .hdsd-table-scroll.hdsd-cols-8 table{min-width:1020px!important}
+  #hdsd-content .hdsd-table-scroll.hdsd-cols-many table{min-width:1140px!important}
+  .medplus-hdsd-image-resize-handle{display:none}
+}
+
 </style>
 
 <!-- MEDPLUS_PRECISE_EFFECT_SECTION_CAPS_SEND_PLANE_STYLE -->
@@ -11623,7 +11772,9 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section{background:#0b1
                     case 'table': {
                         const rows = block._children || [];
                         if (rows.length) {
-                            html += '<div class="hdsd-table-scroll"><table class="hdsd-table">';
+                            const maxCols = rows.reduce((m,row)=>Math.max(m, ((row.table_row&&row.table_row.cells)||[]).length), 0);
+                            const colClass = maxCols >= 9 ? 'hdsd-cols-many' : ('hdsd-cols-' + Math.max(1, maxCols));
+                            html += '<div class="hdsd-table-scroll '+colClass+'"><table class="hdsd-table">';
                             rows.forEach((row, ri) => {
                                 const cells = (row.table_row&&row.table_row.cells)||[];
                                 html += '<tr>';
@@ -17557,6 +17708,74 @@ body.dark-mode #send-button svg,body.dark-mode .send-button svg{filter:drop-shad
           const ZOOM_MIN = 0.35;
           const ZOOM_MAX = 14;
           let state = { scale:1, x:0, y:0, fitW:0, fitH:0, pointers:new Map(), lastPinch:null, dragging:false };
+
+          function hdsdResizeHandlesHtml_(){
+            return '<span class="medplus-hdsd-image-resize-handle" data-hdsd-resize="n"></span><span class="medplus-hdsd-image-resize-handle" data-hdsd-resize="s"></span><span class="medplus-hdsd-image-resize-handle" data-hdsd-resize="e"></span><span class="medplus-hdsd-image-resize-handle" data-hdsd-resize="w"></span><span class="medplus-hdsd-image-resize-handle" data-hdsd-resize="ne"></span><span class="medplus-hdsd-image-resize-handle" data-hdsd-resize="nw"></span><span class="medplus-hdsd-image-resize-handle" data-hdsd-resize="se"></span><span class="medplus-hdsd-image-resize-handle" data-hdsd-resize="sw"></span>';
+          }
+          let resizeState_ = null;
+          function beginResize_(e){
+            const handle = e.target && e.target.closest ? e.target.closest('[data-hdsd-resize]') : null;
+            if(!handle) return;
+            e.preventDefault();
+            e.stopPropagation();
+            const layer = ensureLayer_();
+            const stage = layer.querySelector('.medplus-hdsd-image-zoom-stage');
+            const img = layer.querySelector('.medplus-hdsd-image-zoom-img');
+            if(!stage || !img) return;
+            resizeState_ = {
+              mode: handle.dataset.hdsdResize || '',
+              startX: e.clientX,
+              startY: e.clientY,
+              w: Math.max(80, parseFloat(stage.style.width) || state.fitW || img.getBoundingClientRect().width || 100),
+              h: Math.max(80, parseFloat(stage.style.height) || state.fitH || img.getBoundingClientRect().height || 100),
+              x: state.x,
+              y: state.y,
+              aspect: Math.max(.05, (state.fitW || img.naturalWidth || 1) / Math.max(1, (state.fitH || img.naturalHeight || 1)))
+            };
+            handle.setPointerCapture && handle.setPointerCapture(e.pointerId);
+            document.addEventListener('pointermove', onResizeMove_, true);
+            document.addEventListener('pointerup', endResize_, true);
+            document.addEventListener('pointercancel', endResize_, true);
+          }
+          function onResizeMove_(e){
+            if(!resizeState_) return;
+            e.preventDefault();
+            const layer = ensureLayer_();
+            const stage = layer.querySelector('.medplus-hdsd-image-zoom-stage');
+            const img = layer.querySelector('.medplus-hdsd-image-zoom-img');
+            if(!stage || !img) return;
+            const mode = resizeState_.mode;
+            const dx = e.clientX - resizeState_.startX;
+            const dy = e.clientY - resizeState_.startY;
+            let w = resizeState_.w, h = resizeState_.h;
+            if(mode.indexOf('e') >= 0) w = resizeState_.w + dx;
+            if(mode.indexOf('w') >= 0) w = resizeState_.w - dx;
+            if(mode.indexOf('s') >= 0) h = resizeState_.h + dy;
+            if(mode.indexOf('n') >= 0) h = resizeState_.h - dy;
+            const onlyVertical = (mode === 'n' || mode === 's');
+            if(onlyVertical || Math.abs(dy) > Math.abs(dx)){
+              h = Math.max(80, Math.min(6000, h));
+              w = h * resizeState_.aspect;
+            } else {
+              w = Math.max(80, Math.min(6000, w));
+              h = w / resizeState_.aspect;
+            }
+            if(mode.indexOf('w') >= 0) state.x = resizeState_.x + (resizeState_.w - w) * state.scale;
+            if(mode.indexOf('n') >= 0) state.y = resizeState_.y + (resizeState_.h - h) * state.scale;
+            state.fitW = w; state.fitH = h;
+            stage.style.width = Math.round(w) + 'px';
+            stage.style.height = Math.round(h) + 'px';
+            img.style.width = Math.round(w) + 'px';
+            img.style.height = Math.round(h) + 'px';
+            apply_();
+          }
+          function endResize_(){
+            resizeState_ = null;
+            document.removeEventListener('pointermove', onResizeMove_, true);
+            document.removeEventListener('pointerup', endResize_, true);
+            document.removeEventListener('pointercancel', endResize_, true);
+          }
+
           function isMobile_(){ return window.matchMedia && window.matchMedia('(max-width: 767px)').matches; }
           function escAttr_(v){ return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
           function ensureLayer_(){
@@ -17565,7 +17784,7 @@ body.dark-mode #send-button svg,body.dark-mode .send-button svg{filter:drop-shad
             layer = document.createElement('div');
             layer.id = 'medplus-hdsd-image-zoom-backdrop';
             layer.className = 'medplus-hdsd-image-zoom-backdrop';
-            layer.innerHTML = '<button type="button" class="medplus-hdsd-image-zoom-close" aria-label="Đóng"></button><div class="medplus-hdsd-image-zoom-stage"><img class="medplus-hdsd-image-zoom-img" alt="Ảnh phóng to"></div><div class="medplus-hdsd-image-zoom-hint">Kéo để xem · Cuộn/pinch để phóng to</div>';
+            layer.innerHTML = '<button type="button" class="medplus-hdsd-image-zoom-close" aria-label="Đóng"></button><div class="medplus-hdsd-image-zoom-stage"><img class="medplus-hdsd-image-zoom-img" alt="Ảnh phóng to">' + hdsdResizeHandlesHtml_() + '</div><div class="medplus-hdsd-image-zoom-hint">Kéo để xem · Cuộn/pinch để phóng to · PC: rê sát viền để kéo rộng ảnh</div>';
             document.body.appendChild(layer);
             layer.addEventListener('click', function(e){ if(e.target === layer || e.target.closest('.medplus-hdsd-image-zoom-close')) closeHDSDInteractiveImageZoom_(); });
             layer.addEventListener('wheel', onWheel_, { passive:false });
@@ -17575,6 +17794,7 @@ body.dark-mode #send-button svg,body.dark-mode .send-button svg{filter:drop-shad
             stage.addEventListener('pointerup', onPointerUp_);
             stage.addEventListener('pointercancel', onPointerUp_);
             stage.addEventListener('dblclick', function(e){ e.preventDefault(); resetZoom_(true); });
+            stage.querySelectorAll('[data-hdsd-resize]').forEach(function(h){ h.addEventListener('pointerdown', beginResize_); });
             document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && layer.classList.contains('show')) closeHDSDInteractiveImageZoom_(); });
             return layer;
           }
