@@ -6041,6 +6041,31 @@ body.dark-mode .abc-toggle-btn.active:hover{
   body.dark-mode .search-wrapper .medplus-alpha-arrow{color:#50dcb4!important;}
 }
 
+
+        /* v10.4.5.18 — HDSD modal image/table zoom and safer table overflow */
+        #hdsd-content .hdsd-table-scroll{
+          display:block;max-width:100%;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-x;margin:12px 0;border-radius:8px;
+        }
+        #hdsd-content .hdsd-table-scroll table{
+          width:max-content;min-width:100%;max-width:none;border-collapse:collapse;
+        }
+        #hdsd-content img{cursor:zoom-in;}
+        .medplus-hdsd-image-zoom-backdrop{position:fixed;inset:0;z-index:2147483100;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.62);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);touch-action:none;overscroll-behavior:contain;}
+        .medplus-hdsd-image-zoom-backdrop.show{display:flex;}
+        .medplus-hdsd-image-zoom-stage{position:relative;overflow:hidden;border-radius:16px;background:#fff;border:1px solid rgba(46,125,50,.30);box-shadow:0 18px 58px rgba(0,0,0,.34);touch-action:none;}
+        .medplus-hdsd-image-zoom-img{position:absolute;left:0;top:0;display:block;max-width:none!important;max-height:none!important;margin:0!important;border-radius:0!important;box-shadow:none!important;user-select:none;-webkit-user-drag:none;touch-action:none;cursor:grab;transform-origin:0 0;will-change:transform;background:#fff;}
+        .medplus-hdsd-image-zoom-img.dragging{cursor:grabbing;}
+        .medplus-hdsd-image-zoom-close{position:absolute;top:12px;right:12px;z-index:3;width:34px;height:34px;border-radius:999px;border:1px solid rgba(46,125,50,.32);background:rgba(255,255,255,.96);color:#1b5e20;font-size:0;line-height:0;display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;box-shadow:0 5px 16px rgba(0,0,0,.24);}
+        .medplus-hdsd-image-zoom-close::before{content:'×';font-family:Arial,'Helvetica Neue',sans-serif;font-size:24px;font-weight:500;line-height:1;transform:translateY(-1px);}
+        .medplus-hdsd-image-zoom-hint{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);z-index:2;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.52);color:#fff;font-size:12px;font-weight:700;pointer-events:none;opacity:.86;white-space:nowrap;}
+        body.dark-mode .medplus-hdsd-image-zoom-stage{background:#071623;border-color:rgba(80,220,180,.38);}
+        body.dark-mode .medplus-hdsd-image-zoom-close{background:#10284b;color:#72e0aa;border-color:rgba(80,220,180,.42);}
+        @media(max-width:767px){
+          .medplus-hdsd-image-zoom-backdrop{padding:12px;}
+          .medplus-hdsd-image-zoom-close{top:9px;right:9px;width:32px;height:32px;}
+          .medplus-hdsd-image-zoom-hint{font-size:11px;bottom:10px;max-width:78vw;overflow:hidden;text-overflow:ellipsis;}
+        }
+
 </style>
 
 <!-- MEDPLUS_PRECISE_EFFECT_SECTION_CAPS_SEND_PLANE_STYLE -->
@@ -11581,8 +11606,8 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section{background:#0b1
                         }
                         const cap = rt(b.caption);
                         html += `<div class="hdsd-img-container" style="text-align:center;margin:14px 0">
-                <img src="${src}" loading="lazy" style="max-width:100%;border-radius:10px;"
-                     onerror="this.parentElement.style.display='none'">
+                <img class="hdsd-zoomable-image" src="${src}" loading="lazy" style="max-width:100%;border-radius:10px;"
+                     title="Bấm để phóng to ảnh" onerror="this.parentElement.style.display='none'">
                 ${cap ? `<br><small style="color:var(--subtext);font-size:13px">${cap}</small>` : ''}
              </div>`;
                         break;
@@ -11598,7 +11623,7 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section{background:#0b1
                     case 'table': {
                         const rows = block._children || [];
                         if (rows.length) {
-                            html += '<div style="overflow-x:auto;margin:12px 0"><table>';
+                            html += '<div class="hdsd-table-scroll"><table class="hdsd-table">';
                             rows.forEach((row, ri) => {
                                 const cells = (row.table_row&&row.table_row.cells)||[];
                                 html += '<tr>';
@@ -11844,7 +11869,7 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-section{background:#0b1
                 if (itemImage && itemImage.trim()) {
                     processedHtml = html.replace(
                         /<img\s[^>]*src="https:\/\/ngocanh\.princetq\.workers\.dev\/image-proxy\/[^"]*"[^>]*>/,
-                        '<img src="' + itemImage + '" style="max-width:100%;border-radius:10px;display:block;margin:14px auto">'
+                        '<img class=\"hdsd-zoomable-image\" src=\"' + itemImage + '\" title=\"Bấm để phóng to ảnh\" style=\"max-width:100%;border-radius:10px;display:block;margin:14px auto\">'
                     );
                 }
                 let finalHtml = processedHtml;
@@ -17520,6 +17545,164 @@ body.dark-mode #send-button svg,body.dark-mode .send-button svg{filter:drop-shad
   // bất đồng bộ hoàn thành khác thời điểm.
   window.medplusResolveRenderedHDSDGuides_=function(){ return Promise.resolve(); };
 })();
+
+</script>
+
+<script>
+
+        // v10.4.5.18 — Interactive zoom/pan for HDSD images, including image-based tables.
+        (function(){
+          if (window.__MEDPLUS_HDSD_IMAGE_ZOOM_18__) return;
+          window.__MEDPLUS_HDSD_IMAGE_ZOOM_18__ = true;
+          const ZOOM_MIN = 0.35;
+          const ZOOM_MAX = 14;
+          let state = { scale:1, x:0, y:0, fitW:0, fitH:0, pointers:new Map(), lastPinch:null, dragging:false };
+          function isMobile_(){ return window.matchMedia && window.matchMedia('(max-width: 767px)').matches; }
+          function escAttr_(v){ return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+          function ensureLayer_(){
+            let layer = document.getElementById('medplus-hdsd-image-zoom-backdrop');
+            if (layer) return layer;
+            layer = document.createElement('div');
+            layer.id = 'medplus-hdsd-image-zoom-backdrop';
+            layer.className = 'medplus-hdsd-image-zoom-backdrop';
+            layer.innerHTML = '<button type="button" class="medplus-hdsd-image-zoom-close" aria-label="Đóng"></button><div class="medplus-hdsd-image-zoom-stage"><img class="medplus-hdsd-image-zoom-img" alt="Ảnh phóng to"></div><div class="medplus-hdsd-image-zoom-hint">Kéo để xem · Cuộn/pinch để phóng to</div>';
+            document.body.appendChild(layer);
+            layer.addEventListener('click', function(e){ if(e.target === layer || e.target.closest('.medplus-hdsd-image-zoom-close')) closeHDSDInteractiveImageZoom_(); });
+            layer.addEventListener('wheel', onWheel_, { passive:false });
+            const stage = layer.querySelector('.medplus-hdsd-image-zoom-stage');
+            stage.addEventListener('pointerdown', onPointerDown_);
+            stage.addEventListener('pointermove', onPointerMove_);
+            stage.addEventListener('pointerup', onPointerUp_);
+            stage.addEventListener('pointercancel', onPointerUp_);
+            stage.addEventListener('dblclick', function(e){ e.preventDefault(); resetZoom_(true); });
+            document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && layer.classList.contains('show')) closeHDSDInteractiveImageZoom_(); });
+            return layer;
+          }
+          function apply_(){
+            const img = document.querySelector('#medplus-hdsd-image-zoom-backdrop .medplus-hdsd-image-zoom-img');
+            if(!img) return;
+            img.style.transform = 'translate(' + state.x + 'px,' + state.y + 'px) scale(' + state.scale + ')';
+          }
+          function resetZoom_(animate){
+            const layer = ensureLayer_();
+            const img = layer.querySelector('.medplus-hdsd-image-zoom-img');
+            if(!img) return;
+            state.scale = 1; state.x = 0; state.y = 0;
+            if(animate){ img.style.transition = 'transform .18s ease'; setTimeout(function(){ img.style.transition=''; }, 210); }
+            apply_();
+          }
+          function openHDSDInteractiveImageZoom_(src, event){
+            if(event){ event.preventDefault(); event.stopPropagation(); }
+            src = String(src || '').trim();
+            if(!src) return;
+            const layer = ensureLayer_();
+            const stage = layer.querySelector('.medplus-hdsd-image-zoom-stage');
+            const img = layer.querySelector('.medplus-hdsd-image-zoom-img');
+            state = { scale:1, x:0, y:0, fitW:0, fitH:0, pointers:new Map(), lastPinch:null, dragging:false };
+            img.classList.remove('dragging');
+            img.onload = function(){
+              const maxW = Math.max(120, window.innerWidth * (isMobile_() ? 0.85 : 0.50));
+              const maxH = Math.max(120, window.innerHeight * (isMobile_() ? 0.70 : 0.80));
+              const naturalW = Math.max(1, img.naturalWidth || 1);
+              const naturalH = Math.max(1, img.naturalHeight || 1);
+              const fit = Math.min(maxW / naturalW, maxH / naturalH, 1);
+              const w = Math.max(80, Math.round(naturalW * fit));
+              const h = Math.max(80, Math.round(naturalH * fit));
+              state.fitW = w; state.fitH = h;
+              stage.style.width = w + 'px';
+              stage.style.height = h + 'px';
+              img.style.width = w + 'px';
+              img.style.height = h + 'px';
+              img.style.transition = '';
+              apply_();
+            };
+            img.src = src;
+            layer.classList.add('show');
+            if (typeof lockBodyScroll === 'function') lockBodyScroll('hdsd-image-zoom');
+          }
+          function closeHDSDInteractiveImageZoom_(){
+            const layer = document.getElementById('medplus-hdsd-image-zoom-backdrop');
+            if(!layer) return;
+            layer.classList.remove('show');
+            const img = layer.querySelector('.medplus-hdsd-image-zoom-img');
+            if(img) img.src = '';
+            if (typeof unlockBodyScroll === 'function') unlockBodyScroll('hdsd-image-zoom');
+          }
+          function zoomAt_(clientX, clientY, factor){
+            const layer = ensureLayer_();
+            const stage = layer.querySelector('.medplus-hdsd-image-zoom-stage');
+            const rect = stage.getBoundingClientRect();
+            const px = clientX - rect.left;
+            const py = clientY - rect.top;
+            const old = state.scale;
+            const next = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, old * factor));
+            if(Math.abs(next - old) < 0.0001) return;
+            const localX = (px - state.x) / old;
+            const localY = (py - state.y) / old;
+            state.x = px - localX * next;
+            state.y = py - localY * next;
+            state.scale = next;
+            apply_();
+          }
+          function onWheel_(e){
+            const layer = ensureLayer_();
+            if(!layer.classList.contains('show')) return;
+            e.preventDefault();
+            const factor = Math.exp(-e.deltaY * 0.0015);
+            zoomAt_(e.clientX, e.clientY, factor);
+          }
+          function dist_(a,b){ const dx=a.clientX-b.clientX, dy=a.clientY-b.clientY; return Math.hypot(dx,dy); }
+          function mid_(a,b){ return { clientX:(a.clientX+b.clientX)/2, clientY:(a.clientY+b.clientY)/2 }; }
+          function onPointerDown_(e){
+            e.preventDefault();
+            e.currentTarget.setPointerCapture && e.currentTarget.setPointerCapture(e.pointerId);
+            state.pointers.set(e.pointerId, {clientX:e.clientX, clientY:e.clientY});
+            const img = e.currentTarget.querySelector('.medplus-hdsd-image-zoom-img');
+            if(img) img.classList.add('dragging');
+            state.dragging = true;
+            if(state.pointers.size === 2){
+              const pts = Array.from(state.pointers.values());
+              state.lastPinch = { d: dist_(pts[0], pts[1]), m: mid_(pts[0], pts[1]) };
+            }
+          }
+          function onPointerMove_(e){
+            if(!state.pointers.has(e.pointerId)) return;
+            e.preventDefault();
+            const prev = state.pointers.get(e.pointerId);
+            state.pointers.set(e.pointerId, {clientX:e.clientX, clientY:e.clientY});
+            if(state.pointers.size >= 2){
+              const pts = Array.from(state.pointers.values()).slice(0,2);
+              const d = dist_(pts[0], pts[1]);
+              const m = mid_(pts[0], pts[1]);
+              if(state.lastPinch && state.lastPinch.d > 0){
+                state.x += m.clientX - state.lastPinch.m.clientX;
+                state.y += m.clientY - state.lastPinch.m.clientY;
+                zoomAt_(m.clientX, m.clientY, d / state.lastPinch.d);
+              }
+              state.lastPinch = { d:d, m:m };
+            } else if(state.dragging && prev){
+              state.x += e.clientX - prev.clientX;
+              state.y += e.clientY - prev.clientY;
+              apply_();
+            }
+          }
+          function onPointerUp_(e){
+            state.pointers.delete(e.pointerId);
+            if(state.pointers.size < 2) state.lastPinch = null;
+            if(state.pointers.size === 0){
+              state.dragging = false;
+              const img = e.currentTarget.querySelector('.medplus-hdsd-image-zoom-img');
+              if(img) img.classList.remove('dragging');
+            }
+          }
+          document.addEventListener('click', function(e){
+            const img = e.target && e.target.closest ? e.target.closest('#hdsd-content img, #medplus-duoc-thu-modal .medplus-duoc-thu-table-image') : null;
+            if(!img || !img.src) return;
+            openHDSDInteractiveImageZoom_(img.currentSrc || img.src, e);
+          }, true);
+          window.openHDSDInteractiveImageZoom_ = openHDSDInteractiveImageZoom_;
+          window.closeHDSDInteractiveImageZoom_ = closeHDSDInteractiveImageZoom_;
+        })();
 
 </script>
 </body>
