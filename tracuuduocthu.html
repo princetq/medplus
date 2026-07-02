@@ -99,8 +99,7 @@ function renderIntro(blocks){
   }).join('')+'</div>';
 }
 function renderSection(sec,idx){
-  const open = idx===0 ? ' open' : '';
-  return '<details class="duoc-section"'+open+'><summary>'+esc(sec.title)+'</summary><div class="section-body">'+sec.blocks.map(renderInlineBlock).join('')+'</div></details>';
+  return '<details class="duoc-section"><summary>'+esc(sec.title)+'</summary><div class="section-body">'+sec.blocks.map(renderInlineBlock).join('')+'</div></details>';
 }
 function renderModal(rec){
   const blocks=Array.isArray(rec.blocks)?rec.blocks:[];
