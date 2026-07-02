@@ -1,10 +1,10 @@
 {
-  "schema_version": "10.1-source-paragraph-boundaries",
+  "schema_version": "11.0.0",
   "id": "natri-nitroprusiat",
   "title": "Natri Nitroprusiat",
   "aliases": [
     "natri nitroprusiat",
-    "sodium nitroprusiat"
+    "Sodium Nitroprusiat"
   ],
   "source": {
     "book": "Dược thư Quốc gia Việt Nam",
@@ -27,263 +27,3284 @@
       "boundary_method": "physical-source-title-band"
     }
   },
-  "sections": [
+  "parser": {
+    "name": "medplus-duoc-thu-v11-structured-pdf-parser",
+    "method": "PyMuPDF span -> line -> block",
+    "content_source": "Duocthu2023.pdf",
+    "old_json_usage": "id/title/page-boundary metadata and existing table asset path only; old content is not used",
+    "column_order": "left column -> right column -> next page",
+    "block_model": [
+      "heading",
+      "subheading",
+      "paragraph",
+      "list",
+      "table",
+      "figure",
+      "note"
+    ],
+    "table_policy": "no OCR; preserve existing duoc-thu-assets/<id>/pXXXX-tXX.png image_path"
+  },
+  "blocks": [
     {
-      "id": "thong-tin-au-chuyen-luan",
-      "title": "Thông tin đầu chuyên luận",
-      "content": "NATRI NITROPRUSIAT",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "NATRI NITROPRUSIAT"
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "ten-chung-quoc-te",
-      "title": "Tên chung quốc tế",
-      "content": "Sodium nitroprusside.\n\nMã ATC: C02DD01.\n\nLoại thuốc: Thuốc giãn mạch, chống tăng huyết áp.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Sodium nitroprusside.\n\nMã ATC: C02DD01.\n\nLoại thuốc: Thuốc giãn mạch, chống tăng huyết áp."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "dang-thuoc-va-ham-luong",
-      "title": "Dạng thuốc và hàm lượng",
-      "content": "Dung dịch tiêm: 25 mg/ml (2 ml).\n\nThuốc bột để pha tiêm: 50 mg/lọ.\n\nDung môi để pha: dung dịch glucose 5%, 2 ml/ống; nước vô khuẩn để tiêm.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Dung dịch tiêm: 25 mg/ml (2 ml).\n\nThuốc bột để pha tiêm: 50 mg/lọ.\n\nDung môi để pha: dung dịch glucose 5%, 2 ml/ống; nước vô khuẩn để tiêm."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "duoc-luc-hoc",
-      "title": "Dược lực học",
-      "content": "Natri nitroprusiat là thuốc hạ huyết áp tác dụng nhanh, chỉ kéo dài từ 1 - 10 phút, cho phép điều chỉnh huyết áp nhanh và hiệu quả.\n\nThuốc gây giãn mạch ngoại vi mạnh nên làm giảm sức cản ngoại vi do giải phóng ra nitơ oxyd nội sinh tác động trực tiếp lên tĩnh mạch và tiểu động mạch. Thuốc được sử dụng để điều trị cơn tăng huyết áp. Tác dụng của thuốc phụ thuộc vào liều và xuất hiện chỉ vài giây sau khi truyền vào tĩnh mạch và tác dụng cũng hết nhanh, do đó cần theo dõi chặt chẽ huyết áp sau khi dùng thuốc. Thuốc còn được dùng để chủ động gây giảm huyết áp khi gây mê toàn thân. Trong suy tim ứ máu nặng, thuốc được sử dụng để làm giảm tiền gánh và hậu gánh. Thuốc không có tác dụng trên hệ thần kinh thực vật.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Natri nitroprusiat là thuốc hạ huyết áp tác dụng nhanh, chỉ kéo dài từ 1 - 10 phút, cho phép điều chỉnh huyết áp nhanh và hiệu quả.\n\nThuốc gây giãn mạch ngoại vi mạnh nên làm giảm sức cản ngoại vi do giải phóng ra nitơ oxyd nội sinh tác động trực tiếp lên tĩnh mạch và tiểu động mạch. Thuốc được sử dụng để điều trị cơn tăng huyết áp. Tác dụng của thuốc phụ thuộc vào liều và xuất hiện chỉ vài giây sau khi truyền vào tĩnh mạch và tác dụng cũng hết nhanh, do đó cần theo dõi chặt chẽ huyết áp sau khi dùng thuốc. Thuốc còn được dùng để chủ động gây giảm huyết áp khi gây mê toàn thân. Trong suy tim ứ máu nặng, thuốc được sử dụng để làm giảm tiền gánh và hậu gánh. Thuốc không có tác dụng trên hệ thần kinh thực vật."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "duoc-ong-hoc",
-      "title": "Dược động học",
-      "content": "Sau khi truyền natri nitroprusiat, thuốc phân bố nhanh chóng, thể tích phân bố xấp xỉ bằng thể tích dịch ngoại bào. Nửa đời thải trừ của nitroprusiat khoảng 2 phút.\n\nTrong hồng cầu, cơ trơn và ở các mô, natri nitroprusiat được chuyển thành cyanid và tại gan, với sự có mặt của thiosulfat, chất này lại được chuyển hóa thành thiocyanat nhờ enzym rhodanase rồi thải từ từ theo nước tiểu. Nửa đời trong huyết tương của thiocyanat khoảng 3 ngày, có thể tăng gấp đôi hoặc gấp ba khi suy thận. Thiocyanat có thể tích luỹ trong máu người bệnh dùng natri nitroprusiat, đặc biệt người bệnh có chức năng thận kém hoặc bị giảm natri huyết hoặc người bệnh dùng natri thiosulfat đơn độc hoặc cùng với natri nitroprusiat để làm tăng nhanh chuyển hóa cyanid. Có thể làm giảm nhanh nồng độ thiocyanat bằng thẩm phân phúc mạc hay lọc máu thận nhân tạo.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Sau khi truyền natri nitroprusiat, thuốc phân bố nhanh chóng, thể tích phân bố xấp xỉ bằng thể tích dịch ngoại bào. Nửa đời thải trừ của nitroprusiat khoảng 2 phút.\n\nTrong hồng cầu, cơ trơn và ở các mô, natri nitroprusiat được chuyển thành cyanid và tại gan, với sự có mặt của thiosulfat, chất này lại được chuyển hóa thành thiocyanat nhờ enzym rhodanase rồi thải từ từ theo nước tiểu. Nửa đời trong huyết tương của thiocyanat khoảng 3 ngày, có thể tăng gấp đôi hoặc gấp ba khi suy thận. Thiocyanat có thể tích luỹ trong máu người bệnh dùng natri nitroprusiat, đặc biệt người bệnh có chức năng thận kém hoặc bị giảm natri huyết hoặc người bệnh dùng natri thiosulfat đơn độc hoặc cùng với natri nitroprusiat để làm tăng nhanh chuyển hóa cyanid. Có thể làm giảm nhanh nồng độ thiocyanat bằng thẩm phân phúc mạc hay lọc máu thận nhân tạo."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "chi-inh",
-      "title": "Chỉ định",
-      "content": "Cơn tăng huyết áp.\n\nSuy tim mất bù cấp.\n\nHạ huyết áp chỉ huy trong phẫu thuật để làm giảm chảy máu.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Cơn tăng huyết áp.\n\nSuy tim mất bù cấp.\n\nHạ huyết áp chỉ huy trong phẫu thuật để làm giảm chảy máu."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "chong-chi-inh",
-      "title": "Chống chỉ định",
-      "content": "Quá mẫn với natri nitroprusiat.\n\nTăng huyết áp còn bù do nguyên nhân hẹp eo động mạch chủ hoặc shunt động - tĩnh mạch.\n\nGây hạ huyết áp trong phẫu thuật ở bệnh nhân suy tuần hoàn não hoặc bệnh nhân có tình trạng quá nặng (điểm ASA bằng 5) được thực hiện phẫu thuật cấp cứu.\n\nNgười bị bệnh teo dây thần kinh thị giác bẩm sinh Leber hoặc người bệnh thiếu thiosulfat sulfuryltransferase (rhodanase).\n\nNgười bị giảm thị lực do thuốc lá.\n\nĐiều trị suy tim sung huyết cấp tính kèm giảm sức cản mạch toàn thân, ví dụ như suy tim cung lượng cao có thể gặp trong sốc nhiễm khuẩn.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Quá mẫn với natri nitroprusiat.\n\nTăng huyết áp còn bù do nguyên nhân hẹp eo động mạch chủ hoặc shunt động - tĩnh mạch.\n\nGây hạ huyết áp trong phẫu thuật ở bệnh nhân suy tuần hoàn não hoặc bệnh nhân có tình trạng quá nặng (điểm ASA bằng 5) được thực hiện phẫu thuật cấp cứu.\n\nNgười bị bệnh teo dây thần kinh thị giác bẩm sinh Leber hoặc người bệnh thiếu thiosulfat sulfuryltransferase (rhodanase).\n\nNgười bị giảm thị lực do thuốc lá.\n\nĐiều trị suy tim sung huyết cấp tính kèm giảm sức cản mạch toàn thân, ví dụ như suy tim cung lượng cao có thể gặp trong sốc nhiễm khuẩn."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "than-trong",
-      "title": "Thận trọng",
-      "content": "Độc tính do cyanid: Trừ khi sử dụng thuốc trong thời gian ngắn hoặc ở tốc độ truyền thấp (< 2 microgam/kg/phút); natri nitroprusiat làm tăng đáng kể nồng độ cyanid. Không sử dụng liều tối đa kéo dài hơn 10 phút; trong trường hợp huyết áp không kiểm soát được khi dùng liều tối đa (10 microgam/kg/phút), cần ngừng truyền. Các bệnh nhân suy dinh dưỡng, suy gan, bắc cầu nối tim phổi hoặc hạ thân nhiệt điều trị có nguy cơ cao hơn gặp độc tính do cyanid.\n\nKhi sử dụng natri nitroprusiat quá 3 ngày cần phải theo dõi nồng độ thiocyanat trong huyết tương và không được cao quá 100 microgam/ml mặc dù độc tính vẫn có thể xảy ra ở nồng độ thấp hơn mức này. Do nồng độ thiocyanat không phản ánh tình trạng ngộ độc cyanid nên trong quá trình điều trị cần phải thường xuyên theo dõi nồng độ cyanid trong máu và độc tính do cyanid dựa trên cân bằng kiềm - toan và nồng độ oxy tĩnh mạch. Nồng độ cyanid trong máu không vượt quá 1 microgam/ml và trong huyết thanh không được vượt qua 80 nanogam/ml.\n\nNgừng dùng natri nitroprusiat khi có dấu hiệu hoặc triệu chứng của độc tính: toan chuyển hóa, giảm bão hòa oxy máu, nhịp tim chậm, lú lẫn, động kinh.\n\nĐộc tính thiocyanat: có thể xảy ra ở bệnh nhân suy thận hoặc bệnh nhân truyền kéo dài (liều > 3 microgam/kg/phút trong hơn 72 giờ).\n\nHạ huyết áp: Hạ huyết áp quá mức có thể dẫn tới giảm tưới máu cơ quan; do vậy cần theo dõi huyết áp liên tục.\n\nTăng áp lực nội sọ: Thuốc có thể làm tăng áp lực nội sọ; do vậy cần sử dụng rất thận trọng trên bệnh nhân tăng áp lực nội sọ.\n\nMethemoglobin: Nitroprusiat làm hemoglobin thành methemoglobin phụ thuộc liều. Cần nghi ngờ methemoglobin khi bệnh nhân dùng liều 10 mg/kg nitroprusiat và có dấu hiệu giảm vận chuyển oxy mặc dù cung lượng tim và phân áp oxy động mạch thỏa đáng.\n\nỞ bệnh nhân thiếu máu: Khi dùng natri nitroprusiat để kiểm soát huyết áp trong phẫu thuật, cần điều trị tình trạng thiếu máu trước đó (nếu có thể).\n\nỞ bệnh nhân giảm thể tích tuần hoàn: Khi dùng natri nitroprusiat để kiểm soát huyết áp trong phẫu thuật, cần điều trị tình trạng giảm thể tích dịch trước phẫu thuật (nếu có thể).\n\nỞ bệnh nhân nhồi máu cơ tim: Sử dụng thận trọng do thuốc có khả năng ảnh hưởng tới huyết động và gây cướp máu mạch vành.\n\nỞ bệnh nhân suy giáp: Sử dụng thận trọng do thiocyanat, chất chuyển hóa của natri nitroprusiat có thể ức chế gắn kết và hấp thu iod.\n\nSuy gan: Sử dụng thận trọng ở bệnh nhân suy gan.\n\nSuy thận: Sử dụng thận trọng; dùng liều thấp nhất trong khoảng liều khuyến cáo, theo dõi nồng độ thiocyanat chặt chẽ.\n\nNgoài ra, dùng thận trọng ở người bệnh có nồng độ cobalamin huyết tương thấp.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Độc tính do cyanid: Trừ khi sử dụng thuốc trong thời gian ngắn hoặc ở tốc độ truyền thấp (< 2 microgam/kg/phút); natri nitroprusiat làm tăng đáng kể nồng độ cyanid. Không sử dụng liều tối đa kéo dài hơn 10 phút; trong trường hợp huyết áp không kiểm soát được khi dùng liều tối đa (10 microgam/kg/phút), cần ngừng truyền. Các bệnh nhân suy dinh dưỡng, suy gan, bắc cầu nối tim phổi hoặc hạ thân nhiệt điều trị có nguy cơ cao hơn gặp độc tính do cyanid.\n\nKhi sử dụng natri nitroprusiat quá 3 ngày cần phải theo dõi nồng độ thiocyanat trong huyết tương và không được cao quá 100 microgam/ml mặc dù độc tính vẫn có thể xảy ra ở nồng độ thấp hơn mức này. Do nồng độ thiocyanat không phản ánh tình trạng ngộ độc cyanid nên trong quá trình điều trị cần phải thường xuyên theo dõi nồng độ cyanid trong máu và độc tính do cyanid dựa trên cân bằng kiềm - toan và nồng độ oxy tĩnh mạch. Nồng độ cyanid trong máu không vượt quá 1 microgam/ml và trong huyết thanh không được vượt qua 80 nanogam/ml.\n\nNgừng dùng natri nitroprusiat khi có dấu hiệu hoặc triệu chứng của độc tính: toan chuyển hóa, giảm bão hòa oxy máu, nhịp tim chậm, lú lẫn, động kinh.\n\nĐộc tính thiocyanat: có thể xảy ra ở bệnh nhân suy thận hoặc bệnh nhân truyền kéo dài (liều > 3 microgam/kg/phút trong hơn 72 giờ).\n\nHạ huyết áp: Hạ huyết áp quá mức có thể dẫn tới giảm tưới máu cơ quan; do vậy cần theo dõi huyết áp liên tục.\n\nTăng áp lực nội sọ: Thuốc có thể làm tăng áp lực nội sọ; do vậy cần sử dụng rất thận trọng trên bệnh nhân tăng áp lực nội sọ.\n\nMethemoglobin: Nitroprusiat làm hemoglobin thành methemoglobin phụ thuộc liều. Cần nghi ngờ methemoglobin khi bệnh nhân dùng liều 10 mg/kg nitroprusiat và có dấu hiệu giảm vận chuyển oxy mặc dù cung lượng tim và phân áp oxy động mạch thỏa đáng.\n\nỞ bệnh nhân thiếu máu: Khi dùng natri nitroprusiat để kiểm soát huyết áp trong phẫu thuật, cần điều trị tình trạng thiếu máu trước đó (nếu có thể).\n\nỞ bệnh nhân giảm thể tích tuần hoàn: Khi dùng natri nitroprusiat để kiểm soát huyết áp trong phẫu thuật, cần điều trị tình trạng giảm thể tích dịch trước phẫu thuật (nếu có thể).\n\nỞ bệnh nhân nhồi máu cơ tim: Sử dụng thận trọng do thuốc có khả năng ảnh hưởng tới huyết động và gây cướp máu mạch vành.\n\nỞ bệnh nhân suy giáp: Sử dụng thận trọng do thiocyanat, chất chuyển hóa của natri nitroprusiat có thể ức chế gắn kết và hấp thu iod.\n\nSuy gan: Sử dụng thận trọng ở bệnh nhân suy gan.\n\nSuy thận: Sử dụng thận trọng; dùng liều thấp nhất trong khoảng liều khuyến cáo, theo dõi nồng độ thiocyanat chặt chẽ.\n\nNgoài ra, dùng thận trọng ở người bệnh có nồng độ cobalamin huyết tương thấp."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "thoi-ky-mang-thai",
-      "title": "Thời kỳ mang thai",
-      "content": "Ở động vật, natri nitroprusiat đi qua nhau thai làm nồng độ cyanid trong máu thai cao hơn trong máu mẹ. Tuy nhiên, nghiên cứu sự ảnh hưởng của thuốc trên sinh sản ở động vật chưa được thực hiện.\n\nCho đến nay chưa biết khi dùng natri nitroprusiat liệu có làm tổn hại đến thai nhi ở phụ nữ mang thai hay không, nhưng thuốc đã và vẫn đang được sử dụng để điều trị tăng huyết áp nặng ở người mang thai hoặc chủ động làm hạ huyết áp khi phẫu thuật. Tác dụng phụ duy nhất được nhận thấy là nhịp tim chậm thoáng qua ở thai.\n\nTrong khi sử dụng cần tránh dùng kéo dài và nên theo dõi pH máu, nồng độ cyanid trong huyết tương, trong hồng cầu và nồng độ methemoglobin ở người mẹ. Liều natri nitroprusiat thường dùng không gây ra nguy cơ tích tụ quá nhiều cyanid trong gan của thai nhi, nhưng natri nitroprusiat lại làm giảm 25 - 35% lưu lượng máu đến tử cung. Vì vậy, chỉ nên dùng để hạ huyết áp cho người mang thai khi thuốc khác không có tác dụng.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Ở động vật, natri nitroprusiat đi qua nhau thai làm nồng độ cyanid trong máu thai cao hơn trong máu mẹ. Tuy nhiên, nghiên cứu sự ảnh hưởng của thuốc trên sinh sản ở động vật chưa được thực hiện.\n\nCho đến nay chưa biết khi dùng natri nitroprusiat liệu có làm tổn hại đến thai nhi ở phụ nữ mang thai hay không, nhưng thuốc đã và vẫn đang được sử dụng để điều trị tăng huyết áp nặng ở người mang thai hoặc chủ động làm hạ huyết áp khi phẫu thuật. Tác dụng phụ duy nhất được nhận thấy là nhịp tim chậm thoáng qua ở thai.\n\nTrong khi sử dụng cần tránh dùng kéo dài và nên theo dõi pH máu, nồng độ cyanid trong huyết tương, trong hồng cầu và nồng độ methemoglobin ở người mẹ. Liều natri nitroprusiat thường dùng không gây ra nguy cơ tích tụ quá nhiều cyanid trong gan của thai nhi, nhưng natri nitroprusiat lại làm giảm 25 - 35% lưu lượng máu đến tử cung. Vì vậy, chỉ nên dùng để hạ huyết áp cho người mang thai khi thuốc khác không có tác dụng."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "thoi-ky-cho-con-bu",
-      "title": "Thời kỳ cho con bú",
-      "content": "Chưa có dữ liệu xác định liệu thuốc và chất chuyển hóa có đi qua sữa mẹ hay không. Do nhiều thuốc có thể bài tiết vào sữa mẹ và những biến cố bất lợi tiềm tàng có thể xảy ra, cần cân nhắc quyết định ngừng cho bú hoặc ngừng thuốc, căn cứ vào tầm quan trọng của thuốc đối với người mẹ.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Chưa có dữ liệu xác định liệu thuốc và chất chuyển hóa có đi qua sữa mẹ hay không. Do nhiều thuốc có thể bài tiết vào sữa mẹ và những biến cố bất lợi tiềm tàng có thể xảy ra, cần cân nhắc quyết định ngừng cho bú hoặc ngừng thuốc, căn cứ vào tầm quan trọng của thuốc đối với người mẹ."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "tac-dung-khong-mong-muon-adr",
-      "title": "Tác dụng không mong muốn (ADR)",
-      "content": "Thường gặp Toàn thân: buồn nôn, nôn, nhức đầu, vã mồ hôi.\n\nTuần hoàn: đánh trống ngực, đau thắt ngực.\n\nTiêu hóa: đau bụng.\n\nCơ: chuột rút.\n\nTai: ù tai.\n\nÍt gặp Toàn thân: tích tụ cyanid, nhiễm toan chuyển hóa.\n\nMáu: methemoglobin huyết kèm xanh tím.\n\nThần kinh: nhìn mờ.\n\nHiếm gặp Nội tiết: nhược năng giáp (khi dùng kéo dài).",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Thường gặp Toàn thân: buồn nôn, nôn, nhức đầu, vã mồ hôi.\n\nTuần hoàn: đánh trống ngực, đau thắt ngực.\n\nTiêu hóa: đau bụng.\n\nCơ: chuột rút.\n\nTai: ù tai.\n\nÍt gặp Toàn thân: tích tụ cyanid, nhiễm toan chuyển hóa.\n\nMáu: methemoglobin huyết kèm xanh tím.\n\nThần kinh: nhìn mờ.\n\nHiếm gặp Nội tiết: nhược năng giáp (khi dùng kéo dài)."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "huong-dan-cach-xu-tri-adr",
-      "title": "Hướng dẫn cách xử trí ADR",
-      "content": "Một số ADR như nhức đầu, ù tai, hồi hộp, đau bụng có thể kiểm soát bằng cách giảm tốc độ truyền (tối đa là 2 microgam/kg/phút).",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Một số ADR như nhức đầu, ù tai, hồi hộp, đau bụng có thể kiểm soát bằng cách giảm tốc độ truyền (tối đa là 2 microgam/kg/phút)."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "cach-dung",
-      "title": "Cách dùng",
-      "content": "Không được tiêm trực tiếp dung dịch thuốc vào tĩnh mạch. Thuốc cần dùng qua đường truyền tĩnh mạch bằng bơm tiêm tự động có thể điều chỉnh được hoặc dụng cụ truyền đặc biệt như máy truyền dịch. Cần phải theo dõi chặt chẽ huyết áp người bệnh trong khi truyền thuốc. Trong phòng điều trị cần có sẵn phương tiện theo dõi liên tục huyết áp, phương tiện hồi sức, phương tiện để điều trị ngộ độc cyanid.\n\nChuẩn bị dung dịch truyền: Hoàn nguyên 50 mg (bột đông khô) natri nitroprusiat với 2 - 3 ml dung dịch tiêm dextrose 5% và lắc nhẹ để hòa tan. Tiếp tục pha loãng dung dịch sau hoàn nguyên với dextrose 5% (thể tích 1 000 ml; 500 ml; 250 ml để truyền dịch).\n\nDung dịch thuốc sau khi pha cần được bảo quản tránh ánh sáng và dùng ngay sau khi pha.\n\nLiều dùng Tùy theo từng trường hợp. Liều khuyên dùng: Cơn tăng huyết áp: Liều khởi đầu là 0,3 - 1,5 microgam/kg/phút. Điều chỉnh liều thường xuyên mỗi 0,5 microgam/kg/phút mỗi 5 phút đến khi đạt được đáp ứng mong muốn. Liều thông thường là 0,5 - 8 microgam/ kg/phút. Nên sử dụng liều thấp hơn nếu bệnh nhân đang dùng một thuốc hạ áp khác. Cần ngừng thuốc nếu đáp ứng không thỏa đáng khi đã dùng liều tối đa 10 microgam/kg/phút trong 10 phút. Để hạn chế độc tính, một số tác giả khuyến cáo không nên vượt quá 2 microgam/kg/phút.\n\nĐể đạt mục tiêu giảm 30 - 40% huyết áp tâm trương: Sử dụng liều 20 - 400 microgam/phút. Nên dùng liều thấp hơn nếu đang dùng một thuốc hạ áp khác.\n\nĐể tránh tích lũy thiocyanat gây ngộ độc và nguy cơ tụt huyết áp không nên truyền dung dịch thuốc quá 72 giờ và tốc độ truyền không vượt quá 10 microgam/kg/phút. Chuyển ngay sang dùng thuốc hạ huyết áp theo đường uống khi có thể được, nhằm giảm thời gian phải truyền natri nitroprusiat. Trường hợp phải truyền thuốc kéo dài cần phải theo dõi nồng độ thiocyanat hàng ngày.\n\nGây hạ huyết áp khi gây mê trước phẫu thuật: Tổng liều tối đa là 1,5 microgam/kg/phút. Chú ý là các thuốc liệt hạch có thể làm tăng tác dụng hạ huyết áp của natri nitroprusiat.\n\nSuy tim mất bù: Liều khởi đầu khuyên dùng là 5 - 15 microgam/ phút, cách 5 - 10 phút có thể tăng từ 10 - 15 microgam/phút cho tới khi đạt được kết quả mong muốn. Đối với điều trị suy tim, tốc độ chỉnh liều cần dựa trên kết quả theo dõi huyết động xâm lấn và theo dõi nước tiểu. Liều thông thường dao động từ 10 - 200 microgam/ phút, thường dùng trong tối đa 3 ngày.\n\nBảng dưới đây gợi ý tốc độ truyền (ml/giờ) để đạt được liều ban đầu khuyến cáo (0,3 microgam/kg/phút) và liều tối đa (10 microgam/ kg/phút), áp dụng trên bệnh nhân người lớn và trẻ em (ít áp dụng được trên bệnh nhân dưới 10 kg).\n\nNgười suy gan: Không cần hiệu chỉnh liều; tuy nhiên do nguy cơ độc tính cyanid, cần sử dụng thận trọng.\n\nNgười suy thận: Sử dụng có thể dẫn tới tích lũy thiocyanat và độc tính; cần hạn chế sử dụng. Khi mức lọc cầu thận dưới 30 ml/ phút/1,73 m2, không nên vượt quá tốc độ truyền trung bình là 3 microgam/kg/phút. Trên bệnh nhân vô niệu, không nên vượt quá tốc độ truyền trung bình là 1 microgam/kg/phút.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Không được tiêm trực tiếp dung dịch thuốc vào tĩnh mạch. Thuốc cần dùng qua đường truyền tĩnh mạch bằng bơm tiêm tự động có thể điều chỉnh được hoặc dụng cụ truyền đặc biệt như máy truyền dịch. Cần phải theo dõi chặt chẽ huyết áp người bệnh trong khi truyền thuốc. Trong phòng điều trị cần có sẵn phương tiện theo dõi liên tục huyết áp, phương tiện hồi sức, phương tiện để điều trị ngộ độc cyanid.\n\nChuẩn bị dung dịch truyền: Hoàn nguyên 50 mg (bột đông khô) natri nitroprusiat với 2 - 3 ml dung dịch tiêm dextrose 5% và lắc nhẹ để hòa tan. Tiếp tục pha loãng dung dịch sau hoàn nguyên với dextrose 5% (thể tích 1 000 ml; 500 ml; 250 ml để truyền dịch).\n\nDung dịch thuốc sau khi pha cần được bảo quản tránh ánh sáng và dùng ngay sau khi pha.\n\nLiều dùng Tùy theo từng trường hợp. Liều khuyên dùng: Cơn tăng huyết áp: Liều khởi đầu là 0,3 - 1,5 microgam/kg/phút. Điều chỉnh liều thường xuyên mỗi 0,5 microgam/kg/phút mỗi 5 phút đến khi đạt được đáp ứng mong muốn. Liều thông thường là 0,5 - 8 microgam/ kg/phút. Nên sử dụng liều thấp hơn nếu bệnh nhân đang dùng một thuốc hạ áp khác. Cần ngừng thuốc nếu đáp ứng không thỏa đáng khi đã dùng liều tối đa 10 microgam/kg/phút trong 10 phút. Để hạn chế độc tính, một số tác giả khuyến cáo không nên vượt quá 2 microgam/kg/phút.\n\nĐể đạt mục tiêu giảm 30 - 40% huyết áp tâm trương: Sử dụng liều 20 - 400 microgam/phút. Nên dùng liều thấp hơn nếu đang dùng một thuốc hạ áp khác.\n\nĐể tránh tích lũy thiocyanat gây ngộ độc và nguy cơ tụt huyết áp không nên truyền dung dịch thuốc quá 72 giờ và tốc độ truyền không vượt quá 10 microgam/kg/phút. Chuyển ngay sang dùng thuốc hạ huyết áp theo đường uống khi có thể được, nhằm giảm thời gian phải truyền natri nitroprusiat. Trường hợp phải truyền thuốc kéo dài cần phải theo dõi nồng độ thiocyanat hàng ngày.\n\nGây hạ huyết áp khi gây mê trước phẫu thuật: Tổng liều tối đa là 1,5 microgam/kg/phút. Chú ý là các thuốc liệt hạch có thể làm tăng tác dụng hạ huyết áp của natri nitroprusiat.\n\nSuy tim mất bù: Liều khởi đầu khuyên dùng là 5 - 15 microgam/ phút, cách 5 - 10 phút có thể tăng từ 10 - 15 microgam/phút cho tới khi đạt được kết quả mong muốn. Đối với điều trị suy tim, tốc độ chỉnh liều cần dựa trên kết quả theo dõi huyết động xâm lấn và theo dõi nước tiểu. Liều thông thường dao động từ 10 - 200 microgam/ phút, thường dùng trong tối đa 3 ngày.\n\nBảng dưới đây gợi ý tốc độ truyền (ml/giờ) để đạt được liều ban đầu khuyến cáo (0,3 microgam/kg/phút) và liều tối đa (10 microgam/ kg/phút), áp dụng trên bệnh nhân người lớn và trẻ em (ít áp dụng được trên bệnh nhân dưới 10 kg)."
-        },
-        {
-          "type": "table",
-          "table_id": "p1174-t02"
-        },
-        {
-          "type": "text",
-          "text": "Người suy gan: Không cần hiệu chỉnh liều; tuy nhiên do nguy cơ độc tính cyanid, cần sử dụng thận trọng.\n\nNgười suy thận: Sử dụng có thể dẫn tới tích lũy thiocyanat và độc tính; cần hạn chế sử dụng. Khi mức lọc cầu thận dưới 30 ml/ phút/1,73 m2, không nên vượt quá tốc độ truyền trung bình là 3 microgam/kg/phút. Trên bệnh nhân vô niệu, không nên vượt quá tốc độ truyền trung bình là 1 microgam/kg/phút."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "tuong-tac-thuoc",
-      "title": "Tương tác thuốc",
-      "content": "Một số thuốc hiệp đồng tác dụng hạ huyết áp cùng natri nitroprusiat: thuốc điều trị tăng huyết áp, alfuzosin, thuốc chống loạn thần không điển hình, barbiturat, benperidol, diazoxid, duloxetin, lormetazepam, methylphenidat, nicorandil, nitric oxid, naftopidil, molsidomin, obinutuzumab, pentoxifylin, thuốc ức chế PDE- 5, đồng đẳng của prostacyclin, riociguat, pholcodin, nicergolin, amifostin, brimonidin, quinagolid.\n\nMột số thuốc có thể làm mất tác dụng hạ huyết áp của natri nitroprusiat: dexmethylphenidat, bromperidol, brigatinib, amphetamin, yohimbin.\n\nNatri nitroprusiat có thể làm tăng độc tính của một số thuốc như: prilocain, natri nitrit, thuốc gây tê tại chỗ.\n\nNitric oxid có thể làm tăng nguy cơ gặp methemoglobin khi dùng cùng natri nitroprusiat.\n\nDapson có thể làm tăng các tác dụng phụ khi dùng natri nitroprusiat.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Một số thuốc hiệp đồng tác dụng hạ huyết áp cùng natri nitroprusiat: thuốc điều trị tăng huyết áp, alfuzosin, thuốc chống loạn thần không điển hình, barbiturat, benperidol, diazoxid, duloxetin, lormetazepam, methylphenidat, nicorandil, nitric oxid, naftopidil, molsidomin, obinutuzumab, pentoxifylin, thuốc ức chế PDE- 5, đồng đẳng của prostacyclin, riociguat, pholcodin, nicergolin, amifostin, brimonidin, quinagolid.\n\nMột số thuốc có thể làm mất tác dụng hạ huyết áp của natri nitroprusiat: dexmethylphenidat, bromperidol, brigatinib, amphetamin, yohimbin.\n\nNatri nitroprusiat có thể làm tăng độc tính của một số thuốc như: prilocain, natri nitrit, thuốc gây tê tại chỗ.\n\nNitric oxid có thể làm tăng nguy cơ gặp methemoglobin khi dùng cùng natri nitroprusiat.\n\nDapson có thể làm tăng các tác dụng phụ khi dùng natri nitroprusiat."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "tuong-ky",
-      "title": "Tương kỵ",
-      "content": "Chỉ pha natri nitroprusiat trong dung dịch glucose 5%.\n\nKhông cho thêm bất cứ thuốc nào vào dung dịch natri nitroprusiat.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Chỉ pha natri nitroprusiat trong dung dịch glucose 5%.\n\nKhông cho thêm bất cứ thuốc nào vào dung dịch natri nitroprusiat."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "qua-lieu-va-xu-tri",
-      "title": "Quá liều và xử trí",
-      "content": "Triệu chứng: Khi lượng cyanid trong huyết tương vượt quá 80 nanogam/ml sẽ xuất hiện dấu hiệu của quá liều hoặc do thiếu hụt thiosulfat nội sinh. Những dấu hiệu đầu tiên là nhịp tim nhanh, vã mồ hôi, thở nhanh - sâu, tụt huyết áp nặng và có thể có nhiễm toan chuyển hóa. Những triệu chứng đi kèm hoặc tiếp theo là: khó thở, nhức đầu, nôn, chóng mặt, mất điều hòa và hôn mê.\n\nQuá liều nặng có thể gây triệu chứng ngộ độc cyanid, kèm rối loạn tâm thần, co giật, hôn mê, mạch rất yếu, mất phản xạ, giãn đồng tử, tụt huyết áp, tiếng tim rất mờ, da vân đá, thở yếu. Chỉ cho thở oxygen không đủ để khắc phục các rối loạn trên.\n\nXử trí: Phải ngừng truyền ngay lập tức. Điều trị như điều trị ngộ độc cyanid. Có hai phương pháp nên dùng: Điều trị bằng hydroxocobalamin: Hydroxocobalamin kết hợp với cyanid để tạo thành cyanocobalamin và do đó bất hoạt ion cyanid.\n\nTiêm hydroxocobalamin vào tĩnh mạch với liều 30 - 60 mg/kg cân nặng. Trên thực tế, do tác dụng hiệp đồng giữa hydroxocobalamin và natri thiosulfat, cho 4 g hydroxocobalamin vào trong 500 ml dung dịch có chứa 10% natri thiosulfat rồi truyền cho người bệnh.\n\nĐiều trị bằng nitrit và natri thiosulfat: Trong khi chờ đợi pha dung dịch tiêm natri nitrit 3% thì cứ mỗi phút lại cho người bệnh hít amyl nitrit 15 - 30 giây.\n\nTruyền tĩnh mạch 10 - 15 ml dung dịch natri nitrit 3% với tốc độ 2,5 - 5 ml/phút và phải theo dõi chặt chẽ huyết áp (có sự tạo thành methemoglobin).\n\nTruyền chậm tĩnh mạch (trong 10 phút) 12,5 g natri thiosulfat trong 50 ml dung dịch glucose 5%. Tuy truyền thiosulfat vào tĩnh mạch theo tỷ lệ 10 : 1 (thiosulfat : nitroprusiat) có tác dụng tốt làm giảm nồng độ cyanid trong huyết thanh và trong tế bào, cần lưu ý chính bản thân thiocyanat cũng độc ở nồng độ cao và người bệnh suy thận dễ có nguy cơ bị ngộ độc thiocyanat.\n\nPhải theo dõi sát sao người bệnh trong nhiều giờ. Nếu các triệu chứng quá liều xuất hiện lại thì phải điều trị lại bằng natri nitrit và natri thiosulfat với liều bằng một nửa lần trước. Trong khi truyền natri nitrit và khi thiocyanat được tạo thành thì huyết áp có thể hạ thấp. Có thể điều trị huyết áp thấp bằng các thuốc gây co mạch.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Triệu chứng: Khi lượng cyanid trong huyết tương vượt quá 80 nanogam/ml sẽ xuất hiện dấu hiệu của quá liều hoặc do thiếu hụt thiosulfat nội sinh. Những dấu hiệu đầu tiên là nhịp tim nhanh, vã mồ hôi, thở nhanh - sâu, tụt huyết áp nặng và có thể có nhiễm toan chuyển hóa. Những triệu chứng đi kèm hoặc tiếp theo là: khó thở, nhức đầu, nôn, chóng mặt, mất điều hòa và hôn mê.\n\nQuá liều nặng có thể gây triệu chứng ngộ độc cyanid, kèm rối loạn tâm thần, co giật, hôn mê, mạch rất yếu, mất phản xạ, giãn đồng tử, tụt huyết áp, tiếng tim rất mờ, da vân đá, thở yếu. Chỉ cho thở oxygen không đủ để khắc phục các rối loạn trên."
-        },
-        {
-          "type": "table",
-          "table_id": "p1174-t01"
-        },
-        {
-          "type": "text",
-          "text": "Xử trí: Phải ngừng truyền ngay lập tức. Điều trị như điều trị ngộ độc cyanid. Có hai phương pháp nên dùng: Điều trị bằng hydroxocobalamin: Hydroxocobalamin kết hợp với cyanid để tạo thành cyanocobalamin và do đó bất hoạt ion cyanid.\n\nTiêm hydroxocobalamin vào tĩnh mạch với liều 30 - 60 mg/kg cân nặng. Trên thực tế, do tác dụng hiệp đồng giữa hydroxocobalamin và natri thiosulfat, cho 4 g hydroxocobalamin vào trong 500 ml dung dịch có chứa 10% natri thiosulfat rồi truyền cho người bệnh.\n\nĐiều trị bằng nitrit và natri thiosulfat: Trong khi chờ đợi pha dung dịch tiêm natri nitrit 3% thì cứ mỗi phút lại cho người bệnh hít amyl nitrit 15 - 30 giây.\n\nTruyền tĩnh mạch 10 - 15 ml dung dịch natri nitrit 3% với tốc độ 2,5 - 5 ml/phút và phải theo dõi chặt chẽ huyết áp (có sự tạo thành methemoglobin).\n\nTruyền chậm tĩnh mạch (trong 10 phút) 12,5 g natri thiosulfat trong 50 ml dung dịch glucose 5%. Tuy truyền thiosulfat vào tĩnh mạch theo tỷ lệ 10 : 1 (thiosulfat : nitroprusiat) có tác dụng tốt làm giảm nồng độ cyanid trong huyết thanh và trong tế bào, cần lưu ý chính bản thân thiocyanat cũng độc ở nồng độ cao và người bệnh suy thận dễ có nguy cơ bị ngộ độc thiocyanat.\n\nPhải theo dõi sát sao người bệnh trong nhiều giờ. Nếu các triệu chứng quá liều xuất hiện lại thì phải điều trị lại bằng natri nitrit và natri thiosulfat với liều bằng một nửa lần trước. Trong khi truyền natri nitrit và khi thiocyanat được tạo thành thì huyết áp có thể hạ thấp. Có thể điều trị huyết áp thấp bằng các thuốc gây co mạch."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "cap-nhat-lan-cuoi",
-      "title": "Cập nhật lần cuối",
-      "content": "2020.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "2020."
-        }
-      ],
-      "subsections": []
-    }
-  ],
-  "tables": [
-    {
-      "id": "p1174-t01",
-      "image_path": "duoc-thu-assets/natri-nitroprusiat/p1174-t01.png",
-      "source_pdf_page": 1174,
+      "id": "b0001",
+      "type": "heading",
+      "level": 1,
+      "text": "NATRI NITROPRUSIAT",
+      "page": 1172,
+      "printed_page": 1178,
+      "column": 1,
       "bbox": [
-        299.39,
-        346.94,
-        551.2,
-        453.02
+        370.49,
+        297.55,
+        480.41,
+        311.39
+      ],
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "NATRI NITROPRUSIAT",
+          "bbox": [
+            370.49,
+            297.55,
+            480.41,
+            311.39
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
       ]
     },
     {
-      "id": "p1174-t02",
-      "image_path": "duoc-thu-assets/natri-nitroprusiat/p1174-t02.png",
-      "source_pdf_page": 1174,
+      "id": "b0002",
+      "type": "paragraph",
+      "text": "Tên chung quốc tế: Sodium nitroprusside.",
+      "page": 1172,
+      "printed_page": 1178,
+      "column": 1,
+      "bbox": [
+        299.39,
+        320.92,
+        463.54,
+        334.07
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tên chung quốc tế: ",
+          "bbox": [
+            299.39,
+            320.92,
+            379.61,
+            334.07
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "Sodium nitroprusside.",
+          "bbox": [
+            379.62,
+            321.07,
+            463.54,
+            333.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0003",
+      "type": "paragraph",
+      "text": "Mã ATC: C02DD01.",
+      "page": 1172,
+      "printed_page": 1178,
+      "column": 1,
+      "bbox": [
+        299.39,
+        332.42,
+        381.27,
+        345.57
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mã ATC: ",
+          "bbox": [
+            299.39,
+            332.42,
+            339.84,
+            345.57
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "C02DD01.",
+          "bbox": [
+            339.84,
+            332.57,
+            381.27,
+            345.37
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0004",
+      "type": "paragraph",
+      "text": "Loại thuốc: Thuốc giãn mạch, chống tăng huyết áp.",
+      "page": 1172,
+      "printed_page": 1178,
+      "column": 1,
+      "bbox": [
+        299.39,
+        343.92,
+        498.33,
+        357.07
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Loại thuốc: ",
+          "bbox": [
+            299.39,
+            343.92,
+            348.47,
+            357.07
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "Thuốc giãn mạch, chống tăng huyết áp.",
+          "bbox": [
+            348.47,
+            344.07,
+            498.33,
+            356.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0005",
+      "type": "heading",
+      "level": 2,
+      "text": "Dạng thuốc và hàm lượng",
+      "page": 1172,
+      "printed_page": 1178,
+      "column": 1,
+      "bbox": [
+        299.39,
+        358.92,
+        404.3,
+        372.07
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dạng thuốc và hàm lượng",
+          "bbox": [
+            299.39,
+            358.92,
+            404.3,
+            372.07
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0006",
+      "type": "paragraph",
+      "text": "Dung dịch tiêm: 25 mg/ml (2 ml).",
+      "page": 1172,
+      "printed_page": 1178,
+      "column": 1,
+      "bbox": [
+        299.39,
+        371.07,
+        428.42,
+        383.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Dung dịch tiêm: 25 mg/ml (2 ml).",
+          "bbox": [
+            299.39,
+            371.07,
+            428.42,
+            383.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0007",
+      "type": "paragraph",
+      "text": "Thuốc bột để pha tiêm: 50 mg/lọ.",
+      "page": 1172,
+      "printed_page": 1178,
+      "column": 1,
+      "bbox": [
+        299.39,
+        383.07,
+        426.31,
+        395.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thuốc bột để pha tiêm: 50 mg/lọ.",
+          "bbox": [
+            299.39,
+            383.07,
+            426.31,
+            395.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0008",
+      "type": "paragraph",
+      "text": "Dung môi để pha: dung dịch glucose 5%, 2 ml/ống; nước vô khuẩn để tiêm.",
+      "page": 1172,
+      "printed_page": 1178,
+      "column": 1,
+      "bbox": [
+        299.39,
+        395.07,
+        553.72,
+        419.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0009",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược lực học",
+      "page": 1172,
+      "printed_page": 1178,
+      "column": 1,
+      "bbox": [
+        299.39,
+        421.92,
+        352.98,
+        435.07
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược lực học",
+          "bbox": [
+            299.39,
+            421.92,
+            352.98,
+            435.07
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0010",
+      "type": "paragraph",
+      "text": "Natri nitroprusiat là thuốc hạ huyết áp tác dụng nhanh, chỉ kéo dài từ 1 - 10 phút, cho phép điều chỉnh huyết áp nhanh và hiệu quả.",
+      "page": 1172,
+      "printed_page": 1178,
+      "column": 1,
+      "bbox": [
+        299.39,
+        434.07,
+        553.72,
+        458.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0011",
+      "type": "paragraph",
+      "text": "Thuốc gây giãn mạch ngoại vi mạnh nên làm giảm sức cản ngoại vi do giải phóng ra nitơ oxyd nội sinh tác động trực tiếp lên tĩnh mạch và tiểu động mạch. Thuốc được sử dụng để điều trị cơn tăng huyết áp. Tác dụng của thuốc phụ thuộc vào liều và xuất hiện chỉ vài giây sau khi truyền vào tĩnh mạch và tác dụng cũng hết nhanh, do đó cần theo dõi chặt chẽ huyết áp sau khi dùng thuốc. Thuốc còn được dùng để chủ động gây giảm huyết áp khi gây mê toàn thân. Trong suy tim ứ máu nặng, thuốc được sử dụng để làm giảm tiền gánh và hậu gánh. Thuốc không có tác dụng trên hệ thần kinh thực vật.",
+      "page": 1172,
+      "printed_page": 1178,
+      "column": 1,
+      "bbox": [
+        299.39,
+        458.07,
+        553.72,
+        566.87
+      ],
+      "source": {
+        "line_count": 9
+      }
+    },
+    {
+      "id": "b0012",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược động học",
+      "page": 1172,
+      "printed_page": 1178,
+      "column": 1,
+      "bbox": [
+        299.39,
+        568.92,
+        360.49,
+        582.07
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược động học",
+          "bbox": [
+            299.39,
+            568.92,
+            360.49,
+            582.07
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0013",
+      "type": "paragraph",
+      "text": "Sau khi truyền natri nitroprusiat, thuốc phân bố nhanh chóng, thể tích phân bố xấp xỉ bằng thể tích dịch ngoại bào. Nửa đời thải trừ của nitroprusiat khoảng 2 phút.",
+      "page": 1172,
+      "printed_page": 1178,
+      "column": 1,
+      "bbox": [
+        299.39,
+        581.07,
+        553.72,
+        617.87
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0014",
+      "type": "paragraph",
+      "text": "Trong hồng cầu, cơ trơn và ở các mô, natri nitroprusiat được chuyển thành cyanid và tại gan, với sự có mặt của thiosulfat, chất này lại được chuyển hóa thành thiocyanat nhờ enzym rhodanase rồi thải từ từ theo nước tiểu. Nửa đời trong huyết tương của thiocyanat khoảng 3 ngày, có thể tăng gấp đôi hoặc gấp ba khi suy thận. Thiocyanat có thể tích luỹ trong máu người bệnh dùng natri nitroprusiat, đặc biệt người bệnh có chức năng thận kém hoặc bị giảm natri huyết hoặc người bệnh dùng natri thiosulfat đơn độc hoặc cùng với natri nitroprusiat để làm tăng nhanh chuyển hóa cyanid. Có thể làm giảm nhanh nồng độ thiocyanat bằng thẩm phân phúc mạc hay lọc máu thận nhân tạo.",
+      "page": 1172,
+      "printed_page": 1178,
+      "column": 1,
+      "bbox": [
+        299.39,
+        617.07,
+        553.72,
+        749.87
+      ],
+      "source": {
+        "line_count": 11
+      }
+    },
+    {
+      "id": "b0015",
+      "type": "heading",
+      "level": 2,
+      "text": "Chỉ định",
+      "page": 1172,
+      "printed_page": 1178,
+      "column": 1,
+      "bbox": [
+        299.39,
+        751.92,
+        335.03,
+        765.07
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chỉ định",
+          "bbox": [
+            299.39,
+            751.92,
+            335.03,
+            765.07
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0016",
+      "type": "paragraph",
+      "text": "Cơn tăng huyết áp.",
+      "page": 1172,
+      "printed_page": 1178,
+      "column": 1,
+      "bbox": [
+        299.39,
+        764.07,
+        373.81,
+        776.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cơn tăng huyết áp. ",
+          "bbox": [
+            299.39,
+            764.07,
+            373.81,
+            776.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0017",
+      "type": "paragraph",
+      "text": "Suy tim mất bù cấp.",
+      "page": 1172,
+      "printed_page": 1178,
+      "column": 1,
+      "bbox": [
+        299.39,
+        776.07,
+        375.65,
+        788.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Suy tim mất bù cấp.",
+          "bbox": [
+            299.39,
+            776.07,
+            375.65,
+            788.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0018",
+      "type": "paragraph",
+      "text": "Hạ huyết áp chỉ huy trong phẫu thuật để làm giảm chảy máu.",
+      "page": 1172,
+      "printed_page": 1178,
+      "column": 1,
+      "bbox": [
+        299.39,
+        788.07,
+        531.31,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Hạ huyết áp chỉ huy trong phẫu thuật để làm giảm chảy máu.",
+          "bbox": [
+            299.39,
+            788.07,
+            531.31,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0019",
+      "type": "heading",
+      "level": 2,
+      "text": "Chống chỉ định",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        63.02,
+        105.73,
+        76.16
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chống chỉ định",
+          "bbox": [
+            43.43,
+            63.02,
+            105.73,
+            76.16
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0020",
+      "type": "paragraph",
+      "text": "Quá mẫn với natri nitroprusiat.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        75.61,
+        161.13,
+        88.41
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Quá mẫn với natri nitroprusiat.",
+          "bbox": [
+            43.43,
+            75.61,
+            161.13,
+            88.41
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0021",
+      "type": "paragraph",
+      "text": "Tăng huyết áp còn bù do nguyên nhân hẹp eo động mạch chủ hoặc shunt động - tĩnh mạch.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        88.06,
+        297.77,
+        113.3
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0022",
+      "type": "paragraph",
+      "text": "Gây hạ huyết áp trong phẫu thuật ở bệnh nhân suy tuần hoàn não hoặc bệnh nhân có tình trạng quá nặng (điểm ASA bằng 5) được thực hiện phẫu thuật cấp cứu.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        112.95,
+        297.77,
+        150.64
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0023",
+      "type": "paragraph",
+      "text": "Người bị bệnh teo dây thần kinh thị giác bẩm sinh Leber hoặc người bệnh thiếu thiosulfat sulfuryltransferase (rhodanase).",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        150.29,
+        297.77,
+        175.54
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0024",
+      "type": "paragraph",
+      "text": "Người bị giảm thị lực do thuốc lá.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        175.19,
+        172.76,
+        187.98
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Người bị giảm thị lực do thuốc lá.",
+          "bbox": [
+            43.43,
+            175.19,
+            172.76,
+            187.98
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0025",
+      "type": "paragraph",
+      "text": "Điều trị suy tim sung huyết cấp tính kèm giảm sức cản mạch toàn thân, ví dụ như suy tim cung lượng cao có thể gặp trong sốc nhiễm khuẩn.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        187.63,
+        297.77,
+        225.32
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0026",
+      "type": "heading",
+      "level": 2,
+      "text": "Thận trọng",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        227.82,
+        89.62,
+        240.97
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thận trọng",
+          "bbox": [
+            43.43,
+            227.82,
+            89.62,
+            240.97
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ],
+      "note_role": "than trong",
+      "v11_fix": "note_title_reclassified_as_heading_alpha5"
+    },
+    {
+      "id": "b0027",
+      "type": "paragraph",
+      "text": "Độc tính do cyanid: Trừ khi sử dụng thuốc trong thời gian ngắn hoặc ở tốc độ truyền thấp (< 2 microgam/kg/phút); natri nitroprusiat làm tăng đáng kể nồng độ cyanid. Không sử dụng liều tối đa kéo dài hơn 10 phút; trong trường hợp huyết áp không kiểm soát được khi dùng liều tối đa (10 microgam/kg/phút), cần ngừng truyền. Các bệnh nhân suy dinh dưỡng, suy gan, bắc cầu nối tim phổi hoặc hạ thân nhiệt điều trị có nguy cơ cao hơn gặp độc tính do cyanid.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        240.42,
+        297.77,
+        327.9
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0028",
+      "type": "paragraph",
+      "text": "Khi sử dụng natri nitroprusiat quá 3 ngày cần phải theo dõi nồng độ thiocyanat trong huyết tương và không được cao quá 100 microgam/ml mặc dù độc tính vẫn có thể xảy ra ở nồng độ thấp hơn mức này. Do nồng độ thiocyanat không phản ánh tình trạng ngộ độc cyanid nên trong quá trình điều trị cần phải thường xuyên theo dõi nồng độ cyanid trong máu và độc tính do cyanid dựa trên cân bằng kiềm - toan và nồng độ oxy tĩnh mạch. Nồng độ cyanid trong máu không vượt quá 1 microgam/ml và trong huyết thanh không được vượt qua 80 nanogam/ml.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        327.55,
+        297.77,
+        439.92
+      ],
+      "source": {
+        "line_count": 9
+      }
+    },
+    {
+      "id": "b0029",
+      "type": "paragraph",
+      "text": "Ngừng dùng natri nitroprusiat khi có dấu hiệu hoặc triệu chứng của độc tính: toan chuyển hóa, giảm bão hòa oxy máu, nhịp tim chậm, lú lẫn, động kinh.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        439.57,
+        297.77,
+        477.26
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0030",
+      "type": "paragraph",
+      "text": "Độc tính thiocyanat: có thể xảy ra ở bệnh nhân suy thận hoặc bệnh nhân truyền kéo dài (liều > 3 microgam/kg/phút trong hơn 72 giờ).",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        476.91,
+        297.76,
+        502.15
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0031",
+      "type": "paragraph",
+      "text": "Hạ huyết áp: Hạ huyết áp quá mức có thể dẫn tới giảm tưới máu cơ quan; do vậy cần theo dõi huyết áp liên tục.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        501.8,
+        297.77,
+        527.04
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0032",
+      "type": "paragraph",
+      "text": "Tăng áp lực nội sọ: Thuốc có thể làm tăng áp lực nội sọ; do vậy cần sử dụng rất thận trọng trên bệnh nhân tăng áp lực nội sọ.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        526.69,
+        297.77,
+        551.94
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0033",
+      "type": "paragraph",
+      "text": "Methemoglobin: Nitroprusiat làm hemoglobin thành methemoglobin phụ thuộc liều. Cần nghi ngờ methemoglobin khi bệnh nhân dùng liều 10 mg/kg nitroprusiat và có dấu hiệu giảm vận chuyển oxy mặc dù cung lượng tim và phân áp oxy động mạch thỏa đáng.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        551.59,
+        297.77,
+        614.17
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0034",
+      "type": "paragraph",
+      "text": "Ở bệnh nhân thiếu máu: Khi dùng natri nitroprusiat để kiểm soát huyết áp trong phẫu thuật, cần điều trị tình trạng thiếu máu trước đó (nếu có thể).",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        613.82,
+        297.77,
+        651.51
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0035",
+      "type": "paragraph",
+      "text": "Ở bệnh nhân giảm thể tích tuần hoàn: Khi dùng natri nitroprusiat để kiểm soát huyết áp trong phẫu thuật, cần điều trị tình trạng giảm thể tích dịch trước phẫu thuật (nếu có thể).",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        651.16,
+        297.77,
+        688.85
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0036",
+      "type": "paragraph",
+      "text": "Ở bệnh nhân nhồi máu cơ tim: Sử dụng thận trọng do thuốc có khả năng ảnh hưởng tới huyết động và gây cướp máu mạch vành.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        688.5,
+        297.76,
+        713.74
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0037",
+      "type": "paragraph",
+      "text": "Ở bệnh nhân suy giáp: Sử dụng thận trọng do thiocyanat, chất chuyển hóa của natri nitroprusiat có thể ức chế gắn kết và hấp thu iod.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        713.39,
+        297.79,
+        738.64
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0038",
+      "type": "paragraph",
+      "text": "Suy gan: Sử dụng thận trọng ở bệnh nhân suy gan.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        738.29,
+        235.41,
+        751.08
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Suy gan:",
+          "bbox": [
+            43.43,
+            738.45,
+            76.94,
+            751.08
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        },
+        {
+          "text": " Sử dụng thận trọng ở bệnh nhân suy gan.",
+          "bbox": [
+            76.94,
+            738.29,
+            235.41,
+            751.08
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0039",
+      "type": "paragraph",
+      "text": "Suy thận: Sử dụng thận trọng; dùng liều thấp nhất trong khoảng liều khuyến cáo, theo dõi nồng độ thiocyanat chặt chẽ.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        750.73,
+        297.76,
+        775.98
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0040",
+      "type": "paragraph",
+      "text": "Ngoài ra, dùng thận trọng ở người bệnh có nồng độ cobalamin huyết tương thấp.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 0,
+      "bbox": [
+        43.43,
+        775.63,
+        297.77,
+        800.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0041",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ mang thai",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        63.02,
+        382.6,
+        76.16
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ mang thai",
+          "bbox": [
+            307.39,
+            63.02,
+            382.6,
+            76.16
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0042",
+      "type": "paragraph",
+      "text": "Ở động vật, natri nitroprusiat đi qua nhau thai làm nồng độ cyanid trong máu thai cao hơn trong máu mẹ. Tuy nhiên, nghiên cứu sự ảnh hưởng của thuốc trên sinh sản ở động vật chưa được thực hiện.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        75.25,
+        561.72,
+        112.21
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0043",
+      "type": "paragraph",
+      "text": "Cho đến nay chưa biết khi dùng natri nitroprusiat liệu có làm tổn hại đến thai nhi ở phụ nữ mang thai hay không, nhưng thuốc đã và vẫn đang được sử dụng để điều trị tăng huyết áp nặng ở người mang thai hoặc chủ động làm hạ huyết áp khi phẫu thuật. Tác dụng phụ duy nhất được nhận thấy là nhịp tim chậm thoáng qua ở thai.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        111.5,
+        561.72,
+        172.63
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0044",
+      "type": "paragraph",
+      "text": "Trong khi sử dụng cần tránh dùng kéo dài và nên theo dõi pH máu, nồng độ cyanid trong huyết tương, trong hồng cầu và nồng độ methemoglobin ở người mẹ. Liều natri nitroprusiat thường dùng không gây ra nguy cơ tích tụ quá nhiều cyanid trong gan của thai nhi, nhưng natri nitroprusiat lại làm giảm 25 - 35% lưu lượng máu đến tử cung. Vì vậy, chỉ nên dùng để hạ huyết áp cho người mang thai khi thuốc khác không có tác dụng.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        171.92,
+        561.72,
+        257.21
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0045",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ cho con bú",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        259.35,
+        385.5,
+        272.49
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ cho con bú",
+          "bbox": [
+            307.39,
+            259.35,
+            385.5,
+            272.49
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0046",
+      "type": "paragraph",
+      "text": "Chưa có dữ liệu xác định liệu thuốc và chất chuyển hóa có đi qua sữa mẹ hay không. Do nhiều thuốc có thể bài tiết vào sữa mẹ và những biến cố bất lợi tiềm tàng có thể xảy ra, cần cân nhắc quyết định ngừng cho bú hoặc ngừng thuốc, căn cứ vào tầm quan trọng của thuốc đối với người mẹ.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        271.58,
+        561.72,
+        332.71
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0047",
+      "type": "heading",
+      "level": 2,
+      "text": "Tác dụng không mong muốn (ADR)",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        334.85,
+        453.33,
+        347.99
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tác dụng không mong muốn (ADR)",
+          "bbox": [
+            307.39,
+            334.85,
+            453.33,
+            347.99
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0048",
+      "type": "subheading",
+      "level": 3,
+      "text": "Thường gặp",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        347.24,
+        353.79,
+        359.88
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thường gặp",
+          "bbox": [
+            307.39,
+            347.24,
+            353.79,
+            359.88
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0049",
+      "type": "paragraph",
+      "text": "Toàn thân: buồn nôn, nôn, nhức đầu, vã mồ hôi.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        359.16,
+        489.45,
+        371.96
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Toàn thân: buồn nôn, nôn, nhức đầu, vã mồ hôi.",
+          "bbox": [
+            307.39,
+            359.16,
+            489.45,
+            371.96
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0050",
+      "type": "paragraph",
+      "text": "Tuần hoàn: đánh trống ngực, đau thắt ngực.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        371.25,
+        473.28,
+        384.04
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tuần hoàn: đánh trống ngực, đau thắt ngực.",
+          "bbox": [
+            307.39,
+            371.25,
+            473.28,
+            384.04
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0051",
+      "type": "paragraph",
+      "text": "Tiêu hóa: đau bụng.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        383.33,
+        383.04,
+        396.13
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêu hóa: đau bụng.",
+          "bbox": [
+            307.39,
+            383.33,
+            383.04,
+            396.13
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0052",
+      "type": "paragraph",
+      "text": "Cơ: chuột rút.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        395.41,
+        360.18,
+        408.21
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cơ: chuột rút.",
+          "bbox": [
+            307.39,
+            395.41,
+            360.18,
+            408.21
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0053",
+      "type": "paragraph",
+      "text": "Tai: ù tai.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        407.5,
+        343.4,
+        420.29
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tai: ù tai.",
+          "bbox": [
+            307.39,
+            407.5,
+            343.4,
+            420.29
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0054",
+      "type": "subheading",
+      "level": 3,
+      "text": "Ít gặp",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        419.74,
+        329.81,
+        432.38
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Ít gặp",
+          "bbox": [
+            307.39,
+            419.74,
+            329.81,
+            432.38
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0055",
+      "type": "paragraph",
+      "text": "Toàn thân: tích tụ cyanid, nhiễm toan chuyển hóa.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        431.66,
+        497.22,
+        444.46
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Toàn thân: tích tụ cyanid, nhiễm toan chuyển hóa.",
+          "bbox": [
+            307.39,
+            431.66,
+            497.22,
+            444.46
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0056",
+      "type": "paragraph",
+      "text": "Máu: methemoglobin huyết kèm xanh tím.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        443.75,
+        469.94,
+        456.54
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Máu: methemoglobin huyết kèm xanh tím.",
+          "bbox": [
+            307.39,
+            443.75,
+            469.94,
+            456.54
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0057",
+      "type": "paragraph",
+      "text": "Thần kinh: nhìn mờ.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        455.83,
+        385.25,
+        468.62
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thần kinh: nhìn mờ.",
+          "bbox": [
+            307.39,
+            455.83,
+            385.25,
+            468.62
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0058",
+      "type": "subheading",
+      "level": 3,
+      "text": "Hiếm gặp",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        468.07,
+        344.59,
+        480.71
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hiếm gặp",
+          "bbox": [
+            307.39,
+            468.07,
+            344.59,
+            480.71
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0059",
+      "type": "paragraph",
+      "text": "Nội tiết: nhược năng giáp (khi dùng kéo dài).",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        479.99,
+        479.31,
+        492.79
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Nội tiết: nhược năng giáp (khi dùng kéo dài).",
+          "bbox": [
+            307.39,
+            479.99,
+            479.31,
+            492.79
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0060",
+      "type": "heading",
+      "level": 2,
+      "text": "Hướng dẫn cách xử trí ADR",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        494.93,
+        421.95,
+        508.07
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hướng dẫn cách xử trí ADR",
+          "bbox": [
+            307.39,
+            494.93,
+            421.95,
+            508.07
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0061",
+      "type": "paragraph",
+      "text": "Một số ADR như nhức đầu, ù tai, hồi hộp, đau bụng có thể kiểm soát bằng cách giảm tốc độ truyền (tối đa là 2 microgam/kg/phút).",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        507.16,
+        561.72,
+        532.04
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0062",
+      "type": "heading",
+      "level": 2,
+      "text": "Liều lượng và cách dùng",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        534.18,
+        407.56,
+        547.32
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng và cách dùng",
+          "bbox": [
+            307.39,
+            534.18,
+            407.56,
+            547.32
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0063",
+      "type": "subheading",
+      "level": 3,
+      "text": "Cách dùng",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        546.49,
+        352.79,
+        559.21
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Cách dùng ",
+          "bbox": [
+            307.39,
+            546.49,
+            352.79,
+            559.21
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0064",
+      "type": "paragraph",
+      "text": "Không được tiêm trực tiếp dung dịch thuốc vào tĩnh mạch. Thuốc cần dùng qua đường truyền tĩnh mạch bằng bơm tiêm tự động có thể điều chỉnh được hoặc dụng cụ truyền đặc biệt như máy truyền dịch. Cần phải theo dõi chặt chẽ huyết áp người bệnh trong khi truyền thuốc. Trong phòng điều trị cần có sẵn phương tiện theo dõi liên tục huyết áp, phương tiện hồi sức, phương tiện để điều trị ngộ độc cyanid.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        558.49,
+        561.72,
+        643.79
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0065",
+      "type": "paragraph",
+      "text": "Chuẩn bị dung dịch truyền: Hoàn nguyên 50 mg (bột đông khô) natri nitroprusiat với 2 - 3 ml dung dịch tiêm dextrose 5% và lắc nhẹ để hòa tan. Tiếp tục pha loãng dung dịch sau hoàn nguyên với dextrose 5% (thể tích 1 000 ml; 500 ml; 250 ml để truyền dịch).",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        642.92,
+        561.72,
+        692.12
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0066",
+      "type": "paragraph",
+      "text": "Dung dịch thuốc sau khi pha cần được bảo quản tránh ánh sáng và dùng ngay sau khi pha.",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        691.41,
+        561.71,
+        716.29
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0067",
+      "type": "subheading",
+      "level": 3,
+      "text": "Liều dùng",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        715.65,
+        347.77,
+        728.37
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều dùng",
+          "bbox": [
+            307.39,
+            715.65,
+            347.77,
+            728.37
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0068",
+      "type": "paragraph",
+      "text": "Tùy theo từng trường hợp. Liều khuyên dùng:",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        727.66,
+        482.37,
+        740.45
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tùy theo từng trường hợp. Liều khuyên dùng:",
+          "bbox": [
+            307.39,
+            727.66,
+            482.37,
+            740.45
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0069",
+      "type": "subheading",
+      "level": 3,
+      "text": "Cơn tăng huyết áp:",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        739.9,
+        383.18,
+        752.54
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Cơn tăng huyết áp: ",
+          "bbox": [
+            307.39,
+            739.9,
+            383.18,
+            752.54
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0070",
+      "type": "paragraph",
+      "text": "Liều khởi đầu là 0,3 - 1,5 microgam/kg/phút. Điều chỉnh liều thường xuyên mỗi 0,5 microgam/kg/phút mỗi 5 phút đến khi đạt được đáp ứng mong muốn. Liều thông thường là 0,5 - 8 microgam/ kg/phút. Nên sử dụng liều thấp hơn nếu bệnh nhân đang dùng một",
+      "page": 1173,
+      "printed_page": 1179,
+      "column": 1,
+      "bbox": [
+        307.39,
+        751.82,
+        561.72,
+        800.87
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0071",
+      "type": "paragraph",
+      "text": "thuốc hạ áp khác. Cần ngừng thuốc nếu đáp ứng không thỏa đáng khi đã dùng liều tối đa 10 microgam/kg/phút trong 10 phút. Để hạn chế độc tính, một số tác giả khuyến cáo không nên vượt quá 2 microgam/kg/phút.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 0,
+      "bbox": [
+        35.43,
+        63.32,
+        289.77,
+        112.83
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0072",
+      "type": "paragraph",
+      "text": "Để đạt mục tiêu giảm 30 - 40% huyết áp tâm trương: Sử dụng liều 20 - 400 microgam/phút. Nên dùng liều thấp hơn nếu đang dùng một thuốc hạ áp khác.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 0,
+      "bbox": [
+        35.43,
+        112.27,
+        289.77,
+        149.55
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0073",
+      "type": "paragraph",
+      "text": "Để tránh tích lũy thiocyanat gây ngộ độc và nguy cơ tụt huyết áp không nên truyền dung dịch thuốc quá 72 giờ và tốc độ truyền không vượt quá 10 microgam/kg/phút. Chuyển ngay sang dùng thuốc hạ huyết áp theo đường uống khi có thể được, nhằm giảm thời gian phải truyền natri nitroprusiat. Trường hợp phải truyền thuốc kéo dài cần phải theo dõi nồng độ thiocyanat hàng ngày.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 0,
+      "bbox": [
+        35.43,
+        148.99,
+        289.77,
+        222.97
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0074",
+      "type": "paragraph",
+      "text": "Gây hạ huyết áp khi gây mê trước phẫu thuật: Tổng liều tối đa là 1,5 microgam/kg/phút. Chú ý là các thuốc liệt hạch có thể làm tăng tác dụng hạ huyết áp của natri nitroprusiat.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 0,
+      "bbox": [
+        35.43,
+        222.41,
+        289.77,
+        259.69
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0075",
+      "type": "paragraph",
+      "text": "Suy tim mất bù: Liều khởi đầu khuyên dùng là 5 - 15 microgam/ phút, cách 5 - 10 phút có thể tăng từ 10 - 15 microgam/phút cho tới khi đạt được kết quả mong muốn. Đối với điều trị suy tim, tốc độ chỉnh liều cần dựa trên kết quả theo dõi huyết động xâm lấn và theo dõi nước tiểu. Liều thông thường dao động từ 10 - 200 microgam/ phút, thường dùng trong tối đa 3 ngày.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 0,
+      "bbox": [
+        35.43,
+        259.13,
+        289.77,
+        333.11
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0076",
+      "type": "paragraph",
+      "text": "Bảng dưới đây gợi ý tốc độ truyền (ml/giờ) để đạt được liều ban đầu khuyến cáo (0,3 microgam/kg/phút) và liều tối đa (10 microgam/ kg/phút), áp dụng trên bệnh nhân người lớn và trẻ em (ít áp dụng được trên bệnh nhân dưới 10 kg).",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 0,
+      "bbox": [
+        35.43,
+        332.56,
+        289.76,
+        382.07
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0077",
+      "type": "table",
+      "text": "Bảng từ PDF gốc",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 0,
       "bbox": [
         35.43,
         383.46,
         287.39,
         597.41
+      ],
+      "source": {
+        "pdf_extraction": "geometry"
+      },
+      "table_id": "p1174-t02",
+      "image": "duoc-thu-assets/natri-nitroprusiat/p1174-t02.png",
+      "image_path": "duoc-thu-assets/natri-nitroprusiat/p1174-t02.png"
+    },
+    {
+      "id": "b0078",
+      "type": "paragraph",
+      "text": "Người suy gan: Không cần hiệu chỉnh liều; tuy nhiên do nguy cơ độc tính cyanid, cần sử dụng thận trọng.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 0,
+      "bbox": [
+        35.43,
+        601.5,
+        289.77,
+        626.54
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0079",
+      "type": "paragraph",
+      "text": "Người suy thận: Sử dụng có thể dẫn tới tích lũy thiocyanat và độc tính; cần hạn chế sử dụng. Khi mức lọc cầu thận dưới 30 ml/ phút/1,73 m2, không nên vượt quá tốc độ truyền trung bình là 3 microgam/kg/phút. Trên bệnh nhân vô niệu, không nên vượt quá tốc độ truyền trung bình là 1 microgam/kg/phút.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 0,
+      "bbox": [
+        35.43,
+        625.98,
+        289.77,
+        687.73
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0080",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương tác thuốc",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 0,
+      "bbox": [
+        35.43,
+        690.02,
+        102.34,
+        703.17
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương tác thuốc",
+          "bbox": [
+            35.43,
+            690.02,
+            102.34,
+            703.17
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0081",
+      "type": "paragraph",
+      "text": "Một số thuốc hiệp đồng tác dụng hạ huyết áp cùng natri nitroprusiat: thuốc điều trị tăng huyết áp, alfuzosin, thuốc chống loạn thần không điển hình, barbiturat, benperidol, diazoxid, duloxetin, lormetazepam, methylphenidat, nicorandil, nitric oxid, naftopidil, molsidomin, obinutuzumab, pentoxifylin, thuốc ức chế PDE- 5, đồng đẳng của prostacyclin, riociguat, pholcodin, nicergolin, amifostin, brimonidin, quinagolid.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 0,
+      "bbox": [
+        35.43,
+        702.41,
+        289.77,
+        788.63
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0082",
+      "type": "paragraph",
+      "text": "Một số thuốc có thể làm mất tác dụng hạ huyết áp của natri",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 0,
+      "bbox": [
+        35.43,
+        788.07,
+        289.77,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Một số thuốc có thể làm mất tác dụng hạ huyết áp của natri ",
+          "bbox": [
+            35.43,
+            788.07,
+            289.77,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0083",
+      "type": "paragraph",
+      "text": "nitroprusiat: dexmethylphenidat, bromperidol, brigatinib, amphetamin, yohimbin.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        63.32,
+        553.76,
+        89.11
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0084",
+      "type": "paragraph",
+      "text": "Natri nitroprusiat có thể làm tăng độc tính của một số thuốc như: prilocain, natri nitrit, thuốc gây tê tại chỗ.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        89.31,
+        553.72,
+        115.09
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0085",
+      "type": "paragraph",
+      "text": "Nitric oxid có thể làm tăng nguy cơ gặp methemoglobin khi dùng cùng natri nitroprusiat.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        115.29,
+        553.71,
+        141.08
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0086",
+      "type": "paragraph",
+      "text": "Dapson có thể làm tăng các tác dụng phụ khi dùng natri nitroprusiat.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        141.27,
+        551.35,
+        154.07
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Dapson có thể làm tăng các tác dụng phụ khi dùng natri nitroprusiat.",
+          "bbox": [
+            299.39,
+            141.27,
+            551.35,
+            154.07
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0087",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương kỵ",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        157.11,
+        339.12,
+        170.26
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương kỵ",
+          "bbox": [
+            299.39,
+            157.11,
+            339.12,
+            170.26
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0088",
+      "type": "paragraph",
+      "text": "Chỉ pha natri nitroprusiat trong dung dịch glucose 5%.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        170.26,
+        506.52,
+        183.05
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Chỉ pha natri nitroprusiat trong dung dịch glucose 5%.",
+          "bbox": [
+            299.39,
+            170.26,
+            506.52,
+            183.05
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0089",
+      "type": "paragraph",
+      "text": "Không cho thêm bất cứ thuốc nào vào dung dịch natri nitroprusiat.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        183.25,
+        551.34,
+        196.05
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Không cho thêm bất cứ thuốc nào vào dung dịch natri nitroprusiat.",
+          "bbox": [
+            299.39,
+            183.25,
+            551.34,
+            196.05
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0090",
+      "type": "heading",
+      "level": 2,
+      "text": "Quá liều và xử trí",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        199.09,
+        371.06,
+        212.24
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Quá liều và xử trí",
+          "bbox": [
+            299.39,
+            199.09,
+            371.06,
+            212.24
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0091",
+      "type": "paragraph",
+      "text": "Triệu chứng: Khi lượng cyanid trong huyết tương vượt quá 80 nanogam/ml sẽ xuất hiện dấu hiệu của quá liều hoặc do thiếu hụt thiosulfat nội sinh. Những dấu hiệu đầu tiên là nhịp tim nhanh, vã mồ hôi, thở nhanh - sâu, tụt huyết áp nặng và có thể có nhiễm toan chuyển hóa. Những triệu chứng đi kèm hoặc tiếp theo là: khó thở, nhức đầu, nôn, chóng mặt, mất điều hòa và hôn mê.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        212.23,
+        553.72,
+        289.99
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0092",
+      "type": "paragraph",
+      "text": "Quá liều nặng có thể gây triệu chứng ngộ độc cyanid, kèm rối loạn tâm thần, co giật, hôn mê, mạch rất yếu, mất phản xạ, giãn đồng tử, tụt huyết áp, tiếng tim rất mờ, da vân đá, thở yếu. Chỉ cho thở oxygen không đủ để khắc phục các rối loạn trên.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        290.19,
+        553.72,
+        341.96
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0093",
+      "type": "table",
+      "text": "Bảng từ PDF gốc",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        346.94,
+        551.2,
+        453.02
+      ],
+      "source": {
+        "pdf_extraction": "geometry"
+      },
+      "table_id": "p1174-t01",
+      "image": "duoc-thu-assets/natri-nitroprusiat/p1174-t01.png",
+      "image_path": "duoc-thu-assets/natri-nitroprusiat/p1174-t01.png"
+    },
+    {
+      "id": "b0094",
+      "type": "paragraph",
+      "text": "Xử trí: Phải ngừng truyền ngay lập tức. Điều trị như điều trị ngộ độc cyanid. Có hai phương pháp nên dùng:",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        457.87,
+        553.71,
+        483.66
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0095",
+      "type": "paragraph",
+      "text": "Điều trị bằng hydroxocobalamin: Hydroxocobalamin kết hợp với cyanid để tạo thành cyanocobalamin và do đó bất hoạt ion cyanid.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        483.85,
+        553.72,
+        509.64
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0096",
+      "type": "paragraph",
+      "text": "Tiêm hydroxocobalamin vào tĩnh mạch với liều 30 - 60 mg/kg cân nặng. Trên thực tế, do tác dụng hiệp đồng giữa hydroxocobalamin và natri thiosulfat, cho 4 g hydroxocobalamin vào trong 500 ml dung dịch có chứa 10% natri thiosulfat rồi truyền cho người bệnh.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        509.84,
+        553.72,
+        561.61
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0097",
+      "type": "paragraph",
+      "text": "Điều trị bằng nitrit và natri thiosulfat: Trong khi chờ đợi pha dung dịch tiêm natri nitrit 3% thì cứ mỗi phút lại cho người bệnh hít amyl nitrit 15 - 30 giây.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        561.81,
+        553.72,
+        600.59
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0098",
+      "type": "paragraph",
+      "text": "Truyền tĩnh mạch 10 - 15 ml dung dịch natri nitrit 3% với tốc độ 2,5 - 5 ml/phút và phải theo dõi chặt chẽ huyết áp (có sự tạo thành methemoglobin).",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        600.78,
+        553.72,
+        639.56
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0099",
+      "type": "paragraph",
+      "text": "Truyền chậm tĩnh mạch (trong 10 phút) 12,5 g natri thiosulfat trong 50 ml dung dịch glucose 5%. Tuy truyền thiosulfat vào tĩnh mạch theo tỷ lệ 10 : 1 (thiosulfat : nitroprusiat) có tác dụng tốt làm giảm nồng độ cyanid trong huyết thanh và trong tế bào, cần lưu ý chính bản thân thiocyanat cũng độc ở nồng độ cao và người bệnh suy thận dễ có nguy cơ bị ngộ độc thiocyanat.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        639.76,
+        553.72,
+        717.52
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0100",
+      "type": "paragraph",
+      "text": "Phải theo dõi sát sao người bệnh trong nhiều giờ. Nếu các triệu chứng quá liều xuất hiện lại thì phải điều trị lại bằng natri nitrit và natri thiosulfat với liều bằng một nửa lần trước. Trong khi truyền natri nitrit và khi thiocyanat được tạo thành thì huyết áp có thể hạ thấp. Có thể điều trị huyết áp thấp bằng các thuốc gây co mạch.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        717.71,
+        553.72,
+        782.48
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0101",
+      "type": "heading",
+      "text": "Cập nhật lần cuối",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        788.23,
+        394.65,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2020.",
+          "bbox": [
+            299.39,
+            788.23,
+            394.65,
+            800.87
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "level": 2,
+      "v11_fix": "cap_nhat_cap_nhap_lan_cuoi_normalized_alpha8"
+    },
+    {
+      "id": "b0101",
+      "type": "paragraph",
+      "text": "2020.",
+      "page": 1174,
+      "printed_page": 1180,
+      "column": 1,
+      "bbox": [
+        299.39,
+        788.23,
+        394.65,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2020.",
+          "bbox": [
+            299.39,
+            788.23,
+            394.65,
+            800.87
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "v11_parent_heading": "Cập nhật lần cuối"
+    }
+  ],
+  "sections": [
+    {
+      "id": "dang-thuoc-va-ham-luong",
+      "title": "Dạng thuốc và hàm lượng",
+      "heading_block": "b0005",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Dung dịch tiêm: 25 mg/ml (2 ml).",
+          "block_id": "b0006"
+        },
+        {
+          "type": "text",
+          "text": "Thuốc bột để pha tiêm: 50 mg/lọ.",
+          "block_id": "b0007"
+        },
+        {
+          "type": "text",
+          "text": "Dung môi để pha: dung dịch glucose 5%, 2 ml/ống; nước vô khuẩn để tiêm.",
+          "block_id": "b0008"
+        }
+      ]
+    },
+    {
+      "id": "duoc-luc-hoc",
+      "title": "Dược lực học",
+      "heading_block": "b0009",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Natri nitroprusiat là thuốc hạ huyết áp tác dụng nhanh, chỉ kéo dài từ 1 - 10 phút, cho phép điều chỉnh huyết áp nhanh và hiệu quả.",
+          "block_id": "b0010"
+        },
+        {
+          "type": "text",
+          "text": "Thuốc gây giãn mạch ngoại vi mạnh nên làm giảm sức cản ngoại vi do giải phóng ra nitơ oxyd nội sinh tác động trực tiếp lên tĩnh mạch và tiểu động mạch. Thuốc được sử dụng để điều trị cơn tăng huyết áp. Tác dụng của thuốc phụ thuộc vào liều và xuất hiện chỉ vài giây sau khi truyền vào tĩnh mạch và tác dụng cũng hết nhanh, do đó cần theo dõi chặt chẽ huyết áp sau khi dùng thuốc. Thuốc còn được dùng để chủ động gây giảm huyết áp khi gây mê toàn thân. Trong suy tim ứ máu nặng, thuốc được sử dụng để làm giảm tiền gánh và hậu gánh. Thuốc không có tác dụng trên hệ thần kinh thực vật.",
+          "block_id": "b0011"
+        }
+      ]
+    },
+    {
+      "id": "duoc-dong-hoc",
+      "title": "Dược động học",
+      "heading_block": "b0012",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Sau khi truyền natri nitroprusiat, thuốc phân bố nhanh chóng, thể tích phân bố xấp xỉ bằng thể tích dịch ngoại bào. Nửa đời thải trừ của nitroprusiat khoảng 2 phút.",
+          "block_id": "b0013"
+        },
+        {
+          "type": "text",
+          "text": "Trong hồng cầu, cơ trơn và ở các mô, natri nitroprusiat được chuyển thành cyanid và tại gan, với sự có mặt của thiosulfat, chất này lại được chuyển hóa thành thiocyanat nhờ enzym rhodanase rồi thải từ từ theo nước tiểu. Nửa đời trong huyết tương của thiocyanat khoảng 3 ngày, có thể tăng gấp đôi hoặc gấp ba khi suy thận. Thiocyanat có thể tích luỹ trong máu người bệnh dùng natri nitroprusiat, đặc biệt người bệnh có chức năng thận kém hoặc bị giảm natri huyết hoặc người bệnh dùng natri thiosulfat đơn độc hoặc cùng với natri nitroprusiat để làm tăng nhanh chuyển hóa cyanid. Có thể làm giảm nhanh nồng độ thiocyanat bằng thẩm phân phúc mạc hay lọc máu thận nhân tạo.",
+          "block_id": "b0014"
+        }
+      ]
+    },
+    {
+      "id": "chi-dinh",
+      "title": "Chỉ định",
+      "heading_block": "b0015",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Cơn tăng huyết áp.",
+          "block_id": "b0016"
+        },
+        {
+          "type": "text",
+          "text": "Suy tim mất bù cấp.",
+          "block_id": "b0017"
+        },
+        {
+          "type": "text",
+          "text": "Hạ huyết áp chỉ huy trong phẫu thuật để làm giảm chảy máu.",
+          "block_id": "b0018"
+        }
+      ]
+    },
+    {
+      "id": "chong-chi-dinh",
+      "title": "Chống chỉ định",
+      "heading_block": "b0019",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Quá mẫn với natri nitroprusiat.",
+          "block_id": "b0020"
+        },
+        {
+          "type": "text",
+          "text": "Tăng huyết áp còn bù do nguyên nhân hẹp eo động mạch chủ hoặc shunt động - tĩnh mạch.",
+          "block_id": "b0021"
+        },
+        {
+          "type": "text",
+          "text": "Gây hạ huyết áp trong phẫu thuật ở bệnh nhân suy tuần hoàn não hoặc bệnh nhân có tình trạng quá nặng (điểm ASA bằng 5) được thực hiện phẫu thuật cấp cứu.",
+          "block_id": "b0022"
+        },
+        {
+          "type": "text",
+          "text": "Người bị bệnh teo dây thần kinh thị giác bẩm sinh Leber hoặc người bệnh thiếu thiosulfat sulfuryltransferase (rhodanase).",
+          "block_id": "b0023"
+        },
+        {
+          "type": "text",
+          "text": "Người bị giảm thị lực do thuốc lá.",
+          "block_id": "b0024"
+        },
+        {
+          "type": "text",
+          "text": "Điều trị suy tim sung huyết cấp tính kèm giảm sức cản mạch toàn thân, ví dụ như suy tim cung lượng cao có thể gặp trong sốc nhiễm khuẩn.",
+          "block_id": "b0025"
+        }
+      ]
+    },
+    {
+      "id": "than-trong",
+      "title": "Thận trọng",
+      "heading_block": "b0026",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Độc tính do cyanid: Trừ khi sử dụng thuốc trong thời gian ngắn hoặc ở tốc độ truyền thấp (< 2 microgam/kg/phút); natri nitroprusiat làm tăng đáng kể nồng độ cyanid. Không sử dụng liều tối đa kéo dài hơn 10 phút; trong trường hợp huyết áp không kiểm soát được khi dùng liều tối đa (10 microgam/kg/phút), cần ngừng truyền. Các bệnh nhân suy dinh dưỡng, suy gan, bắc cầu nối tim phổi hoặc hạ thân nhiệt điều trị có nguy cơ cao hơn gặp độc tính do cyanid.",
+          "block_id": "b0027"
+        },
+        {
+          "type": "text",
+          "text": "Khi sử dụng natri nitroprusiat quá 3 ngày cần phải theo dõi nồng độ thiocyanat trong huyết tương và không được cao quá 100 microgam/ml mặc dù độc tính vẫn có thể xảy ra ở nồng độ thấp hơn mức này. Do nồng độ thiocyanat không phản ánh tình trạng ngộ độc cyanid nên trong quá trình điều trị cần phải thường xuyên theo dõi nồng độ cyanid trong máu và độc tính do cyanid dựa trên cân bằng kiềm - toan và nồng độ oxy tĩnh mạch. Nồng độ cyanid trong máu không vượt quá 1 microgam/ml và trong huyết thanh không được vượt qua 80 nanogam/ml.",
+          "block_id": "b0028"
+        },
+        {
+          "type": "text",
+          "text": "Ngừng dùng natri nitroprusiat khi có dấu hiệu hoặc triệu chứng của độc tính: toan chuyển hóa, giảm bão hòa oxy máu, nhịp tim chậm, lú lẫn, động kinh.",
+          "block_id": "b0029"
+        },
+        {
+          "type": "text",
+          "text": "Độc tính thiocyanat: có thể xảy ra ở bệnh nhân suy thận hoặc bệnh nhân truyền kéo dài (liều > 3 microgam/kg/phút trong hơn 72 giờ).",
+          "block_id": "b0030"
+        },
+        {
+          "type": "text",
+          "text": "Hạ huyết áp: Hạ huyết áp quá mức có thể dẫn tới giảm tưới máu cơ quan; do vậy cần theo dõi huyết áp liên tục.",
+          "block_id": "b0031"
+        },
+        {
+          "type": "text",
+          "text": "Tăng áp lực nội sọ: Thuốc có thể làm tăng áp lực nội sọ; do vậy cần sử dụng rất thận trọng trên bệnh nhân tăng áp lực nội sọ.",
+          "block_id": "b0032"
+        },
+        {
+          "type": "text",
+          "text": "Methemoglobin: Nitroprusiat làm hemoglobin thành methemoglobin phụ thuộc liều. Cần nghi ngờ methemoglobin khi bệnh nhân dùng liều 10 mg/kg nitroprusiat và có dấu hiệu giảm vận chuyển oxy mặc dù cung lượng tim và phân áp oxy động mạch thỏa đáng.",
+          "block_id": "b0033"
+        },
+        {
+          "type": "text",
+          "text": "Ở bệnh nhân thiếu máu: Khi dùng natri nitroprusiat để kiểm soát huyết áp trong phẫu thuật, cần điều trị tình trạng thiếu máu trước đó (nếu có thể).",
+          "block_id": "b0034"
+        },
+        {
+          "type": "text",
+          "text": "Ở bệnh nhân giảm thể tích tuần hoàn: Khi dùng natri nitroprusiat để kiểm soát huyết áp trong phẫu thuật, cần điều trị tình trạng giảm thể tích dịch trước phẫu thuật (nếu có thể).",
+          "block_id": "b0035"
+        },
+        {
+          "type": "text",
+          "text": "Ở bệnh nhân nhồi máu cơ tim: Sử dụng thận trọng do thuốc có khả năng ảnh hưởng tới huyết động và gây cướp máu mạch vành.",
+          "block_id": "b0036"
+        },
+        {
+          "type": "text",
+          "text": "Ở bệnh nhân suy giáp: Sử dụng thận trọng do thiocyanat, chất chuyển hóa của natri nitroprusiat có thể ức chế gắn kết và hấp thu iod.",
+          "block_id": "b0037"
+        },
+        {
+          "type": "text",
+          "text": "Suy gan: Sử dụng thận trọng ở bệnh nhân suy gan.",
+          "block_id": "b0038"
+        },
+        {
+          "type": "text",
+          "text": "Suy thận: Sử dụng thận trọng; dùng liều thấp nhất trong khoảng liều khuyến cáo, theo dõi nồng độ thiocyanat chặt chẽ.",
+          "block_id": "b0039"
+        },
+        {
+          "type": "text",
+          "text": "Ngoài ra, dùng thận trọng ở người bệnh có nồng độ cobalamin huyết tương thấp.",
+          "block_id": "b0040"
+        }
+      ]
+    },
+    {
+      "id": "thoi-ky-mang-thai",
+      "title": "Thời kỳ mang thai",
+      "heading_block": "b0041",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Ở động vật, natri nitroprusiat đi qua nhau thai làm nồng độ cyanid trong máu thai cao hơn trong máu mẹ. Tuy nhiên, nghiên cứu sự ảnh hưởng của thuốc trên sinh sản ở động vật chưa được thực hiện.",
+          "block_id": "b0042"
+        },
+        {
+          "type": "text",
+          "text": "Cho đến nay chưa biết khi dùng natri nitroprusiat liệu có làm tổn hại đến thai nhi ở phụ nữ mang thai hay không, nhưng thuốc đã và vẫn đang được sử dụng để điều trị tăng huyết áp nặng ở người mang thai hoặc chủ động làm hạ huyết áp khi phẫu thuật. Tác dụng phụ duy nhất được nhận thấy là nhịp tim chậm thoáng qua ở thai.",
+          "block_id": "b0043"
+        },
+        {
+          "type": "text",
+          "text": "Trong khi sử dụng cần tránh dùng kéo dài và nên theo dõi pH máu, nồng độ cyanid trong huyết tương, trong hồng cầu và nồng độ methemoglobin ở người mẹ. Liều natri nitroprusiat thường dùng không gây ra nguy cơ tích tụ quá nhiều cyanid trong gan của thai nhi, nhưng natri nitroprusiat lại làm giảm 25 - 35% lưu lượng máu đến tử cung. Vì vậy, chỉ nên dùng để hạ huyết áp cho người mang thai khi thuốc khác không có tác dụng.",
+          "block_id": "b0044"
+        }
+      ]
+    },
+    {
+      "id": "thoi-ky-cho-con-bu",
+      "title": "Thời kỳ cho con bú",
+      "heading_block": "b0045",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Chưa có dữ liệu xác định liệu thuốc và chất chuyển hóa có đi qua sữa mẹ hay không. Do nhiều thuốc có thể bài tiết vào sữa mẹ và những biến cố bất lợi tiềm tàng có thể xảy ra, cần cân nhắc quyết định ngừng cho bú hoặc ngừng thuốc, căn cứ vào tầm quan trọng của thuốc đối với người mẹ.",
+          "block_id": "b0046"
+        }
+      ]
+    },
+    {
+      "id": "tac-dung-khong-mong-muon-adr",
+      "title": "Tác dụng không mong muốn (ADR)",
+      "heading_block": "b0047",
+      "blocks": [
+        {
+          "type": "subheading",
+          "text": "Thường gặp",
+          "block_id": "b0048"
+        },
+        {
+          "type": "text",
+          "text": "Toàn thân: buồn nôn, nôn, nhức đầu, vã mồ hôi.",
+          "block_id": "b0049"
+        },
+        {
+          "type": "text",
+          "text": "Tuần hoàn: đánh trống ngực, đau thắt ngực.",
+          "block_id": "b0050"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: đau bụng.",
+          "block_id": "b0051"
+        },
+        {
+          "type": "text",
+          "text": "Cơ: chuột rút.",
+          "block_id": "b0052"
+        },
+        {
+          "type": "text",
+          "text": "Tai: ù tai.",
+          "block_id": "b0053"
+        },
+        {
+          "type": "subheading",
+          "text": "Ít gặp",
+          "block_id": "b0054"
+        },
+        {
+          "type": "text",
+          "text": "Toàn thân: tích tụ cyanid, nhiễm toan chuyển hóa.",
+          "block_id": "b0055"
+        },
+        {
+          "type": "text",
+          "text": "Máu: methemoglobin huyết kèm xanh tím.",
+          "block_id": "b0056"
+        },
+        {
+          "type": "text",
+          "text": "Thần kinh: nhìn mờ.",
+          "block_id": "b0057"
+        },
+        {
+          "type": "subheading",
+          "text": "Hiếm gặp",
+          "block_id": "b0058"
+        },
+        {
+          "type": "text",
+          "text": "Nội tiết: nhược năng giáp (khi dùng kéo dài).",
+          "block_id": "b0059"
+        }
+      ]
+    },
+    {
+      "id": "huong-dan-cach-xu-tri-adr",
+      "title": "Hướng dẫn cách xử trí ADR",
+      "heading_block": "b0060",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Một số ADR như nhức đầu, ù tai, hồi hộp, đau bụng có thể kiểm soát bằng cách giảm tốc độ truyền (tối đa là 2 microgam/kg/phút).",
+          "block_id": "b0061"
+        }
+      ]
+    },
+    {
+      "id": "lieu-luong-va-cach-dung",
+      "title": "Liều lượng và cách dùng",
+      "heading_block": "b0062",
+      "blocks": [
+        {
+          "type": "subheading",
+          "text": "Cách dùng",
+          "block_id": "b0063"
+        },
+        {
+          "type": "text",
+          "text": "Không được tiêm trực tiếp dung dịch thuốc vào tĩnh mạch. Thuốc cần dùng qua đường truyền tĩnh mạch bằng bơm tiêm tự động có thể điều chỉnh được hoặc dụng cụ truyền đặc biệt như máy truyền dịch. Cần phải theo dõi chặt chẽ huyết áp người bệnh trong khi truyền thuốc. Trong phòng điều trị cần có sẵn phương tiện theo dõi liên tục huyết áp, phương tiện hồi sức, phương tiện để điều trị ngộ độc cyanid.",
+          "block_id": "b0064"
+        },
+        {
+          "type": "text",
+          "text": "Chuẩn bị dung dịch truyền: Hoàn nguyên 50 mg (bột đông khô) natri nitroprusiat với 2 - 3 ml dung dịch tiêm dextrose 5% và lắc nhẹ để hòa tan. Tiếp tục pha loãng dung dịch sau hoàn nguyên với dextrose 5% (thể tích 1 000 ml; 500 ml; 250 ml để truyền dịch).",
+          "block_id": "b0065"
+        },
+        {
+          "type": "text",
+          "text": "Dung dịch thuốc sau khi pha cần được bảo quản tránh ánh sáng và dùng ngay sau khi pha.",
+          "block_id": "b0066"
+        },
+        {
+          "type": "subheading",
+          "text": "Liều dùng",
+          "block_id": "b0067"
+        },
+        {
+          "type": "text",
+          "text": "Tùy theo từng trường hợp. Liều khuyên dùng:",
+          "block_id": "b0068"
+        },
+        {
+          "type": "subheading",
+          "text": "Cơn tăng huyết áp:",
+          "block_id": "b0069"
+        },
+        {
+          "type": "text",
+          "text": "Liều khởi đầu là 0,3 - 1,5 microgam/kg/phút. Điều chỉnh liều thường xuyên mỗi 0,5 microgam/kg/phút mỗi 5 phút đến khi đạt được đáp ứng mong muốn. Liều thông thường là 0,5 - 8 microgam/ kg/phút. Nên sử dụng liều thấp hơn nếu bệnh nhân đang dùng một",
+          "block_id": "b0070"
+        },
+        {
+          "type": "text",
+          "text": "thuốc hạ áp khác. Cần ngừng thuốc nếu đáp ứng không thỏa đáng khi đã dùng liều tối đa 10 microgam/kg/phút trong 10 phút. Để hạn chế độc tính, một số tác giả khuyến cáo không nên vượt quá 2 microgam/kg/phút.",
+          "block_id": "b0071"
+        },
+        {
+          "type": "text",
+          "text": "Để đạt mục tiêu giảm 30 - 40% huyết áp tâm trương: Sử dụng liều 20 - 400 microgam/phút. Nên dùng liều thấp hơn nếu đang dùng một thuốc hạ áp khác.",
+          "block_id": "b0072"
+        },
+        {
+          "type": "text",
+          "text": "Để tránh tích lũy thiocyanat gây ngộ độc và nguy cơ tụt huyết áp không nên truyền dung dịch thuốc quá 72 giờ và tốc độ truyền không vượt quá 10 microgam/kg/phút. Chuyển ngay sang dùng thuốc hạ huyết áp theo đường uống khi có thể được, nhằm giảm thời gian phải truyền natri nitroprusiat. Trường hợp phải truyền thuốc kéo dài cần phải theo dõi nồng độ thiocyanat hàng ngày.",
+          "block_id": "b0073"
+        },
+        {
+          "type": "text",
+          "text": "Gây hạ huyết áp khi gây mê trước phẫu thuật: Tổng liều tối đa là 1,5 microgam/kg/phút. Chú ý là các thuốc liệt hạch có thể làm tăng tác dụng hạ huyết áp của natri nitroprusiat.",
+          "block_id": "b0074"
+        },
+        {
+          "type": "text",
+          "text": "Suy tim mất bù: Liều khởi đầu khuyên dùng là 5 - 15 microgam/ phút, cách 5 - 10 phút có thể tăng từ 10 - 15 microgam/phút cho tới khi đạt được kết quả mong muốn. Đối với điều trị suy tim, tốc độ chỉnh liều cần dựa trên kết quả theo dõi huyết động xâm lấn và theo dõi nước tiểu. Liều thông thường dao động từ 10 - 200 microgam/ phút, thường dùng trong tối đa 3 ngày.",
+          "block_id": "b0075"
+        },
+        {
+          "type": "text",
+          "text": "Bảng dưới đây gợi ý tốc độ truyền (ml/giờ) để đạt được liều ban đầu khuyến cáo (0,3 microgam/kg/phút) và liều tối đa (10 microgam/ kg/phút), áp dụng trên bệnh nhân người lớn và trẻ em (ít áp dụng được trên bệnh nhân dưới 10 kg).",
+          "block_id": "b0076"
+        },
+        {
+          "type": "table",
+          "table_id": "p1174-t02",
+          "block_id": "b0077"
+        },
+        {
+          "type": "text",
+          "text": "Người suy gan: Không cần hiệu chỉnh liều; tuy nhiên do nguy cơ độc tính cyanid, cần sử dụng thận trọng.",
+          "block_id": "b0078"
+        },
+        {
+          "type": "text",
+          "text": "Người suy thận: Sử dụng có thể dẫn tới tích lũy thiocyanat và độc tính; cần hạn chế sử dụng. Khi mức lọc cầu thận dưới 30 ml/ phút/1,73 m2, không nên vượt quá tốc độ truyền trung bình là 3 microgam/kg/phút. Trên bệnh nhân vô niệu, không nên vượt quá tốc độ truyền trung bình là 1 microgam/kg/phút.",
+          "block_id": "b0079"
+        }
+      ]
+    },
+    {
+      "id": "tuong-tac-thuoc",
+      "title": "Tương tác thuốc",
+      "heading_block": "b0080",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Một số thuốc hiệp đồng tác dụng hạ huyết áp cùng natri nitroprusiat: thuốc điều trị tăng huyết áp, alfuzosin, thuốc chống loạn thần không điển hình, barbiturat, benperidol, diazoxid, duloxetin, lormetazepam, methylphenidat, nicorandil, nitric oxid, naftopidil, molsidomin, obinutuzumab, pentoxifylin, thuốc ức chế PDE- 5, đồng đẳng của prostacyclin, riociguat, pholcodin, nicergolin, amifostin, brimonidin, quinagolid.",
+          "block_id": "b0081"
+        },
+        {
+          "type": "text",
+          "text": "Một số thuốc có thể làm mất tác dụng hạ huyết áp của natri",
+          "block_id": "b0082"
+        },
+        {
+          "type": "text",
+          "text": "nitroprusiat: dexmethylphenidat, bromperidol, brigatinib, amphetamin, yohimbin.",
+          "block_id": "b0083"
+        },
+        {
+          "type": "text",
+          "text": "Natri nitroprusiat có thể làm tăng độc tính của một số thuốc như: prilocain, natri nitrit, thuốc gây tê tại chỗ.",
+          "block_id": "b0084"
+        },
+        {
+          "type": "text",
+          "text": "Nitric oxid có thể làm tăng nguy cơ gặp methemoglobin khi dùng cùng natri nitroprusiat.",
+          "block_id": "b0085"
+        },
+        {
+          "type": "text",
+          "text": "Dapson có thể làm tăng các tác dụng phụ khi dùng natri nitroprusiat.",
+          "block_id": "b0086"
+        }
+      ]
+    },
+    {
+      "id": "tuong-ky",
+      "title": "Tương kỵ",
+      "heading_block": "b0087",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Chỉ pha natri nitroprusiat trong dung dịch glucose 5%.",
+          "block_id": "b0088"
+        },
+        {
+          "type": "text",
+          "text": "Không cho thêm bất cứ thuốc nào vào dung dịch natri nitroprusiat.",
+          "block_id": "b0089"
+        }
+      ]
+    },
+    {
+      "id": "qua-lieu-va-xu-tri",
+      "title": "Quá liều và xử trí",
+      "heading_block": "b0090",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Triệu chứng: Khi lượng cyanid trong huyết tương vượt quá 80 nanogam/ml sẽ xuất hiện dấu hiệu của quá liều hoặc do thiếu hụt thiosulfat nội sinh. Những dấu hiệu đầu tiên là nhịp tim nhanh, vã mồ hôi, thở nhanh - sâu, tụt huyết áp nặng và có thể có nhiễm toan chuyển hóa. Những triệu chứng đi kèm hoặc tiếp theo là: khó thở, nhức đầu, nôn, chóng mặt, mất điều hòa và hôn mê.",
+          "block_id": "b0091"
+        },
+        {
+          "type": "text",
+          "text": "Quá liều nặng có thể gây triệu chứng ngộ độc cyanid, kèm rối loạn tâm thần, co giật, hôn mê, mạch rất yếu, mất phản xạ, giãn đồng tử, tụt huyết áp, tiếng tim rất mờ, da vân đá, thở yếu. Chỉ cho thở oxygen không đủ để khắc phục các rối loạn trên.",
+          "block_id": "b0092"
+        },
+        {
+          "type": "table",
+          "table_id": "p1174-t01",
+          "block_id": "b0093"
+        },
+        {
+          "type": "text",
+          "text": "Xử trí: Phải ngừng truyền ngay lập tức. Điều trị như điều trị ngộ độc cyanid. Có hai phương pháp nên dùng:",
+          "block_id": "b0094"
+        },
+        {
+          "type": "text",
+          "text": "Điều trị bằng hydroxocobalamin: Hydroxocobalamin kết hợp với cyanid để tạo thành cyanocobalamin và do đó bất hoạt ion cyanid.",
+          "block_id": "b0095"
+        },
+        {
+          "type": "text",
+          "text": "Tiêm hydroxocobalamin vào tĩnh mạch với liều 30 - 60 mg/kg cân nặng. Trên thực tế, do tác dụng hiệp đồng giữa hydroxocobalamin và natri thiosulfat, cho 4 g hydroxocobalamin vào trong 500 ml dung dịch có chứa 10% natri thiosulfat rồi truyền cho người bệnh.",
+          "block_id": "b0096"
+        },
+        {
+          "type": "text",
+          "text": "Điều trị bằng nitrit và natri thiosulfat: Trong khi chờ đợi pha dung dịch tiêm natri nitrit 3% thì cứ mỗi phút lại cho người bệnh hít amyl nitrit 15 - 30 giây.",
+          "block_id": "b0097"
+        },
+        {
+          "type": "text",
+          "text": "Truyền tĩnh mạch 10 - 15 ml dung dịch natri nitrit 3% với tốc độ 2,5 - 5 ml/phút và phải theo dõi chặt chẽ huyết áp (có sự tạo thành methemoglobin).",
+          "block_id": "b0098"
+        },
+        {
+          "type": "text",
+          "text": "Truyền chậm tĩnh mạch (trong 10 phút) 12,5 g natri thiosulfat trong 50 ml dung dịch glucose 5%. Tuy truyền thiosulfat vào tĩnh mạch theo tỷ lệ 10 : 1 (thiosulfat : nitroprusiat) có tác dụng tốt làm giảm nồng độ cyanid trong huyết thanh và trong tế bào, cần lưu ý chính bản thân thiocyanat cũng độc ở nồng độ cao và người bệnh suy thận dễ có nguy cơ bị ngộ độc thiocyanat.",
+          "block_id": "b0099"
+        },
+        {
+          "type": "text",
+          "text": "Phải theo dõi sát sao người bệnh trong nhiều giờ. Nếu các triệu chứng quá liều xuất hiện lại thì phải điều trị lại bằng natri nitrit và natri thiosulfat với liều bằng một nửa lần trước. Trong khi truyền natri nitrit và khi thiocyanat được tạo thành thì huyết áp có thể hạ thấp. Có thể điều trị huyết áp thấp bằng các thuốc gây co mạch.",
+          "block_id": "b0100"
+        }
+      ]
+    },
+    {
+      "id": "cap-nhat-lan-cuoi",
+      "title": "Cập nhật lần cuối",
+      "heading_block": "b0101",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "2020.",
+          "block_id": "b0101"
+        }
       ]
     }
   ],
   "quality": {
-    "status": "source-layout-rebuilt-v10.1-source-paragraph-boundaries",
-    "pdf_text_order": "left-column-then-right-column; visual line flow",
-    "paragraph_policy": "Paragraph boundaries are source-derived and stored only as blank lines. The client preserves those boundaries exactly; it must not create a new paragraph from label words such as “Trẻ em:” or “Người lớn:”. A lower-case continuation fragment is merged only when it follows a non-terminal source fragment; table footnotes remain separate. No client-side anchor or length-based sentence splitter is allowed.",
-    "table_policy": "source-table image inserted by PDF page/column/y position; table-cell text excluded from prose",
-    "validation": {
-      "raw_newline_inside_paragraph": false,
-      "table_count": 2,
-      "section_count": 17,
-      "client_anchor_resegmentation_disabled": true,
-      "client_length_sentence_chunking_disabled": true
+    "block_count": 101,
+    "heading_count": 14,
+    "subheading_count": 6,
+    "paragraph_count": 78,
+    "list_count": 0,
+    "table_count": 2,
+    "figure_count": 0,
+    "note_count": 1,
+    "page_count": 4
+  },
+  "tables": [
+    {
+      "id": "p1174-t02",
+      "image_path": "duoc-thu-assets/natri-nitroprusiat/p1174-t02.png",
+      "image": "duoc-thu-assets/natri-nitroprusiat/p1174-t02.png",
+      "source_pdf_page": 1174,
+      "printed_page": 1180,
+      "bbox": [
+        35.43,
+        383.46,
+        287.39,
+        597.41
+      ],
+      "block_id": "b0077"
+    },
+    {
+      "id": "p1174-t01",
+      "image_path": "duoc-thu-assets/natri-nitroprusiat/p1174-t01.png",
+      "image": "duoc-thu-assets/natri-nitroprusiat/p1174-t01.png",
+      "source_pdf_page": 1174,
+      "printed_page": 1180,
+      "bbox": [
+        299.39,
+        346.94,
+        551.2,
+        453.02
+      ],
+      "block_id": "b0093"
     }
+  ],
+  "legacy_compat": {
+    "sections": "generated from v11 blocks for v10.4.5.39 renderer/chatbot compatibility"
   }
 }

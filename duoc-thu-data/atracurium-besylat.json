@@ -1,5 +1,5 @@
 {
-  "schema_version": "10.1-source-paragraph-boundaries",
+  "schema_version": "11.0.0",
   "id": "atracurium-besylat",
   "title": "Atracurium Besylat",
   "aliases": [
@@ -26,236 +26,3039 @@
       "boundary_method": "physical-source-title-band"
     }
   },
+  "parser": {
+    "name": "medplus-duoc-thu-v11-structured-pdf-parser",
+    "method": "PyMuPDF span -> line -> block",
+    "content_source": "Duocthu2023.pdf",
+    "old_json_usage": "id/title/page-boundary metadata and existing table asset path only; old content is not used",
+    "column_order": "left column -> right column -> next page",
+    "block_model": [
+      "heading",
+      "subheading",
+      "paragraph",
+      "list",
+      "table",
+      "figure",
+      "note"
+    ],
+    "table_policy": "no OCR; preserve existing duoc-thu-assets/<id>/pXXXX-tXX.png image_path"
+  },
+  "blocks": [
+    {
+      "id": "b0001",
+      "type": "heading",
+      "level": 1,
+      "text": "ATRACURIUM BESYLAT",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        110.37,
+        62.83,
+        228.63,
+        76.67
+      ],
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "ATRACURIUM BESYLAT",
+          "bbox": [
+            110.37,
+            62.83,
+            228.63,
+            76.67
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0002",
+      "type": "paragraph",
+      "text": "Tên chung quốc tế: Atracurium besylate.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        86.72,
+        203.34,
+        99.86
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tên chung quốc tế: ",
+          "bbox": [
+            43.43,
+            86.72,
+            123.66,
+            99.86
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "Atracurium besylate.",
+          "bbox": [
+            123.66,
+            86.87,
+            203.34,
+            99.66
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0003",
+      "type": "paragraph",
+      "text": "Mã ATC: M03AC04.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        98.74,
+        126.91,
+        111.89
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mã ATC: ",
+          "bbox": [
+            43.43,
+            98.74,
+            83.89,
+            111.89
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "M03AC04.",
+          "bbox": [
+            83.89,
+            98.89,
+            126.91,
+            111.69
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0004",
+      "type": "paragraph",
+      "text": "Loại thuốc: Thuốc giãn cơ loại phong bế thần kinh - cơ không khử cực.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        112.76,
+        297.76,
+        136.9
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0005",
+      "type": "heading",
+      "level": 2,
+      "text": "Dạng thuốc và hàm lượng",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        139.14,
+        148.35,
+        152.29
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dạng thuốc và hàm lượng",
+          "bbox": [
+            43.43,
+            139.14,
+            148.35,
+            152.29
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0006",
+      "type": "paragraph",
+      "text": "Dung dịch tiêm: 10 mg/ml (ống 2,5 ml; 5 ml; 25 ml).",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        151.48,
+        245.33,
+        164.27
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Dung dịch tiêm: 10 mg/ml (ống 2,5 ml; 5 ml; 25 ml).",
+          "bbox": [
+            43.43,
+            151.48,
+            245.33,
+            164.27
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0007",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược lực học",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        166.51,
+        97.03,
+        179.66
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược lực học",
+          "bbox": [
+            43.43,
+            166.51,
+            97.03,
+            179.66
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0008",
+      "type": "paragraph",
+      "text": "Atracurium besylat có tác dụng phong bế thần kinh - cơ bằng cách cạnh tranh với acetylcholin ở các thụ thể trên khe synap của bản vận động. Các cơ mặt bị tác động đầu tiên, sau đó là các chi và thân, cuối cùng là cơ hoành. Liệt có thể hồi phục theo chiều ngược lại. Có thể thúc đẩy hồi phục nhanh chức năng thần kinh - cơ bằng cách tăng nồng độ acetylcholin ở bản vận động như dùng một thuốc kháng cholinesterase (như neostigmin).",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        178.85,
+        297.77,
+        264.78
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0009",
+      "type": "paragraph",
+      "text": "Atracurium besylat ít tác dụng đến tim mạch. Thuốc hầu như không tác động đến tần số tim, huyết áp trung bình, sức cản mạch máu, cung lượng tim hoặc huyết áp tĩnh mạch trung tâm. Tuy vậy, thuốc có thể tác động gián tiếp đến tim mạch (như giảm sức cản mạch máu ngoại biên) thông qua giải phóng histamin.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        264.17,
+        297.77,
+        325.72
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0010",
+      "type": "paragraph",
+      "text": "Atracurium besylat có nhiều ưu điểm so với đa số các thuốc chẹn thần kinh - cơ hiện có vì rất ít tác dụng đến tim mạch, tác dụng tương đối ngắn và hầu như không tích lũy. Tuy vậy, trong trường hợp cấp cứu phải đặt ống nội khí quản, succinylcholin thường được ưa dùng hơn vì tác dụng nhanh.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        325.11,
+        297.77,
+        386.66
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0011",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược động học",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        388.9,
+        104.54,
+        402.05
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược động học",
+          "bbox": [
+            43.43,
+            388.9,
+            104.54,
+            402.05
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0012",
+      "type": "paragraph",
+      "text": "Thời gian bắt đầu tác dụng, thời gian tác dụng, và tốc độ phục hồi phong bế thần kinh - cơ do atracurium besylat thay đổi tùy theo từng bệnh nhân, và có thể bị ảnh hưởng bởi thuốc mê (như enfluran, isofluran, halothan) và liều dùng. Thời gian bắt đầu khởi phát tác dụng sau 2 - 3 phút, thời gian đạt tác dụng tối đa sau 3 - 5 phút.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        401.24,
+        297.8,
+        462.79
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0013",
+      "type": "paragraph",
+      "text": "Thời gian bắt đầu hồi phục 20 - 35 phút sau liều khởi đầu 0,4 - 0,5 mg/kg, dưới điều kiện gây mê cân bằng, tỷ lệ hồi phục đạt 95% sau 60 - 70 phút.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        462.18,
+        297.77,
+        499.35
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0014",
+      "type": "paragraph",
+      "text": "Phân bố: Thể tích phân bố ở người lớn có chức năng thận và gan bình thường sau khi tiêm 1 liều duy nhất 0,3 mg/kg hoặc 0,6 mg/kg, trung bình là 160 ml/kg (dao động: 120 - 188 ml/kg).",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        498.75,
+        297.79,
+        535.92
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0015",
+      "type": "paragraph",
+      "text": "Thuốc gắn với protein khoảng 82%.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        535.31,
+        182.76,
+        548.11
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thuốc gắn với protein khoảng 82%. ",
+          "bbox": [
+            43.43,
+            535.31,
+            182.76,
+            548.11
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0016",
+      "type": "paragraph",
+      "text": "Thuốc qua nhau thai một lượng nhỏ không có ý nghĩa lâm sàng.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        547.5,
+        288.98,
+        560.3
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thuốc qua nhau thai một lượng nhỏ không có ý nghĩa lâm sàng. ",
+          "bbox": [
+            43.43,
+            547.5,
+            288.98,
+            560.3
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0017",
+      "type": "paragraph",
+      "text": "Chuyển hóa: Atracurium besylat bị chuyển hóa nhanh qua sự thải trừ Hofmann (quá trình này không phụ thuộc vào chức năng thận và gan) và qua sự thủy phân ester tạo thành các sản phẩm không có hoạt tính. Laudanosin, một sản phẩm của quá trình thải trừ Hofmann, có tác dụng kích thích TKTW và có thể tích lũy khi sử dụng kéo dài. Laudanosin được chuyển hóa ở gan.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        559.69,
+        297.77,
+        633.42
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0018",
+      "type": "paragraph",
+      "text": "Thải trừ: Atracurium besylat và các chất chuyển hóa được thải trừ qua nước tiểu và phân, hầu hết dưới dạng đã chuyển hóa. Nửa đời thải trừ của atracurium là khoảng 20 phút, nửa đời thải trừ của laudanosin là khoảng 3 - 6 giờ.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        632.82,
+        297.77,
+        682.18
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0019",
+      "type": "heading",
+      "level": 2,
+      "text": "Chỉ định",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        684.42,
+        79.08,
+        697.56
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chỉ định",
+          "bbox": [
+            43.43,
+            684.42,
+            79.08,
+            697.56
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0020",
+      "type": "paragraph",
+      "text": "Dùng để gây giãn cơ trong phẫu thuật, tạo điều kiện thuận lợi cho đặt nội khí quản, thông khí nhân tạo trên các bệnh nhân hồi sức tích cực (ICU).",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        696.76,
+        297.76,
+        733.93
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0021",
+      "type": "heading",
+      "level": 2,
+      "text": "Chống chỉ định",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        736.17,
+        105.73,
+        749.32
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chống chỉ định",
+          "bbox": [
+            43.43,
+            736.17,
+            105.73,
+            749.32
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0022",
+      "type": "paragraph",
+      "text": "Người tiền sử mẫn cảm với thuốc.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        748.51,
+        173.29,
+        761.31
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Người tiền sử mẫn cảm với thuốc.",
+          "bbox": [
+            43.43,
+            748.51,
+            173.29,
+            761.31
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0023",
+      "type": "heading",
+      "level": 2,
+      "text": "Thận trọng",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        763.54,
+        89.62,
+        776.69
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thận trọng",
+          "bbox": [
+            43.43,
+            763.54,
+            89.62,
+            776.69
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ],
+      "note_role": "than trong",
+      "v11_fix": "note_title_reclassified_as_heading_alpha5"
+    },
+    {
+      "id": "b0024",
+      "type": "paragraph",
+      "text": "Atracurium besylat có thể làm suy hô hấp và gây liệt hô hấp. Người dùng atracurium besylat phải có kinh nghiệm sử dụng thuốc phong",
+      "page": 246,
+      "printed_page": 252,
+      "column": 0,
+      "bbox": [
+        43.43,
+        775.88,
+        297.76,
+        800.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0025",
+      "type": "paragraph",
+      "text": "bế thần kinh - cơ; phải có sẵn nhân viên và phương tiện để đặt ống nội khí quản, và thông khí nhân tạo.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        63.32,
+        561.72,
+        88.25
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0026",
+      "type": "paragraph",
+      "text": "Nguy cơ giải phóng histamin trên các bệnh nhân nhạy cảm trong suốt quá trình điều trị với atracurium. Cần thận trọng khi sử dụng thuốc cho bệnh nhân có tiền sử nhạy cảm với tác dụng của histamin.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        87.58,
+        561.72,
+        124.64
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0027",
+      "type": "paragraph",
+      "text": "Đặc biệt co thắt phế quản có thể xảy ra với bệnh nhân có tiền sử dị ứng hoặc hen.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        123.98,
+        561.72,
+        148.91
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0028",
+      "type": "paragraph",
+      "text": "Có sự mẫn cảm chéo giữa các thuốc ức chế thần kinh - cơ với một tỷ lệ cao. Vì vậy cần loại trừ nguy cơ quá mẫn với các thuốc ức chế thần kinh - cơ khác trước khi tiêm atracurium.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        148.24,
+        561.72,
+        185.3
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0029",
+      "type": "paragraph",
+      "text": "Nên kiểm soát giá trị creatinin phosphat trên các bệnh nhân hen phế quản đang điều trị với liều cao corticosteroid và các thuốc ức chế thần kinh - cơ trong khoa hồi sức tích cực (ICU).",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        184.64,
+        561.72,
+        221.69
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0030",
+      "type": "paragraph",
+      "text": "Atracurium có ảnh hưởng không đáng kể trên việc ức chế hạch hoặc dây thần kinh phế vị trong mức liều khuyến cáo. Do vậy, thuốc ảnh hưởng lên nhịp tim không có ý nghĩa lâm sàng, thuốc không chống lại được nhịp tim chậm do nhiều thuốc gây mê hoặc do kích thích thần kinh phó giao cảm trong quá trình phẫu thuật.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        221.03,
+        561.72,
+        282.35
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0031",
+      "type": "paragraph",
+      "text": "Phải dùng atracurium besylat hết sức thận trọng ở bệnh nhân có bệnh nhược cơ nặng hoặc các bệnh thần kinh - cơ khác vì bệnh này có thể làm tăng tác dụng phong bế thần kinh - cơ của thuốc.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        281.69,
+        561.72,
+        318.75
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0032",
+      "type": "paragraph",
+      "text": "Tương tự các thuốc ức chế thần kinh - cơ khác, rối loạn cân bằng acid - base/rối loạn điện giải có thể làm tăng hoặc giảm nhạy cảm với thuốc của bệnh nhân.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        318.08,
+        561.72,
+        355.14
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0033",
+      "type": "paragraph",
+      "text": "Tương tự các thuốc ức chế thần kinh - cơ không khử cực, giảm phosphat huyết có thể làm chậm hồi phục trên bệnh nhân.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        354.47,
+        561.72,
+        379.4
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0034",
+      "type": "paragraph",
+      "text": "Atracurium nên tiêm chậm trong khoảng thời gian 60 giây ở bệnh nhân bị giảm khối lượng tuần hoàn vì dễ gây tụt huyết áp.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        378.74,
+        561.71,
+        403.67
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0035",
+      "type": "paragraph",
+      "text": "Bệnh nhân bỏng thường có nguy cơ kháng với các thuốc không khử cực. Cần hiệu chỉnh liều theo đáp ứng.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        403.0,
+        561.71,
+        427.93
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0036",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ mang thai",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        430.11,
+        382.6,
+        443.26
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ mang thai",
+          "bbox": [
+            307.39,
+            430.11,
+            382.6,
+            443.26
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0037",
+      "type": "paragraph",
+      "text": "Các nghiên cứu trên động vật cho thấy thuốc không có ảnh hưởng có ý nghĩa đến sự phát triển của thai nhi. Tuy nhiên, giống như các thuốc phong bế thần kinh - cơ khác, atracurium chỉ nên sử dụng cho mẹ trong thời kỳ mang thai nếu lợi ích cho mẹ vượt trội nguy cơ tiềm năng cho thai nhi. Atracurium thích hợp để duy trì tác dụng giãn cơ trong suốt quá trình mổ lấy thai. Thuốc qua được hàng rào nhau thai tuy nhiên ở mức độ nhỏ không có ý nghĩa lâm sàng khi dùng ở mức liều khuyến cáo.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        442.39,
+        561.72,
+        540.11
+      ],
+      "source": {
+        "line_count": 8
+      }
+    },
+    {
+      "id": "b0038",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ cho con bú",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        542.29,
+        385.5,
+        555.44
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ cho con bú",
+          "bbox": [
+            307.39,
+            542.29,
+            385.5,
+            555.44
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0039",
+      "type": "paragraph",
+      "text": "Vì không biết atracurium besylat có được phân bố trong sữa mẹ hay không nên phải sử dụng thuốc một cách thận trọng ở phụ nữ cho con bú.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        554.58,
+        561.72,
+        591.64
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0040",
+      "type": "heading",
+      "level": 2,
+      "text": "Tác dụng không mong muốn (ADR)",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        593.82,
+        453.33,
+        606.97
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tác dụng không mong muốn (ADR)",
+          "bbox": [
+            307.39,
+            593.82,
+            453.33,
+            606.97
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0041",
+      "type": "paragraph",
+      "text": "Các ADR của atracurium besylat thường nhẹ, xảy ra ở khoảng 5% bệnh nhân hoặc ít hơn sau khi tiêm tĩnh mạch và chủ yếu do sự giải phóng histamin. Các ADR có ý nghĩa lâm sàng xảy ra ở 0,8% bệnh nhân dùng thuốc.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        606.1,
+        561.72,
+        655.29
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0042",
+      "type": "subheading",
+      "level": 3,
+      "text": "Thường gặp",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        654.79,
+        353.79,
+        667.42
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thường gặp",
+          "bbox": [
+            307.39,
+            654.79,
+            353.79,
+            667.42
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0043",
+      "type": "paragraph",
+      "text": "Da: đỏ bừng da.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        666.76,
+        368.47,
+        679.56
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Da: đỏ bừng da.",
+          "bbox": [
+            307.39,
+            666.76,
+            368.47,
+            679.56
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0044",
+      "type": "paragraph",
+      "text": "Tim mạch: tăng hoặc giảm huyết áp, tăng nhịp tim.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        678.89,
+        501.52,
+        691.69
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tim mạch: tăng hoặc giảm huyết áp, tăng nhịp tim.",
+          "bbox": [
+            307.39,
+            678.89,
+            501.52,
+            691.69
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0045",
+      "type": "subheading",
+      "level": 3,
+      "text": "Ít gặp",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        691.18,
+        329.81,
+        703.82
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Ít gặp",
+          "bbox": [
+            307.39,
+            691.18,
+            329.81,
+            703.82
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0046",
+      "type": "paragraph",
+      "text": "Da: ban đỏ, ngứa, mày đay, nốt phỏng và ban đỏ ở nơi tiêm.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        703.15,
+        535.42,
+        715.95
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Da: ban đỏ, ngứa, mày đay, nốt phỏng và ban đỏ ở nơi tiêm.",
+          "bbox": [
+            307.39,
+            703.15,
+            535.42,
+            715.95
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0047",
+      "type": "paragraph",
+      "text": "Hô hấp: tiếng thở khò khè và tăng tiết dịch phế quản, co thắt phế quản.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        715.28,
+        561.72,
+        740.21
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0048",
+      "type": "paragraph",
+      "text": "Tim mạch: giảm nhịp tim.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        739.55,
+        406.54,
+        752.34
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tim mạch: giảm nhịp tim.",
+          "bbox": [
+            307.39,
+            739.55,
+            406.54,
+            752.34
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0049",
+      "type": "subheading",
+      "level": 3,
+      "text": "Hiếm gặp",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        751.84,
+        344.59,
+        764.48
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hiếm gặp",
+          "bbox": [
+            307.39,
+            751.84,
+            344.59,
+            764.48
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0050",
+      "type": "paragraph",
+      "text": "Hô hấp: co thắt phế quản.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        763.81,
+        405.01,
+        776.61
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Hô hấp: co thắt phế quản.",
+          "bbox": [
+            307.39,
+            763.81,
+            405.01,
+            776.61
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0051",
+      "type": "paragraph",
+      "text": "Tim mạch: hạ huyết áp, phù mạch.",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        775.94,
+        438.98,
+        788.74
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tim mạch: hạ huyết áp, phù mạch.",
+          "bbox": [
+            307.39,
+            775.94,
+            438.98,
+            788.74
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0052",
+      "type": "paragraph",
+      "text": "Miễn dịch: sốc phản vệ, phản ứng phản vệ như sốc, trụy tuần hoàn",
+      "page": 246,
+      "printed_page": 252,
+      "column": 1,
+      "bbox": [
+        307.39,
+        788.07,
+        561.71,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Miễn dịch: sốc phản vệ, phản ứng phản vệ như sốc, trụy tuần hoàn ",
+          "bbox": [
+            307.39,
+            788.07,
+            561.71,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0053",
+      "type": "paragraph",
+      "text": "và ngừng tim (thường gặp khi phối hợp atracurium với một hoặc nhiều thuốc gây mê).",
+      "page": 247,
+      "printed_page": 253,
+      "column": 0,
+      "bbox": [
+        35.43,
+        63.32,
+        289.77,
+        88.3
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0054",
+      "type": "paragraph",
+      "text": "Da: mày đay.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 0,
+      "bbox": [
+        35.43,
+        87.69,
+        85.73,
+        100.48
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Da: mày đay.",
+          "bbox": [
+            35.43,
+            87.69,
+            85.73,
+            100.48
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0055",
+      "type": "paragraph",
+      "text": "Khác: xanh tím, phản ứng dị ứng nặng (như phản ứng dẫn đến ngừng tim), co giật.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 0,
+      "bbox": [
+        35.43,
+        99.87,
+        289.76,
+        124.85
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0056",
+      "type": "subheading",
+      "level": 3,
+      "text": "Chưa xác định được tần suất",
+      "page": 247,
+      "printed_page": 253,
+      "column": 0,
+      "bbox": [
+        35.43,
+        124.39,
+        145.6,
+        137.03
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chưa xác định được tần suất",
+          "bbox": [
+            35.43,
+            124.39,
+            145.6,
+            137.03
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0057",
+      "type": "paragraph",
+      "text": "Thần kinh: co giật.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 0,
+      "bbox": [
+        35.43,
+        136.41,
+        107.21,
+        149.21
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thần kinh: co giật.",
+          "bbox": [
+            35.43,
+            136.41,
+            107.21,
+            149.21
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0058",
+      "type": "paragraph",
+      "text": "Cơ - xương - khớp và mô liên kết: bệnh cơ, yếu cơ.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 0,
+      "bbox": [
+        35.43,
+        148.6,
+        230.35,
+        161.39
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cơ - xương - khớp và mô liên kết: bệnh cơ, yếu cơ.",
+          "bbox": [
+            35.43,
+            148.6,
+            230.35,
+            161.39
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0059",
+      "type": "heading",
+      "level": 2,
+      "text": "Hướng dẫn cách xử trí ADR",
+      "page": 247,
+      "printed_page": 253,
+      "column": 0,
+      "bbox": [
+        35.43,
+        163.63,
+        150.0,
+        176.77
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hướng dẫn cách xử trí ADR",
+          "bbox": [
+            35.43,
+            163.63,
+            150.0,
+            176.77
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0060",
+      "type": "paragraph",
+      "text": "Hiếm khi phải ngừng thuốc và cần tiến hành điều trị một cách thích hợp khi có tăng tiết dịch phế quản hoặc thở khò khè. Nếu xảy ra nhịp chậm nặng, có thể điều trị với atropin. Khi có hạ huyết áp nặng cũng cần phải điều trị (truyền dịch).",
+      "page": 247,
+      "printed_page": 253,
+      "column": 0,
+      "bbox": [
+        35.43,
+        175.96,
+        289.77,
+        225.3
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0061",
+      "type": "heading",
+      "level": 2,
+      "text": "Liều lượng và cách dùng",
+      "page": 247,
+      "printed_page": 253,
+      "column": 0,
+      "bbox": [
+        35.43,
+        227.54,
+        135.61,
+        240.69
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng và cách dùng",
+          "bbox": [
+            35.43,
+            227.54,
+            135.61,
+            240.69
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0062",
+      "type": "paragraph",
+      "text": "Cách dùng: Atracurium besylat được tiêm tĩnh mạch nhanh hoặc tiêm truyền tĩnh mạch. Trong các phẫu thuật kéo dài, có thể tiêm truyền tĩnh mạch liên tục. Để tiêm truyền tĩnh mạch liên tục, phải pha loãng thuốc tiêm atracurium besylat tới nồng độ 0,2 hoặc 0,5 mg/ml trong dung dịch pha tiêm dextrose 5%; dextrose 5% và natri clorid 0,9%, hoặc natri clorid 0,9%. Để tránh lo lắng cho người bệnh, chỉ dùng thuốc khi người bệnh mất ý thức. Để theo dõi một cách chính xác mức độ giãn cơ và giảm thiểu khả năng quá liều nên dùng máy kích thích điện để theo dõi sự phong bế và phục hồi ở bệnh nhân được gây mê và dùng atracurium.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 0,
+      "bbox": [
+        35.43,
+        239.87,
+        289.77,
+        362.31
+      ],
+      "source": {
+        "line_count": 10
+      }
+    },
+    {
+      "id": "b0063",
+      "type": "subheading",
+      "level": 3,
+      "text": "Liều lượng",
+      "page": 247,
+      "printed_page": 253,
+      "column": 0,
+      "bbox": [
+        35.43,
+        361.77,
+        79.22,
+        374.49
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng",
+          "bbox": [
+            35.43,
+            361.77,
+            79.22,
+            374.49
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0064",
+      "type": "paragraph",
+      "text": "Liều ban đầu: Người lớn trong trường hợp đặt ống nội khí quản:",
+      "page": 247,
+      "printed_page": 253,
+      "column": 0,
+      "bbox": [
+        35.43,
+        373.88,
+        289.77,
+        386.67
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Liều ban đầu:",
+          "bbox": [
+            35.43,
+            374.04,
+            89.86,
+            386.67
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        },
+        {
+          "text": " Người lớn trong trường hợp đặt ống nội khí quản: ",
+          "bbox": [
+            89.86,
+            373.88,
+            289.77,
+            386.67
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0065",
+      "type": "paragraph",
+      "text": "Tiêm tĩnh mạch 0,4 - 0,5 mg/kg. Sau liều ban đầu này, có thể thực hiện đặt ống nội khí quản đối với phẫu thuật không cấp cứu trong vòng 2 - 2,5 phút ở phần lớn bệnh nhân và sự phong bế thần kinh cơ tối đa thường xảy ra trong vòng 3 - 5 phút. Khi sử dụng đồng thời với gây mê phối hợp, liều ban đầu này thường phong bế thần kinh - cơ đủ trong lâm sàng khoảng 20 - 35 phút. Sự phục hồi tới 25% như lúc đầu sau khoảng 35 - 45 phút và tới 95% khoảng 1 giờ sau khi dùng.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 0,
+      "bbox": [
+        35.43,
+        386.06,
+        289.78,
+        484.13
+      ],
+      "source": {
+        "line_count": 8
+      }
+    },
+    {
+      "id": "b0066",
+      "type": "paragraph",
+      "text": "Nhà sản xuất khuyến cáo phải giảm liều ban đầu ở người lớn khoảng 33% (nghĩa là từ 0,25 - 0,35 mg/kg) khi thuốc được cho sau khi gây mê ổn định bằng enfluran hoặc isofluran, giảm ít hơn khoảng 20% nếu gây mê bằng halothan vì halothan chỉ có tác dụng tối thiểu đến hoạt tính phong bế thần kinh - cơ của atracurium besylat.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 0,
+      "bbox": [
+        35.43,
+        483.52,
+        289.8,
+        545.04
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0067",
+      "type": "paragraph",
+      "text": "Liều duy trì - Tiêm tĩnh mạch cách quãng: Để duy trì sự phong bế thần kinh - cơ trong các phẫu thuật kéo dài, liều được hiệu chỉnh theo từng cá nhân và liều thường dùng ở người lớn là 0,08 - 0,1 mg/kg.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 0,
+      "bbox": [
+        35.43,
+        544.43,
+        289.8,
+        581.59
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0068",
+      "type": "paragraph",
+      "text": "Ở bệnh nhân được gây mê phối hợp, liều duy trì đầu tiên thường cần thiết ở 20 - 45 phút sau khi dùng liều ban đầu. Có thể dùng liều duy trì nhắc lại ở các khoảng cách tương đối đều là 15 - 25 phút ở bệnh nhân được gây mê phối hợp. Khi enfluran hoặc isofluran được dùng để gây mê hoặc khi dùng liều duy trì atracurium besylat cao hơn, có thể dùng liều duy trì này ở khoảng cách dài hơn.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 0,
+      "bbox": [
+        35.43,
+        580.97,
+        289.77,
+        654.68
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0069",
+      "type": "paragraph",
+      "text": "Tiêm truyền tĩnh mạch liên tục: Trong các phẫu thuật kéo dài, có thể truyền tĩnh mạch liên tục atracurium besylat sau khi tiêm tĩnh mạch nhanh liều ban đầu. Chỉ bắt đầu tiêm truyền thuốc sau khi bắt đầu phục hồi từ liều tiêm tĩnh mạch ban đầu. Tiêm truyền tĩnh mạch liên tục cho người lớn với tốc độ ban đầu là 9 - 10 microgam/ kg/phút, và sau đó duy trì với tốc độ tiêm truyền là 5 - 9 microgam/ kg/phút ở bệnh nhân được gây mê phối hợp. Tốc độ tiêm truyền giảm khoảng 33% khi gây mê ở trạng thái ổn định với enfluran hoặc isofluran.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 0,
+      "bbox": [
+        35.43,
+        654.07,
+        289.77,
+        764.32
+      ],
+      "source": {
+        "line_count": 9
+      }
+    },
+    {
+      "id": "b0070",
+      "type": "paragraph",
+      "text": "Người cao tuổi: Sử dụng mức liều chuẩn thông thường. Tuy nhiên, nên dùng liều khởi đầu ở mức liều thấp, mức dưới của khoảng điều trị và nên tiêm chậm.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 0,
+      "bbox": [
+        35.43,
+        763.71,
+        289.76,
+        800.87
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0071",
+      "type": "subheading",
+      "level": 3,
+      "text": "Trẻ em:",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        63.49,
+        331.05,
+        76.13
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Trẻ em: ",
+          "bbox": [
+            299.39,
+            63.49,
+            331.05,
+            76.13
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0072",
+      "type": "paragraph",
+      "text": "Khuyến cáo đối với liều ban đầu, liều duy trì và tốc độ tiêm truyền tĩnh mạch liên tục atracurium besylat ở trẻ em 2 tuổi trở lên giống như ở người lớn.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        75.36,
+        553.72,
+        112.22
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0073",
+      "type": "paragraph",
+      "text": "Trẻ sơ sinh: Không được khuyến cáo sử dụng do chưa có đủ dữ liệu chứng minh hiệu quả và tính an toàn với đối tượng này.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        111.45,
+        553.72,
+        136.27
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0074",
+      "type": "paragraph",
+      "text": "Trẻ em từ 1 tháng đến < 2 tuổi:",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        135.51,
+        420.12,
+        148.3
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Trẻ em từ 1 tháng đến < 2 tuổi: ",
+          "bbox": [
+            299.39,
+            135.51,
+            420.12,
+            148.3
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0075",
+      "type": "paragraph",
+      "text": "Liều ban đầu: Tiêm tĩnh mạch 0,3 - 0,4 mg/kg.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        147.54,
+        479.09,
+        160.33
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Liều ban đầu: Tiêm tĩnh mạch 0,3 - 0,4 mg/kg. ",
+          "bbox": [
+            299.39,
+            147.54,
+            479.09,
+            160.33
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0076",
+      "type": "paragraph",
+      "text": "Liều duy trì: 0,3 - 0,4mg/kg nếu cần để duy trì phong bế thần kinh - cơ hoặc truyền liên tục: 0,6 - 1,2 mg/kg/giờ hoặc 10 - 20 microgam/kg/phút.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        159.57,
+        553.72,
+        196.42
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0077",
+      "type": "paragraph",
+      "text": "Suy gan, suy thận: Không cần hiệu chỉnh liều kể cả giai đoạn cuối suy thận.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        195.66,
+        553.72,
+        220.48
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0078",
+      "type": "paragraph",
+      "text": "Bệnh nhân hồi sức tích cực (ICU): Sau khi tiêm liều khởi đầu 0,3 - 0,6 mg/kg, có thể duy trì tác dụng ức chế thần kinh - cơ bằng truyền tĩnh mạch liên tục với tốc độ 0,65 - 0,78 mg/kg/giờ. Có sự thay đổi giữa các bệnh nhân về mức liều yêu cầu và có thể tăng, giảm theo thời gian. Một số trường hợp có thể dùng ở mức liều thấp 0,27 mg/kg/giờ hoặc ở mức liều cao 1,77 mg/kg/giờ.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        219.71,
+        553.72,
+        292.66
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0079",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương tác thuốc",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        294.74,
+        366.29,
+        307.89
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương tác thuốc",
+          "bbox": [
+            299.39,
+            294.74,
+            366.29,
+            307.89
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0080",
+      "type": "paragraph",
+      "text": "Các thuốc tránh phối hợp: Quinidin.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        306.92,
+        439.04,
+        319.72
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Các thuốc tránh phối hợp:",
+          "bbox": [
+            299.39,
+            307.08,
+            400.51,
+            319.72
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        },
+        {
+          "text": " Quinidin.",
+          "bbox": [
+            400.5,
+            306.92,
+            439.04,
+            319.72
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0081",
+      "type": "subheading",
+      "level": 3,
+      "text": "Tăng tác dụng và độc tính:",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        319.11,
+        402.03,
+        331.75
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tăng tác dụng và độc tính:",
+          "bbox": [
+            299.39,
+            319.11,
+            402.03,
+            331.75
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0082",
+      "type": "paragraph",
+      "text": "Atracurium có thể làm tăng nồng độ/tác dụng của: glycosid tim, các corticosteroid (dùng đường toàn thân), onabotulinumtoxin A, rimabotulinumtoxin B.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        330.98,
+        553.72,
+        367.84
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0083",
+      "type": "paragraph",
+      "text": "Nồng độ/tác dụng của atracurium có thể bị tăng bởi các thuốc sau: abobotulinumtoxin A, các kháng sinh aminoglycosid, các thuốc chẹn kênh canxi, capreomycin, clindamycin (tại chỗ), cyclosporin (toàn thân), fosphenytoin - phenytoin, thuốc mê hô hấp, ketorolac (dạng xông hít), ketorolac (toàn thân), kháng sinh lincosamid, lithi, thuốc lợi tiểu quai, muối magnesi, minocyclin, polymixin B, procainamid, quinidin, quinin, spironolacton, dẫn chất tetracyclin, vancomycin.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        367.07,
+        553.76,
+        464.07
+      ],
+      "source": {
+        "line_count": 8
+      }
+    },
+    {
+      "id": "b0084",
+      "type": "paragraph",
+      "text": "Giảm tác dụng: Nồng độ/tác dụng của atracurium bị giảm bởi các thuốc sau: Các thuốc ức chế acetylcholinesterase, fosphenytoin phenytoin, các thuốc lợi tiểu quai.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        463.3,
+        553.72,
+        500.16
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0085",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương kỵ",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        502.24,
+        339.12,
+        515.39
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương kỵ",
+          "bbox": [
+            299.39,
+            502.24,
+            339.12,
+            515.39
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0086",
+      "type": "paragraph",
+      "text": "Atracurium bị bất hoạt ở pH cao và không được trộn lẫn trong cùng xylanh với thiopental hoặc bất kỳ các thuốc có tính kiềm khác.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        514.42,
+        553.72,
+        539.25
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0087",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương hợp",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        541.33,
+        344.92,
+        554.48
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương hợp",
+          "bbox": [
+            299.39,
+            541.33,
+            344.92,
+            554.48
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0088",
+      "type": "paragraph",
+      "text": "Atracurium tương hợp với các dụng dịch sau: dung dịch nước muối tiêm truyền 0,9%, dung dịch glucose tiêm truyền 5%, dung dịch Ringer pha tiêm, dung dịch natri lactat tiêm truyền.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        553.51,
+        553.72,
+        590.37
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0089",
+      "type": "heading",
+      "level": 2,
+      "text": "Quá liều và xử trí",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        592.45,
+        371.06,
+        605.6
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Quá liều và xử trí",
+          "bbox": [
+            299.39,
+            592.45,
+            371.06,
+            605.6
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0090",
+      "type": "paragraph",
+      "text": "Triệu chứng: Dấu hiệu chính của quá liều là liệt cơ kéo dài và hậu quả của nó.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        604.63,
+        553.71,
+        629.46
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0091",
+      "type": "paragraph",
+      "text": "Xử trí: Điều trị hỗ trợ và điều trị triệu chứng. Duy trì thông khí hỗ trợ đến tận khi bệnh nhân có thể tự thở. Bệnh nhân cần được an thần hoàn toàn.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        628.69,
+        553.71,
+        665.54
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0092",
+      "type": "paragraph",
+      "text": "Đảo ngược tác dụng phong bế thần kinh - cơ: Có thể làm mất tác dụng phong bế thần kinh - cơ do atracurium besylat bằng cách dùng một thuốc ức chế cholinesterase như neostigmin, pyridostigmin hoặc edrophonium, thường phối hợp với atropin hoặc glycopyralat để phong bế tác dụng phụ trên muscarinic của thuốc ức chế cholinesterase.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        664.78,
+        553.72,
+        737.72
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0093",
+      "type": "heading",
+      "text": "Cập nhật lần cuối",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        742.52,
+        397.02,
+        755.15
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2017.\n",
+          "bbox": [
+            299.39,
+            742.52,
+            397.02,
+            755.15
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "level": 2,
+      "v11_fix": "cap_nhat_cap_nhap_lan_cuoi_normalized_alpha8"
+    },
+    {
+      "id": "b0093",
+      "type": "paragraph",
+      "text": "2017.",
+      "page": 247,
+      "printed_page": 253,
+      "column": 1,
+      "bbox": [
+        299.39,
+        742.52,
+        397.02,
+        755.15
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2017.\n",
+          "bbox": [
+            299.39,
+            742.52,
+            397.02,
+            755.15
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "v11_parent_heading": "Cập nhật lần cuối"
+    }
+  ],
   "sections": [
-    {
-      "id": "thong-tin-au-chuyen-luan",
-      "title": "Thông tin đầu chuyên luận",
-      "content": "ATRACURIUM BESYLAT",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "ATRACURIUM BESYLAT"
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "ten-chung-quoc-te",
-      "title": "Tên chung quốc tế",
-      "content": "Atracurium besylate.\n\nMã ATC: M03AC04.\n\nLoại thuốc: Thuốc giãn cơ loại phong bế thần kinh - cơ không khử cực.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Atracurium besylate.\n\nMã ATC: M03AC04.\n\nLoại thuốc: Thuốc giãn cơ loại phong bế thần kinh - cơ không khử cực."
-        }
-      ],
-      "subsections": []
-    },
     {
       "id": "dang-thuoc-va-ham-luong",
       "title": "Dạng thuốc và hàm lượng",
-      "content": "Dung dịch tiêm: 10 mg/ml (ống 2,5 ml; 5 ml; 25 ml).",
+      "heading_block": "b0005",
       "blocks": [
         {
           "type": "text",
-          "text": "Dung dịch tiêm: 10 mg/ml (ống 2,5 ml; 5 ml; 25 ml)."
+          "text": "Dung dịch tiêm: 10 mg/ml (ống 2,5 ml; 5 ml; 25 ml).",
+          "block_id": "b0006"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "duoc-luc-hoc",
       "title": "Dược lực học",
-      "content": "Atracurium besylat có tác dụng phong bế thần kinh - cơ bằng cách cạnh tranh với acetylcholin ở các thụ thể trên khe synap của bản vận động. Các cơ mặt bị tác động đầu tiên, sau đó là các chi và thân, cuối cùng là cơ hoành. Liệt có thể hồi phục theo chiều ngược lại. Có thể thúc đẩy hồi phục nhanh chức năng thần kinh - cơ bằng cách tăng nồng độ acetylcholin ở bản vận động như dùng một thuốc kháng cholinesterase (như neostigmin).\n\nAtracurium besylat ít tác dụng đến tim mạch. Thuốc hầu như không tác động đến tần số tim, huyết áp trung bình, sức cản mạch máu, cung lượng tim hoặc huyết áp tĩnh mạch trung tâm. Tuy vậy, thuốc có thể tác động gián tiếp đến tim mạch (như giảm sức cản mạch máu ngoại biên) thông qua giải phóng histamin.\n\nAtracurium besylat có nhiều ưu điểm so với đa số các thuốc chẹn thần kinh - cơ hiện có vì rất ít tác dụng đến tim mạch, tác dụng tương đối ngắn và hầu như không tích lũy. Tuy vậy, trong trường hợp cấp cứu phải đặt ống nội khí quản, succinylcholin thường được ưa dùng hơn vì tác dụng nhanh.",
+      "heading_block": "b0007",
       "blocks": [
         {
           "type": "text",
-          "text": "Atracurium besylat có tác dụng phong bế thần kinh - cơ bằng cách cạnh tranh với acetylcholin ở các thụ thể trên khe synap của bản vận động. Các cơ mặt bị tác động đầu tiên, sau đó là các chi và thân, cuối cùng là cơ hoành. Liệt có thể hồi phục theo chiều ngược lại. Có thể thúc đẩy hồi phục nhanh chức năng thần kinh - cơ bằng cách tăng nồng độ acetylcholin ở bản vận động như dùng một thuốc kháng cholinesterase (như neostigmin).\n\nAtracurium besylat ít tác dụng đến tim mạch. Thuốc hầu như không tác động đến tần số tim, huyết áp trung bình, sức cản mạch máu, cung lượng tim hoặc huyết áp tĩnh mạch trung tâm. Tuy vậy, thuốc có thể tác động gián tiếp đến tim mạch (như giảm sức cản mạch máu ngoại biên) thông qua giải phóng histamin.\n\nAtracurium besylat có nhiều ưu điểm so với đa số các thuốc chẹn thần kinh - cơ hiện có vì rất ít tác dụng đến tim mạch, tác dụng tương đối ngắn và hầu như không tích lũy. Tuy vậy, trong trường hợp cấp cứu phải đặt ống nội khí quản, succinylcholin thường được ưa dùng hơn vì tác dụng nhanh."
+          "text": "Atracurium besylat có tác dụng phong bế thần kinh - cơ bằng cách cạnh tranh với acetylcholin ở các thụ thể trên khe synap của bản vận động. Các cơ mặt bị tác động đầu tiên, sau đó là các chi và thân, cuối cùng là cơ hoành. Liệt có thể hồi phục theo chiều ngược lại. Có thể thúc đẩy hồi phục nhanh chức năng thần kinh - cơ bằng cách tăng nồng độ acetylcholin ở bản vận động như dùng một thuốc kháng cholinesterase (như neostigmin).",
+          "block_id": "b0008"
+        },
+        {
+          "type": "text",
+          "text": "Atracurium besylat ít tác dụng đến tim mạch. Thuốc hầu như không tác động đến tần số tim, huyết áp trung bình, sức cản mạch máu, cung lượng tim hoặc huyết áp tĩnh mạch trung tâm. Tuy vậy, thuốc có thể tác động gián tiếp đến tim mạch (như giảm sức cản mạch máu ngoại biên) thông qua giải phóng histamin.",
+          "block_id": "b0009"
+        },
+        {
+          "type": "text",
+          "text": "Atracurium besylat có nhiều ưu điểm so với đa số các thuốc chẹn thần kinh - cơ hiện có vì rất ít tác dụng đến tim mạch, tác dụng tương đối ngắn và hầu như không tích lũy. Tuy vậy, trong trường hợp cấp cứu phải đặt ống nội khí quản, succinylcholin thường được ưa dùng hơn vì tác dụng nhanh.",
+          "block_id": "b0010"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "duoc-ong-hoc",
+      "id": "duoc-dong-hoc",
       "title": "Dược động học",
-      "content": "Thời gian bắt đầu tác dụng, thời gian tác dụng, và tốc độ phục hồi phong bế thần kinh - cơ do atracurium besylat thay đổi tùy theo từng bệnh nhân, và có thể bị ảnh hưởng bởi thuốc mê (như enfluran, isofluran, halothan) và liều dùng. Thời gian bắt đầu khởi phát tác dụng sau 2 - 3 phút, thời gian đạt tác dụng tối đa sau 3 - 5 phút.\n\nThời gian bắt đầu hồi phục 20 - 35 phút sau liều khởi đầu 0,4 - 0,5 mg/kg, dưới điều kiện gây mê cân bằng, tỷ lệ hồi phục đạt 95% sau 60 - 70 phút.\n\nPhân bố: Thể tích phân bố ở người lớn có chức năng thận và gan bình thường sau khi tiêm 1 liều duy nhất 0,3 mg/kg hoặc 0,6 mg/kg, trung bình là 160 ml/kg (dao động: 120 - 188 ml/kg).\n\nThuốc gắn với protein khoảng 82%.\n\nThuốc qua nhau thai một lượng nhỏ không có ý nghĩa lâm sàng.\n\nChuyển hóa: Atracurium besylat bị chuyển hóa nhanh qua sự thải trừ Hofmann (quá trình này không phụ thuộc vào chức năng thận và gan) và qua sự thủy phân ester tạo thành các sản phẩm không có hoạt tính. Laudanosin, một sản phẩm của quá trình thải trừ Hofmann, có tác dụng kích thích TKTW và có thể tích lũy khi sử dụng kéo dài. Laudanosin được chuyển hóa ở gan.\n\nThải trừ: Atracurium besylat và các chất chuyển hóa được thải trừ qua nước tiểu và phân, hầu hết dưới dạng đã chuyển hóa. Nửa đời thải trừ của atracurium là khoảng 20 phút, nửa đời thải trừ của laudanosin là khoảng 3 - 6 giờ.",
+      "heading_block": "b0011",
       "blocks": [
         {
           "type": "text",
-          "text": "Thời gian bắt đầu tác dụng, thời gian tác dụng, và tốc độ phục hồi phong bế thần kinh - cơ do atracurium besylat thay đổi tùy theo từng bệnh nhân, và có thể bị ảnh hưởng bởi thuốc mê (như enfluran, isofluran, halothan) và liều dùng. Thời gian bắt đầu khởi phát tác dụng sau 2 - 3 phút, thời gian đạt tác dụng tối đa sau 3 - 5 phút.\n\nThời gian bắt đầu hồi phục 20 - 35 phút sau liều khởi đầu 0,4 - 0,5 mg/kg, dưới điều kiện gây mê cân bằng, tỷ lệ hồi phục đạt 95% sau 60 - 70 phút.\n\nPhân bố: Thể tích phân bố ở người lớn có chức năng thận và gan bình thường sau khi tiêm 1 liều duy nhất 0,3 mg/kg hoặc 0,6 mg/kg, trung bình là 160 ml/kg (dao động: 120 - 188 ml/kg).\n\nThuốc gắn với protein khoảng 82%.\n\nThuốc qua nhau thai một lượng nhỏ không có ý nghĩa lâm sàng.\n\nChuyển hóa: Atracurium besylat bị chuyển hóa nhanh qua sự thải trừ Hofmann (quá trình này không phụ thuộc vào chức năng thận và gan) và qua sự thủy phân ester tạo thành các sản phẩm không có hoạt tính. Laudanosin, một sản phẩm của quá trình thải trừ Hofmann, có tác dụng kích thích TKTW và có thể tích lũy khi sử dụng kéo dài. Laudanosin được chuyển hóa ở gan.\n\nThải trừ: Atracurium besylat và các chất chuyển hóa được thải trừ qua nước tiểu và phân, hầu hết dưới dạng đã chuyển hóa. Nửa đời thải trừ của atracurium là khoảng 20 phút, nửa đời thải trừ của laudanosin là khoảng 3 - 6 giờ."
+          "text": "Thời gian bắt đầu tác dụng, thời gian tác dụng, và tốc độ phục hồi phong bế thần kinh - cơ do atracurium besylat thay đổi tùy theo từng bệnh nhân, và có thể bị ảnh hưởng bởi thuốc mê (như enfluran, isofluran, halothan) và liều dùng. Thời gian bắt đầu khởi phát tác dụng sau 2 - 3 phút, thời gian đạt tác dụng tối đa sau 3 - 5 phút.",
+          "block_id": "b0012"
+        },
+        {
+          "type": "text",
+          "text": "Thời gian bắt đầu hồi phục 20 - 35 phút sau liều khởi đầu 0,4 - 0,5 mg/kg, dưới điều kiện gây mê cân bằng, tỷ lệ hồi phục đạt 95% sau 60 - 70 phút.",
+          "block_id": "b0013"
+        },
+        {
+          "type": "text",
+          "text": "Phân bố: Thể tích phân bố ở người lớn có chức năng thận và gan bình thường sau khi tiêm 1 liều duy nhất 0,3 mg/kg hoặc 0,6 mg/kg, trung bình là 160 ml/kg (dao động: 120 - 188 ml/kg).",
+          "block_id": "b0014"
+        },
+        {
+          "type": "text",
+          "text": "Thuốc gắn với protein khoảng 82%.",
+          "block_id": "b0015"
+        },
+        {
+          "type": "text",
+          "text": "Thuốc qua nhau thai một lượng nhỏ không có ý nghĩa lâm sàng.",
+          "block_id": "b0016"
+        },
+        {
+          "type": "text",
+          "text": "Chuyển hóa: Atracurium besylat bị chuyển hóa nhanh qua sự thải trừ Hofmann (quá trình này không phụ thuộc vào chức năng thận và gan) và qua sự thủy phân ester tạo thành các sản phẩm không có hoạt tính. Laudanosin, một sản phẩm của quá trình thải trừ Hofmann, có tác dụng kích thích TKTW và có thể tích lũy khi sử dụng kéo dài. Laudanosin được chuyển hóa ở gan.",
+          "block_id": "b0017"
+        },
+        {
+          "type": "text",
+          "text": "Thải trừ: Atracurium besylat và các chất chuyển hóa được thải trừ qua nước tiểu và phân, hầu hết dưới dạng đã chuyển hóa. Nửa đời thải trừ của atracurium là khoảng 20 phút, nửa đời thải trừ của laudanosin là khoảng 3 - 6 giờ.",
+          "block_id": "b0018"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chi-inh",
+      "id": "chi-dinh",
       "title": "Chỉ định",
-      "content": "Dùng để gây giãn cơ trong phẫu thuật, tạo điều kiện thuận lợi cho đặt nội khí quản, thông khí nhân tạo trên các bệnh nhân hồi sức tích cực (ICU).",
+      "heading_block": "b0019",
       "blocks": [
         {
           "type": "text",
-          "text": "Dùng để gây giãn cơ trong phẫu thuật, tạo điều kiện thuận lợi cho đặt nội khí quản, thông khí nhân tạo trên các bệnh nhân hồi sức tích cực (ICU)."
+          "text": "Dùng để gây giãn cơ trong phẫu thuật, tạo điều kiện thuận lợi cho đặt nội khí quản, thông khí nhân tạo trên các bệnh nhân hồi sức tích cực (ICU).",
+          "block_id": "b0020"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chong-chi-inh",
+      "id": "chong-chi-dinh",
       "title": "Chống chỉ định",
-      "content": "Người tiền sử mẫn cảm với thuốc.",
+      "heading_block": "b0021",
       "blocks": [
         {
           "type": "text",
-          "text": "Người tiền sử mẫn cảm với thuốc."
+          "text": "Người tiền sử mẫn cảm với thuốc.",
+          "block_id": "b0022"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "than-trong",
       "title": "Thận trọng",
-      "content": "Atracurium besylat có thể làm suy hô hấp và gây liệt hô hấp. Người dùng atracurium besylat phải có kinh nghiệm sử dụng thuốc phong bế thần kinh - cơ; phải có sẵn nhân viên và phương tiện để đặt ống nội khí quản, và thông khí nhân tạo.\n\nNguy cơ giải phóng histamin trên các bệnh nhân nhạy cảm trong suốt quá trình điều trị với atracurium. Cần thận trọng khi sử dụng thuốc cho bệnh nhân có tiền sử nhạy cảm với tác dụng của histamin.\n\nĐặc biệt co thắt phế quản có thể xảy ra với bệnh nhân có tiền sử dị ứng hoặc hen.\n\nCó sự mẫn cảm chéo giữa các thuốc ức chế thần kinh - cơ với một tỷ lệ cao. Vì vậy cần loại trừ nguy cơ quá mẫn với các thuốc ức chế thần kinh - cơ khác trước khi tiêm atracurium.\n\nNên kiểm soát giá trị creatinin phosphat trên các bệnh nhân hen phế quản đang điều trị với liều cao corticosteroid và các thuốc ức chế thần kinh - cơ trong khoa hồi sức tích cực (ICU).\n\nAtracurium có ảnh hưởng không đáng kể trên việc ức chế hạch hoặc dây thần kinh phế vị trong mức liều khuyến cáo. Do vậy, thuốc ảnh hưởng lên nhịp tim không có ý nghĩa lâm sàng, thuốc không chống lại được nhịp tim chậm do nhiều thuốc gây mê hoặc do kích thích thần kinh phó giao cảm trong quá trình phẫu thuật.\n\nPhải dùng atracurium besylat hết sức thận trọng ở bệnh nhân có bệnh nhược cơ nặng hoặc các bệnh thần kinh - cơ khác vì bệnh này có thể làm tăng tác dụng phong bế thần kinh - cơ của thuốc.\n\nTương tự các thuốc ức chế thần kinh - cơ khác, rối loạn cân bằng acid - base/rối loạn điện giải có thể làm tăng hoặc giảm nhạy cảm với thuốc của bệnh nhân.\n\nTương tự các thuốc ức chế thần kinh - cơ không khử cực, giảm phosphat huyết có thể làm chậm hồi phục trên bệnh nhân.\n\nAtracurium nên tiêm chậm trong khoảng thời gian 60 giây ở bệnh nhân bị giảm khối lượng tuần hoàn vì dễ gây tụt huyết áp.\n\nBệnh nhân bỏng thường có nguy cơ kháng với các thuốc không khử cực. Cần hiệu chỉnh liều theo đáp ứng.",
+      "heading_block": "b0023",
       "blocks": [
         {
           "type": "text",
-          "text": "Atracurium besylat có thể làm suy hô hấp và gây liệt hô hấp. Người dùng atracurium besylat phải có kinh nghiệm sử dụng thuốc phong bế thần kinh - cơ; phải có sẵn nhân viên và phương tiện để đặt ống nội khí quản, và thông khí nhân tạo.\n\nNguy cơ giải phóng histamin trên các bệnh nhân nhạy cảm trong suốt quá trình điều trị với atracurium. Cần thận trọng khi sử dụng thuốc cho bệnh nhân có tiền sử nhạy cảm với tác dụng của histamin.\n\nĐặc biệt co thắt phế quản có thể xảy ra với bệnh nhân có tiền sử dị ứng hoặc hen.\n\nCó sự mẫn cảm chéo giữa các thuốc ức chế thần kinh - cơ với một tỷ lệ cao. Vì vậy cần loại trừ nguy cơ quá mẫn với các thuốc ức chế thần kinh - cơ khác trước khi tiêm atracurium.\n\nNên kiểm soát giá trị creatinin phosphat trên các bệnh nhân hen phế quản đang điều trị với liều cao corticosteroid và các thuốc ức chế thần kinh - cơ trong khoa hồi sức tích cực (ICU).\n\nAtracurium có ảnh hưởng không đáng kể trên việc ức chế hạch hoặc dây thần kinh phế vị trong mức liều khuyến cáo. Do vậy, thuốc ảnh hưởng lên nhịp tim không có ý nghĩa lâm sàng, thuốc không chống lại được nhịp tim chậm do nhiều thuốc gây mê hoặc do kích thích thần kinh phó giao cảm trong quá trình phẫu thuật.\n\nPhải dùng atracurium besylat hết sức thận trọng ở bệnh nhân có bệnh nhược cơ nặng hoặc các bệnh thần kinh - cơ khác vì bệnh này có thể làm tăng tác dụng phong bế thần kinh - cơ của thuốc.\n\nTương tự các thuốc ức chế thần kinh - cơ khác, rối loạn cân bằng acid - base/rối loạn điện giải có thể làm tăng hoặc giảm nhạy cảm với thuốc của bệnh nhân.\n\nTương tự các thuốc ức chế thần kinh - cơ không khử cực, giảm phosphat huyết có thể làm chậm hồi phục trên bệnh nhân.\n\nAtracurium nên tiêm chậm trong khoảng thời gian 60 giây ở bệnh nhân bị giảm khối lượng tuần hoàn vì dễ gây tụt huyết áp.\n\nBệnh nhân bỏng thường có nguy cơ kháng với các thuốc không khử cực. Cần hiệu chỉnh liều theo đáp ứng."
+          "text": "Atracurium besylat có thể làm suy hô hấp và gây liệt hô hấp. Người dùng atracurium besylat phải có kinh nghiệm sử dụng thuốc phong",
+          "block_id": "b0024"
+        },
+        {
+          "type": "text",
+          "text": "bế thần kinh - cơ; phải có sẵn nhân viên và phương tiện để đặt ống nội khí quản, và thông khí nhân tạo.",
+          "block_id": "b0025"
+        },
+        {
+          "type": "text",
+          "text": "Nguy cơ giải phóng histamin trên các bệnh nhân nhạy cảm trong suốt quá trình điều trị với atracurium. Cần thận trọng khi sử dụng thuốc cho bệnh nhân có tiền sử nhạy cảm với tác dụng của histamin.",
+          "block_id": "b0026"
+        },
+        {
+          "type": "text",
+          "text": "Đặc biệt co thắt phế quản có thể xảy ra với bệnh nhân có tiền sử dị ứng hoặc hen.",
+          "block_id": "b0027"
+        },
+        {
+          "type": "text",
+          "text": "Có sự mẫn cảm chéo giữa các thuốc ức chế thần kinh - cơ với một tỷ lệ cao. Vì vậy cần loại trừ nguy cơ quá mẫn với các thuốc ức chế thần kinh - cơ khác trước khi tiêm atracurium.",
+          "block_id": "b0028"
+        },
+        {
+          "type": "text",
+          "text": "Nên kiểm soát giá trị creatinin phosphat trên các bệnh nhân hen phế quản đang điều trị với liều cao corticosteroid và các thuốc ức chế thần kinh - cơ trong khoa hồi sức tích cực (ICU).",
+          "block_id": "b0029"
+        },
+        {
+          "type": "text",
+          "text": "Atracurium có ảnh hưởng không đáng kể trên việc ức chế hạch hoặc dây thần kinh phế vị trong mức liều khuyến cáo. Do vậy, thuốc ảnh hưởng lên nhịp tim không có ý nghĩa lâm sàng, thuốc không chống lại được nhịp tim chậm do nhiều thuốc gây mê hoặc do kích thích thần kinh phó giao cảm trong quá trình phẫu thuật.",
+          "block_id": "b0030"
+        },
+        {
+          "type": "text",
+          "text": "Phải dùng atracurium besylat hết sức thận trọng ở bệnh nhân có bệnh nhược cơ nặng hoặc các bệnh thần kinh - cơ khác vì bệnh này có thể làm tăng tác dụng phong bế thần kinh - cơ của thuốc.",
+          "block_id": "b0031"
+        },
+        {
+          "type": "text",
+          "text": "Tương tự các thuốc ức chế thần kinh - cơ khác, rối loạn cân bằng acid - base/rối loạn điện giải có thể làm tăng hoặc giảm nhạy cảm với thuốc của bệnh nhân.",
+          "block_id": "b0032"
+        },
+        {
+          "type": "text",
+          "text": "Tương tự các thuốc ức chế thần kinh - cơ không khử cực, giảm phosphat huyết có thể làm chậm hồi phục trên bệnh nhân.",
+          "block_id": "b0033"
+        },
+        {
+          "type": "text",
+          "text": "Atracurium nên tiêm chậm trong khoảng thời gian 60 giây ở bệnh nhân bị giảm khối lượng tuần hoàn vì dễ gây tụt huyết áp.",
+          "block_id": "b0034"
+        },
+        {
+          "type": "text",
+          "text": "Bệnh nhân bỏng thường có nguy cơ kháng với các thuốc không khử cực. Cần hiệu chỉnh liều theo đáp ứng.",
+          "block_id": "b0035"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-mang-thai",
       "title": "Thời kỳ mang thai",
-      "content": "Các nghiên cứu trên động vật cho thấy thuốc không có ảnh hưởng có ý nghĩa đến sự phát triển của thai nhi. Tuy nhiên, giống như các thuốc phong bế thần kinh - cơ khác, atracurium chỉ nên sử dụng cho mẹ trong thời kỳ mang thai nếu lợi ích cho mẹ vượt trội nguy cơ tiềm năng cho thai nhi. Atracurium thích hợp để duy trì tác dụng giãn cơ trong suốt quá trình mổ lấy thai. Thuốc qua được hàng rào nhau thai tuy nhiên ở mức độ nhỏ không có ý nghĩa lâm sàng khi dùng ở mức liều khuyến cáo.",
+      "heading_block": "b0036",
       "blocks": [
         {
           "type": "text",
-          "text": "Các nghiên cứu trên động vật cho thấy thuốc không có ảnh hưởng có ý nghĩa đến sự phát triển của thai nhi. Tuy nhiên, giống như các thuốc phong bế thần kinh - cơ khác, atracurium chỉ nên sử dụng cho mẹ trong thời kỳ mang thai nếu lợi ích cho mẹ vượt trội nguy cơ tiềm năng cho thai nhi. Atracurium thích hợp để duy trì tác dụng giãn cơ trong suốt quá trình mổ lấy thai. Thuốc qua được hàng rào nhau thai tuy nhiên ở mức độ nhỏ không có ý nghĩa lâm sàng khi dùng ở mức liều khuyến cáo."
+          "text": "Các nghiên cứu trên động vật cho thấy thuốc không có ảnh hưởng có ý nghĩa đến sự phát triển của thai nhi. Tuy nhiên, giống như các thuốc phong bế thần kinh - cơ khác, atracurium chỉ nên sử dụng cho mẹ trong thời kỳ mang thai nếu lợi ích cho mẹ vượt trội nguy cơ tiềm năng cho thai nhi. Atracurium thích hợp để duy trì tác dụng giãn cơ trong suốt quá trình mổ lấy thai. Thuốc qua được hàng rào nhau thai tuy nhiên ở mức độ nhỏ không có ý nghĩa lâm sàng khi dùng ở mức liều khuyến cáo.",
+          "block_id": "b0037"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-cho-con-bu",
       "title": "Thời kỳ cho con bú",
-      "content": "Vì không biết atracurium besylat có được phân bố trong sữa mẹ hay không nên phải sử dụng thuốc một cách thận trọng ở phụ nữ cho con bú.",
+      "heading_block": "b0038",
       "blocks": [
         {
           "type": "text",
-          "text": "Vì không biết atracurium besylat có được phân bố trong sữa mẹ hay không nên phải sử dụng thuốc một cách thận trọng ở phụ nữ cho con bú."
+          "text": "Vì không biết atracurium besylat có được phân bố trong sữa mẹ hay không nên phải sử dụng thuốc một cách thận trọng ở phụ nữ cho con bú.",
+          "block_id": "b0039"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tac-dung-khong-mong-muon-adr",
       "title": "Tác dụng không mong muốn (ADR)",
-      "content": "Các ADR của atracurium besylat thường nhẹ, xảy ra ở khoảng 5% bệnh nhân hoặc ít hơn sau khi tiêm tĩnh mạch và chủ yếu do sự giải phóng histamin. Các ADR có ý nghĩa lâm sàng xảy ra ở 0,8% bệnh nhân dùng thuốc.\n\nThường gặp Da: đỏ bừng da.\n\nTim mạch: tăng hoặc giảm huyết áp, tăng nhịp tim.\n\nÍt gặp Da: ban đỏ, ngứa, mày đay, nốt phỏng và ban đỏ ở nơi tiêm.\n\nHô hấp: tiếng thở khò khè và tăng tiết dịch phế quản, co thắt phế quản.\n\nTim mạch: giảm nhịp tim.\n\nHiếm gặp Hô hấp: co thắt phế quản.\n\nTim mạch: hạ huyết áp, phù mạch.\n\nMiễn dịch: sốc phản vệ, phản ứng phản vệ như sốc, trụy tuần hoàn và ngừng tim (thường gặp khi phối hợp atracurium với một hoặc nhiều thuốc gây mê).\n\nDa: mày đay.\n\nKhác: xanh tím, phản ứng dị ứng nặng (như phản ứng dẫn đến ngừng tim), co giật.\n\nChưa xác định được tần suất Thần kinh: co giật.\n\nCơ - xương - khớp và mô liên kết: bệnh cơ, yếu cơ.",
+      "heading_block": "b0040",
       "blocks": [
         {
           "type": "text",
-          "text": "Các ADR của atracurium besylat thường nhẹ, xảy ra ở khoảng 5% bệnh nhân hoặc ít hơn sau khi tiêm tĩnh mạch và chủ yếu do sự giải phóng histamin. Các ADR có ý nghĩa lâm sàng xảy ra ở 0,8% bệnh nhân dùng thuốc.\n\nThường gặp Da: đỏ bừng da.\n\nTim mạch: tăng hoặc giảm huyết áp, tăng nhịp tim.\n\nÍt gặp Da: ban đỏ, ngứa, mày đay, nốt phỏng và ban đỏ ở nơi tiêm.\n\nHô hấp: tiếng thở khò khè và tăng tiết dịch phế quản, co thắt phế quản.\n\nTim mạch: giảm nhịp tim.\n\nHiếm gặp Hô hấp: co thắt phế quản.\n\nTim mạch: hạ huyết áp, phù mạch.\n\nMiễn dịch: sốc phản vệ, phản ứng phản vệ như sốc, trụy tuần hoàn và ngừng tim (thường gặp khi phối hợp atracurium với một hoặc nhiều thuốc gây mê).\n\nDa: mày đay.\n\nKhác: xanh tím, phản ứng dị ứng nặng (như phản ứng dẫn đến ngừng tim), co giật.\n\nChưa xác định được tần suất Thần kinh: co giật.\n\nCơ - xương - khớp và mô liên kết: bệnh cơ, yếu cơ."
+          "text": "Các ADR của atracurium besylat thường nhẹ, xảy ra ở khoảng 5% bệnh nhân hoặc ít hơn sau khi tiêm tĩnh mạch và chủ yếu do sự giải phóng histamin. Các ADR có ý nghĩa lâm sàng xảy ra ở 0,8% bệnh nhân dùng thuốc.",
+          "block_id": "b0041"
+        },
+        {
+          "type": "subheading",
+          "text": "Thường gặp",
+          "block_id": "b0042"
+        },
+        {
+          "type": "text",
+          "text": "Da: đỏ bừng da.",
+          "block_id": "b0043"
+        },
+        {
+          "type": "text",
+          "text": "Tim mạch: tăng hoặc giảm huyết áp, tăng nhịp tim.",
+          "block_id": "b0044"
+        },
+        {
+          "type": "subheading",
+          "text": "Ít gặp",
+          "block_id": "b0045"
+        },
+        {
+          "type": "text",
+          "text": "Da: ban đỏ, ngứa, mày đay, nốt phỏng và ban đỏ ở nơi tiêm.",
+          "block_id": "b0046"
+        },
+        {
+          "type": "text",
+          "text": "Hô hấp: tiếng thở khò khè và tăng tiết dịch phế quản, co thắt phế quản.",
+          "block_id": "b0047"
+        },
+        {
+          "type": "text",
+          "text": "Tim mạch: giảm nhịp tim.",
+          "block_id": "b0048"
+        },
+        {
+          "type": "subheading",
+          "text": "Hiếm gặp",
+          "block_id": "b0049"
+        },
+        {
+          "type": "text",
+          "text": "Hô hấp: co thắt phế quản.",
+          "block_id": "b0050"
+        },
+        {
+          "type": "text",
+          "text": "Tim mạch: hạ huyết áp, phù mạch.",
+          "block_id": "b0051"
+        },
+        {
+          "type": "text",
+          "text": "Miễn dịch: sốc phản vệ, phản ứng phản vệ như sốc, trụy tuần hoàn",
+          "block_id": "b0052"
+        },
+        {
+          "type": "text",
+          "text": "và ngừng tim (thường gặp khi phối hợp atracurium với một hoặc nhiều thuốc gây mê).",
+          "block_id": "b0053"
+        },
+        {
+          "type": "text",
+          "text": "Da: mày đay.",
+          "block_id": "b0054"
+        },
+        {
+          "type": "text",
+          "text": "Khác: xanh tím, phản ứng dị ứng nặng (như phản ứng dẫn đến ngừng tim), co giật.",
+          "block_id": "b0055"
+        },
+        {
+          "type": "subheading",
+          "text": "Chưa xác định được tần suất",
+          "block_id": "b0056"
+        },
+        {
+          "type": "text",
+          "text": "Thần kinh: co giật.",
+          "block_id": "b0057"
+        },
+        {
+          "type": "text",
+          "text": "Cơ - xương - khớp và mô liên kết: bệnh cơ, yếu cơ.",
+          "block_id": "b0058"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "huong-dan-cach-xu-tri-adr",
       "title": "Hướng dẫn cách xử trí ADR",
-      "content": "Hiếm khi phải ngừng thuốc và cần tiến hành điều trị một cách thích hợp khi có tăng tiết dịch phế quản hoặc thở khò khè. Nếu xảy ra nhịp chậm nặng, có thể điều trị với atropin. Khi có hạ huyết áp nặng cũng cần phải điều trị (truyền dịch).",
+      "heading_block": "b0059",
       "blocks": [
         {
           "type": "text",
-          "text": "Hiếm khi phải ngừng thuốc và cần tiến hành điều trị một cách thích hợp khi có tăng tiết dịch phế quản hoặc thở khò khè. Nếu xảy ra nhịp chậm nặng, có thể điều trị với atropin. Khi có hạ huyết áp nặng cũng cần phải điều trị (truyền dịch)."
+          "text": "Hiếm khi phải ngừng thuốc và cần tiến hành điều trị một cách thích hợp khi có tăng tiết dịch phế quản hoặc thở khò khè. Nếu xảy ra nhịp chậm nặng, có thể điều trị với atropin. Khi có hạ huyết áp nặng cũng cần phải điều trị (truyền dịch).",
+          "block_id": "b0060"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "lieu-luong-va-cach-dung",
       "title": "Liều lượng và cách dùng",
-      "content": "Cách dùng: Atracurium besylat được tiêm tĩnh mạch nhanh hoặc tiêm truyền tĩnh mạch. Trong các phẫu thuật kéo dài, có thể tiêm truyền tĩnh mạch liên tục. Để tiêm truyền tĩnh mạch liên tục, phải pha loãng thuốc tiêm atracurium besylat tới nồng độ 0,2 hoặc 0,5 mg/ml trong dung dịch pha tiêm dextrose 5%; dextrose 5% và natri clorid 0,9%, hoặc natri clorid 0,9%. Để tránh lo lắng cho người bệnh, chỉ dùng thuốc khi người bệnh mất ý thức. Để theo dõi một cách chính xác mức độ giãn cơ và giảm thiểu khả năng quá liều nên dùng máy kích thích điện để theo dõi sự phong bế và phục hồi ở bệnh nhân được gây mê và dùng atracurium.",
+      "heading_block": "b0061",
       "blocks": [
         {
           "type": "text",
-          "text": "Cách dùng: Atracurium besylat được tiêm tĩnh mạch nhanh hoặc tiêm truyền tĩnh mạch. Trong các phẫu thuật kéo dài, có thể tiêm truyền tĩnh mạch liên tục. Để tiêm truyền tĩnh mạch liên tục, phải pha loãng thuốc tiêm atracurium besylat tới nồng độ 0,2 hoặc 0,5 mg/ml trong dung dịch pha tiêm dextrose 5%; dextrose 5% và natri clorid 0,9%, hoặc natri clorid 0,9%. Để tránh lo lắng cho người bệnh, chỉ dùng thuốc khi người bệnh mất ý thức. Để theo dõi một cách chính xác mức độ giãn cơ và giảm thiểu khả năng quá liều nên dùng máy kích thích điện để theo dõi sự phong bế và phục hồi ở bệnh nhân được gây mê và dùng atracurium."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "lieu-luong",
-      "title": "Liều lượng",
-      "content": "Liều ban đầu: Người lớn trong trường hợp đặt ống nội khí quản: Tiêm tĩnh mạch 0,4 - 0,5 mg/kg. Sau liều ban đầu này, có thể thực hiện đặt ống nội khí quản đối với phẫu thuật không cấp cứu trong vòng 2 - 2,5 phút ở phần lớn bệnh nhân và sự phong bế thần kinh - cơ tối đa thường xảy ra trong vòng 3 - 5 phút. Khi sử dụng đồng thời với gây mê phối hợp, liều ban đầu này thường phong bế thần kinh - cơ đủ trong lâm sàng khoảng 20 - 35 phút. Sự phục hồi tới 25% như lúc đầu sau khoảng 35 - 45 phút và tới 95% khoảng 1 giờ sau khi dùng.\n\nNhà sản xuất khuyến cáo phải giảm liều ban đầu ở người lớn khoảng 33% (nghĩa là từ 0,25 - 0,35 mg/kg) khi thuốc được cho sau khi gây mê ổn định bằng enfluran hoặc isofluran, giảm ít hơn khoảng 20% nếu gây mê bằng halothan vì halothan chỉ có tác dụng tối thiểu đến hoạt tính phong bế thần kinh - cơ của atracurium besylat.\n\nLiều duy trì - Tiêm tĩnh mạch cách quãng: Để duy trì sự phong bế thần kinh - cơ trong các phẫu thuật kéo dài, liều được hiệu chỉnh theo từng cá nhân và liều thường dùng ở người lớn là 0,08 - 0,1 mg/kg.\n\nỞ bệnh nhân được gây mê phối hợp, liều duy trì đầu tiên thường cần thiết ở 20 - 45 phút sau khi dùng liều ban đầu. Có thể dùng liều duy trì nhắc lại ở các khoảng cách tương đối đều là 15 - 25 phút ở bệnh nhân được gây mê phối hợp. Khi enfluran hoặc isofluran được dùng để gây mê hoặc khi dùng liều duy trì atracurium besylat cao hơn, có thể dùng liều duy trì này ở khoảng cách dài hơn.\n\nTiêm truyền tĩnh mạch liên tục: Trong các phẫu thuật kéo dài, có thể truyền tĩnh mạch liên tục atracurium besylat sau khi tiêm tĩnh mạch nhanh liều ban đầu. Chỉ bắt đầu tiêm truyền thuốc sau khi bắt đầu phục hồi từ liều tiêm tĩnh mạch ban đầu. Tiêm truyền tĩnh mạch liên tục cho người lớn với tốc độ ban đầu là 9 - 10 microgam/ kg/phút, và sau đó duy trì với tốc độ tiêm truyền là 5 - 9 microgam/ kg/phút ở bệnh nhân được gây mê phối hợp. Tốc độ tiêm truyền giảm khoảng 33% khi gây mê ở trạng thái ổn định với enfluran hoặc isofluran.\n\nNgười cao tuổi: Sử dụng mức liều chuẩn thông thường. Tuy nhiên, nên dùng liều khởi đầu ở mức liều thấp, mức dưới của khoảng điều trị và nên tiêm chậm.\n\nTrẻ em: Khuyến cáo đối với liều ban đầu, liều duy trì và tốc độ tiêm truyền tĩnh mạch liên tục atracurium besylat ở trẻ em 2 tuổi trở lên giống như ở người lớn.\n\nTrẻ sơ sinh: Không được khuyến cáo sử dụng do chưa có đủ dữ liệu chứng minh hiệu quả và tính an toàn với đối tượng này.\n\nTrẻ em từ 1 tháng đến < 2 tuổi: Liều ban đầu: Tiêm tĩnh mạch 0,3 - 0,4 mg/kg.\n\nLiều duy trì: 0,3 - 0,4mg/kg nếu cần để duy trì phong bế thần kinh - cơ hoặc truyền liên tục: 0,6 - 1,2 mg/kg/giờ hoặc 10 - 20 microgam/kg/phút.\n\nSuy gan, suy thận: Không cần hiệu chỉnh liều kể cả giai đoạn cuối suy thận.\n\nBệnh nhân hồi sức tích cực (ICU): Sau khi tiêm liều khởi đầu 0,3 - 0,6 mg/kg, có thể duy trì tác dụng ức chế thần kinh - cơ bằng truyền tĩnh mạch liên tục với tốc độ 0,65 - 0,78 mg/kg/giờ. Có sự thay đổi giữa các bệnh nhân về mức liều yêu cầu và có thể tăng, giảm theo thời gian. Một số trường hợp có thể dùng ở mức liều thấp 0,27 mg/kg/giờ hoặc ở mức liều cao 1,77 mg/kg/giờ.",
-      "blocks": [
+          "text": "Cách dùng: Atracurium besylat được tiêm tĩnh mạch nhanh hoặc tiêm truyền tĩnh mạch. Trong các phẫu thuật kéo dài, có thể tiêm truyền tĩnh mạch liên tục. Để tiêm truyền tĩnh mạch liên tục, phải pha loãng thuốc tiêm atracurium besylat tới nồng độ 0,2 hoặc 0,5 mg/ml trong dung dịch pha tiêm dextrose 5%; dextrose 5% và natri clorid 0,9%, hoặc natri clorid 0,9%. Để tránh lo lắng cho người bệnh, chỉ dùng thuốc khi người bệnh mất ý thức. Để theo dõi một cách chính xác mức độ giãn cơ và giảm thiểu khả năng quá liều nên dùng máy kích thích điện để theo dõi sự phong bế và phục hồi ở bệnh nhân được gây mê và dùng atracurium.",
+          "block_id": "b0062"
+        },
+        {
+          "type": "subheading",
+          "text": "Liều lượng",
+          "block_id": "b0063"
+        },
         {
           "type": "text",
-          "text": "Liều ban đầu: Người lớn trong trường hợp đặt ống nội khí quản: Tiêm tĩnh mạch 0,4 - 0,5 mg/kg. Sau liều ban đầu này, có thể thực hiện đặt ống nội khí quản đối với phẫu thuật không cấp cứu trong vòng 2 - 2,5 phút ở phần lớn bệnh nhân và sự phong bế thần kinh - cơ tối đa thường xảy ra trong vòng 3 - 5 phút. Khi sử dụng đồng thời với gây mê phối hợp, liều ban đầu này thường phong bế thần kinh - cơ đủ trong lâm sàng khoảng 20 - 35 phút. Sự phục hồi tới 25% như lúc đầu sau khoảng 35 - 45 phút và tới 95% khoảng 1 giờ sau khi dùng.\n\nNhà sản xuất khuyến cáo phải giảm liều ban đầu ở người lớn khoảng 33% (nghĩa là từ 0,25 - 0,35 mg/kg) khi thuốc được cho sau khi gây mê ổn định bằng enfluran hoặc isofluran, giảm ít hơn khoảng 20% nếu gây mê bằng halothan vì halothan chỉ có tác dụng tối thiểu đến hoạt tính phong bế thần kinh - cơ của atracurium besylat.\n\nLiều duy trì - Tiêm tĩnh mạch cách quãng: Để duy trì sự phong bế thần kinh - cơ trong các phẫu thuật kéo dài, liều được hiệu chỉnh theo từng cá nhân và liều thường dùng ở người lớn là 0,08 - 0,1 mg/kg.\n\nỞ bệnh nhân được gây mê phối hợp, liều duy trì đầu tiên thường cần thiết ở 20 - 45 phút sau khi dùng liều ban đầu. Có thể dùng liều duy trì nhắc lại ở các khoảng cách tương đối đều là 15 - 25 phút ở bệnh nhân được gây mê phối hợp. Khi enfluran hoặc isofluran được dùng để gây mê hoặc khi dùng liều duy trì atracurium besylat cao hơn, có thể dùng liều duy trì này ở khoảng cách dài hơn.\n\nTiêm truyền tĩnh mạch liên tục: Trong các phẫu thuật kéo dài, có thể truyền tĩnh mạch liên tục atracurium besylat sau khi tiêm tĩnh mạch nhanh liều ban đầu. Chỉ bắt đầu tiêm truyền thuốc sau khi bắt đầu phục hồi từ liều tiêm tĩnh mạch ban đầu. Tiêm truyền tĩnh mạch liên tục cho người lớn với tốc độ ban đầu là 9 - 10 microgam/ kg/phút, và sau đó duy trì với tốc độ tiêm truyền là 5 - 9 microgam/ kg/phút ở bệnh nhân được gây mê phối hợp. Tốc độ tiêm truyền giảm khoảng 33% khi gây mê ở trạng thái ổn định với enfluran hoặc isofluran.\n\nNgười cao tuổi: Sử dụng mức liều chuẩn thông thường. Tuy nhiên, nên dùng liều khởi đầu ở mức liều thấp, mức dưới của khoảng điều trị và nên tiêm chậm.\n\nTrẻ em: Khuyến cáo đối với liều ban đầu, liều duy trì và tốc độ tiêm truyền tĩnh mạch liên tục atracurium besylat ở trẻ em 2 tuổi trở lên giống như ở người lớn.\n\nTrẻ sơ sinh: Không được khuyến cáo sử dụng do chưa có đủ dữ liệu chứng minh hiệu quả và tính an toàn với đối tượng này.\n\nTrẻ em từ 1 tháng đến < 2 tuổi: Liều ban đầu: Tiêm tĩnh mạch 0,3 - 0,4 mg/kg.\n\nLiều duy trì: 0,3 - 0,4mg/kg nếu cần để duy trì phong bế thần kinh - cơ hoặc truyền liên tục: 0,6 - 1,2 mg/kg/giờ hoặc 10 - 20 microgam/kg/phút.\n\nSuy gan, suy thận: Không cần hiệu chỉnh liều kể cả giai đoạn cuối suy thận.\n\nBệnh nhân hồi sức tích cực (ICU): Sau khi tiêm liều khởi đầu 0,3 - 0,6 mg/kg, có thể duy trì tác dụng ức chế thần kinh - cơ bằng truyền tĩnh mạch liên tục với tốc độ 0,65 - 0,78 mg/kg/giờ. Có sự thay đổi giữa các bệnh nhân về mức liều yêu cầu và có thể tăng, giảm theo thời gian. Một số trường hợp có thể dùng ở mức liều thấp 0,27 mg/kg/giờ hoặc ở mức liều cao 1,77 mg/kg/giờ."
+          "text": "Liều ban đầu: Người lớn trong trường hợp đặt ống nội khí quản:",
+          "block_id": "b0064"
+        },
+        {
+          "type": "text",
+          "text": "Tiêm tĩnh mạch 0,4 - 0,5 mg/kg. Sau liều ban đầu này, có thể thực hiện đặt ống nội khí quản đối với phẫu thuật không cấp cứu trong vòng 2 - 2,5 phút ở phần lớn bệnh nhân và sự phong bế thần kinh cơ tối đa thường xảy ra trong vòng 3 - 5 phút. Khi sử dụng đồng thời với gây mê phối hợp, liều ban đầu này thường phong bế thần kinh - cơ đủ trong lâm sàng khoảng 20 - 35 phút. Sự phục hồi tới 25% như lúc đầu sau khoảng 35 - 45 phút và tới 95% khoảng 1 giờ sau khi dùng.",
+          "block_id": "b0065"
+        },
+        {
+          "type": "text",
+          "text": "Nhà sản xuất khuyến cáo phải giảm liều ban đầu ở người lớn khoảng 33% (nghĩa là từ 0,25 - 0,35 mg/kg) khi thuốc được cho sau khi gây mê ổn định bằng enfluran hoặc isofluran, giảm ít hơn khoảng 20% nếu gây mê bằng halothan vì halothan chỉ có tác dụng tối thiểu đến hoạt tính phong bế thần kinh - cơ của atracurium besylat.",
+          "block_id": "b0066"
+        },
+        {
+          "type": "text",
+          "text": "Liều duy trì - Tiêm tĩnh mạch cách quãng: Để duy trì sự phong bế thần kinh - cơ trong các phẫu thuật kéo dài, liều được hiệu chỉnh theo từng cá nhân và liều thường dùng ở người lớn là 0,08 - 0,1 mg/kg.",
+          "block_id": "b0067"
+        },
+        {
+          "type": "text",
+          "text": "Ở bệnh nhân được gây mê phối hợp, liều duy trì đầu tiên thường cần thiết ở 20 - 45 phút sau khi dùng liều ban đầu. Có thể dùng liều duy trì nhắc lại ở các khoảng cách tương đối đều là 15 - 25 phút ở bệnh nhân được gây mê phối hợp. Khi enfluran hoặc isofluran được dùng để gây mê hoặc khi dùng liều duy trì atracurium besylat cao hơn, có thể dùng liều duy trì này ở khoảng cách dài hơn.",
+          "block_id": "b0068"
+        },
+        {
+          "type": "text",
+          "text": "Tiêm truyền tĩnh mạch liên tục: Trong các phẫu thuật kéo dài, có thể truyền tĩnh mạch liên tục atracurium besylat sau khi tiêm tĩnh mạch nhanh liều ban đầu. Chỉ bắt đầu tiêm truyền thuốc sau khi bắt đầu phục hồi từ liều tiêm tĩnh mạch ban đầu. Tiêm truyền tĩnh mạch liên tục cho người lớn với tốc độ ban đầu là 9 - 10 microgam/ kg/phút, và sau đó duy trì với tốc độ tiêm truyền là 5 - 9 microgam/ kg/phút ở bệnh nhân được gây mê phối hợp. Tốc độ tiêm truyền giảm khoảng 33% khi gây mê ở trạng thái ổn định với enfluran hoặc isofluran.",
+          "block_id": "b0069"
+        },
+        {
+          "type": "text",
+          "text": "Người cao tuổi: Sử dụng mức liều chuẩn thông thường. Tuy nhiên, nên dùng liều khởi đầu ở mức liều thấp, mức dưới của khoảng điều trị và nên tiêm chậm.",
+          "block_id": "b0070"
+        },
+        {
+          "type": "subheading",
+          "text": "Trẻ em:",
+          "block_id": "b0071"
+        },
+        {
+          "type": "text",
+          "text": "Khuyến cáo đối với liều ban đầu, liều duy trì và tốc độ tiêm truyền tĩnh mạch liên tục atracurium besylat ở trẻ em 2 tuổi trở lên giống như ở người lớn.",
+          "block_id": "b0072"
+        },
+        {
+          "type": "text",
+          "text": "Trẻ sơ sinh: Không được khuyến cáo sử dụng do chưa có đủ dữ liệu chứng minh hiệu quả và tính an toàn với đối tượng này.",
+          "block_id": "b0073"
+        },
+        {
+          "type": "text",
+          "text": "Trẻ em từ 1 tháng đến < 2 tuổi:",
+          "block_id": "b0074"
+        },
+        {
+          "type": "text",
+          "text": "Liều ban đầu: Tiêm tĩnh mạch 0,3 - 0,4 mg/kg.",
+          "block_id": "b0075"
+        },
+        {
+          "type": "text",
+          "text": "Liều duy trì: 0,3 - 0,4mg/kg nếu cần để duy trì phong bế thần kinh - cơ hoặc truyền liên tục: 0,6 - 1,2 mg/kg/giờ hoặc 10 - 20 microgam/kg/phút.",
+          "block_id": "b0076"
+        },
+        {
+          "type": "text",
+          "text": "Suy gan, suy thận: Không cần hiệu chỉnh liều kể cả giai đoạn cuối suy thận.",
+          "block_id": "b0077"
+        },
+        {
+          "type": "text",
+          "text": "Bệnh nhân hồi sức tích cực (ICU): Sau khi tiêm liều khởi đầu 0,3 - 0,6 mg/kg, có thể duy trì tác dụng ức chế thần kinh - cơ bằng truyền tĩnh mạch liên tục với tốc độ 0,65 - 0,78 mg/kg/giờ. Có sự thay đổi giữa các bệnh nhân về mức liều yêu cầu và có thể tăng, giảm theo thời gian. Một số trường hợp có thể dùng ở mức liều thấp 0,27 mg/kg/giờ hoặc ở mức liều cao 1,77 mg/kg/giờ.",
+          "block_id": "b0078"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-tac-thuoc",
       "title": "Tương tác thuốc",
-      "content": "Các thuốc tránh phối hợp: Quinidin.\n\nTăng tác dụng và độc tính: Atracurium có thể làm tăng nồng độ/tác dụng của: glycosid tim, các corticosteroid (dùng đường toàn thân), onabotulinumtoxin A, rimabotulinumtoxin B.\n\nNồng độ/tác dụng của atracurium có thể bị tăng bởi các thuốc sau: abobotulinumtoxin A, các kháng sinh aminoglycosid, các thuốc chẹn kênh canxi, capreomycin, clindamycin (tại chỗ), cyclosporin (toàn thân), fosphenytoin - phenytoin, thuốc mê hô hấp, ketorolac (dạng xông hít), ketorolac (toàn thân), kháng sinh lincosamid, lithi, thuốc lợi tiểu quai, muối magnesi, minocyclin, polymixin B, procainamid, quinidin, quinin, spironolacton, dẫn chất tetracyclin, vancomycin.\n\nGiảm tác dụng: Nồng độ/tác dụng của atracurium bị giảm bởi các thuốc sau: Các thuốc ức chế acetylcholinesterase, fosphenytoin - phenytoin, các thuốc lợi tiểu quai.",
+      "heading_block": "b0079",
       "blocks": [
         {
           "type": "text",
-          "text": "Các thuốc tránh phối hợp: Quinidin.\n\nTăng tác dụng và độc tính: Atracurium có thể làm tăng nồng độ/tác dụng của: glycosid tim, các corticosteroid (dùng đường toàn thân), onabotulinumtoxin A, rimabotulinumtoxin B.\n\nNồng độ/tác dụng của atracurium có thể bị tăng bởi các thuốc sau: abobotulinumtoxin A, các kháng sinh aminoglycosid, các thuốc chẹn kênh canxi, capreomycin, clindamycin (tại chỗ), cyclosporin (toàn thân), fosphenytoin - phenytoin, thuốc mê hô hấp, ketorolac (dạng xông hít), ketorolac (toàn thân), kháng sinh lincosamid, lithi, thuốc lợi tiểu quai, muối magnesi, minocyclin, polymixin B, procainamid, quinidin, quinin, spironolacton, dẫn chất tetracyclin, vancomycin.\n\nGiảm tác dụng: Nồng độ/tác dụng của atracurium bị giảm bởi các thuốc sau: Các thuốc ức chế acetylcholinesterase, fosphenytoin - phenytoin, các thuốc lợi tiểu quai."
+          "text": "Các thuốc tránh phối hợp: Quinidin.",
+          "block_id": "b0080"
+        },
+        {
+          "type": "subheading",
+          "text": "Tăng tác dụng và độc tính:",
+          "block_id": "b0081"
+        },
+        {
+          "type": "text",
+          "text": "Atracurium có thể làm tăng nồng độ/tác dụng của: glycosid tim, các corticosteroid (dùng đường toàn thân), onabotulinumtoxin A, rimabotulinumtoxin B.",
+          "block_id": "b0082"
+        },
+        {
+          "type": "text",
+          "text": "Nồng độ/tác dụng của atracurium có thể bị tăng bởi các thuốc sau: abobotulinumtoxin A, các kháng sinh aminoglycosid, các thuốc chẹn kênh canxi, capreomycin, clindamycin (tại chỗ), cyclosporin (toàn thân), fosphenytoin - phenytoin, thuốc mê hô hấp, ketorolac (dạng xông hít), ketorolac (toàn thân), kháng sinh lincosamid, lithi, thuốc lợi tiểu quai, muối magnesi, minocyclin, polymixin B, procainamid, quinidin, quinin, spironolacton, dẫn chất tetracyclin, vancomycin.",
+          "block_id": "b0083"
+        },
+        {
+          "type": "text",
+          "text": "Giảm tác dụng: Nồng độ/tác dụng của atracurium bị giảm bởi các thuốc sau: Các thuốc ức chế acetylcholinesterase, fosphenytoin phenytoin, các thuốc lợi tiểu quai.",
+          "block_id": "b0084"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-ky",
       "title": "Tương kỵ",
-      "content": "Atracurium bị bất hoạt ở pH cao và không được trộn lẫn trong cùng xylanh với thiopental hoặc bất kỳ các thuốc có tính kiềm khác.\n\nTương hợp Atracurium tương hợp với các dụng dịch sau: dung dịch nước muối tiêm truyền 0,9%, dung dịch glucose tiêm truyền 5%, dung dịch Ringer pha tiêm, dung dịch natri lactat tiêm truyền.",
+      "heading_block": "b0085",
       "blocks": [
         {
           "type": "text",
-          "text": "Atracurium bị bất hoạt ở pH cao và không được trộn lẫn trong cùng xylanh với thiopental hoặc bất kỳ các thuốc có tính kiềm khác.\n\nTương hợp Atracurium tương hợp với các dụng dịch sau: dung dịch nước muối tiêm truyền 0,9%, dung dịch glucose tiêm truyền 5%, dung dịch Ringer pha tiêm, dung dịch natri lactat tiêm truyền."
+          "text": "Atracurium bị bất hoạt ở pH cao và không được trộn lẫn trong cùng xylanh với thiopental hoặc bất kỳ các thuốc có tính kiềm khác.",
+          "block_id": "b0086"
         }
-      ],
-      "subsections": []
+      ]
+    },
+    {
+      "id": "tuong-hop",
+      "title": "Tương hợp",
+      "heading_block": "b0087",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Atracurium tương hợp với các dụng dịch sau: dung dịch nước muối tiêm truyền 0,9%, dung dịch glucose tiêm truyền 5%, dung dịch Ringer pha tiêm, dung dịch natri lactat tiêm truyền.",
+          "block_id": "b0088"
+        }
+      ]
     },
     {
       "id": "qua-lieu-va-xu-tri",
       "title": "Quá liều và xử trí",
-      "content": "Triệu chứng: Dấu hiệu chính của quá liều là liệt cơ kéo dài và hậu quả của nó.\n\nXử trí: Điều trị hỗ trợ và điều trị triệu chứng. Duy trì thông khí hỗ trợ đến tận khi bệnh nhân có thể tự thở. Bệnh nhân cần được an thần hoàn toàn.\n\nĐảo ngược tác dụng phong bế thần kinh - cơ: Có thể làm mất tác dụng phong bế thần kinh - cơ do atracurium besylat bằng cách dùng một thuốc ức chế cholinesterase như neostigmin, pyridostigmin hoặc edrophonium, thường phối hợp với atropin hoặc glycopyralat để phong bế tác dụng phụ trên muscarinic của thuốc ức chế cholinesterase.",
+      "heading_block": "b0089",
       "blocks": [
         {
           "type": "text",
-          "text": "Triệu chứng: Dấu hiệu chính của quá liều là liệt cơ kéo dài và hậu quả của nó.\n\nXử trí: Điều trị hỗ trợ và điều trị triệu chứng. Duy trì thông khí hỗ trợ đến tận khi bệnh nhân có thể tự thở. Bệnh nhân cần được an thần hoàn toàn.\n\nĐảo ngược tác dụng phong bế thần kinh - cơ: Có thể làm mất tác dụng phong bế thần kinh - cơ do atracurium besylat bằng cách dùng một thuốc ức chế cholinesterase như neostigmin, pyridostigmin hoặc edrophonium, thường phối hợp với atropin hoặc glycopyralat để phong bế tác dụng phụ trên muscarinic của thuốc ức chế cholinesterase."
+          "text": "Triệu chứng: Dấu hiệu chính của quá liều là liệt cơ kéo dài và hậu quả của nó.",
+          "block_id": "b0090"
+        },
+        {
+          "type": "text",
+          "text": "Xử trí: Điều trị hỗ trợ và điều trị triệu chứng. Duy trì thông khí hỗ trợ đến tận khi bệnh nhân có thể tự thở. Bệnh nhân cần được an thần hoàn toàn.",
+          "block_id": "b0091"
+        },
+        {
+          "type": "text",
+          "text": "Đảo ngược tác dụng phong bế thần kinh - cơ: Có thể làm mất tác dụng phong bế thần kinh - cơ do atracurium besylat bằng cách dùng một thuốc ức chế cholinesterase như neostigmin, pyridostigmin hoặc edrophonium, thường phối hợp với atropin hoặc glycopyralat để phong bế tác dụng phụ trên muscarinic của thuốc ức chế cholinesterase.",
+          "block_id": "b0092"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "cap-nhat-lan-cuoi",
       "title": "Cập nhật lần cuối",
-      "content": "2017.",
+      "heading_block": "b0093",
       "blocks": [
         {
           "type": "text",
-          "text": "2017."
+          "text": "2017.",
+          "block_id": "b0093"
         }
-      ],
-      "subsections": []
+      ]
     }
   ],
-  "tables": [],
   "quality": {
-    "status": "source-layout-rebuilt-v10.1-source-paragraph-boundaries",
-    "pdf_text_order": "left-column-then-right-column; visual line flow",
-    "paragraph_policy": "Paragraph boundaries are source-derived and stored only as blank lines. The client preserves those boundaries exactly; it must not create a new paragraph from label words such as “Trẻ em:” or “Người lớn:”. A lower-case continuation fragment is merged only when it follows a non-terminal source fragment; table footnotes remain separate. No client-side anchor or length-based sentence splitter is allowed.",
-    "table_policy": "source-table image inserted by PDF page/column/y position; table-cell text excluded from prose",
-    "validation": {
-      "raw_newline_inside_paragraph": false,
-      "table_count": 0,
-      "section_count": 18,
-      "client_anchor_resegmentation_disabled": true,
-      "client_length_sentence_chunking_disabled": true
-    }
+    "block_count": 93,
+    "heading_count": 15,
+    "subheading_count": 7,
+    "paragraph_count": 70,
+    "list_count": 0,
+    "table_count": 0,
+    "figure_count": 0,
+    "note_count": 1,
+    "page_count": 3
+  },
+  "tables": [],
+  "legacy_compat": {
+    "sections": "generated from v11 blocks for v10.4.5.39 renderer/chatbot compatibility"
   }
 }

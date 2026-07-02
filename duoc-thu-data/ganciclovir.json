@@ -1,5 +1,5 @@
 {
-  "schema_version": "10.1-source-paragraph-boundaries",
+  "schema_version": "11.0.0",
   "id": "ganciclovir",
   "title": "Ganciclovir",
   "aliases": [
@@ -26,256 +26,3709 @@
       "boundary_method": "physical-source-title-band"
     }
   },
-  "sections": [
+  "parser": {
+    "name": "medplus-duoc-thu-v11-structured-pdf-parser",
+    "method": "PyMuPDF span -> line -> block",
+    "content_source": "Duocthu2023.pdf",
+    "old_json_usage": "id/title/page-boundary metadata and existing table asset path only; old content is not used",
+    "column_order": "left column -> right column -> next page",
+    "block_model": [
+      "heading",
+      "subheading",
+      "paragraph",
+      "list",
+      "table",
+      "figure",
+      "note"
+    ],
+    "table_policy": "no OCR; preserve existing duoc-thu-assets/<id>/pXXXX-tXX.png image_path"
+  },
+  "blocks": [
     {
-      "id": "thong-tin-au-chuyen-luan",
-      "title": "Thông tin đầu chuyên luận",
-      "content": "GANCICLOVIR",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "GANCICLOVIR"
-        }
+      "id": "b0001",
+      "type": "heading",
+      "level": 1,
+      "text": "GANCICLOVIR",
+      "page": 796,
+      "printed_page": 802,
+      "column": 1,
+      "bbox": [
+        397.2,
+        386.7,
+        470.53,
+        400.54
       ],
-      "subsections": []
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "GANCICLOVIR",
+          "bbox": [
+            397.2,
+            386.7,
+            470.53,
+            400.54
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
     },
     {
-      "id": "ten-chung-quoc-te",
-      "title": "Tên chung quốc tế",
-      "content": "Ganciclovir.\n\nMã ATC: J05AB06 (dạng dùng toàn thân), S01AD09 (dạng thuốc nhỏ mắt).\n\nLoại thuốc: Thuốc kháng virus.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Ganciclovir.\n\nMã ATC: J05AB06 (dạng dùng toàn thân), S01AD09 (dạng thuốc nhỏ mắt).\n\nLoại thuốc: Thuốc kháng virus."
-        }
+      "id": "b0002",
+      "type": "paragraph",
+      "text": "Tên chung quốc tế: Ganciclovir.",
+      "page": 796,
+      "printed_page": 802,
+      "column": 1,
+      "bbox": [
+        307.89,
+        410.49,
+        434.81,
+        423.63
       ],
-      "subsections": []
-    },
-    {
-      "id": "dang-thuoc-va-ham-luong",
-      "title": "Dạng thuốc và hàm lượng",
-      "content": "Bột pha dung dịch tiêm truyền tĩnh mạch: 500 mg.\n\nGel nhỏ mắt: 0,15% (kl/kl).",
-      "blocks": [
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
         {
-          "type": "text",
-          "text": "Bột pha dung dịch tiêm truyền tĩnh mạch: 500 mg.\n\nGel nhỏ mắt: 0,15% (kl/kl)."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "duoc-luc-hoc",
-      "title": "Dược lực học",
-      "content": "Cơ chế tác dụng Ganciclovir là một dẫn chất của 2’-deoxyguanosin, có tác dụng ức chế quá trình sao chép của Cytomegalovirus (CMV). Trong tế bào, đầu tiên, ganciclovir được phosphoryl hóa bởi protein kinase tạo ganciclovir monophosphat. Do quá trình này được xúc tác bởi enzym của virus nên quá trình phosphoryl hóa ganciclovir xảy ra chọn lọc trong các tế bào nhiễm CMV. Sau đó, quá trình phosphoryl hóa được thực hiện thông qua các enzym kinase của tế bào để tạo thành ganciclovir triphosphat. Chất này ức chế enzym ADN polymerase thông qua cơ chế đối kháng cạnh tranh với deoxyguanosin, từ đó ức chế quá trình sao chép của virus. So với aciclovir, nồng độ dạng triphosphat của ganciclovir cao hơn khoảng 10 lần và thải trừ chậm hơn ra khỏi tế bào.\n\nPhổ tác dụng Các chủng virus nhạy cảm bao gồm: CMV, virus Herpes simplex typ 1 và 2 (HSV-1 và HSV-2), virus Herpes trên người các typ 6, 7, 8 (HHV-6, HHV-7 và HHV-8), virus Epstein-Barr (EBV), virus Varicella-zoster (VZV) và virus viêm gan B. Tuy nhiên mới chỉ có tác dụng trên CMV của thuốc được đánh giá thông qua các nghiên cứu lâm sàng.\n\nKháng thuốc Đã ghi nhận hiện tượng đề kháng của CMV với ganciclovir khi sử dụng thuốc dài ngày. Các dữ liệu trên lâm sàng chưa đủ để đánh giá đầy đủ các cơ chế phát sinh đề kháng. Một số bằng chứng cho thấy virus kháng thuốc mang đột biến trên các gen chịu trách nhiệm cho quá trình tổng hợp enzym kinase và ADN polymerase.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Cơ chế tác dụng Ganciclovir là một dẫn chất của 2’-deoxyguanosin, có tác dụng ức chế quá trình sao chép của Cytomegalovirus (CMV). Trong tế bào, đầu tiên, ganciclovir được phosphoryl hóa bởi protein kinase tạo ganciclovir monophosphat. Do quá trình này được xúc tác bởi enzym của virus nên quá trình phosphoryl hóa ganciclovir xảy ra chọn lọc trong các tế bào nhiễm CMV. Sau đó, quá trình phosphoryl hóa được thực hiện thông qua các enzym kinase của tế bào để tạo thành ganciclovir triphosphat. Chất này ức chế enzym ADN polymerase thông qua cơ chế đối kháng cạnh tranh với deoxyguanosin, từ đó ức chế quá trình sao chép của virus. So với aciclovir, nồng độ dạng triphosphat của ganciclovir cao hơn khoảng 10 lần và thải trừ chậm hơn ra khỏi tế bào.\n\nPhổ tác dụng Các chủng virus nhạy cảm bao gồm: CMV, virus Herpes simplex typ 1 và 2 (HSV-1 và HSV-2), virus Herpes trên người các typ 6, 7, 8 (HHV-6, HHV-7 và HHV-8), virus Epstein-Barr (EBV), virus Varicella-zoster (VZV) và virus viêm gan B. Tuy nhiên mới chỉ có tác dụng trên CMV của thuốc được đánh giá thông qua các nghiên cứu lâm sàng.\n\nKháng thuốc Đã ghi nhận hiện tượng đề kháng của CMV với ganciclovir khi sử dụng thuốc dài ngày. Các dữ liệu trên lâm sàng chưa đủ để đánh giá đầy đủ các cơ chế phát sinh đề kháng. Một số bằng chứng cho thấy virus kháng thuốc mang đột biến trên các gen chịu trách nhiệm cho quá trình tổng hợp enzym kinase và ADN polymerase."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "duoc-ong-hoc",
-      "title": "Dược động học",
-      "content": "Hấp thu: Thuốc hấp thu kém qua đường tiêu hóa. Sinh khả dụng đường uống đạt khoảng 5% lúc đói và khoảng 6 - 9% sau khi ăn.\n\nSau khi sử dụng liều 1 000 mg mỗi 8 giờ, nồng độ đỉnh và nồng độ đáy lần lượt là 0,5 - 1,2 và 0,2 - 0,5 microgam/ml. Khi truyền tĩnh mạch với liều 5 mg/kg trong 1 giờ, nồng độ đỉnh và nồng độ đáy trong huyết tương lần lượt là 8 - 11 và 0,6 - 1,2 microgam/ml.\n\nPhân bố: Thể tích phân bố của ganciclovir theo đường truyền tĩnh mạch tại trạng thái ổn định là 0,54 - 0,87 lít/kg. Tỷ lệ liên kết với protein huyết tương khoảng 1 - 2%. Thuốc qua được nhau thai và hàng rào máu - não. Nồng độ thuốc trong dịch não tủy đạt khoảng 24 - 67% nồng độ trong huyết tương. Nồng độ trong dịch kính khoảng 1 microgam/ml, tương tự hoặc cao hơn một ít so với nồng độ trong huyết tương.\n\nThải trừ: Thuốc được thải trừ nguyên dạng với tỷ lệ trên 90%, với hai cơ chế chính là lọc ở cầu thận và bài tiết ở ống thận. Quá trình thải trừ thuốc từ huyết tương xảy ra theo 2 pha. Khi sử dụng qua đường tĩnh mạch, ở pha đầu tiên, nửa đời của thuốc khoảng 0,23 - 0,76 giờ và ở pha cuối là khoảng 2,53 - 3,6 giờ trên bệnh nhân có chức năng thận bình thường. Nửa đời của thuốc khi dùng qua đường uống là 4,8 giờ. Nửa đời của thuốc có thể kéo dài tới 4,4 - 30 giờ trên bệnh nhân suy thận. Thuốc có thể được thải trừ thông qua thẩm phân máu, sau 4 giờ tiến hành nồng độ thuốc có thể giảm từ 40 - 50%.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Hấp thu: Thuốc hấp thu kém qua đường tiêu hóa. Sinh khả dụng đường uống đạt khoảng 5% lúc đói và khoảng 6 - 9% sau khi ăn.\n\nSau khi sử dụng liều 1 000 mg mỗi 8 giờ, nồng độ đỉnh và nồng độ đáy lần lượt là 0,5 - 1,2 và 0,2 - 0,5 microgam/ml. Khi truyền tĩnh mạch với liều 5 mg/kg trong 1 giờ, nồng độ đỉnh và nồng độ đáy trong huyết tương lần lượt là 8 - 11 và 0,6 - 1,2 microgam/ml.\n\nPhân bố: Thể tích phân bố của ganciclovir theo đường truyền tĩnh mạch tại trạng thái ổn định là 0,54 - 0,87 lít/kg. Tỷ lệ liên kết với protein huyết tương khoảng 1 - 2%. Thuốc qua được nhau thai và hàng rào máu - não. Nồng độ thuốc trong dịch não tủy đạt khoảng 24 - 67% nồng độ trong huyết tương. Nồng độ trong dịch kính khoảng 1 microgam/ml, tương tự hoặc cao hơn một ít so với nồng độ trong huyết tương.\n\nThải trừ: Thuốc được thải trừ nguyên dạng với tỷ lệ trên 90%, với hai cơ chế chính là lọc ở cầu thận và bài tiết ở ống thận. Quá trình thải trừ thuốc từ huyết tương xảy ra theo 2 pha. Khi sử dụng qua đường tĩnh mạch, ở pha đầu tiên, nửa đời của thuốc khoảng 0,23 - 0,76 giờ và ở pha cuối là khoảng 2,53 - 3,6 giờ trên bệnh nhân có chức năng thận bình thường. Nửa đời của thuốc khi dùng qua đường uống là 4,8 giờ. Nửa đời của thuốc có thể kéo dài tới 4,4 - 30 giờ trên bệnh nhân suy thận. Thuốc có thể được thải trừ thông qua thẩm phân máu, sau 4 giờ tiến hành nồng độ thuốc có thể giảm từ 40 - 50%."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "chi-inh",
-      "title": "Chỉ định",
-      "content": "Dùng toàn thân Điều trị CMV trên bệnh nhân suy giảm miễn dịch.\n\nDự phòng nhiễm CMV trên bệnh nhân sử dụng thuốc ức chế miễn dịch trong ghép tạng.\n\nDùng tại mắt Điều trị viêm giác mạc do virus Herpes (loét giác mạc hình cành cây).",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Dùng toàn thân Điều trị CMV trên bệnh nhân suy giảm miễn dịch.\n\nDự phòng nhiễm CMV trên bệnh nhân sử dụng thuốc ức chế miễn dịch trong ghép tạng.\n\nDùng tại mắt Điều trị viêm giác mạc do virus Herpes (loét giác mạc hình cành cây)."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "chong-chi-inh",
-      "title": "Chống chỉ định",
-      "content": "Mẫn cảm với thuốc, valganciclovir.\n\nPhụ nữ cho con bú.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Mẫn cảm với thuốc, valganciclovir.\n\nPhụ nữ cho con bú."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "than-trong",
-      "title": "Thận trọng",
-      "content": "Phản ứng dị ứng chéo: Do có cấu trúc hóa học tương đồng, phản ứng dị ứng chéo giữa ganciclovir với aciclovir và penciclovir có thể xảy ra. Thận trọng khi sử dụng ganciclovir trên bệnh nhân có tiền sử quá mẫn với aciclovir, penciclovir hoặc tiền thuốc của chúng (valaciclovir, famciclovir).\n\nẢnh hưởng trên thai nhi và hệ sinh sản của bệnh nhân: Các nghiên cứu trên động vật cho thấy ganciclovir có khả năng gây đột biến, dị tật thai nhi cũng như có nguy cơ gây ung thư và gây vô sinh. Các nghiên cứu lâm sàng và tiền lâm sàng cho thấy thuốc dường như gây ức chế tạm thời hoặc vĩnh viễn quá trình sinh tinh trùng. Do đó, phụ nữ trong độ tuổi sinh sản cần sử dụng một biện pháp tránh thai có hiệu quả trong suốt liệu trình và duy trì tối thiểu 30 ngày sau khi ngừng thuốc. Với nam giới, cần sử dụng biện pháp tránh thai trong suốt liệu trình và duy trì tối thiểu 90 ngày sau khi ngừng thuốc, trừ trường hợp bạn tình không có nguy cơ mang thai.\n\nThận trọng khi sử dụng thuốc trên trẻ em.\n\nẢnh hưởng trên tủy xương: Đã ghi nhận triệu chứng giảm bạch cầu, hồng cầu, tiểu cầu và suy tủy nặng trên bệnh nhân sử dụng ganciclovir. Cần thận trọng khi sử dụng thuốc trên bệnh nhân đang có triệu chứng giảm tế bào máu hoặc có tiền sử giảm tế bào máu do thuốc và bệnh nhân đang xạ trị. Không sử dụng thuốc khi số lượng bạch cầu trung tính giảm dưới 0,5 × 109/microlít, số lượng tiểu cầu giảm dưới 25 × 109/lít hoặc hemoglobin dưới 80 g/lít.\n\nTrong quá trình sử dụng thuốc, cần giám sát công thức máu của bệnh nhân, đặc biệt trên bệnh nhân suy thận, trẻ sơ sinh và trẻ nhỏ. Trong 14 ngày đầu tiên của liệu trình điều trị, khuyến cáo xét nghiệm công thức bạch cầu 2 ngày/lần; trên bệnh nhân có số lượng bạch cầu trung tính thấp (< 1,0 × 109/lít), bệnh nhân có tiền sử giảm bạch cầu do thuốc và bệnh nhân suy thận, cần xét nghiệm hàng ngày.\n\nTrên bệnh nhân giảm bạch cầu, giảm hồng cầu và giảm tiểu cầu nặng, xem xét ngừng ganciclovir và/hoặc sử dụng các thuốc kích thích tạo máu.\n\nBệnh nhân suy thận: Bệnh nhân suy thận có nguy cơ gặp ADR cao hơn. Cần hiệu chỉnh liều khi sử dụng thuốc trên đối tượng này.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Phản ứng dị ứng chéo: Do có cấu trúc hóa học tương đồng, phản ứng dị ứng chéo giữa ganciclovir với aciclovir và penciclovir có thể xảy ra. Thận trọng khi sử dụng ganciclovir trên bệnh nhân có tiền sử quá mẫn với aciclovir, penciclovir hoặc tiền thuốc của chúng (valaciclovir, famciclovir).\n\nẢnh hưởng trên thai nhi và hệ sinh sản của bệnh nhân: Các nghiên cứu trên động vật cho thấy ganciclovir có khả năng gây đột biến, dị tật thai nhi cũng như có nguy cơ gây ung thư và gây vô sinh. Các nghiên cứu lâm sàng và tiền lâm sàng cho thấy thuốc dường như gây ức chế tạm thời hoặc vĩnh viễn quá trình sinh tinh trùng. Do đó, phụ nữ trong độ tuổi sinh sản cần sử dụng một biện pháp tránh thai có hiệu quả trong suốt liệu trình và duy trì tối thiểu 30 ngày sau khi ngừng thuốc. Với nam giới, cần sử dụng biện pháp tránh thai trong suốt liệu trình và duy trì tối thiểu 90 ngày sau khi ngừng thuốc, trừ trường hợp bạn tình không có nguy cơ mang thai.\n\nThận trọng khi sử dụng thuốc trên trẻ em.\n\nẢnh hưởng trên tủy xương: Đã ghi nhận triệu chứng giảm bạch cầu, hồng cầu, tiểu cầu và suy tủy nặng trên bệnh nhân sử dụng ganciclovir. Cần thận trọng khi sử dụng thuốc trên bệnh nhân đang có triệu chứng giảm tế bào máu hoặc có tiền sử giảm tế bào máu do thuốc và bệnh nhân đang xạ trị. Không sử dụng thuốc khi số lượng bạch cầu trung tính giảm dưới 0,5 × 109/microlít, số lượng tiểu cầu giảm dưới 25 × 109/lít hoặc hemoglobin dưới 80 g/lít.\n\nTrong quá trình sử dụng thuốc, cần giám sát công thức máu của bệnh nhân, đặc biệt trên bệnh nhân suy thận, trẻ sơ sinh và trẻ nhỏ. Trong 14 ngày đầu tiên của liệu trình điều trị, khuyến cáo xét nghiệm công thức bạch cầu 2 ngày/lần; trên bệnh nhân có số lượng bạch cầu trung tính thấp (< 1,0 × 109/lít), bệnh nhân có tiền sử giảm bạch cầu do thuốc và bệnh nhân suy thận, cần xét nghiệm hàng ngày.\n\nTrên bệnh nhân giảm bạch cầu, giảm hồng cầu và giảm tiểu cầu nặng, xem xét ngừng ganciclovir và/hoặc sử dụng các thuốc kích thích tạo máu.\n\nBệnh nhân suy thận: Bệnh nhân suy thận có nguy cơ gặp ADR cao hơn. Cần hiệu chỉnh liều khi sử dụng thuốc trên đối tượng này."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "thoi-ky-mang-thai",
-      "title": "Thời kỳ mang thai",
-      "content": "Tính an toàn của ganciclovir trên phụ nữ mang thai chưa được đánh giá đầy đủ. Các bằng chứng cho thấy thuốc có khả năng qua nhau thai. Trên động vật, ganciclovir gây độc tính trên hệ sinh sản và gây dị tật thai nhi. Do đó, không sử dụng ganciclovir trên phụ nữ mang thai trừ khi nhu cầu điều trị của người mẹ vượt trội hơn nguy cơ gây dị tật thai nhi của thuốc.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Tính an toàn của ganciclovir trên phụ nữ mang thai chưa được đánh giá đầy đủ. Các bằng chứng cho thấy thuốc có khả năng qua nhau thai. Trên động vật, ganciclovir gây độc tính trên hệ sinh sản và gây dị tật thai nhi. Do đó, không sử dụng ganciclovir trên phụ nữ mang thai trừ khi nhu cầu điều trị của người mẹ vượt trội hơn nguy cơ gây dị tật thai nhi của thuốc."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "thoi-ky-cho-con-bu",
-      "title": "Thời kỳ cho con bú",
-      "content": "Khả năng bài xuất của ganciclovir vào sữa mẹ chưa được đánh giá đầy đủ. Dữ liệu trên động vật cho thấy thuốc có khả năng bài xuất qua sữa. Do đó, cần ngừng cho con bú khi sử dụng ganciclovir.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Khả năng bài xuất của ganciclovir vào sữa mẹ chưa được đánh giá đầy đủ. Dữ liệu trên động vật cho thấy thuốc có khả năng bài xuất qua sữa. Do đó, cần ngừng cho con bú khi sử dụng ganciclovir."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "tac-dung-khong-mong-muon-adr",
-      "title": "Tác dụng không mong muốn (ADR)",
-      "content": "Thường gặp Nhiễm trùng: nhiễm nấm Candida, nhiễm khuẩn hô hấp trên, nhiễm khuẩn huyết, cúm, nhiễm khuẩn tiết niệu, viêm mô tế bào.\n\nHuyết học: giảm bạch cầu, giảm hồng cầu, giảm tiểu cầu, giảm toàn bộ tế bào máu ngoại vi, suy tủy xương.\n\nMiễn dịch: phản ứng quá mẫn.\n\nChuyển hóa: chán ăn, giảm cân.\n\nTâm thần: trầm cảm, lo âu, lú lẫn.\n\nThần kinh: đau đầu, mất ngủ, bệnh thần kinh ngoại vi, chóng mặt, dị cảm, giảm cảm giác, co giật, rối loạn vị giác.\n\nThị giác: giảm thị lực, bong võng mạc, đục dịch kính, đau mắt, viêm kết mạc, phù hoàng điểm.\n\nThính giác: đau tai.\n\nTim mạch: hạ huyết áp.\n\nHô hấp: ho, khó thở.\n\nTiêu hóa: tiêu chảy, buồn nôn, nôn, đau bụng, đầy hơi, khó tiêu, táo bón, loét miệng, khó nuốt, trướng bụng, viêm tụy cấp.\n\nGan mật: rối loạn chức năng gan, tăng phosphatase kiềm, tăng transaminase.\n\nDa và mô mềm: viêm da, vã mồ hôi, ngứa, ban đỏ, rụng tóc.\n\nCơ - xương - khớp: đau lưng, đau cơ, đau khớp, co thắt cơ.\n\nThận - tiết niệu: suy giảm chức năng thận, tăng creatinin huyết thanh.\n\nToàn thân: sốt, mệt mỏi, phản ứng tại chỗ tiêm, đau, ớn lạnh, khó chịu, suy nhược.\n\nÍt gặp Suy tủy xương, kích động, ảo giác, run, mất thính giác, loạn nhịp tim, mày đay, khô da, suy thận, tiểu máu, gây vô sinh ở nam giới, đau ngực.\n\nHiếm gặp Thiếu máu bất sản, giảm/mất bạch cầu hạt, sốc phản vệ.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Thường gặp Nhiễm trùng: nhiễm nấm Candida, nhiễm khuẩn hô hấp trên, nhiễm khuẩn huyết, cúm, nhiễm khuẩn tiết niệu, viêm mô tế bào.\n\nHuyết học: giảm bạch cầu, giảm hồng cầu, giảm tiểu cầu, giảm toàn bộ tế bào máu ngoại vi, suy tủy xương.\n\nMiễn dịch: phản ứng quá mẫn.\n\nChuyển hóa: chán ăn, giảm cân.\n\nTâm thần: trầm cảm, lo âu, lú lẫn.\n\nThần kinh: đau đầu, mất ngủ, bệnh thần kinh ngoại vi, chóng mặt, dị cảm, giảm cảm giác, co giật, rối loạn vị giác.\n\nThị giác: giảm thị lực, bong võng mạc, đục dịch kính, đau mắt, viêm kết mạc, phù hoàng điểm.\n\nThính giác: đau tai.\n\nTim mạch: hạ huyết áp.\n\nHô hấp: ho, khó thở.\n\nTiêu hóa: tiêu chảy, buồn nôn, nôn, đau bụng, đầy hơi, khó tiêu, táo bón, loét miệng, khó nuốt, trướng bụng, viêm tụy cấp.\n\nGan mật: rối loạn chức năng gan, tăng phosphatase kiềm, tăng transaminase.\n\nDa và mô mềm: viêm da, vã mồ hôi, ngứa, ban đỏ, rụng tóc.\n\nCơ - xương - khớp: đau lưng, đau cơ, đau khớp, co thắt cơ.\n\nThận - tiết niệu: suy giảm chức năng thận, tăng creatinin huyết thanh.\n\nToàn thân: sốt, mệt mỏi, phản ứng tại chỗ tiêm, đau, ớn lạnh, khó chịu, suy nhược.\n\nÍt gặp Suy tủy xương, kích động, ảo giác, run, mất thính giác, loạn nhịp tim, mày đay, khô da, suy thận, tiểu máu, gây vô sinh ở nam giới, đau ngực.\n\nHiếm gặp Thiếu máu bất sản, giảm/mất bạch cầu hạt, sốc phản vệ."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "huong-dan-cach-xu-tri-adr",
-      "title": "Hướng dẫn cách xử trí ADR",
-      "content": "Trên bệnh nhân giảm bạch cầu, giảm hồng cầu và giảm tiểu cầu nặng, xem xét ngừng ganciclovir và/hoặc sử dụng các thuốc kích thích tạo máu.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Trên bệnh nhân giảm bạch cầu, giảm hồng cầu và giảm tiểu cầu nặng, xem xét ngừng ganciclovir và/hoặc sử dụng các thuốc kích thích tạo máu."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "lieu-luong-va-cach-dung",
-      "title": "Liều lượng và cách dùng",
-      "content": "Liều dùng toàn thân Người lớn và trẻ em từ 13 tuổi trở lên Điều trị CMV trên bệnh nhân suy giảm miễn dịch Giai đoạn tấn công: 5 mg/kg, truyền tĩnh mạch tối thiểu trong 1 giờ, mỗi 12 giờ. Thời gian điều trị từ 14 - 21 ngày.\n\nGiai đoạn duy trì: 5 mg/kg/ngày, ngày 1 lần truyền tĩnh mạch trong tối thiểu 1 giờ, 7 lần/tuần, hoặc 6 mg/kg/ngày, ngày 1 lần, 5 lần/ tuần. Thời gian điều trị cần được cá thể hóa theo tình trạng của bệnh nhân. Trong trường hợp tái phát, sử dụng liều như giai đoạn tấn công.\n\nDự phòng CMV trên bệnh nhân sử dụng thuốc ức chế miễn dịch Giai đoạn tấn công: 5 mg/kg truyền tĩnh mạch tối thiểu trong 1 giờ, mỗi 12 giờ. Thời gian điều trị từ 14 - 21 ngày.\n\nGiai đoạn duy trì: 5 mg/kg/ngày, ngày 1 lần, truyền tĩnh mạch trong tối thiểu 1 giờ, 7 lần/tuần, hoặc, 6 mg/kg/ngày, ngày 1 lần, 5 lần/ tuần. Thời gian điều trị cần được cá thể hóa theo nguy cơ nhiễm CMV của bệnh nhân. Với bệnh nhân ghép tạng, cần sử dụng thuốc tới 100 - 120 ngày sau ghép.\n\nBệnh nhân suy thận Cần hiệu chỉnh liều theo bảng sau.\n\nBệnh nhân suy gan: Chưa có khuyến cáo liều dùng cho đối tượng này.\n\nNgười cao tuổi: Lưu ý hiệu chỉnh liều theo chức năng thận của bệnh nhân.\n\nTrẻ em dưới 13 tuổi: Chưa có khuyến cáo liều dùng cho đối tượng này.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Liều dùng toàn thân Người lớn và trẻ em từ 13 tuổi trở lên Điều trị CMV trên bệnh nhân suy giảm miễn dịch Giai đoạn tấn công: 5 mg/kg, truyền tĩnh mạch tối thiểu trong 1 giờ, mỗi 12 giờ. Thời gian điều trị từ 14 - 21 ngày.\n\nGiai đoạn duy trì: 5 mg/kg/ngày, ngày 1 lần truyền tĩnh mạch trong tối thiểu 1 giờ, 7 lần/tuần, hoặc 6 mg/kg/ngày, ngày 1 lần, 5 lần/ tuần. Thời gian điều trị cần được cá thể hóa theo tình trạng của bệnh nhân. Trong trường hợp tái phát, sử dụng liều như giai đoạn tấn công.\n\nDự phòng CMV trên bệnh nhân sử dụng thuốc ức chế miễn dịch Giai đoạn tấn công: 5 mg/kg truyền tĩnh mạch tối thiểu trong 1 giờ, mỗi 12 giờ. Thời gian điều trị từ 14 - 21 ngày.\n\nGiai đoạn duy trì: 5 mg/kg/ngày, ngày 1 lần, truyền tĩnh mạch trong tối thiểu 1 giờ, 7 lần/tuần, hoặc, 6 mg/kg/ngày, ngày 1 lần, 5 lần/ tuần. Thời gian điều trị cần được cá thể hóa theo nguy cơ nhiễm CMV của bệnh nhân. Với bệnh nhân ghép tạng, cần sử dụng thuốc tới 100 - 120 ngày sau ghép.\n\nBệnh nhân suy thận Cần hiệu chỉnh liều theo bảng sau."
+          "text": "Tên chung quốc tế: ",
+          "bbox": [
+            307.89,
+            410.49,
+            388.12,
+            423.63
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
         },
         {
-          "type": "table",
-          "table_id": "p0798-t01"
+          "text": "Ganciclovir.",
+          "bbox": [
+            388.12,
+            410.64,
+            434.81,
+            423.43
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0003",
+      "type": "paragraph",
+      "text": "Mã ATC: J05AB06 (dạng dùng toàn thân), S01AD09 (dạng thuốc nhỏ mắt).",
+      "page": 796,
+      "printed_page": 802,
+      "column": 1,
+      "bbox": [
+        307.89,
+        422.41,
+        562.22,
+        444.45
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0004",
+      "type": "paragraph",
+      "text": "Loại thuốc: Thuốc kháng virus.",
+      "page": 796,
+      "printed_page": 802,
+      "column": 1,
+      "bbox": [
+        307.89,
+        443.42,
+        432.97,
+        456.57
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Loại thuốc: ",
+          "bbox": [
+            307.89,
+            443.42,
+            356.98,
+            456.57
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
         },
         {
-          "type": "text",
-          "text": "Bệnh nhân suy gan: Chưa có khuyến cáo liều dùng cho đối tượng này.\n\nNgười cao tuổi: Lưu ý hiệu chỉnh liều theo chức năng thận của bệnh nhân.\n\nTrẻ em dưới 13 tuổi: Chưa có khuyến cáo liều dùng cho đối tượng này."
+          "text": "Thuốc kháng virus. ",
+          "bbox": [
+            356.98,
+            443.57,
+            432.97,
+            456.37
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "cach-dung",
-      "title": "Cách dùng",
-      "content": "Sử dụng thuốc qua đường truyền tĩnh mạch. Thời gian truyền tối thiểu 1 giờ và nồng độ thuốc không vượt quá 10 mg/ml. Không tiêm tĩnh mạch nhanh vì có thể tạo nồng độ thuốc trong huyết tương cao, làm tăng độc tính trên thận của thuốc. Không tiêm bắp hay tiêm dưới da vì có thể gây kích ứng vị trí tiêm do dung dịch ganciclovir có pH cao (~11).\n\nHoàn nguyên bột ganciclovir trong nước cất pha tiêm (nồng độ khoảng 50 mg/ml). Pha loãng bằng dung dịch tiêm truyền natri clorid 0,9%, glucose 5%, dung dịch Ringer hoặc Ringer lactat để có dung dịch chứa không quá 10 mg/ml. Không được dùng nước pha tiêm có chất bảo quản paraben vì có thể gây tủa. Dung dịch tiêm truyền phải dùng trong vòng 24 giờ để tránh nhiễm khuẩn.\n\nLiều dùng tại mắt Điều trị viêm giác mạc do virus Herpes Người lớn và trẻ em từ 18 tuổi trở lên Nhỏ mắt 1 giọt gel nồng độ 0,15%/lần, 5 lần/ngày cho tới khi hết triệu chứng. Tiếp tục sử dụng 3 lần/ngày, trong 7 ngày sau đó.\n\nKhông sử dụng vượt quá 21 ngày.\n\nTrẻ em dưới 18 tuổi Chưa có khuyến cáo liều dùng cho đối tượng này.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Sử dụng thuốc qua đường truyền tĩnh mạch. Thời gian truyền tối thiểu 1 giờ và nồng độ thuốc không vượt quá 10 mg/ml. Không tiêm tĩnh mạch nhanh vì có thể tạo nồng độ thuốc trong huyết tương cao, làm tăng độc tính trên thận của thuốc. Không tiêm bắp hay tiêm dưới da vì có thể gây kích ứng vị trí tiêm do dung dịch ganciclovir có pH cao (~11).\n\nHoàn nguyên bột ganciclovir trong nước cất pha tiêm (nồng độ khoảng 50 mg/ml). Pha loãng bằng dung dịch tiêm truyền natri clorid 0,9%, glucose 5%, dung dịch Ringer hoặc Ringer lactat để có dung dịch chứa không quá 10 mg/ml. Không được dùng nước pha tiêm có chất bảo quản paraben vì có thể gây tủa. Dung dịch tiêm truyền phải dùng trong vòng 24 giờ để tránh nhiễm khuẩn.\n\nLiều dùng tại mắt Điều trị viêm giác mạc do virus Herpes Người lớn và trẻ em từ 18 tuổi trở lên Nhỏ mắt 1 giọt gel nồng độ 0,15%/lần, 5 lần/ngày cho tới khi hết triệu chứng. Tiếp tục sử dụng 3 lần/ngày, trong 7 ngày sau đó.\n\nKhông sử dụng vượt quá 21 ngày.\n\nTrẻ em dưới 18 tuổi Chưa có khuyến cáo liều dùng cho đối tượng này."
-        }
+      "id": "b0005",
+      "type": "heading",
+      "level": 2,
+      "text": "Dạng thuốc và hàm lượng",
+      "page": 796,
+      "printed_page": 802,
+      "column": 1,
+      "bbox": [
+        307.89,
+        458.51,
+        412.81,
+        471.66
       ],
-      "subsections": []
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dạng thuốc và hàm lượng",
+          "bbox": [
+            307.89,
+            458.51,
+            412.81,
+            471.66
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
     },
     {
-      "id": "tuong-tac-thuoc",
-      "title": "Tương tác thuốc",
-      "content": "Probenecid: Probenecid làm giảm thanh thải qua thận của ganciclovir, tăng nguy cơ xuất hiện độc tính. Bệnh nhân sử dụng đồng thời này cần được giám sát chặt chẽ các dấu hiệu độc tính của ganciclovir.\n\nDidanosin: Phối hợp 2 thuốc làm tăng nồng độ didanosin trong huyết thanh. Bệnh nhân sử dụng đồng thời hai thuốc này cần được giám sát chặt chẽ các dấu hiệu độc tính của didanosin.\n\nImipenem-cilastatin: Phối hợp imipenem-cilastatin với ganciclovir có thể xuất hiện phản ứng co giật. Không sử dụng 2 thuốc đồng thời, trừ khi lợi ích vượt trội so với nguy cơ.\n\nZidovudin: Phối hợp hai thuốc làm tăng nguy cơ độc tính trên huyết học. Không nên sử dụng hai thuốc đồng thời.\n\nMột số thuốc khác: Ganciclovir có thể hiệp đồng tăng độc tính của các thuốc có độc tính trên tủy xương và trên thận, bao gồm: Dapson, pentamidin, flucytosin, amphotericin B, sulfamethoxazol/ trimethoprim, ciclosporin, tacrolimus, mycophenolat mofetil, vincristin, vinblastin, doxorubicin, hydroxyurê, zidovudin, stavudin, dianosin, tenofovir, adefovir. Khuyến cáo không dùng đồng thời với các thuốc này trừ khi lợi ích vượt trội so với nguy cơ.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Probenecid: Probenecid làm giảm thanh thải qua thận của ganciclovir, tăng nguy cơ xuất hiện độc tính. Bệnh nhân sử dụng đồng thời này cần được giám sát chặt chẽ các dấu hiệu độc tính của ganciclovir.\n\nDidanosin: Phối hợp 2 thuốc làm tăng nồng độ didanosin trong huyết thanh. Bệnh nhân sử dụng đồng thời hai thuốc này cần được giám sát chặt chẽ các dấu hiệu độc tính của didanosin.\n\nImipenem-cilastatin: Phối hợp imipenem-cilastatin với ganciclovir có thể xuất hiện phản ứng co giật. Không sử dụng 2 thuốc đồng thời, trừ khi lợi ích vượt trội so với nguy cơ.\n\nZidovudin: Phối hợp hai thuốc làm tăng nguy cơ độc tính trên huyết học. Không nên sử dụng hai thuốc đồng thời.\n\nMột số thuốc khác: Ganciclovir có thể hiệp đồng tăng độc tính của các thuốc có độc tính trên tủy xương và trên thận, bao gồm: Dapson, pentamidin, flucytosin, amphotericin B, sulfamethoxazol/ trimethoprim, ciclosporin, tacrolimus, mycophenolat mofetil, vincristin, vinblastin, doxorubicin, hydroxyurê, zidovudin, stavudin, dianosin, tenofovir, adefovir. Khuyến cáo không dùng đồng thời với các thuốc này trừ khi lợi ích vượt trội so với nguy cơ."
-        }
+      "id": "b0006",
+      "type": "paragraph",
+      "text": "Bột pha dung dịch tiêm truyền tĩnh mạch: 500 mg.",
+      "page": 796,
+      "printed_page": 802,
+      "column": 1,
+      "bbox": [
+        307.89,
+        470.75,
+        500.0,
+        483.55
       ],
-      "subsections": []
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Bột pha dung dịch tiêm truyền tĩnh mạch: 500 mg.",
+          "bbox": [
+            307.89,
+            470.75,
+            500.0,
+            483.55
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
     },
     {
-      "id": "tuong-ky",
-      "title": "Tương kỵ",
-      "content": "Ngoại trừ các dung dịch được liệt kê trong phần Cách dùng (Natri clorid, glucose 5%, Ringer và Ringer lactat), không trộn lẫn ganciclovir với bất kỳ dung dịch nào khác. Không sử dụng nước cất vô khuẩn có chứa paraben để hoàn nguyên.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Ngoại trừ các dung dịch được liệt kê trong phần Cách dùng (Natri clorid, glucose 5%, Ringer và Ringer lactat), không trộn lẫn ganciclovir với bất kỳ dung dịch nào khác. Không sử dụng nước cất vô khuẩn có chứa paraben để hoàn nguyên."
-        }
+      "id": "b0007",
+      "type": "paragraph",
+      "text": "Gel nhỏ mắt: 0,15% (kl/kl).",
+      "page": 796,
+      "printed_page": 802,
+      "column": 1,
+      "bbox": [
+        307.89,
+        482.84,
+        412.91,
+        495.64
       ],
-      "subsections": []
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Gel nhỏ mắt: 0,15% (kl/kl).",
+          "bbox": [
+            307.89,
+            482.84,
+            412.91,
+            495.64
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
     },
     {
-      "id": "qua-lieu-va-xu-tri",
-      "title": "Quá liều và xử trí",
-      "content": "Triệu chứng: Huyết học: suy tủy xương, giảm toàn bộ tế bào máu ngoại vi, giảm bạch cầu, giảm bạch cầu trung tính, bạch cầu hạt.\n\nGan mật: viêm gan, rối loạn chức năng gan.\n\nThận - tiết niệu: tiểu máu, suy thận cấp, tăng creatinin.\n\nTiêu hóa: đau bụng, tiêu chảy, buồn nôn.\n\nThần kinh: run toàn thân, co giật.\n\nXử trí: Có thể sử dụng thẩm phân máu trong điều trị quá liều ganciclovir. Bù nước và điện giải, điều trị triệu chứng, cân nhắc sử dụng các thuốc kích thích tăng sinh tế bào máu ở bệnh nhân có triệu chứng trên huyết học.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Triệu chứng: Huyết học: suy tủy xương, giảm toàn bộ tế bào máu ngoại vi, giảm bạch cầu, giảm bạch cầu trung tính, bạch cầu hạt.\n\nGan mật: viêm gan, rối loạn chức năng gan.\n\nThận - tiết niệu: tiểu máu, suy thận cấp, tăng creatinin.\n\nTiêu hóa: đau bụng, tiêu chảy, buồn nôn.\n\nThần kinh: run toàn thân, co giật.\n\nXử trí: Có thể sử dụng thẩm phân máu trong điều trị quá liều ganciclovir. Bù nước và điện giải, điều trị triệu chứng, cân nhắc sử dụng các thuốc kích thích tăng sinh tế bào máu ở bệnh nhân có triệu chứng trên huyết học."
-        }
+      "id": "b0008",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược lực học",
+      "page": 796,
+      "printed_page": 802,
+      "column": 1,
+      "bbox": [
+        307.89,
+        497.78,
+        363.86,
+        510.93
       ],
-      "subsections": []
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược lực học ",
+          "bbox": [
+            307.89,
+            497.78,
+            363.86,
+            510.93
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
     },
     {
-      "id": "cap-nhat-lan-cuoi",
-      "title": "Cập nhật lần cuối",
-      "content": "2018.",
-      "blocks": [
+      "id": "b0009",
+      "type": "subheading",
+      "level": 3,
+      "text": "Cơ chế tác dụng",
+      "page": 796,
+      "printed_page": 802,
+      "column": 1,
+      "bbox": [
+        307.89,
+        510.18,
+        370.22,
+        522.82
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
         {
-          "type": "text",
-          "text": "2018."
+          "text": "Cơ chế tác dụng",
+          "bbox": [
+            307.89,
+            510.18,
+            370.22,
+            522.82
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0010",
+      "type": "paragraph",
+      "text": "Ganciclovir là một dẫn chất của 2’-deoxyguanosin, có tác dụng ức chế quá trình sao chép của Cytomegalovirus (CMV). Trong tế bào, đầu tiên, ganciclovir được phosphoryl hóa bởi protein kinase tạo ganciclovir monophosphat. Do quá trình này được xúc tác bởi enzym của virus nên quá trình phosphoryl hóa ganciclovir xảy ra chọn lọc trong các tế bào nhiễm CMV. Sau đó, quá trình phosphoryl hóa được thực hiện thông qua các enzym kinase của tế bào để tạo thành ganciclovir triphosphat. Chất này ức chế enzym ADN polymerase thông qua cơ chế đối kháng cạnh tranh với deoxyguanosin, từ đó ức chế quá trình sao chép của virus. So với aciclovir, nồng độ dạng triphosphat của ganciclovir cao hơn khoảng 10 lần và thải trừ chậm hơn ra khỏi tế bào.",
+      "page": 796,
+      "printed_page": 802,
+      "column": 1,
+      "bbox": [
+        307.89,
+        522.11,
+        562.23,
+        667.89
+      ],
+      "source": {
+        "line_count": 12
+      }
+    },
+    {
+      "id": "b0011",
+      "type": "subheading",
+      "level": 3,
+      "text": "Phổ tác dụng",
+      "page": 796,
+      "printed_page": 802,
+      "column": 1,
+      "bbox": [
+        307.89,
+        667.34,
+        358.55,
+        679.98
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Phổ tác dụng",
+          "bbox": [
+            307.89,
+            667.34,
+            358.55,
+            679.98
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0012",
+      "type": "paragraph",
+      "text": "Các chủng virus nhạy cảm bao gồm: CMV, virus Herpes simplex typ 1 và 2 (HSV-1 và HSV-2), virus Herpes trên người các typ 6, 7, 8 (HHV-6, HHV-7 và HHV-8), virus Epstein-Barr (EBV), virus Varicella-zoster (VZV) và virus viêm gan B. Tuy nhiên mới chỉ có tác dụng trên CMV của thuốc được đánh giá thông qua các nghiên cứu lâm sàng.",
+      "page": 796,
+      "printed_page": 802,
+      "column": 1,
+      "bbox": [
+        307.89,
+        679.27,
+        562.22,
+        752.51
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0013",
+      "type": "subheading",
+      "level": 3,
+      "text": "Kháng thuốc",
+      "page": 796,
+      "printed_page": 802,
+      "column": 1,
+      "bbox": [
+        307.89,
+        751.97,
+        356.71,
+        764.6
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Kháng thuốc",
+          "bbox": [
+            307.89,
+            751.97,
+            356.71,
+            764.6
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0014",
+      "type": "paragraph",
+      "text": "Đã ghi nhận hiện tượng đề kháng của CMV với ganciclovir khi sử dụng thuốc dài ngày. Các dữ liệu trên lâm sàng chưa đủ để đánh giá đầy đủ các cơ chế phát sinh đề kháng. Một số bằng chứng cho thấy",
+      "page": 796,
+      "printed_page": 802,
+      "column": 1,
+      "bbox": [
+        307.89,
+        763.89,
+        562.22,
+        800.87
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0015",
+      "type": "paragraph",
+      "text": "virus kháng thuốc mang đột biến trên các gen chịu trách nhiệm cho quá trình tổng hợp enzym kinase và ADN polymerase.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        63.32,
+        289.26,
+        88.2
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0016",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược động học",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        90.33,
+        96.03,
+        103.48
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược động học",
+          "bbox": [
+            34.93,
+            90.33,
+            96.03,
+            103.48
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0017",
+      "type": "paragraph",
+      "text": "Hấp thu: Thuốc hấp thu kém qua đường tiêu hóa. Sinh khả dụng đường uống đạt khoảng 5% lúc đói và khoảng 6 - 9% sau khi ăn.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        102.56,
+        289.26,
+        127.44
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0018",
+      "type": "paragraph",
+      "text": "Sau khi sử dụng liều 1 000 mg mỗi 8 giờ, nồng độ đỉnh và nồng độ đáy lần lượt là 0,5 - 1,2 và 0,2 - 0,5 microgam/ml. Khi truyền tĩnh mạch với liều 5 mg/kg trong 1 giờ, nồng độ đỉnh và nồng độ đáy trong huyết tương lần lượt là 8 - 11 và 0,6 - 1,2 microgam/ml.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        126.72,
+        289.26,
+        175.76
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0019",
+      "type": "paragraph",
+      "text": "Phân bố: Thể tích phân bố của ganciclovir theo đường truyền tĩnh mạch tại trạng thái ổn định là 0,54 - 0,87 lít/kg. Tỷ lệ liên kết với protein huyết tương khoảng 1 - 2%. Thuốc qua được nhau thai và hàng rào máu - não. Nồng độ thuốc trong dịch não tủy đạt khoảng 24 - 67% nồng độ trong huyết tương. Nồng độ trong dịch kính khoảng 1 microgam/ml, tương tự hoặc cao hơn một ít so với nồng độ trong huyết tương.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        175.05,
+        289.26,
+        260.33
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0020",
+      "type": "paragraph",
+      "text": "Thải trừ: Thuốc được thải trừ nguyên dạng với tỷ lệ trên 90%, với hai cơ chế chính là lọc ở cầu thận và bài tiết ở ống thận. Quá trình thải trừ thuốc từ huyết tương xảy ra theo 2 pha. Khi sử dụng qua đường tĩnh mạch, ở pha đầu tiên, nửa đời của thuốc khoảng 0,23 - 0,76 giờ và ở pha cuối là khoảng 2,53 - 3,6 giờ trên bệnh nhân có chức năng thận bình thường. Nửa đời của thuốc khi dùng qua đường uống là 4,8 giờ. Nửa đời của thuốc có thể kéo dài tới 4,4 - 30 giờ trên bệnh nhân suy thận. Thuốc có thể được thải trừ thông qua thẩm phân máu, sau 4 giờ tiến hành nồng độ thuốc có thể giảm từ 40 - 50%.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        259.61,
+        289.26,
+        381.13
+      ],
+      "source": {
+        "line_count": 10
+      }
+    },
+    {
+      "id": "b0021",
+      "type": "heading",
+      "level": 2,
+      "text": "Chỉ định",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        383.26,
+        70.57,
+        396.41
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chỉ định",
+          "bbox": [
+            34.93,
+            383.26,
+            70.57,
+            396.41
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0022",
+      "type": "subheading",
+      "level": 3,
+      "text": "Dùng toàn thân",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        395.66,
+        94.57,
+        408.29
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dùng toàn thân",
+          "bbox": [
+            34.93,
+            395.66,
+            94.57,
+            408.29
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0023",
+      "type": "paragraph",
+      "text": "Điều trị CMV trên bệnh nhân suy giảm miễn dịch.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        407.58,
+        226.32,
+        420.37
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Điều trị CMV trên bệnh nhân suy giảm miễn dịch.",
+          "bbox": [
+            34.93,
+            407.58,
+            226.32,
+            420.37
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0024",
+      "type": "paragraph",
+      "text": "Dự phòng nhiễm CMV trên bệnh nhân sử dụng thuốc ức chế miễn dịch trong ghép tạng.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        419.66,
+        289.26,
+        444.53
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0025",
+      "type": "subheading",
+      "level": 3,
+      "text": "Dùng tại mắt",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        443.98,
+        85.07,
+        456.61
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dùng tại mắt",
+          "bbox": [
+            34.93,
+            443.98,
+            85.07,
+            456.61
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0026",
+      "type": "paragraph",
+      "text": "Điều trị viêm giác mạc do virus Herpes (loét giác mạc hình cành cây).",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        455.9,
+        289.26,
+        480.78
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0027",
+      "type": "heading",
+      "level": 2,
+      "text": "Chống chỉ định",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        482.91,
+        97.23,
+        496.06
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chống chỉ định",
+          "bbox": [
+            34.93,
+            482.91,
+            97.23,
+            496.06
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0028",
+      "type": "paragraph",
+      "text": "Mẫn cảm với thuốc, valganciclovir.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        495.14,
+        169.75,
+        507.94
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mẫn cảm với thuốc, valganciclovir.",
+          "bbox": [
+            34.93,
+            495.14,
+            169.75,
+            507.94
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0029",
+      "type": "paragraph",
+      "text": "Phụ nữ cho con bú.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        507.22,
+        108.42,
+        520.02
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Phụ nữ cho con bú.",
+          "bbox": [
+            34.93,
+            507.22,
+            108.42,
+            520.02
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0030",
+      "type": "heading",
+      "level": 2,
+      "text": "Thận trọng",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        522.15,
+        81.12,
+        535.3
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thận trọng",
+          "bbox": [
+            34.93,
+            522.15,
+            81.12,
+            535.3
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
         }
       ],
-      "subsections": []
-    }
-  ],
-  "tables": [
+      "note_role": "than trong",
+      "v11_fix": "note_title_reclassified_as_heading_alpha5"
+    },
     {
-      "id": "p0798-t01",
-      "image_path": "duoc-thu-assets/ganciclovir/p0798-t01.png",
-      "source_pdf_page": 798,
+      "id": "b0031",
+      "type": "paragraph",
+      "text": "Phản ứng dị ứng chéo: Do có cấu trúc hóa học tương đồng, phản ứng dị ứng chéo giữa ganciclovir với aciclovir và penciclovir có thể xảy ra. Thận trọng khi sử dụng ganciclovir trên bệnh nhân có tiền sử quá mẫn với aciclovir, penciclovir hoặc tiền thuốc của chúng (valaciclovir, famciclovir).",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        534.38,
+        289.26,
+        595.5
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0032",
+      "type": "paragraph",
+      "text": "Ảnh hưởng trên thai nhi và hệ sinh sản của bệnh nhân: Các nghiên cứu trên động vật cho thấy ganciclovir có khả năng gây đột biến, dị tật thai nhi cũng như có nguy cơ gây ung thư và gây vô sinh. Các nghiên cứu lâm sàng và tiền lâm sàng cho thấy thuốc dường như gây ức chế tạm thời hoặc vĩnh viễn quá trình sinh tinh trùng. Do đó, phụ nữ trong độ tuổi sinh sản cần sử dụng một biện pháp tránh thai có hiệu quả trong suốt liệu trình và duy trì tối thiểu 30 ngày sau khi ngừng thuốc. Với nam giới, cần sử dụng biện pháp tránh thai trong suốt liệu trình và duy trì tối thiểu 90 ngày sau khi ngừng thuốc, trừ trường hợp bạn tình không có nguy cơ mang thai.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        594.78,
+        289.26,
+        716.31
+      ],
+      "source": {
+        "line_count": 10
+      }
+    },
+    {
+      "id": "b0033",
+      "type": "paragraph",
+      "text": "Thận trọng khi sử dụng thuốc trên trẻ em.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        715.59,
+        193.38,
+        728.39
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thận trọng khi sử dụng thuốc trên trẻ em.",
+          "bbox": [
+            34.93,
+            715.59,
+            193.38,
+            728.39
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0034",
+      "type": "paragraph",
+      "text": "Ảnh hưởng trên tủy xương: Đã ghi nhận triệu chứng giảm bạch cầu, hồng cầu, tiểu cầu và suy tủy nặng trên bệnh nhân sử dụng ganciclovir. Cần thận trọng khi sử dụng thuốc trên bệnh nhân đang có triệu chứng giảm tế bào máu hoặc có tiền sử giảm tế bào máu do thuốc và bệnh nhân đang xạ trị. Không sử dụng thuốc khi số lượng bạch cầu trung tính giảm dưới 0,5 × 109/microlít, số lượng tiểu cầu",
+      "page": 797,
+      "printed_page": 803,
+      "column": 0,
+      "bbox": [
+        34.93,
+        727.67,
+        289.26,
+        801.04
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0035",
+      "type": "paragraph",
+      "text": "giảm dưới 25 × 109/lít hoặc hemoglobin dưới 80 g/lít.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        63.65,
+        502.59,
+        76.45
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "giảm dưới 25 × 10",
+          "bbox": [
+            298.88,
+            63.65,
+            369.3,
+            76.45
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "9",
+          "bbox": [
+            369.3,
+            64.61,
+            372.07,
+            72.07
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 5.54,
+          "flags": 5,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "/lít hoặc hemoglobin dưới 80 g/lít.",
+          "bbox": [
+            372.07,
+            63.65,
+            502.59,
+            76.45
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0036",
+      "type": "paragraph",
+      "text": "Trong quá trình sử dụng thuốc, cần giám sát công thức máu của bệnh nhân, đặc biệt trên bệnh nhân suy thận, trẻ sơ sinh và trẻ nhỏ. Trong 14 ngày đầu tiên của liệu trình điều trị, khuyến cáo xét nghiệm công thức bạch cầu 2 ngày/lần; trên bệnh nhân có số lượng bạch cầu trung tính thấp (< 1,0 × 109/lít), bệnh nhân có tiền sử giảm bạch cầu do thuốc và bệnh nhân suy thận, cần xét nghiệm hàng ngày.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        75.73,
+        553.22,
+        160.97
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0037",
+      "type": "paragraph",
+      "text": "Trên bệnh nhân giảm bạch cầu, giảm hồng cầu và giảm tiểu cầu nặng, xem xét ngừng ganciclovir và/hoặc sử dụng các thuốc kích thích tạo máu.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        160.25,
+        553.21,
+        197.2
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0038",
+      "type": "paragraph",
+      "text": "Bệnh nhân suy thận: Bệnh nhân suy thận có nguy cơ gặp ADR cao hơn. Cần hiệu chỉnh liều khi sử dụng thuốc trên đối tượng này.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        196.48,
+        553.21,
+        221.35
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0039",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ mang thai",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        223.47,
+        374.09,
+        236.62
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ mang thai",
+          "bbox": [
+            298.88,
+            223.47,
+            374.09,
+            236.62
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0040",
+      "type": "paragraph",
+      "text": "Tính an toàn của ganciclovir trên phụ nữ mang thai chưa được đánh giá đầy đủ. Các bằng chứng cho thấy thuốc có khả năng qua nhau thai. Trên động vật, ganciclovir gây độc tính trên hệ sinh sản và gây dị tật thai nhi. Do đó, không sử dụng ganciclovir trên phụ nữ mang thai trừ khi nhu cầu điều trị của người mẹ vượt trội hơn nguy cơ gây dị tật thai nhi của thuốc.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        235.7,
+        553.22,
+        308.87
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0041",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ cho con bú",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        311.0,
+        377.0,
+        324.15
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ cho con bú",
+          "bbox": [
+            298.88,
+            311.0,
+            377.0,
+            324.15
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0042",
+      "type": "paragraph",
+      "text": "Khả năng bài xuất của ganciclovir vào sữa mẹ chưa được đánh giá đầy đủ. Dữ liệu trên động vật cho thấy thuốc có khả năng bài xuất qua sữa. Do đó, cần ngừng cho con bú khi sử dụng ganciclovir.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        323.22,
+        553.22,
+        360.17
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0043",
+      "type": "heading",
+      "level": 2,
+      "text": "Tác dụng không mong muốn (ADR)",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        362.3,
+        444.83,
+        375.45
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tác dụng không mong muốn (ADR)",
+          "bbox": [
+            298.88,
+            362.3,
+            444.83,
+            375.45
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0044",
+      "type": "subheading",
+      "level": 3,
+      "text": "Thường gặp",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        374.69,
+        345.29,
+        387.32
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thường gặp",
+          "bbox": [
+            298.88,
+            374.69,
+            345.29,
+            387.32
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0045",
+      "type": "paragraph",
+      "text": "Nhiễm trùng: nhiễm nấm Candida, nhiễm khuẩn hô hấp trên, nhiễm khuẩn huyết, cúm, nhiễm khuẩn tiết niệu, viêm mô tế bào.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        386.6,
+        553.21,
+        411.47
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0046",
+      "type": "paragraph",
+      "text": "Huyết học: giảm bạch cầu, giảm hồng cầu, giảm tiểu cầu, giảm toàn bộ tế bào máu ngoại vi, suy tủy xương.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        410.75,
+        553.21,
+        435.62
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0047",
+      "type": "paragraph",
+      "text": "Miễn dịch: phản ứng quá mẫn.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        434.9,
+        415.38,
+        447.7
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Miễn dịch: phản ứng quá mẫn.",
+          "bbox": [
+            298.88,
+            434.9,
+            415.38,
+            447.7
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0048",
+      "type": "paragraph",
+      "text": "Chuyển hóa: chán ăn, giảm cân.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        446.97,
+        420.51,
+        459.77
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Chuyển hóa: chán ăn, giảm cân.",
+          "bbox": [
+            298.88,
+            446.97,
+            420.51,
+            459.77
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0049",
+      "type": "paragraph",
+      "text": "Tâm thần: trầm cảm, lo âu, lú lẫn.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        459.05,
+        427.64,
+        471.85
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tâm thần: trầm cảm, lo âu, lú lẫn.",
+          "bbox": [
+            298.88,
+            459.05,
+            427.64,
+            471.85
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0050",
+      "type": "paragraph",
+      "text": "Thần kinh: đau đầu, mất ngủ, bệnh thần kinh ngoại vi, chóng mặt, dị cảm, giảm cảm giác, co giật, rối loạn vị giác.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        471.12,
+        553.22,
+        496.0
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0051",
+      "type": "paragraph",
+      "text": "Thị giác: giảm thị lực, bong võng mạc, đục dịch kính, đau mắt, viêm kết mạc, phù hoàng điểm.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        495.27,
+        553.22,
+        520.15
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0052",
+      "type": "paragraph",
+      "text": "Thính giác: đau tai.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        519.42,
+        372.76,
+        532.22
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thính giác: đau tai.",
+          "bbox": [
+            298.88,
+            519.42,
+            372.76,
+            532.22
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0053",
+      "type": "paragraph",
+      "text": "Tim mạch: hạ huyết áp.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        531.5,
+        388.52,
+        544.3
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tim mạch: hạ huyết áp.",
+          "bbox": [
+            298.88,
+            531.5,
+            388.52,
+            544.3
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0054",
+      "type": "paragraph",
+      "text": "Hô hấp: ho, khó thở.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        543.57,
+        377.27,
+        556.37
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Hô hấp: ho, khó thở.",
+          "bbox": [
+            298.88,
+            543.57,
+            377.27,
+            556.37
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0055",
+      "type": "paragraph",
+      "text": "Tiêu hóa: tiêu chảy, buồn nôn, nôn, đau bụng, đầy hơi, khó tiêu, táo bón, loét miệng, khó nuốt, trướng bụng, viêm tụy cấp.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        555.65,
+        553.22,
+        580.52
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0056",
+      "type": "paragraph",
+      "text": "Gan mật: rối loạn chức năng gan, tăng phosphatase kiềm, tăng transaminase.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        579.8,
+        553.22,
+        604.67
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0057",
+      "type": "paragraph",
+      "text": "Da và mô mềm: viêm da, vã mồ hôi, ngứa, ban đỏ, rụng tóc.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        603.95,
+        527.78,
+        616.75
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Da và mô mềm: viêm da, vã mồ hôi, ngứa, ban đỏ, rụng tóc.",
+          "bbox": [
+            298.88,
+            603.95,
+            527.78,
+            616.75
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0058",
+      "type": "paragraph",
+      "text": "Cơ - xương - khớp: đau lưng, đau cơ, đau khớp, co thắt cơ.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        616.02,
+        522.71,
+        628.82
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cơ - xương - khớp: đau lưng, đau cơ, đau khớp, co thắt cơ.",
+          "bbox": [
+            298.88,
+            616.02,
+            522.71,
+            628.82
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0059",
+      "type": "paragraph",
+      "text": "Thận - tiết niệu: suy giảm chức năng thận, tăng creatinin huyết thanh.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        628.1,
+        553.21,
+        652.97
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0060",
+      "type": "paragraph",
+      "text": "Toàn thân: sốt, mệt mỏi, phản ứng tại chỗ tiêm, đau, ớn lạnh, khó chịu, suy nhược.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        652.25,
+        553.21,
+        677.12
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0061",
+      "type": "subheading",
+      "level": 3,
+      "text": "Ít gặp",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        676.56,
+        321.31,
+        689.19
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Ít gặp",
+          "bbox": [
+            298.88,
+            676.56,
+            321.31,
+            689.19
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0062",
+      "type": "paragraph",
+      "text": "Suy tủy xương, kích động, ảo giác, run, mất thính giác, loạn nhịp tim, mày đay, khô da, suy thận, tiểu máu, gây vô sinh ở nam giới, đau ngực.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        688.47,
+        553.22,
+        725.42
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0063",
+      "type": "subheading",
+      "level": 3,
+      "text": "Hiếm gặp",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        724.86,
+        336.08,
+        737.49
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hiếm gặp",
+          "bbox": [
+            298.88,
+            724.86,
+            336.08,
+            737.49
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0064",
+      "type": "paragraph",
+      "text": "Thiếu máu bất sản, giảm/mất bạch cầu hạt, sốc phản vệ.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        736.77,
+        511.27,
+        749.57
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thiếu máu bất sản, giảm/mất bạch cầu hạt, sốc phản vệ.",
+          "bbox": [
+            298.88,
+            736.77,
+            511.27,
+            749.57
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0065",
+      "type": "heading",
+      "level": 2,
+      "text": "Hướng dẫn cách xử trí ADR",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        751.7,
+        415.82,
+        764.84
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hướng dẫn cách xử trí ADR ",
+          "bbox": [
+            298.88,
+            751.7,
+            415.82,
+            764.84
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0066",
+      "type": "paragraph",
+      "text": "Trên bệnh nhân giảm bạch cầu, giảm hồng cầu và giảm tiểu cầu nặng, xem xét ngừng ganciclovir và/hoặc sử dụng các thuốc kích thích tạo máu.",
+      "page": 797,
+      "printed_page": 803,
+      "column": 1,
+      "bbox": [
+        298.88,
+        763.92,
+        553.21,
+        800.87
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0067",
+      "type": "heading",
+      "level": 2,
+      "text": "Liều lượng và cách dùng",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        63.01,
+        144.11,
+        76.16
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng và cách dùng",
+          "bbox": [
+            43.94,
+            63.01,
+            144.11,
+            76.16
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0068",
+      "type": "subheading",
+      "level": 3,
+      "text": "Liều dùng toàn thân",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        75.47,
+        124.45,
+        88.19
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều dùng toàn thân",
+          "bbox": [
+            43.94,
+            75.47,
+            124.45,
+            88.19
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0069",
+      "type": "subheading",
+      "level": 3,
+      "text": "Người lớn và trẻ em từ 13 tuổi trở lên",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        87.78,
+        187.47,
+        100.42
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Người lớn và trẻ em từ 13 tuổi trở lên",
+          "bbox": [
+            43.94,
+            87.78,
+            187.47,
+            100.42
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0070",
+      "type": "paragraph",
+      "text": "Điều trị CMV trên bệnh nhân suy giảm miễn dịch Giai đoạn tấn công: 5 mg/kg, truyền tĩnh mạch tối thiểu trong 1 giờ, mỗi 12 giờ. Thời gian điều trị từ 14 - 21 ngày.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        99.84,
+        298.27,
+        137.09
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0071",
+      "type": "paragraph",
+      "text": "Giai đoạn duy trì: 5 mg/kg/ngày, ngày 1 lần truyền tĩnh mạch trong tối thiểu 1 giờ, 7 lần/tuần, hoặc 6 mg/kg/ngày, ngày 1 lần, 5 lần/ tuần. Thời gian điều trị cần được cá thể hóa theo tình trạng của bệnh nhân. Trong trường hợp tái phát, sử dụng liều như giai đoạn tấn công.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        136.51,
+        298.27,
+        198.2
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0072",
+      "type": "paragraph",
+      "text": "Dự phòng CMV trên bệnh nhân sử dụng thuốc ức chế miễn dịch Giai đoạn tấn công: 5 mg/kg truyền tĩnh mạch tối thiểu trong 1 giờ, mỗi 12 giờ. Thời gian điều trị từ 14 - 21 ngày.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        197.63,
+        298.27,
+        234.87
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0073",
+      "type": "paragraph",
+      "text": "Giai đoạn duy trì: 5 mg/kg/ngày, ngày 1 lần, truyền tĩnh mạch trong tối thiểu 1 giờ, 7 lần/tuần, hoặc, 6 mg/kg/ngày, ngày 1 lần, 5 lần/ tuần. Thời gian điều trị cần được cá thể hóa theo nguy cơ nhiễm CMV của bệnh nhân. Với bệnh nhân ghép tạng, cần sử dụng thuốc tới 100 - 120 ngày sau ghép.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        234.3,
+        298.27,
+        295.99
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0074",
+      "type": "subheading",
+      "level": 3,
+      "text": "Bệnh nhân suy thận",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        295.57,
+        119.14,
+        308.21
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Bệnh nhân suy thận",
+          "bbox": [
+            43.94,
+            295.57,
+            119.14,
+            308.21
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0075",
+      "type": "paragraph",
+      "text": "Cần hiệu chỉnh liều theo bảng sau.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        307.64,
+        175.08,
+        320.43
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cần hiệu chỉnh liều theo bảng sau.",
+          "bbox": [
+            43.94,
+            307.64,
+            175.08,
+            320.43
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0076",
+      "type": "table",
+      "text": "Bảng từ PDF gốc",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
       "bbox": [
         43.94,
         321.82,
         295.75,
         429.34
+      ],
+      "source": {
+        "pdf_extraction": "geometry"
+      },
+      "table_id": "p0798-t01",
+      "image": "duoc-thu-assets/ganciclovir/p0798-t01.png",
+      "image_path": "duoc-thu-assets/ganciclovir/p0798-t01.png"
+    },
+    {
+      "id": "b0077",
+      "type": "paragraph",
+      "text": "Bệnh nhân suy gan: Chưa có khuyến cáo liều dùng cho đối tượng này.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        430.59,
+        295.91,
+        443.38
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Bệnh nhân suy gan: ",
+          "bbox": [
+            43.94,
+            430.75,
+            118.01,
+            443.38
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        },
+        {
+          "text": "Chưa có khuyến cáo liều dùng cho đối tượng này.",
+          "bbox": [
+            117.62,
+            430.59,
+            295.91,
+            443.38
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0078",
+      "type": "paragraph",
+      "text": "Người cao tuổi: Lưu ý hiệu chỉnh liều theo chức năng thận của bệnh nhân.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        442.81,
+        298.28,
+        467.83
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0079",
+      "type": "paragraph",
+      "text": "Trẻ em dưới 13 tuổi: Chưa có khuyến cáo liều dùng cho đối tượng này.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        467.26,
+        295.91,
+        480.05
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Trẻ em dưới 13 tuổi: ",
+          "bbox": [
+            43.94,
+            467.42,
+            119.46,
+            480.05
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        },
+        {
+          "text": "Chưa có khuyến cáo liều dùng cho đối tượng này.",
+          "bbox": [
+            118.92,
+            467.26,
+            295.91,
+            480.05
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0080",
+      "type": "subheading",
+      "level": 3,
+      "text": "Cách dùng",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        479.56,
+        86.96,
+        492.28
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Cách dùng",
+          "bbox": [
+            43.94,
+            479.56,
+            86.96,
+            492.28
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0081",
+      "type": "paragraph",
+      "text": "Sử dụng thuốc qua đường truyền tĩnh mạch. Thời gian truyền tối thiểu 1 giờ và nồng độ thuốc không vượt quá 10 mg/ml. Không tiêm tĩnh mạch nhanh vì có thể tạo nồng độ thuốc trong huyết tương cao, làm tăng độc tính trên thận của thuốc. Không tiêm bắp hay tiêm dưới da vì có thể gây kích ứng vị trí tiêm do dung dịch ganciclovir có pH cao (~11).",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        491.71,
+        298.27,
+        565.62
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0082",
+      "type": "paragraph",
+      "text": "Hoàn nguyên bột ganciclovir trong nước cất pha tiêm (nồng độ khoảng 50 mg/ml). Pha loãng bằng dung dịch tiêm truyền natri clorid 0,9%, glucose 5%, dung dịch Ringer hoặc Ringer lactat để có dung dịch chứa không quá 10 mg/ml. Không được dùng nước pha tiêm có chất bảo quản paraben vì có thể gây tủa. Dung dịch tiêm truyền phải dùng trong vòng 24 giờ để tránh nhiễm khuẩn.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        565.05,
+        298.27,
+        638.96
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0083",
+      "type": "subheading",
+      "level": 3,
+      "text": "Liều dùng tại mắt",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        638.47,
+        113.89,
+        651.19
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều dùng tại mắt",
+          "bbox": [
+            43.94,
+            638.47,
+            113.89,
+            651.19
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0084",
+      "type": "paragraph",
+      "text": "Điều trị viêm giác mạc do virus Herpes",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        650.62,
+        194.05,
+        663.41
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Điều trị viêm giác mạc do virus ",
+          "bbox": [
+            43.94,
+            650.62,
+            166.63,
+            663.41
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "Herpes",
+          "bbox": [
+            166.61,
+            650.78,
+            194.05,
+            663.41
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0085",
+      "type": "subheading",
+      "level": 3,
+      "text": "Người lớn và trẻ em từ 18 tuổi trở lên",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        663.0,
+        187.47,
+        675.63
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Người lớn và trẻ em từ 18 tuổi trở lên",
+          "bbox": [
+            43.94,
+            663.0,
+            187.47,
+            675.63
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0086",
+      "type": "paragraph",
+      "text": "Nhỏ mắt 1 giọt gel nồng độ 0,15%/lần, 5 lần/ngày cho tới khi hết triệu chứng. Tiếp tục sử dụng 3 lần/ngày, trong 7 ngày sau đó.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        675.06,
+        298.27,
+        700.08
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0087",
+      "type": "paragraph",
+      "text": "Không sử dụng vượt quá 21 ngày.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        699.5,
+        172.9,
+        712.3
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Không sử dụng vượt quá 21 ngày.",
+          "bbox": [
+            43.94,
+            699.5,
+            172.9,
+            712.3
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0088",
+      "type": "subheading",
+      "level": 3,
+      "text": "Trẻ em dưới 18 tuổi",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        711.89,
+        119.11,
+        724.53
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Trẻ em dưới 18 tuổi",
+          "bbox": [
+            43.94,
+            711.89,
+            119.11,
+            724.53
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0089",
+      "type": "paragraph",
+      "text": "Chưa có khuyến cáo liều dùng cho đối tượng này.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        723.96,
+        232.77,
+        736.75
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Chưa có khuyến cáo liều dùng cho đối tượng này.",
+          "bbox": [
+            43.94,
+            723.96,
+            232.77,
+            736.75
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0090",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương tác thuốc",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        739.03,
+        110.85,
+        752.17
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương tác thuốc",
+          "bbox": [
+            43.94,
+            739.03,
+            110.85,
+            752.17
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0091",
+      "type": "paragraph",
+      "text": "Probenecid: Probenecid làm giảm thanh thải qua thận của ganciclovir, tăng nguy cơ xuất hiện độc tính. Bệnh nhân sử dụng đồng thời này cần được giám sát chặt chẽ các dấu hiệu độc tính của ganciclovir.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 0,
+      "bbox": [
+        43.94,
+        751.4,
+        298.27,
+        800.87
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0092",
+      "type": "paragraph",
+      "text": "Didanosin: Phối hợp 2 thuốc làm tăng nồng độ didanosin trong huyết thanh. Bệnh nhân sử dụng đồng thời hai thuốc này cần được giám sát chặt chẽ các dấu hiệu độc tính của didanosin.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 1,
+      "bbox": [
+        307.89,
+        63.33,
+        562.22,
+        100.51
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0093",
+      "type": "paragraph",
+      "text": "Imipenem-cilastatin: Phối hợp imipenem-cilastatin với ganciclovir có thể xuất hiện phản ứng co giật. Không sử dụng 2 thuốc đồng thời, trừ khi lợi ích vượt trội so với nguy cơ.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 1,
+      "bbox": [
+        307.89,
+        99.9,
+        562.23,
+        137.09
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0094",
+      "type": "paragraph",
+      "text": "Zidovudin: Phối hợp hai thuốc làm tăng nguy cơ độc tính trên huyết học. Không nên sử dụng hai thuốc đồng thời.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 1,
+      "bbox": [
+        307.89,
+        136.48,
+        562.22,
+        161.46
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0095",
+      "type": "paragraph",
+      "text": "Một số thuốc khác: Ganciclovir có thể hiệp đồng tăng độc tính của các thuốc có độc tính trên tủy xương và trên thận, bao gồm:",
+      "page": 798,
+      "printed_page": 804,
+      "column": 1,
+      "bbox": [
+        307.89,
+        160.85,
+        562.22,
+        185.84
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0096",
+      "type": "paragraph",
+      "text": "Dapson, pentamidin, flucytosin, amphotericin B, sulfamethoxazol/ trimethoprim, ciclosporin, tacrolimus, mycophenolat mofetil, vincristin, vinblastin, doxorubicin, hydroxyurê, zidovudin, stavudin, dianosin, tenofovir, adefovir. Khuyến cáo không dùng đồng thời với các thuốc này trừ khi lợi ích vượt trội so với nguy cơ.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 1,
+      "bbox": [
+        307.89,
+        185.24,
+        562.22,
+        246.8
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0097",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương kỵ",
+      "page": 798,
+      "printed_page": 804,
+      "column": 1,
+      "bbox": [
+        307.89,
+        249.04,
+        347.62,
+        262.19
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương kỵ",
+          "bbox": [
+            307.89,
+            249.04,
+            347.62,
+            262.19
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0098",
+      "type": "paragraph",
+      "text": "Ngoại trừ các dung dịch được liệt kê trong phần Cách dùng (Natri clorid, glucose 5%, Ringer và Ringer lactat), không trộn lẫn ganciclovir với bất kỳ dung dịch nào khác. Không sử dụng nước cất vô khuẩn có chứa paraben để hoàn nguyên.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 1,
+      "bbox": [
+        307.89,
+        261.38,
+        562.22,
+        310.75
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0099",
+      "type": "heading",
+      "level": 2,
+      "text": "Quá liều và xử trí",
+      "page": 798,
+      "printed_page": 804,
+      "column": 1,
+      "bbox": [
+        307.89,
+        313.0,
+        379.56,
+        326.14
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Quá liều và xử trí",
+          "bbox": [
+            307.89,
+            313.0,
+            379.56,
+            326.14
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0100",
+      "type": "subheading",
+      "level": 3,
+      "text": "Triệu chứng:",
+      "page": 798,
+      "printed_page": 804,
+      "column": 1,
+      "bbox": [
+        307.89,
+        325.5,
+        357.13,
+        338.13
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Triệu chứng:",
+          "bbox": [
+            307.89,
+            325.5,
+            357.13,
+            338.13
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0101",
+      "type": "paragraph",
+      "text": "Huyết học: suy tủy xương, giảm toàn bộ tế bào máu ngoại vi, giảm bạch cầu, giảm bạch cầu trung tính, bạch cầu hạt.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 1,
+      "bbox": [
+        307.89,
+        337.53,
+        562.22,
+        362.51
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0102",
+      "type": "paragraph",
+      "text": "Gan mật: viêm gan, rối loạn chức năng gan.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 1,
+      "bbox": [
+        307.89,
+        361.91,
+        476.88,
+        374.71
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Gan mật: viêm gan, rối loạn chức năng gan. ",
+          "bbox": [
+            307.89,
+            361.91,
+            476.88,
+            374.71
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0103",
+      "type": "paragraph",
+      "text": "Thận - tiết niệu: tiểu máu, suy thận cấp, tăng creatinin.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 1,
+      "bbox": [
+        307.89,
+        374.1,
+        517.91,
+        386.9
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thận - tiết niệu: tiểu máu, suy thận cấp, tăng creatinin. ",
+          "bbox": [
+            307.89,
+            374.1,
+            517.91,
+            386.9
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0104",
+      "type": "paragraph",
+      "text": "Tiêu hóa: đau bụng, tiêu chảy, buồn nôn.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 1,
+      "bbox": [
+        307.89,
+        386.29,
+        462.59,
+        399.09
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêu hóa: đau bụng, tiêu chảy, buồn nôn.",
+          "bbox": [
+            307.89,
+            386.29,
+            462.59,
+            399.09
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0105",
+      "type": "paragraph",
+      "text": "Thần kinh: run toàn thân, co giật.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 1,
+      "bbox": [
+        307.89,
+        398.48,
+        436.91,
+        411.27
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thần kinh: run toàn thân, co giật. ",
+          "bbox": [
+            307.89,
+            398.48,
+            436.91,
+            411.27
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0106",
+      "type": "paragraph",
+      "text": "Xử trí: Có thể sử dụng thẩm phân máu trong điều trị quá liều ganciclovir. Bù nước và điện giải, điều trị triệu chứng, cân nhắc sử dụng các thuốc kích thích tăng sinh tế bào máu ở bệnh nhân có triệu chứng trên huyết học.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 1,
+      "bbox": [
+        307.89,
+        410.68,
+        562.22,
+        460.04
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0107",
+      "type": "heading",
+      "text": "Cập nhật lần cuối",
+      "page": 798,
+      "printed_page": 804,
+      "column": 1,
+      "bbox": [
+        307.89,
+        465.0,
+        403.15,
+        477.63
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2018.",
+          "bbox": [
+            307.89,
+            465.0,
+            403.15,
+            477.63
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "level": 2,
+      "v11_fix": "cap_nhat_cap_nhap_lan_cuoi_normalized_alpha8"
+    },
+    {
+      "id": "b0107",
+      "type": "paragraph",
+      "text": "2018.",
+      "page": 798,
+      "printed_page": 804,
+      "column": 1,
+      "bbox": [
+        307.89,
+        465.0,
+        403.15,
+        477.63
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2018.",
+          "bbox": [
+            307.89,
+            465.0,
+            403.15,
+            477.63
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "v11_parent_heading": "Cập nhật lần cuối"
+    }
+  ],
+  "sections": [
+    {
+      "id": "dang-thuoc-va-ham-luong",
+      "title": "Dạng thuốc và hàm lượng",
+      "heading_block": "b0005",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Bột pha dung dịch tiêm truyền tĩnh mạch: 500 mg.",
+          "block_id": "b0006"
+        },
+        {
+          "type": "text",
+          "text": "Gel nhỏ mắt: 0,15% (kl/kl).",
+          "block_id": "b0007"
+        }
+      ]
+    },
+    {
+      "id": "duoc-luc-hoc",
+      "title": "Dược lực học",
+      "heading_block": "b0008",
+      "blocks": [
+        {
+          "type": "subheading",
+          "text": "Cơ chế tác dụng",
+          "block_id": "b0009"
+        },
+        {
+          "type": "text",
+          "text": "Ganciclovir là một dẫn chất của 2’-deoxyguanosin, có tác dụng ức chế quá trình sao chép của Cytomegalovirus (CMV). Trong tế bào, đầu tiên, ganciclovir được phosphoryl hóa bởi protein kinase tạo ganciclovir monophosphat. Do quá trình này được xúc tác bởi enzym của virus nên quá trình phosphoryl hóa ganciclovir xảy ra chọn lọc trong các tế bào nhiễm CMV. Sau đó, quá trình phosphoryl hóa được thực hiện thông qua các enzym kinase của tế bào để tạo thành ganciclovir triphosphat. Chất này ức chế enzym ADN polymerase thông qua cơ chế đối kháng cạnh tranh với deoxyguanosin, từ đó ức chế quá trình sao chép của virus. So với aciclovir, nồng độ dạng triphosphat của ganciclovir cao hơn khoảng 10 lần và thải trừ chậm hơn ra khỏi tế bào.",
+          "block_id": "b0010"
+        },
+        {
+          "type": "subheading",
+          "text": "Phổ tác dụng",
+          "block_id": "b0011"
+        },
+        {
+          "type": "text",
+          "text": "Các chủng virus nhạy cảm bao gồm: CMV, virus Herpes simplex typ 1 và 2 (HSV-1 và HSV-2), virus Herpes trên người các typ 6, 7, 8 (HHV-6, HHV-7 và HHV-8), virus Epstein-Barr (EBV), virus Varicella-zoster (VZV) và virus viêm gan B. Tuy nhiên mới chỉ có tác dụng trên CMV của thuốc được đánh giá thông qua các nghiên cứu lâm sàng.",
+          "block_id": "b0012"
+        },
+        {
+          "type": "subheading",
+          "text": "Kháng thuốc",
+          "block_id": "b0013"
+        },
+        {
+          "type": "text",
+          "text": "Đã ghi nhận hiện tượng đề kháng của CMV với ganciclovir khi sử dụng thuốc dài ngày. Các dữ liệu trên lâm sàng chưa đủ để đánh giá đầy đủ các cơ chế phát sinh đề kháng. Một số bằng chứng cho thấy",
+          "block_id": "b0014"
+        },
+        {
+          "type": "text",
+          "text": "virus kháng thuốc mang đột biến trên các gen chịu trách nhiệm cho quá trình tổng hợp enzym kinase và ADN polymerase.",
+          "block_id": "b0015"
+        }
+      ]
+    },
+    {
+      "id": "duoc-dong-hoc",
+      "title": "Dược động học",
+      "heading_block": "b0016",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Hấp thu: Thuốc hấp thu kém qua đường tiêu hóa. Sinh khả dụng đường uống đạt khoảng 5% lúc đói và khoảng 6 - 9% sau khi ăn.",
+          "block_id": "b0017"
+        },
+        {
+          "type": "text",
+          "text": "Sau khi sử dụng liều 1 000 mg mỗi 8 giờ, nồng độ đỉnh và nồng độ đáy lần lượt là 0,5 - 1,2 và 0,2 - 0,5 microgam/ml. Khi truyền tĩnh mạch với liều 5 mg/kg trong 1 giờ, nồng độ đỉnh và nồng độ đáy trong huyết tương lần lượt là 8 - 11 và 0,6 - 1,2 microgam/ml.",
+          "block_id": "b0018"
+        },
+        {
+          "type": "text",
+          "text": "Phân bố: Thể tích phân bố của ganciclovir theo đường truyền tĩnh mạch tại trạng thái ổn định là 0,54 - 0,87 lít/kg. Tỷ lệ liên kết với protein huyết tương khoảng 1 - 2%. Thuốc qua được nhau thai và hàng rào máu - não. Nồng độ thuốc trong dịch não tủy đạt khoảng 24 - 67% nồng độ trong huyết tương. Nồng độ trong dịch kính khoảng 1 microgam/ml, tương tự hoặc cao hơn một ít so với nồng độ trong huyết tương.",
+          "block_id": "b0019"
+        },
+        {
+          "type": "text",
+          "text": "Thải trừ: Thuốc được thải trừ nguyên dạng với tỷ lệ trên 90%, với hai cơ chế chính là lọc ở cầu thận và bài tiết ở ống thận. Quá trình thải trừ thuốc từ huyết tương xảy ra theo 2 pha. Khi sử dụng qua đường tĩnh mạch, ở pha đầu tiên, nửa đời của thuốc khoảng 0,23 - 0,76 giờ và ở pha cuối là khoảng 2,53 - 3,6 giờ trên bệnh nhân có chức năng thận bình thường. Nửa đời của thuốc khi dùng qua đường uống là 4,8 giờ. Nửa đời của thuốc có thể kéo dài tới 4,4 - 30 giờ trên bệnh nhân suy thận. Thuốc có thể được thải trừ thông qua thẩm phân máu, sau 4 giờ tiến hành nồng độ thuốc có thể giảm từ 40 - 50%.",
+          "block_id": "b0020"
+        }
+      ]
+    },
+    {
+      "id": "chi-dinh",
+      "title": "Chỉ định",
+      "heading_block": "b0021",
+      "blocks": [
+        {
+          "type": "subheading",
+          "text": "Dùng toàn thân",
+          "block_id": "b0022"
+        },
+        {
+          "type": "text",
+          "text": "Điều trị CMV trên bệnh nhân suy giảm miễn dịch.",
+          "block_id": "b0023"
+        },
+        {
+          "type": "text",
+          "text": "Dự phòng nhiễm CMV trên bệnh nhân sử dụng thuốc ức chế miễn dịch trong ghép tạng.",
+          "block_id": "b0024"
+        },
+        {
+          "type": "subheading",
+          "text": "Dùng tại mắt",
+          "block_id": "b0025"
+        },
+        {
+          "type": "text",
+          "text": "Điều trị viêm giác mạc do virus Herpes (loét giác mạc hình cành cây).",
+          "block_id": "b0026"
+        }
+      ]
+    },
+    {
+      "id": "chong-chi-dinh",
+      "title": "Chống chỉ định",
+      "heading_block": "b0027",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Mẫn cảm với thuốc, valganciclovir.",
+          "block_id": "b0028"
+        },
+        {
+          "type": "text",
+          "text": "Phụ nữ cho con bú.",
+          "block_id": "b0029"
+        }
+      ]
+    },
+    {
+      "id": "than-trong",
+      "title": "Thận trọng",
+      "heading_block": "b0030",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Phản ứng dị ứng chéo: Do có cấu trúc hóa học tương đồng, phản ứng dị ứng chéo giữa ganciclovir với aciclovir và penciclovir có thể xảy ra. Thận trọng khi sử dụng ganciclovir trên bệnh nhân có tiền sử quá mẫn với aciclovir, penciclovir hoặc tiền thuốc của chúng (valaciclovir, famciclovir).",
+          "block_id": "b0031"
+        },
+        {
+          "type": "text",
+          "text": "Ảnh hưởng trên thai nhi và hệ sinh sản của bệnh nhân: Các nghiên cứu trên động vật cho thấy ganciclovir có khả năng gây đột biến, dị tật thai nhi cũng như có nguy cơ gây ung thư và gây vô sinh. Các nghiên cứu lâm sàng và tiền lâm sàng cho thấy thuốc dường như gây ức chế tạm thời hoặc vĩnh viễn quá trình sinh tinh trùng. Do đó, phụ nữ trong độ tuổi sinh sản cần sử dụng một biện pháp tránh thai có hiệu quả trong suốt liệu trình và duy trì tối thiểu 30 ngày sau khi ngừng thuốc. Với nam giới, cần sử dụng biện pháp tránh thai trong suốt liệu trình và duy trì tối thiểu 90 ngày sau khi ngừng thuốc, trừ trường hợp bạn tình không có nguy cơ mang thai.",
+          "block_id": "b0032"
+        },
+        {
+          "type": "text",
+          "text": "Thận trọng khi sử dụng thuốc trên trẻ em.",
+          "block_id": "b0033"
+        },
+        {
+          "type": "text",
+          "text": "Ảnh hưởng trên tủy xương: Đã ghi nhận triệu chứng giảm bạch cầu, hồng cầu, tiểu cầu và suy tủy nặng trên bệnh nhân sử dụng ganciclovir. Cần thận trọng khi sử dụng thuốc trên bệnh nhân đang có triệu chứng giảm tế bào máu hoặc có tiền sử giảm tế bào máu do thuốc và bệnh nhân đang xạ trị. Không sử dụng thuốc khi số lượng bạch cầu trung tính giảm dưới 0,5 × 109/microlít, số lượng tiểu cầu",
+          "block_id": "b0034"
+        },
+        {
+          "type": "text",
+          "text": "giảm dưới 25 × 109/lít hoặc hemoglobin dưới 80 g/lít.",
+          "block_id": "b0035"
+        },
+        {
+          "type": "text",
+          "text": "Trong quá trình sử dụng thuốc, cần giám sát công thức máu của bệnh nhân, đặc biệt trên bệnh nhân suy thận, trẻ sơ sinh và trẻ nhỏ. Trong 14 ngày đầu tiên của liệu trình điều trị, khuyến cáo xét nghiệm công thức bạch cầu 2 ngày/lần; trên bệnh nhân có số lượng bạch cầu trung tính thấp (< 1,0 × 109/lít), bệnh nhân có tiền sử giảm bạch cầu do thuốc và bệnh nhân suy thận, cần xét nghiệm hàng ngày.",
+          "block_id": "b0036"
+        },
+        {
+          "type": "text",
+          "text": "Trên bệnh nhân giảm bạch cầu, giảm hồng cầu và giảm tiểu cầu nặng, xem xét ngừng ganciclovir và/hoặc sử dụng các thuốc kích thích tạo máu.",
+          "block_id": "b0037"
+        },
+        {
+          "type": "text",
+          "text": "Bệnh nhân suy thận: Bệnh nhân suy thận có nguy cơ gặp ADR cao hơn. Cần hiệu chỉnh liều khi sử dụng thuốc trên đối tượng này.",
+          "block_id": "b0038"
+        }
+      ]
+    },
+    {
+      "id": "thoi-ky-mang-thai",
+      "title": "Thời kỳ mang thai",
+      "heading_block": "b0039",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Tính an toàn của ganciclovir trên phụ nữ mang thai chưa được đánh giá đầy đủ. Các bằng chứng cho thấy thuốc có khả năng qua nhau thai. Trên động vật, ganciclovir gây độc tính trên hệ sinh sản và gây dị tật thai nhi. Do đó, không sử dụng ganciclovir trên phụ nữ mang thai trừ khi nhu cầu điều trị của người mẹ vượt trội hơn nguy cơ gây dị tật thai nhi của thuốc.",
+          "block_id": "b0040"
+        }
+      ]
+    },
+    {
+      "id": "thoi-ky-cho-con-bu",
+      "title": "Thời kỳ cho con bú",
+      "heading_block": "b0041",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Khả năng bài xuất của ganciclovir vào sữa mẹ chưa được đánh giá đầy đủ. Dữ liệu trên động vật cho thấy thuốc có khả năng bài xuất qua sữa. Do đó, cần ngừng cho con bú khi sử dụng ganciclovir.",
+          "block_id": "b0042"
+        }
+      ]
+    },
+    {
+      "id": "tac-dung-khong-mong-muon-adr",
+      "title": "Tác dụng không mong muốn (ADR)",
+      "heading_block": "b0043",
+      "blocks": [
+        {
+          "type": "subheading",
+          "text": "Thường gặp",
+          "block_id": "b0044"
+        },
+        {
+          "type": "text",
+          "text": "Nhiễm trùng: nhiễm nấm Candida, nhiễm khuẩn hô hấp trên, nhiễm khuẩn huyết, cúm, nhiễm khuẩn tiết niệu, viêm mô tế bào.",
+          "block_id": "b0045"
+        },
+        {
+          "type": "text",
+          "text": "Huyết học: giảm bạch cầu, giảm hồng cầu, giảm tiểu cầu, giảm toàn bộ tế bào máu ngoại vi, suy tủy xương.",
+          "block_id": "b0046"
+        },
+        {
+          "type": "text",
+          "text": "Miễn dịch: phản ứng quá mẫn.",
+          "block_id": "b0047"
+        },
+        {
+          "type": "text",
+          "text": "Chuyển hóa: chán ăn, giảm cân.",
+          "block_id": "b0048"
+        },
+        {
+          "type": "text",
+          "text": "Tâm thần: trầm cảm, lo âu, lú lẫn.",
+          "block_id": "b0049"
+        },
+        {
+          "type": "text",
+          "text": "Thần kinh: đau đầu, mất ngủ, bệnh thần kinh ngoại vi, chóng mặt, dị cảm, giảm cảm giác, co giật, rối loạn vị giác.",
+          "block_id": "b0050"
+        },
+        {
+          "type": "text",
+          "text": "Thị giác: giảm thị lực, bong võng mạc, đục dịch kính, đau mắt, viêm kết mạc, phù hoàng điểm.",
+          "block_id": "b0051"
+        },
+        {
+          "type": "text",
+          "text": "Thính giác: đau tai.",
+          "block_id": "b0052"
+        },
+        {
+          "type": "text",
+          "text": "Tim mạch: hạ huyết áp.",
+          "block_id": "b0053"
+        },
+        {
+          "type": "text",
+          "text": "Hô hấp: ho, khó thở.",
+          "block_id": "b0054"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: tiêu chảy, buồn nôn, nôn, đau bụng, đầy hơi, khó tiêu, táo bón, loét miệng, khó nuốt, trướng bụng, viêm tụy cấp.",
+          "block_id": "b0055"
+        },
+        {
+          "type": "text",
+          "text": "Gan mật: rối loạn chức năng gan, tăng phosphatase kiềm, tăng transaminase.",
+          "block_id": "b0056"
+        },
+        {
+          "type": "text",
+          "text": "Da và mô mềm: viêm da, vã mồ hôi, ngứa, ban đỏ, rụng tóc.",
+          "block_id": "b0057"
+        },
+        {
+          "type": "text",
+          "text": "Cơ - xương - khớp: đau lưng, đau cơ, đau khớp, co thắt cơ.",
+          "block_id": "b0058"
+        },
+        {
+          "type": "text",
+          "text": "Thận - tiết niệu: suy giảm chức năng thận, tăng creatinin huyết thanh.",
+          "block_id": "b0059"
+        },
+        {
+          "type": "text",
+          "text": "Toàn thân: sốt, mệt mỏi, phản ứng tại chỗ tiêm, đau, ớn lạnh, khó chịu, suy nhược.",
+          "block_id": "b0060"
+        },
+        {
+          "type": "subheading",
+          "text": "Ít gặp",
+          "block_id": "b0061"
+        },
+        {
+          "type": "text",
+          "text": "Suy tủy xương, kích động, ảo giác, run, mất thính giác, loạn nhịp tim, mày đay, khô da, suy thận, tiểu máu, gây vô sinh ở nam giới, đau ngực.",
+          "block_id": "b0062"
+        },
+        {
+          "type": "subheading",
+          "text": "Hiếm gặp",
+          "block_id": "b0063"
+        },
+        {
+          "type": "text",
+          "text": "Thiếu máu bất sản, giảm/mất bạch cầu hạt, sốc phản vệ.",
+          "block_id": "b0064"
+        }
+      ]
+    },
+    {
+      "id": "huong-dan-cach-xu-tri-adr",
+      "title": "Hướng dẫn cách xử trí ADR",
+      "heading_block": "b0065",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Trên bệnh nhân giảm bạch cầu, giảm hồng cầu và giảm tiểu cầu nặng, xem xét ngừng ganciclovir và/hoặc sử dụng các thuốc kích thích tạo máu.",
+          "block_id": "b0066"
+        }
+      ]
+    },
+    {
+      "id": "lieu-luong-va-cach-dung",
+      "title": "Liều lượng và cách dùng",
+      "heading_block": "b0067",
+      "blocks": [
+        {
+          "type": "subheading",
+          "text": "Liều dùng toàn thân",
+          "block_id": "b0068"
+        },
+        {
+          "type": "subheading",
+          "text": "Người lớn và trẻ em từ 13 tuổi trở lên",
+          "block_id": "b0069"
+        },
+        {
+          "type": "text",
+          "text": "Điều trị CMV trên bệnh nhân suy giảm miễn dịch Giai đoạn tấn công: 5 mg/kg, truyền tĩnh mạch tối thiểu trong 1 giờ, mỗi 12 giờ. Thời gian điều trị từ 14 - 21 ngày.",
+          "block_id": "b0070"
+        },
+        {
+          "type": "text",
+          "text": "Giai đoạn duy trì: 5 mg/kg/ngày, ngày 1 lần truyền tĩnh mạch trong tối thiểu 1 giờ, 7 lần/tuần, hoặc 6 mg/kg/ngày, ngày 1 lần, 5 lần/ tuần. Thời gian điều trị cần được cá thể hóa theo tình trạng của bệnh nhân. Trong trường hợp tái phát, sử dụng liều như giai đoạn tấn công.",
+          "block_id": "b0071"
+        },
+        {
+          "type": "text",
+          "text": "Dự phòng CMV trên bệnh nhân sử dụng thuốc ức chế miễn dịch Giai đoạn tấn công: 5 mg/kg truyền tĩnh mạch tối thiểu trong 1 giờ, mỗi 12 giờ. Thời gian điều trị từ 14 - 21 ngày.",
+          "block_id": "b0072"
+        },
+        {
+          "type": "text",
+          "text": "Giai đoạn duy trì: 5 mg/kg/ngày, ngày 1 lần, truyền tĩnh mạch trong tối thiểu 1 giờ, 7 lần/tuần, hoặc, 6 mg/kg/ngày, ngày 1 lần, 5 lần/ tuần. Thời gian điều trị cần được cá thể hóa theo nguy cơ nhiễm CMV của bệnh nhân. Với bệnh nhân ghép tạng, cần sử dụng thuốc tới 100 - 120 ngày sau ghép.",
+          "block_id": "b0073"
+        },
+        {
+          "type": "subheading",
+          "text": "Bệnh nhân suy thận",
+          "block_id": "b0074"
+        },
+        {
+          "type": "text",
+          "text": "Cần hiệu chỉnh liều theo bảng sau.",
+          "block_id": "b0075"
+        },
+        {
+          "type": "table",
+          "table_id": "p0798-t01",
+          "block_id": "b0076"
+        },
+        {
+          "type": "text",
+          "text": "Bệnh nhân suy gan: Chưa có khuyến cáo liều dùng cho đối tượng này.",
+          "block_id": "b0077"
+        },
+        {
+          "type": "text",
+          "text": "Người cao tuổi: Lưu ý hiệu chỉnh liều theo chức năng thận của bệnh nhân.",
+          "block_id": "b0078"
+        },
+        {
+          "type": "text",
+          "text": "Trẻ em dưới 13 tuổi: Chưa có khuyến cáo liều dùng cho đối tượng này.",
+          "block_id": "b0079"
+        },
+        {
+          "type": "subheading",
+          "text": "Cách dùng",
+          "block_id": "b0080"
+        },
+        {
+          "type": "text",
+          "text": "Sử dụng thuốc qua đường truyền tĩnh mạch. Thời gian truyền tối thiểu 1 giờ và nồng độ thuốc không vượt quá 10 mg/ml. Không tiêm tĩnh mạch nhanh vì có thể tạo nồng độ thuốc trong huyết tương cao, làm tăng độc tính trên thận của thuốc. Không tiêm bắp hay tiêm dưới da vì có thể gây kích ứng vị trí tiêm do dung dịch ganciclovir có pH cao (~11).",
+          "block_id": "b0081"
+        },
+        {
+          "type": "text",
+          "text": "Hoàn nguyên bột ganciclovir trong nước cất pha tiêm (nồng độ khoảng 50 mg/ml). Pha loãng bằng dung dịch tiêm truyền natri clorid 0,9%, glucose 5%, dung dịch Ringer hoặc Ringer lactat để có dung dịch chứa không quá 10 mg/ml. Không được dùng nước pha tiêm có chất bảo quản paraben vì có thể gây tủa. Dung dịch tiêm truyền phải dùng trong vòng 24 giờ để tránh nhiễm khuẩn.",
+          "block_id": "b0082"
+        },
+        {
+          "type": "subheading",
+          "text": "Liều dùng tại mắt",
+          "block_id": "b0083"
+        },
+        {
+          "type": "text",
+          "text": "Điều trị viêm giác mạc do virus Herpes",
+          "block_id": "b0084"
+        },
+        {
+          "type": "subheading",
+          "text": "Người lớn và trẻ em từ 18 tuổi trở lên",
+          "block_id": "b0085"
+        },
+        {
+          "type": "text",
+          "text": "Nhỏ mắt 1 giọt gel nồng độ 0,15%/lần, 5 lần/ngày cho tới khi hết triệu chứng. Tiếp tục sử dụng 3 lần/ngày, trong 7 ngày sau đó.",
+          "block_id": "b0086"
+        },
+        {
+          "type": "text",
+          "text": "Không sử dụng vượt quá 21 ngày.",
+          "block_id": "b0087"
+        },
+        {
+          "type": "subheading",
+          "text": "Trẻ em dưới 18 tuổi",
+          "block_id": "b0088"
+        },
+        {
+          "type": "text",
+          "text": "Chưa có khuyến cáo liều dùng cho đối tượng này.",
+          "block_id": "b0089"
+        }
+      ]
+    },
+    {
+      "id": "tuong-tac-thuoc",
+      "title": "Tương tác thuốc",
+      "heading_block": "b0090",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Probenecid: Probenecid làm giảm thanh thải qua thận của ganciclovir, tăng nguy cơ xuất hiện độc tính. Bệnh nhân sử dụng đồng thời này cần được giám sát chặt chẽ các dấu hiệu độc tính của ganciclovir.",
+          "block_id": "b0091"
+        },
+        {
+          "type": "text",
+          "text": "Didanosin: Phối hợp 2 thuốc làm tăng nồng độ didanosin trong huyết thanh. Bệnh nhân sử dụng đồng thời hai thuốc này cần được giám sát chặt chẽ các dấu hiệu độc tính của didanosin.",
+          "block_id": "b0092"
+        },
+        {
+          "type": "text",
+          "text": "Imipenem-cilastatin: Phối hợp imipenem-cilastatin với ganciclovir có thể xuất hiện phản ứng co giật. Không sử dụng 2 thuốc đồng thời, trừ khi lợi ích vượt trội so với nguy cơ.",
+          "block_id": "b0093"
+        },
+        {
+          "type": "text",
+          "text": "Zidovudin: Phối hợp hai thuốc làm tăng nguy cơ độc tính trên huyết học. Không nên sử dụng hai thuốc đồng thời.",
+          "block_id": "b0094"
+        },
+        {
+          "type": "text",
+          "text": "Một số thuốc khác: Ganciclovir có thể hiệp đồng tăng độc tính của các thuốc có độc tính trên tủy xương và trên thận, bao gồm:",
+          "block_id": "b0095"
+        },
+        {
+          "type": "text",
+          "text": "Dapson, pentamidin, flucytosin, amphotericin B, sulfamethoxazol/ trimethoprim, ciclosporin, tacrolimus, mycophenolat mofetil, vincristin, vinblastin, doxorubicin, hydroxyurê, zidovudin, stavudin, dianosin, tenofovir, adefovir. Khuyến cáo không dùng đồng thời với các thuốc này trừ khi lợi ích vượt trội so với nguy cơ.",
+          "block_id": "b0096"
+        }
+      ]
+    },
+    {
+      "id": "tuong-ky",
+      "title": "Tương kỵ",
+      "heading_block": "b0097",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Ngoại trừ các dung dịch được liệt kê trong phần Cách dùng (Natri clorid, glucose 5%, Ringer và Ringer lactat), không trộn lẫn ganciclovir với bất kỳ dung dịch nào khác. Không sử dụng nước cất vô khuẩn có chứa paraben để hoàn nguyên.",
+          "block_id": "b0098"
+        }
+      ]
+    },
+    {
+      "id": "qua-lieu-va-xu-tri",
+      "title": "Quá liều và xử trí",
+      "heading_block": "b0099",
+      "blocks": [
+        {
+          "type": "subheading",
+          "text": "Triệu chứng:",
+          "block_id": "b0100"
+        },
+        {
+          "type": "text",
+          "text": "Huyết học: suy tủy xương, giảm toàn bộ tế bào máu ngoại vi, giảm bạch cầu, giảm bạch cầu trung tính, bạch cầu hạt.",
+          "block_id": "b0101"
+        },
+        {
+          "type": "text",
+          "text": "Gan mật: viêm gan, rối loạn chức năng gan.",
+          "block_id": "b0102"
+        },
+        {
+          "type": "text",
+          "text": "Thận - tiết niệu: tiểu máu, suy thận cấp, tăng creatinin.",
+          "block_id": "b0103"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: đau bụng, tiêu chảy, buồn nôn.",
+          "block_id": "b0104"
+        },
+        {
+          "type": "text",
+          "text": "Thần kinh: run toàn thân, co giật.",
+          "block_id": "b0105"
+        },
+        {
+          "type": "text",
+          "text": "Xử trí: Có thể sử dụng thẩm phân máu trong điều trị quá liều ganciclovir. Bù nước và điện giải, điều trị triệu chứng, cân nhắc sử dụng các thuốc kích thích tăng sinh tế bào máu ở bệnh nhân có triệu chứng trên huyết học.",
+          "block_id": "b0106"
+        }
+      ]
+    },
+    {
+      "id": "cap-nhat-lan-cuoi",
+      "title": "Cập nhật lần cuối",
+      "heading_block": "b0107",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "2018.",
+          "block_id": "b0107"
+        }
       ]
     }
   ],
   "quality": {
-    "status": "source-layout-rebuilt-v10.1-source-paragraph-boundaries",
-    "pdf_text_order": "left-column-then-right-column; visual line flow",
-    "paragraph_policy": "Paragraph boundaries are source-derived and stored only as blank lines. The client preserves those boundaries exactly; it must not create a new paragraph from label words such as “Trẻ em:” or “Người lớn:”. A lower-case continuation fragment is merged only when it follows a non-terminal source fragment; table footnotes remain separate. No client-side anchor or length-based sentence splitter is allowed.",
-    "table_policy": "source-table image inserted by PDF page/column/y position; table-cell text excluded from prose",
-    "validation": {
-      "raw_newline_inside_paragraph": false,
-      "table_count": 1,
-      "section_count": 18,
-      "client_anchor_resegmentation_disabled": true,
-      "client_length_sentence_chunking_disabled": true
+    "block_count": 107,
+    "heading_count": 14,
+    "subheading_count": 16,
+    "paragraph_count": 75,
+    "list_count": 0,
+    "table_count": 1,
+    "figure_count": 0,
+    "note_count": 1,
+    "page_count": 3
+  },
+  "tables": [
+    {
+      "id": "p0798-t01",
+      "image_path": "duoc-thu-assets/ganciclovir/p0798-t01.png",
+      "image": "duoc-thu-assets/ganciclovir/p0798-t01.png",
+      "source_pdf_page": 798,
+      "printed_page": 804,
+      "bbox": [
+        43.94,
+        321.82,
+        295.75,
+        429.34
+      ],
+      "block_id": "b0076"
     }
+  ],
+  "legacy_compat": {
+    "sections": "generated from v11 blocks for v10.4.5.39 renderer/chatbot compatibility"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "schema_version": "10.1-source-paragraph-boundaries",
+  "schema_version": "11.0.0",
   "id": "epoetin",
   "title": "Epoetin",
   "aliases": [
@@ -26,236 +26,2741 @@
       "boundary_method": "physical-source-title-band"
     }
   },
+  "parser": {
+    "name": "medplus-duoc-thu-v11-structured-pdf-parser",
+    "method": "PyMuPDF span -> line -> block",
+    "content_source": "Duocthu2023.pdf",
+    "old_json_usage": "id/title/page-boundary metadata and existing table asset path only; old content is not used",
+    "column_order": "left column -> right column -> next page",
+    "block_model": [
+      "heading",
+      "subheading",
+      "paragraph",
+      "list",
+      "table",
+      "figure",
+      "note"
+    ],
+    "table_policy": "no OCR; preserve existing duoc-thu-assets/<id>/pXXXX-tXX.png image_path"
+  },
+  "blocks": [
+    {
+      "id": "b0001",
+      "type": "heading",
+      "level": 1,
+      "text": "EPOETIN",
+      "page": 669,
+      "printed_page": 675,
+      "column": 0,
+      "bbox": [
+        138.4,
+        392.79,
+        183.41,
+        406.63
+      ],
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "EPOETIN",
+          "bbox": [
+            138.4,
+            392.79,
+            183.41,
+            406.63
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0002",
+      "type": "paragraph",
+      "text": "Tên chung quốc tế: Epoetin alfa, epoetin beta, epoetin zeta.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 0,
+      "bbox": [
+        34.93,
+        416.53,
+        260.24,
+        429.32
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tên chung quốc tế: Epoetin alfa, epoetin beta, epoetin zeta.",
+          "bbox": [
+            34.93,
+            416.53,
+            260.24,
+            429.32
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0003",
+      "type": "paragraph",
+      "text": "Mã ATC: B03XA01.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 0,
+      "bbox": [
+        34.93,
+        428.09,
+        116.82,
+        441.24
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mã ATC: ",
+          "bbox": [
+            34.93,
+            428.09,
+            75.39,
+            441.24
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "B03XA01.",
+          "bbox": [
+            75.39,
+            428.25,
+            116.82,
+            441.04
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0004",
+      "type": "paragraph",
+      "text": "Loại thuốc: Thuốc kích thích tạo hồng cầu.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 0,
+      "bbox": [
+        34.93,
+        439.81,
+        206.43,
+        452.96
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Loại thuốc: ",
+          "bbox": [
+            34.93,
+            439.81,
+            84.02,
+            452.96
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "Thuốc kích thích tạo hồng cầu.",
+          "bbox": [
+            84.02,
+            439.96,
+            201.69,
+            452.76
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0005",
+      "type": "heading",
+      "level": 2,
+      "text": "Dạng thuốc và hàm lượng",
+      "page": 669,
+      "printed_page": 675,
+      "column": 0,
+      "bbox": [
+        34.93,
+        455.03,
+        139.85,
+        468.18
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dạng thuốc và hàm lượng",
+          "bbox": [
+            34.93,
+            455.03,
+            139.85,
+            468.18
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0006",
+      "type": "paragraph",
+      "text": "Dung dịch tiêm epoetin alpha: 2 000 đơn vị (đv)/1 ml, bơm tiêm 0,5 ml; 4 000 đv/1 ml, bơm tiêm 0,5 ml; 10 000 đv/1 ml, bơm tiêm 0,3 ml, 0,4 ml, 0,5 ml, 0,6 ml, 0,8 ml và 1 ml; 40 000 đv/1 ml, bơm tiêm 0,5 ml, 0,75 ml và 1 ml.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 0,
+      "bbox": [
+        34.93,
+        467.4,
+        289.27,
+        516.85
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0007",
+      "type": "paragraph",
+      "text": "Dung dịch tiêm epoetin beta: 1 667 đv/ml, bơm tiêm 0,3 ml; 6 667 đv/ml, bơm tiêm 0,3 ml; 10 000 đv/ml, bơm tiêm 0,3 ml; 13 333 đv/ml, bơm tiêm 0,3 ml; 16 667 đv/ml, bơm tiêm 0,3 ml và 0,6 ml; 20 000 đv/ml, bơm tiêm 0,3 ml; 33 333 đv/ml, bơm tiêm 0,6 ml; 50 000 đv/ml, bơm tiêm 0,6 ml.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 0,
+      "bbox": [
+        34.93,
+        516.27,
+        289.26,
+        577.94
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0008",
+      "type": "paragraph",
+      "text": "Dung dịch tiêm epoetin zeta: 3 333 đv/ml, bơm tiêm 0,3 ml, 0,6 ml và 0,9 ml; 10 000 đv/ml, bơm tiêm 0,4 ml, 0,5 ml, 0,6 ml, 0,6 ml và 1 ml; 40 000 đv/ml, bơm tiêm 0,5 ml, 0,75 ml và 1 ml.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 0,
+      "bbox": [
+        34.93,
+        577.36,
+        289.26,
+        614.6
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0009",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược lực học",
+      "page": 669,
+      "printed_page": 675,
+      "column": 0,
+      "bbox": [
+        34.93,
+        616.87,
+        88.53,
+        630.01
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược lực học",
+          "bbox": [
+            34.93,
+            616.87,
+            88.53,
+            630.01
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0010",
+      "type": "paragraph",
+      "text": "Các epoetin (epoetin alpha, epoetin beta, epoetin gamma, epoetin lambda, epoetin omega, epoetin theta và epoetin zeta) là protein tái tổ hợp có trình tự acid amin giống với trình tự acid amin của erythropoietin nội sinh nhưng khác nhau ở phần nhóm ngoại carbohydrat. Thuốc tác dụng tương tự như erythropoietin nội sinh, chủ yếu lên quá trình tạo hồng cầu do kích thích phát triển và biệt hóa các tế bào tủy xương tạo hồng cầu thông qua gắn với các receptor ở màng tế bào. Cụ thể, sau khi gắn với receptor, các epoetin có thể kích thích tổng hợp acid nucleic để tế bào tủy xương phân chia; đồng thời có thể ức chế những tế bào này chết theo chương trình khiến các tế bào tủy xương tiếp tục phát triển và biệt hóa thành hồng cầu. Thuốc cũng kích thích giải phóng hồng cầu lưới từ tủy xương vào máu để phát triển thành hồng cầu trưởng thành.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 0,
+      "bbox": [
+        34.93,
+        629.24,
+        289.27,
+        800.87
+      ],
+      "source": {
+        "line_count": 14
+      }
+    },
+    {
+      "id": "b0011",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược động học",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        63.02,
+        359.99,
+        76.16
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược động học",
+          "bbox": [
+            298.88,
+            63.02,
+            359.99,
+            76.16
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0012",
+      "type": "paragraph",
+      "text": "Hấp thu: Do bản chất là một protein, các epoetin bị phân hủy ở đường tiêu hóa nên phải dùng theo đường tiêm (truyền tĩnh mạch, tiêm dưới da). Thuốc hấp thu chậm và không hoàn toàn sau khi tiêm dưới da. Nồng độ đỉnh của epoetin alpha đạt được sau khi tiêm dưới da 5 - 24 giờ. Sau khi tiêm tĩnh mạch, thuốc đạt nồng độ đỉnh trong huyết tương cao hơn nhưng giảm nhanh hơn so với tiêm dưới da.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        75.51,
+        553.22,
+        162.37
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0013",
+      "type": "paragraph",
+      "text": "Phân bố: Thể tích phân bố khoảng 9 lít. Thuốc phân bố nhanh vào huyết tương và tập trung tại gan, thận và tủy xương. Không rõ thuốc có qua nhau thai hay phân bố vào sữa mẹ hay không. Thể tích phân bố thuốc ở trẻ đẻ non cao hơn 1,5 - 2 lần so với người lớn khỏe mạnh.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        161.91,
+        553.22,
+        224.08
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0014",
+      "type": "paragraph",
+      "text": "Chuyển hóa: Hiểu biết về chuyển hóa của thuốc vẫn còn rất hạn chế. Một phần thuốc bị thoái hóa. Chuyển hóa ở gan chỉ đóng góp một phần nhỏ cho quá trình chuyển hóa thuốc.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        223.63,
+        553.21,
+        261.11
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0015",
+      "type": "paragraph",
+      "text": "Thải trừ: Thải trừ chủ yếu qua phân, khoảng ≤ 10% thuốc được thải trừ qua nước tiểu dưới dạng chưa chuyển hóa. Nửa đời thải trừ của epoetin alpha là 4 - 13 giờ ở người bệnh suy thận mạn tính sau liều tiêm tĩnh mạch; 16 - 67 giờ ở bệnh nhân ung thư sau khi tiêm dưới da.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        260.66,
+        553.22,
+        322.83
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0016",
+      "type": "heading",
+      "level": 2,
+      "text": "Chỉ định",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        325.22,
+        334.53,
+        338.37
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chỉ định",
+          "bbox": [
+            298.88,
+            325.22,
+            334.53,
+            338.37
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0017",
+      "type": "paragraph",
+      "text": "Điều trị thiếu máu ở bệnh nhân suy thận mạn tính (đang lọc máu hoặc chưa phải lọc máu).",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        337.72,
+        553.21,
+        362.86
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0018",
+      "type": "paragraph",
+      "text": "Điều trị thiếu máu do hóa trị liệu ở người bệnh ung thư.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        362.4,
+        510.54,
+        375.2
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Điều trị thiếu máu do hóa trị liệu ở người bệnh ung thư.",
+          "bbox": [
+            298.88,
+            362.4,
+            510.54,
+            375.2
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0019",
+      "type": "paragraph",
+      "text": "Làm tăng sản xuất hồng cầu (để giảm lượng máu cần truyền) ở bệnh nhân chuẩn bị phẫu thuật (trừ phẫu thuật tim mạch) có hemoglobin 10 - 13 g/100 ml và có nguy cơ mất máu cao.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        374.75,
+        553.22,
+        412.23
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0020",
+      "type": "paragraph",
+      "text": "Phòng thiếu máu ở trẻ sinh non có cân nặng lúc sinh từ 750 g - 1 500 g và tuổi thai dưới 34 tuần.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        411.78,
+        553.22,
+        436.92
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0021",
+      "type": "paragraph",
+      "text": "Tăng sinh lượng máu tự thân của người đang trong thời kỳ chuẩn bị cho máu.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        436.46,
+        553.21,
+        461.6
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0022",
+      "type": "heading",
+      "level": 2,
+      "text": "Chống chỉ định",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        464.0,
+        363.56,
+        477.15
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chống chỉ định ",
+          "bbox": [
+            298.88,
+            464.0,
+            363.56,
+            477.15
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0023",
+      "type": "paragraph",
+      "text": "Bệnh nhân không thể dùng điều trị dự phòng huyết khối.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        476.49,
+        514.34,
+        489.29
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Bệnh nhân không thể dùng điều trị dự phòng huyết khối.",
+          "bbox": [
+            298.88,
+            476.49,
+            514.34,
+            489.29
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0024",
+      "type": "paragraph",
+      "text": "Bất sản hồng cầu đơn thuần sau liệu pháp erythropoietin.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        488.84,
+        515.52,
+        501.63
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Bất sản hồng cầu đơn thuần sau liệu pháp erythropoietin.",
+          "bbox": [
+            298.88,
+            488.84,
+            515.52,
+            501.63
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0025",
+      "type": "paragraph",
+      "text": "Tăng huyết áp không kiểm soát được.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        501.18,
+        442.3,
+        513.98
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tăng huyết áp không kiểm soát được.",
+          "bbox": [
+            298.88,
+            501.18,
+            442.3,
+            513.98
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0026",
+      "type": "paragraph",
+      "text": "Mẫn cảm với thuốc.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        513.52,
+        375.15,
+        526.32
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mẫn cảm với thuốc.",
+          "bbox": [
+            298.88,
+            513.52,
+            375.15,
+            526.32
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0027",
+      "type": "heading",
+      "level": 2,
+      "text": "Thận trọng",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        528.71,
+        345.07,
+        541.86
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thận trọng",
+          "bbox": [
+            298.88,
+            528.71,
+            345.07,
+            541.86
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ],
+      "note_role": "than trong",
+      "v11_fix": "note_title_reclassified_as_heading_alpha5"
+    },
+    {
+      "id": "b0028",
+      "type": "paragraph",
+      "text": "Nhiễm độc nhôm hoặc cùng lúc mắc nhiễm khuẩn có thể ảnh hưởng tới đáp ứng với các epoetin. Trước khi điều trị, cần điều chỉnh các yếu tố có thể góp phần gây thiếu máu ở người suy thận mạn như thiếu sắt, thiếu folat.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        541.21,
+        553.21,
+        591.04
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0029",
+      "type": "paragraph",
+      "text": "Trong quá trình lọc máu, có thể cần tăng liều heparin không phân đoạn hoặc heparin trọng lượng phân tử thấp.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        590.58,
+        553.21,
+        615.72
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0030",
+      "type": "paragraph",
+      "text": "Thận trọng khi dùng cho người bị động kinh, người bị tăng huyết áp không được điều trị hoặc điều trị không hiệu quả. Cần ngừng dùng epoetin nếu thấy huyết áp không kiểm soát tốt.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        615.27,
+        553.21,
+        652.75
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0031",
+      "type": "paragraph",
+      "text": "Bệnh thiếu máu do nghẽn mạch cục bộ; bệnh ác tính; các bệnh viêm khác (có thể ảnh hưởng tới đáp ứng với epoetin). Có thể tăng nguy cơ huyết khối khi dùng điều trị thiếu máu trước phẫu thuật chỉnh hình. Tránh dùng trong các bệnh tim mạch như nhồi máu cơ tim hoặc tai biến mạch máu não mới xảy ra.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        652.3,
+        553.22,
+        714.47
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0032",
+      "type": "paragraph",
+      "text": "Nguy cơ huyết khối có thể tăng lên khi dùng điều trị thiếu máu ở người dùng hóa trị.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        714.01,
+        553.21,
+        739.15
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0033",
+      "type": "paragraph",
+      "text": "Bệnh hồng cầu liềm (có thể đặt mục tiêu Hb thấp hơn ở những người này).",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        738.7,
+        553.21,
+        763.84
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0034",
+      "type": "paragraph",
+      "text": "Đau đột ngột kiểu đau nửa đầu.",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        763.39,
+        418.28,
+        776.18
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Đau đột ngột kiểu đau nửa đầu.",
+          "bbox": [
+            298.88,
+            763.39,
+            418.28,
+            776.18
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0035",
+      "type": "paragraph",
+      "text": "Tăng tiểu cầu (cần theo dõi số lượng tiểu cầu trong vòng 8 tuần đầu tiên).",
+      "page": 669,
+      "printed_page": 675,
+      "column": 1,
+      "bbox": [
+        298.88,
+        775.73,
+        553.22,
+        800.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0036",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ mang thai",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        63.02,
+        119.15,
+        76.16
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ mang thai",
+          "bbox": [
+            43.94,
+            63.02,
+            119.15,
+            76.16
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0037",
+      "type": "paragraph",
+      "text": "Chưa có bằng chứng rõ ràng cho thấy các epoetin qua nhau thai.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        75.34,
+        298.27,
+        88.14
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Chưa có bằng chứng rõ ràng cho thấy các epoetin qua nhau thai. ",
+          "bbox": [
+            43.94,
+            75.34,
+            298.27,
+            88.14
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0038",
+      "type": "paragraph",
+      "text": "Vì thiếu máu và cần thiết truyền máu nhiều lần cũng gây nguy cơ đáng kể cho mẹ và thai nhi, nên chỉ dùng epoetin alpha trong thời kỳ mang thai khi lợi ích dùng thuốc trội hơn nguy cơ được biết.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        87.52,
+        298.27,
+        124.66
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0039",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ cho con bú",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        126.88,
+        122.06,
+        140.03
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ cho con bú",
+          "bbox": [
+            43.94,
+            126.88,
+            122.06,
+            140.03
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0040",
+      "type": "paragraph",
+      "text": "Chưa biết các epoetin có bài tiết vào sữa hay không, phải dùng thuốc thận trọng trong thời kỳ cho con bú.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        139.21,
+        298.27,
+        164.18
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0041",
+      "type": "heading",
+      "level": 2,
+      "text": "Tác dụng không mong muốn (ADR)",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        166.41,
+        189.89,
+        179.55
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tác dụng không mong muốn (ADR)",
+          "bbox": [
+            43.94,
+            166.41,
+            189.89,
+            179.55
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0042",
+      "type": "subheading",
+      "level": 3,
+      "text": "Thường gặp hoặc rất thường gặp",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        179.89,
+        173.17,
+        192.53
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thường gặp hoặc rất thường gặp ",
+          "bbox": [
+            43.94,
+            179.89,
+            173.17,
+            192.53
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0043",
+      "type": "paragraph",
+      "text": "Làm nặng thêm tình trạng tăng huyết áp (phụ thuộc liều). Cơn tăng huyết áp ở người vốn có huyết áp bình thường hoặc thấp. Tai biến tim mạch.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        192.91,
+        298.27,
+        232.05
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0044",
+      "type": "paragraph",
+      "text": "Tiêu chảy.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        232.43,
+        83.08,
+        245.22
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêu chảy.",
+          "bbox": [
+            43.94,
+            232.43,
+            83.08,
+            245.22
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0045",
+      "type": "paragraph",
+      "text": "Tăng số lượng tiểu cầu sau khi điều trị, tác dụng phụ thuộc liều.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        245.6,
+        286.58,
+        258.4
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tăng số lượng tiểu cầu sau khi điều trị, tác dụng phụ thuộc liều.",
+          "bbox": [
+            43.94,
+            245.6,
+            286.58,
+            258.4
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0046",
+      "type": "paragraph",
+      "text": "Đau đầu.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        258.77,
+        78.23,
+        271.57
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Đau đầu.",
+          "bbox": [
+            43.94,
+            258.77,
+            78.23,
+            271.57
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0047",
+      "type": "paragraph",
+      "text": "Triệu chứng giống cúm (có thể giảm bớt nếu tiêm tĩnh mạch kéo dài trên 5 phút).",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        271.95,
+        298.27,
+        297.92
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0048",
+      "type": "paragraph",
+      "text": "Buồn nôn, nôn.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        298.3,
+        102.52,
+        311.09
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Buồn nôn, nôn.",
+          "bbox": [
+            43.94,
+            298.3,
+            102.52,
+            311.09
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0049",
+      "type": "paragraph",
+      "text": "Huyết khối, đặc biệt là nếu bệnh nhân có xu hướng hạ huyết áp hoặc biến chứng suy động tĩnh mạch.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        311.47,
+        298.27,
+        337.44
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0050",
+      "type": "subheading",
+      "level": 3,
+      "text": "Rất hiếm gặp",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        337.98,
+        94.6,
+        350.61
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Rất hiếm gặp",
+          "bbox": [
+            43.94,
+            337.98,
+            94.6,
+            350.61
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0051",
+      "type": "paragraph",
+      "text": "Đột ngột giảm hiệu quả điều trị do bất sản hồng cầu đơn thuần, đặc biệt là sau khi tiêm dưới da, ở bệnh nhân suy thận mạn.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        350.99,
+        298.27,
+        376.96
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0052",
+      "type": "subheading",
+      "level": 3,
+      "text": "Chưa xác định được tần suất",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        377.5,
+        154.1,
+        390.14
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chưa xác định được tần suất",
+          "bbox": [
+            43.94,
+            377.5,
+            154.1,
+            390.14
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0053",
+      "type": "paragraph",
+      "text": "Sốc phản vệ, phù mạch, tăng kali huyết, phản ứng quá mẫn, phản ứng tại chỗ tiêm, phù ngoại vi, phản ứng da, hội chứng Stevens- Johnson, hoại tử thượng bì nhiễm độc.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        390.51,
+        298.27,
+        429.66
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0054",
+      "type": "heading",
+      "level": 2,
+      "text": "Hướng dẫn cách xử trí ADR",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        431.88,
+        158.5,
+        445.03
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hướng dẫn cách xử trí ADR",
+          "bbox": [
+            43.94,
+            431.88,
+            158.5,
+            445.03
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0055",
+      "type": "paragraph",
+      "text": "Cần theo dõi hematocrit một cách thường xuyên và điều chỉnh liều theo đáp ứng nồng độ hemoglobin.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        444.21,
+        298.27,
+        469.18
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0056",
+      "type": "paragraph",
+      "text": "Để tránh tăng đông máu gây tắc mạch, sau khi đã tiêm thuốc vào tĩnh mạch thì tiêm thêm ngay 10 ml dung dịch muối đẳng trương và tăng liều heparin trong khi chạy thận nhân tạo để phòng huyết khối.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        468.56,
+        298.27,
+        505.7
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0057",
+      "type": "heading",
+      "level": 2,
+      "text": "Liều lượng và cách dùng",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        507.92,
+        144.11,
+        521.07
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng và cách dùng",
+          "bbox": [
+            43.94,
+            507.92,
+            144.11,
+            521.07
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0058",
+      "type": "subheading",
+      "level": 3,
+      "text": "Cách dùng",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        520.33,
+        86.96,
+        533.05
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Cách dùng",
+          "bbox": [
+            43.94,
+            520.33,
+            86.96,
+            533.05
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0059",
+      "type": "paragraph",
+      "text": "Thuốc được đóng sẵn trong bơm tiêm và được dùng theo đường tiêm tĩnh mạch hoặc tiêm dưới da. Tiêm tĩnh mạch trong vòng 1 - 5 phút. Tiêm dưới da tối đa 1 ml tại mỗi vị trí tiêm.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        532.42,
+        298.27,
+        569.57
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0060",
+      "type": "subheading",
+      "level": 3,
+      "text": "Liều lượng",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        569.02,
+        90.1,
+        581.74
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng ",
+          "bbox": [
+            43.94,
+            569.02,
+            90.1,
+            581.74
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0061",
+      "type": "paragraph",
+      "text": "Điều trị thiếu máu ở bệnh nhân suy thận mạn tính đang lọc máu (trẻ em và người lớn):",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        581.28,
+        298.26,
+        606.09
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0062",
+      "type": "paragraph",
+      "text": "Epoetin alpha và zeta (tiêm tĩnh mạch): Người lớn và trẻ em cân nặng > 10 kg: Liều khởi đầu 50 đv/kg/lần, 3 lần/tuần; trẻ em cân nặng ≤ 10 kg: Liều khởi đầu 25 đv/kg/lần, 3 lần/tuần.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        605.47,
+        298.27,
+        642.61
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0063",
+      "type": "paragraph",
+      "text": "Giảm 25% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        641.99,
+        298.3,
+        691.31
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0064",
+      "type": "paragraph",
+      "text": "Epoetin beta: Tiêm dưới da liều khởi đầu 20 đv/kg/lần, 3 lần/tuần trong 4 tuần (nếu tiêm tĩnh mạch thì liều khởi đầu 40 đv/kg/lần, 3 lần/tuần, trong 4 tuần sau đó tăng lên 80 đv/kg/lần, 3 lần/tuần).",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        690.68,
+        298.28,
+        727.83
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0065",
+      "type": "paragraph",
+      "text": "Cứ sau 4 tuần thì tăng liều thêm 20 đv/lần nếu bệnh nhân không đáp ứng thuốc. Giảm 25% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc (tối đa 720 đv/kg/tuần).",
+      "page": 670,
+      "printed_page": 676,
+      "column": 0,
+      "bbox": [
+        43.94,
+        727.2,
+        298.27,
+        800.87
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0066",
+      "type": "paragraph",
+      "text": "Điều trị thiếu máu ở bệnh nhân suy thận mạn tính chưa phải lọc máu (người lớn):",
+      "page": 670,
+      "printed_page": 676,
+      "column": 1,
+      "bbox": [
+        307.89,
+        63.49,
+        562.22,
+        88.31
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0067",
+      "type": "paragraph",
+      "text": "Epoetin alpha và zeta: Tiêm tĩnh mạch liều khởi đầu 50 đv/kg/ lần, 3 lần/tuần. Tăng liều thêm 25% sau ít nhất mỗi 4 tuần nếu cần thiết. Liều duy trì 17 - 33 đv/kg/lần, 3 lần/tuần (tối đa 200 đv/kg/ lần, 3 lần/tuần). Giảm 25% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc (tối đa 720 đv/kg/tuần).",
+      "page": 670,
+      "printed_page": 676,
+      "column": 1,
+      "bbox": [
+        307.89,
+        87.69,
+        562.22,
+        185.77
+      ],
+      "source": {
+        "line_count": 8
+      }
+    },
+    {
+      "id": "b0068",
+      "type": "paragraph",
+      "text": "Epoetin beta: Liều dùng tương tự với bệnh nhân thiếu máu do suy thận mạn đang lọc máu, ưu tiên dùng đường tiêm dưới da.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 1,
+      "bbox": [
+        307.89,
+        185.15,
+        562.22,
+        210.13
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0069",
+      "type": "paragraph",
+      "text": "Điều trị thiếu máu do hóa trị liệu ở người bị bệnh ung thư (người lớn):",
+      "page": 670,
+      "printed_page": 676,
+      "column": 1,
+      "bbox": [
+        307.89,
+        209.68,
+        562.22,
+        234.49
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0070",
+      "type": "paragraph",
+      "text": "Epoetin alpha và zeta: Tiêm dưới da liều khởi đầu 150 đv/kg/lần, 3 lần/tuần hoặc 450 đv/lần, 1 lần/tuần. Tăng lên đến 300 đv/kg/lần, 3 lần/tuần nếu sau 4 tuần không đạt được mức tăng hemoglobin hoặc số lượng tế bào hồng cầu lưới mong muốn. Ngừng thuốc nếu dùng liều cao hơn mà sau 4 tuần không có đáp ứng. Giảm 25 - 50% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc. Ngừng thuốc sau khi kết thúc hóa trị liệu khoảng 4 tuần.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 1,
+      "bbox": [
+        307.89,
+        233.88,
+        562.23,
+        356.31
+      ],
+      "source": {
+        "line_count": 10
+      }
+    },
+    {
+      "id": "b0071",
+      "type": "paragraph",
+      "text": "Epoetin beta: Tiêm dưới da liều khởi đầu 450 đv/kg/lần, 1 lần/ tuần trong 4 tuần (có thể chia nhỏ liều thành 3 - 7 liều nhỏ). Tăng liều lên đến 900 đv/kg/tuần (tối đa 60 000 đv/tuần) nếu sau 4 tuần không đạt được mức tăng hemoglobin thêm ít nhất 1 g/100 ml và dừng thuốc nếu sau 8 tuần không đạt được mức tăng hemoglobin này. Giảm 25 - 50% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc. Ngừng thuốc sau khi kết thúc hóa trị liệu khoảng 4 tuần.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 1,
+      "bbox": [
+        307.89,
+        355.7,
+        562.23,
+        478.14
+      ],
+      "source": {
+        "line_count": 10
+      }
+    },
+    {
+      "id": "b0072",
+      "type": "paragraph",
+      "text": "Làm tăng sản xuất hồng cầu (để giảm lượng máu cần truyền) ở bệnh nhân chuẩn bị phẫu thuật (trừ phẫu thuật tim mạch) có hemoglobin 10 - 13 g/100 ml và có nguy cơ mất máu cao (người lớn):",
+      "page": 670,
+      "printed_page": 676,
+      "column": 1,
+      "bbox": [
+        307.89,
+        477.68,
+        562.22,
+        514.68
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0073",
+      "type": "paragraph",
+      "text": "Epoetin alpha và zeta: Tiêm dưới da 600 đv/kg/lần, 2 lần/tuần, trong 3 tuần bắt đầu 21 ngày trước phẫu thuật; hoặc 300 đv/ngày trong 15 ngày, bắt đầu 10 ngày trước khi phẫu thuật.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 1,
+      "bbox": [
+        307.89,
+        514.07,
+        562.23,
+        551.23
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0074",
+      "type": "paragraph",
+      "text": "Phòng thiếu máu ở trẻ sinh non có cân nặng lúc sinh từ 750 g - 1 500 g và tuổi thai dưới 34 tuần:",
+      "page": 670,
+      "printed_page": 676,
+      "column": 1,
+      "bbox": [
+        307.89,
+        550.78,
+        562.23,
+        575.59
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0075",
+      "type": "paragraph",
+      "text": "Epoetin beta: Tiêm dưới da 250 đv/kg/lần, 3 lần/tuần, trong 6 tuần.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 1,
+      "bbox": [
+        307.89,
+        574.98,
+        559.85,
+        587.77
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Epoetin beta: Tiêm dưới da 250 đv/kg/lần, 3 lần/tuần, trong 6 tuần.",
+          "bbox": [
+            307.89,
+            574.98,
+            559.85,
+            587.77
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0076",
+      "type": "paragraph",
+      "text": "Tăng sinh lượng máu tự thân của người đang trong thời kỳ chuẩn bị cho máu:",
+      "page": 670,
+      "printed_page": 676,
+      "column": 1,
+      "bbox": [
+        307.89,
+        587.32,
+        562.22,
+        612.14
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0077",
+      "type": "paragraph",
+      "text": "Epoetin beta: Tiêm tĩnh mạch vào khoảng 2 phút hoặc tiêm dưới da 2 lần/tuần, trong 4 tuần. Liều dùng mỗi lần phụ thuộc vào lượng hồng cầu dữ trữ nội sinh của bệnh nhân và lượng máu dự tính sẽ lấy ra. Ví dụ, bệnh nhân nữ có lượng dự trữ hồng cầu nội sinh là 500 ml và cần lấy ra 6 đơn vị máu thì liều tiêm tĩnh mạch là 800 đv/kg, tiêm dưới da là 600 đv/kg; bệnh nhân nam có lượng dự trữ hồng cầu nội sinh là 500 ml và cần lấy ra 5 đơn vị máu thì liều tiêm tĩnh mạch là 200 đv/kg, tiêm dưới da là 150 đv/kg.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 1,
+      "bbox": [
+        307.89,
+        611.52,
+        562.24,
+        709.59
+      ],
+      "source": {
+        "line_count": 8
+      }
+    },
+    {
+      "id": "b0078",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương tác thuốc",
+      "page": 670,
+      "printed_page": 676,
+      "column": 1,
+      "bbox": [
+        307.89,
+        711.83,
+        374.8,
+        724.98
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương tác thuốc",
+          "bbox": [
+            307.89,
+            711.83,
+            374.8,
+            724.98
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0079",
+      "type": "paragraph",
+      "text": "Dùng các thuốc ức chế men chuyển đồng thời với epoetin có thể làm tăng nguy cơ bị tăng kali huyết, đặc biệt ở người bệnh giảm chức năng thận.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 1,
+      "bbox": [
+        307.89,
+        724.16,
+        562.23,
+        761.32
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0080",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương kỵ",
+      "page": 670,
+      "printed_page": 676,
+      "column": 1,
+      "bbox": [
+        307.89,
+        763.56,
+        347.63,
+        776.7
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương kỵ",
+          "bbox": [
+            307.89,
+            763.56,
+            347.63,
+            776.7
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0081",
+      "type": "paragraph",
+      "text": "Chế phẩm epoetin được đệm bằng dung dịch natri clorid/natri citrat đẳng trương có pH là 6,9 ± 0,3.",
+      "page": 670,
+      "printed_page": 676,
+      "column": 1,
+      "bbox": [
+        307.89,
+        775.89,
+        562.23,
+        800.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0082",
+      "type": "paragraph",
+      "text": "Không trộn epoetin với các thuốc khác.",
+      "page": 671,
+      "printed_page": 677,
+      "column": 0,
+      "bbox": [
+        34.93,
+        63.32,
+        184.8,
+        76.12
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Không trộn epoetin với các thuốc khác.",
+          "bbox": [
+            34.93,
+            63.32,
+            184.8,
+            76.12
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0083",
+      "type": "paragraph",
+      "text": "Không cho thêm epoetin vào các dung dịch truyền tĩnh mạch.",
+      "page": 671,
+      "printed_page": 677,
+      "column": 0,
+      "bbox": [
+        34.93,
+        75.38,
+        268.96,
+        88.17
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Không cho thêm epoetin vào các dung dịch truyền tĩnh mạch.",
+          "bbox": [
+            34.93,
+            75.38,
+            268.96,
+            88.17
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0084",
+      "type": "heading",
+      "level": 2,
+      "text": "Quá liều và xử trí",
+      "page": 671,
+      "printed_page": 677,
+      "column": 0,
+      "bbox": [
+        34.93,
+        90.28,
+        106.61,
+        103.43
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Quá liều và xử trí",
+          "bbox": [
+            34.93,
+            90.28,
+            106.61,
+            103.43
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0085",
+      "type": "paragraph",
+      "text": "Giới hạn điều trị của epoetin rất rộng. Quá liều epoetin có thể gây tăng tác dụng dược lý của hormon. Có thể rút máu tĩnh mạch nếu nồng độ hemoglobin quá cao. Nếu cần, điều trị hỗ trợ thêm.",
+      "page": 671,
+      "printed_page": 677,
+      "column": 0,
+      "bbox": [
+        34.93,
+        102.48,
+        289.26,
+        139.39
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0086",
+      "type": "heading",
+      "text": "Cập nhật lần cuối",
+      "page": 671,
+      "printed_page": 677,
+      "column": 0,
+      "bbox": [
+        34.93,
+        144.21,
+        130.2,
+        156.85
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2019.",
+          "bbox": [
+            34.93,
+            144.21,
+            130.2,
+            156.85
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "level": 2,
+      "v11_fix": "cap_nhat_cap_nhap_lan_cuoi_normalized_alpha8"
+    },
+    {
+      "id": "b0086",
+      "type": "paragraph",
+      "text": "2019.",
+      "page": 671,
+      "printed_page": 677,
+      "column": 0,
+      "bbox": [
+        34.93,
+        144.21,
+        130.2,
+        156.85
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2019.",
+          "bbox": [
+            34.93,
+            144.21,
+            130.2,
+            156.85
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "v11_parent_heading": "Cập nhật lần cuối"
+    }
+  ],
   "sections": [
-    {
-      "id": "thong-tin-au-chuyen-luan",
-      "title": "Thông tin đầu chuyên luận",
-      "content": "EPOETIN",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "EPOETIN"
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "ten-chung-quoc-te",
-      "title": "Tên chung quốc tế",
-      "content": "Epoetin alfa, epoetin beta, epoetin zeta.\n\nMã ATC: B03XA01.\n\nLoại thuốc: Thuốc kích thích tạo hồng cầu.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Epoetin alfa, epoetin beta, epoetin zeta.\n\nMã ATC: B03XA01.\n\nLoại thuốc: Thuốc kích thích tạo hồng cầu."
-        }
-      ],
-      "subsections": []
-    },
     {
       "id": "dang-thuoc-va-ham-luong",
       "title": "Dạng thuốc và hàm lượng",
-      "content": "Dung dịch tiêm epoetin alpha: 2 000 đơn vị (đv)/1 ml, bơm tiêm 0,5 ml; 4 000 đv/1 ml, bơm tiêm 0,5 ml; 10 000 đv/1 ml, bơm tiêm 0,3 ml, 0,4 ml, 0,5 ml, 0,6 ml, 0,8 ml và 1 ml; 40 000 đv/1 ml, bơm tiêm 0,5 ml, 0,75 ml và 1 ml.\n\nDung dịch tiêm epoetin beta: 1 667 đv/ml, bơm tiêm 0,3 ml; 6 667 đv/ml, bơm tiêm 0,3 ml; 10 000 đv/ml, bơm tiêm 0,3 ml; 13 333 đv/ml, bơm tiêm 0,3 ml; 16 667 đv/ml, bơm tiêm 0,3 ml và 0,6 ml; 20 000 đv/ml, bơm tiêm 0,3 ml; 33 333 đv/ml, bơm tiêm 0,6 ml; 50 000 đv/ml, bơm tiêm 0,6 ml.\n\nDung dịch tiêm epoetin zeta: 3 333 đv/ml, bơm tiêm 0,3 ml, 0,6 ml và 0,9 ml; 10 000 đv/ml, bơm tiêm 0,4 ml, 0,5 ml, 0,6 ml, 0,6 ml và 1 ml; 40 000 đv/ml, bơm tiêm 0,5 ml, 0,75 ml và 1 ml.",
+      "heading_block": "b0005",
       "blocks": [
         {
           "type": "text",
-          "text": "Dung dịch tiêm epoetin alpha: 2 000 đơn vị (đv)/1 ml, bơm tiêm 0,5 ml; 4 000 đv/1 ml, bơm tiêm 0,5 ml; 10 000 đv/1 ml, bơm tiêm 0,3 ml, 0,4 ml, 0,5 ml, 0,6 ml, 0,8 ml và 1 ml; 40 000 đv/1 ml, bơm tiêm 0,5 ml, 0,75 ml và 1 ml.\n\nDung dịch tiêm epoetin beta: 1 667 đv/ml, bơm tiêm 0,3 ml; 6 667 đv/ml, bơm tiêm 0,3 ml; 10 000 đv/ml, bơm tiêm 0,3 ml; 13 333 đv/ml, bơm tiêm 0,3 ml; 16 667 đv/ml, bơm tiêm 0,3 ml và 0,6 ml; 20 000 đv/ml, bơm tiêm 0,3 ml; 33 333 đv/ml, bơm tiêm 0,6 ml; 50 000 đv/ml, bơm tiêm 0,6 ml.\n\nDung dịch tiêm epoetin zeta: 3 333 đv/ml, bơm tiêm 0,3 ml, 0,6 ml và 0,9 ml; 10 000 đv/ml, bơm tiêm 0,4 ml, 0,5 ml, 0,6 ml, 0,6 ml và 1 ml; 40 000 đv/ml, bơm tiêm 0,5 ml, 0,75 ml và 1 ml."
+          "text": "Dung dịch tiêm epoetin alpha: 2 000 đơn vị (đv)/1 ml, bơm tiêm 0,5 ml; 4 000 đv/1 ml, bơm tiêm 0,5 ml; 10 000 đv/1 ml, bơm tiêm 0,3 ml, 0,4 ml, 0,5 ml, 0,6 ml, 0,8 ml và 1 ml; 40 000 đv/1 ml, bơm tiêm 0,5 ml, 0,75 ml và 1 ml.",
+          "block_id": "b0006"
+        },
+        {
+          "type": "text",
+          "text": "Dung dịch tiêm epoetin beta: 1 667 đv/ml, bơm tiêm 0,3 ml; 6 667 đv/ml, bơm tiêm 0,3 ml; 10 000 đv/ml, bơm tiêm 0,3 ml; 13 333 đv/ml, bơm tiêm 0,3 ml; 16 667 đv/ml, bơm tiêm 0,3 ml và 0,6 ml; 20 000 đv/ml, bơm tiêm 0,3 ml; 33 333 đv/ml, bơm tiêm 0,6 ml; 50 000 đv/ml, bơm tiêm 0,6 ml.",
+          "block_id": "b0007"
+        },
+        {
+          "type": "text",
+          "text": "Dung dịch tiêm epoetin zeta: 3 333 đv/ml, bơm tiêm 0,3 ml, 0,6 ml và 0,9 ml; 10 000 đv/ml, bơm tiêm 0,4 ml, 0,5 ml, 0,6 ml, 0,6 ml và 1 ml; 40 000 đv/ml, bơm tiêm 0,5 ml, 0,75 ml và 1 ml.",
+          "block_id": "b0008"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "duoc-luc-hoc",
       "title": "Dược lực học",
-      "content": "Các epoetin (epoetin alpha, epoetin beta, epoetin gamma, epoetin lambda, epoetin omega, epoetin theta và epoetin zeta) là protein tái tổ hợp có trình tự acid amin giống với trình tự acid amin của erythropoietin nội sinh nhưng khác nhau ở phần nhóm ngoại carbohydrat. Thuốc tác dụng tương tự như erythropoietin nội sinh, chủ yếu lên quá trình tạo hồng cầu do kích thích phát triển và biệt hóa các tế bào tủy xương tạo hồng cầu thông qua gắn với các receptor ở màng tế bào. Cụ thể, sau khi gắn với receptor, các epoetin có thể kích thích tổng hợp acid nucleic để tế bào tủy xương phân chia; đồng thời có thể ức chế những tế bào này chết theo chương trình khiến các tế bào tủy xương tiếp tục phát triển và biệt hóa thành hồng cầu. Thuốc cũng kích thích giải phóng hồng cầu lưới từ tủy xương vào máu để phát triển thành hồng cầu trưởng thành.",
+      "heading_block": "b0009",
       "blocks": [
         {
           "type": "text",
-          "text": "Các epoetin (epoetin alpha, epoetin beta, epoetin gamma, epoetin lambda, epoetin omega, epoetin theta và epoetin zeta) là protein tái tổ hợp có trình tự acid amin giống với trình tự acid amin của erythropoietin nội sinh nhưng khác nhau ở phần nhóm ngoại carbohydrat. Thuốc tác dụng tương tự như erythropoietin nội sinh, chủ yếu lên quá trình tạo hồng cầu do kích thích phát triển và biệt hóa các tế bào tủy xương tạo hồng cầu thông qua gắn với các receptor ở màng tế bào. Cụ thể, sau khi gắn với receptor, các epoetin có thể kích thích tổng hợp acid nucleic để tế bào tủy xương phân chia; đồng thời có thể ức chế những tế bào này chết theo chương trình khiến các tế bào tủy xương tiếp tục phát triển và biệt hóa thành hồng cầu. Thuốc cũng kích thích giải phóng hồng cầu lưới từ tủy xương vào máu để phát triển thành hồng cầu trưởng thành."
+          "text": "Các epoetin (epoetin alpha, epoetin beta, epoetin gamma, epoetin lambda, epoetin omega, epoetin theta và epoetin zeta) là protein tái tổ hợp có trình tự acid amin giống với trình tự acid amin của erythropoietin nội sinh nhưng khác nhau ở phần nhóm ngoại carbohydrat. Thuốc tác dụng tương tự như erythropoietin nội sinh, chủ yếu lên quá trình tạo hồng cầu do kích thích phát triển và biệt hóa các tế bào tủy xương tạo hồng cầu thông qua gắn với các receptor ở màng tế bào. Cụ thể, sau khi gắn với receptor, các epoetin có thể kích thích tổng hợp acid nucleic để tế bào tủy xương phân chia; đồng thời có thể ức chế những tế bào này chết theo chương trình khiến các tế bào tủy xương tiếp tục phát triển và biệt hóa thành hồng cầu. Thuốc cũng kích thích giải phóng hồng cầu lưới từ tủy xương vào máu để phát triển thành hồng cầu trưởng thành.",
+          "block_id": "b0010"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "duoc-ong-hoc",
+      "id": "duoc-dong-hoc",
       "title": "Dược động học",
-      "content": "Hấp thu: Do bản chất là một protein, các epoetin bị phân hủy ở đường tiêu hóa nên phải dùng theo đường tiêm (truyền tĩnh mạch, tiêm dưới da). Thuốc hấp thu chậm và không hoàn toàn sau khi tiêm dưới da. Nồng độ đỉnh của epoetin alpha đạt được sau khi tiêm dưới da 5 - 24 giờ. Sau khi tiêm tĩnh mạch, thuốc đạt nồng độ đỉnh trong huyết tương cao hơn nhưng giảm nhanh hơn so với tiêm dưới da.\n\nPhân bố: Thể tích phân bố khoảng 9 lít. Thuốc phân bố nhanh vào huyết tương và tập trung tại gan, thận và tủy xương. Không rõ thuốc có qua nhau thai hay phân bố vào sữa mẹ hay không. Thể tích phân bố thuốc ở trẻ đẻ non cao hơn 1,5 - 2 lần so với người lớn khỏe mạnh.\n\nChuyển hóa: Hiểu biết về chuyển hóa của thuốc vẫn còn rất hạn chế. Một phần thuốc bị thoái hóa. Chuyển hóa ở gan chỉ đóng góp một phần nhỏ cho quá trình chuyển hóa thuốc.\n\nThải trừ: Thải trừ chủ yếu qua phân, khoảng ≤ 10% thuốc được thải trừ qua nước tiểu dưới dạng chưa chuyển hóa. Nửa đời thải trừ của epoetin alpha là 4 - 13 giờ ở người bệnh suy thận mạn tính sau liều tiêm tĩnh mạch; 16 - 67 giờ ở bệnh nhân ung thư sau khi tiêm dưới da.",
+      "heading_block": "b0011",
       "blocks": [
         {
           "type": "text",
-          "text": "Hấp thu: Do bản chất là một protein, các epoetin bị phân hủy ở đường tiêu hóa nên phải dùng theo đường tiêm (truyền tĩnh mạch, tiêm dưới da). Thuốc hấp thu chậm và không hoàn toàn sau khi tiêm dưới da. Nồng độ đỉnh của epoetin alpha đạt được sau khi tiêm dưới da 5 - 24 giờ. Sau khi tiêm tĩnh mạch, thuốc đạt nồng độ đỉnh trong huyết tương cao hơn nhưng giảm nhanh hơn so với tiêm dưới da.\n\nPhân bố: Thể tích phân bố khoảng 9 lít. Thuốc phân bố nhanh vào huyết tương và tập trung tại gan, thận và tủy xương. Không rõ thuốc có qua nhau thai hay phân bố vào sữa mẹ hay không. Thể tích phân bố thuốc ở trẻ đẻ non cao hơn 1,5 - 2 lần so với người lớn khỏe mạnh.\n\nChuyển hóa: Hiểu biết về chuyển hóa của thuốc vẫn còn rất hạn chế. Một phần thuốc bị thoái hóa. Chuyển hóa ở gan chỉ đóng góp một phần nhỏ cho quá trình chuyển hóa thuốc.\n\nThải trừ: Thải trừ chủ yếu qua phân, khoảng ≤ 10% thuốc được thải trừ qua nước tiểu dưới dạng chưa chuyển hóa. Nửa đời thải trừ của epoetin alpha là 4 - 13 giờ ở người bệnh suy thận mạn tính sau liều tiêm tĩnh mạch; 16 - 67 giờ ở bệnh nhân ung thư sau khi tiêm dưới da."
+          "text": "Hấp thu: Do bản chất là một protein, các epoetin bị phân hủy ở đường tiêu hóa nên phải dùng theo đường tiêm (truyền tĩnh mạch, tiêm dưới da). Thuốc hấp thu chậm và không hoàn toàn sau khi tiêm dưới da. Nồng độ đỉnh của epoetin alpha đạt được sau khi tiêm dưới da 5 - 24 giờ. Sau khi tiêm tĩnh mạch, thuốc đạt nồng độ đỉnh trong huyết tương cao hơn nhưng giảm nhanh hơn so với tiêm dưới da.",
+          "block_id": "b0012"
+        },
+        {
+          "type": "text",
+          "text": "Phân bố: Thể tích phân bố khoảng 9 lít. Thuốc phân bố nhanh vào huyết tương và tập trung tại gan, thận và tủy xương. Không rõ thuốc có qua nhau thai hay phân bố vào sữa mẹ hay không. Thể tích phân bố thuốc ở trẻ đẻ non cao hơn 1,5 - 2 lần so với người lớn khỏe mạnh.",
+          "block_id": "b0013"
+        },
+        {
+          "type": "text",
+          "text": "Chuyển hóa: Hiểu biết về chuyển hóa của thuốc vẫn còn rất hạn chế. Một phần thuốc bị thoái hóa. Chuyển hóa ở gan chỉ đóng góp một phần nhỏ cho quá trình chuyển hóa thuốc.",
+          "block_id": "b0014"
+        },
+        {
+          "type": "text",
+          "text": "Thải trừ: Thải trừ chủ yếu qua phân, khoảng ≤ 10% thuốc được thải trừ qua nước tiểu dưới dạng chưa chuyển hóa. Nửa đời thải trừ của epoetin alpha là 4 - 13 giờ ở người bệnh suy thận mạn tính sau liều tiêm tĩnh mạch; 16 - 67 giờ ở bệnh nhân ung thư sau khi tiêm dưới da.",
+          "block_id": "b0015"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chi-inh",
+      "id": "chi-dinh",
       "title": "Chỉ định",
-      "content": "Điều trị thiếu máu ở bệnh nhân suy thận mạn tính (đang lọc máu hoặc chưa phải lọc máu).\n\nĐiều trị thiếu máu do hóa trị liệu ở người bệnh ung thư.\n\nLàm tăng sản xuất hồng cầu (để giảm lượng máu cần truyền) ở bệnh nhân chuẩn bị phẫu thuật (trừ phẫu thuật tim mạch) có hemoglobin 10 - 13 g/100 ml và có nguy cơ mất máu cao.\n\nPhòng thiếu máu ở trẻ sinh non có cân nặng lúc sinh từ 750 g - 1 500 g và tuổi thai dưới 34 tuần.\n\nTăng sinh lượng máu tự thân của người đang trong thời kỳ chuẩn bị cho máu.",
+      "heading_block": "b0016",
       "blocks": [
         {
           "type": "text",
-          "text": "Điều trị thiếu máu ở bệnh nhân suy thận mạn tính (đang lọc máu hoặc chưa phải lọc máu).\n\nĐiều trị thiếu máu do hóa trị liệu ở người bệnh ung thư.\n\nLàm tăng sản xuất hồng cầu (để giảm lượng máu cần truyền) ở bệnh nhân chuẩn bị phẫu thuật (trừ phẫu thuật tim mạch) có hemoglobin 10 - 13 g/100 ml và có nguy cơ mất máu cao.\n\nPhòng thiếu máu ở trẻ sinh non có cân nặng lúc sinh từ 750 g - 1 500 g và tuổi thai dưới 34 tuần.\n\nTăng sinh lượng máu tự thân của người đang trong thời kỳ chuẩn bị cho máu."
+          "text": "Điều trị thiếu máu ở bệnh nhân suy thận mạn tính (đang lọc máu hoặc chưa phải lọc máu).",
+          "block_id": "b0017"
+        },
+        {
+          "type": "text",
+          "text": "Điều trị thiếu máu do hóa trị liệu ở người bệnh ung thư.",
+          "block_id": "b0018"
+        },
+        {
+          "type": "text",
+          "text": "Làm tăng sản xuất hồng cầu (để giảm lượng máu cần truyền) ở bệnh nhân chuẩn bị phẫu thuật (trừ phẫu thuật tim mạch) có hemoglobin 10 - 13 g/100 ml và có nguy cơ mất máu cao.",
+          "block_id": "b0019"
+        },
+        {
+          "type": "text",
+          "text": "Phòng thiếu máu ở trẻ sinh non có cân nặng lúc sinh từ 750 g - 1 500 g và tuổi thai dưới 34 tuần.",
+          "block_id": "b0020"
+        },
+        {
+          "type": "text",
+          "text": "Tăng sinh lượng máu tự thân của người đang trong thời kỳ chuẩn bị cho máu.",
+          "block_id": "b0021"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chong-chi-inh",
+      "id": "chong-chi-dinh",
       "title": "Chống chỉ định",
-      "content": "Bệnh nhân không thể dùng điều trị dự phòng huyết khối.\n\nBất sản hồng cầu đơn thuần sau liệu pháp erythropoietin.\n\nTăng huyết áp không kiểm soát được.\n\nMẫn cảm với thuốc.",
+      "heading_block": "b0022",
       "blocks": [
         {
           "type": "text",
-          "text": "Bệnh nhân không thể dùng điều trị dự phòng huyết khối.\n\nBất sản hồng cầu đơn thuần sau liệu pháp erythropoietin.\n\nTăng huyết áp không kiểm soát được.\n\nMẫn cảm với thuốc."
+          "text": "Bệnh nhân không thể dùng điều trị dự phòng huyết khối.",
+          "block_id": "b0023"
+        },
+        {
+          "type": "text",
+          "text": "Bất sản hồng cầu đơn thuần sau liệu pháp erythropoietin.",
+          "block_id": "b0024"
+        },
+        {
+          "type": "text",
+          "text": "Tăng huyết áp không kiểm soát được.",
+          "block_id": "b0025"
+        },
+        {
+          "type": "text",
+          "text": "Mẫn cảm với thuốc.",
+          "block_id": "b0026"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "than-trong",
       "title": "Thận trọng",
-      "content": "Nhiễm độc nhôm hoặc cùng lúc mắc nhiễm khuẩn có thể ảnh hưởng tới đáp ứng với các epoetin. Trước khi điều trị, cần điều chỉnh các yếu tố có thể góp phần gây thiếu máu ở người suy thận mạn như thiếu sắt, thiếu folat.\n\nTrong quá trình lọc máu, có thể cần tăng liều heparin không phân đoạn hoặc heparin trọng lượng phân tử thấp.\n\nThận trọng khi dùng cho người bị động kinh, người bị tăng huyết áp không được điều trị hoặc điều trị không hiệu quả. Cần ngừng dùng epoetin nếu thấy huyết áp không kiểm soát tốt.\n\nBệnh thiếu máu do nghẽn mạch cục bộ; bệnh ác tính; các bệnh viêm khác (có thể ảnh hưởng tới đáp ứng với epoetin). Có thể tăng nguy cơ huyết khối khi dùng điều trị thiếu máu trước phẫu thuật chỉnh hình. Tránh dùng trong các bệnh tim mạch như nhồi máu cơ tim hoặc tai biến mạch máu não mới xảy ra.\n\nNguy cơ huyết khối có thể tăng lên khi dùng điều trị thiếu máu ở người dùng hóa trị.\n\nBệnh hồng cầu liềm (có thể đặt mục tiêu Hb thấp hơn ở những người này).\n\nĐau đột ngột kiểu đau nửa đầu.\n\nTăng tiểu cầu (cần theo dõi số lượng tiểu cầu trong vòng 8 tuần đầu tiên).",
+      "heading_block": "b0027",
       "blocks": [
         {
           "type": "text",
-          "text": "Nhiễm độc nhôm hoặc cùng lúc mắc nhiễm khuẩn có thể ảnh hưởng tới đáp ứng với các epoetin. Trước khi điều trị, cần điều chỉnh các yếu tố có thể góp phần gây thiếu máu ở người suy thận mạn như thiếu sắt, thiếu folat.\n\nTrong quá trình lọc máu, có thể cần tăng liều heparin không phân đoạn hoặc heparin trọng lượng phân tử thấp.\n\nThận trọng khi dùng cho người bị động kinh, người bị tăng huyết áp không được điều trị hoặc điều trị không hiệu quả. Cần ngừng dùng epoetin nếu thấy huyết áp không kiểm soát tốt.\n\nBệnh thiếu máu do nghẽn mạch cục bộ; bệnh ác tính; các bệnh viêm khác (có thể ảnh hưởng tới đáp ứng với epoetin). Có thể tăng nguy cơ huyết khối khi dùng điều trị thiếu máu trước phẫu thuật chỉnh hình. Tránh dùng trong các bệnh tim mạch như nhồi máu cơ tim hoặc tai biến mạch máu não mới xảy ra.\n\nNguy cơ huyết khối có thể tăng lên khi dùng điều trị thiếu máu ở người dùng hóa trị.\n\nBệnh hồng cầu liềm (có thể đặt mục tiêu Hb thấp hơn ở những người này).\n\nĐau đột ngột kiểu đau nửa đầu.\n\nTăng tiểu cầu (cần theo dõi số lượng tiểu cầu trong vòng 8 tuần đầu tiên)."
+          "text": "Nhiễm độc nhôm hoặc cùng lúc mắc nhiễm khuẩn có thể ảnh hưởng tới đáp ứng với các epoetin. Trước khi điều trị, cần điều chỉnh các yếu tố có thể góp phần gây thiếu máu ở người suy thận mạn như thiếu sắt, thiếu folat.",
+          "block_id": "b0028"
+        },
+        {
+          "type": "text",
+          "text": "Trong quá trình lọc máu, có thể cần tăng liều heparin không phân đoạn hoặc heparin trọng lượng phân tử thấp.",
+          "block_id": "b0029"
+        },
+        {
+          "type": "text",
+          "text": "Thận trọng khi dùng cho người bị động kinh, người bị tăng huyết áp không được điều trị hoặc điều trị không hiệu quả. Cần ngừng dùng epoetin nếu thấy huyết áp không kiểm soát tốt.",
+          "block_id": "b0030"
+        },
+        {
+          "type": "text",
+          "text": "Bệnh thiếu máu do nghẽn mạch cục bộ; bệnh ác tính; các bệnh viêm khác (có thể ảnh hưởng tới đáp ứng với epoetin). Có thể tăng nguy cơ huyết khối khi dùng điều trị thiếu máu trước phẫu thuật chỉnh hình. Tránh dùng trong các bệnh tim mạch như nhồi máu cơ tim hoặc tai biến mạch máu não mới xảy ra.",
+          "block_id": "b0031"
+        },
+        {
+          "type": "text",
+          "text": "Nguy cơ huyết khối có thể tăng lên khi dùng điều trị thiếu máu ở người dùng hóa trị.",
+          "block_id": "b0032"
+        },
+        {
+          "type": "text",
+          "text": "Bệnh hồng cầu liềm (có thể đặt mục tiêu Hb thấp hơn ở những người này).",
+          "block_id": "b0033"
+        },
+        {
+          "type": "text",
+          "text": "Đau đột ngột kiểu đau nửa đầu.",
+          "block_id": "b0034"
+        },
+        {
+          "type": "text",
+          "text": "Tăng tiểu cầu (cần theo dõi số lượng tiểu cầu trong vòng 8 tuần đầu tiên).",
+          "block_id": "b0035"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-mang-thai",
       "title": "Thời kỳ mang thai",
-      "content": "Chưa có bằng chứng rõ ràng cho thấy các epoetin qua nhau thai.\n\nVì thiếu máu và cần thiết truyền máu nhiều lần cũng gây nguy cơ đáng kể cho mẹ và thai nhi, nên chỉ dùng epoetin alpha trong thời kỳ mang thai khi lợi ích dùng thuốc trội hơn nguy cơ được biết.",
+      "heading_block": "b0036",
       "blocks": [
         {
           "type": "text",
-          "text": "Chưa có bằng chứng rõ ràng cho thấy các epoetin qua nhau thai.\n\nVì thiếu máu và cần thiết truyền máu nhiều lần cũng gây nguy cơ đáng kể cho mẹ và thai nhi, nên chỉ dùng epoetin alpha trong thời kỳ mang thai khi lợi ích dùng thuốc trội hơn nguy cơ được biết."
+          "text": "Chưa có bằng chứng rõ ràng cho thấy các epoetin qua nhau thai.",
+          "block_id": "b0037"
+        },
+        {
+          "type": "text",
+          "text": "Vì thiếu máu và cần thiết truyền máu nhiều lần cũng gây nguy cơ đáng kể cho mẹ và thai nhi, nên chỉ dùng epoetin alpha trong thời kỳ mang thai khi lợi ích dùng thuốc trội hơn nguy cơ được biết.",
+          "block_id": "b0038"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-cho-con-bu",
       "title": "Thời kỳ cho con bú",
-      "content": "Chưa biết các epoetin có bài tiết vào sữa hay không, phải dùng thuốc thận trọng trong thời kỳ cho con bú.",
+      "heading_block": "b0039",
       "blocks": [
         {
           "type": "text",
-          "text": "Chưa biết các epoetin có bài tiết vào sữa hay không, phải dùng thuốc thận trọng trong thời kỳ cho con bú."
+          "text": "Chưa biết các epoetin có bài tiết vào sữa hay không, phải dùng thuốc thận trọng trong thời kỳ cho con bú.",
+          "block_id": "b0040"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tac-dung-khong-mong-muon-adr",
       "title": "Tác dụng không mong muốn (ADR)",
-      "content": "Thường gặp hoặc rất thường gặp Làm nặng thêm tình trạng tăng huyết áp (phụ thuộc liều). Cơn tăng huyết áp ở người vốn có huyết áp bình thường hoặc thấp. Tai biến tim mạch.\n\nTiêu chảy.\n\nTăng số lượng tiểu cầu sau khi điều trị, tác dụng phụ thuộc liều.\n\nĐau đầu.\n\nTriệu chứng giống cúm (có thể giảm bớt nếu tiêm tĩnh mạch kéo dài trên 5 phút).\n\nBuồn nôn, nôn.\n\nHuyết khối, đặc biệt là nếu bệnh nhân có xu hướng hạ huyết áp hoặc biến chứng suy động tĩnh mạch.\n\nRất hiếm gặp Đột ngột giảm hiệu quả điều trị do bất sản hồng cầu đơn thuần, đặc biệt là sau khi tiêm dưới da, ở bệnh nhân suy thận mạn.\n\nChưa xác định được tần suất Sốc phản vệ, phù mạch, tăng kali huyết, phản ứng quá mẫn, phản ứng tại chỗ tiêm, phù ngoại vi, phản ứng da, hội chứng StevensJohnson, hoại tử thượng bì nhiễm độc.",
+      "heading_block": "b0041",
       "blocks": [
         {
+          "type": "subheading",
+          "text": "Thường gặp hoặc rất thường gặp",
+          "block_id": "b0042"
+        },
+        {
           "type": "text",
-          "text": "Thường gặp hoặc rất thường gặp Làm nặng thêm tình trạng tăng huyết áp (phụ thuộc liều). Cơn tăng huyết áp ở người vốn có huyết áp bình thường hoặc thấp. Tai biến tim mạch.\n\nTiêu chảy.\n\nTăng số lượng tiểu cầu sau khi điều trị, tác dụng phụ thuộc liều.\n\nĐau đầu.\n\nTriệu chứng giống cúm (có thể giảm bớt nếu tiêm tĩnh mạch kéo dài trên 5 phút).\n\nBuồn nôn, nôn.\n\nHuyết khối, đặc biệt là nếu bệnh nhân có xu hướng hạ huyết áp hoặc biến chứng suy động tĩnh mạch.\n\nRất hiếm gặp Đột ngột giảm hiệu quả điều trị do bất sản hồng cầu đơn thuần, đặc biệt là sau khi tiêm dưới da, ở bệnh nhân suy thận mạn.\n\nChưa xác định được tần suất Sốc phản vệ, phù mạch, tăng kali huyết, phản ứng quá mẫn, phản ứng tại chỗ tiêm, phù ngoại vi, phản ứng da, hội chứng StevensJohnson, hoại tử thượng bì nhiễm độc."
+          "text": "Làm nặng thêm tình trạng tăng huyết áp (phụ thuộc liều). Cơn tăng huyết áp ở người vốn có huyết áp bình thường hoặc thấp. Tai biến tim mạch.",
+          "block_id": "b0043"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu chảy.",
+          "block_id": "b0044"
+        },
+        {
+          "type": "text",
+          "text": "Tăng số lượng tiểu cầu sau khi điều trị, tác dụng phụ thuộc liều.",
+          "block_id": "b0045"
+        },
+        {
+          "type": "text",
+          "text": "Đau đầu.",
+          "block_id": "b0046"
+        },
+        {
+          "type": "text",
+          "text": "Triệu chứng giống cúm (có thể giảm bớt nếu tiêm tĩnh mạch kéo dài trên 5 phút).",
+          "block_id": "b0047"
+        },
+        {
+          "type": "text",
+          "text": "Buồn nôn, nôn.",
+          "block_id": "b0048"
+        },
+        {
+          "type": "text",
+          "text": "Huyết khối, đặc biệt là nếu bệnh nhân có xu hướng hạ huyết áp hoặc biến chứng suy động tĩnh mạch.",
+          "block_id": "b0049"
+        },
+        {
+          "type": "subheading",
+          "text": "Rất hiếm gặp",
+          "block_id": "b0050"
+        },
+        {
+          "type": "text",
+          "text": "Đột ngột giảm hiệu quả điều trị do bất sản hồng cầu đơn thuần, đặc biệt là sau khi tiêm dưới da, ở bệnh nhân suy thận mạn.",
+          "block_id": "b0051"
+        },
+        {
+          "type": "subheading",
+          "text": "Chưa xác định được tần suất",
+          "block_id": "b0052"
+        },
+        {
+          "type": "text",
+          "text": "Sốc phản vệ, phù mạch, tăng kali huyết, phản ứng quá mẫn, phản ứng tại chỗ tiêm, phù ngoại vi, phản ứng da, hội chứng Stevens- Johnson, hoại tử thượng bì nhiễm độc.",
+          "block_id": "b0053"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "huong-dan-cach-xu-tri-adr",
       "title": "Hướng dẫn cách xử trí ADR",
-      "content": "Cần theo dõi hematocrit một cách thường xuyên và điều chỉnh liều theo đáp ứng nồng độ hemoglobin.\n\nĐể tránh tăng đông máu gây tắc mạch, sau khi đã tiêm thuốc vào tĩnh mạch thì tiêm thêm ngay 10 ml dung dịch muối đẳng trương và tăng liều heparin trong khi chạy thận nhân tạo để phòng huyết khối.",
+      "heading_block": "b0054",
       "blocks": [
         {
           "type": "text",
-          "text": "Cần theo dõi hematocrit một cách thường xuyên và điều chỉnh liều theo đáp ứng nồng độ hemoglobin.\n\nĐể tránh tăng đông máu gây tắc mạch, sau khi đã tiêm thuốc vào tĩnh mạch thì tiêm thêm ngay 10 ml dung dịch muối đẳng trương và tăng liều heparin trong khi chạy thận nhân tạo để phòng huyết khối."
+          "text": "Cần theo dõi hematocrit một cách thường xuyên và điều chỉnh liều theo đáp ứng nồng độ hemoglobin.",
+          "block_id": "b0055"
+        },
+        {
+          "type": "text",
+          "text": "Để tránh tăng đông máu gây tắc mạch, sau khi đã tiêm thuốc vào tĩnh mạch thì tiêm thêm ngay 10 ml dung dịch muối đẳng trương và tăng liều heparin trong khi chạy thận nhân tạo để phòng huyết khối.",
+          "block_id": "b0056"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "cach-dung",
-      "title": "Cách dùng",
-      "content": "Thuốc được đóng sẵn trong bơm tiêm và được dùng theo đường tiêm tĩnh mạch hoặc tiêm dưới da. Tiêm tĩnh mạch trong vòng 1 - 5 phút. Tiêm dưới da tối đa 1 ml tại mỗi vị trí tiêm.",
+      "id": "lieu-luong-va-cach-dung",
+      "title": "Liều lượng và cách dùng",
+      "heading_block": "b0057",
       "blocks": [
         {
-          "type": "text",
-          "text": "Thuốc được đóng sẵn trong bơm tiêm và được dùng theo đường tiêm tĩnh mạch hoặc tiêm dưới da. Tiêm tĩnh mạch trong vòng 1 - 5 phút. Tiêm dưới da tối đa 1 ml tại mỗi vị trí tiêm."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "lieu-luong",
-      "title": "Liều lượng",
-      "content": "Điều trị thiếu máu ở bệnh nhân suy thận mạn tính đang lọc máu (trẻ em và người lớn): Epoetin alpha và zeta (tiêm tĩnh mạch): Người lớn và trẻ em cân nặng > 10 kg: Liều khởi đầu 50 đv/kg/lần, 3 lần/tuần; trẻ em cân nặng ≤ 10 kg: Liều khởi đầu 25 đv/kg/lần, 3 lần/tuần.\n\nGiảm 25% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc.\n\nEpoetin beta: Tiêm dưới da liều khởi đầu 20 đv/kg/lần, 3 lần/tuần trong 4 tuần (nếu tiêm tĩnh mạch thì liều khởi đầu 40 đv/kg/lần, 3 lần/tuần, trong 4 tuần sau đó tăng lên 80 đv/kg/lần, 3 lần/tuần).\n\nCứ sau 4 tuần thì tăng liều thêm 20 đv/lần nếu bệnh nhân không đáp ứng thuốc. Giảm 25% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc (tối đa 720 đv/kg/tuần).\n\nĐiều trị thiếu máu ở bệnh nhân suy thận mạn tính chưa phải lọc máu (người lớn): Epoetin alpha và zeta: Tiêm tĩnh mạch liều khởi đầu 50 đv/kg/ lần, 3 lần/tuần. Tăng liều thêm 25% sau ít nhất mỗi 4 tuần nếu cần thiết. Liều duy trì 17 - 33 đv/kg/lần, 3 lần/tuần (tối đa 200 đv/kg/ lần, 3 lần/tuần). Giảm 25% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc (tối đa 720 đv/kg/tuần).\n\nEpoetin beta: Liều dùng tương tự với bệnh nhân thiếu máu do suy thận mạn đang lọc máu, ưu tiên dùng đường tiêm dưới da.\n\nĐiều trị thiếu máu do hóa trị liệu ở người bị bệnh ung thư (người lớn): Epoetin alpha và zeta: Tiêm dưới da liều khởi đầu 150 đv/kg/lần, 3 lần/tuần hoặc 450 đv/lần, 1 lần/tuần. Tăng lên đến 300 đv/kg/lần, 3 lần/tuần nếu sau 4 tuần không đạt được mức tăng hemoglobin hoặc số lượng tế bào hồng cầu lưới mong muốn. Ngừng thuốc nếu dùng liều cao hơn mà sau 4 tuần không có đáp ứng. Giảm 25 - 50% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc. Ngừng thuốc sau khi kết thúc hóa trị liệu khoảng 4 tuần.\n\nEpoetin beta: Tiêm dưới da liều khởi đầu 450 đv/kg/lần, 1 lần/ tuần trong 4 tuần (có thể chia nhỏ liều thành 3 - 7 liều nhỏ). Tăng liều lên đến 900 đv/kg/tuần (tối đa 60 000 đv/tuần) nếu sau 4 tuần không đạt được mức tăng hemoglobin thêm ít nhất 1 g/100 ml và dừng thuốc nếu sau 8 tuần không đạt được mức tăng hemoglobin này. Giảm 25 - 50% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc. Ngừng thuốc sau khi kết thúc hóa trị liệu khoảng 4 tuần.\n\nLàm tăng sản xuất hồng cầu (để giảm lượng máu cần truyền) ở bệnh nhân chuẩn bị phẫu thuật (trừ phẫu thuật tim mạch) có hemoglobin 10 - 13 g/100 ml và có nguy cơ mất máu cao (người lớn): Epoetin alpha và zeta: Tiêm dưới da 600 đv/kg/lần, 2 lần/tuần, trong 3 tuần bắt đầu 21 ngày trước phẫu thuật; hoặc 300 đv/ngày trong 15 ngày, bắt đầu 10 ngày trước khi phẫu thuật.\n\nPhòng thiếu máu ở trẻ sinh non có cân nặng lúc sinh từ 750 g - 1 500 g và tuổi thai dưới 34 tuần: Epoetin beta: Tiêm dưới da 250 đv/kg/lần, 3 lần/tuần, trong 6 tuần.\n\nTăng sinh lượng máu tự thân của người đang trong thời kỳ chuẩn bị cho máu: Epoetin beta: Tiêm tĩnh mạch vào khoảng 2 phút hoặc tiêm dưới da 2 lần/tuần, trong 4 tuần. Liều dùng mỗi lần phụ thuộc vào lượng hồng cầu dữ trữ nội sinh của bệnh nhân và lượng máu dự tính sẽ lấy ra. Ví dụ, bệnh nhân nữ có lượng dự trữ hồng cầu nội sinh là 500 ml và cần lấy ra 6 đơn vị máu thì liều tiêm tĩnh mạch là 800 đv/kg, tiêm dưới da là 600 đv/kg; bệnh nhân nam có lượng dự trữ hồng cầu nội sinh là 500 ml và cần lấy ra 5 đơn vị máu thì liều tiêm tĩnh mạch là 200 đv/kg, tiêm dưới da là 150 đv/kg.",
-      "blocks": [
+          "type": "subheading",
+          "text": "Cách dùng",
+          "block_id": "b0058"
+        },
         {
           "type": "text",
-          "text": "Điều trị thiếu máu ở bệnh nhân suy thận mạn tính đang lọc máu (trẻ em và người lớn): Epoetin alpha và zeta (tiêm tĩnh mạch): Người lớn và trẻ em cân nặng > 10 kg: Liều khởi đầu 50 đv/kg/lần, 3 lần/tuần; trẻ em cân nặng ≤ 10 kg: Liều khởi đầu 25 đv/kg/lần, 3 lần/tuần.\n\nGiảm 25% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc.\n\nEpoetin beta: Tiêm dưới da liều khởi đầu 20 đv/kg/lần, 3 lần/tuần trong 4 tuần (nếu tiêm tĩnh mạch thì liều khởi đầu 40 đv/kg/lần, 3 lần/tuần, trong 4 tuần sau đó tăng lên 80 đv/kg/lần, 3 lần/tuần).\n\nCứ sau 4 tuần thì tăng liều thêm 20 đv/lần nếu bệnh nhân không đáp ứng thuốc. Giảm 25% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc (tối đa 720 đv/kg/tuần).\n\nĐiều trị thiếu máu ở bệnh nhân suy thận mạn tính chưa phải lọc máu (người lớn): Epoetin alpha và zeta: Tiêm tĩnh mạch liều khởi đầu 50 đv/kg/ lần, 3 lần/tuần. Tăng liều thêm 25% sau ít nhất mỗi 4 tuần nếu cần thiết. Liều duy trì 17 - 33 đv/kg/lần, 3 lần/tuần (tối đa 200 đv/kg/ lần, 3 lần/tuần). Giảm 25% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc (tối đa 720 đv/kg/tuần).\n\nEpoetin beta: Liều dùng tương tự với bệnh nhân thiếu máu do suy thận mạn đang lọc máu, ưu tiên dùng đường tiêm dưới da.\n\nĐiều trị thiếu máu do hóa trị liệu ở người bị bệnh ung thư (người lớn): Epoetin alpha và zeta: Tiêm dưới da liều khởi đầu 150 đv/kg/lần, 3 lần/tuần hoặc 450 đv/lần, 1 lần/tuần. Tăng lên đến 300 đv/kg/lần, 3 lần/tuần nếu sau 4 tuần không đạt được mức tăng hemoglobin hoặc số lượng tế bào hồng cầu lưới mong muốn. Ngừng thuốc nếu dùng liều cao hơn mà sau 4 tuần không có đáp ứng. Giảm 25 - 50% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc. Ngừng thuốc sau khi kết thúc hóa trị liệu khoảng 4 tuần.\n\nEpoetin beta: Tiêm dưới da liều khởi đầu 450 đv/kg/lần, 1 lần/ tuần trong 4 tuần (có thể chia nhỏ liều thành 3 - 7 liều nhỏ). Tăng liều lên đến 900 đv/kg/tuần (tối đa 60 000 đv/tuần) nếu sau 4 tuần không đạt được mức tăng hemoglobin thêm ít nhất 1 g/100 ml và dừng thuốc nếu sau 8 tuần không đạt được mức tăng hemoglobin này. Giảm 25 - 50% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc. Ngừng thuốc sau khi kết thúc hóa trị liệu khoảng 4 tuần.\n\nLàm tăng sản xuất hồng cầu (để giảm lượng máu cần truyền) ở bệnh nhân chuẩn bị phẫu thuật (trừ phẫu thuật tim mạch) có hemoglobin 10 - 13 g/100 ml và có nguy cơ mất máu cao (người lớn): Epoetin alpha và zeta: Tiêm dưới da 600 đv/kg/lần, 2 lần/tuần, trong 3 tuần bắt đầu 21 ngày trước phẫu thuật; hoặc 300 đv/ngày trong 15 ngày, bắt đầu 10 ngày trước khi phẫu thuật.\n\nPhòng thiếu máu ở trẻ sinh non có cân nặng lúc sinh từ 750 g - 1 500 g và tuổi thai dưới 34 tuần: Epoetin beta: Tiêm dưới da 250 đv/kg/lần, 3 lần/tuần, trong 6 tuần.\n\nTăng sinh lượng máu tự thân của người đang trong thời kỳ chuẩn bị cho máu: Epoetin beta: Tiêm tĩnh mạch vào khoảng 2 phút hoặc tiêm dưới da 2 lần/tuần, trong 4 tuần. Liều dùng mỗi lần phụ thuộc vào lượng hồng cầu dữ trữ nội sinh của bệnh nhân và lượng máu dự tính sẽ lấy ra. Ví dụ, bệnh nhân nữ có lượng dự trữ hồng cầu nội sinh là 500 ml và cần lấy ra 6 đơn vị máu thì liều tiêm tĩnh mạch là 800 đv/kg, tiêm dưới da là 600 đv/kg; bệnh nhân nam có lượng dự trữ hồng cầu nội sinh là 500 ml và cần lấy ra 5 đơn vị máu thì liều tiêm tĩnh mạch là 200 đv/kg, tiêm dưới da là 150 đv/kg."
+          "text": "Thuốc được đóng sẵn trong bơm tiêm và được dùng theo đường tiêm tĩnh mạch hoặc tiêm dưới da. Tiêm tĩnh mạch trong vòng 1 - 5 phút. Tiêm dưới da tối đa 1 ml tại mỗi vị trí tiêm.",
+          "block_id": "b0059"
+        },
+        {
+          "type": "subheading",
+          "text": "Liều lượng",
+          "block_id": "b0060"
+        },
+        {
+          "type": "text",
+          "text": "Điều trị thiếu máu ở bệnh nhân suy thận mạn tính đang lọc máu (trẻ em và người lớn):",
+          "block_id": "b0061"
+        },
+        {
+          "type": "text",
+          "text": "Epoetin alpha và zeta (tiêm tĩnh mạch): Người lớn và trẻ em cân nặng > 10 kg: Liều khởi đầu 50 đv/kg/lần, 3 lần/tuần; trẻ em cân nặng ≤ 10 kg: Liều khởi đầu 25 đv/kg/lần, 3 lần/tuần.",
+          "block_id": "b0062"
+        },
+        {
+          "type": "text",
+          "text": "Giảm 25% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc.",
+          "block_id": "b0063"
+        },
+        {
+          "type": "text",
+          "text": "Epoetin beta: Tiêm dưới da liều khởi đầu 20 đv/kg/lần, 3 lần/tuần trong 4 tuần (nếu tiêm tĩnh mạch thì liều khởi đầu 40 đv/kg/lần, 3 lần/tuần, trong 4 tuần sau đó tăng lên 80 đv/kg/lần, 3 lần/tuần).",
+          "block_id": "b0064"
+        },
+        {
+          "type": "text",
+          "text": "Cứ sau 4 tuần thì tăng liều thêm 20 đv/lần nếu bệnh nhân không đáp ứng thuốc. Giảm 25% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc (tối đa 720 đv/kg/tuần).",
+          "block_id": "b0065"
+        },
+        {
+          "type": "text",
+          "text": "Điều trị thiếu máu ở bệnh nhân suy thận mạn tính chưa phải lọc máu (người lớn):",
+          "block_id": "b0066"
+        },
+        {
+          "type": "text",
+          "text": "Epoetin alpha và zeta: Tiêm tĩnh mạch liều khởi đầu 50 đv/kg/ lần, 3 lần/tuần. Tăng liều thêm 25% sau ít nhất mỗi 4 tuần nếu cần thiết. Liều duy trì 17 - 33 đv/kg/lần, 3 lần/tuần (tối đa 200 đv/kg/ lần, 3 lần/tuần). Giảm 25% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc (tối đa 720 đv/kg/tuần).",
+          "block_id": "b0067"
+        },
+        {
+          "type": "text",
+          "text": "Epoetin beta: Liều dùng tương tự với bệnh nhân thiếu máu do suy thận mạn đang lọc máu, ưu tiên dùng đường tiêm dưới da.",
+          "block_id": "b0068"
+        },
+        {
+          "type": "text",
+          "text": "Điều trị thiếu máu do hóa trị liệu ở người bị bệnh ung thư (người lớn):",
+          "block_id": "b0069"
+        },
+        {
+          "type": "text",
+          "text": "Epoetin alpha và zeta: Tiêm dưới da liều khởi đầu 150 đv/kg/lần, 3 lần/tuần hoặc 450 đv/lần, 1 lần/tuần. Tăng lên đến 300 đv/kg/lần, 3 lần/tuần nếu sau 4 tuần không đạt được mức tăng hemoglobin hoặc số lượng tế bào hồng cầu lưới mong muốn. Ngừng thuốc nếu dùng liều cao hơn mà sau 4 tuần không có đáp ứng. Giảm 25 - 50% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc. Ngừng thuốc sau khi kết thúc hóa trị liệu khoảng 4 tuần.",
+          "block_id": "b0070"
+        },
+        {
+          "type": "text",
+          "text": "Epoetin beta: Tiêm dưới da liều khởi đầu 450 đv/kg/lần, 1 lần/ tuần trong 4 tuần (có thể chia nhỏ liều thành 3 - 7 liều nhỏ). Tăng liều lên đến 900 đv/kg/tuần (tối đa 60 000 đv/tuần) nếu sau 4 tuần không đạt được mức tăng hemoglobin thêm ít nhất 1 g/100 ml và dừng thuốc nếu sau 8 tuần không đạt được mức tăng hemoglobin này. Giảm 25 - 50% liều nếu sau 4 tuần hemoglobin tăng thêm quá 2 g/100 ml hoặc hemoglobin vượt quá 12 g/100 ml. Nếu hemoglobin tiếp tục tăng thì ngừng thuốc và bắt đầu điều trị lại khi hemoglobin giảm với liều bằng khoảng 75% liều trước khi dừng thuốc. Ngừng thuốc sau khi kết thúc hóa trị liệu khoảng 4 tuần.",
+          "block_id": "b0071"
+        },
+        {
+          "type": "text",
+          "text": "Làm tăng sản xuất hồng cầu (để giảm lượng máu cần truyền) ở bệnh nhân chuẩn bị phẫu thuật (trừ phẫu thuật tim mạch) có hemoglobin 10 - 13 g/100 ml và có nguy cơ mất máu cao (người lớn):",
+          "block_id": "b0072"
+        },
+        {
+          "type": "text",
+          "text": "Epoetin alpha và zeta: Tiêm dưới da 600 đv/kg/lần, 2 lần/tuần, trong 3 tuần bắt đầu 21 ngày trước phẫu thuật; hoặc 300 đv/ngày trong 15 ngày, bắt đầu 10 ngày trước khi phẫu thuật.",
+          "block_id": "b0073"
+        },
+        {
+          "type": "text",
+          "text": "Phòng thiếu máu ở trẻ sinh non có cân nặng lúc sinh từ 750 g - 1 500 g và tuổi thai dưới 34 tuần:",
+          "block_id": "b0074"
+        },
+        {
+          "type": "text",
+          "text": "Epoetin beta: Tiêm dưới da 250 đv/kg/lần, 3 lần/tuần, trong 6 tuần.",
+          "block_id": "b0075"
+        },
+        {
+          "type": "text",
+          "text": "Tăng sinh lượng máu tự thân của người đang trong thời kỳ chuẩn bị cho máu:",
+          "block_id": "b0076"
+        },
+        {
+          "type": "text",
+          "text": "Epoetin beta: Tiêm tĩnh mạch vào khoảng 2 phút hoặc tiêm dưới da 2 lần/tuần, trong 4 tuần. Liều dùng mỗi lần phụ thuộc vào lượng hồng cầu dữ trữ nội sinh của bệnh nhân và lượng máu dự tính sẽ lấy ra. Ví dụ, bệnh nhân nữ có lượng dự trữ hồng cầu nội sinh là 500 ml và cần lấy ra 6 đơn vị máu thì liều tiêm tĩnh mạch là 800 đv/kg, tiêm dưới da là 600 đv/kg; bệnh nhân nam có lượng dự trữ hồng cầu nội sinh là 500 ml và cần lấy ra 5 đơn vị máu thì liều tiêm tĩnh mạch là 200 đv/kg, tiêm dưới da là 150 đv/kg.",
+          "block_id": "b0077"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-tac-thuoc",
       "title": "Tương tác thuốc",
-      "content": "Dùng các thuốc ức chế men chuyển đồng thời với epoetin có thể làm tăng nguy cơ bị tăng kali huyết, đặc biệt ở người bệnh giảm chức năng thận.",
+      "heading_block": "b0078",
       "blocks": [
         {
           "type": "text",
-          "text": "Dùng các thuốc ức chế men chuyển đồng thời với epoetin có thể làm tăng nguy cơ bị tăng kali huyết, đặc biệt ở người bệnh giảm chức năng thận."
+          "text": "Dùng các thuốc ức chế men chuyển đồng thời với epoetin có thể làm tăng nguy cơ bị tăng kali huyết, đặc biệt ở người bệnh giảm chức năng thận.",
+          "block_id": "b0079"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-ky",
       "title": "Tương kỵ",
-      "content": "Chế phẩm epoetin được đệm bằng dung dịch natri clorid/natri citrat đẳng trương có pH là 6,9 ± 0,3.\n\nKhông trộn epoetin với các thuốc khác.\n\nKhông cho thêm epoetin vào các dung dịch truyền tĩnh mạch.",
+      "heading_block": "b0080",
       "blocks": [
         {
           "type": "text",
-          "text": "Chế phẩm epoetin được đệm bằng dung dịch natri clorid/natri citrat đẳng trương có pH là 6,9 ± 0,3.\n\nKhông trộn epoetin với các thuốc khác.\n\nKhông cho thêm epoetin vào các dung dịch truyền tĩnh mạch."
+          "text": "Chế phẩm epoetin được đệm bằng dung dịch natri clorid/natri citrat đẳng trương có pH là 6,9 ± 0,3.",
+          "block_id": "b0081"
+        },
+        {
+          "type": "text",
+          "text": "Không trộn epoetin với các thuốc khác.",
+          "block_id": "b0082"
+        },
+        {
+          "type": "text",
+          "text": "Không cho thêm epoetin vào các dung dịch truyền tĩnh mạch.",
+          "block_id": "b0083"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "qua-lieu-va-xu-tri",
       "title": "Quá liều và xử trí",
-      "content": "Giới hạn điều trị của epoetin rất rộng. Quá liều epoetin có thể gây tăng tác dụng dược lý của hormon. Có thể rút máu tĩnh mạch nếu nồng độ hemoglobin quá cao. Nếu cần, điều trị hỗ trợ thêm.",
+      "heading_block": "b0084",
       "blocks": [
         {
           "type": "text",
-          "text": "Giới hạn điều trị của epoetin rất rộng. Quá liều epoetin có thể gây tăng tác dụng dược lý của hormon. Có thể rút máu tĩnh mạch nếu nồng độ hemoglobin quá cao. Nếu cần, điều trị hỗ trợ thêm."
+          "text": "Giới hạn điều trị của epoetin rất rộng. Quá liều epoetin có thể gây tăng tác dụng dược lý của hormon. Có thể rút máu tĩnh mạch nếu nồng độ hemoglobin quá cao. Nếu cần, điều trị hỗ trợ thêm.",
+          "block_id": "b0085"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "cap-nhat-lan-cuoi",
       "title": "Cập nhật lần cuối",
-      "content": "2019.",
+      "heading_block": "b0086",
       "blocks": [
         {
           "type": "text",
-          "text": "2019."
+          "text": "2019.",
+          "block_id": "b0086"
         }
-      ],
-      "subsections": []
+      ]
     }
   ],
-  "tables": [],
   "quality": {
-    "status": "source-layout-rebuilt-v10.1-source-paragraph-boundaries",
-    "pdf_text_order": "left-column-then-right-column; visual line flow",
-    "paragraph_policy": "Paragraph boundaries are source-derived and stored only as blank lines. The client preserves those boundaries exactly; it must not create a new paragraph from label words such as “Trẻ em:” or “Người lớn:”. A lower-case continuation fragment is merged only when it follows a non-terminal source fragment; table footnotes remain separate. No client-side anchor or length-based sentence splitter is allowed.",
-    "table_policy": "source-table image inserted by PDF page/column/y position; table-cell text excluded from prose",
-    "validation": {
-      "raw_newline_inside_paragraph": false,
-      "table_count": 0,
-      "section_count": 18,
-      "client_anchor_resegmentation_disabled": true,
-      "client_length_sentence_chunking_disabled": true
-    }
+    "block_count": 86,
+    "heading_count": 14,
+    "subheading_count": 5,
+    "paragraph_count": 66,
+    "list_count": 0,
+    "table_count": 0,
+    "figure_count": 0,
+    "note_count": 1,
+    "page_count": 3
+  },
+  "tables": [],
+  "legacy_compat": {
+    "sections": "generated from v11 blocks for v10.4.5.39 renderer/chatbot compatibility"
   }
 }

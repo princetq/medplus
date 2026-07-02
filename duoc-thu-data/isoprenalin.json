@@ -1,5 +1,5 @@
 {
-  "schema_version": "10.1-source-paragraph-boundaries",
+  "schema_version": "11.0.0",
   "id": "isoprenalin",
   "title": "Isoprenalin",
   "aliases": [
@@ -26,236 +26,3198 @@
       "boundary_method": "physical-source-title-band"
     }
   },
-  "sections": [
+  "parser": {
+    "name": "medplus-duoc-thu-v11-structured-pdf-parser",
+    "method": "PyMuPDF span -> line -> block",
+    "content_source": "Duocthu2023.pdf",
+    "old_json_usage": "id/title/page-boundary metadata and existing table asset path only; old content is not used",
+    "column_order": "left column -> right column -> next page",
+    "block_model": [
+      "heading",
+      "subheading",
+      "paragraph",
+      "list",
+      "table",
+      "figure",
+      "note"
+    ],
+    "table_policy": "no OCR; preserve existing duoc-thu-assets/<id>/pXXXX-tXX.png image_path"
+  },
+  "blocks": [
     {
-      "id": "thong-tin-au-chuyen-luan",
-      "title": "Thông tin đầu chuyên luận",
-      "content": "ISOPRENALIN (Isoproterenol)",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "ISOPRENALIN (Isoproterenol)"
-        }
+      "id": "b0001",
+      "type": "heading",
+      "level": 1,
+      "text": "ISOPRENALIN",
+      "page": 937,
+      "printed_page": 943,
+      "column": 1,
+      "bbox": [
+        399.14,
+        164.67,
+        471.09,
+        178.51
       ],
-      "subsections": []
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "ISOPRENALIN ",
+          "bbox": [
+            399.14,
+            164.67,
+            471.09,
+            178.51
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
     },
     {
-      "id": "ten-chung-quoc-te",
-      "title": "Tên chung quốc tế",
-      "content": "Isoprenaline.\n\nMã ATC: R03CB01, R03AB02, C01CA02.\n\nLoại thuốc: Thuốc chủ vận beta-adrenergic không chọn lọc.",
+      "id": "b0002",
+      "type": "heading",
+      "level": 2,
+      "text": "(Isoproterenol)",
+      "page": 937,
+      "printed_page": 943,
+      "column": 1,
+      "bbox": [
+        402.01,
+        176.74,
+        465.73,
+        190.58
+      ],
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "MinionPro-Bold"
+        ]
+      },
+      "spans": [
+        {
+          "text": "(Isoproterenol)",
+          "bbox": [
+            402.01,
+            176.74,
+            465.73,
+            190.58
+          ],
+          "font": "MinionPro-Bold",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0003",
+      "type": "paragraph",
+      "text": "Tên chung quốc tế: Isoprenaline.",
+      "page": 937,
+      "printed_page": 943,
+      "column": 1,
+      "bbox": [
+        307.89,
+        200.04,
+        436.93,
+        213.19
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tên chung quốc tế",
+          "bbox": [
+            307.89,
+            200.04,
+            382.58,
+            213.19
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": ": Isoprenaline.",
+          "bbox": [
+            382.58,
+            200.19,
+            436.93,
+            212.99
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0004",
+      "type": "paragraph",
+      "text": "Mã ATC: R03CB01, R03AB02, C01CA02.",
+      "page": 937,
+      "printed_page": 943,
+      "column": 1,
+      "bbox": [
+        307.89,
+        211.79,
+        477.67,
+        224.94
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mã ATC: ",
+          "bbox": [
+            307.89,
+            211.79,
+            348.35,
+            224.94
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "R03CB01, R03AB02, C01CA02.",
+          "bbox": [
+            348.35,
+            211.95,
+            475.3,
+            224.74
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0005",
+      "type": "paragraph",
+      "text": "Loại thuốc: Thuốc chủ vận beta-adrenergic không chọn lọc.",
+      "page": 937,
+      "printed_page": 943,
+      "column": 1,
+      "bbox": [
+        307.89,
+        223.55,
+        538.03,
+        236.69
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Loại thuốc: ",
+          "bbox": [
+            307.89,
+            223.55,
+            356.98,
+            236.69
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "Thuốc chủ vận beta-adrenergic không chọn lọc.",
+          "bbox": [
+            356.98,
+            223.7,
+            538.03,
+            236.5
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0006",
+      "type": "heading",
+      "level": 2,
+      "text": "Dạng thuốc và hàm lượng",
+      "page": 937,
+      "printed_page": 943,
+      "column": 1,
+      "bbox": [
+        307.89,
+        241.3,
+        412.81,
+        254.45
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dạng thuốc và hàm lượng",
+          "bbox": [
+            307.89,
+            241.3,
+            412.81,
+            254.45
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0007",
+      "type": "paragraph",
+      "text": "Thuốc tiêm: 0,2 mg/1 ml (isoprenalin hydroclorid).",
+      "page": 937,
+      "printed_page": 943,
+      "column": 1,
+      "bbox": [
+        307.89,
+        253.2,
+        502.63,
+        266.0
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thuốc tiêm: 0,2 mg/1 ml (isoprenalin hydroclorid).",
+          "bbox": [
+            307.89,
+            253.2,
+            502.63,
+            266.0
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0008",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược lực học",
+      "page": 937,
+      "printed_page": 943,
+      "column": 1,
+      "bbox": [
+        307.89,
+        270.8,
+        361.49,
+        283.95
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược lực học",
+          "bbox": [
+            307.89,
+            270.8,
+            361.49,
+            283.95
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0009",
+      "type": "paragraph",
+      "text": "Isoprenalin tác dụng trực tiếp lên thụ thể beta-adrenergic. Ở liều điều trị, thuốc ít hoặc không tác dụng lên thụ thể alpha-adrenergic.",
+      "page": 937,
+      "printed_page": 943,
+      "column": 1,
+      "bbox": [
+        307.89,
+        282.71,
+        562.26,
+        307.26
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0010",
+      "type": "paragraph",
+      "text": "Tác dụng của thuốc lên thụ thể beta-adrenergic được cho là do kích thích sản xuất AMP vòng (adenosin-3’, 5’-monophosphat) vì hoạt hóa enzym adenyl cyclase. Tác dụng chính của isoprenalin ở liều điều trị là làm giãn phế quản, kích thích tim và giãn mạch ngoại vi.",
+      "page": 937,
+      "printed_page": 943,
+      "column": 1,
+      "bbox": [
+        307.89,
+        306.21,
+        562.23,
+        354.27
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0011",
+      "type": "paragraph",
+      "text": "Khi dùng isoprenalin kéo dài hoặc quá thường xuyên, bệnh nhân có thể dung nạp các tác dụng trên tim và giãn phế quản.",
+      "page": 937,
+      "printed_page": 943,
+      "column": 1,
+      "bbox": [
+        307.89,
+        353.23,
+        562.22,
+        377.77
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0012",
+      "type": "paragraph",
+      "text": "Trên cơ trơn: Isoprenalin làm giãn cơ trơn phế quản, cơ trơn dạ dày ruột và tử cung do kích thích thụ thể beta2-adrenergic. Ngoài ra, isoprenalin ức chế giải phóng histamin do kháng nguyên gây ra, ức chế chất phản ứng chậm của phản vệ. Trên bệnh nhân bị co thắt phế quản, isoprenalin ở liều thường dùng có thể làm giảm co thắt phế quản, làm tăng dung tích sống, làm giảm thể tích cặn trong phổi và làm các dịch tiết ở phổi dễ dàng thoát ra ngoài. Tuy nhiên, oxy động mạch có thể tiếp tục giảm, co thắt phế quản có thể xuất hiện trở lại khi thuốc hết tác dụng.",
+      "page": 937,
+      "printed_page": 943,
+      "column": 1,
+      "bbox": [
+        307.89,
+        376.73,
+        562.25,
+        483.55
+      ],
+      "source": {
+        "line_count": 9
+      }
+    },
+    {
+      "id": "b0013",
+      "type": "paragraph",
+      "text": "Trên tim mạch: Isoprenalin tác động lên các thụ thể beta1-adrenergic ở tim, làm tăng tần số tim thông qua nút xoang và tăng co bóp cơ tim. Cung lượng tim thường tăng, đi kèm với tăng thể tích nhát bóp. Isoprenalin có thể làm cơ tim tăng tiêu thụ oxy, làm tăng công năng của tim và làm giảm hiệu suất của tim. Mặc dù thuốc có thể làm tăng lưu lượng động mạch vành do làm giãn động mạch vành trực tiếp và gián tiếp, nhưng có thể không cung cấp đủ nhu cầu oxy tăng lên của cơ tim dẫn đến suy vành và thiếu oxy cơ tim. Tác dụng gây giãn mạch vành trên bệnh nhân có bệnh mạch vành dễ làm máu chuyển từ các vùng thiếu máu cục bộ đến các vùng giãn mạch. Dùng isoprenalin trên bệnh nhân bị nhồi máu cơ tim cấp có thể làm vùng thiếu máu mở rộng.",
+      "page": 937,
+      "printed_page": 943,
+      "column": 1,
+      "bbox": [
+        307.89,
+        482.5,
+        562.23,
+        624.58
+      ],
+      "source": {
+        "line_count": 12
+      }
+    },
+    {
+      "id": "b0014",
+      "type": "paragraph",
+      "text": "Trên bệnh nhân có blốc nhĩ thất, isoprenalin làm rút ngắn thời gian dẫn truyền và thời kỳ trơ của nút nhĩ thất, làm tăng tốc độ và lực co bóp của tâm thất; nhờ vậy có thể loại bỏ hoặc ngừa tái phát nhịp tim chậm. Trên một số bệnh nhân, isoprenalin có thể tạm thời ngăn ngừa rung thất hoặc nhịp nhanh thất nhờ tạo nhịp nhanh xoang giúp rút ngắn thời kỳ tâm trương và ức chế tạo nhịp thất.",
+      "page": 937,
+      "printed_page": 943,
+      "column": 1,
+      "bbox": [
+        307.89,
+        623.54,
+        562.22,
+        695.1
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0015",
+      "type": "paragraph",
+      "text": "Rối loạn nhịp tim, bao gồm ngoại tâm thu thất, nhịp nhanh thất, nhịp ngoại vị ở tâm thất hoặc rung thất có thể xảy ra trên bệnh nhân dùng isoprenalin, đặc biệt khi dùng liều cao trên bệnh nhân sốc tim, nhiễm toan, giảm oxy máu, tăng hoặc giảm kali huyết, hoặc bệnh nhân nhạy cảm với tác dụng này của isoprenalin do trước đó đã dùng các thuốc như digitalis hoặc một số thuốc gây mê.",
+      "page": 937,
+      "printed_page": 943,
+      "column": 1,
+      "bbox": [
+        307.89,
+        694.05,
+        562.23,
+        765.61
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0016",
+      "type": "paragraph",
+      "text": "Isoprenalin làm giãn các động mạch và tiểu động mạch ở cơ xương, với mức độ ít hơn ở các mạch mạc treo, ruột, phổi và đùi do tác động lên thụ thể beta-adrenergic. Chưa ghi nhận ảnh hưởng của",
+      "page": 937,
+      "printed_page": 943,
+      "column": 1,
+      "bbox": [
+        307.89,
+        764.57,
+        562.23,
+        800.87
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0017",
+      "type": "paragraph",
+      "text": "thuốc lên mạch máu não. Thuốc làm giãn mạch ngoại vi nên làm giảm sức cản ngoại vi và tăng lượng máu tĩnh mạch trở về tim.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        63.32,
+        289.27,
+        87.89
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0018",
+      "type": "paragraph",
+      "text": "Tưới máu đến mô và các cơ quan có thể được cải thiện ở một số bệnh nhân sốc. Lưu lượng máu đến thận thường giảm ở bệnh nhân có huyết áp bình thường, nhưng tăng đáng kể ở bệnh nhân sốc.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        86.88,
+        289.26,
+        123.23
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0019",
+      "type": "paragraph",
+      "text": "Isoprenalin làm tăng huyết áp tâm thu do làm tăng cung lượng tim, nhưng thường làm giảm huyết áp tâm trương do gây giãn mạch.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        122.22,
+        289.27,
+        146.79
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0020",
+      "type": "paragraph",
+      "text": "Huyết áp trung bình thường giảm nhẹ, nhưng cũng có thể giữ nguyên hoặc tăng nhẹ khi mạch đã giãn tối đa. Isoprenalin liều cao làm huyết áp trung bình giảm mạnh. Isoprenalin không làm thay đổi áp lực động mạch phổi ở hầu hết bệnh nhân nhưng có thể đảo ngược sự tăng áp động mạch phổi ở bệnh nhân thuyên tắc phổi.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        145.78,
+        289.26,
+        205.68
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0021",
+      "type": "paragraph",
+      "text": "Trên TKTW: Isoprenalin kích thích TKTW nhưng hiếm gặp ở liều điều trị. Một số bệnh nhân có thể xuất hiện hồi hộp, kích thích, mất ngủ, run rẩy.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        204.67,
+        289.26,
+        241.02
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0022",
+      "type": "paragraph",
+      "text": "Trên chuyển hóa: Isoprenalin làm tăng thủy phân glycogen ở gan nhưng đồng thời tăng tiết insulin, do đó ít làm tăng glucose huyết.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        240.01,
+        289.26,
+        264.58
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0023",
+      "type": "paragraph",
+      "text": "Isoprenalin làm tăng nồng độ acid béo tự do. Thuốc làm tăng thân nhiệt và tăng nhu cầu oxy ở hầu hết các mô đến mức máu có thể không cung cấp đủ; chuyển hóa yếm khí tăng lên nên có thể làm tăng nồng độ acid lactic động mạch.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        263.57,
+        289.26,
+        311.7
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0024",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược động học",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        315.04,
+        96.03,
+        328.19
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược động học",
+          "bbox": [
+            34.93,
+            315.04,
+            96.03,
+            328.19
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0025",
+      "type": "paragraph",
+      "text": "Hấp thu: Isoprenalin hấp thu nhanh sau khi hít bằng đường miệng, mức độ hấp thu dạng đặt dưới lưỡi và đặt trực tràng rất biến động.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        328.46,
+        289.27,
+        353.04
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0026",
+      "type": "paragraph",
+      "text": "Isoprenalin chuyển hóa nhanh ở đường tiêu hóa. Tuy nhiên, dạng uống, khí dung, đặt dưới lưỡi và đặt trực tràng hiện không còn được lưu hành.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        352.02,
+        289.26,
+        388.38
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0027",
+      "type": "paragraph",
+      "text": "Giãn phế quản xảy ra nhanh ngay sau khi hít thuốc vào và kéo dài khoảng 1 giờ. Tác dụng của thuốc tồn tại vài phút sau khi tiêm tĩnh mạch và tới 2 giờ sau khi tiêm dưới da hoặc đặt dưới lưỡi, 2 - 4 giờ sau khi đặt trực tràng một viên ngậm dưới lưỡi.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        387.36,
+        289.27,
+        435.49
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0028",
+      "type": "paragraph",
+      "text": "Phân bố: Hiện chưa rõ thuốc có phân bố trong sữa không.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        434.47,
+        258.15,
+        447.27
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Phân bố:",
+          "bbox": [
+            34.93,
+            434.63,
+            70.02,
+            447.27
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        },
+        {
+          "text": " Hiện chưa rõ thuốc có phân bố trong sữa không. ",
+          "bbox": [
+            70.02,
+            434.47,
+            258.15,
+            447.27
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0029",
+      "type": "paragraph",
+      "text": "Chuyển hóa: Thuốc được chuyển hóa chủ yếu ở gan, phổi và các mô khác, nhờ enzym catecholamin-O-methyltransferase (COMT).",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        446.25,
+        289.26,
+        470.83
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0030",
+      "type": "paragraph",
+      "text": "Chất chuyển hóa chính là 3-O-methyl-isoproterenol có hoạt tính chẹn beta-adrenergic yếu.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        469.81,
+        289.26,
+        494.39
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0031",
+      "type": "paragraph",
+      "text": "Thải trừ: Ở người lớn bị hen, 75% isoprenalin được bài tiết ra nước tiểu trong vòng 15 giờ sau khi tiêm tĩnh mạch bolus và trong vòng 22 giờ khi truyền tĩnh mạch 30 phút. Khoảng 40 - 50% liều dùng được bài xuất ra nước tiểu ở dạng không đổi và phần còn lại dưới dạng chất chuyển hóa. Ở người lớn mắc bệnh nặng, khoảng 75 - 90% liều thuốc dùng đường tiêm được bài xuất ra nước tiểu trong vòng 24 giờ dưới dạng liên hợp của isoprenalin và chất huyển hóa, dưới 15% ở dạng không đổi.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        493.37,
+        289.26,
+        588.62
+      ],
+      "source": {
+        "line_count": 8
+      }
+    },
+    {
+      "id": "b0032",
+      "type": "heading",
+      "level": 2,
+      "text": "Chỉ định",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        592.33,
+        70.57,
+        605.48
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chỉ định",
+          "bbox": [
+            34.93,
+            592.33,
+            70.57,
+            605.48
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0033",
+      "type": "paragraph",
+      "text": "Isoprenalin được chỉ định cho người lớn trong các trường hợp:",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        605.39,
+        272.87,
+        618.18
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Isoprenalin được chỉ định cho người lớn trong các trường hợp:",
+          "bbox": [
+            34.93,
+            605.39,
+            272.87,
+            618.18
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0034",
+      "type": "paragraph",
+      "text": "Cơn blốc tim (blốc nhĩ thất) nhẹ hoặc thoáng qua không cần sốc điện hay liệu pháp tạo nhịp.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        617.17,
+        289.26,
+        641.74
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0035",
+      "type": "paragraph",
+      "text": "Cơn blốc tim nặng chưa cần sốc điện hay liệu pháp tạo nhịp (ngoại trừ do ngộ độc digitalis, hoặc do nhịp nhanh thất hay rung thất).",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        640.72,
+        289.26,
+        665.29
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0036",
+      "type": "paragraph",
+      "text": "Cơn Adams-Stokes nặng (ngoại trừ do nhịp nhanh thất hay rung thất).",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        664.28,
+        286.9,
+        677.07
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cơn Adams-Stokes nặng (ngoại trừ do nhịp nhanh thất hay rung thất).",
+          "bbox": [
+            34.93,
+            664.28,
+            286.9,
+            677.07
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0037",
+      "type": "paragraph",
+      "text": "Ngừng tim, khi sốc điện hoặc liệu pháp tạo nhịp chưa có sẵn.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        676.06,
+        267.39,
+        688.85
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Ngừng tim, khi sốc điện hoặc liệu pháp tạo nhịp chưa có sẵn.",
+          "bbox": [
+            34.93,
+            676.06,
+            267.39,
+            688.85
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0038",
+      "type": "paragraph",
+      "text": "Hỗ trợ các liệu pháp bù dịch và điện giải, dùng thuốc và các thủ thuật khác trong điều trị giảm thể tích tuần hoàn, sốc nhiễm khuẩn, giảm cung lượng tim, suy tim sung huyết và sốc tim.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        687.84,
+        289.26,
+        724.19
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0039",
+      "type": "paragraph",
+      "text": "Giãn phế quản trong gây mê.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        723.18,
+        145.21,
+        735.97
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Giãn phế quản trong gây mê.",
+          "bbox": [
+            34.93,
+            723.18,
+            145.21,
+            735.97
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0040",
+      "type": "heading",
+      "level": 2,
+      "text": "Chống chỉ định",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        739.68,
+        97.23,
+        752.83
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chống chỉ định",
+          "bbox": [
+            34.93,
+            739.68,
+            97.23,
+            752.83
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0041",
+      "type": "paragraph",
+      "text": "Quá mẫn với isoprenalin.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        752.74,
+        131.25,
+        765.53
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Quá mẫn với isoprenalin.",
+          "bbox": [
+            34.93,
+            752.74,
+            131.25,
+            765.53
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0042",
+      "type": "paragraph",
+      "text": "Rối loạn nhịp nhanh.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        764.51,
+        114.62,
+        777.31
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Rối loạn nhịp nhanh.",
+          "bbox": [
+            34.93,
+            764.51,
+            114.62,
+            777.31
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0043",
+      "type": "paragraph",
+      "text": "Nhịp tim nhanh hoặc blốc tim do digitalis.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        776.29,
+        195.91,
+        789.09
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Nhịp tim nhanh hoặc blốc tim do digitalis.",
+          "bbox": [
+            34.93,
+            776.29,
+            195.91,
+            789.09
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0044",
+      "type": "paragraph",
+      "text": "Đau thắt ngực.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 0,
+      "bbox": [
+        34.93,
+        788.07,
+        91.0,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Đau thắt ngực.",
+          "bbox": [
+            34.93,
+            788.07,
+            91.0,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0045",
+      "type": "heading",
+      "level": 2,
+      "text": "Thận trọng",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        63.01,
+        345.07,
+        76.16
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thận trọng",
+          "bbox": [
+            298.88,
+            63.01,
+            345.07,
+            76.16
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ],
+      "note_role": "than trong",
+      "v11_fix": "note_title_reclassified_as_heading_alpha5"
+    },
+    {
+      "id": "b0046",
+      "type": "paragraph",
+      "text": "Hiệu quả và an toàn của thuốc chưa được chứng minh trên trẻ em.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        74.95,
+        552.31,
+        87.74
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Hiệu quả và an toàn của thuốc chưa được chứng minh trên trẻ em. ",
+          "bbox": [
+            298.88,
+            74.95,
+            552.31,
+            87.74
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0047",
+      "type": "paragraph",
+      "text": "Dữ liệu trên lâm sàng không đủ kết luận về an toàn của isoprenalin trên bệnh nhân từ 65 tuổi trở lên. Nên dùng isoprenalin liều thấp nhất trên người cao tuổi. Tuy nhiên, một số dữ liệu cho thấy người cao tuổi đáp ứng với thuốc kích thích beta-adrenergic kém hơn so với người trẻ.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        86.73,
+        553.22,
+        146.63
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0048",
+      "type": "paragraph",
+      "text": "Isoprenalin làm cơ tim tăng tiêu thụ oxy đồng thời làm giảm tưới máu mạch vành. Thuốc không được khuyến cáo là lựa chọn ban đầu để điều trị sốc tim sau nhồi máu cơ tim. Tuy nhiên, khi huyết áp động mạch đã được tăng lên nhờ liệu pháp khác, dùng isoprenalin có thể có lợi cho huyết động và chuyển hóa.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        145.62,
+        553.22,
+        205.52
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0049",
+      "type": "paragraph",
+      "text": "Nên khởi đầu isoprenalin ở liều thấp nhất, sau đó có thể tăng dần liều nếu cần, đồng thời giám sát bệnh nhân thận trọng. Liều thuốc làm nhịp tim tăng đến hơn 130 lần/phút có thể làm tăng nguy cơ rối loạn nhịp thất. Nhịp tim tăng như vậy cũng có thể làm tăng công năng của tim và cơ tim tăng nhu cầu oxy, ảnh hưởng xấu trên bệnh nhân suy tim hoặc xơ vữa động mạch vành.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        204.51,
+        553.22,
+        276.19
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0050",
+      "type": "paragraph",
+      "text": "Trước khi dùng thuốc vận mạch trong các trường hợp sốc, việc bù đủ thể tích tuần hoàn là yếu tố quan trọng hàng đầu. Cần theo dõi áp lực tĩnh mạch trung tâm trong khi bù dịch. Nếu bù dịch đủ mà vẫn còn dấu hiệu giảm tưới máu, thì có thể dùng isoprenalin tiêm.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        275.18,
+        553.22,
+        323.3
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0051",
+      "type": "paragraph",
+      "text": "Bên cạnh việc theo dõi huyết áp, nhịp tim, lượng nước tiểu và điện tim, cần đo thường xuyên áp lực tĩnh mạch trung tâm và khí máu để đánh giá đáp ứng của isoprenalin. Theo dõi sát bệnh nhân sốc trong khi dùng isoprenalin. Nếu nhịp tim vượt quá 110 lần/ phút, nên giảm tốc độ truyền hoặc tạm thời ngừng truyền. Đảm bảo thông khí đủ, giám sát cân bằng toan kiềm và điều chỉnh rối loạn điện giải.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        322.29,
+        553.21,
+        405.75
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0052",
+      "type": "paragraph",
+      "text": "Sử dụng isoprenalin thận trọng trên bệnh nhân cao tuổi, bệnh nhân bị rối loạn co giật, suy vành, đái tháo đường, tăng huyết áp, cường giáp hoặc quá mẫn với các amin giao cảm.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        404.73,
+        553.21,
+        441.09
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0053",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ mang thai",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        444.79,
+        374.09,
+        457.94
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ mang thai",
+          "bbox": [
+            298.88,
+            444.79,
+            374.09,
+            457.94
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0054",
+      "type": "paragraph",
+      "text": "Các nghiên cứu trên chuột và thỏ sử dụng isoprenalin đường hít liều cao không phát hiện khả năng gây dị tật. Không có nghiên cứu về isoprenalin hydroclorid đường tiêm trên động vật. Không có đủ bằng chứng về sử dụng isoprenalin trên phụ nữ mang thai, do đó chỉ dùng thuốc trong thai kỳ khi thật sự cần thiết.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        457.84,
+        553.21,
+        517.75
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0055",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ cho con bú",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        521.46,
+        377.0,
+        534.61
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ cho con bú",
+          "bbox": [
+            298.88,
+            521.46,
+            377.0,
+            534.61
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0056",
+      "type": "paragraph",
+      "text": "Chưa có thông tin về sự bài tiết isoprenalin ra sữa. Cần thận trọng khi dùng isoprenalin cho phụ nữ cho con bú.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        534.51,
+        553.21,
+        559.08
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0057",
+      "type": "heading",
+      "level": 2,
+      "text": "Tác dụng không mong muốn (ADR)",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        562.42,
+        444.83,
+        575.57
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tác dụng không mong muốn (ADR)",
+          "bbox": [
+            298.88,
+            562.42,
+            444.83,
+            575.57
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0058",
+      "type": "paragraph",
+      "text": "Các ADR được ghi nhận sau khi dùng isoprenalin hydroclorid tiêm bao gồm:",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        575.84,
+        553.21,
+        600.42
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0059",
+      "type": "paragraph",
+      "text": "Thần kinh: bồn chồn, lo lắng, đau đầu, chóng mặt.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        599.4,
+        492.56,
+        612.2
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thần kinh: bồn chồn, lo lắng, đau đầu, chóng mặt. ",
+          "bbox": [
+            298.88,
+            599.4,
+            492.56,
+            612.2
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0060",
+      "type": "paragraph",
+      "text": "Tiêu hóa: buồn nôn, nôn.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        611.18,
+        394.07,
+        623.98
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêu hóa: buồn nôn, nôn.",
+          "bbox": [
+            298.88,
+            611.18,
+            394.07,
+            623.98
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0061",
+      "type": "paragraph",
+      "text": "Tim mạch: nhịp nhanh, đánh trống ngực, đau ngực, cơn Adams- Stokes, phù phổi, tăng huyết áp, tụt huyết áp, rối loạn nhịp thất, rối loạn nhịp nhanh.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        622.96,
+        553.21,
+        659.31
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0062",
+      "type": "paragraph",
+      "text": "Hô hấp: khó thở.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        658.29,
+        363.01,
+        671.09
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Hô hấp: khó thở.",
+          "bbox": [
+            298.88,
+            658.29,
+            363.01,
+            671.09
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0063",
+      "type": "paragraph",
+      "text": "Mắt: nhìn mờ.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        670.07,
+        353.26,
+        682.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mắt: nhìn mờ.",
+          "bbox": [
+            298.88,
+            670.07,
+            353.26,
+            682.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0064",
+      "type": "paragraph",
+      "text": "Các bộ phận khác: da bừng đỏ, run, ra mồ hôi, yếu cơ, xanh xao.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        681.85,
+        544.66,
+        694.65
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Các bộ phận khác: da bừng đỏ, run, ra mồ hôi, yếu cơ, xanh xao.",
+          "bbox": [
+            298.88,
+            681.85,
+            544.66,
+            694.65
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0065",
+      "type": "heading",
+      "level": 2,
+      "text": "Hướng dẫn cách xử trí ADR",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        699.48,
+        413.44,
+        712.62
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hướng dẫn cách xử trí ADR",
+          "bbox": [
+            298.88,
+            699.48,
+            413.44,
+            712.62
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0066",
+      "type": "paragraph",
+      "text": "Xem mục Quá liều và xử trí.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        711.41,
+        407.72,
+        724.2
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Xem mục Quá liều và xử trí.",
+          "bbox": [
+            298.88,
+            711.41,
+            407.72,
+            724.2
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0067",
+      "type": "heading",
+      "level": 2,
+      "text": "Liều lượng và cách dùng",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        729.03,
+        399.06,
+        742.18
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng và cách dùng",
+          "bbox": [
+            298.88,
+            729.03,
+            399.06,
+            742.18
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0068",
+      "type": "subheading",
+      "level": 3,
+      "text": "Cách dùng",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        741.04,
+        341.9,
+        753.76
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Cách dùng",
+          "bbox": [
+            298.88,
+            741.04,
+            341.9,
+            753.76
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0069",
+      "type": "paragraph",
+      "text": "Isoprenalin thường được dùng theo đường truyền tĩnh mạch hoặc tiêm tĩnh mạch bolus. Trường hợp khẩn cấp đe dọa tính mạng, có thể tiêm trong tim. Trường hợp không quá khẩn cấp, nên tiêm bắp hoặc tiêm dưới da đối với liều isoprenalin khởi đầu.",
+      "page": 938,
+      "printed_page": 944,
+      "column": 1,
+      "bbox": [
+        298.88,
+        752.74,
+        553.21,
+        800.87
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0070",
+      "type": "paragraph",
+      "text": "Cần pha loãng dung dịch isoprenalin hydroclorid 0,2 mg/ml trước khi tiêm tĩnh mạch hoặc truyền tĩnh mạch. Đối với tiêm bắp, tiêm dưới da và tiêm trong tim, sử dụng dung dịch tiêm chưa pha loãng.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        63.32,
+        298.28,
+        99.71
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0071",
+      "type": "subheading",
+      "level": 3,
+      "text": "Liều lượng",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        98.79,
+        87.72,
+        111.51
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng",
+          "bbox": [
+            43.94,
+            98.79,
+            87.72,
+            111.51
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0072",
+      "type": "subheading",
+      "level": 3,
+      "text": "Cơn blốc tim, Adams-Stokes và ngừng tim",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        110.67,
+        203.62,
+        123.31
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Cơn blốc tim, Adams-Stokes và ngừng tim",
+          "bbox": [
+            43.94,
+            110.67,
+            203.62,
+            123.31
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0073",
+      "type": "paragraph",
+      "text": "Tiêm tĩnh mạch bolus: Trước khi tiêm phải pha loãng 1 ml (0,2 mg) isoprenalin trong 9 ml dung dịch natri clorid 0,9% hoặc dung dịch glucose 5%. Liều khởi đầu 0,02 - 0,06 mg (1 - 3 ml dung dịch đã pha loãng). Liều tiếp theo 0,01 - 0,2 mg (0,5 - 10 ml dung dịch đã pha loãng) tùy theo đáp ứng.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        122.07,
+        298.31,
+        181.06
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0074",
+      "type": "paragraph",
+      "text": "Truyền tĩnh mạch: Trước khi truyền phải pha loãng 10 ml (2 mg) trong 500 ml dung dịch glucose 5%. Tốc độ truyền 5 microgam/ phút (1 ml dịch truyền đã pha loãng/phút).",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        179.82,
+        298.27,
+        215.71
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0075",
+      "type": "paragraph",
+      "text": "Tiêm bắp: Liều khởi đầu 0,2 mg (1 ml dung dịch chưa pha loãng).",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        214.46,
+        298.27,
+        227.26
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêm bắp: Liều khởi đầu 0,2 mg (1 ml dung dịch chưa pha loãng). ",
+          "bbox": [
+            43.94,
+            214.46,
+            298.27,
+            227.26
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0076",
+      "type": "paragraph",
+      "text": "Liều duy trì 0,02 - 1 mg (0,1 - 5 ml dung dịch chưa pha loãng) tùy theo đáp ứng.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        226.01,
+        298.27,
+        250.35
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0077",
+      "type": "paragraph",
+      "text": "Tiêm dưới da: Liều khởi đầu 0,2 mg (1 ml dung dịch chưa pha loãng). Liều duy trì 0,15 - 0,2 mg (0,75 - 1 ml dung dịch chưa pha loãng) tùy theo đáp ứng.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        249.11,
+        298.27,
+        285.0
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0078",
+      "type": "paragraph",
+      "text": "Tiêm trong tim: 0,02 mg (0,1 ml dung dịch chưa pha loãng).",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        283.76,
+        273.05,
+        296.55
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêm trong tim: 0,02 mg (0,1 ml dung dịch chưa pha loãng).",
+          "bbox": [
+            43.94,
+            283.76,
+            273.05,
+            296.55
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0079",
+      "type": "subheading",
+      "level": 3,
+      "text": "Các tình trạng sốc hoặc giảm thể tích tuần hoàn:",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        295.47,
+        233.41,
+        308.1
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Các tình trạng sốc hoặc giảm thể tích tuần hoàn: ",
+          "bbox": [
+            43.94,
+            295.47,
+            233.41,
+            308.1
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0080",
+      "type": "paragraph",
+      "text": "Truyền tĩnh mạch: Trước khi truyền phải pha loãng 5 ml (1 mg) trong 500 ml dung dịch glucose 5%. Trường hợp cần hạn chế dịch, nồng độ dịch truyền có thể cao hơn đến hơn 10 lần. Tốc độ truyền 0,5 - 5 microgam/phút (0,25 - 2,5 ml dịch truyền đã pha loãng/ phút). Điều chỉnh tốc độ truyền theo nhịp tim, áp lực tĩnh mạch trung tâm, huyết áp, lượng nước tiểu. Nếu nhịp tim vượt quá 110 lần/phút, nên giảm tốc độ truyền hoặc tạm thời ngừng truyền.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        306.85,
+        298.27,
+        388.95
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0081",
+      "type": "subheading",
+      "level": 3,
+      "text": "Giãn phế quản trong gây mê:",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        387.86,
+        155.72,
+        400.49
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Giãn phế quản trong gây mê:",
+          "bbox": [
+            43.94,
+            387.86,
+            155.72,
+            400.49
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0082",
+      "type": "paragraph",
+      "text": "Tiêm tĩnh mạch bolus: Trước khi tiêm, phải pha loãng 1 ml (0,2 mg) isoprenalin trong 9 ml dung dịch natri clorid 0,9% hoặc dung dịch glucose 5%. Liều khởi đầu 0,01 - 0,02 mg (0,5 - 1 ml dung dịch đã pha loãng). Lặp lại liều này nếu cần.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        399.25,
+        298.27,
+        446.69
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0083",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương tác thuốc",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        450.42,
+        110.85,
+        463.57
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương tác thuốc",
+          "bbox": [
+            43.94,
+            450.42,
+            110.85,
+            463.57
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0084",
+      "type": "paragraph",
+      "text": "Thuốc giống giao cảm: Dùng đồng thời isoprenalin với adrenalin và phần lớn các thuốc giãn phế quản giống giao cảm khác có thể làm tăng tác dụng và tăng độc tính trên tim. Nên dùng các thuốc này lần lượt và cách nhau ít nhất 4 giờ.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        463.5,
+        298.27,
+        511.69
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0085",
+      "type": "paragraph",
+      "text": "Dẫn chất xanthin: Dùng đồng thời các thuốc giống giao cảm (như isoprenalin) và các dẫn chất xanthin (như aminophylin) có thể làm tăng độc tính trên tim.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        510.69,
+        298.28,
+        547.09
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0086",
+      "type": "paragraph",
+      "text": "Thuốc gây mê: Dùng isoprenalin cho người bệnh gây mê bằng cyclopropan hoặc dẫn chất halogen có thể gây loạn nhịp. Không dùng isoprenalin hoặc dùng thận trọng trên bệnh nhân đang dùng các thuốc gây mê này.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        546.09,
+        298.27,
+        594.28
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0087",
+      "type": "paragraph",
+      "text": "Thuốc chẹn beta-adrenergic: Tác dụng của isoprenalin lên tim, tác dụng giãn phế quản và giãn mạch sẽ bị đối kháng bởi thuốc chẹn beta-adrenergic như propranolol. Có thể dùng propranolol để điều trị nhịp tim nhanh do isoprenalin nhưng không nên dùng cho người bị hen vì có thể làm tăng co thắt phế quản.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        593.28,
+        298.27,
+        653.28
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0088",
+      "type": "paragraph",
+      "text": "Dẫn chất nấm cựa gà: Các alkaloid nấm cựa gà gây tăng huyết áp trên bệnh nhân đang sử dụng isoprenalin, do thúc đẩy tác dụng gây tăng cung lượng tim của isoprenalin đồng thời gây co mạch.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        652.28,
+        298.27,
+        688.67
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0089",
+      "type": "paragraph",
+      "text": "Glycosid trợ tim: Khi dùng đồng thời isoprenalin với các glycosid tim, nguy cơ loạn nhịp tim tăng lên rõ rệt. Chống chỉ định isoprenalin trên bệnh nhân bị nhịp tim nhanh do digitalis.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        687.68,
+        298.27,
+        724.07
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0090",
+      "type": "paragraph",
+      "text": "Thuốc lợi tiểu thải kali: Nguy cơ loạn nhịp tim tăng lên khi dùng đồng thời các thuốc này với isoprenalin.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        723.07,
+        298.27,
+        747.67
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0091",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương kỵ",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        751.4,
+        83.68,
+        764.55
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương kỵ",
+          "bbox": [
+            43.94,
+            751.4,
+            83.68,
+            764.55
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0092",
+      "type": "paragraph",
+      "text": "Isoprenalin bị phân hủy trong dung dịch kiềm như natri bicarbonat.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        764.47,
+        298.27,
+        777.27
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Isoprenalin bị phân hủy trong dung dịch kiềm như natri bicarbonat. ",
+          "bbox": [
+            43.94,
+            764.47,
+            298.27,
+            777.27
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0093",
+      "type": "paragraph",
+      "text": "Ngoài ra, isoprenalin tương kị với aminophylin, furosemid, pantoprazol.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 0,
+      "bbox": [
+        43.94,
+        776.27,
+        298.27,
+        800.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0094",
+      "type": "heading",
+      "level": 2,
+      "text": "Quá liều và xử trí",
+      "page": 939,
+      "printed_page": 945,
+      "column": 1,
+      "bbox": [
+        307.89,
+        63.01,
+        379.56,
+        76.16
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Quá liều và xử trí",
+          "bbox": [
+            307.89,
+            63.01,
+            379.56,
+            76.16
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0095",
+      "type": "paragraph",
+      "text": "Triệu chứng: Quá liều isoprenalin có thể gây tụt huyết áp rõ rệt.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 1,
+      "bbox": [
+        307.89,
+        74.93,
+        562.22,
+        87.72
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Triệu chứng:",
+          "bbox": [
+            307.89,
+            75.09,
+            357.93,
+            87.72
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        },
+        {
+          "text": " Quá liều isoprenalin có thể gây tụt huyết áp rõ rệt. ",
+          "bbox": [
+            357.94,
+            74.93,
+            562.22,
+            87.72
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0096",
+      "type": "paragraph",
+      "text": "Trường hợp vô tình quá liều isoprenalin, đã ghi nhận các triệu chứng loạn nhịp tim, loạn nhịp nhanh, đánh trống ngực, đau thắt ngực, tụt huyết áp hoặc tăng huyết áp.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 1,
+      "bbox": [
+        307.89,
+        86.68,
+        562.22,
+        122.99
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0097",
+      "type": "paragraph",
+      "text": "Xử trí: Giảm tốc độ truyền hoặc ngừng thuốc và hỗ trợ các chức năng sống cho đến khi người bệnh ổn định; theo dõi huyết áp, nhịp tim, nhịp thở và điện tâm đồ.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 1,
+      "bbox": [
+        307.89,
+        121.94,
+        562.22,
+        158.25
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0098",
+      "type": "heading",
+      "text": "Cập nhật lần cuối",
+      "page": 939,
+      "printed_page": 945,
+      "column": 1,
+      "bbox": [
+        307.89,
+        163.37,
+        403.15,
+        176.01
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2019.",
+          "bbox": [
+            307.89,
+            163.37,
+            403.15,
+            176.01
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "level": 2,
+      "v11_fix": "cap_nhat_cap_nhap_lan_cuoi_normalized_alpha8"
+    },
+    {
+      "id": "b0098",
+      "type": "paragraph",
+      "text": "2019.",
+      "page": 939,
+      "printed_page": 945,
+      "column": 1,
+      "bbox": [
+        307.89,
+        163.37,
+        403.15,
+        176.01
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2019.",
+          "bbox": [
+            307.89,
+            163.37,
+            403.15,
+            176.01
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "v11_parent_heading": "Cập nhật lần cuối"
+    }
+  ],
+  "sections": [
+    {
+      "id": "isoproterenol",
+      "title": "(Isoproterenol)",
+      "heading_block": "b0002",
       "blocks": [
         {
           "type": "text",
-          "text": "Isoprenaline.\n\nMã ATC: R03CB01, R03AB02, C01CA02.\n\nLoại thuốc: Thuốc chủ vận beta-adrenergic không chọn lọc."
+          "text": "Tên chung quốc tế: Isoprenaline.",
+          "block_id": "b0003"
+        },
+        {
+          "type": "text",
+          "text": "Mã ATC: R03CB01, R03AB02, C01CA02.",
+          "block_id": "b0004"
+        },
+        {
+          "type": "text",
+          "text": "Loại thuốc: Thuốc chủ vận beta-adrenergic không chọn lọc.",
+          "block_id": "b0005"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "dang-thuoc-va-ham-luong",
       "title": "Dạng thuốc và hàm lượng",
-      "content": "Thuốc tiêm: 0,2 mg/1 ml (isoprenalin hydroclorid).",
+      "heading_block": "b0006",
       "blocks": [
         {
           "type": "text",
-          "text": "Thuốc tiêm: 0,2 mg/1 ml (isoprenalin hydroclorid)."
+          "text": "Thuốc tiêm: 0,2 mg/1 ml (isoprenalin hydroclorid).",
+          "block_id": "b0007"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "duoc-luc-hoc",
       "title": "Dược lực học",
-      "content": "Isoprenalin tác dụng trực tiếp lên thụ thể beta-adrenergic. Ở liều điều trị, thuốc ít hoặc không tác dụng lên thụ thể alpha-adrenergic.\n\nTác dụng của thuốc lên thụ thể beta-adrenergic được cho là do kích thích sản xuất AMP vòng (adenosin-3’, 5’-monophosphat) vì hoạt hóa enzym adenyl cyclase. Tác dụng chính của isoprenalin ở liều điều trị là làm giãn phế quản, kích thích tim và giãn mạch ngoại vi.\n\nKhi dùng isoprenalin kéo dài hoặc quá thường xuyên, bệnh nhân có thể dung nạp các tác dụng trên tim và giãn phế quản.\n\nTrên cơ trơn: Isoprenalin làm giãn cơ trơn phế quản, cơ trơn dạ dày ruột và tử cung do kích thích thụ thể beta2-adrenergic. Ngoài ra, isoprenalin ức chế giải phóng histamin do kháng nguyên gây ra, ức chế chất phản ứng chậm của phản vệ. Trên bệnh nhân bị co thắt phế quản, isoprenalin ở liều thường dùng có thể làm giảm co thắt phế quản, làm tăng dung tích sống, làm giảm thể tích cặn trong phổi và làm các dịch tiết ở phổi dễ dàng thoát ra ngoài. Tuy nhiên, oxy động mạch có thể tiếp tục giảm, co thắt phế quản có thể xuất hiện trở lại khi thuốc hết tác dụng.\n\nTrên tim mạch: Isoprenalin tác động lên các thụ thể beta1-adrenergic ở tim, làm tăng tần số tim thông qua nút xoang và tăng co bóp cơ tim. Cung lượng tim thường tăng, đi kèm với tăng thể tích nhát bóp. Isoprenalin có thể làm cơ tim tăng tiêu thụ oxy, làm tăng công năng của tim và làm giảm hiệu suất của tim. Mặc dù thuốc có thể làm tăng lưu lượng động mạch vành do làm giãn động mạch vành trực tiếp và gián tiếp, nhưng có thể không cung cấp đủ nhu cầu oxy tăng lên của cơ tim dẫn đến suy vành và thiếu oxy cơ tim. Tác dụng gây giãn mạch vành trên bệnh nhân có bệnh mạch vành dễ làm máu chuyển từ các vùng thiếu máu cục bộ đến các vùng giãn mạch. Dùng isoprenalin trên bệnh nhân bị nhồi máu cơ tim cấp có thể làm vùng thiếu máu mở rộng.\n\nTrên bệnh nhân có blốc nhĩ thất, isoprenalin làm rút ngắn thời gian dẫn truyền và thời kỳ trơ của nút nhĩ thất, làm tăng tốc độ và lực co bóp của tâm thất; nhờ vậy có thể loại bỏ hoặc ngừa tái phát nhịp tim chậm. Trên một số bệnh nhân, isoprenalin có thể tạm thời ngăn ngừa rung thất hoặc nhịp nhanh thất nhờ tạo nhịp nhanh xoang giúp rút ngắn thời kỳ tâm trương và ức chế tạo nhịp thất.\n\nRối loạn nhịp tim, bao gồm ngoại tâm thu thất, nhịp nhanh thất, nhịp ngoại vị ở tâm thất hoặc rung thất có thể xảy ra trên bệnh nhân dùng isoprenalin, đặc biệt khi dùng liều cao trên bệnh nhân sốc tim, nhiễm toan, giảm oxy máu, tăng hoặc giảm kali huyết, hoặc bệnh nhân nhạy cảm với tác dụng này của isoprenalin do trước đó đã dùng các thuốc như digitalis hoặc một số thuốc gây mê.\n\nIsoprenalin làm giãn các động mạch và tiểu động mạch ở cơ xương, với mức độ ít hơn ở các mạch mạc treo, ruột, phổi và đùi do tác động lên thụ thể beta-adrenergic. Chưa ghi nhận ảnh hưởng của thuốc lên mạch máu não. Thuốc làm giãn mạch ngoại vi nên làm giảm sức cản ngoại vi và tăng lượng máu tĩnh mạch trở về tim.\n\nTưới máu đến mô và các cơ quan có thể được cải thiện ở một số bệnh nhân sốc. Lưu lượng máu đến thận thường giảm ở bệnh nhân có huyết áp bình thường, nhưng tăng đáng kể ở bệnh nhân sốc.\n\nIsoprenalin làm tăng huyết áp tâm thu do làm tăng cung lượng tim, nhưng thường làm giảm huyết áp tâm trương do gây giãn mạch.\n\nHuyết áp trung bình thường giảm nhẹ, nhưng cũng có thể giữ nguyên hoặc tăng nhẹ khi mạch đã giãn tối đa. Isoprenalin liều cao làm huyết áp trung bình giảm mạnh. Isoprenalin không làm thay đổi áp lực động mạch phổi ở hầu hết bệnh nhân nhưng có thể đảo ngược sự tăng áp động mạch phổi ở bệnh nhân thuyên tắc phổi.\n\nTrên TKTW: Isoprenalin kích thích TKTW nhưng hiếm gặp ở liều điều trị. Một số bệnh nhân có thể xuất hiện hồi hộp, kích thích, mất ngủ, run rẩy.\n\nTrên chuyển hóa: Isoprenalin làm tăng thủy phân glycogen ở gan nhưng đồng thời tăng tiết insulin, do đó ít làm tăng glucose huyết.\n\nIsoprenalin làm tăng nồng độ acid béo tự do. Thuốc làm tăng thân nhiệt và tăng nhu cầu oxy ở hầu hết các mô đến mức máu có thể không cung cấp đủ; chuyển hóa yếm khí tăng lên nên có thể làm tăng nồng độ acid lactic động mạch.",
+      "heading_block": "b0008",
       "blocks": [
         {
           "type": "text",
-          "text": "Isoprenalin tác dụng trực tiếp lên thụ thể beta-adrenergic. Ở liều điều trị, thuốc ít hoặc không tác dụng lên thụ thể alpha-adrenergic.\n\nTác dụng của thuốc lên thụ thể beta-adrenergic được cho là do kích thích sản xuất AMP vòng (adenosin-3’, 5’-monophosphat) vì hoạt hóa enzym adenyl cyclase. Tác dụng chính của isoprenalin ở liều điều trị là làm giãn phế quản, kích thích tim và giãn mạch ngoại vi.\n\nKhi dùng isoprenalin kéo dài hoặc quá thường xuyên, bệnh nhân có thể dung nạp các tác dụng trên tim và giãn phế quản.\n\nTrên cơ trơn: Isoprenalin làm giãn cơ trơn phế quản, cơ trơn dạ dày ruột và tử cung do kích thích thụ thể beta2-adrenergic. Ngoài ra, isoprenalin ức chế giải phóng histamin do kháng nguyên gây ra, ức chế chất phản ứng chậm của phản vệ. Trên bệnh nhân bị co thắt phế quản, isoprenalin ở liều thường dùng có thể làm giảm co thắt phế quản, làm tăng dung tích sống, làm giảm thể tích cặn trong phổi và làm các dịch tiết ở phổi dễ dàng thoát ra ngoài. Tuy nhiên, oxy động mạch có thể tiếp tục giảm, co thắt phế quản có thể xuất hiện trở lại khi thuốc hết tác dụng.\n\nTrên tim mạch: Isoprenalin tác động lên các thụ thể beta1-adrenergic ở tim, làm tăng tần số tim thông qua nút xoang và tăng co bóp cơ tim. Cung lượng tim thường tăng, đi kèm với tăng thể tích nhát bóp. Isoprenalin có thể làm cơ tim tăng tiêu thụ oxy, làm tăng công năng của tim và làm giảm hiệu suất của tim. Mặc dù thuốc có thể làm tăng lưu lượng động mạch vành do làm giãn động mạch vành trực tiếp và gián tiếp, nhưng có thể không cung cấp đủ nhu cầu oxy tăng lên của cơ tim dẫn đến suy vành và thiếu oxy cơ tim. Tác dụng gây giãn mạch vành trên bệnh nhân có bệnh mạch vành dễ làm máu chuyển từ các vùng thiếu máu cục bộ đến các vùng giãn mạch. Dùng isoprenalin trên bệnh nhân bị nhồi máu cơ tim cấp có thể làm vùng thiếu máu mở rộng.\n\nTrên bệnh nhân có blốc nhĩ thất, isoprenalin làm rút ngắn thời gian dẫn truyền và thời kỳ trơ của nút nhĩ thất, làm tăng tốc độ và lực co bóp của tâm thất; nhờ vậy có thể loại bỏ hoặc ngừa tái phát nhịp tim chậm. Trên một số bệnh nhân, isoprenalin có thể tạm thời ngăn ngừa rung thất hoặc nhịp nhanh thất nhờ tạo nhịp nhanh xoang giúp rút ngắn thời kỳ tâm trương và ức chế tạo nhịp thất.\n\nRối loạn nhịp tim, bao gồm ngoại tâm thu thất, nhịp nhanh thất, nhịp ngoại vị ở tâm thất hoặc rung thất có thể xảy ra trên bệnh nhân dùng isoprenalin, đặc biệt khi dùng liều cao trên bệnh nhân sốc tim, nhiễm toan, giảm oxy máu, tăng hoặc giảm kali huyết, hoặc bệnh nhân nhạy cảm với tác dụng này của isoprenalin do trước đó đã dùng các thuốc như digitalis hoặc một số thuốc gây mê.\n\nIsoprenalin làm giãn các động mạch và tiểu động mạch ở cơ xương, với mức độ ít hơn ở các mạch mạc treo, ruột, phổi và đùi do tác động lên thụ thể beta-adrenergic. Chưa ghi nhận ảnh hưởng của thuốc lên mạch máu não. Thuốc làm giãn mạch ngoại vi nên làm giảm sức cản ngoại vi và tăng lượng máu tĩnh mạch trở về tim.\n\nTưới máu đến mô và các cơ quan có thể được cải thiện ở một số bệnh nhân sốc. Lưu lượng máu đến thận thường giảm ở bệnh nhân có huyết áp bình thường, nhưng tăng đáng kể ở bệnh nhân sốc.\n\nIsoprenalin làm tăng huyết áp tâm thu do làm tăng cung lượng tim, nhưng thường làm giảm huyết áp tâm trương do gây giãn mạch.\n\nHuyết áp trung bình thường giảm nhẹ, nhưng cũng có thể giữ nguyên hoặc tăng nhẹ khi mạch đã giãn tối đa. Isoprenalin liều cao làm huyết áp trung bình giảm mạnh. Isoprenalin không làm thay đổi áp lực động mạch phổi ở hầu hết bệnh nhân nhưng có thể đảo ngược sự tăng áp động mạch phổi ở bệnh nhân thuyên tắc phổi.\n\nTrên TKTW: Isoprenalin kích thích TKTW nhưng hiếm gặp ở liều điều trị. Một số bệnh nhân có thể xuất hiện hồi hộp, kích thích, mất ngủ, run rẩy.\n\nTrên chuyển hóa: Isoprenalin làm tăng thủy phân glycogen ở gan nhưng đồng thời tăng tiết insulin, do đó ít làm tăng glucose huyết.\n\nIsoprenalin làm tăng nồng độ acid béo tự do. Thuốc làm tăng thân nhiệt và tăng nhu cầu oxy ở hầu hết các mô đến mức máu có thể không cung cấp đủ; chuyển hóa yếm khí tăng lên nên có thể làm tăng nồng độ acid lactic động mạch."
+          "text": "Isoprenalin tác dụng trực tiếp lên thụ thể beta-adrenergic. Ở liều điều trị, thuốc ít hoặc không tác dụng lên thụ thể alpha-adrenergic.",
+          "block_id": "b0009"
+        },
+        {
+          "type": "text",
+          "text": "Tác dụng của thuốc lên thụ thể beta-adrenergic được cho là do kích thích sản xuất AMP vòng (adenosin-3’, 5’-monophosphat) vì hoạt hóa enzym adenyl cyclase. Tác dụng chính của isoprenalin ở liều điều trị là làm giãn phế quản, kích thích tim và giãn mạch ngoại vi.",
+          "block_id": "b0010"
+        },
+        {
+          "type": "text",
+          "text": "Khi dùng isoprenalin kéo dài hoặc quá thường xuyên, bệnh nhân có thể dung nạp các tác dụng trên tim và giãn phế quản.",
+          "block_id": "b0011"
+        },
+        {
+          "type": "text",
+          "text": "Trên cơ trơn: Isoprenalin làm giãn cơ trơn phế quản, cơ trơn dạ dày ruột và tử cung do kích thích thụ thể beta2-adrenergic. Ngoài ra, isoprenalin ức chế giải phóng histamin do kháng nguyên gây ra, ức chế chất phản ứng chậm của phản vệ. Trên bệnh nhân bị co thắt phế quản, isoprenalin ở liều thường dùng có thể làm giảm co thắt phế quản, làm tăng dung tích sống, làm giảm thể tích cặn trong phổi và làm các dịch tiết ở phổi dễ dàng thoát ra ngoài. Tuy nhiên, oxy động mạch có thể tiếp tục giảm, co thắt phế quản có thể xuất hiện trở lại khi thuốc hết tác dụng.",
+          "block_id": "b0012"
+        },
+        {
+          "type": "text",
+          "text": "Trên tim mạch: Isoprenalin tác động lên các thụ thể beta1-adrenergic ở tim, làm tăng tần số tim thông qua nút xoang và tăng co bóp cơ tim. Cung lượng tim thường tăng, đi kèm với tăng thể tích nhát bóp. Isoprenalin có thể làm cơ tim tăng tiêu thụ oxy, làm tăng công năng của tim và làm giảm hiệu suất của tim. Mặc dù thuốc có thể làm tăng lưu lượng động mạch vành do làm giãn động mạch vành trực tiếp và gián tiếp, nhưng có thể không cung cấp đủ nhu cầu oxy tăng lên của cơ tim dẫn đến suy vành và thiếu oxy cơ tim. Tác dụng gây giãn mạch vành trên bệnh nhân có bệnh mạch vành dễ làm máu chuyển từ các vùng thiếu máu cục bộ đến các vùng giãn mạch. Dùng isoprenalin trên bệnh nhân bị nhồi máu cơ tim cấp có thể làm vùng thiếu máu mở rộng.",
+          "block_id": "b0013"
+        },
+        {
+          "type": "text",
+          "text": "Trên bệnh nhân có blốc nhĩ thất, isoprenalin làm rút ngắn thời gian dẫn truyền và thời kỳ trơ của nút nhĩ thất, làm tăng tốc độ và lực co bóp của tâm thất; nhờ vậy có thể loại bỏ hoặc ngừa tái phát nhịp tim chậm. Trên một số bệnh nhân, isoprenalin có thể tạm thời ngăn ngừa rung thất hoặc nhịp nhanh thất nhờ tạo nhịp nhanh xoang giúp rút ngắn thời kỳ tâm trương và ức chế tạo nhịp thất.",
+          "block_id": "b0014"
+        },
+        {
+          "type": "text",
+          "text": "Rối loạn nhịp tim, bao gồm ngoại tâm thu thất, nhịp nhanh thất, nhịp ngoại vị ở tâm thất hoặc rung thất có thể xảy ra trên bệnh nhân dùng isoprenalin, đặc biệt khi dùng liều cao trên bệnh nhân sốc tim, nhiễm toan, giảm oxy máu, tăng hoặc giảm kali huyết, hoặc bệnh nhân nhạy cảm với tác dụng này của isoprenalin do trước đó đã dùng các thuốc như digitalis hoặc một số thuốc gây mê.",
+          "block_id": "b0015"
+        },
+        {
+          "type": "text",
+          "text": "Isoprenalin làm giãn các động mạch và tiểu động mạch ở cơ xương, với mức độ ít hơn ở các mạch mạc treo, ruột, phổi và đùi do tác động lên thụ thể beta-adrenergic. Chưa ghi nhận ảnh hưởng của",
+          "block_id": "b0016"
+        },
+        {
+          "type": "text",
+          "text": "thuốc lên mạch máu não. Thuốc làm giãn mạch ngoại vi nên làm giảm sức cản ngoại vi và tăng lượng máu tĩnh mạch trở về tim.",
+          "block_id": "b0017"
+        },
+        {
+          "type": "text",
+          "text": "Tưới máu đến mô và các cơ quan có thể được cải thiện ở một số bệnh nhân sốc. Lưu lượng máu đến thận thường giảm ở bệnh nhân có huyết áp bình thường, nhưng tăng đáng kể ở bệnh nhân sốc.",
+          "block_id": "b0018"
+        },
+        {
+          "type": "text",
+          "text": "Isoprenalin làm tăng huyết áp tâm thu do làm tăng cung lượng tim, nhưng thường làm giảm huyết áp tâm trương do gây giãn mạch.",
+          "block_id": "b0019"
+        },
+        {
+          "type": "text",
+          "text": "Huyết áp trung bình thường giảm nhẹ, nhưng cũng có thể giữ nguyên hoặc tăng nhẹ khi mạch đã giãn tối đa. Isoprenalin liều cao làm huyết áp trung bình giảm mạnh. Isoprenalin không làm thay đổi áp lực động mạch phổi ở hầu hết bệnh nhân nhưng có thể đảo ngược sự tăng áp động mạch phổi ở bệnh nhân thuyên tắc phổi.",
+          "block_id": "b0020"
+        },
+        {
+          "type": "text",
+          "text": "Trên TKTW: Isoprenalin kích thích TKTW nhưng hiếm gặp ở liều điều trị. Một số bệnh nhân có thể xuất hiện hồi hộp, kích thích, mất ngủ, run rẩy.",
+          "block_id": "b0021"
+        },
+        {
+          "type": "text",
+          "text": "Trên chuyển hóa: Isoprenalin làm tăng thủy phân glycogen ở gan nhưng đồng thời tăng tiết insulin, do đó ít làm tăng glucose huyết.",
+          "block_id": "b0022"
+        },
+        {
+          "type": "text",
+          "text": "Isoprenalin làm tăng nồng độ acid béo tự do. Thuốc làm tăng thân nhiệt và tăng nhu cầu oxy ở hầu hết các mô đến mức máu có thể không cung cấp đủ; chuyển hóa yếm khí tăng lên nên có thể làm tăng nồng độ acid lactic động mạch.",
+          "block_id": "b0023"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "duoc-ong-hoc",
+      "id": "duoc-dong-hoc",
       "title": "Dược động học",
-      "content": "Hấp thu: Isoprenalin hấp thu nhanh sau khi hít bằng đường miệng, mức độ hấp thu dạng đặt dưới lưỡi và đặt trực tràng rất biến động.\n\nIsoprenalin chuyển hóa nhanh ở đường tiêu hóa. Tuy nhiên, dạng uống, khí dung, đặt dưới lưỡi và đặt trực tràng hiện không còn được lưu hành.\n\nGiãn phế quản xảy ra nhanh ngay sau khi hít thuốc vào và kéo dài khoảng 1 giờ. Tác dụng của thuốc tồn tại vài phút sau khi tiêm tĩnh mạch và tới 2 giờ sau khi tiêm dưới da hoặc đặt dưới lưỡi, 2 - 4 giờ sau khi đặt trực tràng một viên ngậm dưới lưỡi.\n\nPhân bố: Hiện chưa rõ thuốc có phân bố trong sữa không.\n\nChuyển hóa: Thuốc được chuyển hóa chủ yếu ở gan, phổi và các mô khác, nhờ enzym catecholamin-O-methyltransferase (COMT).\n\nChất chuyển hóa chính là 3-O-methyl-isoproterenol có hoạt tính chẹn beta-adrenergic yếu.\n\nThải trừ: Ở người lớn bị hen, 75% isoprenalin được bài tiết ra nước tiểu trong vòng 15 giờ sau khi tiêm tĩnh mạch bolus và trong vòng 22 giờ khi truyền tĩnh mạch 30 phút. Khoảng 40 - 50% liều dùng được bài xuất ra nước tiểu ở dạng không đổi và phần còn lại dưới dạng chất chuyển hóa. Ở người lớn mắc bệnh nặng, khoảng 75 - 90% liều thuốc dùng đường tiêm được bài xuất ra nước tiểu trong vòng 24 giờ dưới dạng liên hợp của isoprenalin và chất huyển hóa, dưới 15% ở dạng không đổi.",
+      "heading_block": "b0024",
       "blocks": [
         {
           "type": "text",
-          "text": "Hấp thu: Isoprenalin hấp thu nhanh sau khi hít bằng đường miệng, mức độ hấp thu dạng đặt dưới lưỡi và đặt trực tràng rất biến động.\n\nIsoprenalin chuyển hóa nhanh ở đường tiêu hóa. Tuy nhiên, dạng uống, khí dung, đặt dưới lưỡi và đặt trực tràng hiện không còn được lưu hành.\n\nGiãn phế quản xảy ra nhanh ngay sau khi hít thuốc vào và kéo dài khoảng 1 giờ. Tác dụng của thuốc tồn tại vài phút sau khi tiêm tĩnh mạch và tới 2 giờ sau khi tiêm dưới da hoặc đặt dưới lưỡi, 2 - 4 giờ sau khi đặt trực tràng một viên ngậm dưới lưỡi.\n\nPhân bố: Hiện chưa rõ thuốc có phân bố trong sữa không.\n\nChuyển hóa: Thuốc được chuyển hóa chủ yếu ở gan, phổi và các mô khác, nhờ enzym catecholamin-O-methyltransferase (COMT).\n\nChất chuyển hóa chính là 3-O-methyl-isoproterenol có hoạt tính chẹn beta-adrenergic yếu.\n\nThải trừ: Ở người lớn bị hen, 75% isoprenalin được bài tiết ra nước tiểu trong vòng 15 giờ sau khi tiêm tĩnh mạch bolus và trong vòng 22 giờ khi truyền tĩnh mạch 30 phút. Khoảng 40 - 50% liều dùng được bài xuất ra nước tiểu ở dạng không đổi và phần còn lại dưới dạng chất chuyển hóa. Ở người lớn mắc bệnh nặng, khoảng 75 - 90% liều thuốc dùng đường tiêm được bài xuất ra nước tiểu trong vòng 24 giờ dưới dạng liên hợp của isoprenalin và chất huyển hóa, dưới 15% ở dạng không đổi."
+          "text": "Hấp thu: Isoprenalin hấp thu nhanh sau khi hít bằng đường miệng, mức độ hấp thu dạng đặt dưới lưỡi và đặt trực tràng rất biến động.",
+          "block_id": "b0025"
+        },
+        {
+          "type": "text",
+          "text": "Isoprenalin chuyển hóa nhanh ở đường tiêu hóa. Tuy nhiên, dạng uống, khí dung, đặt dưới lưỡi và đặt trực tràng hiện không còn được lưu hành.",
+          "block_id": "b0026"
+        },
+        {
+          "type": "text",
+          "text": "Giãn phế quản xảy ra nhanh ngay sau khi hít thuốc vào và kéo dài khoảng 1 giờ. Tác dụng của thuốc tồn tại vài phút sau khi tiêm tĩnh mạch và tới 2 giờ sau khi tiêm dưới da hoặc đặt dưới lưỡi, 2 - 4 giờ sau khi đặt trực tràng một viên ngậm dưới lưỡi.",
+          "block_id": "b0027"
+        },
+        {
+          "type": "text",
+          "text": "Phân bố: Hiện chưa rõ thuốc có phân bố trong sữa không.",
+          "block_id": "b0028"
+        },
+        {
+          "type": "text",
+          "text": "Chuyển hóa: Thuốc được chuyển hóa chủ yếu ở gan, phổi và các mô khác, nhờ enzym catecholamin-O-methyltransferase (COMT).",
+          "block_id": "b0029"
+        },
+        {
+          "type": "text",
+          "text": "Chất chuyển hóa chính là 3-O-methyl-isoproterenol có hoạt tính chẹn beta-adrenergic yếu.",
+          "block_id": "b0030"
+        },
+        {
+          "type": "text",
+          "text": "Thải trừ: Ở người lớn bị hen, 75% isoprenalin được bài tiết ra nước tiểu trong vòng 15 giờ sau khi tiêm tĩnh mạch bolus và trong vòng 22 giờ khi truyền tĩnh mạch 30 phút. Khoảng 40 - 50% liều dùng được bài xuất ra nước tiểu ở dạng không đổi và phần còn lại dưới dạng chất chuyển hóa. Ở người lớn mắc bệnh nặng, khoảng 75 - 90% liều thuốc dùng đường tiêm được bài xuất ra nước tiểu trong vòng 24 giờ dưới dạng liên hợp của isoprenalin và chất huyển hóa, dưới 15% ở dạng không đổi.",
+          "block_id": "b0031"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chi-inh",
+      "id": "chi-dinh",
       "title": "Chỉ định",
-      "content": "Isoprenalin được chỉ định cho người lớn trong các trường hợp: Cơn blốc tim (blốc nhĩ thất) nhẹ hoặc thoáng qua không cần sốc điện hay liệu pháp tạo nhịp.\n\nCơn blốc tim nặng chưa cần sốc điện hay liệu pháp tạo nhịp (ngoại trừ do ngộ độc digitalis, hoặc do nhịp nhanh thất hay rung thất).\n\nCơn Adams-Stokes nặng (ngoại trừ do nhịp nhanh thất hay rung thất).\n\nNgừng tim, khi sốc điện hoặc liệu pháp tạo nhịp chưa có sẵn.\n\nHỗ trợ các liệu pháp bù dịch và điện giải, dùng thuốc và các thủ thuật khác trong điều trị giảm thể tích tuần hoàn, sốc nhiễm khuẩn, giảm cung lượng tim, suy tim sung huyết và sốc tim.\n\nGiãn phế quản trong gây mê.",
+      "heading_block": "b0032",
       "blocks": [
         {
           "type": "text",
-          "text": "Isoprenalin được chỉ định cho người lớn trong các trường hợp: Cơn blốc tim (blốc nhĩ thất) nhẹ hoặc thoáng qua không cần sốc điện hay liệu pháp tạo nhịp.\n\nCơn blốc tim nặng chưa cần sốc điện hay liệu pháp tạo nhịp (ngoại trừ do ngộ độc digitalis, hoặc do nhịp nhanh thất hay rung thất).\n\nCơn Adams-Stokes nặng (ngoại trừ do nhịp nhanh thất hay rung thất).\n\nNgừng tim, khi sốc điện hoặc liệu pháp tạo nhịp chưa có sẵn.\n\nHỗ trợ các liệu pháp bù dịch và điện giải, dùng thuốc và các thủ thuật khác trong điều trị giảm thể tích tuần hoàn, sốc nhiễm khuẩn, giảm cung lượng tim, suy tim sung huyết và sốc tim.\n\nGiãn phế quản trong gây mê."
+          "text": "Isoprenalin được chỉ định cho người lớn trong các trường hợp:",
+          "block_id": "b0033"
+        },
+        {
+          "type": "text",
+          "text": "Cơn blốc tim (blốc nhĩ thất) nhẹ hoặc thoáng qua không cần sốc điện hay liệu pháp tạo nhịp.",
+          "block_id": "b0034"
+        },
+        {
+          "type": "text",
+          "text": "Cơn blốc tim nặng chưa cần sốc điện hay liệu pháp tạo nhịp (ngoại trừ do ngộ độc digitalis, hoặc do nhịp nhanh thất hay rung thất).",
+          "block_id": "b0035"
+        },
+        {
+          "type": "text",
+          "text": "Cơn Adams-Stokes nặng (ngoại trừ do nhịp nhanh thất hay rung thất).",
+          "block_id": "b0036"
+        },
+        {
+          "type": "text",
+          "text": "Ngừng tim, khi sốc điện hoặc liệu pháp tạo nhịp chưa có sẵn.",
+          "block_id": "b0037"
+        },
+        {
+          "type": "text",
+          "text": "Hỗ trợ các liệu pháp bù dịch và điện giải, dùng thuốc và các thủ thuật khác trong điều trị giảm thể tích tuần hoàn, sốc nhiễm khuẩn, giảm cung lượng tim, suy tim sung huyết và sốc tim.",
+          "block_id": "b0038"
+        },
+        {
+          "type": "text",
+          "text": "Giãn phế quản trong gây mê.",
+          "block_id": "b0039"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chong-chi-inh",
+      "id": "chong-chi-dinh",
       "title": "Chống chỉ định",
-      "content": "Quá mẫn với isoprenalin.\n\nRối loạn nhịp nhanh.\n\nNhịp tim nhanh hoặc blốc tim do digitalis.\n\nĐau thắt ngực.",
+      "heading_block": "b0040",
       "blocks": [
         {
           "type": "text",
-          "text": "Quá mẫn với isoprenalin.\n\nRối loạn nhịp nhanh.\n\nNhịp tim nhanh hoặc blốc tim do digitalis.\n\nĐau thắt ngực."
+          "text": "Quá mẫn với isoprenalin.",
+          "block_id": "b0041"
+        },
+        {
+          "type": "text",
+          "text": "Rối loạn nhịp nhanh.",
+          "block_id": "b0042"
+        },
+        {
+          "type": "text",
+          "text": "Nhịp tim nhanh hoặc blốc tim do digitalis.",
+          "block_id": "b0043"
+        },
+        {
+          "type": "text",
+          "text": "Đau thắt ngực.",
+          "block_id": "b0044"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "than-trong",
       "title": "Thận trọng",
-      "content": "Hiệu quả và an toàn của thuốc chưa được chứng minh trên trẻ em.\n\nDữ liệu trên lâm sàng không đủ kết luận về an toàn của isoprenalin trên bệnh nhân từ 65 tuổi trở lên. Nên dùng isoprenalin liều thấp nhất trên người cao tuổi. Tuy nhiên, một số dữ liệu cho thấy người cao tuổi đáp ứng với thuốc kích thích beta-adrenergic kém hơn so với người trẻ.\n\nIsoprenalin làm cơ tim tăng tiêu thụ oxy đồng thời làm giảm tưới máu mạch vành. Thuốc không được khuyến cáo là lựa chọn ban đầu để điều trị sốc tim sau nhồi máu cơ tim. Tuy nhiên, khi huyết áp động mạch đã được tăng lên nhờ liệu pháp khác, dùng isoprenalin có thể có lợi cho huyết động và chuyển hóa.\n\nNên khởi đầu isoprenalin ở liều thấp nhất, sau đó có thể tăng dần liều nếu cần, đồng thời giám sát bệnh nhân thận trọng. Liều thuốc làm nhịp tim tăng đến hơn 130 lần/phút có thể làm tăng nguy cơ rối loạn nhịp thất. Nhịp tim tăng như vậy cũng có thể làm tăng công năng của tim và cơ tim tăng nhu cầu oxy, ảnh hưởng xấu trên bệnh nhân suy tim hoặc xơ vữa động mạch vành.\n\nTrước khi dùng thuốc vận mạch trong các trường hợp sốc, việc bù đủ thể tích tuần hoàn là yếu tố quan trọng hàng đầu. Cần theo dõi áp lực tĩnh mạch trung tâm trong khi bù dịch. Nếu bù dịch đủ mà vẫn còn dấu hiệu giảm tưới máu, thì có thể dùng isoprenalin tiêm.\n\nBên cạnh việc theo dõi huyết áp, nhịp tim, lượng nước tiểu và điện tim, cần đo thường xuyên áp lực tĩnh mạch trung tâm và khí máu để đánh giá đáp ứng của isoprenalin. Theo dõi sát bệnh nhân sốc trong khi dùng isoprenalin. Nếu nhịp tim vượt quá 110 lần/ phút, nên giảm tốc độ truyền hoặc tạm thời ngừng truyền. Đảm bảo thông khí đủ, giám sát cân bằng toan kiềm và điều chỉnh rối loạn điện giải.\n\nSử dụng isoprenalin thận trọng trên bệnh nhân cao tuổi, bệnh nhân bị rối loạn co giật, suy vành, đái tháo đường, tăng huyết áp, cường giáp hoặc quá mẫn với các amin giao cảm.",
+      "heading_block": "b0045",
       "blocks": [
         {
           "type": "text",
-          "text": "Hiệu quả và an toàn của thuốc chưa được chứng minh trên trẻ em.\n\nDữ liệu trên lâm sàng không đủ kết luận về an toàn của isoprenalin trên bệnh nhân từ 65 tuổi trở lên. Nên dùng isoprenalin liều thấp nhất trên người cao tuổi. Tuy nhiên, một số dữ liệu cho thấy người cao tuổi đáp ứng với thuốc kích thích beta-adrenergic kém hơn so với người trẻ.\n\nIsoprenalin làm cơ tim tăng tiêu thụ oxy đồng thời làm giảm tưới máu mạch vành. Thuốc không được khuyến cáo là lựa chọn ban đầu để điều trị sốc tim sau nhồi máu cơ tim. Tuy nhiên, khi huyết áp động mạch đã được tăng lên nhờ liệu pháp khác, dùng isoprenalin có thể có lợi cho huyết động và chuyển hóa.\n\nNên khởi đầu isoprenalin ở liều thấp nhất, sau đó có thể tăng dần liều nếu cần, đồng thời giám sát bệnh nhân thận trọng. Liều thuốc làm nhịp tim tăng đến hơn 130 lần/phút có thể làm tăng nguy cơ rối loạn nhịp thất. Nhịp tim tăng như vậy cũng có thể làm tăng công năng của tim và cơ tim tăng nhu cầu oxy, ảnh hưởng xấu trên bệnh nhân suy tim hoặc xơ vữa động mạch vành.\n\nTrước khi dùng thuốc vận mạch trong các trường hợp sốc, việc bù đủ thể tích tuần hoàn là yếu tố quan trọng hàng đầu. Cần theo dõi áp lực tĩnh mạch trung tâm trong khi bù dịch. Nếu bù dịch đủ mà vẫn còn dấu hiệu giảm tưới máu, thì có thể dùng isoprenalin tiêm.\n\nBên cạnh việc theo dõi huyết áp, nhịp tim, lượng nước tiểu và điện tim, cần đo thường xuyên áp lực tĩnh mạch trung tâm và khí máu để đánh giá đáp ứng của isoprenalin. Theo dõi sát bệnh nhân sốc trong khi dùng isoprenalin. Nếu nhịp tim vượt quá 110 lần/ phút, nên giảm tốc độ truyền hoặc tạm thời ngừng truyền. Đảm bảo thông khí đủ, giám sát cân bằng toan kiềm và điều chỉnh rối loạn điện giải.\n\nSử dụng isoprenalin thận trọng trên bệnh nhân cao tuổi, bệnh nhân bị rối loạn co giật, suy vành, đái tháo đường, tăng huyết áp, cường giáp hoặc quá mẫn với các amin giao cảm."
+          "text": "Hiệu quả và an toàn của thuốc chưa được chứng minh trên trẻ em.",
+          "block_id": "b0046"
+        },
+        {
+          "type": "text",
+          "text": "Dữ liệu trên lâm sàng không đủ kết luận về an toàn của isoprenalin trên bệnh nhân từ 65 tuổi trở lên. Nên dùng isoprenalin liều thấp nhất trên người cao tuổi. Tuy nhiên, một số dữ liệu cho thấy người cao tuổi đáp ứng với thuốc kích thích beta-adrenergic kém hơn so với người trẻ.",
+          "block_id": "b0047"
+        },
+        {
+          "type": "text",
+          "text": "Isoprenalin làm cơ tim tăng tiêu thụ oxy đồng thời làm giảm tưới máu mạch vành. Thuốc không được khuyến cáo là lựa chọn ban đầu để điều trị sốc tim sau nhồi máu cơ tim. Tuy nhiên, khi huyết áp động mạch đã được tăng lên nhờ liệu pháp khác, dùng isoprenalin có thể có lợi cho huyết động và chuyển hóa.",
+          "block_id": "b0048"
+        },
+        {
+          "type": "text",
+          "text": "Nên khởi đầu isoprenalin ở liều thấp nhất, sau đó có thể tăng dần liều nếu cần, đồng thời giám sát bệnh nhân thận trọng. Liều thuốc làm nhịp tim tăng đến hơn 130 lần/phút có thể làm tăng nguy cơ rối loạn nhịp thất. Nhịp tim tăng như vậy cũng có thể làm tăng công năng của tim và cơ tim tăng nhu cầu oxy, ảnh hưởng xấu trên bệnh nhân suy tim hoặc xơ vữa động mạch vành.",
+          "block_id": "b0049"
+        },
+        {
+          "type": "text",
+          "text": "Trước khi dùng thuốc vận mạch trong các trường hợp sốc, việc bù đủ thể tích tuần hoàn là yếu tố quan trọng hàng đầu. Cần theo dõi áp lực tĩnh mạch trung tâm trong khi bù dịch. Nếu bù dịch đủ mà vẫn còn dấu hiệu giảm tưới máu, thì có thể dùng isoprenalin tiêm.",
+          "block_id": "b0050"
+        },
+        {
+          "type": "text",
+          "text": "Bên cạnh việc theo dõi huyết áp, nhịp tim, lượng nước tiểu và điện tim, cần đo thường xuyên áp lực tĩnh mạch trung tâm và khí máu để đánh giá đáp ứng của isoprenalin. Theo dõi sát bệnh nhân sốc trong khi dùng isoprenalin. Nếu nhịp tim vượt quá 110 lần/ phút, nên giảm tốc độ truyền hoặc tạm thời ngừng truyền. Đảm bảo thông khí đủ, giám sát cân bằng toan kiềm và điều chỉnh rối loạn điện giải.",
+          "block_id": "b0051"
+        },
+        {
+          "type": "text",
+          "text": "Sử dụng isoprenalin thận trọng trên bệnh nhân cao tuổi, bệnh nhân bị rối loạn co giật, suy vành, đái tháo đường, tăng huyết áp, cường giáp hoặc quá mẫn với các amin giao cảm.",
+          "block_id": "b0052"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-mang-thai",
       "title": "Thời kỳ mang thai",
-      "content": "Các nghiên cứu trên chuột và thỏ sử dụng isoprenalin đường hít liều cao không phát hiện khả năng gây dị tật. Không có nghiên cứu về isoprenalin hydroclorid đường tiêm trên động vật. Không có đủ bằng chứng về sử dụng isoprenalin trên phụ nữ mang thai, do đó chỉ dùng thuốc trong thai kỳ khi thật sự cần thiết.",
+      "heading_block": "b0053",
       "blocks": [
         {
           "type": "text",
-          "text": "Các nghiên cứu trên chuột và thỏ sử dụng isoprenalin đường hít liều cao không phát hiện khả năng gây dị tật. Không có nghiên cứu về isoprenalin hydroclorid đường tiêm trên động vật. Không có đủ bằng chứng về sử dụng isoprenalin trên phụ nữ mang thai, do đó chỉ dùng thuốc trong thai kỳ khi thật sự cần thiết."
+          "text": "Các nghiên cứu trên chuột và thỏ sử dụng isoprenalin đường hít liều cao không phát hiện khả năng gây dị tật. Không có nghiên cứu về isoprenalin hydroclorid đường tiêm trên động vật. Không có đủ bằng chứng về sử dụng isoprenalin trên phụ nữ mang thai, do đó chỉ dùng thuốc trong thai kỳ khi thật sự cần thiết.",
+          "block_id": "b0054"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-cho-con-bu",
       "title": "Thời kỳ cho con bú",
-      "content": "Chưa có thông tin về sự bài tiết isoprenalin ra sữa. Cần thận trọng khi dùng isoprenalin cho phụ nữ cho con bú.",
+      "heading_block": "b0055",
       "blocks": [
         {
           "type": "text",
-          "text": "Chưa có thông tin về sự bài tiết isoprenalin ra sữa. Cần thận trọng khi dùng isoprenalin cho phụ nữ cho con bú."
+          "text": "Chưa có thông tin về sự bài tiết isoprenalin ra sữa. Cần thận trọng khi dùng isoprenalin cho phụ nữ cho con bú.",
+          "block_id": "b0056"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tac-dung-khong-mong-muon-adr",
       "title": "Tác dụng không mong muốn (ADR)",
-      "content": "Các ADR được ghi nhận sau khi dùng isoprenalin hydroclorid tiêm bao gồm: Thần kinh: bồn chồn, lo lắng, đau đầu, chóng mặt.\n\nTiêu hóa: buồn nôn, nôn.\n\nTim mạch: nhịp nhanh, đánh trống ngực, đau ngực, cơn AdamsStokes, phù phổi, tăng huyết áp, tụt huyết áp, rối loạn nhịp thất, rối loạn nhịp nhanh.\n\nHô hấp: khó thở.\n\nMắt: nhìn mờ.\n\nCác bộ phận khác: da bừng đỏ, run, ra mồ hôi, yếu cơ, xanh xao.",
+      "heading_block": "b0057",
       "blocks": [
         {
           "type": "text",
-          "text": "Các ADR được ghi nhận sau khi dùng isoprenalin hydroclorid tiêm bao gồm: Thần kinh: bồn chồn, lo lắng, đau đầu, chóng mặt.\n\nTiêu hóa: buồn nôn, nôn.\n\nTim mạch: nhịp nhanh, đánh trống ngực, đau ngực, cơn AdamsStokes, phù phổi, tăng huyết áp, tụt huyết áp, rối loạn nhịp thất, rối loạn nhịp nhanh.\n\nHô hấp: khó thở.\n\nMắt: nhìn mờ.\n\nCác bộ phận khác: da bừng đỏ, run, ra mồ hôi, yếu cơ, xanh xao."
+          "text": "Các ADR được ghi nhận sau khi dùng isoprenalin hydroclorid tiêm bao gồm:",
+          "block_id": "b0058"
+        },
+        {
+          "type": "text",
+          "text": "Thần kinh: bồn chồn, lo lắng, đau đầu, chóng mặt.",
+          "block_id": "b0059"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: buồn nôn, nôn.",
+          "block_id": "b0060"
+        },
+        {
+          "type": "text",
+          "text": "Tim mạch: nhịp nhanh, đánh trống ngực, đau ngực, cơn Adams- Stokes, phù phổi, tăng huyết áp, tụt huyết áp, rối loạn nhịp thất, rối loạn nhịp nhanh.",
+          "block_id": "b0061"
+        },
+        {
+          "type": "text",
+          "text": "Hô hấp: khó thở.",
+          "block_id": "b0062"
+        },
+        {
+          "type": "text",
+          "text": "Mắt: nhìn mờ.",
+          "block_id": "b0063"
+        },
+        {
+          "type": "text",
+          "text": "Các bộ phận khác: da bừng đỏ, run, ra mồ hôi, yếu cơ, xanh xao.",
+          "block_id": "b0064"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "huong-dan-cach-xu-tri-adr",
       "title": "Hướng dẫn cách xử trí ADR",
-      "content": "Xem mục Quá liều và xử trí.",
+      "heading_block": "b0065",
       "blocks": [
         {
           "type": "text",
-          "text": "Xem mục Quá liều và xử trí."
+          "text": "Xem mục Quá liều và xử trí.",
+          "block_id": "b0066"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "cach-dung",
-      "title": "Cách dùng",
-      "content": "Isoprenalin thường được dùng theo đường truyền tĩnh mạch hoặc tiêm tĩnh mạch bolus. Trường hợp khẩn cấp đe dọa tính mạng, có thể tiêm trong tim. Trường hợp không quá khẩn cấp, nên tiêm bắp hoặc tiêm dưới da đối với liều isoprenalin khởi đầu.\n\nCần pha loãng dung dịch isoprenalin hydroclorid 0,2 mg/ml trước khi tiêm tĩnh mạch hoặc truyền tĩnh mạch. Đối với tiêm bắp, tiêm dưới da và tiêm trong tim, sử dụng dung dịch tiêm chưa pha loãng.",
+      "id": "lieu-luong-va-cach-dung",
+      "title": "Liều lượng và cách dùng",
+      "heading_block": "b0067",
       "blocks": [
         {
-          "type": "text",
-          "text": "Isoprenalin thường được dùng theo đường truyền tĩnh mạch hoặc tiêm tĩnh mạch bolus. Trường hợp khẩn cấp đe dọa tính mạng, có thể tiêm trong tim. Trường hợp không quá khẩn cấp, nên tiêm bắp hoặc tiêm dưới da đối với liều isoprenalin khởi đầu.\n\nCần pha loãng dung dịch isoprenalin hydroclorid 0,2 mg/ml trước khi tiêm tĩnh mạch hoặc truyền tĩnh mạch. Đối với tiêm bắp, tiêm dưới da và tiêm trong tim, sử dụng dung dịch tiêm chưa pha loãng."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "lieu-luong",
-      "title": "Liều lượng",
-      "content": "Cơn blốc tim, Adams-Stokes và ngừng tim Tiêm tĩnh mạch bolus: Trước khi tiêm phải pha loãng 1 ml (0,2 mg) isoprenalin trong 9 ml dung dịch natri clorid 0,9% hoặc dung dịch glucose 5%. Liều khởi đầu 0,02 - 0,06 mg (1 - 3 ml dung dịch đã pha loãng). Liều tiếp theo 0,01 - 0,2 mg (0,5 - 10 ml dung dịch đã pha loãng) tùy theo đáp ứng.\n\nTruyền tĩnh mạch: Trước khi truyền phải pha loãng 10 ml (2 mg) trong 500 ml dung dịch glucose 5%. Tốc độ truyền 5 microgam/ phút (1 ml dịch truyền đã pha loãng/phút).\n\nTiêm bắp: Liều khởi đầu 0,2 mg (1 ml dung dịch chưa pha loãng).\n\nLiều duy trì 0,02 - 1 mg (0,1 - 5 ml dung dịch chưa pha loãng) tùy theo đáp ứng.\n\nTiêm dưới da: Liều khởi đầu 0,2 mg (1 ml dung dịch chưa pha loãng). Liều duy trì 0,15 - 0,2 mg (0,75 - 1 ml dung dịch chưa pha loãng) tùy theo đáp ứng.\n\nTiêm trong tim: 0,02 mg (0,1 ml dung dịch chưa pha loãng).\n\nCác tình trạng sốc hoặc giảm thể tích tuần hoàn: Truyền tĩnh mạch: Trước khi truyền phải pha loãng 5 ml (1 mg) trong 500 ml dung dịch glucose 5%. Trường hợp cần hạn chế dịch, nồng độ dịch truyền có thể cao hơn đến hơn 10 lần. Tốc độ truyền 0,5 - 5 microgam/phút (0,25 - 2,5 ml dịch truyền đã pha loãng/ phút). Điều chỉnh tốc độ truyền theo nhịp tim, áp lực tĩnh mạch trung tâm, huyết áp, lượng nước tiểu. Nếu nhịp tim vượt quá 110 lần/phút, nên giảm tốc độ truyền hoặc tạm thời ngừng truyền.\n\nGiãn phế quản trong gây mê: Tiêm tĩnh mạch bolus: Trước khi tiêm, phải pha loãng 1 ml (0,2 mg) isoprenalin trong 9 ml dung dịch natri clorid 0,9% hoặc dung dịch glucose 5%. Liều khởi đầu 0,01 - 0,02 mg (0,5 - 1 ml dung dịch đã pha loãng). Lặp lại liều này nếu cần.",
-      "blocks": [
+          "type": "subheading",
+          "text": "Cách dùng",
+          "block_id": "b0068"
+        },
         {
           "type": "text",
-          "text": "Cơn blốc tim, Adams-Stokes và ngừng tim Tiêm tĩnh mạch bolus: Trước khi tiêm phải pha loãng 1 ml (0,2 mg) isoprenalin trong 9 ml dung dịch natri clorid 0,9% hoặc dung dịch glucose 5%. Liều khởi đầu 0,02 - 0,06 mg (1 - 3 ml dung dịch đã pha loãng). Liều tiếp theo 0,01 - 0,2 mg (0,5 - 10 ml dung dịch đã pha loãng) tùy theo đáp ứng.\n\nTruyền tĩnh mạch: Trước khi truyền phải pha loãng 10 ml (2 mg) trong 500 ml dung dịch glucose 5%. Tốc độ truyền 5 microgam/ phút (1 ml dịch truyền đã pha loãng/phút).\n\nTiêm bắp: Liều khởi đầu 0,2 mg (1 ml dung dịch chưa pha loãng).\n\nLiều duy trì 0,02 - 1 mg (0,1 - 5 ml dung dịch chưa pha loãng) tùy theo đáp ứng.\n\nTiêm dưới da: Liều khởi đầu 0,2 mg (1 ml dung dịch chưa pha loãng). Liều duy trì 0,15 - 0,2 mg (0,75 - 1 ml dung dịch chưa pha loãng) tùy theo đáp ứng.\n\nTiêm trong tim: 0,02 mg (0,1 ml dung dịch chưa pha loãng).\n\nCác tình trạng sốc hoặc giảm thể tích tuần hoàn: Truyền tĩnh mạch: Trước khi truyền phải pha loãng 5 ml (1 mg) trong 500 ml dung dịch glucose 5%. Trường hợp cần hạn chế dịch, nồng độ dịch truyền có thể cao hơn đến hơn 10 lần. Tốc độ truyền 0,5 - 5 microgam/phút (0,25 - 2,5 ml dịch truyền đã pha loãng/ phút). Điều chỉnh tốc độ truyền theo nhịp tim, áp lực tĩnh mạch trung tâm, huyết áp, lượng nước tiểu. Nếu nhịp tim vượt quá 110 lần/phút, nên giảm tốc độ truyền hoặc tạm thời ngừng truyền.\n\nGiãn phế quản trong gây mê: Tiêm tĩnh mạch bolus: Trước khi tiêm, phải pha loãng 1 ml (0,2 mg) isoprenalin trong 9 ml dung dịch natri clorid 0,9% hoặc dung dịch glucose 5%. Liều khởi đầu 0,01 - 0,02 mg (0,5 - 1 ml dung dịch đã pha loãng). Lặp lại liều này nếu cần."
+          "text": "Isoprenalin thường được dùng theo đường truyền tĩnh mạch hoặc tiêm tĩnh mạch bolus. Trường hợp khẩn cấp đe dọa tính mạng, có thể tiêm trong tim. Trường hợp không quá khẩn cấp, nên tiêm bắp hoặc tiêm dưới da đối với liều isoprenalin khởi đầu.",
+          "block_id": "b0069"
+        },
+        {
+          "type": "text",
+          "text": "Cần pha loãng dung dịch isoprenalin hydroclorid 0,2 mg/ml trước khi tiêm tĩnh mạch hoặc truyền tĩnh mạch. Đối với tiêm bắp, tiêm dưới da và tiêm trong tim, sử dụng dung dịch tiêm chưa pha loãng.",
+          "block_id": "b0070"
+        },
+        {
+          "type": "subheading",
+          "text": "Liều lượng",
+          "block_id": "b0071"
+        },
+        {
+          "type": "subheading",
+          "text": "Cơn blốc tim, Adams-Stokes và ngừng tim",
+          "block_id": "b0072"
+        },
+        {
+          "type": "text",
+          "text": "Tiêm tĩnh mạch bolus: Trước khi tiêm phải pha loãng 1 ml (0,2 mg) isoprenalin trong 9 ml dung dịch natri clorid 0,9% hoặc dung dịch glucose 5%. Liều khởi đầu 0,02 - 0,06 mg (1 - 3 ml dung dịch đã pha loãng). Liều tiếp theo 0,01 - 0,2 mg (0,5 - 10 ml dung dịch đã pha loãng) tùy theo đáp ứng.",
+          "block_id": "b0073"
+        },
+        {
+          "type": "text",
+          "text": "Truyền tĩnh mạch: Trước khi truyền phải pha loãng 10 ml (2 mg) trong 500 ml dung dịch glucose 5%. Tốc độ truyền 5 microgam/ phút (1 ml dịch truyền đã pha loãng/phút).",
+          "block_id": "b0074"
+        },
+        {
+          "type": "text",
+          "text": "Tiêm bắp: Liều khởi đầu 0,2 mg (1 ml dung dịch chưa pha loãng).",
+          "block_id": "b0075"
+        },
+        {
+          "type": "text",
+          "text": "Liều duy trì 0,02 - 1 mg (0,1 - 5 ml dung dịch chưa pha loãng) tùy theo đáp ứng.",
+          "block_id": "b0076"
+        },
+        {
+          "type": "text",
+          "text": "Tiêm dưới da: Liều khởi đầu 0,2 mg (1 ml dung dịch chưa pha loãng). Liều duy trì 0,15 - 0,2 mg (0,75 - 1 ml dung dịch chưa pha loãng) tùy theo đáp ứng.",
+          "block_id": "b0077"
+        },
+        {
+          "type": "text",
+          "text": "Tiêm trong tim: 0,02 mg (0,1 ml dung dịch chưa pha loãng).",
+          "block_id": "b0078"
+        },
+        {
+          "type": "subheading",
+          "text": "Các tình trạng sốc hoặc giảm thể tích tuần hoàn:",
+          "block_id": "b0079"
+        },
+        {
+          "type": "text",
+          "text": "Truyền tĩnh mạch: Trước khi truyền phải pha loãng 5 ml (1 mg) trong 500 ml dung dịch glucose 5%. Trường hợp cần hạn chế dịch, nồng độ dịch truyền có thể cao hơn đến hơn 10 lần. Tốc độ truyền 0,5 - 5 microgam/phút (0,25 - 2,5 ml dịch truyền đã pha loãng/ phút). Điều chỉnh tốc độ truyền theo nhịp tim, áp lực tĩnh mạch trung tâm, huyết áp, lượng nước tiểu. Nếu nhịp tim vượt quá 110 lần/phút, nên giảm tốc độ truyền hoặc tạm thời ngừng truyền.",
+          "block_id": "b0080"
+        },
+        {
+          "type": "subheading",
+          "text": "Giãn phế quản trong gây mê:",
+          "block_id": "b0081"
+        },
+        {
+          "type": "text",
+          "text": "Tiêm tĩnh mạch bolus: Trước khi tiêm, phải pha loãng 1 ml (0,2 mg) isoprenalin trong 9 ml dung dịch natri clorid 0,9% hoặc dung dịch glucose 5%. Liều khởi đầu 0,01 - 0,02 mg (0,5 - 1 ml dung dịch đã pha loãng). Lặp lại liều này nếu cần.",
+          "block_id": "b0082"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-tac-thuoc",
       "title": "Tương tác thuốc",
-      "content": "Thuốc giống giao cảm: Dùng đồng thời isoprenalin với adrenalin và phần lớn các thuốc giãn phế quản giống giao cảm khác có thể làm tăng tác dụng và tăng độc tính trên tim. Nên dùng các thuốc này lần lượt và cách nhau ít nhất 4 giờ.\n\nDẫn chất xanthin: Dùng đồng thời các thuốc giống giao cảm (như isoprenalin) và các dẫn chất xanthin (như aminophylin) có thể làm tăng độc tính trên tim.\n\nThuốc gây mê: Dùng isoprenalin cho người bệnh gây mê bằng cyclopropan hoặc dẫn chất halogen có thể gây loạn nhịp. Không dùng isoprenalin hoặc dùng thận trọng trên bệnh nhân đang dùng các thuốc gây mê này.\n\nThuốc chẹn beta-adrenergic: Tác dụng của isoprenalin lên tim, tác dụng giãn phế quản và giãn mạch sẽ bị đối kháng bởi thuốc chẹn beta-adrenergic như propranolol. Có thể dùng propranolol để điều trị nhịp tim nhanh do isoprenalin nhưng không nên dùng cho người bị hen vì có thể làm tăng co thắt phế quản.\n\nDẫn chất nấm cựa gà: Các alkaloid nấm cựa gà gây tăng huyết áp trên bệnh nhân đang sử dụng isoprenalin, do thúc đẩy tác dụng gây tăng cung lượng tim của isoprenalin đồng thời gây co mạch.\n\nGlycosid trợ tim: Khi dùng đồng thời isoprenalin với các glycosid tim, nguy cơ loạn nhịp tim tăng lên rõ rệt. Chống chỉ định isoprenalin trên bệnh nhân bị nhịp tim nhanh do digitalis.\n\nThuốc lợi tiểu thải kali: Nguy cơ loạn nhịp tim tăng lên khi dùng đồng thời các thuốc này với isoprenalin.",
+      "heading_block": "b0083",
       "blocks": [
         {
           "type": "text",
-          "text": "Thuốc giống giao cảm: Dùng đồng thời isoprenalin với adrenalin và phần lớn các thuốc giãn phế quản giống giao cảm khác có thể làm tăng tác dụng và tăng độc tính trên tim. Nên dùng các thuốc này lần lượt và cách nhau ít nhất 4 giờ.\n\nDẫn chất xanthin: Dùng đồng thời các thuốc giống giao cảm (như isoprenalin) và các dẫn chất xanthin (như aminophylin) có thể làm tăng độc tính trên tim.\n\nThuốc gây mê: Dùng isoprenalin cho người bệnh gây mê bằng cyclopropan hoặc dẫn chất halogen có thể gây loạn nhịp. Không dùng isoprenalin hoặc dùng thận trọng trên bệnh nhân đang dùng các thuốc gây mê này.\n\nThuốc chẹn beta-adrenergic: Tác dụng của isoprenalin lên tim, tác dụng giãn phế quản và giãn mạch sẽ bị đối kháng bởi thuốc chẹn beta-adrenergic như propranolol. Có thể dùng propranolol để điều trị nhịp tim nhanh do isoprenalin nhưng không nên dùng cho người bị hen vì có thể làm tăng co thắt phế quản.\n\nDẫn chất nấm cựa gà: Các alkaloid nấm cựa gà gây tăng huyết áp trên bệnh nhân đang sử dụng isoprenalin, do thúc đẩy tác dụng gây tăng cung lượng tim của isoprenalin đồng thời gây co mạch.\n\nGlycosid trợ tim: Khi dùng đồng thời isoprenalin với các glycosid tim, nguy cơ loạn nhịp tim tăng lên rõ rệt. Chống chỉ định isoprenalin trên bệnh nhân bị nhịp tim nhanh do digitalis.\n\nThuốc lợi tiểu thải kali: Nguy cơ loạn nhịp tim tăng lên khi dùng đồng thời các thuốc này với isoprenalin."
+          "text": "Thuốc giống giao cảm: Dùng đồng thời isoprenalin với adrenalin và phần lớn các thuốc giãn phế quản giống giao cảm khác có thể làm tăng tác dụng và tăng độc tính trên tim. Nên dùng các thuốc này lần lượt và cách nhau ít nhất 4 giờ.",
+          "block_id": "b0084"
+        },
+        {
+          "type": "text",
+          "text": "Dẫn chất xanthin: Dùng đồng thời các thuốc giống giao cảm (như isoprenalin) và các dẫn chất xanthin (như aminophylin) có thể làm tăng độc tính trên tim.",
+          "block_id": "b0085"
+        },
+        {
+          "type": "text",
+          "text": "Thuốc gây mê: Dùng isoprenalin cho người bệnh gây mê bằng cyclopropan hoặc dẫn chất halogen có thể gây loạn nhịp. Không dùng isoprenalin hoặc dùng thận trọng trên bệnh nhân đang dùng các thuốc gây mê này.",
+          "block_id": "b0086"
+        },
+        {
+          "type": "text",
+          "text": "Thuốc chẹn beta-adrenergic: Tác dụng của isoprenalin lên tim, tác dụng giãn phế quản và giãn mạch sẽ bị đối kháng bởi thuốc chẹn beta-adrenergic như propranolol. Có thể dùng propranolol để điều trị nhịp tim nhanh do isoprenalin nhưng không nên dùng cho người bị hen vì có thể làm tăng co thắt phế quản.",
+          "block_id": "b0087"
+        },
+        {
+          "type": "text",
+          "text": "Dẫn chất nấm cựa gà: Các alkaloid nấm cựa gà gây tăng huyết áp trên bệnh nhân đang sử dụng isoprenalin, do thúc đẩy tác dụng gây tăng cung lượng tim của isoprenalin đồng thời gây co mạch.",
+          "block_id": "b0088"
+        },
+        {
+          "type": "text",
+          "text": "Glycosid trợ tim: Khi dùng đồng thời isoprenalin với các glycosid tim, nguy cơ loạn nhịp tim tăng lên rõ rệt. Chống chỉ định isoprenalin trên bệnh nhân bị nhịp tim nhanh do digitalis.",
+          "block_id": "b0089"
+        },
+        {
+          "type": "text",
+          "text": "Thuốc lợi tiểu thải kali: Nguy cơ loạn nhịp tim tăng lên khi dùng đồng thời các thuốc này với isoprenalin.",
+          "block_id": "b0090"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-ky",
       "title": "Tương kỵ",
-      "content": "Isoprenalin bị phân hủy trong dung dịch kiềm như natri bicarbonat.\n\nNgoài ra, isoprenalin tương kị với aminophylin, furosemid, pantoprazol.",
+      "heading_block": "b0091",
       "blocks": [
         {
           "type": "text",
-          "text": "Isoprenalin bị phân hủy trong dung dịch kiềm như natri bicarbonat.\n\nNgoài ra, isoprenalin tương kị với aminophylin, furosemid, pantoprazol."
+          "text": "Isoprenalin bị phân hủy trong dung dịch kiềm như natri bicarbonat.",
+          "block_id": "b0092"
+        },
+        {
+          "type": "text",
+          "text": "Ngoài ra, isoprenalin tương kị với aminophylin, furosemid, pantoprazol.",
+          "block_id": "b0093"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "qua-lieu-va-xu-tri",
       "title": "Quá liều và xử trí",
-      "content": "Triệu chứng: Quá liều isoprenalin có thể gây tụt huyết áp rõ rệt.\n\nTrường hợp vô tình quá liều isoprenalin, đã ghi nhận các triệu chứng loạn nhịp tim, loạn nhịp nhanh, đánh trống ngực, đau thắt ngực, tụt huyết áp hoặc tăng huyết áp.\n\nXử trí: Giảm tốc độ truyền hoặc ngừng thuốc và hỗ trợ các chức năng sống cho đến khi người bệnh ổn định; theo dõi huyết áp, nhịp tim, nhịp thở và điện tâm đồ.",
+      "heading_block": "b0094",
       "blocks": [
         {
           "type": "text",
-          "text": "Triệu chứng: Quá liều isoprenalin có thể gây tụt huyết áp rõ rệt.\n\nTrường hợp vô tình quá liều isoprenalin, đã ghi nhận các triệu chứng loạn nhịp tim, loạn nhịp nhanh, đánh trống ngực, đau thắt ngực, tụt huyết áp hoặc tăng huyết áp.\n\nXử trí: Giảm tốc độ truyền hoặc ngừng thuốc và hỗ trợ các chức năng sống cho đến khi người bệnh ổn định; theo dõi huyết áp, nhịp tim, nhịp thở và điện tâm đồ."
+          "text": "Triệu chứng: Quá liều isoprenalin có thể gây tụt huyết áp rõ rệt.",
+          "block_id": "b0095"
+        },
+        {
+          "type": "text",
+          "text": "Trường hợp vô tình quá liều isoprenalin, đã ghi nhận các triệu chứng loạn nhịp tim, loạn nhịp nhanh, đánh trống ngực, đau thắt ngực, tụt huyết áp hoặc tăng huyết áp.",
+          "block_id": "b0096"
+        },
+        {
+          "type": "text",
+          "text": "Xử trí: Giảm tốc độ truyền hoặc ngừng thuốc và hỗ trợ các chức năng sống cho đến khi người bệnh ổn định; theo dõi huyết áp, nhịp tim, nhịp thở và điện tâm đồ.",
+          "block_id": "b0097"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "cap-nhat-lan-cuoi",
       "title": "Cập nhật lần cuối",
-      "content": "2019.",
+      "heading_block": "b0098",
       "blocks": [
         {
           "type": "text",
-          "text": "2019."
+          "text": "2019.",
+          "block_id": "b0098"
         }
-      ],
-      "subsections": []
+      ]
     }
   ],
-  "tables": [],
   "quality": {
-    "status": "source-layout-rebuilt-v10.1-source-paragraph-boundaries",
-    "pdf_text_order": "left-column-then-right-column; visual line flow",
-    "paragraph_policy": "Paragraph boundaries are source-derived and stored only as blank lines. The client preserves those boundaries exactly; it must not create a new paragraph from label words such as “Trẻ em:” or “Người lớn:”. A lower-case continuation fragment is merged only when it follows a non-terminal source fragment; table footnotes remain separate. No client-side anchor or length-based sentence splitter is allowed.",
-    "table_policy": "source-table image inserted by PDF page/column/y position; table-cell text excluded from prose",
-    "validation": {
-      "raw_newline_inside_paragraph": false,
-      "table_count": 0,
-      "section_count": 18,
-      "client_anchor_resegmentation_disabled": true,
-      "client_length_sentence_chunking_disabled": true
-    }
+    "block_count": 98,
+    "heading_count": 15,
+    "subheading_count": 5,
+    "paragraph_count": 77,
+    "list_count": 0,
+    "table_count": 0,
+    "figure_count": 0,
+    "note_count": 1,
+    "page_count": 3
+  },
+  "tables": [],
+  "legacy_compat": {
+    "sections": "generated from v11 blocks for v10.4.5.39 renderer/chatbot compatibility"
   }
 }

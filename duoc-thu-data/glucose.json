@@ -1,5 +1,5 @@
 {
-  "schema_version": "10.1-source-paragraph-boundaries",
+  "schema_version": "11.0.0",
   "id": "glucose",
   "title": "Glucose",
   "aliases": [
@@ -26,212 +26,2584 @@
       "boundary_method": "physical-source-title-band"
     }
   },
-  "sections": [
+  "parser": {
+    "name": "medplus-duoc-thu-v11-structured-pdf-parser",
+    "method": "PyMuPDF span -> line -> block",
+    "content_source": "Duocthu2023.pdf",
+    "old_json_usage": "id/title/page-boundary metadata and existing table asset path only; old content is not used",
+    "column_order": "left column -> right column -> next page",
+    "block_model": [
+      "heading",
+      "subheading",
+      "paragraph",
+      "list",
+      "table",
+      "figure",
+      "note"
+    ],
+    "table_policy": "no OCR; preserve existing duoc-thu-assets/<id>/pXXXX-tXX.png image_path"
+  },
+  "blocks": [
     {
-      "id": "thong-tin-au-chuyen-luan",
-      "title": "Thông tin đầu chuyên luận",
-      "content": "GLUCOSE (Dextrose)",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "GLUCOSE (Dextrose)"
-        }
+      "id": "b0001",
+      "type": "heading",
+      "level": 1,
+      "text": "GLUCOSE",
+      "page": 829,
+      "printed_page": 835,
+      "column": 0,
+      "bbox": [
+        136.46,
+        726.61,
+        185.36,
+        740.45
       ],
-      "subsections": []
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "GLUCOSE",
+          "bbox": [
+            136.46,
+            726.61,
+            185.36,
+            740.45
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
     },
     {
-      "id": "ten-chung-quoc-te",
-      "title": "Tên chung quốc tế",
-      "content": "Glucose.\n\nMã ATC: B05CX01; V04CA02; V06DC01.\n\nLoại thuốc: Chất dinh dưỡng, chất cung cấp năng lượng.",
+      "id": "b0002",
+      "type": "heading",
+      "level": 2,
+      "text": "(Dextrose)",
+      "page": 829,
+      "printed_page": 835,
+      "column": 0,
+      "bbox": [
+        138.57,
+        740.16,
+        183.25,
+        754.0
+      ],
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "MinionPro-Bold"
+        ]
+      },
+      "spans": [
+        {
+          "text": "(Dextrose)",
+          "bbox": [
+            138.57,
+            740.16,
+            183.25,
+            754.0
+          ],
+          "font": "MinionPro-Bold",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0003",
+      "type": "paragraph",
+      "text": "Tên chung quốc tế: Glucose.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 0,
+      "bbox": [
+        34.93,
+        764.45,
+        148.67,
+        777.6
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tên chung quốc tế:",
+          "bbox": [
+            34.93,
+            764.45,
+            112.78,
+            777.6
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": " Glucose.",
+          "bbox": [
+            112.78,
+            764.6,
+            148.67,
+            777.4
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0004",
+      "type": "paragraph",
+      "text": "Mã ATC: B05CX01; V04CA02; V06DC01.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 0,
+      "bbox": [
+        34.93,
+        776.18,
+        206.47,
+        789.33
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mã ATC: ",
+          "bbox": [
+            34.93,
+            776.18,
+            75.39,
+            789.33
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "B05CX01; V04CA02; V06DC01.",
+          "bbox": [
+            75.39,
+            776.34,
+            204.09,
+            789.13
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0005",
+      "type": "paragraph",
+      "text": "Loại thuốc: Chất dinh dưỡng, chất cung cấp năng lượng.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 0,
+      "bbox": [
+        34.93,
+        787.92,
+        252.92,
+        801.07
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Loại thuốc: ",
+          "bbox": [
+            34.93,
+            787.92,
+            84.02,
+            801.07
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "Chất dinh dưỡng, chất cung cấp năng lượng.",
+          "bbox": [
+            84.02,
+            788.07,
+            252.92,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0006",
+      "type": "heading",
+      "level": 2,
+      "text": "Dạng thuốc và hàm lượng",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        63.01,
+        403.8,
+        76.16
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dạng thuốc và hàm lượng",
+          "bbox": [
+            298.88,
+            63.01,
+            403.8,
+            76.16
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0007",
+      "type": "paragraph",
+      "text": "Dung dịch glucose 5%, đẳng trương với huyết thanh; dung dịch ưu trương 10%; 15%; 30%; 40%; 50% đựng trong ống tiêm 5 ml, trong chai 100 ml, 250 ml, 500 ml.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        75.2,
+        553.22,
+        112.06
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0008",
+      "type": "paragraph",
+      "text": "Dạng bột dùng để pha uống.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        111.29,
+        408.91,
+        124.09
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Dạng bột dùng để pha uống. ",
+          "bbox": [
+            298.88,
+            111.29,
+            408.91,
+            124.09
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0009",
+      "type": "paragraph",
+      "text": "Viên nén 10 mg.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        123.33,
+        361.64,
+        136.13
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Viên nén 10 mg.",
+          "bbox": [
+            298.88,
+            123.33,
+            361.64,
+            136.13
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0010",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược lực học",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        138.21,
+        352.48,
+        151.35
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược lực học",
+          "bbox": [
+            298.88,
+            138.21,
+            352.48,
+            151.35
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0011",
+      "type": "paragraph",
+      "text": "Glucose là đường đơn 6 carbon, chế phẩm của glucose được dùng theo đường uống hoặc tiêm tĩnh mạch để điều trị thiếu hụt glucose và dịch. Glucose thường được dùng để cung cấp năng lượng theo đường tiêm cho người bệnh và dùng cùng với các dung dịch điện giải để phòng và điều trị mất nước do ỉa chảy cấp. Glucose còn được sử dụng để điều trị chứng hạ glucose huyết. Khi làm test dung nạp glucose thì dùng glucose theo đường uống. Các dung dịch glucose còn được sử dụng làm chất dẫn các thuốc khác.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        150.39,
+        553.21,
+        247.42
+      ],
+      "source": {
+        "line_count": 8
+      }
+    },
+    {
+      "id": "b0012",
+      "type": "paragraph",
+      "text": "Dung dịch có nồng độ glucose khan 5,05% hoặc nồng độ glucose monohydrat 5,51% được coi là đẳng trương với máu, bởi vậy, dung dịch glucose 5% hay được dùng nhất trong bồi phụ nước theo đường tĩnh mạch ngoại vi. Các dung dịch glucose có nồng độ cao hơn 5% là các dung dịch ưu trương và thường được dùng để cung cấp hydrat carbon (dung dịch 50% dùng để điều trị những trường hợp hạ glucose huyết nặng).",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        246.65,
+        553.21,
+        331.65
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0013",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược động học",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        333.73,
+        359.98,
+        346.87
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược động học",
+          "bbox": [
+            298.88,
+            333.73,
+            359.98,
+            346.87
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0014",
+      "type": "paragraph",
+      "text": "Sau khi uống, glucose hấp thu rất nhanh ở ruột. Ở người bệnh bị hạ glucose huyết thì nồng độ đỉnh trong huyết tương xuất hiện 40 phút sau khi uống. Glucose chuyển hóa thành carbon dioxyd và nước, đồng thời giải phóng ra năng lượng.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        345.91,
+        553.21,
+        394.8
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0015",
+      "type": "heading",
+      "level": 2,
+      "text": "Chỉ định",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        396.89,
+        334.52,
+        410.04
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chỉ định",
+          "bbox": [
+            298.88,
+            396.89,
+            334.52,
+            410.04
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0016",
+      "type": "paragraph",
+      "text": "Làm test dung nạp glucose (uống).",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        409.07,
+        433.18,
+        421.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Làm test dung nạp glucose (uống). ",
+          "bbox": [
+            298.88,
+            409.07,
+            433.18,
+            421.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0017",
+      "type": "paragraph",
+      "text": "Thiếu hụt hydrat carbon và dịch.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        421.11,
+        422.88,
+        433.9
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thiếu hụt hydrat carbon và dịch.",
+          "bbox": [
+            298.88,
+            421.11,
+            422.88,
+            433.9
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0018",
+      "type": "paragraph",
+      "text": "Phòng và điều trị mất nước do ỉa chảy cấp.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        433.13,
+        461.56,
+        445.93
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Phòng và điều trị mất nước do ỉa chảy cấp.",
+          "bbox": [
+            298.88,
+            433.13,
+            461.56,
+            445.93
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0019",
+      "type": "paragraph",
+      "text": "Hạ glucose huyết do suy dinh dưỡng, do ngộ độc rượu, do tăng chuyển hóa khi bị stress hay chấn thương.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        445.17,
+        553.22,
+        469.99
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0020",
+      "type": "paragraph",
+      "text": "Điều trị cấp cứu trong tình trạng có tăng kali huyết (dùng cùng với calci và insulin).",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        469.23,
+        553.21,
+        494.07
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0021",
+      "type": "paragraph",
+      "text": "Điều trị nhiễm toan ceton do đái tháo đường (sau khi đã điều chỉnh glucose huyết và phải đi kèm với truyền insulin liên tục).",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        493.3,
+        553.22,
+        518.13
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0022",
+      "type": "heading",
+      "level": 2,
+      "text": "Chống chỉ định",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        520.21,
+        361.18,
+        533.36
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chống chỉ định",
+          "bbox": [
+            298.88,
+            520.21,
+            361.18,
+            533.36
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0023",
+      "type": "paragraph",
+      "text": "Người bệnh không dung nạp được glucose.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        532.4,
+        463.03,
+        545.2
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Người bệnh không dung nạp được glucose.",
+          "bbox": [
+            298.88,
+            532.4,
+            463.03,
+            545.2
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0024",
+      "type": "paragraph",
+      "text": "Mất nước nhược trương nếu chưa bù đủ các chất điện giải.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        544.43,
+        521.34,
+        557.22
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mất nước nhược trương nếu chưa bù đủ các chất điện giải.",
+          "bbox": [
+            298.88,
+            544.43,
+            521.34,
+            557.22
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0025",
+      "type": "paragraph",
+      "text": "Ứ nước.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        556.46,
+        330.14,
+        569.26
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Ứ nước.",
+          "bbox": [
+            298.88,
+            556.46,
+            330.14,
+            569.26
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0026",
+      "type": "paragraph",
+      "text": "Hạ kali huyết.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        568.49,
+        352.44,
+        581.29
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Hạ kali huyết.",
+          "bbox": [
+            298.88,
+            568.49,
+            352.44,
+            581.29
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0027",
+      "type": "paragraph",
+      "text": "Hôn mê tăng thẩm thấu. Nhiễm toan.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        580.53,
+        439.78,
+        593.32
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Hôn mê tăng thẩm thấu. Nhiễm toan.",
+          "bbox": [
+            298.88,
+            580.53,
+            439.78,
+            593.32
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0028",
+      "type": "paragraph",
+      "text": "Vô niệu.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        592.55,
+        331.6,
+        605.35
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Vô niệu.",
+          "bbox": [
+            298.88,
+            592.55,
+            331.6,
+            605.35
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0029",
+      "type": "paragraph",
+      "text": "Bị chảy máu trong sọ hoặc trong tủy sống, mê sảng rượu kèm mất nước (không được dùng dung dịch glucose ưu trương cho các trường hợp này).",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        604.59,
+        553.21,
+        641.45
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0030",
+      "type": "paragraph",
+      "text": "Không được dùng dung dịch glucose cho người bệnh sau cơn tai biến mạch não vì glucose huyết cao ở vùng thiếu máu cục bộ chuyển hóa thành acid lactic làm chết tế bào não.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        640.69,
+        553.21,
+        677.55
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0031",
+      "type": "heading",
+      "level": 2,
+      "text": "Thận trọng",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        679.63,
+        345.07,
+        692.78
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thận trọng",
+          "bbox": [
+            298.88,
+            679.63,
+            345.07,
+            692.78
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ],
+      "note_role": "than trong",
+      "v11_fix": "note_title_reclassified_as_heading_alpha5"
+    },
+    {
+      "id": "b0032",
+      "type": "paragraph",
+      "text": "Phải theo dõi đều đặn glucose huyết, cân bằng nước và các chất điện giải. Cần bổ sung các chất điện giải nếu cần.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        691.82,
+        553.21,
+        716.64
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0033",
+      "type": "paragraph",
+      "text": "Không truyền dung dịch glucose cùng với máu qua một bộ dây truyền vì có thể gây tan huyết và tắc nghẽn.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        715.88,
+        553.21,
+        740.71
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0034",
+      "type": "paragraph",
+      "text": "Truyền glucose đơn độc vào tĩnh mạch có thể dẫn đến rối loạn dịch và điện giải như hạ kali huyết, hạ magnesi huyết, hạ phospho huyết.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        739.94,
+        553.21,
+        776.8
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0035",
+      "type": "paragraph",
+      "text": "Truyền kéo dài hoặc truyền nhanh một lượng lớn dung dịch glucose đẳng trương có thể gây phù hoặc ngộ độc nước.",
+      "page": 829,
+      "printed_page": 835,
+      "column": 1,
+      "bbox": [
+        298.88,
+        776.04,
+        553.21,
+        800.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0036",
+      "type": "paragraph",
+      "text": "Truyền kéo dài hoặc truyền nhanh một lượng lớn dung dịch glucose ưu trương có thể gây mất nước tế bào do tăng glucose huyết.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        63.32,
+        298.27,
+        88.15
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0037",
+      "type": "paragraph",
+      "text": "Không được truyền dung dịch glucose ưu trương cho người bệnh bị mất nước vì tình trạng mất nước sẽ nặng thêm do bị lợi niệu thẩm thấu.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        87.38,
+        298.27,
+        124.24
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0038",
+      "type": "paragraph",
+      "text": "Thận trọng khi dùng cho bệnh nhân bị đái tháo đường (truyền nhanh có thể dẫn đến tăng glucose huyết), bệnh nhân bị suy dinh dưỡng, thiếu thiamin, không dung nạp glucose, bệnh nhân bị sốc nhiễm khuẩn, sốc, chấn thương.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        123.47,
+        298.27,
+        172.36
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0039",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ mang thai",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        174.44,
+        119.15,
+        187.58
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ mang thai",
+          "bbox": [
+            43.94,
+            174.44,
+            119.15,
+            187.58
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0040",
+      "type": "paragraph",
+      "text": "Dùng được cho người mang thai.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        186.62,
+        169.83,
+        199.41
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Dùng được cho người mang thai.",
+          "bbox": [
+            43.94,
+            186.62,
+            169.83,
+            199.41
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0041",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ cho con bú",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        201.5,
+        122.06,
+        214.64
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ cho con bú",
+          "bbox": [
+            43.94,
+            201.5,
+            122.06,
+            214.64
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0042",
+      "type": "paragraph",
+      "text": "An toàn đối với người cho con bú.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        213.68,
+        174.71,
+        226.47
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "An toàn đối với người cho con bú.",
+          "bbox": [
+            43.94,
+            213.68,
+            174.71,
+            226.47
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0043",
+      "type": "heading",
+      "level": 2,
+      "text": "Tác dụng không mong muốn (ADR)",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        228.56,
+        189.89,
+        241.7
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tác dụng không mong muốn (ADR)",
+          "bbox": [
+            43.94,
+            228.56,
+            189.89,
+            241.7
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0044",
+      "type": "subheading",
+      "level": 3,
+      "text": "Thường gặp",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        240.9,
+        90.34,
+        253.53
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thường gặp",
+          "bbox": [
+            43.94,
+            240.9,
+            90.34,
+            253.53
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0045",
+      "type": "paragraph",
+      "text": "Đau tại chỗ tiêm tĩnh mạch, nhất là khi dùng dung dịch glucose ưu trương vì thường có pH thấp.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        252.77,
+        298.27,
+        277.59
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0046",
+      "type": "paragraph",
+      "text": "Kích ứng tĩnh mạch, viêm tắc tĩnh mạch, hoại tử chỗ tiêm nếu thuốc thoát ra ngoài mạch.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        276.83,
+        298.27,
+        301.65
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0047",
+      "type": "subheading",
+      "level": 3,
+      "text": "Ít gặp",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        301.05,
+        66.37,
+        313.68
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Ít gặp",
+          "bbox": [
+            43.94,
+            301.05,
+            66.37,
+            313.68
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0048",
+      "type": "paragraph",
+      "text": "Rối loạn nước và điện giải (hạ kali huyết, hạ magnesi huyết, hạ phospho huyết).",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        312.92,
+        298.27,
+        337.74
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0049",
+      "type": "subheading",
+      "level": 3,
+      "text": "Hiếm gặp",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        337.14,
+        81.14,
+        349.77
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hiếm gặp",
+          "bbox": [
+            43.94,
+            337.14,
+            81.14,
+            349.77
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0050",
+      "type": "paragraph",
+      "text": "Phù hoặc ngộ độc nước (do truyền kéo dài hoặc truyền nhanh một lượng lớn dung dịch đẳng trương).",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        349.0,
+        298.27,
+        373.83
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0051",
+      "type": "paragraph",
+      "text": "Mất nước do hậu quả của glucose huyết cao (khi truyền kéo dài hoặc quá nhanh các dung dịch ưu trương).",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        373.06,
+        298.27,
+        397.89
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0052",
+      "type": "heading",
+      "level": 2,
+      "text": "Hướng dẫn cách xử trí ADR",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        399.97,
+        158.5,
+        413.12
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hướng dẫn cách xử trí ADR",
+          "bbox": [
+            43.94,
+            399.97,
+            158.5,
+            413.12
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0053",
+      "type": "paragraph",
+      "text": "Giảm liều và/hoặc tiêm insulin, nếu đường huyết tăng cao hoặc có đường niệu.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        412.15,
+        298.27,
+        436.98
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0054",
+      "type": "paragraph",
+      "text": "Điều chỉnh cân bằng nước và điện giải.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        436.21,
+        192.89,
+        449.01
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Điều chỉnh cân bằng nước và điện giải.",
+          "bbox": [
+            43.94,
+            436.21,
+            192.89,
+            449.01
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0055",
+      "type": "paragraph",
+      "text": "Điều chỉnh thể tích dịch truyền và tốc độ truyền.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        448.24,
+        228.1,
+        461.04
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Điều chỉnh thể tích dịch truyền và tốc độ truyền.",
+          "bbox": [
+            43.94,
+            448.24,
+            228.1,
+            461.04
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0056",
+      "type": "heading",
+      "level": 2,
+      "text": "Liều lượng và cách dùng",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        463.12,
+        144.11,
+        476.27
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng và cách dùng",
+          "bbox": [
+            43.94,
+            463.12,
+            144.11,
+            476.27
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0057",
+      "type": "subheading",
+      "level": 3,
+      "text": "Cách dùng",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        475.38,
+        86.96,
+        488.1
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Cách dùng",
+          "bbox": [
+            43.94,
+            475.38,
+            86.96,
+            488.1
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0058",
+      "type": "paragraph",
+      "text": "Nuôi dưỡng bằng đường tĩnh mạch có thể thực hiện qua tĩnh mạch ngoại vi hoặc tĩnh mạch trung tâm. Chỉ định dùng qua đường tĩnh mạch ngoại vi khi chỉ cần nuôi dưỡng người bệnh trong một thời gian ngắn; hoặc khi bổ trợ thêm cho nuôi dưỡng theo đường tiêu hóa; hoặc khi người bệnh có nhiều nguy cơ tai biến nếu truyền qua đường tĩnh mạch trung tâm. Các tĩnh mạch ngoại vi dễ bị viêm tắc, nhất là khi dung dịch có áp suất thẩm thấu lớn hơn 600 mOsm/lít, do đó không nên truyền vào tĩnh mạch ngoại vi các dịch truyền có nồng độ glucose cao hơn 10%. Nếu buộc phải truyền qua tĩnh mạch ngoại vi thì phải truyền chậm (tốc độ truyền dung dịch glucose 50% trong trường hợp này chỉ nên 3 ml/phút). Phải truyền các dung dịch glucose ưu trương theo đường tĩnh mạch trung tâm vì ở đấy dung dịch glucose được pha loãng nhanh hơn, tuy vậy không nên truyền lâu dài và phải thay đổi vị trí truyền.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        487.33,
+        298.27,
+        656.51
+      ],
+      "source": {
+        "line_count": 14
+      }
+    },
+    {
+      "id": "b0059",
+      "type": "paragraph",
+      "text": "Trong nuôi dưỡng theo đường tĩnh mạch, có thể truyền dung dịch glucose đồng thời với các dung dịch có acid amin hoặc nhũ tương lipid (truyền riêng rẽ hoặc cùng nhau bằng hỗn hợp “3 trong 1” chứa trong cùng một chai).",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        655.75,
+        298.27,
+        704.63
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0060",
+      "type": "paragraph",
+      "text": "Cung cấp glucose cho người bệnh suy dinh dưỡng, hoặc người bệnh rối loạn chuyển hóa do stress sau mổ phải bắt đầu từ từ do khả năng sử dụng glucose của người bệnh tăng lên dần dần. Nhiều người bệnh được nuôi dưỡng theo đường tiêm truyền bị tăng glucose huyết. Cần phải xác định nguyên nhân và điều chỉnh bằng các biện pháp không phải insulin trước khi sử dụng insulin nếu có thể được. Cần truyền tốc độ đều, không ngừng đột ngột để tránh thay đổi nhanh glucose huyết.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 0,
+      "bbox": [
+        43.94,
+        703.87,
+        298.27,
+        800.87
+      ],
+      "source": {
+        "line_count": 8
+      }
+    },
+    {
+      "id": "b0061",
+      "type": "paragraph",
+      "text": "Tùy trường hợp có thể dùng insulin kèm thêm, ví dụ điều trị nhiễm toan do đái tháo đường. Nếu dùng insulin thì phải theo dõi thường xuyên glucose huyết của người bệnh và điều chỉnh liều insulin. Tuy insulin làm tăng tác dụng nuôi dưỡng theo đường tiêm truyền, nhưng vẫn cần phải thận trọng khi dùng để tránh nguy cơ hạ glucose huyết và do insulin làm tăng lắng đọng acid béo ở các mô dự trữ mỡ khiến cho chúng ít vào được các đường chuyển hóa quan trọng. Nếu cần thiết, có thể tiêm insulin vào dưới da hoặc vào tĩnh mạch, hoặc cho thêm vào dịch truyền nuôi dưỡng. Một khi người bệnh đã ổn định với một liều insulin nhất định thì tiêm insulin riêng rẽ sẽ có lợi hơn về kinh tế, tránh lãng phí phải bỏ dịch truyền khi cần thay đổi liều insulin. Dùng insulin người là tốt nhất vì ít ảnh hưởng đến miễn dịch nhất. Liều dùng insulin là theo kinh nghiệm và điều kiện thực tế (ví dụ có thể dùng một nửa hoặc một phần ba liều cần dùng ngày hôm trước cùng với dịch truyền nuôi dưỡng hàng ngày). Cần tôn trọng các bước chuẩn bị và pha dịch truyền để giảm thiểu biến động hoạt tính của insulin do hiện tượng hấp phụ gây ra.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 1,
+      "bbox": [
+        307.89,
+        63.32,
+        562.23,
+        281.33
+      ],
+      "source": {
+        "line_count": 18
+      }
+    },
+    {
+      "id": "b0062",
+      "type": "subheading",
+      "level": 3,
+      "text": "Liều dùng",
+      "page": 830,
+      "printed_page": 836,
+      "column": 1,
+      "bbox": [
+        307.89,
+        280.68,
+        348.27,
+        293.4
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều dùng",
+          "bbox": [
+            307.89,
+            280.68,
+            348.27,
+            293.4
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0063",
+      "type": "paragraph",
+      "text": "Liều dùng thay đổi tùy theo nhu cầu của từng người bệnh.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 1,
+      "bbox": [
+        307.89,
+        292.68,
+        528.5,
+        305.48
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Liều dùng thay đổi tùy theo nhu cầu của từng người bệnh.",
+          "bbox": [
+            307.89,
+            292.68,
+            528.5,
+            305.48
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0064",
+      "type": "paragraph",
+      "text": "Phải theo dõi chặt chẽ glucose huyết của người bệnh. Liều glucose tối đa khuyên dùng là 500 - 800 mg/kg/giờ.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 1,
+      "bbox": [
+        307.89,
+        304.75,
+        562.23,
+        329.62
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0065",
+      "type": "paragraph",
+      "text": "Để làm giảm áp lực não - tủy và phù não do ngộ độc rượu, dùng dung dịch ưu trương 25 - 50%.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 1,
+      "bbox": [
+        307.89,
+        328.89,
+        562.22,
+        353.76
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0066",
+      "type": "paragraph",
+      "text": "Để điều trị hạ đường huyết do quá liều insulin hoặc do các nguyên nhân khác ở người lớn và trẻ em, thường dùng liều 20 - 50 ml dung dịch glucose 50% tiêm tĩnh mạch chậm (ví dụ 3 ml/phút), trường hợp nặng có thể cần dùng nhắc lại và bổ sung các trị liệu phối hợp khác. Điều trị hạ đường huyết cấp ở trẻ sơ sinh và trẻ nhỏ, thường tiêm tĩnh mạch chậm dung dịch glucose 10 - 25% với liều 2 ml/kg; trường hợp nặng có thể cần dùng liều cao hơn hoặc nhắc lại 1 liều nữa. Nếu bệnh nhân không đáp ứng với glucose hoặc không dung nạp glucose thì cần tính đến việc sử dụng thuốc khác (ví dụ như glucagon, corticosteroid, epinephrin).",
+      "page": 830,
+      "printed_page": 836,
+      "column": 1,
+      "bbox": [
+        307.89,
+        353.04,
+        562.25,
+        474.48
+      ],
+      "source": {
+        "line_count": 10
+      }
+    },
+    {
+      "id": "b0067",
+      "type": "paragraph",
+      "text": "Để khống chế hạ đường huyết do đái thảo đường có ý thức, có thể uống (dạng dung dịch) hoặc nhai (dạng viên) 10 - 20 g glucose; có thể nhắc lại liều sau 10 - 20 phút nếu cần. Tự giám sát lượng đường trong máu có thể xác định được có cần nhắc lại liều hay không. Một số bác sỹ lâm sàng khuyên rằng nếu 20 phút sau khi uống glucose, triệu chứng hạ đường huyết vẫn còn và lượng đường trong máu còn cao hơn bình thường ít nhất 20 mg/l thì cần phải dùng thêm liều nữa. Mỗi gam dung dịch glucose 40% (kl/kl) cung cấp 400 mg glucose (tức là 25 g dung dịch cung cấp 10 g glucose).",
+      "page": 830,
+      "printed_page": 836,
+      "column": 1,
+      "bbox": [
+        307.89,
+        473.75,
+        562.23,
+        583.12
+      ],
+      "source": {
+        "line_count": 9
+      }
+    },
+    {
+      "id": "b0068",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương kỵ",
+      "page": 830,
+      "printed_page": 836,
+      "column": 1,
+      "bbox": [
+        307.89,
+        585.24,
+        347.63,
+        598.39
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương kỵ",
+          "bbox": [
+            307.89,
+            585.24,
+            347.63,
+            598.39
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0069",
+      "type": "paragraph",
+      "text": "Trước khi pha thêm bất kỳ một thuốc gì vào dung dịch glucose để truyền phải kiểm tra xem có phù hợp không.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 1,
+      "bbox": [
+        307.89,
+        597.46,
+        562.22,
+        622.33
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0070",
+      "type": "paragraph",
+      "text": "Dung dịch chứa glucose và có pH < 6 có thể gây kết tủa indomethacin.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 1,
+      "bbox": [
+        307.89,
+        621.61,
+        559.88,
+        634.4
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Dung dịch chứa glucose và có pH < 6 có thể gây kết tủa indomethacin.",
+          "bbox": [
+            307.89,
+            621.61,
+            559.88,
+            634.4
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0071",
+      "type": "heading",
+      "level": 2,
+      "text": "Quá liều và xử trí",
+      "page": 830,
+      "printed_page": 836,
+      "column": 1,
+      "bbox": [
+        307.89,
+        636.53,
+        379.57,
+        649.67
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Quá liều và xử trí",
+          "bbox": [
+            307.89,
+            636.53,
+            379.57,
+            649.67
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0072",
+      "type": "paragraph",
+      "text": "Triệu chứng: tăng glucose máu, glucose niệu, mất nước, hôn mê do tăng áp lực thẩm thấu, có thể dẫn tới tử vong.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 1,
+      "bbox": [
+        307.89,
+        648.75,
+        562.22,
+        673.62
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0073",
+      "type": "paragraph",
+      "text": "Xử trí: Ngừng truyền glucose, bổ sung liều insulin phù hợp.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 1,
+      "bbox": [
+        307.89,
+        672.89,
+        535.41,
+        685.69
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Xử trí:",
+          "bbox": [
+            307.89,
+            673.05,
+            333.39,
+            685.69
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        },
+        {
+          "text": " Ngừng truyền glucose, bổ sung liều insulin phù hợp.",
+          "bbox": [
+            333.39,
+            672.89,
+            535.41,
+            685.69
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0074",
+      "type": "heading",
+      "text": "Cập nhật lần cuối",
+      "page": 830,
+      "printed_page": 836,
+      "column": 1,
+      "bbox": [
+        307.89,
+        690.53,
+        403.16,
+        703.16
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2017.",
+          "bbox": [
+            307.89,
+            690.53,
+            403.16,
+            703.16
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "level": 2,
+      "v11_fix": "cap_nhat_cap_nhap_lan_cuoi_normalized_alpha8"
+    },
+    {
+      "id": "b0074",
+      "type": "paragraph",
+      "text": "2017.",
+      "page": 830,
+      "printed_page": 836,
+      "column": 1,
+      "bbox": [
+        307.89,
+        690.53,
+        403.16,
+        703.16
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2017.",
+          "bbox": [
+            307.89,
+            690.53,
+            403.16,
+            703.16
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "v11_parent_heading": "Cập nhật lần cuối"
+    }
+  ],
+  "sections": [
+    {
+      "id": "dextrose",
+      "title": "(Dextrose)",
+      "heading_block": "b0002",
       "blocks": [
         {
           "type": "text",
-          "text": "Glucose.\n\nMã ATC: B05CX01; V04CA02; V06DC01.\n\nLoại thuốc: Chất dinh dưỡng, chất cung cấp năng lượng."
+          "text": "Tên chung quốc tế: Glucose.",
+          "block_id": "b0003"
+        },
+        {
+          "type": "text",
+          "text": "Mã ATC: B05CX01; V04CA02; V06DC01.",
+          "block_id": "b0004"
+        },
+        {
+          "type": "text",
+          "text": "Loại thuốc: Chất dinh dưỡng, chất cung cấp năng lượng.",
+          "block_id": "b0005"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "dang-thuoc-va-ham-luong",
       "title": "Dạng thuốc và hàm lượng",
-      "content": "Dung dịch glucose 5%, đẳng trương với huyết thanh; dung dịch ưu trương 10%; 15%; 30%; 40%; 50% đựng trong ống tiêm 5 ml, trong chai 100 ml, 250 ml, 500 ml.\n\nDạng bột dùng để pha uống.\n\nViên nén 10 mg.",
+      "heading_block": "b0006",
       "blocks": [
         {
           "type": "text",
-          "text": "Dung dịch glucose 5%, đẳng trương với huyết thanh; dung dịch ưu trương 10%; 15%; 30%; 40%; 50% đựng trong ống tiêm 5 ml, trong chai 100 ml, 250 ml, 500 ml.\n\nDạng bột dùng để pha uống.\n\nViên nén 10 mg."
+          "text": "Dung dịch glucose 5%, đẳng trương với huyết thanh; dung dịch ưu trương 10%; 15%; 30%; 40%; 50% đựng trong ống tiêm 5 ml, trong chai 100 ml, 250 ml, 500 ml.",
+          "block_id": "b0007"
+        },
+        {
+          "type": "text",
+          "text": "Dạng bột dùng để pha uống.",
+          "block_id": "b0008"
+        },
+        {
+          "type": "text",
+          "text": "Viên nén 10 mg.",
+          "block_id": "b0009"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "duoc-luc-hoc",
       "title": "Dược lực học",
-      "content": "Glucose là đường đơn 6 carbon, chế phẩm của glucose được dùng theo đường uống hoặc tiêm tĩnh mạch để điều trị thiếu hụt glucose và dịch. Glucose thường được dùng để cung cấp năng lượng theo đường tiêm cho người bệnh và dùng cùng với các dung dịch điện giải để phòng và điều trị mất nước do ỉa chảy cấp. Glucose còn được sử dụng để điều trị chứng hạ glucose huyết. Khi làm test dung nạp glucose thì dùng glucose theo đường uống. Các dung dịch glucose còn được sử dụng làm chất dẫn các thuốc khác.\n\nDung dịch có nồng độ glucose khan 5,05% hoặc nồng độ glucose monohydrat 5,51% được coi là đẳng trương với máu, bởi vậy, dung dịch glucose 5% hay được dùng nhất trong bồi phụ nước theo đường tĩnh mạch ngoại vi. Các dung dịch glucose có nồng độ cao hơn 5% là các dung dịch ưu trương và thường được dùng để cung cấp hydrat carbon (dung dịch 50% dùng để điều trị những trường hợp hạ glucose huyết nặng).",
+      "heading_block": "b0010",
       "blocks": [
         {
           "type": "text",
-          "text": "Glucose là đường đơn 6 carbon, chế phẩm của glucose được dùng theo đường uống hoặc tiêm tĩnh mạch để điều trị thiếu hụt glucose và dịch. Glucose thường được dùng để cung cấp năng lượng theo đường tiêm cho người bệnh và dùng cùng với các dung dịch điện giải để phòng và điều trị mất nước do ỉa chảy cấp. Glucose còn được sử dụng để điều trị chứng hạ glucose huyết. Khi làm test dung nạp glucose thì dùng glucose theo đường uống. Các dung dịch glucose còn được sử dụng làm chất dẫn các thuốc khác.\n\nDung dịch có nồng độ glucose khan 5,05% hoặc nồng độ glucose monohydrat 5,51% được coi là đẳng trương với máu, bởi vậy, dung dịch glucose 5% hay được dùng nhất trong bồi phụ nước theo đường tĩnh mạch ngoại vi. Các dung dịch glucose có nồng độ cao hơn 5% là các dung dịch ưu trương và thường được dùng để cung cấp hydrat carbon (dung dịch 50% dùng để điều trị những trường hợp hạ glucose huyết nặng)."
+          "text": "Glucose là đường đơn 6 carbon, chế phẩm của glucose được dùng theo đường uống hoặc tiêm tĩnh mạch để điều trị thiếu hụt glucose và dịch. Glucose thường được dùng để cung cấp năng lượng theo đường tiêm cho người bệnh và dùng cùng với các dung dịch điện giải để phòng và điều trị mất nước do ỉa chảy cấp. Glucose còn được sử dụng để điều trị chứng hạ glucose huyết. Khi làm test dung nạp glucose thì dùng glucose theo đường uống. Các dung dịch glucose còn được sử dụng làm chất dẫn các thuốc khác.",
+          "block_id": "b0011"
+        },
+        {
+          "type": "text",
+          "text": "Dung dịch có nồng độ glucose khan 5,05% hoặc nồng độ glucose monohydrat 5,51% được coi là đẳng trương với máu, bởi vậy, dung dịch glucose 5% hay được dùng nhất trong bồi phụ nước theo đường tĩnh mạch ngoại vi. Các dung dịch glucose có nồng độ cao hơn 5% là các dung dịch ưu trương và thường được dùng để cung cấp hydrat carbon (dung dịch 50% dùng để điều trị những trường hợp hạ glucose huyết nặng).",
+          "block_id": "b0012"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "duoc-ong-hoc",
+      "id": "duoc-dong-hoc",
       "title": "Dược động học",
-      "content": "Sau khi uống, glucose hấp thu rất nhanh ở ruột. Ở người bệnh bị hạ glucose huyết thì nồng độ đỉnh trong huyết tương xuất hiện 40 phút sau khi uống. Glucose chuyển hóa thành carbon dioxyd và nước, đồng thời giải phóng ra năng lượng.",
+      "heading_block": "b0013",
       "blocks": [
         {
           "type": "text",
-          "text": "Sau khi uống, glucose hấp thu rất nhanh ở ruột. Ở người bệnh bị hạ glucose huyết thì nồng độ đỉnh trong huyết tương xuất hiện 40 phút sau khi uống. Glucose chuyển hóa thành carbon dioxyd và nước, đồng thời giải phóng ra năng lượng."
+          "text": "Sau khi uống, glucose hấp thu rất nhanh ở ruột. Ở người bệnh bị hạ glucose huyết thì nồng độ đỉnh trong huyết tương xuất hiện 40 phút sau khi uống. Glucose chuyển hóa thành carbon dioxyd và nước, đồng thời giải phóng ra năng lượng.",
+          "block_id": "b0014"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chi-inh",
+      "id": "chi-dinh",
       "title": "Chỉ định",
-      "content": "Làm test dung nạp glucose (uống).\n\nThiếu hụt hydrat carbon và dịch.\n\nPhòng và điều trị mất nước do ỉa chảy cấp.\n\nHạ glucose huyết do suy dinh dưỡng, do ngộ độc rượu, do tăng chuyển hóa khi bị stress hay chấn thương.\n\nĐiều trị cấp cứu trong tình trạng có tăng kali huyết (dùng cùng với calci và insulin).\n\nĐiều trị nhiễm toan ceton do đái tháo đường (sau khi đã điều chỉnh glucose huyết và phải đi kèm với truyền insulin liên tục).",
+      "heading_block": "b0015",
       "blocks": [
         {
           "type": "text",
-          "text": "Làm test dung nạp glucose (uống).\n\nThiếu hụt hydrat carbon và dịch.\n\nPhòng và điều trị mất nước do ỉa chảy cấp.\n\nHạ glucose huyết do suy dinh dưỡng, do ngộ độc rượu, do tăng chuyển hóa khi bị stress hay chấn thương.\n\nĐiều trị cấp cứu trong tình trạng có tăng kali huyết (dùng cùng với calci và insulin).\n\nĐiều trị nhiễm toan ceton do đái tháo đường (sau khi đã điều chỉnh glucose huyết và phải đi kèm với truyền insulin liên tục)."
+          "text": "Làm test dung nạp glucose (uống).",
+          "block_id": "b0016"
+        },
+        {
+          "type": "text",
+          "text": "Thiếu hụt hydrat carbon và dịch.",
+          "block_id": "b0017"
+        },
+        {
+          "type": "text",
+          "text": "Phòng và điều trị mất nước do ỉa chảy cấp.",
+          "block_id": "b0018"
+        },
+        {
+          "type": "text",
+          "text": "Hạ glucose huyết do suy dinh dưỡng, do ngộ độc rượu, do tăng chuyển hóa khi bị stress hay chấn thương.",
+          "block_id": "b0019"
+        },
+        {
+          "type": "text",
+          "text": "Điều trị cấp cứu trong tình trạng có tăng kali huyết (dùng cùng với calci và insulin).",
+          "block_id": "b0020"
+        },
+        {
+          "type": "text",
+          "text": "Điều trị nhiễm toan ceton do đái tháo đường (sau khi đã điều chỉnh glucose huyết và phải đi kèm với truyền insulin liên tục).",
+          "block_id": "b0021"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chong-chi-inh",
+      "id": "chong-chi-dinh",
       "title": "Chống chỉ định",
-      "content": "Người bệnh không dung nạp được glucose.\n\nMất nước nhược trương nếu chưa bù đủ các chất điện giải.\n\nỨ nước.\n\nHạ kali huyết.\n\nHôn mê tăng thẩm thấu. Nhiễm toan.\n\nVô niệu.\n\nBị chảy máu trong sọ hoặc trong tủy sống, mê sảng rượu kèm mất nước (không được dùng dung dịch glucose ưu trương cho các trường hợp này).\n\nKhông được dùng dung dịch glucose cho người bệnh sau cơn tai biến mạch não vì glucose huyết cao ở vùng thiếu máu cục bộ chuyển hóa thành acid lactic làm chết tế bào não.",
+      "heading_block": "b0022",
       "blocks": [
         {
           "type": "text",
-          "text": "Người bệnh không dung nạp được glucose.\n\nMất nước nhược trương nếu chưa bù đủ các chất điện giải.\n\nỨ nước.\n\nHạ kali huyết.\n\nHôn mê tăng thẩm thấu. Nhiễm toan.\n\nVô niệu.\n\nBị chảy máu trong sọ hoặc trong tủy sống, mê sảng rượu kèm mất nước (không được dùng dung dịch glucose ưu trương cho các trường hợp này).\n\nKhông được dùng dung dịch glucose cho người bệnh sau cơn tai biến mạch não vì glucose huyết cao ở vùng thiếu máu cục bộ chuyển hóa thành acid lactic làm chết tế bào não."
+          "text": "Người bệnh không dung nạp được glucose.",
+          "block_id": "b0023"
+        },
+        {
+          "type": "text",
+          "text": "Mất nước nhược trương nếu chưa bù đủ các chất điện giải.",
+          "block_id": "b0024"
+        },
+        {
+          "type": "text",
+          "text": "Ứ nước.",
+          "block_id": "b0025"
+        },
+        {
+          "type": "text",
+          "text": "Hạ kali huyết.",
+          "block_id": "b0026"
+        },
+        {
+          "type": "text",
+          "text": "Hôn mê tăng thẩm thấu. Nhiễm toan.",
+          "block_id": "b0027"
+        },
+        {
+          "type": "text",
+          "text": "Vô niệu.",
+          "block_id": "b0028"
+        },
+        {
+          "type": "text",
+          "text": "Bị chảy máu trong sọ hoặc trong tủy sống, mê sảng rượu kèm mất nước (không được dùng dung dịch glucose ưu trương cho các trường hợp này).",
+          "block_id": "b0029"
+        },
+        {
+          "type": "text",
+          "text": "Không được dùng dung dịch glucose cho người bệnh sau cơn tai biến mạch não vì glucose huyết cao ở vùng thiếu máu cục bộ chuyển hóa thành acid lactic làm chết tế bào não.",
+          "block_id": "b0030"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "than-trong",
       "title": "Thận trọng",
-      "content": "Phải theo dõi đều đặn glucose huyết, cân bằng nước và các chất điện giải. Cần bổ sung các chất điện giải nếu cần.\n\nKhông truyền dung dịch glucose cùng với máu qua một bộ dây truyền vì có thể gây tan huyết và tắc nghẽn.\n\nTruyền glucose đơn độc vào tĩnh mạch có thể dẫn đến rối loạn dịch và điện giải như hạ kali huyết, hạ magnesi huyết, hạ phospho huyết.\n\nTruyền kéo dài hoặc truyền nhanh một lượng lớn dung dịch glucose đẳng trương có thể gây phù hoặc ngộ độc nước.\n\nTruyền kéo dài hoặc truyền nhanh một lượng lớn dung dịch glucose ưu trương có thể gây mất nước tế bào do tăng glucose huyết.\n\nKhông được truyền dung dịch glucose ưu trương cho người bệnh bị mất nước vì tình trạng mất nước sẽ nặng thêm do bị lợi niệu thẩm thấu.\n\nThận trọng khi dùng cho bệnh nhân bị đái tháo đường (truyền nhanh có thể dẫn đến tăng glucose huyết), bệnh nhân bị suy dinh dưỡng, thiếu thiamin, không dung nạp glucose, bệnh nhân bị sốc nhiễm khuẩn, sốc, chấn thương.",
+      "heading_block": "b0031",
       "blocks": [
         {
           "type": "text",
-          "text": "Phải theo dõi đều đặn glucose huyết, cân bằng nước và các chất điện giải. Cần bổ sung các chất điện giải nếu cần.\n\nKhông truyền dung dịch glucose cùng với máu qua một bộ dây truyền vì có thể gây tan huyết và tắc nghẽn.\n\nTruyền glucose đơn độc vào tĩnh mạch có thể dẫn đến rối loạn dịch và điện giải như hạ kali huyết, hạ magnesi huyết, hạ phospho huyết.\n\nTruyền kéo dài hoặc truyền nhanh một lượng lớn dung dịch glucose đẳng trương có thể gây phù hoặc ngộ độc nước.\n\nTruyền kéo dài hoặc truyền nhanh một lượng lớn dung dịch glucose ưu trương có thể gây mất nước tế bào do tăng glucose huyết.\n\nKhông được truyền dung dịch glucose ưu trương cho người bệnh bị mất nước vì tình trạng mất nước sẽ nặng thêm do bị lợi niệu thẩm thấu.\n\nThận trọng khi dùng cho bệnh nhân bị đái tháo đường (truyền nhanh có thể dẫn đến tăng glucose huyết), bệnh nhân bị suy dinh dưỡng, thiếu thiamin, không dung nạp glucose, bệnh nhân bị sốc nhiễm khuẩn, sốc, chấn thương."
+          "text": "Phải theo dõi đều đặn glucose huyết, cân bằng nước và các chất điện giải. Cần bổ sung các chất điện giải nếu cần.",
+          "block_id": "b0032"
+        },
+        {
+          "type": "text",
+          "text": "Không truyền dung dịch glucose cùng với máu qua một bộ dây truyền vì có thể gây tan huyết và tắc nghẽn.",
+          "block_id": "b0033"
+        },
+        {
+          "type": "text",
+          "text": "Truyền glucose đơn độc vào tĩnh mạch có thể dẫn đến rối loạn dịch và điện giải như hạ kali huyết, hạ magnesi huyết, hạ phospho huyết.",
+          "block_id": "b0034"
+        },
+        {
+          "type": "text",
+          "text": "Truyền kéo dài hoặc truyền nhanh một lượng lớn dung dịch glucose đẳng trương có thể gây phù hoặc ngộ độc nước.",
+          "block_id": "b0035"
+        },
+        {
+          "type": "text",
+          "text": "Truyền kéo dài hoặc truyền nhanh một lượng lớn dung dịch glucose ưu trương có thể gây mất nước tế bào do tăng glucose huyết.",
+          "block_id": "b0036"
+        },
+        {
+          "type": "text",
+          "text": "Không được truyền dung dịch glucose ưu trương cho người bệnh bị mất nước vì tình trạng mất nước sẽ nặng thêm do bị lợi niệu thẩm thấu.",
+          "block_id": "b0037"
+        },
+        {
+          "type": "text",
+          "text": "Thận trọng khi dùng cho bệnh nhân bị đái tháo đường (truyền nhanh có thể dẫn đến tăng glucose huyết), bệnh nhân bị suy dinh dưỡng, thiếu thiamin, không dung nạp glucose, bệnh nhân bị sốc nhiễm khuẩn, sốc, chấn thương.",
+          "block_id": "b0038"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-mang-thai",
       "title": "Thời kỳ mang thai",
-      "content": "Dùng được cho người mang thai.",
+      "heading_block": "b0039",
       "blocks": [
         {
           "type": "text",
-          "text": "Dùng được cho người mang thai."
+          "text": "Dùng được cho người mang thai.",
+          "block_id": "b0040"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-cho-con-bu",
       "title": "Thời kỳ cho con bú",
-      "content": "An toàn đối với người cho con bú.",
+      "heading_block": "b0041",
       "blocks": [
         {
           "type": "text",
-          "text": "An toàn đối với người cho con bú."
+          "text": "An toàn đối với người cho con bú.",
+          "block_id": "b0042"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tac-dung-khong-mong-muon-adr",
       "title": "Tác dụng không mong muốn (ADR)",
-      "content": "Thường gặp Đau tại chỗ tiêm tĩnh mạch, nhất là khi dùng dung dịch glucose ưu trương vì thường có pH thấp.\n\nKích ứng tĩnh mạch, viêm tắc tĩnh mạch, hoại tử chỗ tiêm nếu thuốc thoát ra ngoài mạch.\n\nÍt gặp Rối loạn nước và điện giải (hạ kali huyết, hạ magnesi huyết, hạ phospho huyết).\n\nHiếm gặp Phù hoặc ngộ độc nước (do truyền kéo dài hoặc truyền nhanh một lượng lớn dung dịch đẳng trương).\n\nMất nước do hậu quả của glucose huyết cao (khi truyền kéo dài hoặc quá nhanh các dung dịch ưu trương).",
+      "heading_block": "b0043",
       "blocks": [
         {
+          "type": "subheading",
+          "text": "Thường gặp",
+          "block_id": "b0044"
+        },
+        {
           "type": "text",
-          "text": "Thường gặp Đau tại chỗ tiêm tĩnh mạch, nhất là khi dùng dung dịch glucose ưu trương vì thường có pH thấp.\n\nKích ứng tĩnh mạch, viêm tắc tĩnh mạch, hoại tử chỗ tiêm nếu thuốc thoát ra ngoài mạch.\n\nÍt gặp Rối loạn nước và điện giải (hạ kali huyết, hạ magnesi huyết, hạ phospho huyết).\n\nHiếm gặp Phù hoặc ngộ độc nước (do truyền kéo dài hoặc truyền nhanh một lượng lớn dung dịch đẳng trương).\n\nMất nước do hậu quả của glucose huyết cao (khi truyền kéo dài hoặc quá nhanh các dung dịch ưu trương)."
+          "text": "Đau tại chỗ tiêm tĩnh mạch, nhất là khi dùng dung dịch glucose ưu trương vì thường có pH thấp.",
+          "block_id": "b0045"
+        },
+        {
+          "type": "text",
+          "text": "Kích ứng tĩnh mạch, viêm tắc tĩnh mạch, hoại tử chỗ tiêm nếu thuốc thoát ra ngoài mạch.",
+          "block_id": "b0046"
+        },
+        {
+          "type": "subheading",
+          "text": "Ít gặp",
+          "block_id": "b0047"
+        },
+        {
+          "type": "text",
+          "text": "Rối loạn nước và điện giải (hạ kali huyết, hạ magnesi huyết, hạ phospho huyết).",
+          "block_id": "b0048"
+        },
+        {
+          "type": "subheading",
+          "text": "Hiếm gặp",
+          "block_id": "b0049"
+        },
+        {
+          "type": "text",
+          "text": "Phù hoặc ngộ độc nước (do truyền kéo dài hoặc truyền nhanh một lượng lớn dung dịch đẳng trương).",
+          "block_id": "b0050"
+        },
+        {
+          "type": "text",
+          "text": "Mất nước do hậu quả của glucose huyết cao (khi truyền kéo dài hoặc quá nhanh các dung dịch ưu trương).",
+          "block_id": "b0051"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "huong-dan-cach-xu-tri-adr",
       "title": "Hướng dẫn cách xử trí ADR",
-      "content": "Giảm liều và/hoặc tiêm insulin, nếu đường huyết tăng cao hoặc có đường niệu.\n\nĐiều chỉnh cân bằng nước và điện giải.\n\nĐiều chỉnh thể tích dịch truyền và tốc độ truyền.",
+      "heading_block": "b0052",
       "blocks": [
         {
           "type": "text",
-          "text": "Giảm liều và/hoặc tiêm insulin, nếu đường huyết tăng cao hoặc có đường niệu.\n\nĐiều chỉnh cân bằng nước và điện giải.\n\nĐiều chỉnh thể tích dịch truyền và tốc độ truyền."
+          "text": "Giảm liều và/hoặc tiêm insulin, nếu đường huyết tăng cao hoặc có đường niệu.",
+          "block_id": "b0053"
+        },
+        {
+          "type": "text",
+          "text": "Điều chỉnh cân bằng nước và điện giải.",
+          "block_id": "b0054"
+        },
+        {
+          "type": "text",
+          "text": "Điều chỉnh thể tích dịch truyền và tốc độ truyền.",
+          "block_id": "b0055"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "cach-dung",
-      "title": "Cách dùng",
-      "content": "Nuôi dưỡng bằng đường tĩnh mạch có thể thực hiện qua tĩnh mạch ngoại vi hoặc tĩnh mạch trung tâm. Chỉ định dùng qua đường tĩnh mạch ngoại vi khi chỉ cần nuôi dưỡng người bệnh trong một thời gian ngắn; hoặc khi bổ trợ thêm cho nuôi dưỡng theo đường tiêu hóa; hoặc khi người bệnh có nhiều nguy cơ tai biến nếu truyền qua đường tĩnh mạch trung tâm. Các tĩnh mạch ngoại vi dễ bị viêm tắc, nhất là khi dung dịch có áp suất thẩm thấu lớn hơn 600 mOsm/lít, do đó không nên truyền vào tĩnh mạch ngoại vi các dịch truyền có nồng độ glucose cao hơn 10%. Nếu buộc phải truyền qua tĩnh mạch ngoại vi thì phải truyền chậm (tốc độ truyền dung dịch glucose 50% trong trường hợp này chỉ nên 3 ml/phút). Phải truyền các dung dịch glucose ưu trương theo đường tĩnh mạch trung tâm vì ở đấy dung dịch glucose được pha loãng nhanh hơn, tuy vậy không nên truyền lâu dài và phải thay đổi vị trí truyền.\n\nTrong nuôi dưỡng theo đường tĩnh mạch, có thể truyền dung dịch glucose đồng thời với các dung dịch có acid amin hoặc nhũ tương lipid (truyền riêng rẽ hoặc cùng nhau bằng hỗn hợp “3 trong 1” chứa trong cùng một chai).\n\nCung cấp glucose cho người bệnh suy dinh dưỡng, hoặc người bệnh rối loạn chuyển hóa do stress sau mổ phải bắt đầu từ từ do khả năng sử dụng glucose của người bệnh tăng lên dần dần. Nhiều người bệnh được nuôi dưỡng theo đường tiêm truyền bị tăng glucose huyết. Cần phải xác định nguyên nhân và điều chỉnh bằng các biện pháp không phải insulin trước khi sử dụng insulin nếu có thể được. Cần truyền tốc độ đều, không ngừng đột ngột để tránh thay đổi nhanh glucose huyết.\n\nTùy trường hợp có thể dùng insulin kèm thêm, ví dụ điều trị nhiễm toan do đái tháo đường. Nếu dùng insulin thì phải theo dõi thường xuyên glucose huyết của người bệnh và điều chỉnh liều insulin. Tuy insulin làm tăng tác dụng nuôi dưỡng theo đường tiêm truyền, nhưng vẫn cần phải thận trọng khi dùng để tránh nguy cơ hạ glucose huyết và do insulin làm tăng lắng đọng acid béo ở các mô dự trữ mỡ khiến cho chúng ít vào được các đường chuyển hóa quan trọng. Nếu cần thiết, có thể tiêm insulin vào dưới da hoặc vào tĩnh mạch, hoặc cho thêm vào dịch truyền nuôi dưỡng. Một khi người bệnh đã ổn định với một liều insulin nhất định thì tiêm insulin riêng rẽ sẽ có lợi hơn về kinh tế, tránh lãng phí phải bỏ dịch truyền khi cần thay đổi liều insulin. Dùng insulin người là tốt nhất vì ít ảnh hưởng đến miễn dịch nhất. Liều dùng insulin là theo kinh nghiệm và điều kiện thực tế (ví dụ có thể dùng một nửa hoặc một phần ba liều cần dùng ngày hôm trước cùng với dịch truyền nuôi dưỡng hàng ngày). Cần tôn trọng các bước chuẩn bị và pha dịch truyền để giảm thiểu biến động hoạt tính của insulin do hiện tượng hấp phụ gây ra.\n\nLiều dùng Liều dùng thay đổi tùy theo nhu cầu của từng người bệnh.\n\nPhải theo dõi chặt chẽ glucose huyết của người bệnh. Liều glucose tối đa khuyên dùng là 500 - 800 mg/kg/giờ.\n\nĐể làm giảm áp lực não - tủy và phù não do ngộ độc rượu, dùng dung dịch ưu trương 25 - 50%.\n\nĐể điều trị hạ đường huyết do quá liều insulin hoặc do các nguyên nhân khác ở người lớn và trẻ em, thường dùng liều 20 - 50 ml dung dịch glucose 50% tiêm tĩnh mạch chậm (ví dụ 3 ml/phút), trường hợp nặng có thể cần dùng nhắc lại và bổ sung các trị liệu phối hợp khác. Điều trị hạ đường huyết cấp ở trẻ sơ sinh và trẻ nhỏ, thường tiêm tĩnh mạch chậm dung dịch glucose 10 - 25% với liều 2 ml/kg; trường hợp nặng có thể cần dùng liều cao hơn hoặc nhắc lại 1 liều nữa. Nếu bệnh nhân không đáp ứng với glucose hoặc không dung nạp glucose thì cần tính đến việc sử dụng thuốc khác (ví dụ như glucagon, corticosteroid, epinephrin).\n\nĐể khống chế hạ đường huyết do đái thảo đường có ý thức, có thể uống (dạng dung dịch) hoặc nhai (dạng viên) 10 - 20 g glucose; có thể nhắc lại liều sau 10 - 20 phút nếu cần. Tự giám sát lượng đường trong máu có thể xác định được có cần nhắc lại liều hay không. Một số bác sỹ lâm sàng khuyên rằng nếu 20 phút sau khi uống glucose, triệu chứng hạ đường huyết vẫn còn và lượng đường trong máu còn cao hơn bình thường ít nhất 20 mg/l thì cần phải dùng thêm liều nữa. Mỗi gam dung dịch glucose 40% (kl/kl) cung cấp 400 mg glucose (tức là 25 g dung dịch cung cấp 10 g glucose).",
+      "id": "lieu-luong-va-cach-dung",
+      "title": "Liều lượng và cách dùng",
+      "heading_block": "b0056",
       "blocks": [
         {
+          "type": "subheading",
+          "text": "Cách dùng",
+          "block_id": "b0057"
+        },
+        {
           "type": "text",
-          "text": "Nuôi dưỡng bằng đường tĩnh mạch có thể thực hiện qua tĩnh mạch ngoại vi hoặc tĩnh mạch trung tâm. Chỉ định dùng qua đường tĩnh mạch ngoại vi khi chỉ cần nuôi dưỡng người bệnh trong một thời gian ngắn; hoặc khi bổ trợ thêm cho nuôi dưỡng theo đường tiêu hóa; hoặc khi người bệnh có nhiều nguy cơ tai biến nếu truyền qua đường tĩnh mạch trung tâm. Các tĩnh mạch ngoại vi dễ bị viêm tắc, nhất là khi dung dịch có áp suất thẩm thấu lớn hơn 600 mOsm/lít, do đó không nên truyền vào tĩnh mạch ngoại vi các dịch truyền có nồng độ glucose cao hơn 10%. Nếu buộc phải truyền qua tĩnh mạch ngoại vi thì phải truyền chậm (tốc độ truyền dung dịch glucose 50% trong trường hợp này chỉ nên 3 ml/phút). Phải truyền các dung dịch glucose ưu trương theo đường tĩnh mạch trung tâm vì ở đấy dung dịch glucose được pha loãng nhanh hơn, tuy vậy không nên truyền lâu dài và phải thay đổi vị trí truyền.\n\nTrong nuôi dưỡng theo đường tĩnh mạch, có thể truyền dung dịch glucose đồng thời với các dung dịch có acid amin hoặc nhũ tương lipid (truyền riêng rẽ hoặc cùng nhau bằng hỗn hợp “3 trong 1” chứa trong cùng một chai).\n\nCung cấp glucose cho người bệnh suy dinh dưỡng, hoặc người bệnh rối loạn chuyển hóa do stress sau mổ phải bắt đầu từ từ do khả năng sử dụng glucose của người bệnh tăng lên dần dần. Nhiều người bệnh được nuôi dưỡng theo đường tiêm truyền bị tăng glucose huyết. Cần phải xác định nguyên nhân và điều chỉnh bằng các biện pháp không phải insulin trước khi sử dụng insulin nếu có thể được. Cần truyền tốc độ đều, không ngừng đột ngột để tránh thay đổi nhanh glucose huyết.\n\nTùy trường hợp có thể dùng insulin kèm thêm, ví dụ điều trị nhiễm toan do đái tháo đường. Nếu dùng insulin thì phải theo dõi thường xuyên glucose huyết của người bệnh và điều chỉnh liều insulin. Tuy insulin làm tăng tác dụng nuôi dưỡng theo đường tiêm truyền, nhưng vẫn cần phải thận trọng khi dùng để tránh nguy cơ hạ glucose huyết và do insulin làm tăng lắng đọng acid béo ở các mô dự trữ mỡ khiến cho chúng ít vào được các đường chuyển hóa quan trọng. Nếu cần thiết, có thể tiêm insulin vào dưới da hoặc vào tĩnh mạch, hoặc cho thêm vào dịch truyền nuôi dưỡng. Một khi người bệnh đã ổn định với một liều insulin nhất định thì tiêm insulin riêng rẽ sẽ có lợi hơn về kinh tế, tránh lãng phí phải bỏ dịch truyền khi cần thay đổi liều insulin. Dùng insulin người là tốt nhất vì ít ảnh hưởng đến miễn dịch nhất. Liều dùng insulin là theo kinh nghiệm và điều kiện thực tế (ví dụ có thể dùng một nửa hoặc một phần ba liều cần dùng ngày hôm trước cùng với dịch truyền nuôi dưỡng hàng ngày). Cần tôn trọng các bước chuẩn bị và pha dịch truyền để giảm thiểu biến động hoạt tính của insulin do hiện tượng hấp phụ gây ra.\n\nLiều dùng Liều dùng thay đổi tùy theo nhu cầu của từng người bệnh.\n\nPhải theo dõi chặt chẽ glucose huyết của người bệnh. Liều glucose tối đa khuyên dùng là 500 - 800 mg/kg/giờ.\n\nĐể làm giảm áp lực não - tủy và phù não do ngộ độc rượu, dùng dung dịch ưu trương 25 - 50%.\n\nĐể điều trị hạ đường huyết do quá liều insulin hoặc do các nguyên nhân khác ở người lớn và trẻ em, thường dùng liều 20 - 50 ml dung dịch glucose 50% tiêm tĩnh mạch chậm (ví dụ 3 ml/phút), trường hợp nặng có thể cần dùng nhắc lại và bổ sung các trị liệu phối hợp khác. Điều trị hạ đường huyết cấp ở trẻ sơ sinh và trẻ nhỏ, thường tiêm tĩnh mạch chậm dung dịch glucose 10 - 25% với liều 2 ml/kg; trường hợp nặng có thể cần dùng liều cao hơn hoặc nhắc lại 1 liều nữa. Nếu bệnh nhân không đáp ứng với glucose hoặc không dung nạp glucose thì cần tính đến việc sử dụng thuốc khác (ví dụ như glucagon, corticosteroid, epinephrin).\n\nĐể khống chế hạ đường huyết do đái thảo đường có ý thức, có thể uống (dạng dung dịch) hoặc nhai (dạng viên) 10 - 20 g glucose; có thể nhắc lại liều sau 10 - 20 phút nếu cần. Tự giám sát lượng đường trong máu có thể xác định được có cần nhắc lại liều hay không. Một số bác sỹ lâm sàng khuyên rằng nếu 20 phút sau khi uống glucose, triệu chứng hạ đường huyết vẫn còn và lượng đường trong máu còn cao hơn bình thường ít nhất 20 mg/l thì cần phải dùng thêm liều nữa. Mỗi gam dung dịch glucose 40% (kl/kl) cung cấp 400 mg glucose (tức là 25 g dung dịch cung cấp 10 g glucose)."
+          "text": "Nuôi dưỡng bằng đường tĩnh mạch có thể thực hiện qua tĩnh mạch ngoại vi hoặc tĩnh mạch trung tâm. Chỉ định dùng qua đường tĩnh mạch ngoại vi khi chỉ cần nuôi dưỡng người bệnh trong một thời gian ngắn; hoặc khi bổ trợ thêm cho nuôi dưỡng theo đường tiêu hóa; hoặc khi người bệnh có nhiều nguy cơ tai biến nếu truyền qua đường tĩnh mạch trung tâm. Các tĩnh mạch ngoại vi dễ bị viêm tắc, nhất là khi dung dịch có áp suất thẩm thấu lớn hơn 600 mOsm/lít, do đó không nên truyền vào tĩnh mạch ngoại vi các dịch truyền có nồng độ glucose cao hơn 10%. Nếu buộc phải truyền qua tĩnh mạch ngoại vi thì phải truyền chậm (tốc độ truyền dung dịch glucose 50% trong trường hợp này chỉ nên 3 ml/phút). Phải truyền các dung dịch glucose ưu trương theo đường tĩnh mạch trung tâm vì ở đấy dung dịch glucose được pha loãng nhanh hơn, tuy vậy không nên truyền lâu dài và phải thay đổi vị trí truyền.",
+          "block_id": "b0058"
+        },
+        {
+          "type": "text",
+          "text": "Trong nuôi dưỡng theo đường tĩnh mạch, có thể truyền dung dịch glucose đồng thời với các dung dịch có acid amin hoặc nhũ tương lipid (truyền riêng rẽ hoặc cùng nhau bằng hỗn hợp “3 trong 1” chứa trong cùng một chai).",
+          "block_id": "b0059"
+        },
+        {
+          "type": "text",
+          "text": "Cung cấp glucose cho người bệnh suy dinh dưỡng, hoặc người bệnh rối loạn chuyển hóa do stress sau mổ phải bắt đầu từ từ do khả năng sử dụng glucose của người bệnh tăng lên dần dần. Nhiều người bệnh được nuôi dưỡng theo đường tiêm truyền bị tăng glucose huyết. Cần phải xác định nguyên nhân và điều chỉnh bằng các biện pháp không phải insulin trước khi sử dụng insulin nếu có thể được. Cần truyền tốc độ đều, không ngừng đột ngột để tránh thay đổi nhanh glucose huyết.",
+          "block_id": "b0060"
+        },
+        {
+          "type": "text",
+          "text": "Tùy trường hợp có thể dùng insulin kèm thêm, ví dụ điều trị nhiễm toan do đái tháo đường. Nếu dùng insulin thì phải theo dõi thường xuyên glucose huyết của người bệnh và điều chỉnh liều insulin. Tuy insulin làm tăng tác dụng nuôi dưỡng theo đường tiêm truyền, nhưng vẫn cần phải thận trọng khi dùng để tránh nguy cơ hạ glucose huyết và do insulin làm tăng lắng đọng acid béo ở các mô dự trữ mỡ khiến cho chúng ít vào được các đường chuyển hóa quan trọng. Nếu cần thiết, có thể tiêm insulin vào dưới da hoặc vào tĩnh mạch, hoặc cho thêm vào dịch truyền nuôi dưỡng. Một khi người bệnh đã ổn định với một liều insulin nhất định thì tiêm insulin riêng rẽ sẽ có lợi hơn về kinh tế, tránh lãng phí phải bỏ dịch truyền khi cần thay đổi liều insulin. Dùng insulin người là tốt nhất vì ít ảnh hưởng đến miễn dịch nhất. Liều dùng insulin là theo kinh nghiệm và điều kiện thực tế (ví dụ có thể dùng một nửa hoặc một phần ba liều cần dùng ngày hôm trước cùng với dịch truyền nuôi dưỡng hàng ngày). Cần tôn trọng các bước chuẩn bị và pha dịch truyền để giảm thiểu biến động hoạt tính của insulin do hiện tượng hấp phụ gây ra.",
+          "block_id": "b0061"
+        },
+        {
+          "type": "subheading",
+          "text": "Liều dùng",
+          "block_id": "b0062"
+        },
+        {
+          "type": "text",
+          "text": "Liều dùng thay đổi tùy theo nhu cầu của từng người bệnh.",
+          "block_id": "b0063"
+        },
+        {
+          "type": "text",
+          "text": "Phải theo dõi chặt chẽ glucose huyết của người bệnh. Liều glucose tối đa khuyên dùng là 500 - 800 mg/kg/giờ.",
+          "block_id": "b0064"
+        },
+        {
+          "type": "text",
+          "text": "Để làm giảm áp lực não - tủy và phù não do ngộ độc rượu, dùng dung dịch ưu trương 25 - 50%.",
+          "block_id": "b0065"
+        },
+        {
+          "type": "text",
+          "text": "Để điều trị hạ đường huyết do quá liều insulin hoặc do các nguyên nhân khác ở người lớn và trẻ em, thường dùng liều 20 - 50 ml dung dịch glucose 50% tiêm tĩnh mạch chậm (ví dụ 3 ml/phút), trường hợp nặng có thể cần dùng nhắc lại và bổ sung các trị liệu phối hợp khác. Điều trị hạ đường huyết cấp ở trẻ sơ sinh và trẻ nhỏ, thường tiêm tĩnh mạch chậm dung dịch glucose 10 - 25% với liều 2 ml/kg; trường hợp nặng có thể cần dùng liều cao hơn hoặc nhắc lại 1 liều nữa. Nếu bệnh nhân không đáp ứng với glucose hoặc không dung nạp glucose thì cần tính đến việc sử dụng thuốc khác (ví dụ như glucagon, corticosteroid, epinephrin).",
+          "block_id": "b0066"
+        },
+        {
+          "type": "text",
+          "text": "Để khống chế hạ đường huyết do đái thảo đường có ý thức, có thể uống (dạng dung dịch) hoặc nhai (dạng viên) 10 - 20 g glucose; có thể nhắc lại liều sau 10 - 20 phút nếu cần. Tự giám sát lượng đường trong máu có thể xác định được có cần nhắc lại liều hay không. Một số bác sỹ lâm sàng khuyên rằng nếu 20 phút sau khi uống glucose, triệu chứng hạ đường huyết vẫn còn và lượng đường trong máu còn cao hơn bình thường ít nhất 20 mg/l thì cần phải dùng thêm liều nữa. Mỗi gam dung dịch glucose 40% (kl/kl) cung cấp 400 mg glucose (tức là 25 g dung dịch cung cấp 10 g glucose).",
+          "block_id": "b0067"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-ky",
       "title": "Tương kỵ",
-      "content": "Trước khi pha thêm bất kỳ một thuốc gì vào dung dịch glucose để truyền phải kiểm tra xem có phù hợp không.\n\nDung dịch chứa glucose và có pH < 6 có thể gây kết tủa indomethacin.",
+      "heading_block": "b0068",
       "blocks": [
         {
           "type": "text",
-          "text": "Trước khi pha thêm bất kỳ một thuốc gì vào dung dịch glucose để truyền phải kiểm tra xem có phù hợp không.\n\nDung dịch chứa glucose và có pH < 6 có thể gây kết tủa indomethacin."
+          "text": "Trước khi pha thêm bất kỳ một thuốc gì vào dung dịch glucose để truyền phải kiểm tra xem có phù hợp không.",
+          "block_id": "b0069"
+        },
+        {
+          "type": "text",
+          "text": "Dung dịch chứa glucose và có pH < 6 có thể gây kết tủa indomethacin.",
+          "block_id": "b0070"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "qua-lieu-va-xu-tri",
       "title": "Quá liều và xử trí",
-      "content": "Triệu chứng: tăng glucose máu, glucose niệu, mất nước, hôn mê do tăng áp lực thẩm thấu, có thể dẫn tới tử vong.\n\nXử trí: Ngừng truyền glucose, bổ sung liều insulin phù hợp.",
+      "heading_block": "b0071",
       "blocks": [
         {
           "type": "text",
-          "text": "Triệu chứng: tăng glucose máu, glucose niệu, mất nước, hôn mê do tăng áp lực thẩm thấu, có thể dẫn tới tử vong.\n\nXử trí: Ngừng truyền glucose, bổ sung liều insulin phù hợp."
+          "text": "Triệu chứng: tăng glucose máu, glucose niệu, mất nước, hôn mê do tăng áp lực thẩm thấu, có thể dẫn tới tử vong.",
+          "block_id": "b0072"
+        },
+        {
+          "type": "text",
+          "text": "Xử trí: Ngừng truyền glucose, bổ sung liều insulin phù hợp.",
+          "block_id": "b0073"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "cap-nhat-lan-cuoi",
       "title": "Cập nhật lần cuối",
-      "content": "2017.",
+      "heading_block": "b0074",
       "blocks": [
         {
           "type": "text",
-          "text": "2017."
+          "text": "2017.",
+          "block_id": "b0074"
         }
-      ],
-      "subsections": []
+      ]
     }
   ],
-  "tables": [],
   "quality": {
-    "status": "source-layout-rebuilt-v10.1-source-paragraph-boundaries",
-    "pdf_text_order": "left-column-then-right-column; visual line flow",
-    "paragraph_policy": "Paragraph boundaries are source-derived and stored only as blank lines. The client preserves those boundaries exactly; it must not create a new paragraph from label words such as “Trẻ em:” or “Người lớn:”. A lower-case continuation fragment is merged only when it follows a non-terminal source fragment; table footnotes remain separate. No client-side anchor or length-based sentence splitter is allowed.",
-    "table_policy": "source-table image inserted by PDF page/column/y position; table-cell text excluded from prose",
-    "validation": {
-      "raw_newline_inside_paragraph": false,
-      "table_count": 0,
-      "section_count": 16,
-      "client_anchor_resegmentation_disabled": true,
-      "client_length_sentence_chunking_disabled": true
-    }
+    "block_count": 74,
+    "heading_count": 14,
+    "subheading_count": 5,
+    "paragraph_count": 54,
+    "list_count": 0,
+    "table_count": 0,
+    "figure_count": 0,
+    "note_count": 1,
+    "page_count": 2
+  },
+  "tables": [],
+  "legacy_compat": {
+    "sections": "generated from v11 blocks for v10.4.5.39 renderer/chatbot compatibility"
   }
 }

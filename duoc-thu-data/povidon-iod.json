@@ -1,5 +1,5 @@
 {
-  "schema_version": "10.1-source-paragraph-boundaries",
+  "schema_version": "11.0.0",
   "id": "povidon-iod",
   "title": "Povidon Iod",
   "aliases": [
@@ -26,212 +26,2985 @@
       "boundary_method": "physical-source-title-band"
     }
   },
+  "parser": {
+    "name": "medplus-duoc-thu-v11-structured-pdf-parser",
+    "method": "PyMuPDF span -> line -> block",
+    "content_source": "Duocthu2023.pdf",
+    "old_json_usage": "id/title/page-boundary metadata and existing table asset path only; old content is not used",
+    "column_order": "left column -> right column -> next page",
+    "block_model": [
+      "heading",
+      "subheading",
+      "paragraph",
+      "list",
+      "table",
+      "figure",
+      "note"
+    ],
+    "table_policy": "no OCR; preserve existing duoc-thu-assets/<id>/pXXXX-tXX.png image_path"
+  },
+  "blocks": [
+    {
+      "id": "b0001",
+      "type": "heading",
+      "level": 1,
+      "text": "POVIDON IOD",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        127.1,
+        302.56,
+        195.71,
+        316.4
+      ],
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "POVIDON IOD",
+          "bbox": [
+            127.1,
+            302.56,
+            195.71,
+            316.4
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0002",
+      "type": "paragraph",
+      "text": "Tên chung quốc tế: Povidone iodine.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        326.05,
+        179.53,
+        339.2
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tên chung quốc tế",
+          "bbox": [
+            35.43,
+            326.05,
+            110.12,
+            339.2
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": ": Povidone iodine.",
+          "bbox": [
+            110.12,
+            326.2,
+            179.53,
+            339.0
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0003",
+      "type": "paragraph",
+      "text": "Mã ATC: D08AG02, D09AA09, D11AC06, G01AX11, R02AA15, S01AX18.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        337.67,
+        289.74,
+        362.23
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0004",
+      "type": "paragraph",
+      "text": "Loại thuốc: Thuốc sát trùng, khử khuẩn.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        360.9,
+        191.52,
+        374.05
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Loại thuốc: ",
+          "bbox": [
+            35.43,
+            360.9,
+            84.52,
+            374.05
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "Thuốc sát trùng, khử khuẩn.",
+          "bbox": [
+            84.52,
+            361.05,
+            191.52,
+            373.85
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0005",
+      "type": "heading",
+      "level": 2,
+      "text": "Dạng thuốc và hàm lượng",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        376.02,
+        140.35,
+        389.17
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dạng thuốc và hàm lượng",
+          "bbox": [
+            35.43,
+            376.02,
+            140.35,
+            389.17
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0006",
+      "type": "paragraph",
+      "text": "Dung dịch dùng ngoài: 7,5%, 10%.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        388.29,
+        171.85,
+        401.09
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Dung dịch dùng ngoài: 7,5%, 10%. ",
+          "bbox": [
+            35.43,
+            388.29,
+            171.85,
+            401.09
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0007",
+      "type": "paragraph",
+      "text": "Thuốc mỡ: 10%.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        400.41,
+        101.68,
+        413.21
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thuốc mỡ: 10%. ",
+          "bbox": [
+            35.43,
+            400.41,
+            101.68,
+            413.21
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0008",
+      "type": "paragraph",
+      "text": "Bột khô để phun: 2,5%.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        412.53,
+        128.06,
+        425.32
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Bột khô để phun: 2,5%. ",
+          "bbox": [
+            35.43,
+            412.53,
+            128.06,
+            425.32
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0009",
+      "type": "paragraph",
+      "text": "Dung dịch nhỏ mắt: 5%.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        424.65,
+        130.96,
+        437.44
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Dung dịch nhỏ mắt: 5%. ",
+          "bbox": [
+            35.43,
+            424.65,
+            130.96,
+            437.44
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0010",
+      "type": "paragraph",
+      "text": "Dung dịch súc miệng: 1%.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        436.76,
+        138.87,
+        449.56
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Dung dịch súc miệng: 1%. ",
+          "bbox": [
+            35.43,
+            436.76,
+            138.87,
+            449.56
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0011",
+      "type": "paragraph",
+      "text": "Dung dịch tạo bọt: 4%.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        448.88,
+        126.21,
+        461.68
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Dung dịch tạo bọt: 4%. ",
+          "bbox": [
+            35.43,
+            448.88,
+            126.21,
+            461.68
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0012",
+      "type": "paragraph",
+      "text": "Viên đặt âm đạo: 200 mg.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        461.0,
+        133.55,
+        473.8
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Viên đặt âm đạo: 200 mg.",
+          "bbox": [
+            35.43,
+            461.0,
+            133.55,
+            473.8
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0013",
+      "type": "paragraph",
+      "text": "Gel bôi âm đạo, dung dịch dùng cho âm đạo: 10%.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        473.12,
+        230.95,
+        485.91
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Gel bôi âm đạo, dung dịch dùng cho âm đạo: 10%. ",
+          "bbox": [
+            35.43,
+            473.12,
+            230.95,
+            485.91
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0014",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược lực học",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        488.08,
+        89.03,
+        501.23
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược lực học",
+          "bbox": [
+            35.43,
+            488.08,
+            89.03,
+            501.23
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0015",
+      "type": "paragraph",
+      "text": "Povidon iod (PVP-I) là phức hợp của iod với polyvinylpyrrolidon (povidon), chứa 9 - 12% iod, dễ tan trong nước và trong cồn; dung dịch chứa 0,85 - 1,2% iod có pH 3,0 - 5,5. Povidon được dùng làm chất mang iod. Dung dịch povidon iod giải phóng iod dần dần, do đó kéo dài tác dụng sát khuẩn, diệt khuẩn, nấm, virus, động vật đơn bào, kén và bào tử. Vì vậy tác dụng của thuốc kém hơn các chế phẩm chứa iod tự do, nhưng ít độc hơn, vì lượng iod tự do thấp hơn, dưới 1 phần triệu trong dung dịch 10%.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        500.35,
+        289.77,
+        597.98
+      ],
+      "source": {
+        "line_count": 8
+      }
+    },
+    {
+      "id": "b0016",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược động học",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        600.15,
+        96.54,
+        613.3
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược động học",
+          "bbox": [
+            35.43,
+            600.15,
+            96.54,
+            613.3
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0017",
+      "type": "paragraph",
+      "text": "Iod giải phóng thấm được qua da và thải qua nước tiểu. Hấp thu toàn thân phụ thuộc vào vùng và tình trạng sử dụng thuốc (diện rộng, da, niêm mạc, vết thương, các khoang trong cơ thể). Khi dùng làm dung dịch rửa các khoang trong cơ thể, toàn bộ phức hợp cao phân tử povidon - iod cũng có thể được cơ thể hấp thu. Phức hợp này không chuyển hóa hoặc đào thải qua thận. Thuốc được hệ liên võng nội mô lọc giữ.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        612.42,
+        289.77,
+        697.92
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0018",
+      "type": "heading",
+      "level": 2,
+      "text": "Chỉ định",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        700.09,
+        71.08,
+        713.24
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chỉ định",
+          "bbox": [
+            35.43,
+            700.09,
+            71.08,
+            713.24
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0019",
+      "type": "paragraph",
+      "text": "Khử khuẩn và sát khuẩn da và niêm mạc trước khi phẫu thuật.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        712.36,
+        273.97,
+        725.16
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Khử khuẩn và sát khuẩn da và niêm mạc trước khi phẫu thuật. ",
+          "bbox": [
+            35.43,
+            712.36,
+            273.97,
+            725.16
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0020",
+      "type": "paragraph",
+      "text": "Sát khuẩn để phòng và điều trị nhiễm khuẩn các vết loét, bỏng, vết rách và các vết thương nhẹ khác.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        724.48,
+        289.77,
+        749.4
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0021",
+      "type": "paragraph",
+      "text": "Khử trùng dụng cụ y tế.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        748.72,
+        126.07,
+        761.52
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Khử trùng dụng cụ y tế.",
+          "bbox": [
+            35.43,
+            748.72,
+            126.07,
+            761.52
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0022",
+      "type": "heading",
+      "level": 2,
+      "text": "Chống chỉ định",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        763.68,
+        97.73,
+        776.83
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chống chỉ định",
+          "bbox": [
+            35.43,
+            763.68,
+            97.73,
+            776.83
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0023",
+      "type": "paragraph",
+      "text": "Tiền sử quá mẫn với iod.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        775.95,
+        132.62,
+        788.75
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiền sử quá mẫn với iod. ",
+          "bbox": [
+            35.43,
+            775.95,
+            132.62,
+            788.75
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0024",
+      "type": "paragraph",
+      "text": "Dùng thường xuyên ở người bệnh có rối loạn tuyến giáp (đặc biệt",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 0,
+      "bbox": [
+        35.43,
+        788.07,
+        289.77,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Dùng thường xuyên ở người bệnh có rối loạn tuyến giáp (đặc biệt ",
+          "bbox": [
+            35.43,
+            788.07,
+            289.77,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0025",
+      "type": "paragraph",
+      "text": "bướu giáp nhân coloid, bướu giáp lưu hành và viêm tuyến giáp Hashimoto).",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        63.32,
+        553.72,
+        88.15
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0026",
+      "type": "paragraph",
+      "text": "Sử dụng kéo dài trong 3 tháng giữa và 3 tháng cuối của thai kỳ.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        87.38,
+        540.56,
+        100.18
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Sử dụng kéo dài trong 3 tháng giữa và 3 tháng cuối của thai kỳ.",
+          "bbox": [
+            299.39,
+            87.38,
+            540.56,
+            100.18
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0027",
+      "type": "paragraph",
+      "text": "Dùng thường xuyên hoặc dùng lượng lớn ở phụ nữ cho con bú.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        99.41,
+        541.81,
+        112.21
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Dùng thường xuyên hoặc dùng lượng lớn ở phụ nữ cho con bú. ",
+          "bbox": [
+            299.39,
+            99.41,
+            541.81,
+            112.21
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0028",
+      "type": "paragraph",
+      "text": "Trẻ sinh non dưới 32 tuần tuổi thai, trẻ đẻ ra có cân nặng dưới 1,5 kg, dùng thường xuyên cho trẻ sơ sinh.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        111.44,
+        553.72,
+        136.27
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0029",
+      "type": "paragraph",
+      "text": "Dùng dạng bột khô để phun cho trẻ em dưới 2 tuổi.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        135.5,
+        494.27,
+        148.3
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Dùng dạng bột khô để phun cho trẻ em dưới 2 tuổi.",
+          "bbox": [
+            299.39,
+            135.5,
+            494.27,
+            148.3
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0030",
+      "type": "paragraph",
+      "text": "Dùng đồng thời với lithi.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        147.53,
+        394.16,
+        160.33
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Dùng đồng thời với lithi.",
+          "bbox": [
+            299.39,
+            147.53,
+            394.16,
+            160.33
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0031",
+      "type": "paragraph",
+      "text": "Thủng màng nhĩ hoặc bôi trực tiếp lên màng não. Khoang bị tổn thương nặng Dung dịch nhỏ mắt: Sử dụng đồng thời với thuốc chống nhiễm khuẩn mắt hoặc thuốc có chất bảo quản có chứa thủy ngân, trẻ sơ sinh non tháng.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        159.56,
+        553.72,
+        220.47
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0032",
+      "type": "heading",
+      "level": 2,
+      "text": "Thận trọng",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        222.56,
+        345.57,
+        235.7
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thận trọng",
+          "bbox": [
+            299.39,
+            222.56,
+            345.57,
+            235.7
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ],
+      "note_role": "than trong",
+      "v11_fix": "note_title_reclassified_as_heading_alpha5"
+    },
+    {
+      "id": "b0033",
+      "type": "paragraph",
+      "text": "Thận trọng khi dùng thường xuyên bôi vết thương đối với người suy thận.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        234.74,
+        553.72,
+        259.56
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0034",
+      "type": "paragraph",
+      "text": "Thận trọng dùng với da bị rách, vết thương mở rộng hoặc vết bỏng nặng có thể ADR toàn thân như nhiễm toan chuyển hóa, tăng natri huyết, suy giảm chức năng thận.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        258.8,
+        553.72,
+        295.65
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0035",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ mang thai",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        297.73,
+        376.97,
+        310.88
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ mang thai ",
+          "bbox": [
+            299.39,
+            297.73,
+            376.97,
+            310.88
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0036",
+      "type": "paragraph",
+      "text": "Lượng iod được hấp thu có thể ảnh hưởng đến tuyến giáp của thai nhi trong 3 tháng giữa và 3 tháng cuối của thai kỳ. Tránh dùng kéo dài trong 3 tháng giữa và 3 tháng cuối của thai kỳ.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        309.92,
+        553.72,
+        346.77
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0037",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ cho con bú",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        348.85,
+        377.5,
+        362.0
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ cho con bú",
+          "bbox": [
+            299.39,
+            348.85,
+            377.5,
+            362.0
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0038",
+      "type": "paragraph",
+      "text": "Iod bài tiết được qua sữa. Tránh dùng kéo dài hoặc bôi trên diện rộng.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        361.03,
+        551.37,
+        373.83
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Iod bài tiết được qua sữa. Tránh dùng kéo dài hoặc bôi trên diện rộng.",
+          "bbox": [
+            299.39,
+            361.03,
+            551.37,
+            373.83
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0039",
+      "type": "heading",
+      "level": 2,
+      "text": "Tác dụng không mong muốn (ADR)",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        375.91,
+        445.33,
+        389.06
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tác dụng không mong muốn (ADR)",
+          "bbox": [
+            299.39,
+            375.91,
+            445.33,
+            389.06
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0040",
+      "type": "paragraph",
+      "text": "Chế phẩm có thể gây kích ứng tại chỗ, mặc dù thuốc ít kích ứng hơn iod tự do. Dùng với vết thương rộng và vết bỏng nặng, có thể gây phản ứng toàn thân.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        388.09,
+        553.72,
+        424.95
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0041",
+      "type": "subheading",
+      "level": 3,
+      "text": "Thường gặp",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        424.34,
+        345.79,
+        436.98
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thường gặp",
+          "bbox": [
+            299.39,
+            424.34,
+            345.79,
+            436.98
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0042",
+      "type": "paragraph",
+      "text": "Iod được hấp thu mạnh ở vết thương rộng và bỏng nặng có thể gây nhiễm acid chuyển hóa, tăng natri huyết và tổn thương chức năng thận.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        436.21,
+        553.75,
+        473.07
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0043",
+      "type": "paragraph",
+      "text": "Đối với tuyến giáp: có thể gây giảm năng giáp nếu có giảm năng giáp tiềm tàng, có thể gây cơn nhiễm độc giáp.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        472.3,
+        553.72,
+        497.13
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0044",
+      "type": "paragraph",
+      "text": "Huyết học: giảm bạch cầu trung tính (ở những người bệnh bị bỏng nặng).",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        496.36,
+        553.74,
+        521.19
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0045",
+      "type": "paragraph",
+      "text": "Thần kinh: co giật (ở những người bệnh điều trị kéo dài).",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        520.42,
+        516.57,
+        533.22
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thần kinh: co giật (ở những người bệnh điều trị kéo dài).",
+          "bbox": [
+            299.39,
+            520.42,
+            516.57,
+            533.22
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0046",
+      "type": "subheading",
+      "level": 3,
+      "text": "Ít gặp",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        532.61,
+        321.81,
+        545.25
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Ít gặp",
+          "bbox": [
+            299.39,
+            532.61,
+            321.81,
+            545.25
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0047",
+      "type": "paragraph",
+      "text": "Huyết học: giảm bạch cầu trung tính (trường hợp bị bỏng nặng).",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        544.48,
+        543.61,
+        557.28
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Huyết học: giảm bạch cầu trung tính (trường hợp bị bỏng nặng).",
+          "bbox": [
+            299.39,
+            544.48,
+            543.61,
+            557.28
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0048",
+      "type": "paragraph",
+      "text": "Thần kinh: cơn động kinh (nếu điều trị PVP-I kéo dài).",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        556.51,
+        508.38,
+        569.31
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thần kinh: cơn động kinh (nếu điều trị PVP-I kéo dài).",
+          "bbox": [
+            299.39,
+            556.51,
+            508.38,
+            569.31
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0049",
+      "type": "paragraph",
+      "text": "Dị ứng, như viêm da do iod, đốm xuất huyết, viêm tuyến nước bọt, nhưng với tỷ lệ rất thấp.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        568.54,
+        553.72,
+        593.36
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0050",
+      "type": "paragraph",
+      "text": "Đã thấy iod trong nước ối của người mẹ dùng povidon iod gây suy giáp và bướu giáp bẩm sinh do thuốc ở trẻ sơ sinh, mặc dù người mẹ dùng lượng thấp iod làm thuốc sát khuẩn. Tuy nhiên, PVP-I cũng có thể gây cường giáp.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        592.6,
+        553.72,
+        641.48
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0051",
+      "type": "paragraph",
+      "text": "Hiếm gặp (dạng thuốc nhỏ mắt) Mắt: xung huyết kết mạc, viêm giác mạc chấm nông.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        640.72,
+        501.23,
+        665.54
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0052",
+      "type": "subheading",
+      "level": 3,
+      "text": "Rất hiếm gặp",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        664.94,
+        350.05,
+        677.57
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Rất hiếm gặp",
+          "bbox": [
+            299.39,
+            664.94,
+            350.05,
+            677.57
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0053",
+      "type": "paragraph",
+      "text": "Rối loạn hệ thống miễn dịch: phản ứng phản vệ/sốc phản vệ.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        676.81,
+        529.87,
+        689.6
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Rối loạn hệ thống miễn dịch: phản ứng phản vệ/sốc phản vệ.",
+          "bbox": [
+            299.39,
+            676.81,
+            529.87,
+            689.6
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0054",
+      "type": "heading",
+      "level": 2,
+      "text": "Liều lượng và cách dùng",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        691.68,
+        399.56,
+        704.83
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng và cách dùng",
+          "bbox": [
+            299.39,
+            691.68,
+            399.56,
+            704.83
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0055",
+      "type": "paragraph",
+      "text": "Povidon iod là thuốc sát khuẩn có phổ kháng khuẩn rộng, khô nhanh, chủ yếu là dùng ngoài. Liều dùng tùy thuộc vào vị trí và tình trạng nhiễm khuẩn, vào dạng thuốc và nồng độ. Xem thêm hướng dẫn của nhà sản xuất.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        703.87,
+        553.72,
+        752.75
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0056",
+      "type": "subheading",
+      "level": 3,
+      "text": "Dung dịch dùng ngoài 10%:",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        752.15,
+        407.57,
+        764.78
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dung dịch dùng ngoài 10%:",
+          "bbox": [
+            299.39,
+            752.15,
+            407.57,
+            764.78
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0057",
+      "type": "paragraph",
+      "text": "Có thể dùng dung dịch pha loãng hoặc không pha loãng.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        764.01,
+        513.9,
+        776.81
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Có thể dùng dung dịch pha loãng hoặc không pha loãng.",
+          "bbox": [
+            299.39,
+            764.01,
+            513.9,
+            776.81
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0058",
+      "type": "paragraph",
+      "text": "Dung dịch không pha loãng: Người lớn bôi lên vùng da tổn thương.",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        776.04,
+        553.72,
+        788.84
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Dung dịch không pha loãng: Người lớn bôi lên vùng da tổn thương. ",
+          "bbox": [
+            299.39,
+            776.04,
+            553.72,
+            788.84
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0059",
+      "type": "paragraph",
+      "text": "Ngày bôi 1- 3 lần, phủ gạc lên vết thương nếu cần. Liều trẻ em",
+      "page": 1326,
+      "printed_page": 1332,
+      "column": 1,
+      "bbox": [
+        299.39,
+        788.07,
+        553.72,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Ngày bôi 1- 3 lần, phủ gạc lên vết thương nếu cần. Liều trẻ em ",
+          "bbox": [
+            299.39,
+            788.07,
+            553.72,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0060",
+      "type": "paragraph",
+      "text": "dùng như liều người lớn.",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        63.32,
+        137.94,
+        76.12
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "dùng như liều người lớn.",
+          "bbox": [
+            43.43,
+            63.32,
+            137.94,
+            76.12
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0061",
+      "type": "paragraph",
+      "text": "Dung dịch pha loãng: Pha loãng thành dung dịch 1% trong nước hoặc dung dịch natri clorid 0,9% để rửa vết thương hoặc pha loãng thành dung dịch 2% trong dung dịch natri clorid 0,9% dùng tưới vết thương để sát khuẩn.",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        75.59,
+        297.77,
+        125.21
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0062",
+      "type": "subheading",
+      "level": 3,
+      "text": "Dung dịch dùng ngoài 7,5%:",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        124.85,
+        153.99,
+        137.48
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dung dịch dùng ngoài 7,5%:",
+          "bbox": [
+            43.43,
+            124.85,
+            153.99,
+            137.48
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0063",
+      "type": "paragraph",
+      "text": "Rửa tay sát trùng: Người lớn và trẻ em, dùng một lượng vừa đủ dung dịch 7,5% làm cho tay ướt, rửa mạnh trong ít nhất 15 giây, rửa sạch và làm khô.",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        136.96,
+        297.76,
+        174.3
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0064",
+      "type": "subheading",
+      "level": 3,
+      "text": "Dung dịch nhỏ mắt 5%:",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        173.94,
+        134.73,
+        186.57
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dung dịch nhỏ mắt 5%:",
+          "bbox": [
+            43.43,
+            173.94,
+            134.73,
+            186.57
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0065",
+      "type": "paragraph",
+      "text": "Làm sạch vùng quanh mắt bằng tăm bông vô trùng, nhỏ 2 - 3 giọt dung dịch 5% vào mắt, nhắm mắt lại và đảo mắt xung quanh để thuốc lan đều. Để trong 2 phút. Rửa mắt bằng dung dịch natri clorid 0,9% vô trùng cho đến khi màu đặc trưng của dung dịch iod hết.",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        186.05,
+        297.77,
+        235.66
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0066",
+      "type": "subheading",
+      "level": 3,
+      "text": "Dung dịch súc miệng 1%:",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        235.3,
+        142.11,
+        247.94
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dung dịch súc miệng 1%:",
+          "bbox": [
+            43.43,
+            235.3,
+            142.11,
+            247.94
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0067",
+      "type": "paragraph",
+      "text": "Người lớn và trẻ em trên 6 tuổi: Dùng dung dịch không pha hoặc pha loãng một nửa với nước ấm.",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        247.41,
+        297.76,
+        272.48
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0068",
+      "type": "paragraph",
+      "text": "Mỗi lần súc miệng khoảng 10 ml trong 30 giây và không được nuốt.",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        271.96,
+        297.78,
+        284.75
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mỗi lần súc miệng khoảng 10 ml trong 30 giây và không được nuốt. ",
+          "bbox": [
+            43.43,
+            271.96,
+            297.78,
+            284.75
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0069",
+      "type": "paragraph",
+      "text": "Ngày có thể súc miệng tới 4 lần và có thể kéo dài tới 14 ngày liền.",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        284.23,
+        282.9,
+        297.03
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Ngày có thể súc miệng tới 4 lần và có thể kéo dài tới 14 ngày liền.",
+          "bbox": [
+            43.43,
+            284.23,
+            282.9,
+            297.03
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0070",
+      "type": "subheading",
+      "level": 3,
+      "text": "Bột khô để phun 2,5%:",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        296.66,
+        130.77,
+        309.3
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Bột khô để phun 2,5%:",
+          "bbox": [
+            43.43,
+            296.66,
+            130.77,
+            309.3
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0071",
+      "type": "paragraph",
+      "text": "Người lớn và trẻ em trên 2 tuổi: Phải lắc kỹ lọ, phun thuốc vào vùng tổn thương từ khoảng cách 15 - 25 cm tới khi bột phủ kín vết thương, nếu cần thì phủ gạc lên vết thương. Không phun vào các khoang niêm mạc hoặc khoang tổn thương nặng.",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        308.78,
+        297.77,
+        358.39
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0072",
+      "type": "subheading",
+      "level": 3,
+      "text": "Viên đặt âm đạo 200 mg:",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        358.03,
+        139.04,
+        370.66
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Viên đặt âm đạo 200 mg:",
+          "bbox": [
+            43.43,
+            358.03,
+            139.04,
+            370.66
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0073",
+      "type": "paragraph",
+      "text": "Người lớn và người cao tuổi: Đặt buổi sáng và buổi tối, mỗi lần 1 viên, dùng liên tục 14 ngày. Trước khi đặt sâu vào âm đạo, phải làm ẩm viên thuốc bằng nước để thuốc khuếch tán tốt và không gây kích ứng tại chỗ. Nếu có kinh nguyệt trong khi đang điều trị, vẫn tiếp tục điều trị.",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        370.14,
+        297.77,
+        432.03
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0074",
+      "type": "paragraph",
+      "text": "Người suy thận: Tránh dùng thường xuyên với da và niêm mạc bị rách hoặc viêm.",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        431.5,
+        297.77,
+        456.57
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0075",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương tác thuốc",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        458.9,
+        110.34,
+        472.04
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương tác thuốc",
+          "bbox": [
+            43.43,
+            458.9,
+            110.34,
+            472.04
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0076",
+      "type": "paragraph",
+      "text": "Tác dụng kháng khuẩn bị giảm khi có kiềm và protein. Xà phòng không làm mất tác dụng.",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        471.32,
+        297.76,
+        496.39
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0077",
+      "type": "paragraph",
+      "text": "Tương tác với các hợp chất thủy ngân: gây ăn da. Thuốc bị mất tác dụng với natri thiosulfat, ánh sáng mặt trời, nhiệt độ cao và các thuốc sát khuẩn khác.",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        495.87,
+        297.77,
+        533.21
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0078",
+      "type": "paragraph",
+      "text": "Có thể cản trở test thăm dò chức năng tuyến giáp.",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        532.69,
+        232.24,
+        545.48
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Có thể cản trở test thăm dò chức năng tuyến giáp.",
+          "bbox": [
+            43.43,
+            532.69,
+            232.24,
+            545.48
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0079",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương kỵ",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        547.81,
+        83.17,
+        560.95
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương kỵ",
+          "bbox": [
+            43.43,
+            547.81,
+            83.17,
+            560.95
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0080",
+      "type": "paragraph",
+      "text": "Povidon iod tương kỵ với các chất khử.",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        560.23,
+        193.61,
+        573.03
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Povidon iod tương kỵ với các chất khử.",
+          "bbox": [
+            43.43,
+            560.23,
+            193.61,
+            573.03
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0081",
+      "type": "heading",
+      "level": 2,
+      "text": "Quá liều và xử trí",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        575.35,
+        115.11,
+        588.5
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Quá liều và xử trí",
+          "bbox": [
+            43.43,
+            575.35,
+            115.11,
+            588.5
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0082",
+      "type": "paragraph",
+      "text": "Triệu chứng: Lượng iod quá thừa sẽ gây bướu giáp, nhược giáp hoặc cường giáp. Dùng chế phẩm nhiều lần trên vùng da tổn thương rộng hoặc bỏng sẽ gây nhiều ADR như vị kim loại, tăng tiết nước bọt; đau rát họng và miệng, mắt bị kích ứng, sưng, đau dạ dày, ỉa chảy, khó thở do phù phổi. Có thể bị nhiễm acid chuyển hóa, tăng natri huyết và tổn thương thận.",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        587.78,
+        297.77,
+        661.94
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0083",
+      "type": "paragraph",
+      "text": "Xử trí: Trong trường hợp uống nhầm một lượng lớn povidon iod, phải điều trị triệu chứng và hỗ trợ, chú ý đặc biệt đến cân bằng điện giải, chức năng thận và tuyến giáp.",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        661.41,
+        297.77,
+        698.75
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0084",
+      "type": "heading",
+      "text": "Cập nhật lần cuối",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        703.79,
+        138.7,
+        716.43
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2019.",
+          "bbox": [
+            43.43,
+            703.79,
+            138.7,
+            716.43
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "level": 2,
+      "v11_fix": "cap_nhat_cap_nhap_lan_cuoi_normalized_alpha8"
+    },
+    {
+      "id": "b0084",
+      "type": "paragraph",
+      "text": "2019.",
+      "page": 1327,
+      "printed_page": 1333,
+      "column": 0,
+      "bbox": [
+        43.43,
+        703.79,
+        138.7,
+        716.43
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2019.",
+          "bbox": [
+            43.43,
+            703.79,
+            138.7,
+            716.43
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "v11_parent_heading": "Cập nhật lần cuối"
+    }
+  ],
   "sections": [
-    {
-      "id": "thong-tin-au-chuyen-luan",
-      "title": "Thông tin đầu chuyên luận",
-      "content": "POVIDON IOD",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "POVIDON IOD"
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "ten-chung-quoc-te",
-      "title": "Tên chung quốc tế",
-      "content": "Povidone iodine.\n\nMã ATC: D08AG02, D09AA09, D11AC06, G01AX11, R02AA15, S01AX18.\n\nLoại thuốc: Thuốc sát trùng, khử khuẩn.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Povidone iodine.\n\nMã ATC: D08AG02, D09AA09, D11AC06, G01AX11, R02AA15, S01AX18.\n\nLoại thuốc: Thuốc sát trùng, khử khuẩn."
-        }
-      ],
-      "subsections": []
-    },
     {
       "id": "dang-thuoc-va-ham-luong",
       "title": "Dạng thuốc và hàm lượng",
-      "content": "Dung dịch dùng ngoài: 7,5%, 10%.\n\nThuốc mỡ: 10%.\n\nBột khô để phun: 2,5%.\n\nDung dịch nhỏ mắt: 5%.\n\nDung dịch súc miệng: 1%.\n\nDung dịch tạo bọt: 4%.\n\nViên đặt âm đạo: 200 mg.\n\nGel bôi âm đạo, dung dịch dùng cho âm đạo: 10%.",
+      "heading_block": "b0005",
       "blocks": [
         {
           "type": "text",
-          "text": "Dung dịch dùng ngoài: 7,5%, 10%.\n\nThuốc mỡ: 10%.\n\nBột khô để phun: 2,5%.\n\nDung dịch nhỏ mắt: 5%.\n\nDung dịch súc miệng: 1%.\n\nDung dịch tạo bọt: 4%.\n\nViên đặt âm đạo: 200 mg.\n\nGel bôi âm đạo, dung dịch dùng cho âm đạo: 10%."
+          "text": "Dung dịch dùng ngoài: 7,5%, 10%.",
+          "block_id": "b0006"
+        },
+        {
+          "type": "text",
+          "text": "Thuốc mỡ: 10%.",
+          "block_id": "b0007"
+        },
+        {
+          "type": "text",
+          "text": "Bột khô để phun: 2,5%.",
+          "block_id": "b0008"
+        },
+        {
+          "type": "text",
+          "text": "Dung dịch nhỏ mắt: 5%.",
+          "block_id": "b0009"
+        },
+        {
+          "type": "text",
+          "text": "Dung dịch súc miệng: 1%.",
+          "block_id": "b0010"
+        },
+        {
+          "type": "text",
+          "text": "Dung dịch tạo bọt: 4%.",
+          "block_id": "b0011"
+        },
+        {
+          "type": "text",
+          "text": "Viên đặt âm đạo: 200 mg.",
+          "block_id": "b0012"
+        },
+        {
+          "type": "text",
+          "text": "Gel bôi âm đạo, dung dịch dùng cho âm đạo: 10%.",
+          "block_id": "b0013"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "duoc-luc-hoc",
       "title": "Dược lực học",
-      "content": "Povidon iod (PVP-I) là phức hợp của iod với polyvinylpyrrolidon (povidon), chứa 9 - 12% iod, dễ tan trong nước và trong cồn; dung dịch chứa 0,85 - 1,2% iod có pH 3,0 - 5,5. Povidon được dùng làm chất mang iod. Dung dịch povidon iod giải phóng iod dần dần, do đó kéo dài tác dụng sát khuẩn, diệt khuẩn, nấm, virus, động vật đơn bào, kén và bào tử. Vì vậy tác dụng của thuốc kém hơn các chế phẩm chứa iod tự do, nhưng ít độc hơn, vì lượng iod tự do thấp hơn, dưới 1 phần triệu trong dung dịch 10%.",
+      "heading_block": "b0014",
       "blocks": [
         {
           "type": "text",
-          "text": "Povidon iod (PVP-I) là phức hợp của iod với polyvinylpyrrolidon (povidon), chứa 9 - 12% iod, dễ tan trong nước và trong cồn; dung dịch chứa 0,85 - 1,2% iod có pH 3,0 - 5,5. Povidon được dùng làm chất mang iod. Dung dịch povidon iod giải phóng iod dần dần, do đó kéo dài tác dụng sát khuẩn, diệt khuẩn, nấm, virus, động vật đơn bào, kén và bào tử. Vì vậy tác dụng của thuốc kém hơn các chế phẩm chứa iod tự do, nhưng ít độc hơn, vì lượng iod tự do thấp hơn, dưới 1 phần triệu trong dung dịch 10%."
+          "text": "Povidon iod (PVP-I) là phức hợp của iod với polyvinylpyrrolidon (povidon), chứa 9 - 12% iod, dễ tan trong nước và trong cồn; dung dịch chứa 0,85 - 1,2% iod có pH 3,0 - 5,5. Povidon được dùng làm chất mang iod. Dung dịch povidon iod giải phóng iod dần dần, do đó kéo dài tác dụng sát khuẩn, diệt khuẩn, nấm, virus, động vật đơn bào, kén và bào tử. Vì vậy tác dụng của thuốc kém hơn các chế phẩm chứa iod tự do, nhưng ít độc hơn, vì lượng iod tự do thấp hơn, dưới 1 phần triệu trong dung dịch 10%.",
+          "block_id": "b0015"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "duoc-ong-hoc",
+      "id": "duoc-dong-hoc",
       "title": "Dược động học",
-      "content": "Iod giải phóng thấm được qua da và thải qua nước tiểu. Hấp thu toàn thân phụ thuộc vào vùng và tình trạng sử dụng thuốc (diện rộng, da, niêm mạc, vết thương, các khoang trong cơ thể). Khi dùng làm dung dịch rửa các khoang trong cơ thể, toàn bộ phức hợp cao phân tử povidon - iod cũng có thể được cơ thể hấp thu. Phức hợp này không chuyển hóa hoặc đào thải qua thận. Thuốc được hệ liên võng nội mô lọc giữ.",
+      "heading_block": "b0016",
       "blocks": [
         {
           "type": "text",
-          "text": "Iod giải phóng thấm được qua da và thải qua nước tiểu. Hấp thu toàn thân phụ thuộc vào vùng và tình trạng sử dụng thuốc (diện rộng, da, niêm mạc, vết thương, các khoang trong cơ thể). Khi dùng làm dung dịch rửa các khoang trong cơ thể, toàn bộ phức hợp cao phân tử povidon - iod cũng có thể được cơ thể hấp thu. Phức hợp này không chuyển hóa hoặc đào thải qua thận. Thuốc được hệ liên võng nội mô lọc giữ."
+          "text": "Iod giải phóng thấm được qua da và thải qua nước tiểu. Hấp thu toàn thân phụ thuộc vào vùng và tình trạng sử dụng thuốc (diện rộng, da, niêm mạc, vết thương, các khoang trong cơ thể). Khi dùng làm dung dịch rửa các khoang trong cơ thể, toàn bộ phức hợp cao phân tử povidon - iod cũng có thể được cơ thể hấp thu. Phức hợp này không chuyển hóa hoặc đào thải qua thận. Thuốc được hệ liên võng nội mô lọc giữ.",
+          "block_id": "b0017"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chi-inh",
+      "id": "chi-dinh",
       "title": "Chỉ định",
-      "content": "Khử khuẩn và sát khuẩn da và niêm mạc trước khi phẫu thuật.\n\nSát khuẩn để phòng và điều trị nhiễm khuẩn các vết loét, bỏng, vết rách và các vết thương nhẹ khác.\n\nKhử trùng dụng cụ y tế.",
+      "heading_block": "b0018",
       "blocks": [
         {
           "type": "text",
-          "text": "Khử khuẩn và sát khuẩn da và niêm mạc trước khi phẫu thuật.\n\nSát khuẩn để phòng và điều trị nhiễm khuẩn các vết loét, bỏng, vết rách và các vết thương nhẹ khác.\n\nKhử trùng dụng cụ y tế."
+          "text": "Khử khuẩn và sát khuẩn da và niêm mạc trước khi phẫu thuật.",
+          "block_id": "b0019"
+        },
+        {
+          "type": "text",
+          "text": "Sát khuẩn để phòng và điều trị nhiễm khuẩn các vết loét, bỏng, vết rách và các vết thương nhẹ khác.",
+          "block_id": "b0020"
+        },
+        {
+          "type": "text",
+          "text": "Khử trùng dụng cụ y tế.",
+          "block_id": "b0021"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chong-chi-inh",
+      "id": "chong-chi-dinh",
       "title": "Chống chỉ định",
-      "content": "Tiền sử quá mẫn với iod.\n\nDùng thường xuyên ở người bệnh có rối loạn tuyến giáp (đặc biệt bướu giáp nhân coloid, bướu giáp lưu hành và viêm tuyến giáp Hashimoto).\n\nSử dụng kéo dài trong 3 tháng giữa và 3 tháng cuối của thai kỳ.\n\nDùng thường xuyên hoặc dùng lượng lớn ở phụ nữ cho con bú.\n\nTrẻ sinh non dưới 32 tuần tuổi thai, trẻ đẻ ra có cân nặng dưới 1,5 kg, dùng thường xuyên cho trẻ sơ sinh.\n\nDùng dạng bột khô để phun cho trẻ em dưới 2 tuổi.\n\nDùng đồng thời với lithi.\n\nThủng màng nhĩ hoặc bôi trực tiếp lên màng não. Khoang bị tổn thương nặng Dung dịch nhỏ mắt: Sử dụng đồng thời với thuốc chống nhiễm khuẩn mắt hoặc thuốc có chất bảo quản có chứa thủy ngân, trẻ sơ sinh non tháng.",
+      "heading_block": "b0022",
       "blocks": [
         {
           "type": "text",
-          "text": "Tiền sử quá mẫn với iod.\n\nDùng thường xuyên ở người bệnh có rối loạn tuyến giáp (đặc biệt bướu giáp nhân coloid, bướu giáp lưu hành và viêm tuyến giáp Hashimoto).\n\nSử dụng kéo dài trong 3 tháng giữa và 3 tháng cuối của thai kỳ.\n\nDùng thường xuyên hoặc dùng lượng lớn ở phụ nữ cho con bú.\n\nTrẻ sinh non dưới 32 tuần tuổi thai, trẻ đẻ ra có cân nặng dưới 1,5 kg, dùng thường xuyên cho trẻ sơ sinh.\n\nDùng dạng bột khô để phun cho trẻ em dưới 2 tuổi.\n\nDùng đồng thời với lithi.\n\nThủng màng nhĩ hoặc bôi trực tiếp lên màng não. Khoang bị tổn thương nặng Dung dịch nhỏ mắt: Sử dụng đồng thời với thuốc chống nhiễm khuẩn mắt hoặc thuốc có chất bảo quản có chứa thủy ngân, trẻ sơ sinh non tháng."
+          "text": "Tiền sử quá mẫn với iod.",
+          "block_id": "b0023"
+        },
+        {
+          "type": "text",
+          "text": "Dùng thường xuyên ở người bệnh có rối loạn tuyến giáp (đặc biệt",
+          "block_id": "b0024"
+        },
+        {
+          "type": "text",
+          "text": "bướu giáp nhân coloid, bướu giáp lưu hành và viêm tuyến giáp Hashimoto).",
+          "block_id": "b0025"
+        },
+        {
+          "type": "text",
+          "text": "Sử dụng kéo dài trong 3 tháng giữa và 3 tháng cuối của thai kỳ.",
+          "block_id": "b0026"
+        },
+        {
+          "type": "text",
+          "text": "Dùng thường xuyên hoặc dùng lượng lớn ở phụ nữ cho con bú.",
+          "block_id": "b0027"
+        },
+        {
+          "type": "text",
+          "text": "Trẻ sinh non dưới 32 tuần tuổi thai, trẻ đẻ ra có cân nặng dưới 1,5 kg, dùng thường xuyên cho trẻ sơ sinh.",
+          "block_id": "b0028"
+        },
+        {
+          "type": "text",
+          "text": "Dùng dạng bột khô để phun cho trẻ em dưới 2 tuổi.",
+          "block_id": "b0029"
+        },
+        {
+          "type": "text",
+          "text": "Dùng đồng thời với lithi.",
+          "block_id": "b0030"
+        },
+        {
+          "type": "text",
+          "text": "Thủng màng nhĩ hoặc bôi trực tiếp lên màng não. Khoang bị tổn thương nặng Dung dịch nhỏ mắt: Sử dụng đồng thời với thuốc chống nhiễm khuẩn mắt hoặc thuốc có chất bảo quản có chứa thủy ngân, trẻ sơ sinh non tháng.",
+          "block_id": "b0031"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "than-trong",
       "title": "Thận trọng",
-      "content": "Thận trọng khi dùng thường xuyên bôi vết thương đối với người suy thận.\n\nThận trọng dùng với da bị rách, vết thương mở rộng hoặc vết bỏng nặng có thể ADR toàn thân như nhiễm toan chuyển hóa, tăng natri huyết, suy giảm chức năng thận.",
+      "heading_block": "b0032",
       "blocks": [
         {
           "type": "text",
-          "text": "Thận trọng khi dùng thường xuyên bôi vết thương đối với người suy thận.\n\nThận trọng dùng với da bị rách, vết thương mở rộng hoặc vết bỏng nặng có thể ADR toàn thân như nhiễm toan chuyển hóa, tăng natri huyết, suy giảm chức năng thận."
+          "text": "Thận trọng khi dùng thường xuyên bôi vết thương đối với người suy thận.",
+          "block_id": "b0033"
+        },
+        {
+          "type": "text",
+          "text": "Thận trọng dùng với da bị rách, vết thương mở rộng hoặc vết bỏng nặng có thể ADR toàn thân như nhiễm toan chuyển hóa, tăng natri huyết, suy giảm chức năng thận.",
+          "block_id": "b0034"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-mang-thai",
       "title": "Thời kỳ mang thai",
-      "content": "Lượng iod được hấp thu có thể ảnh hưởng đến tuyến giáp của thai nhi trong 3 tháng giữa và 3 tháng cuối của thai kỳ. Tránh dùng kéo dài trong 3 tháng giữa và 3 tháng cuối của thai kỳ.",
+      "heading_block": "b0035",
       "blocks": [
         {
           "type": "text",
-          "text": "Lượng iod được hấp thu có thể ảnh hưởng đến tuyến giáp của thai nhi trong 3 tháng giữa và 3 tháng cuối của thai kỳ. Tránh dùng kéo dài trong 3 tháng giữa và 3 tháng cuối của thai kỳ."
+          "text": "Lượng iod được hấp thu có thể ảnh hưởng đến tuyến giáp của thai nhi trong 3 tháng giữa và 3 tháng cuối của thai kỳ. Tránh dùng kéo dài trong 3 tháng giữa và 3 tháng cuối của thai kỳ.",
+          "block_id": "b0036"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-cho-con-bu",
       "title": "Thời kỳ cho con bú",
-      "content": "Iod bài tiết được qua sữa. Tránh dùng kéo dài hoặc bôi trên diện rộng.",
+      "heading_block": "b0037",
       "blocks": [
         {
           "type": "text",
-          "text": "Iod bài tiết được qua sữa. Tránh dùng kéo dài hoặc bôi trên diện rộng."
+          "text": "Iod bài tiết được qua sữa. Tránh dùng kéo dài hoặc bôi trên diện rộng.",
+          "block_id": "b0038"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tac-dung-khong-mong-muon-adr",
       "title": "Tác dụng không mong muốn (ADR)",
-      "content": "Chế phẩm có thể gây kích ứng tại chỗ, mặc dù thuốc ít kích ứng hơn iod tự do. Dùng với vết thương rộng và vết bỏng nặng, có thể gây phản ứng toàn thân.\n\nThường gặp Iod được hấp thu mạnh ở vết thương rộng và bỏng nặng có thể gây nhiễm acid chuyển hóa, tăng natri huyết và tổn thương chức năng thận.\n\nĐối với tuyến giáp: có thể gây giảm năng giáp nếu có giảm năng giáp tiềm tàng, có thể gây cơn nhiễm độc giáp.\n\nHuyết học: giảm bạch cầu trung tính (ở những người bệnh bị bỏng nặng).\n\nThần kinh: co giật (ở những người bệnh điều trị kéo dài).\n\nÍt gặp Huyết học: giảm bạch cầu trung tính (trường hợp bị bỏng nặng).\n\nThần kinh: cơn động kinh (nếu điều trị PVP-I kéo dài).\n\nDị ứng, như viêm da do iod, đốm xuất huyết, viêm tuyến nước bọt, nhưng với tỷ lệ rất thấp.\n\nĐã thấy iod trong nước ối của người mẹ dùng povidon iod gây suy giáp và bướu giáp bẩm sinh do thuốc ở trẻ sơ sinh, mặc dù người mẹ dùng lượng thấp iod làm thuốc sát khuẩn. Tuy nhiên, PVP-I cũng có thể gây cường giáp.\n\nHiếm gặp (dạng thuốc nhỏ mắt) Mắt: xung huyết kết mạc, viêm giác mạc chấm nông.\n\nRất hiếm gặp Rối loạn hệ thống miễn dịch: phản ứng phản vệ/sốc phản vệ.",
+      "heading_block": "b0039",
       "blocks": [
         {
           "type": "text",
-          "text": "Chế phẩm có thể gây kích ứng tại chỗ, mặc dù thuốc ít kích ứng hơn iod tự do. Dùng với vết thương rộng và vết bỏng nặng, có thể gây phản ứng toàn thân.\n\nThường gặp Iod được hấp thu mạnh ở vết thương rộng và bỏng nặng có thể gây nhiễm acid chuyển hóa, tăng natri huyết và tổn thương chức năng thận.\n\nĐối với tuyến giáp: có thể gây giảm năng giáp nếu có giảm năng giáp tiềm tàng, có thể gây cơn nhiễm độc giáp.\n\nHuyết học: giảm bạch cầu trung tính (ở những người bệnh bị bỏng nặng).\n\nThần kinh: co giật (ở những người bệnh điều trị kéo dài).\n\nÍt gặp Huyết học: giảm bạch cầu trung tính (trường hợp bị bỏng nặng).\n\nThần kinh: cơn động kinh (nếu điều trị PVP-I kéo dài).\n\nDị ứng, như viêm da do iod, đốm xuất huyết, viêm tuyến nước bọt, nhưng với tỷ lệ rất thấp.\n\nĐã thấy iod trong nước ối của người mẹ dùng povidon iod gây suy giáp và bướu giáp bẩm sinh do thuốc ở trẻ sơ sinh, mặc dù người mẹ dùng lượng thấp iod làm thuốc sát khuẩn. Tuy nhiên, PVP-I cũng có thể gây cường giáp.\n\nHiếm gặp (dạng thuốc nhỏ mắt) Mắt: xung huyết kết mạc, viêm giác mạc chấm nông.\n\nRất hiếm gặp Rối loạn hệ thống miễn dịch: phản ứng phản vệ/sốc phản vệ."
+          "text": "Chế phẩm có thể gây kích ứng tại chỗ, mặc dù thuốc ít kích ứng hơn iod tự do. Dùng với vết thương rộng và vết bỏng nặng, có thể gây phản ứng toàn thân.",
+          "block_id": "b0040"
+        },
+        {
+          "type": "subheading",
+          "text": "Thường gặp",
+          "block_id": "b0041"
+        },
+        {
+          "type": "text",
+          "text": "Iod được hấp thu mạnh ở vết thương rộng và bỏng nặng có thể gây nhiễm acid chuyển hóa, tăng natri huyết và tổn thương chức năng thận.",
+          "block_id": "b0042"
+        },
+        {
+          "type": "text",
+          "text": "Đối với tuyến giáp: có thể gây giảm năng giáp nếu có giảm năng giáp tiềm tàng, có thể gây cơn nhiễm độc giáp.",
+          "block_id": "b0043"
+        },
+        {
+          "type": "text",
+          "text": "Huyết học: giảm bạch cầu trung tính (ở những người bệnh bị bỏng nặng).",
+          "block_id": "b0044"
+        },
+        {
+          "type": "text",
+          "text": "Thần kinh: co giật (ở những người bệnh điều trị kéo dài).",
+          "block_id": "b0045"
+        },
+        {
+          "type": "subheading",
+          "text": "Ít gặp",
+          "block_id": "b0046"
+        },
+        {
+          "type": "text",
+          "text": "Huyết học: giảm bạch cầu trung tính (trường hợp bị bỏng nặng).",
+          "block_id": "b0047"
+        },
+        {
+          "type": "text",
+          "text": "Thần kinh: cơn động kinh (nếu điều trị PVP-I kéo dài).",
+          "block_id": "b0048"
+        },
+        {
+          "type": "text",
+          "text": "Dị ứng, như viêm da do iod, đốm xuất huyết, viêm tuyến nước bọt, nhưng với tỷ lệ rất thấp.",
+          "block_id": "b0049"
+        },
+        {
+          "type": "text",
+          "text": "Đã thấy iod trong nước ối của người mẹ dùng povidon iod gây suy giáp và bướu giáp bẩm sinh do thuốc ở trẻ sơ sinh, mặc dù người mẹ dùng lượng thấp iod làm thuốc sát khuẩn. Tuy nhiên, PVP-I cũng có thể gây cường giáp.",
+          "block_id": "b0050"
+        },
+        {
+          "type": "text",
+          "text": "Hiếm gặp (dạng thuốc nhỏ mắt) Mắt: xung huyết kết mạc, viêm giác mạc chấm nông.",
+          "block_id": "b0051"
+        },
+        {
+          "type": "subheading",
+          "text": "Rất hiếm gặp",
+          "block_id": "b0052"
+        },
+        {
+          "type": "text",
+          "text": "Rối loạn hệ thống miễn dịch: phản ứng phản vệ/sốc phản vệ.",
+          "block_id": "b0053"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "lieu-luong-va-cach-dung",
       "title": "Liều lượng và cách dùng",
-      "content": "Povidon iod là thuốc sát khuẩn có phổ kháng khuẩn rộng, khô nhanh, chủ yếu là dùng ngoài. Liều dùng tùy thuộc vào vị trí và tình trạng nhiễm khuẩn, vào dạng thuốc và nồng độ. Xem thêm hướng dẫn của nhà sản xuất.\n\nDung dịch dùng ngoài 10%: Có thể dùng dung dịch pha loãng hoặc không pha loãng.\n\nDung dịch không pha loãng: Người lớn bôi lên vùng da tổn thương.\n\nNgày bôi 1- 3 lần, phủ gạc lên vết thương nếu cần. Liều trẻ em dùng như liều người lớn.\n\nDung dịch pha loãng: Pha loãng thành dung dịch 1% trong nước hoặc dung dịch natri clorid 0,9% để rửa vết thương hoặc pha loãng thành dung dịch 2% trong dung dịch natri clorid 0,9% dùng tưới vết thương để sát khuẩn.\n\nDung dịch dùng ngoài 7,5%: Rửa tay sát trùng: Người lớn và trẻ em, dùng một lượng vừa đủ dung dịch 7,5% làm cho tay ướt, rửa mạnh trong ít nhất 15 giây, rửa sạch và làm khô.\n\nDung dịch nhỏ mắt 5%: Làm sạch vùng quanh mắt bằng tăm bông vô trùng, nhỏ 2 - 3 giọt dung dịch 5% vào mắt, nhắm mắt lại và đảo mắt xung quanh để thuốc lan đều. Để trong 2 phút. Rửa mắt bằng dung dịch natri clorid 0,9% vô trùng cho đến khi màu đặc trưng của dung dịch iod hết.\n\nDung dịch súc miệng 1%: Người lớn và trẻ em trên 6 tuổi: Dùng dung dịch không pha hoặc pha loãng một nửa với nước ấm.\n\nMỗi lần súc miệng khoảng 10 ml trong 30 giây và không được nuốt.\n\nNgày có thể súc miệng tới 4 lần và có thể kéo dài tới 14 ngày liền.\n\nBột khô để phun 2,5%: Người lớn và trẻ em trên 2 tuổi: Phải lắc kỹ lọ, phun thuốc vào vùng tổn thương từ khoảng cách 15 - 25 cm tới khi bột phủ kín vết thương, nếu cần thì phủ gạc lên vết thương. Không phun vào các khoang niêm mạc hoặc khoang tổn thương nặng.\n\nViên đặt âm đạo 200 mg: Người lớn và người cao tuổi: Đặt buổi sáng và buổi tối, mỗi lần 1 viên, dùng liên tục 14 ngày. Trước khi đặt sâu vào âm đạo, phải làm ẩm viên thuốc bằng nước để thuốc khuếch tán tốt và không gây kích ứng tại chỗ. Nếu có kinh nguyệt trong khi đang điều trị, vẫn tiếp tục điều trị.\n\nNgười suy thận: Tránh dùng thường xuyên với da và niêm mạc bị rách hoặc viêm.",
+      "heading_block": "b0054",
       "blocks": [
         {
           "type": "text",
-          "text": "Povidon iod là thuốc sát khuẩn có phổ kháng khuẩn rộng, khô nhanh, chủ yếu là dùng ngoài. Liều dùng tùy thuộc vào vị trí và tình trạng nhiễm khuẩn, vào dạng thuốc và nồng độ. Xem thêm hướng dẫn của nhà sản xuất.\n\nDung dịch dùng ngoài 10%: Có thể dùng dung dịch pha loãng hoặc không pha loãng.\n\nDung dịch không pha loãng: Người lớn bôi lên vùng da tổn thương.\n\nNgày bôi 1- 3 lần, phủ gạc lên vết thương nếu cần. Liều trẻ em dùng như liều người lớn.\n\nDung dịch pha loãng: Pha loãng thành dung dịch 1% trong nước hoặc dung dịch natri clorid 0,9% để rửa vết thương hoặc pha loãng thành dung dịch 2% trong dung dịch natri clorid 0,9% dùng tưới vết thương để sát khuẩn.\n\nDung dịch dùng ngoài 7,5%: Rửa tay sát trùng: Người lớn và trẻ em, dùng một lượng vừa đủ dung dịch 7,5% làm cho tay ướt, rửa mạnh trong ít nhất 15 giây, rửa sạch và làm khô.\n\nDung dịch nhỏ mắt 5%: Làm sạch vùng quanh mắt bằng tăm bông vô trùng, nhỏ 2 - 3 giọt dung dịch 5% vào mắt, nhắm mắt lại và đảo mắt xung quanh để thuốc lan đều. Để trong 2 phút. Rửa mắt bằng dung dịch natri clorid 0,9% vô trùng cho đến khi màu đặc trưng của dung dịch iod hết.\n\nDung dịch súc miệng 1%: Người lớn và trẻ em trên 6 tuổi: Dùng dung dịch không pha hoặc pha loãng một nửa với nước ấm.\n\nMỗi lần súc miệng khoảng 10 ml trong 30 giây và không được nuốt.\n\nNgày có thể súc miệng tới 4 lần và có thể kéo dài tới 14 ngày liền.\n\nBột khô để phun 2,5%: Người lớn và trẻ em trên 2 tuổi: Phải lắc kỹ lọ, phun thuốc vào vùng tổn thương từ khoảng cách 15 - 25 cm tới khi bột phủ kín vết thương, nếu cần thì phủ gạc lên vết thương. Không phun vào các khoang niêm mạc hoặc khoang tổn thương nặng.\n\nViên đặt âm đạo 200 mg: Người lớn và người cao tuổi: Đặt buổi sáng và buổi tối, mỗi lần 1 viên, dùng liên tục 14 ngày. Trước khi đặt sâu vào âm đạo, phải làm ẩm viên thuốc bằng nước để thuốc khuếch tán tốt và không gây kích ứng tại chỗ. Nếu có kinh nguyệt trong khi đang điều trị, vẫn tiếp tục điều trị.\n\nNgười suy thận: Tránh dùng thường xuyên với da và niêm mạc bị rách hoặc viêm."
+          "text": "Povidon iod là thuốc sát khuẩn có phổ kháng khuẩn rộng, khô nhanh, chủ yếu là dùng ngoài. Liều dùng tùy thuộc vào vị trí và tình trạng nhiễm khuẩn, vào dạng thuốc và nồng độ. Xem thêm hướng dẫn của nhà sản xuất.",
+          "block_id": "b0055"
+        },
+        {
+          "type": "subheading",
+          "text": "Dung dịch dùng ngoài 10%:",
+          "block_id": "b0056"
+        },
+        {
+          "type": "text",
+          "text": "Có thể dùng dung dịch pha loãng hoặc không pha loãng.",
+          "block_id": "b0057"
+        },
+        {
+          "type": "text",
+          "text": "Dung dịch không pha loãng: Người lớn bôi lên vùng da tổn thương.",
+          "block_id": "b0058"
+        },
+        {
+          "type": "text",
+          "text": "Ngày bôi 1- 3 lần, phủ gạc lên vết thương nếu cần. Liều trẻ em",
+          "block_id": "b0059"
+        },
+        {
+          "type": "text",
+          "text": "dùng như liều người lớn.",
+          "block_id": "b0060"
+        },
+        {
+          "type": "text",
+          "text": "Dung dịch pha loãng: Pha loãng thành dung dịch 1% trong nước hoặc dung dịch natri clorid 0,9% để rửa vết thương hoặc pha loãng thành dung dịch 2% trong dung dịch natri clorid 0,9% dùng tưới vết thương để sát khuẩn.",
+          "block_id": "b0061"
+        },
+        {
+          "type": "subheading",
+          "text": "Dung dịch dùng ngoài 7,5%:",
+          "block_id": "b0062"
+        },
+        {
+          "type": "text",
+          "text": "Rửa tay sát trùng: Người lớn và trẻ em, dùng một lượng vừa đủ dung dịch 7,5% làm cho tay ướt, rửa mạnh trong ít nhất 15 giây, rửa sạch và làm khô.",
+          "block_id": "b0063"
+        },
+        {
+          "type": "subheading",
+          "text": "Dung dịch nhỏ mắt 5%:",
+          "block_id": "b0064"
+        },
+        {
+          "type": "text",
+          "text": "Làm sạch vùng quanh mắt bằng tăm bông vô trùng, nhỏ 2 - 3 giọt dung dịch 5% vào mắt, nhắm mắt lại và đảo mắt xung quanh để thuốc lan đều. Để trong 2 phút. Rửa mắt bằng dung dịch natri clorid 0,9% vô trùng cho đến khi màu đặc trưng của dung dịch iod hết.",
+          "block_id": "b0065"
+        },
+        {
+          "type": "subheading",
+          "text": "Dung dịch súc miệng 1%:",
+          "block_id": "b0066"
+        },
+        {
+          "type": "text",
+          "text": "Người lớn và trẻ em trên 6 tuổi: Dùng dung dịch không pha hoặc pha loãng một nửa với nước ấm.",
+          "block_id": "b0067"
+        },
+        {
+          "type": "text",
+          "text": "Mỗi lần súc miệng khoảng 10 ml trong 30 giây và không được nuốt.",
+          "block_id": "b0068"
+        },
+        {
+          "type": "text",
+          "text": "Ngày có thể súc miệng tới 4 lần và có thể kéo dài tới 14 ngày liền.",
+          "block_id": "b0069"
+        },
+        {
+          "type": "subheading",
+          "text": "Bột khô để phun 2,5%:",
+          "block_id": "b0070"
+        },
+        {
+          "type": "text",
+          "text": "Người lớn và trẻ em trên 2 tuổi: Phải lắc kỹ lọ, phun thuốc vào vùng tổn thương từ khoảng cách 15 - 25 cm tới khi bột phủ kín vết thương, nếu cần thì phủ gạc lên vết thương. Không phun vào các khoang niêm mạc hoặc khoang tổn thương nặng.",
+          "block_id": "b0071"
+        },
+        {
+          "type": "subheading",
+          "text": "Viên đặt âm đạo 200 mg:",
+          "block_id": "b0072"
+        },
+        {
+          "type": "text",
+          "text": "Người lớn và người cao tuổi: Đặt buổi sáng và buổi tối, mỗi lần 1 viên, dùng liên tục 14 ngày. Trước khi đặt sâu vào âm đạo, phải làm ẩm viên thuốc bằng nước để thuốc khuếch tán tốt và không gây kích ứng tại chỗ. Nếu có kinh nguyệt trong khi đang điều trị, vẫn tiếp tục điều trị.",
+          "block_id": "b0073"
+        },
+        {
+          "type": "text",
+          "text": "Người suy thận: Tránh dùng thường xuyên với da và niêm mạc bị rách hoặc viêm.",
+          "block_id": "b0074"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-tac-thuoc",
       "title": "Tương tác thuốc",
-      "content": "Tác dụng kháng khuẩn bị giảm khi có kiềm và protein. Xà phòng không làm mất tác dụng.\n\nTương tác với các hợp chất thủy ngân: gây ăn da. Thuốc bị mất tác dụng với natri thiosulfat, ánh sáng mặt trời, nhiệt độ cao và các thuốc sát khuẩn khác.\n\nCó thể cản trở test thăm dò chức năng tuyến giáp.",
+      "heading_block": "b0075",
       "blocks": [
         {
           "type": "text",
-          "text": "Tác dụng kháng khuẩn bị giảm khi có kiềm và protein. Xà phòng không làm mất tác dụng.\n\nTương tác với các hợp chất thủy ngân: gây ăn da. Thuốc bị mất tác dụng với natri thiosulfat, ánh sáng mặt trời, nhiệt độ cao và các thuốc sát khuẩn khác.\n\nCó thể cản trở test thăm dò chức năng tuyến giáp."
+          "text": "Tác dụng kháng khuẩn bị giảm khi có kiềm và protein. Xà phòng không làm mất tác dụng.",
+          "block_id": "b0076"
+        },
+        {
+          "type": "text",
+          "text": "Tương tác với các hợp chất thủy ngân: gây ăn da. Thuốc bị mất tác dụng với natri thiosulfat, ánh sáng mặt trời, nhiệt độ cao và các thuốc sát khuẩn khác.",
+          "block_id": "b0077"
+        },
+        {
+          "type": "text",
+          "text": "Có thể cản trở test thăm dò chức năng tuyến giáp.",
+          "block_id": "b0078"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-ky",
       "title": "Tương kỵ",
-      "content": "Povidon iod tương kỵ với các chất khử.",
+      "heading_block": "b0079",
       "blocks": [
         {
           "type": "text",
-          "text": "Povidon iod tương kỵ với các chất khử."
+          "text": "Povidon iod tương kỵ với các chất khử.",
+          "block_id": "b0080"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "qua-lieu-va-xu-tri",
       "title": "Quá liều và xử trí",
-      "content": "Triệu chứng: Lượng iod quá thừa sẽ gây bướu giáp, nhược giáp hoặc cường giáp. Dùng chế phẩm nhiều lần trên vùng da tổn thương rộng hoặc bỏng sẽ gây nhiều ADR như vị kim loại, tăng tiết nước bọt; đau rát họng và miệng, mắt bị kích ứng, sưng, đau dạ dày, ỉa chảy, khó thở do phù phổi. Có thể bị nhiễm acid chuyển hóa, tăng natri huyết và tổn thương thận.\n\nXử trí: Trong trường hợp uống nhầm một lượng lớn povidon iod, phải điều trị triệu chứng và hỗ trợ, chú ý đặc biệt đến cân bằng điện giải, chức năng thận và tuyến giáp.",
+      "heading_block": "b0081",
       "blocks": [
         {
           "type": "text",
-          "text": "Triệu chứng: Lượng iod quá thừa sẽ gây bướu giáp, nhược giáp hoặc cường giáp. Dùng chế phẩm nhiều lần trên vùng da tổn thương rộng hoặc bỏng sẽ gây nhiều ADR như vị kim loại, tăng tiết nước bọt; đau rát họng và miệng, mắt bị kích ứng, sưng, đau dạ dày, ỉa chảy, khó thở do phù phổi. Có thể bị nhiễm acid chuyển hóa, tăng natri huyết và tổn thương thận.\n\nXử trí: Trong trường hợp uống nhầm một lượng lớn povidon iod, phải điều trị triệu chứng và hỗ trợ, chú ý đặc biệt đến cân bằng điện giải, chức năng thận và tuyến giáp."
+          "text": "Triệu chứng: Lượng iod quá thừa sẽ gây bướu giáp, nhược giáp hoặc cường giáp. Dùng chế phẩm nhiều lần trên vùng da tổn thương rộng hoặc bỏng sẽ gây nhiều ADR như vị kim loại, tăng tiết nước bọt; đau rát họng và miệng, mắt bị kích ứng, sưng, đau dạ dày, ỉa chảy, khó thở do phù phổi. Có thể bị nhiễm acid chuyển hóa, tăng natri huyết và tổn thương thận.",
+          "block_id": "b0082"
+        },
+        {
+          "type": "text",
+          "text": "Xử trí: Trong trường hợp uống nhầm một lượng lớn povidon iod, phải điều trị triệu chứng và hỗ trợ, chú ý đặc biệt đến cân bằng điện giải, chức năng thận và tuyến giáp.",
+          "block_id": "b0083"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "cap-nhat-lan-cuoi",
       "title": "Cập nhật lần cuối",
-      "content": "2019.",
+      "heading_block": "b0084",
       "blocks": [
         {
           "type": "text",
-          "text": "2019."
+          "text": "2019.",
+          "block_id": "b0084"
         }
-      ],
-      "subsections": []
+      ]
     }
   ],
-  "tables": [],
   "quality": {
-    "status": "source-layout-rebuilt-v10.1-source-paragraph-boundaries",
-    "pdf_text_order": "left-column-then-right-column; visual line flow",
-    "paragraph_policy": "Paragraph boundaries are source-derived and stored only as blank lines. The client preserves those boundaries exactly; it must not create a new paragraph from label words such as “Trẻ em:” or “Người lớn:”. A lower-case continuation fragment is merged only when it follows a non-terminal source fragment; table footnotes remain separate. No client-side anchor or length-based sentence splitter is allowed.",
-    "table_policy": "source-table image inserted by PDF page/column/y position; table-cell text excluded from prose",
-    "validation": {
-      "raw_newline_inside_paragraph": false,
-      "table_count": 0,
-      "section_count": 16,
-      "client_anchor_resegmentation_disabled": true,
-      "client_length_sentence_chunking_disabled": true
-    }
+    "block_count": 84,
+    "heading_count": 13,
+    "subheading_count": 9,
+    "paragraph_count": 61,
+    "list_count": 0,
+    "table_count": 0,
+    "figure_count": 0,
+    "note_count": 1,
+    "page_count": 2
+  },
+  "tables": [],
+  "legacy_compat": {
+    "sections": "generated from v11 blocks for v10.4.5.39 renderer/chatbot compatibility"
   }
 }

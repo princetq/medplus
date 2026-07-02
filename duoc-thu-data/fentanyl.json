@@ -1,10 +1,9 @@
 {
-  "schema_version": "10.1-source-paragraph-boundaries",
+  "schema_version": "11.0.0",
   "id": "fentanyl",
   "title": "Fentanyl",
   "aliases": [
-    "fentanyl",
-    "fentanyl citrate"
+    "fentanyl"
   ],
   "source": {
     "book": "Dược thư Quốc gia Việt Nam",
@@ -27,236 +26,4337 @@
       "boundary_method": "physical-source-title-band"
     }
   },
+  "parser": {
+    "name": "medplus-duoc-thu-v11-structured-pdf-parser",
+    "method": "PyMuPDF span -> line -> block",
+    "content_source": "Duocthu2023.pdf",
+    "old_json_usage": "id/title/page-boundary metadata and existing table asset path only; old content is not used",
+    "column_order": "left column -> right column -> next page",
+    "block_model": [
+      "heading",
+      "subheading",
+      "paragraph",
+      "list",
+      "table",
+      "figure",
+      "note"
+    ],
+    "table_policy": "no OCR; preserve existing duoc-thu-assets/<id>/pXXXX-tXX.png image_path"
+  },
+  "blocks": [
+    {
+      "id": "b0001",
+      "type": "heading",
+      "level": 1,
+      "text": "FENTANYL",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        134.05,
+        303.55,
+        188.31,
+        317.39
+      ],
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "FENTANYL",
+          "bbox": [
+            134.05,
+            303.55,
+            188.31,
+            317.39
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0002",
+      "type": "paragraph",
+      "text": "Tên chung quốc tế: Fentanyl.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        34.93,
+        326.92,
+        150.78,
+        340.07
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tên chung quốc tế: ",
+          "bbox": [
+            34.93,
+            326.92,
+            115.16,
+            340.07
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "Fentanyl.",
+          "bbox": [
+            115.16,
+            327.07,
+            150.78,
+            339.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0003",
+      "type": "paragraph",
+      "text": "Mã ATC: N02AB03.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        34.93,
+        338.42,
+        116.82,
+        351.57
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mã ATC: ",
+          "bbox": [
+            34.93,
+            338.42,
+            75.39,
+            351.57
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "N02AB03.",
+          "bbox": [
+            75.39,
+            338.57,
+            116.82,
+            351.37
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0004",
+      "type": "paragraph",
+      "text": "Loại thuốc: Thuốc giảm đau nhóm opioid.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        34.93,
+        349.92,
+        198.8,
+        363.07
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Loại thuốc: ",
+          "bbox": [
+            34.93,
+            349.92,
+            84.02,
+            363.07
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "Thuốc giảm đau nhóm opioid.",
+          "bbox": [
+            84.02,
+            350.07,
+            198.8,
+            362.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0005",
+      "type": "heading",
+      "level": 2,
+      "text": "Dạng thuốc và hàm lượng",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        34.93,
+        364.92,
+        139.85,
+        378.07
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dạng thuốc và hàm lượng",
+          "bbox": [
+            34.93,
+            364.92,
+            139.85,
+            378.07
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0006",
+      "type": "paragraph",
+      "text": "Viên ngậm fentanyl citrat: 100 microgam, 200 microgam, 400 microgam, 600 microgam, 800 microgam, 1 200 microgam, 1 600 microgam fentanyl citrat.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        34.93,
+        377.07,
+        289.27,
+        413.87
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0007",
+      "type": "paragraph",
+      "text": "Viên ngậm tại niêm mạc má fentanyl citrat: 100 microgam, 200 microgam, 300 microgam, 400 microgam, 600 microgam, 800 microgam.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        34.93,
+        413.07,
+        289.27,
+        449.87
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0008",
+      "type": "paragraph",
+      "text": "Viên ngậm dưới lưỡi fentanyl citrat: 100 microgam, 200 microgam, 300 microgam, 400 microgam, 600 microgam, 800 microgam.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        34.93,
+        449.07,
+        289.27,
+        473.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0009",
+      "type": "paragraph",
+      "text": "Thuốc tiêm (tiêm tĩnh mạch, tiêm bắp) fentanyl citrat:",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        34.93,
+        473.07,
+        289.27,
+        485.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thuốc tiêm (tiêm tĩnh mạch, tiêm bắp) fentanyl citrat: \n",
+          "bbox": [
+            34.93,
+            473.07,
+            289.27,
+            485.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0010",
+      "type": "paragraph",
+      "text": "100 microgam/2 ml; 500 microgam/10 ml, 2 500 microgam/50 ml.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        34.93,
+        485.07,
+        286.89,
+        497.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "100 microgam/2 ml; 500 microgam/10 ml, 2 500 microgam/50 ml.",
+          "bbox": [
+            34.93,
+            485.07,
+            286.89,
+            497.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0011",
+      "type": "paragraph",
+      "text": "Miếng dán: miếng dán giải phóng 12 microgam/giờ/trong 72 giờ, 25 microgam/giờ/trong 72 giờ, miếng dán giải phóng 37,5 microgam/giờ/trong 72 giờ, miếng dán giải phóng 50 microgam/giờ/trong 72 giờ, miếng dán giải phóng 75 microgam/ giờ/trong 72 giờ, miếng dán giải phóng 100 microgam/giờ/trong 72 giờ.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        34.93,
+        497.07,
+        289.28,
+        569.87
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0012",
+      "type": "paragraph",
+      "text": "Dung dịch xịt mũi fentanyl citrat: 50 microgam/liều, 100 microgam/ liều, 200 micogram/liều, 400 microgam/liều.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        34.93,
+        569.07,
+        286.89,
+        593.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0013",
+      "type": "paragraph",
+      "text": "Dung dịch xịt dưới lưỡi: 100 microgam/liều, 200 microgam/liều, 400 microgam/liều, 600 microgam/liều, 800 microgam/liều, 1 200 microgam/liều, 1 600 microgam/liều.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        34.93,
+        593.07,
+        289.27,
+        629.87
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0014",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược lực học",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        34.93,
+        631.92,
+        88.53,
+        645.07
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược lực học",
+          "bbox": [
+            34.93,
+            631.92,
+            88.53,
+            645.07
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0015",
+      "type": "paragraph",
+      "text": "Fentanyl là một opioid tổng hợp, có tác dụng như một opioid.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        34.93,
+        644.07,
+        289.26,
+        656.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Fentanyl là một opioid tổng hợp, có tác dụng như một opioid. ",
+          "bbox": [
+            34.93,
+            644.07,
+            289.26,
+            656.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0016",
+      "type": "paragraph",
+      "text": "Fentanyl được dùng trước, trong và ngay sau mổ để giảm đau.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        34.93,
+        656.07,
+        289.26,
+        668.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Fentanyl được dùng trước, trong và ngay sau mổ để giảm đau. ",
+          "bbox": [
+            34.93,
+            656.07,
+            289.26,
+            668.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0017",
+      "type": "paragraph",
+      "text": "Thuốc còn được dùng để phòng hoặc làm giảm thở nhanh và giảm cơn sảng cấp sau mổ. Fentanyl citrat được dùng theo đường tiêm để giảm lo âu và tiết nhiều mồ hôi trước khi mổ và được dùng để bổ sung cho gây mê toàn thân hoặc gây tê tại chỗ. Fentanyl cũng rất có ích trong việc chuẩn bị cho các phẫu thuật nhỏ hoặc phẫu thuật ngắn ở bệnh nhân ngoại trú, cho các thủ thuật chẩn đoán hay trị liệu đòi hỏi bệnh nhân phải tỉnh táo hay chỉ cần vô cảm rất nông.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        34.93,
+        668.07,
+        289.28,
+        752.87
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0018",
+      "type": "paragraph",
+      "text": "Fentanyl là thuốc giảm đau mạnh kiểu gây ngủ morphin, tác dụng giảm đau mạnh gấp 100 lần morphin. Fentanyl liều cao vẫn duy trì chức năng tim ổn định và làm giảm biến chứng nội tiết do stress.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        34.93,
+        752.07,
+        289.26,
+        788.87
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0019",
+      "type": "paragraph",
+      "text": "Fentanyl giảm đau nhanh tối đa khoảng 3 - 5 phút sau khi tiêm tĩnh",
+      "page": 733,
+      "printed_page": 739,
+      "column": 0,
+      "bbox": [
+        34.93,
+        788.07,
+        289.26,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Fentanyl giảm đau nhanh tối đa khoảng 3 - 5 phút sau khi tiêm tĩnh ",
+          "bbox": [
+            34.93,
+            788.07,
+            289.26,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0020",
+      "type": "paragraph",
+      "text": "mạch và kéo dài khoảng 1 - 2 giờ, đồng thời ức chế hô hấp. Giống như các dạng opioid khác, fentanyl có thể làm cơ co cứng và tim đập chậm.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 1,
+      "bbox": [
+        298.88,
+        63.32,
+        553.22,
+        100.48
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0021",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược động học",
+      "page": 733,
+      "printed_page": 739,
+      "column": 1,
+      "bbox": [
+        298.88,
+        102.72,
+        359.99,
+        115.86
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược động học",
+          "bbox": [
+            298.88,
+            102.72,
+            359.99,
+            115.86
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0022",
+      "type": "paragraph",
+      "text": "Hấp thu: Fentanyl được hấp thu tốt qua da, qua niêm mạc miệng, qua đường tiêm. Sau khi tiêm tĩnh mạch liều tới 100 microgam, tác dụng của thuốc xuất hiện nhanh, tác dụng giảm đau tối đa đạt sau vài phút và kéo dài 30 - 60 phút. Nếu tiêm bắp, tác dụng của thuốc xuất hiện sau 7 - 15 phút và kéo dài 1 - 2 giờ. Tác dụng ức chế hô hấp có thể tồn tại lâu hơn tác dụng giảm đau. Lượng fentanyl tồn dư trong cơ thể có thể làm tăng tác dụng của liều tiếp theo.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 1,
+      "bbox": [
+        298.88,
+        115.05,
+        553.22,
+        200.94
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0023",
+      "type": "paragraph",
+      "text": "Khoảng 25% fentanyl được hấp thu qua niêm mạc miệng và chậm hơn ở niêm mạc ống tiêu hóa. Lượng thuốc được hấp thu ở ruột phụ thuộc vào từng cá thể (lượng nước bọt, nuốt nhiều hay ít). Sinh khả dụng và nồng độ đỉnh trong huyết tương của thuốc do hấp thu ở ruột thấp hơn so với theo đường niêm mạc miệng. Nói chung, sinh khả dụng khi dùng viêm ngậm khoảng 50%. Các tác dụng an thần, chống lo âu, giảm đau xuất hiện sau 5 - 15 phút, đạt đỉnh sau 20 - 50 phút, các tác dụng dược lý (ví dụ ức chế hô hấp) có thể kéo dài vài giờ sau khi dùng một liều.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 1,
+      "bbox": [
+        298.88,
+        200.33,
+        553.22,
+        310.58
+      ],
+      "source": {
+        "line_count": 9
+      }
+    },
+    {
+      "id": "b0024",
+      "type": "paragraph",
+      "text": "Sử dụng miếng dán có mục đích làm giải phóng fentanyl ở mức tương đối ổn định là 25 microgam/giờ (trên miếng dán có diện tích 10 cm2 hoặc 6,25 cm2). Tuy nhiên, lượng thuốc được hấp thu tùy thuộc vào từng người. Trước hết, thuốc ngấm và bão hòa vào da ngay dưới chỗ dán; sau đó đọng ở các lớp trên của da. Nồng độ thuốc trong huyết thanh tăng chậm, đạt mức ổn định sau 12 - 24 giờ và được duy trì tương đối hằng định trong thời gian dán thuốc còn lại (tổng thời gian là 72 giờ). Nồng độ đỉnh trong huyết thanh xuất hiện 24 - 72 giờ sau khi dán. Thân nhiệt tăng làm tăng nồng độ thuốc trong huyết thanh (nồng độ tăng thêm 1/3 khi thân nhiệt là 40 °C). Nồng độ ổn định trong huyết thanh của thuốc sau khi dán liên tiếp thay đổi theo cá thể, phụ thuộc vào tính thấm của da và độ thanh thải thuốc của cơ thể.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 1,
+      "bbox": [
+        298.88,
+        309.97,
+        553.21,
+        468.95
+      ],
+      "source": {
+        "line_count": 13
+      }
+    },
+    {
+      "id": "b0025",
+      "type": "paragraph",
+      "text": "Phân bố: Tái phân bố được cho là nguyên nhân chính khiến fentanyl có tác dụng ngắn. Sau khi tiêm tĩnh mạch, fentanyl từ máu nhanh chóng tới phổi và cơ vân rồi tới các mô mỡ ở sâu hơn.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 1,
+      "bbox": [
+        298.88,
+        468.33,
+        553.21,
+        505.5
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0026",
+      "type": "paragraph",
+      "text": "Sau đó, thuốc lại từ các nơi này được chuyển từ từ vào vòng đại tuần hoàn. Liều cao hoặc dùng nhiều liều nhắc lại có thể gây tích tụ thuốc và làm kéo dài tác dụng của thuốc. 80 - 85% thuốc gắn vào protein huyết tương (alpha1-acid glycoprotein, albumin và lipoprotein). Phần fentanyl tự do trong huyết tương tăng khi cơ thể bị nhiễm toan. Thể tích phân bố trung bình ở giai đoạn ổn định là 4 - 6 lít/kg. Fentanyl phân bố một phần trong dịch não tủy, nhau thai và một lượng rất nhỏ trong sữa.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 1,
+      "bbox": [
+        298.88,
+        504.88,
+        553.22,
+        602.95
+      ],
+      "source": {
+        "line_count": 8
+      }
+    },
+    {
+      "id": "b0027",
+      "type": "paragraph",
+      "text": "Chuyển hóa: Fentanyl được chuyển hóa mạnh ở gan (bởi isoenzym CYP3A4) và ở niêm mạc ruột.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 1,
+      "bbox": [
+        298.88,
+        602.34,
+        553.22,
+        627.32
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0028",
+      "type": "paragraph",
+      "text": "Thải trừ: Fentanyl chủ yếu được thải trừ (hơn 90%) bằng cách chuyển hóa sinh học thành các chất chuyển hóa không hoạt tính qua quá trình hydroxyl hóa và N-dealkyl hóa. Dưới 7% liều dùng được bài tiết dưới dạng không đổi qua nước tiểu, chỉ khoảng 1% được bài tiết dưới dạng không đổi qua phân. Các chất chuyển hóa chủ yếu được bài tiết qua nước tiểu. Tổng độ thanh thải trong huyết tương của fentanyl là 0,5 lít/giờ/kg (khoảng 0,3 - 0,7 lít/giờ/kg).",
+      "page": 733,
+      "printed_page": 739,
+      "column": 1,
+      "bbox": [
+        298.88,
+        626.7,
+        553.23,
+        712.59
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0029",
+      "type": "paragraph",
+      "text": "Nửa đời thải trừ cuối cùng sau khi dùng dạng xịt dưới lưỡi là từ 5 đến 12 giờ, dung dịch xịt mũi là 3 - 4 giờ, viên ngậm tại niêm mạc má là 22 giờ, viên ngậm dưới lưỡi 11,5 - 25 giờ, viên ngậm là khoảng 7 giờ, truyền tĩnh mạch là 2 - 14 giờ, miếng dán là 20 - 27 giờ.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 1,
+      "bbox": [
+        298.88,
+        711.98,
+        553.22,
+        773.51
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0030",
+      "type": "heading",
+      "level": 2,
+      "text": "Chỉ định",
+      "page": 733,
+      "printed_page": 739,
+      "column": 1,
+      "bbox": [
+        298.88,
+        775.74,
+        334.53,
+        788.89
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chỉ định",
+          "bbox": [
+            298.88,
+            775.74,
+            334.53,
+            788.89
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0031",
+      "type": "paragraph",
+      "text": "Giảm đau nặng và đau cho bệnh nhân ung thư.",
+      "page": 733,
+      "printed_page": 739,
+      "column": 1,
+      "bbox": [
+        298.88,
+        788.07,
+        476.06,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Giảm đau nặng và đau cho bệnh nhân ung thư.",
+          "bbox": [
+            298.88,
+            788.07,
+            476.06,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0032",
+      "type": "heading",
+      "level": 2,
+      "text": "Chú ý",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        63.49,
+        66.37,
+        76.13
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chú ý",
+          "bbox": [
+            43.94,
+            63.49,
+            66.37,
+            76.13
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "note_role": "chu y",
+      "v11_fix": "note_title_reclassified_as_heading_alpha5"
+    },
+    {
+      "id": "b0033",
+      "type": "paragraph",
+      "text": "Dạng thuốc tiêm: Liều lượng thấp để giảm đau trong quá trình phẫu thuật ngắn. Liều cao như một thuốc giảm đau/ức chế hô hấp ở những bệnh nhân cần thở máy. Phối hợp với một loại thuốc an thần như một phần của liệu pháp giảm đau an thần. Trong điều trị các cơn đau dữ dội, chẳng hạn như cơn đau do nhồi máu cơ tim.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        75.51,
+        298.27,
+        137.04
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0034",
+      "type": "paragraph",
+      "text": "Dạng viên ngậm, viên đặt dưới lưỡi, miếng dán, dung dịch xịt mũi đơn liều được dùng để giảm đau mạn tính ở bệnh nhân bị ung thư có dung nạp opiat.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        136.42,
+        298.28,
+        173.58
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0035",
+      "type": "paragraph",
+      "text": "Dạng miếng dán được dùng để điều trị đau mạn tính vừa, nặng cần giảm đau bằng opiat (ví dụ đau do ung thư) do các thuốc giảm đau khác không có tác dụng và cần dùng liên tục opiat trong thời gian dài. Chỉ dùng cho người có dung nạp opiat để tránh nguy cơ bị suy hô hấp có thể gây tử vong.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        172.97,
+        298.27,
+        234.49
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0036",
+      "type": "heading",
+      "level": 2,
+      "text": "Chống chỉ định",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        236.73,
+        106.24,
+        249.88
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chống chỉ định",
+          "bbox": [
+            43.94,
+            236.73,
+            106.24,
+            249.88
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0037",
+      "type": "paragraph",
+      "text": "Mẫn cảm với thuốc.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        249.06,
+        122.58,
+        261.86
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mẫn cảm với thuốc. ",
+          "bbox": [
+            43.94,
+            249.06,
+            122.58,
+            261.86
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0038",
+      "type": "paragraph",
+      "text": "Suy hô hấp cấp, người hôn mê, tổn thương đầu, tăng áp lực nội sọ, nguy cơ liệt ruột.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        261.24,
+        298.27,
+        286.22
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0039",
+      "type": "paragraph",
+      "text": "Chống chỉ định bổ sung đối với viên ngậm, viên ngậm dưới lưỡi, xịt mũi Hen phế quản cấp tính hoặc nặng trong điều kiện không được theo dõi hoặc không có thiết bị hồi sức, tắc nghẽn đường tiêu hóa, đau cấp tính hoặc đau sau phẫu thuật (bao gồm đau đầu, đau nửa đầu hoặc đau răng), người không dung nạp opioid, điều trị cơn đau cấp tính tại phòng cấp cứu.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        285.77,
+        298.27,
+        371.5
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0040",
+      "type": "subheading",
+      "level": 3,
+      "text": "Chống chỉ định bổ sung với dạng tiêm",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        371.04,
+        189.14,
+        383.68
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chống chỉ định bổ sung với dạng tiêm",
+          "bbox": [
+            43.94,
+            371.04,
+            189.14,
+            383.68
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0041",
+      "type": "paragraph",
+      "text": "Bệnh tắc nghẽn đường thở. Dùng đồng thời với các chất ức chế monoamin oxidase hoặc trong vòng 2 tuần kể từ khi ngừng thuốc.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        383.06,
+        298.27,
+        408.04
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0042",
+      "type": "subheading",
+      "level": 3,
+      "text": "Chống chỉ định bổ sung đối với miếng dán qua da",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        407.59,
+        234.26,
+        420.23
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chống chỉ định bổ sung đối với miếng dán qua da",
+          "bbox": [
+            43.94,
+            407.59,
+            234.26,
+            420.23
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0043",
+      "type": "paragraph",
+      "text": "Hen phế quản cấp hoặc nặng trong điều kiện không được theo dõi hoặc không có thiết bị hồi sức; tắc nghẽn đường tiêu hóa; bệnh nhân cần điều trị ngắn hạn, kiểm soát cơn đau cấp tính hoặc đau từng cơn, đau sau phẫu thuật hoặc đau nhẹ; người không dung nạp opioid.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        419.61,
+        298.27,
+        481.14
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0044",
+      "type": "heading",
+      "level": 2,
+      "text": "Thận trọng",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        483.37,
+        90.13,
+        496.52
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thận trọng",
+          "bbox": [
+            43.94,
+            483.37,
+            90.13,
+            496.52
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ],
+      "note_role": "than trong",
+      "v11_fix": "note_title_reclassified_as_heading_alpha5"
+    },
+    {
+      "id": "b0045",
+      "type": "paragraph",
+      "text": "Thận trọng cho tất cả các opioid: Suy vỏ thượng thận (khuyến cáo giảm liều), hen phế quản (tránh dùng trong hen cấp), co giật, người suy nhược (khuyến cáo giảm liều), có bệnh về đường mật, người già (khuyến cáo giảm liều), hạ huyết áp, suy giáp (khuyến cáo giảm liều), suy giảm chức năng hô hấp (tránh sử dụng ở bệnh phổi tắc nghẽn mạn tính), viêm ruột, nhược cơ, rối loạn tắc nghẽn ruột, phì đại tiền liệt tuyến, sốc, hẹp niệu đạo.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        495.7,
+        298.27,
+        581.59
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0046",
+      "type": "paragraph",
+      "text": "Phụ thuộc thuốc: Sử dụng lặp lại opiod có thể dẫn đến phụ thuộc về thể chất và tinh thần, mặc dù hiếm khi có vấn đề về điều trị, thận trọng khi kê đơn cho người có tiền sử phụ thuộc thuốc.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        580.98,
+        298.28,
+        618.14
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0047",
+      "type": "paragraph",
+      "text": "Chăm sóc giảm nhẹ: Để giảm đau trong trường hợp nặng, không nhất thiết vì thận trọng mà tránh dùng opioid để giảm đau.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        617.52,
+        298.27,
+        642.5
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0048",
+      "type": "paragraph",
+      "text": "Thận trọng trong u não, đái tháo đường, suy giảm nhận thức.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        641.89,
+        275.1,
+        654.68
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thận trọng trong u não, đái tháo đường, suy giảm nhận thức.",
+          "bbox": [
+            43.94,
+            641.89,
+            275.1,
+            654.68
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0049",
+      "type": "paragraph",
+      "text": "Với dạng hấp thu qua niêm mạc miệng: Tình trạng viêm niêm mạc có thể làm tăng hấp thu thuốc nên cần thận trọng trong quá trình chỉnh liều.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        654.07,
+        298.27,
+        691.23
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0050",
+      "type": "paragraph",
+      "text": "Với dạng miếng dán: Miếng dán fentanyl không phù hợp cho điều trị đau cấp hoặc bệnh nhân cần thay đổi giảm đau nhanh do miếng dán cần thời gian dài mới đạt trạng thái ổn định nên khó để chỉnh liều nhanh. Nguy cơ suy hô hấp tử vong, đặc biệt ở người trước đó chưa điều trị bằng thuốc giảm đau opioid mạnh, chỉ nên sử dụng ở người dung nạp opioid.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        690.62,
+        298.28,
+        764.32
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0051",
+      "type": "paragraph",
+      "text": "Dạng tiêm truyền tĩnh mạch: Thận trọng khi sử dụng các liều lặp lại trong phẫu thuật, ức chế hô hấp có thể tiếp diễn dai dẳng sau phẫu thuật và đôi khi thể hiện rõ trong thời gian đầu hậu phẫu khi không",
+      "page": 734,
+      "printed_page": 740,
+      "column": 0,
+      "bbox": [
+        43.94,
+        763.71,
+        298.27,
+        800.87
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0052",
+      "type": "paragraph",
+      "text": "theo dõi sát bệnh nhân.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        63.32,
+        398.13,
+        76.12
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "theo dõi sát bệnh nhân. ",
+          "bbox": [
+            307.89,
+            63.32,
+            398.13,
+            76.12
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0053",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ mang thai",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        78.25,
+        383.1,
+        91.4
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ mang thai",
+          "bbox": [
+            307.89,
+            78.25,
+            383.1,
+            91.4
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0054",
+      "type": "paragraph",
+      "text": "Thuốc giảm đau opioid có thể gây ức chế hô hấp ở thai nhi, tác dụng này có thể kéo dài; bởi vậy không dùng cho phụ nữ mang thai. Với phụ nữ sắp sinh (2 - 3 giờ trước khi sinh), fentanyl chỉ được chỉ định trong các trường hợp thật cần sau khi đã cân nhắc kỹ lợi ích và nguy cơ và phải theo dõi chặt chẽ tình trạng của mẹ và thai nhi. Có tài liệu khuyên không nên dùng.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        90.48,
+        562.22,
+        163.68
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0055",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ cho con bú",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        165.81,
+        386.01,
+        178.96
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ cho con bú",
+          "bbox": [
+            307.89,
+            165.81,
+            386.01,
+            178.96
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0056",
+      "type": "paragraph",
+      "text": "Fentanyl được bài tiết vào sữa mẹ. Do đó, không nên cho con bú trong vòng 24 giờ sau khi điều trị. Nên cân nhắc nguy cơ/lợi ích của việc cho con bú sau khi dùng fentanyl.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        178.05,
+        562.22,
+        215.0
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0057",
+      "type": "heading",
+      "level": 2,
+      "text": "Tác dụng không mong muốn (ADR)",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        217.14,
+        453.84,
+        230.28
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tác dụng không mong muốn (ADR)",
+          "bbox": [
+            307.89,
+            217.14,
+            453.84,
+            230.28
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0058",
+      "type": "paragraph",
+      "text": "Khoảng 45% trường hợp điều trị với fentanyl có thể xuất hiện ADR.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        229.37,
+        562.22,
+        254.25
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0059",
+      "type": "subheading",
+      "level": 3,
+      "text": "Rất thường gặp",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        253.69,
+        367.23,
+        266.33
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Rất thường gặp",
+          "bbox": [
+            307.89,
+            253.69,
+            367.23,
+            266.33
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0060",
+      "type": "paragraph",
+      "text": "Tiêu hóa: buồn nôn.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        265.61,
+        384.08,
+        278.41
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêu hóa: buồn nôn.",
+          "bbox": [
+            307.89,
+            265.61,
+            384.08,
+            278.41
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0061",
+      "type": "subheading",
+      "level": 3,
+      "text": "Thường gặp",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        277.85,
+        354.3,
+        290.49
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thường gặp",
+          "bbox": [
+            307.89,
+            277.85,
+            354.3,
+            290.49
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0062",
+      "type": "paragraph",
+      "text": "TKTW: chóng mặt, đau đầu, buồn ngủ.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        289.77,
+        459.51,
+        302.57
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "TKTW: chóng mặt, đau đầu, buồn ngủ. ",
+          "bbox": [
+            307.89,
+            289.77,
+            459.51,
+            302.57
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0063",
+      "type": "paragraph",
+      "text": "Hô hấp: khó thở.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        301.85,
+        372.02,
+        314.65
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Hô hấp: khó thở.",
+          "bbox": [
+            307.89,
+            301.85,
+            372.02,
+            314.65
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0064",
+      "type": "paragraph",
+      "text": "Da và mô mềm: tiết mồ hôi quá mức.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        313.93,
+        449.99,
+        326.73
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Da và mô mềm: tiết mồ hôi quá mức.",
+          "bbox": [
+            307.89,
+            313.93,
+            449.99,
+            326.73
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0065",
+      "type": "paragraph",
+      "text": "Tiêu hóa: viêm dạ dày, nôn, táo bón, khô miệng.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        326.01,
+        491.37,
+        338.81
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêu hóa: viêm dạ dày, nôn, táo bón, khô miệng.",
+          "bbox": [
+            307.89,
+            326.01,
+            491.37,
+            338.81
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0066",
+      "type": "paragraph",
+      "text": "Toàn thân: mệt mỏi.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        338.09,
+        384.28,
+        350.89
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Toàn thân: mệt mỏi.",
+          "bbox": [
+            307.89,
+            338.09,
+            384.28,
+            350.89
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0067",
+      "type": "subheading",
+      "level": 3,
+      "text": "Ít gặp",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        350.34,
+        330.32,
+        362.97
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Ít gặp",
+          "bbox": [
+            307.89,
+            350.34,
+            330.32,
+            362.97
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0068",
+      "type": "paragraph",
+      "text": "Toàn thân: hội chứng cai thuốc, suy nhược, khó chịu.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        362.25,
+        509.89,
+        375.05
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Toàn thân: hội chứng cai thuốc, suy nhược, khó chịu.",
+          "bbox": [
+            307.89,
+            362.25,
+            509.89,
+            375.05
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0069",
+      "type": "paragraph",
+      "text": "Tổn thương, ngộ độc và tuân thủ điều trị: vô tình quá liều.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        374.33,
+        528.64,
+        387.13
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tổn thương, ngộ độc và tuân thủ điều trị: vô tình quá liều.",
+          "bbox": [
+            307.89,
+            374.33,
+            528.64,
+            387.13
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0070",
+      "type": "paragraph",
+      "text": "Miễn dịch: mẫn cảm.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        386.42,
+        388.63,
+        399.21
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Miễn dịch: mẫn cảm.",
+          "bbox": [
+            307.89,
+            386.42,
+            388.63,
+            399.21
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0071",
+      "type": "paragraph",
+      "text": "Chuyển hóa và dinh dưỡng: chán ăn, giảm thèm ăn.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        398.5,
+        504.08,
+        411.29
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Chuyển hóa và dinh dưỡng: chán ăn, giảm thèm ăn.",
+          "bbox": [
+            307.89,
+            398.5,
+            504.08,
+            411.29
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0072",
+      "type": "paragraph",
+      "text": "Tâm thần: trầm cảm, hoang tưởng, trạng thái bối rối, mất phương hướng, tình trạng tinh thần thay đổi, lo lắng, hưng phấn, chán chường, rối loạn cảm xúc, xáo trộn trong sự chú ý, mất ngủ.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        410.58,
+        562.22,
+        447.53
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0073",
+      "type": "paragraph",
+      "text": "TKTW: hay quên, loạn khứu giác, loạn vị giác, run rẩy, hôn mê, giảm xúc giác, rối loạn giấc ngủ.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        446.82,
+        562.22,
+        471.69
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0074",
+      "type": "paragraph",
+      "text": "Mắt: nhìn mờ.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        470.98,
+        362.27,
+        483.78
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mắt: nhìn mờ.",
+          "bbox": [
+            307.89,
+            470.98,
+            362.27,
+            483.78
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0075",
+      "type": "paragraph",
+      "text": "Tim mạch: nhịp nhanh, nhịp chậm, hạ huyết áp.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        483.06,
+        489.36,
+        495.86
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tim mạch: nhịp nhanh, nhịp chậm, hạ huyết áp.",
+          "bbox": [
+            307.89,
+            483.06,
+            489.36,
+            495.86
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0076",
+      "type": "paragraph",
+      "text": "Hô hấp: đau hầu họng, nghẽn họng.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        495.14,
+        443.51,
+        507.94
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Hô hấp: đau hầu họng, nghẽn họng.",
+          "bbox": [
+            307.89,
+            495.14,
+            443.51,
+            507.94
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0077",
+      "type": "paragraph",
+      "text": "Tiêu hóa: loét miệng, viêm loét lợi, loét môi, suy giảm khả năng làm rỗng dạ dày, đau bụng, khó tiêu, khó chịu ở dạ dày, rối loạn lưỡi, nhiệt miệng.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        507.22,
+        562.22,
+        544.18
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0078",
+      "type": "paragraph",
+      "text": "Da và mô mềm: tổn thương da, phát ban, dị ứng ngứa, ngứa, đổ mồ hôi đêm, tăng xu hướng bầm tím.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        543.46,
+        562.22,
+        568.34
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0079",
+      "type": "paragraph",
+      "text": "Cơ - xương - khớp: đau khớp, cứng cơ xương khớp.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        567.62,
+        505.22,
+        580.42
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cơ - xương - khớp: đau khớp, cứng cơ xương khớp.",
+          "bbox": [
+            307.89,
+            567.62,
+            505.22,
+            580.42
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0080",
+      "type": "paragraph",
+      "text": "Sinh dục: rối loạn chức năng cương dương.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        579.7,
+        472.7,
+        592.5
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Sinh dục: rối loạn chức năng cương dương.",
+          "bbox": [
+            307.89,
+            579.7,
+            472.7,
+            592.5
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0081",
+      "type": "subheading",
+      "level": 3,
+      "text": "Chưa xác định được tần suất",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        591.95,
+        418.05,
+        604.58
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chưa xác định được tần suất",
+          "bbox": [
+            307.89,
+            591.95,
+            418.05,
+            604.58
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0082",
+      "type": "paragraph",
+      "text": "Toàn thân: đỏ bừng và nóng bừng, phù ngoại vi, sốt, hội chứng cai thuốc ở trẻ sơ sinh.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        603.86,
+        562.22,
+        628.74
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0083",
+      "type": "paragraph",
+      "text": "Tâm thần: ảo giác, lệ thuộc thuốc (nghiện thuốc), lạm dụng thuốc, mê sảng.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        628.03,
+        562.23,
+        652.9
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0084",
+      "type": "paragraph",
+      "text": "TKTW: co giật, suy giảm ý thức, mất ý thức.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        652.19,
+        478.79,
+        664.98
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "TKTW: co giật, suy giảm ý thức, mất ý thức.",
+          "bbox": [
+            307.89,
+            652.19,
+            478.79,
+            664.98
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0085",
+      "type": "paragraph",
+      "text": "Hô hấp: ức chế hô hấp.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        664.27,
+        395.88,
+        677.06
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Hô hấp: ức chế hô hấp.",
+          "bbox": [
+            307.89,
+            664.27,
+            395.88,
+            677.06
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0086",
+      "type": "paragraph",
+      "text": "Tiêu hóa: sưng lưỡi, tiêu chảy.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        676.35,
+        423.3,
+        689.14
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêu hóa: sưng lưỡi, tiêu chảy.",
+          "bbox": [
+            307.89,
+            676.35,
+            423.3,
+            689.14
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0087",
+      "type": "paragraph",
+      "text": "Da và mô mềm: mày đay.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        688.43,
+        405.41,
+        701.23
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Da và mô mềm: mày đay.",
+          "bbox": [
+            307.89,
+            688.43,
+            405.41,
+            701.23
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0088",
+      "type": "heading",
+      "level": 2,
+      "text": "Hướng dẫn cách xử trí ADR",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        703.36,
+        422.45,
+        716.51
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hướng dẫn cách xử trí ADR",
+          "bbox": [
+            307.89,
+            703.36,
+            422.45,
+            716.51
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0089",
+      "type": "paragraph",
+      "text": "Nhịp tim chậm: Dùng atropin.",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        715.59,
+        422.68,
+        728.39
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Nhịp tim chậm: Dùng atropin.",
+          "bbox": [
+            307.89,
+            715.59,
+            422.68,
+            728.39
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0090",
+      "type": "paragraph",
+      "text": "Suy hô hấp: Trong khi mổ, nếu suy hô hấp vẫn còn sau khi mổ thì phải thông khí nhân tạo kéo dài. Ngoài ra có thể phải tiêm tĩnh mạch naloxon. Phải dò liều naloxon thật cẩn thận để đạt hiệu quả mong muốn mà không ảnh hưởng đến việc kiểm soát đau sau mổ hoặc không gây tác dụng không mong muốn khác như tăng huyết áp và nhịp tim nhanh. Liều khởi đầu có thể là 0,5 microgam",
+      "page": 734,
+      "printed_page": 740,
+      "column": 1,
+      "bbox": [
+        307.89,
+        727.67,
+        562.23,
+        800.87
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0091",
+      "type": "paragraph",
+      "text": "naloxon/kg thể trọng, tiêm tĩnh mạch. Phải tiếp tục theo dõi suy hô hấp để tiêm bổ sung naloxon nếu cần. Truyền tĩnh mạch liên tục có thể kiểm soát được các tác dụng không mong muốn của opioid.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 0,
+      "bbox": [
+        34.93,
+        63.32,
+        289.26,
+        100.18
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0092",
+      "type": "paragraph",
+      "text": "Hạ huyết áp: bồi phụ nước và điện giải. Đặt người bệnh ở tư thế để máu dễ trở về tim, nếu điều kiện mổ cho phép. Nếu cần thiết, tiêm thuốc nâng huyết áp (trong hoặc sau mổ) và/hoặc naloxon (chỉ tiêm sau mổ).",
+      "page": 735,
+      "printed_page": 741,
+      "column": 0,
+      "bbox": [
+        34.93,
+        99.41,
+        289.27,
+        148.29
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0093",
+      "type": "paragraph",
+      "text": "Cứng cơ: Tiêm thuốc ức chế dẫn truyền thần kinh cơ và hỗ trợ hô hấp hoặc có thể tiêm naloxon. Sử dụng những biện pháp hỗ trợ khác nếu cần thiết.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 0,
+      "bbox": [
+        34.93,
+        147.53,
+        289.26,
+        184.38
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0094",
+      "type": "paragraph",
+      "text": "Có thể làm giảm nguy cơ cứng cơ nếu tiêm tĩnh mạch chậm và được chỉ định dùng các thuốc benzodiazepin trước khi dùng fentanyl. Có thể xảy ra suy hô hấp thứ cấp sau mổ.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 0,
+      "bbox": [
+        34.93,
+        183.61,
+        289.27,
+        220.47
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0095",
+      "type": "heading",
+      "level": 2,
+      "text": "Liều lượng và cách dùng",
+      "page": 735,
+      "printed_page": 741,
+      "column": 0,
+      "bbox": [
+        34.93,
+        222.55,
+        135.11,
+        235.7
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng và cách dùng",
+          "bbox": [
+            34.93,
+            222.55,
+            135.11,
+            235.7
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0096",
+      "type": "subheading",
+      "level": 3,
+      "text": "Cách dùng",
+      "page": 735,
+      "printed_page": 741,
+      "column": 0,
+      "bbox": [
+        34.93,
+        234.81,
+        77.95,
+        247.53
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Cách dùng",
+          "bbox": [
+            34.93,
+            234.81,
+            77.95,
+            247.53
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0097",
+      "type": "paragraph",
+      "text": "Fentanyl chỉ dùng ở bệnh viện do cán bộ có kinh nghiệm về gây mê bằng đường tĩnh mạch, gây tê ngoài màng cứng và quen xử trí các tai biến của thuốc giảm đau opioid. Cơ sở phải có sẵn thuốc đối kháng opioid, thuốc hồi sức, phương tiện đặt nội khí quản và oxygen, trong và sau khi dùng fentanyl.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 0,
+      "bbox": [
+        34.93,
+        246.76,
+        289.26,
+        307.67
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0098",
+      "type": "paragraph",
+      "text": "Viên ngậm: Viên ngậm được thiết kế để sử dụng ở niêm mạc, do đó nên được đặt trong miệng áp vào má và phải được di chuyển quanh miệng với mục đích tối đa hóa diện tích niêm mạc tiếp xúc với thuốc. Không được nhai, nuốt viên thuốc. Có thể dùng nước để làm ẩm niêm mạc miệng ở những người bị khô miệng. Thời gian ngậm cần trên 15 phút.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 0,
+      "bbox": [
+        34.93,
+        306.91,
+        289.26,
+        379.85
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0099",
+      "type": "paragraph",
+      "text": "Viên ngậm ở niêm mạc má: Lấy viên thuốc ra khỏi vỉ ngay trước khi sử dụng. Đặt viên thuốc vào miệng giữa má và lợi để thuốc tự tan hoàn toàn. Không nhai, nuốt viên thuốc, có thể chuyển viên thuốc sang phía má bên kia. Thời gian ngậm cần trên 15 phút.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 0,
+      "bbox": [
+        34.93,
+        379.08,
+        289.26,
+        427.96
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0100",
+      "type": "paragraph",
+      "text": "Viên ngậm dưới lưỡi: Nên ngậm ở phần sâu nhất dưới lưỡi. Không được nuốt, không nhai hoặc mút mà ngậm để thuốc tan hoàn toàn trong khoang dưới lưỡi. Bệnh nhân không nên ăn hoặc uống bất cứ thứ gì cho đến khi viên ngậm dưới lưỡi được hòa tan hoàn toàn. Ở những người bị khô miệng, có thể dùng nước để làm ẩm niêm mạc miệng trước khi ngậm thuốc.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 0,
+      "bbox": [
+        34.93,
+        427.2,
+        289.26,
+        500.14
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0101",
+      "type": "paragraph",
+      "text": "Miếng dán: Phải dán trên chỗ da khô, da lành, không hở ra ngoài trời, bề mặt phẳng (vùng ngực, lưng, lườn, cánh tay); dùng tay ấn lên miếng dán trong 30 giây, đảm bảo cho toàn bộ miếng dán nhất là các góc đều tiếp xúc; với trẻ nhỏ và người có rối loạn ý thức thì phải dán miếng dán ở chỗ không thể bị người dùng lấy ra và cho vào miệng.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 0,
+      "bbox": [
+        34.93,
+        499.37,
+        289.26,
+        572.31
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0102",
+      "type": "paragraph",
+      "text": "Vùng da dán thuốc: Không được cạo lông mà phải nhổ lông; chỉ rửa vùng này bằng nước sạch, không dùng xà phòng, dầu, dung dịch tẩy, cồn hay hóa chất để tránh bị kích thích. Sau khi dán thuốc, bệnh nhân có thể tắm, gội hay bơi nhưng cần tránh phơi nắng, tránh tắm nước nóng, tránh để vùng có dán thuốc bị chiếu nhiệt trực tiếp vì sẽ làm tăng hấp thu thuốc, có thể dẫn đến quá liều. Phải luân chuyển vị trí dán thuốc, không dán mãi ở 1 chỗ hoặc dán đè lên chỗ dán cũ.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 0,
+      "bbox": [
+        34.93,
+        571.55,
+        289.27,
+        668.55
+      ],
+      "source": {
+        "line_count": 8
+      }
+    },
+    {
+      "id": "b0103",
+      "type": "paragraph",
+      "text": "Dạng thuốc xịt mũi: Đầu của bệnh nhân thẳng (bệnh nhân ở tư thế ngồi hoặc đứng) khi dùng thuốc.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 0,
+      "bbox": [
+        34.93,
+        667.78,
+        289.26,
+        692.61
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0104",
+      "type": "paragraph",
+      "text": "Dạng xịt dưới lưỡi: Nên mở thuốc ngay trước khi sử dụng. Xịt thuốc cẩn thận vào miệng, ở bên dưới lưỡi.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 0,
+      "bbox": [
+        34.93,
+        691.84,
+        289.26,
+        716.67
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0105",
+      "type": "paragraph",
+      "text": "Dung dịch tiêm: Tiêm tĩnh mạch và tiêm bắp. Dung dịch fentanyl 50 microgam/ml để tiêm/truyền có thể được dùng cho cả người lớn và trẻ em qua đường tiêm tĩnh mạch dưới dạng liều bolus hoặc truyền.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 0,
+      "bbox": [
+        34.93,
+        715.9,
+        289.27,
+        764.78
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0106",
+      "type": "subheading",
+      "level": 3,
+      "text": "Liều lượng",
+      "page": 735,
+      "printed_page": 741,
+      "column": 0,
+      "bbox": [
+        34.93,
+        764.09,
+        78.71,
+        776.81
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng",
+          "bbox": [
+            34.93,
+            764.09,
+            78.71,
+            776.81
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0107",
+      "type": "paragraph",
+      "text": "Liều lượng dao động tùy theo phẫu thuật và đáp ứng của người bệnh.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 0,
+      "bbox": [
+        34.93,
+        776.04,
+        289.26,
+        800.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0108",
+      "type": "paragraph",
+      "text": "Đau mạn tính khó điều trị và bệnh nhân hiện đang điều trị bằng thuốc giảm đau opioid mạnh:",
+      "page": 735,
+      "printed_page": 741,
+      "column": 1,
+      "bbox": [
+        298.88,
+        63.49,
+        553.21,
+        88.21
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0109",
+      "type": "paragraph",
+      "text": "Miếng dán qua da: Người lớn và trẻ 16 - 17 tuổi: Khởi đầu 12 microgam/giờ mỗi 72 giờ, hoặc 25 microgam/giờ mỗi 72 giờ, không nên đánh giá hiệu quả giảm đau khi sử dụng miếng dán chưa đủ 24 giờ (nồng độ fentanyl trong huyết thanh tăng dần), nên ngừng dần liệu pháp điều trị giảm đau đang dùng trước đó từ khi dán miếng dán đầu tiên, chỉnh liều 12 - 25 microgam/giờ sau mỗi 48 - 72 giờ nếu cần, có thể dùng nhiều hơn 1 miếng dán trong một khoảng thời gian (dán cùng 1 thời điểm để tránh nhầm lẫn), bổ sung thêm liệu pháp giảm đau khác nếu liều quá 300 microgam/giờ.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 1,
+      "bbox": [
+        298.88,
+        87.49,
+        553.22,
+        196.92
+      ],
+      "source": {
+        "line_count": 9
+      }
+    },
+    {
+      "id": "b0110",
+      "type": "paragraph",
+      "text": "Đau mạn tính khó điều trị và bệnh nhân hiện không điều trị bằng thuốc giảm đau opioid mạnh Miếng dán qua da: Người lớn và trẻ em 2 - 17 tuổi: Liều khởi đầu dựa trên nhu cầu opioid 24 giờ trước đó để đánh giá hiệu quả giảm đau và tăng liều.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 1,
+      "bbox": [
+        298.88,
+        196.36,
+        553.22,
+        257.31
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0111",
+      "type": "paragraph",
+      "text": "Hô hấp tự nhiên: Giảm đau và tăng cường gây mê trong phẫu thuật ở bệnh nhân không phải trợ thở Tiêm tĩnh mạch chậm, tiêm bắp: Người lớn và trẻ em 12 - 17 tuổi:",
+      "page": 735,
+      "printed_page": 741,
+      "column": 1,
+      "bbox": [
+        298.88,
+        256.76,
+        553.22,
+        293.55
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0112",
+      "type": "paragraph",
+      "text": "Khởi đầu 50 - 100 microgam (tối đa mỗi liều 200 microgam), sau đó 25 - 50 microgam nếu cần. Trẻ em 2 - 11 tuổi: Khởi đầu 1 - 3 microgam/kg, sau đó 1 - 1,25 microgam nếu cần.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 1,
+      "bbox": [
+        298.88,
+        292.83,
+        553.21,
+        329.79
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0113",
+      "type": "paragraph",
+      "text": "Truyền tĩnh mạch: Người lớn: 3 - 4,8 microgam/kg/giờ, chỉnh liều theo đáp ứng.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 1,
+      "bbox": [
+        298.88,
+        329.07,
+        553.21,
+        353.94
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0114",
+      "type": "paragraph",
+      "text": "Hỗ trợ thở máy: giảm đau và tăng cường gây mê trong quá trình phẫu thuật, trong hồi sức tích cực Tiêm tĩnh mạch chậm, tiêm bắp: Người lớn và trẻ em 12 - 17 tuổi: khởi đầu 300 - 3 500 microgam, sau đó 100 - 200 microgam nếu cần. Trẻ em 2 - 11 tuổi: Khởi đầu 1 - 3 microgam/kg, sau đó 1 - 1,25 microgam nếu cần.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 1,
+      "bbox": [
+        298.88,
+        353.39,
+        553.24,
+        426.42
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0115",
+      "type": "paragraph",
+      "text": "Truyền tĩnh mạch: Người lớn: Khởi đầu 10 microgam/kg, truyền trên 10 phút, sau đó 6 microgam/kg/giờ, chỉnh liều theo đáp ứng, có thể cần đến 180 microgam/kg/giờ trong phẫu thuật tim mạch.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 1,
+      "bbox": [
+        298.88,
+        425.7,
+        553.21,
+        462.66
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0116",
+      "type": "paragraph",
+      "text": "Đau nặng ở bệnh nhân đang dùng opiod điều trị đau mạn do ung thư Viên ngậm: Người lớn và trẻ 16 - 17 tuổi: Khởi đầu 200 microgam, ngậm trong 15 phút, sau đó 200 microgam mỗi 15 phút nếu cần, không được dùng trên 2 liều cho mỗi cơn đau; nếu không đạt hiệu quả giảm đau với một liều cho các cơn đau nặng liên tiếp, tăng hàm lượng mỗi đơn vị liều (mỗi viên) đến khi đạt hiệu quả giảm đau với không quá 4 viên ngậm/ngày, nếu có trên 4 cơn đau mỗi ngày, đánh giá lại liệu pháp giảm đau trong 24 giờ.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 1,
+      "bbox": [
+        298.88,
+        462.1,
+        553.22,
+        571.37
+      ],
+      "source": {
+        "line_count": 9
+      }
+    },
+    {
+      "id": "b0117",
+      "type": "paragraph",
+      "text": "Để tránh quá liều ở người béo phì, cân nặng dùng để tính liều là cân nặng lý tưởng.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 1,
+      "bbox": [
+        298.88,
+        570.65,
+        553.21,
+        595.53
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0118",
+      "type": "paragraph",
+      "text": "Viên ngậm dưới lưỡi: Người lớn: Khởi đầu 100 microgam, sau đó 100 microgam mỗi 15 - 30 phút nếu cần, chỉnh liều theo đáp ứng, không dùng trên 2 viên trong 15 - 30 phút cho mỗi cơn đau, tối đa 800 microgam mỗi cơn đau nặng, duy trì khoảng cách tối thiểu 2 giờ giữa mỗi lần điều trị cơn đau nặng, nếu có trên 4 cơn đau mỗi ngày, đánh giá lại liệu pháp giảm đau trong 24 giờ.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 1,
+      "bbox": [
+        298.88,
+        594.81,
+        553.22,
+        668.0
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0119",
+      "type": "paragraph",
+      "text": "Viên ngậm tại niêm mạc má: Người lớn: Khởi đầu 100 microgam, sau đó 100 microgam mỗi 30 phút nếu cần, chỉnh liều theo đáp ứng, không dùng trên 2 viên cho mỗi cơn đau, tối đa 800 microgam mỗi cơn đau nặng, duy trì khoảng cách tối thiểu 4 giờ giữa mỗi lần điều trị cơn đau nặng trong quá trình chỉnh liều.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 1,
+      "bbox": [
+        298.88,
+        667.28,
+        553.22,
+        728.4
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0120",
+      "type": "paragraph",
+      "text": "Dung dịch xịt mũi: Người lớn: khởi đầu 50 - 100 microgam, xịt vào 1 bên mũi, sau đó 50 - 100 microgam mỗi 10 phút nếu cần, chỉnh liều theo đáp ứng, tối đa 2 lần xịt cho mỗi cơn đau và tối thiểu 4 giờ giữa mỗi lần điều trị một cơn đau, nếu có trên 4 cơn đau mỗi ngày, đánh giá lại liệu pháp giảm đau trong 24 giờ.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 1,
+      "bbox": [
+        298.88,
+        727.68,
+        553.22,
+        788.79
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0121",
+      "type": "paragraph",
+      "text": "Người cao tuổi: Phải giảm liều.",
+      "page": 735,
+      "printed_page": 741,
+      "column": 1,
+      "bbox": [
+        298.88,
+        788.07,
+        418.91,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Người cao tuổi: ",
+          "bbox": [
+            298.88,
+            788.23,
+            361.65,
+            800.87
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        },
+        {
+          "text": "Phải giảm liều.",
+          "bbox": [
+            361.64,
+            788.07,
+            418.91,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0122",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương tác thuốc",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        63.02,
+        110.85,
+        76.16
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương tác thuốc",
+          "bbox": [
+            43.94,
+            63.02,
+            110.85,
+            76.16
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0123",
+      "type": "paragraph",
+      "text": "Fentanyl citrat có những tương tác giống như tương tác của các opiat.",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        75.28,
+        295.94,
+        88.07
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Fentanyl citrat có những tương tác giống như tương tác của các opiat.",
+          "bbox": [
+            43.94,
+            75.28,
+            295.94,
+            88.07
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0124",
+      "type": "paragraph",
+      "text": "Sử dụng đồng thời fentanyl với các thuốc serotoninergic, như ức chế tái hấp thu serotonin chọn lọc (SSRI), hoặc ức chế tái hấp thu serotonin norepinephrin (SNRI) hoặc ức chế monoamin oxidase (IMAO), có thể làm tăng nguy cơ hội chứng serotonin, có thể đe dọa tính mạng.",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        87.39,
+        298.27,
+        148.62
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0125",
+      "type": "paragraph",
+      "text": "Không khuyến cáo sử dụng cho những người đã dùng thuốc ức chế monoamin oxidase (IMAO) trong vòng 14 ngày vì có tác dụng nghiêm trọng và không thể đoán trước được của thuốc ức chế (IMAO) khi dùng cùng thuốc giảm đau opioid.",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        147.94,
+        298.27,
+        197.06
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0126",
+      "type": "paragraph",
+      "text": "Không khuyến cáo sử dụng đồng thời thuốc chủ vận/thuốc đối kháng opioid (như buprenorphin, nalbuphin, pentazocin). Các thuốc này có ái lực cao với các thụ thể opioid có hoạt tính nội tại thấp, do đó đối kháng một phần với tác dụng giảm đau của fentanyl và có thể gây ra các triệu chứng cai thuốc ở những người lệ thuộc opioid.",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        196.38,
+        298.31,
+        257.61
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0127",
+      "type": "paragraph",
+      "text": "Sử dụng fentanyl đồng thời với các thuốc ức chế CYP3A4 như một số kháng sinh nhóm macrolid (như clarithromycin, erythromycin, troleandomycin), dẫn xuất azol (như fluconazol, itraconazol, ketoconazol), các thuốc ức chế protease trong điều trị HIV (như fosamprenavir, nelfinavir, ritonavir), amiodaron, aprepitant, diltiazem, nefazodon, verapamil, nước bưởi có thể làm tăng sinh khả dụng và làm giảm thanh thải fentanyl. Điều này có thể dẫn đến kéo dài tác dụng opiat của thuốc, kể cả ức chế hô hấp gây tử vong.",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        256.93,
+        298.28,
+        354.49
+      ],
+      "source": {
+        "line_count": 8
+      }
+    },
+    {
+      "id": "b0128",
+      "type": "paragraph",
+      "text": "Ngược lại, dùng fentanyl đồng thời với các thuốc kích thích CYP 3A4 có thể làm giảm tác dụng của fentanyl.",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        353.81,
+        298.27,
+        378.71
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0129",
+      "type": "paragraph",
+      "text": "Tác dụng giảm đau của fentanyl tăng bởi các tác nhân ức chế thần kinh trung ương như: rượu, thuốc gây mê, thuốc ngủ, thuốc chống trầm cảm ba vòng, phenothiazin.",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        378.03,
+        298.27,
+        415.04
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0130",
+      "type": "paragraph",
+      "text": "Tác dụng trên đường tiêu hóa của fentanyl làm giảm hấp thu một số thuốc: mexiletin, metoclopramid.",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        414.35,
+        298.27,
+        439.26
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0131",
+      "type": "paragraph",
+      "text": "Huyết áp giảm mạnh thường xảy ra khi phối hợp fentanyl với thuốc chẹn beta và thuốc chẹn kênh calci.",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        438.57,
+        298.27,
+        463.48
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0132",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương kỵ",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        465.64,
+        83.68,
+        478.79
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương kỵ",
+          "bbox": [
+            43.94,
+            465.64,
+            83.68,
+            478.79
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0133",
+      "type": "paragraph",
+      "text": "Fentanyl citrat tương kỵ với thiopenton, methohexiton natri.",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        477.9,
+        272.62,
+        490.7
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Fentanyl citrat tương kỵ với thiopenton, methohexiton natri.",
+          "bbox": [
+            43.94,
+            477.9,
+            272.62,
+            490.7
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0134",
+      "type": "paragraph",
+      "text": "Kết tủa sẽ tạo thành khi tiêm truyền fentanyl phối hợp với droperidol ngay sau khi tiêm nafcilin natri. Fentanyl citrat tương hợp với dung dịch glucose 5% và natri clorid 0,9%.",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        490.01,
+        298.27,
+        527.03
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0135",
+      "type": "heading",
+      "level": 2,
+      "text": "Quá liều và xử trí",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        529.19,
+        115.61,
+        542.34
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Quá liều và xử trí",
+          "bbox": [
+            43.94,
+            529.19,
+            115.61,
+            542.34
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0136",
+      "type": "paragraph",
+      "text": "Trong trường hợp ngộ độc, để người bệnh nằm thoải mái, điều trị suy hô hấp và sốc. Nếu có co cứng cơ ảnh hưởng đến hô hấp, có thể cần đặt nội khí quản, hỗ trợ thông khí và dùng thuốc đối kháng opioid cũng như thuốc giãn cơ.",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        541.45,
+        298.27,
+        590.58
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0137",
+      "type": "paragraph",
+      "text": "Dùng thuốc giải độc naloxon hydroclorid: 0,4 - 2 mg tiêm tĩnh mạch, nhắc lại sau mỗi 2 - 3 phút, có thể dùng với liều 10 mg.",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        589.89,
+        298.27,
+        614.8
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0138",
+      "type": "paragraph",
+      "text": "Naloxon có thể tiêm dưới da, tiêm bắp, hoặc tiêm tĩnh mạch. Cần thận trọng khi sử dụng naloxon hoặc các chất đối kháng opioid khác để điều trị quá liều ở bệnh nhân duy trì opioid, do nguy cơ dẫn đến hội chứng cai thuốc cấp tính.",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        614.11,
+        298.27,
+        663.24
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0139",
+      "type": "paragraph",
+      "text": "Bệnh nhân cần được theo dõi cẩn thận, giữ ấm và bù dịch. Nếu tụt huyết áp nặng và dai dẳng, theo dõi giảm thể tích máu, cần kiểm soát huyết áp bằng truyền dịch một cách phù hợp.",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        662.55,
+        298.27,
+        699.57
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0140",
+      "type": "heading",
+      "text": "Cập nhật lần cuối",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        704.44,
+        139.2,
+        717.08
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2021.",
+          "bbox": [
+            43.94,
+            704.44,
+            139.2,
+            717.08
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "level": 2,
+      "v11_fix": "cap_nhat_cap_nhap_lan_cuoi_normalized_alpha8"
+    },
+    {
+      "id": "b0140",
+      "type": "paragraph",
+      "text": "2021.",
+      "page": 736,
+      "printed_page": 742,
+      "column": 0,
+      "bbox": [
+        43.94,
+        704.44,
+        139.2,
+        717.08
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2021.",
+          "bbox": [
+            43.94,
+            704.44,
+            139.2,
+            717.08
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "v11_parent_heading": "Cập nhật lần cuối"
+    }
+  ],
   "sections": [
-    {
-      "id": "thong-tin-au-chuyen-luan",
-      "title": "Thông tin đầu chuyên luận",
-      "content": "FENTANYL",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "FENTANYL"
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "ten-chung-quoc-te",
-      "title": "Tên chung quốc tế",
-      "content": "Fentanyl.\n\nMã ATC: N02AB03.\n\nLoại thuốc: Thuốc giảm đau nhóm opioid.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Fentanyl.\n\nMã ATC: N02AB03.\n\nLoại thuốc: Thuốc giảm đau nhóm opioid."
-        }
-      ],
-      "subsections": []
-    },
     {
       "id": "dang-thuoc-va-ham-luong",
       "title": "Dạng thuốc và hàm lượng",
-      "content": "Viên ngậm fentanyl citrat: 100 microgam, 200 microgam, 400 microgam, 600 microgam, 800 microgam, 1 200 microgam, 1 600 microgam fentanyl citrat.\n\nViên ngậm tại niêm mạc má fentanyl citrat: 100 microgam, 200 microgam, 300 microgam, 400 microgam, 600 microgam, 800 microgam.\n\nViên ngậm dưới lưỡi fentanyl citrat: 100 microgam, 200 microgam, 300 microgam, 400 microgam, 600 microgam, 800 microgam.\n\nThuốc tiêm (tiêm tĩnh mạch, tiêm bắp) fentanyl citrat: 100 microgam/2 ml; 500 microgam/10 ml, 2 500 microgam/50 ml.\n\nMiếng dán: miếng dán giải phóng 12 microgam/giờ/trong 72 giờ, 25 microgam/giờ/trong 72 giờ, miếng dán giải phóng 37,5 microgam/giờ/trong 72 giờ, miếng dán giải phóng 50 microgam/giờ/trong 72 giờ, miếng dán giải phóng 75 microgam/ giờ/trong 72 giờ, miếng dán giải phóng 100 microgam/giờ/trong 72 giờ.\n\nDung dịch xịt mũi fentanyl citrat: 50 microgam/liều, 100 microgam/ liều, 200 micogram/liều, 400 microgam/liều.\n\nDung dịch xịt dưới lưỡi: 100 microgam/liều, 200 microgam/liều, 400 microgam/liều, 600 microgam/liều, 800 microgam/liều, 1 200 microgam/liều, 1 600 microgam/liều.",
+      "heading_block": "b0005",
       "blocks": [
         {
           "type": "text",
-          "text": "Viên ngậm fentanyl citrat: 100 microgam, 200 microgam, 400 microgam, 600 microgam, 800 microgam, 1 200 microgam, 1 600 microgam fentanyl citrat.\n\nViên ngậm tại niêm mạc má fentanyl citrat: 100 microgam, 200 microgam, 300 microgam, 400 microgam, 600 microgam, 800 microgam.\n\nViên ngậm dưới lưỡi fentanyl citrat: 100 microgam, 200 microgam, 300 microgam, 400 microgam, 600 microgam, 800 microgam.\n\nThuốc tiêm (tiêm tĩnh mạch, tiêm bắp) fentanyl citrat: 100 microgam/2 ml; 500 microgam/10 ml, 2 500 microgam/50 ml.\n\nMiếng dán: miếng dán giải phóng 12 microgam/giờ/trong 72 giờ, 25 microgam/giờ/trong 72 giờ, miếng dán giải phóng 37,5 microgam/giờ/trong 72 giờ, miếng dán giải phóng 50 microgam/giờ/trong 72 giờ, miếng dán giải phóng 75 microgam/ giờ/trong 72 giờ, miếng dán giải phóng 100 microgam/giờ/trong 72 giờ.\n\nDung dịch xịt mũi fentanyl citrat: 50 microgam/liều, 100 microgam/ liều, 200 micogram/liều, 400 microgam/liều.\n\nDung dịch xịt dưới lưỡi: 100 microgam/liều, 200 microgam/liều, 400 microgam/liều, 600 microgam/liều, 800 microgam/liều, 1 200 microgam/liều, 1 600 microgam/liều."
+          "text": "Viên ngậm fentanyl citrat: 100 microgam, 200 microgam, 400 microgam, 600 microgam, 800 microgam, 1 200 microgam, 1 600 microgam fentanyl citrat.",
+          "block_id": "b0006"
+        },
+        {
+          "type": "text",
+          "text": "Viên ngậm tại niêm mạc má fentanyl citrat: 100 microgam, 200 microgam, 300 microgam, 400 microgam, 600 microgam, 800 microgam.",
+          "block_id": "b0007"
+        },
+        {
+          "type": "text",
+          "text": "Viên ngậm dưới lưỡi fentanyl citrat: 100 microgam, 200 microgam, 300 microgam, 400 microgam, 600 microgam, 800 microgam.",
+          "block_id": "b0008"
+        },
+        {
+          "type": "text",
+          "text": "Thuốc tiêm (tiêm tĩnh mạch, tiêm bắp) fentanyl citrat:",
+          "block_id": "b0009"
+        },
+        {
+          "type": "text",
+          "text": "100 microgam/2 ml; 500 microgam/10 ml, 2 500 microgam/50 ml.",
+          "block_id": "b0010"
+        },
+        {
+          "type": "text",
+          "text": "Miếng dán: miếng dán giải phóng 12 microgam/giờ/trong 72 giờ, 25 microgam/giờ/trong 72 giờ, miếng dán giải phóng 37,5 microgam/giờ/trong 72 giờ, miếng dán giải phóng 50 microgam/giờ/trong 72 giờ, miếng dán giải phóng 75 microgam/ giờ/trong 72 giờ, miếng dán giải phóng 100 microgam/giờ/trong 72 giờ.",
+          "block_id": "b0011"
+        },
+        {
+          "type": "text",
+          "text": "Dung dịch xịt mũi fentanyl citrat: 50 microgam/liều, 100 microgam/ liều, 200 micogram/liều, 400 microgam/liều.",
+          "block_id": "b0012"
+        },
+        {
+          "type": "text",
+          "text": "Dung dịch xịt dưới lưỡi: 100 microgam/liều, 200 microgam/liều, 400 microgam/liều, 600 microgam/liều, 800 microgam/liều, 1 200 microgam/liều, 1 600 microgam/liều.",
+          "block_id": "b0013"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "duoc-luc-hoc",
       "title": "Dược lực học",
-      "content": "Fentanyl là một opioid tổng hợp, có tác dụng như một opioid.\n\nFentanyl được dùng trước, trong và ngay sau mổ để giảm đau.\n\nThuốc còn được dùng để phòng hoặc làm giảm thở nhanh và giảm cơn sảng cấp sau mổ. Fentanyl citrat được dùng theo đường tiêm để giảm lo âu và tiết nhiều mồ hôi trước khi mổ và được dùng để bổ sung cho gây mê toàn thân hoặc gây tê tại chỗ. Fentanyl cũng rất có ích trong việc chuẩn bị cho các phẫu thuật nhỏ hoặc phẫu thuật ngắn ở bệnh nhân ngoại trú, cho các thủ thuật chẩn đoán hay trị liệu đòi hỏi bệnh nhân phải tỉnh táo hay chỉ cần vô cảm rất nông.\n\nFentanyl là thuốc giảm đau mạnh kiểu gây ngủ morphin, tác dụng giảm đau mạnh gấp 100 lần morphin. Fentanyl liều cao vẫn duy trì chức năng tim ổn định và làm giảm biến chứng nội tiết do stress.\n\nFentanyl giảm đau nhanh tối đa khoảng 3 - 5 phút sau khi tiêm tĩnh mạch và kéo dài khoảng 1 - 2 giờ, đồng thời ức chế hô hấp. Giống như các dạng opioid khác, fentanyl có thể làm cơ co cứng và tim đập chậm.",
+      "heading_block": "b0014",
       "blocks": [
         {
           "type": "text",
-          "text": "Fentanyl là một opioid tổng hợp, có tác dụng như một opioid.\n\nFentanyl được dùng trước, trong và ngay sau mổ để giảm đau.\n\nThuốc còn được dùng để phòng hoặc làm giảm thở nhanh và giảm cơn sảng cấp sau mổ. Fentanyl citrat được dùng theo đường tiêm để giảm lo âu và tiết nhiều mồ hôi trước khi mổ và được dùng để bổ sung cho gây mê toàn thân hoặc gây tê tại chỗ. Fentanyl cũng rất có ích trong việc chuẩn bị cho các phẫu thuật nhỏ hoặc phẫu thuật ngắn ở bệnh nhân ngoại trú, cho các thủ thuật chẩn đoán hay trị liệu đòi hỏi bệnh nhân phải tỉnh táo hay chỉ cần vô cảm rất nông.\n\nFentanyl là thuốc giảm đau mạnh kiểu gây ngủ morphin, tác dụng giảm đau mạnh gấp 100 lần morphin. Fentanyl liều cao vẫn duy trì chức năng tim ổn định và làm giảm biến chứng nội tiết do stress.\n\nFentanyl giảm đau nhanh tối đa khoảng 3 - 5 phút sau khi tiêm tĩnh mạch và kéo dài khoảng 1 - 2 giờ, đồng thời ức chế hô hấp. Giống như các dạng opioid khác, fentanyl có thể làm cơ co cứng và tim đập chậm."
+          "text": "Fentanyl là một opioid tổng hợp, có tác dụng như một opioid.",
+          "block_id": "b0015"
+        },
+        {
+          "type": "text",
+          "text": "Fentanyl được dùng trước, trong và ngay sau mổ để giảm đau.",
+          "block_id": "b0016"
+        },
+        {
+          "type": "text",
+          "text": "Thuốc còn được dùng để phòng hoặc làm giảm thở nhanh và giảm cơn sảng cấp sau mổ. Fentanyl citrat được dùng theo đường tiêm để giảm lo âu và tiết nhiều mồ hôi trước khi mổ và được dùng để bổ sung cho gây mê toàn thân hoặc gây tê tại chỗ. Fentanyl cũng rất có ích trong việc chuẩn bị cho các phẫu thuật nhỏ hoặc phẫu thuật ngắn ở bệnh nhân ngoại trú, cho các thủ thuật chẩn đoán hay trị liệu đòi hỏi bệnh nhân phải tỉnh táo hay chỉ cần vô cảm rất nông.",
+          "block_id": "b0017"
+        },
+        {
+          "type": "text",
+          "text": "Fentanyl là thuốc giảm đau mạnh kiểu gây ngủ morphin, tác dụng giảm đau mạnh gấp 100 lần morphin. Fentanyl liều cao vẫn duy trì chức năng tim ổn định và làm giảm biến chứng nội tiết do stress.",
+          "block_id": "b0018"
+        },
+        {
+          "type": "text",
+          "text": "Fentanyl giảm đau nhanh tối đa khoảng 3 - 5 phút sau khi tiêm tĩnh",
+          "block_id": "b0019"
+        },
+        {
+          "type": "text",
+          "text": "mạch và kéo dài khoảng 1 - 2 giờ, đồng thời ức chế hô hấp. Giống như các dạng opioid khác, fentanyl có thể làm cơ co cứng và tim đập chậm.",
+          "block_id": "b0020"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "duoc-ong-hoc",
+      "id": "duoc-dong-hoc",
       "title": "Dược động học",
-      "content": "Hấp thu: Fentanyl được hấp thu tốt qua da, qua niêm mạc miệng, qua đường tiêm. Sau khi tiêm tĩnh mạch liều tới 100 microgam, tác dụng của thuốc xuất hiện nhanh, tác dụng giảm đau tối đa đạt sau vài phút và kéo dài 30 - 60 phút. Nếu tiêm bắp, tác dụng của thuốc xuất hiện sau 7 - 15 phút và kéo dài 1 - 2 giờ. Tác dụng ức chế hô hấp có thể tồn tại lâu hơn tác dụng giảm đau. Lượng fentanyl tồn dư trong cơ thể có thể làm tăng tác dụng của liều tiếp theo.\n\nKhoảng 25% fentanyl được hấp thu qua niêm mạc miệng và chậm hơn ở niêm mạc ống tiêu hóa. Lượng thuốc được hấp thu ở ruột phụ thuộc vào từng cá thể (lượng nước bọt, nuốt nhiều hay ít). Sinh khả dụng và nồng độ đỉnh trong huyết tương của thuốc do hấp thu ở ruột thấp hơn so với theo đường niêm mạc miệng. Nói chung, sinh khả dụng khi dùng viêm ngậm khoảng 50%. Các tác dụng an thần, chống lo âu, giảm đau xuất hiện sau 5 - 15 phút, đạt đỉnh sau 20 - 50 phút, các tác dụng dược lý (ví dụ ức chế hô hấp) có thể kéo dài vài giờ sau khi dùng một liều.\n\nSử dụng miếng dán có mục đích làm giải phóng fentanyl ở mức tương đối ổn định là 25 microgam/giờ (trên miếng dán có diện tích 10 cm2 hoặc 6,25 cm2). Tuy nhiên, lượng thuốc được hấp thu tùy thuộc vào từng người. Trước hết, thuốc ngấm và bão hòa vào da ngay dưới chỗ dán; sau đó đọng ở các lớp trên của da. Nồng độ thuốc trong huyết thanh tăng chậm, đạt mức ổn định sau 12 - 24 giờ và được duy trì tương đối hằng định trong thời gian dán thuốc còn lại (tổng thời gian là 72 giờ). Nồng độ đỉnh trong huyết thanh xuất hiện 24 - 72 giờ sau khi dán. Thân nhiệt tăng làm tăng nồng độ thuốc trong huyết thanh (nồng độ tăng thêm 1/3 khi thân nhiệt là 40 °C). Nồng độ ổn định trong huyết thanh của thuốc sau khi dán liên tiếp thay đổi theo cá thể, phụ thuộc vào tính thấm của da và độ thanh thải thuốc của cơ thể.\n\nPhân bố: Tái phân bố được cho là nguyên nhân chính khiến fentanyl có tác dụng ngắn. Sau khi tiêm tĩnh mạch, fentanyl từ máu nhanh chóng tới phổi và cơ vân rồi tới các mô mỡ ở sâu hơn.\n\nSau đó, thuốc lại từ các nơi này được chuyển từ từ vào vòng đại tuần hoàn. Liều cao hoặc dùng nhiều liều nhắc lại có thể gây tích tụ thuốc và làm kéo dài tác dụng của thuốc. 80 - 85% thuốc gắn vào protein huyết tương (alpha1-acid glycoprotein, albumin và lipoprotein). Phần fentanyl tự do trong huyết tương tăng khi cơ thể bị nhiễm toan. Thể tích phân bố trung bình ở giai đoạn ổn định là 4 - 6 lít/kg. Fentanyl phân bố một phần trong dịch não tủy, nhau thai và một lượng rất nhỏ trong sữa.\n\nChuyển hóa: Fentanyl được chuyển hóa mạnh ở gan (bởi isoenzym CYP3A4) và ở niêm mạc ruột.\n\nThải trừ: Fentanyl chủ yếu được thải trừ (hơn 90%) bằng cách chuyển hóa sinh học thành các chất chuyển hóa không hoạt tính qua quá trình hydroxyl hóa và N-dealkyl hóa. Dưới 7% liều dùng được bài tiết dưới dạng không đổi qua nước tiểu, chỉ khoảng 1% được bài tiết dưới dạng không đổi qua phân. Các chất chuyển hóa chủ yếu được bài tiết qua nước tiểu. Tổng độ thanh thải trong huyết tương của fentanyl là 0,5 lít/giờ/kg (khoảng 0,3 - 0,7 lít/giờ/kg).\n\nNửa đời thải trừ cuối cùng sau khi dùng dạng xịt dưới lưỡi là từ 5 đến 12 giờ, dung dịch xịt mũi là 3 - 4 giờ, viên ngậm tại niêm mạc má là 22 giờ, viên ngậm dưới lưỡi 11,5 - 25 giờ, viên ngậm là khoảng 7 giờ, truyền tĩnh mạch là 2 - 14 giờ, miếng dán là 20 - 27 giờ.",
+      "heading_block": "b0021",
       "blocks": [
         {
           "type": "text",
-          "text": "Hấp thu: Fentanyl được hấp thu tốt qua da, qua niêm mạc miệng, qua đường tiêm. Sau khi tiêm tĩnh mạch liều tới 100 microgam, tác dụng của thuốc xuất hiện nhanh, tác dụng giảm đau tối đa đạt sau vài phút và kéo dài 30 - 60 phút. Nếu tiêm bắp, tác dụng của thuốc xuất hiện sau 7 - 15 phút và kéo dài 1 - 2 giờ. Tác dụng ức chế hô hấp có thể tồn tại lâu hơn tác dụng giảm đau. Lượng fentanyl tồn dư trong cơ thể có thể làm tăng tác dụng của liều tiếp theo.\n\nKhoảng 25% fentanyl được hấp thu qua niêm mạc miệng và chậm hơn ở niêm mạc ống tiêu hóa. Lượng thuốc được hấp thu ở ruột phụ thuộc vào từng cá thể (lượng nước bọt, nuốt nhiều hay ít). Sinh khả dụng và nồng độ đỉnh trong huyết tương của thuốc do hấp thu ở ruột thấp hơn so với theo đường niêm mạc miệng. Nói chung, sinh khả dụng khi dùng viêm ngậm khoảng 50%. Các tác dụng an thần, chống lo âu, giảm đau xuất hiện sau 5 - 15 phút, đạt đỉnh sau 20 - 50 phút, các tác dụng dược lý (ví dụ ức chế hô hấp) có thể kéo dài vài giờ sau khi dùng một liều.\n\nSử dụng miếng dán có mục đích làm giải phóng fentanyl ở mức tương đối ổn định là 25 microgam/giờ (trên miếng dán có diện tích 10 cm2 hoặc 6,25 cm2). Tuy nhiên, lượng thuốc được hấp thu tùy thuộc vào từng người. Trước hết, thuốc ngấm và bão hòa vào da ngay dưới chỗ dán; sau đó đọng ở các lớp trên của da. Nồng độ thuốc trong huyết thanh tăng chậm, đạt mức ổn định sau 12 - 24 giờ và được duy trì tương đối hằng định trong thời gian dán thuốc còn lại (tổng thời gian là 72 giờ). Nồng độ đỉnh trong huyết thanh xuất hiện 24 - 72 giờ sau khi dán. Thân nhiệt tăng làm tăng nồng độ thuốc trong huyết thanh (nồng độ tăng thêm 1/3 khi thân nhiệt là 40 °C). Nồng độ ổn định trong huyết thanh của thuốc sau khi dán liên tiếp thay đổi theo cá thể, phụ thuộc vào tính thấm của da và độ thanh thải thuốc của cơ thể.\n\nPhân bố: Tái phân bố được cho là nguyên nhân chính khiến fentanyl có tác dụng ngắn. Sau khi tiêm tĩnh mạch, fentanyl từ máu nhanh chóng tới phổi và cơ vân rồi tới các mô mỡ ở sâu hơn.\n\nSau đó, thuốc lại từ các nơi này được chuyển từ từ vào vòng đại tuần hoàn. Liều cao hoặc dùng nhiều liều nhắc lại có thể gây tích tụ thuốc và làm kéo dài tác dụng của thuốc. 80 - 85% thuốc gắn vào protein huyết tương (alpha1-acid glycoprotein, albumin và lipoprotein). Phần fentanyl tự do trong huyết tương tăng khi cơ thể bị nhiễm toan. Thể tích phân bố trung bình ở giai đoạn ổn định là 4 - 6 lít/kg. Fentanyl phân bố một phần trong dịch não tủy, nhau thai và một lượng rất nhỏ trong sữa.\n\nChuyển hóa: Fentanyl được chuyển hóa mạnh ở gan (bởi isoenzym CYP3A4) và ở niêm mạc ruột.\n\nThải trừ: Fentanyl chủ yếu được thải trừ (hơn 90%) bằng cách chuyển hóa sinh học thành các chất chuyển hóa không hoạt tính qua quá trình hydroxyl hóa và N-dealkyl hóa. Dưới 7% liều dùng được bài tiết dưới dạng không đổi qua nước tiểu, chỉ khoảng 1% được bài tiết dưới dạng không đổi qua phân. Các chất chuyển hóa chủ yếu được bài tiết qua nước tiểu. Tổng độ thanh thải trong huyết tương của fentanyl là 0,5 lít/giờ/kg (khoảng 0,3 - 0,7 lít/giờ/kg).\n\nNửa đời thải trừ cuối cùng sau khi dùng dạng xịt dưới lưỡi là từ 5 đến 12 giờ, dung dịch xịt mũi là 3 - 4 giờ, viên ngậm tại niêm mạc má là 22 giờ, viên ngậm dưới lưỡi 11,5 - 25 giờ, viên ngậm là khoảng 7 giờ, truyền tĩnh mạch là 2 - 14 giờ, miếng dán là 20 - 27 giờ."
+          "text": "Hấp thu: Fentanyl được hấp thu tốt qua da, qua niêm mạc miệng, qua đường tiêm. Sau khi tiêm tĩnh mạch liều tới 100 microgam, tác dụng của thuốc xuất hiện nhanh, tác dụng giảm đau tối đa đạt sau vài phút và kéo dài 30 - 60 phút. Nếu tiêm bắp, tác dụng của thuốc xuất hiện sau 7 - 15 phút và kéo dài 1 - 2 giờ. Tác dụng ức chế hô hấp có thể tồn tại lâu hơn tác dụng giảm đau. Lượng fentanyl tồn dư trong cơ thể có thể làm tăng tác dụng của liều tiếp theo.",
+          "block_id": "b0022"
+        },
+        {
+          "type": "text",
+          "text": "Khoảng 25% fentanyl được hấp thu qua niêm mạc miệng và chậm hơn ở niêm mạc ống tiêu hóa. Lượng thuốc được hấp thu ở ruột phụ thuộc vào từng cá thể (lượng nước bọt, nuốt nhiều hay ít). Sinh khả dụng và nồng độ đỉnh trong huyết tương của thuốc do hấp thu ở ruột thấp hơn so với theo đường niêm mạc miệng. Nói chung, sinh khả dụng khi dùng viêm ngậm khoảng 50%. Các tác dụng an thần, chống lo âu, giảm đau xuất hiện sau 5 - 15 phút, đạt đỉnh sau 20 - 50 phút, các tác dụng dược lý (ví dụ ức chế hô hấp) có thể kéo dài vài giờ sau khi dùng một liều.",
+          "block_id": "b0023"
+        },
+        {
+          "type": "text",
+          "text": "Sử dụng miếng dán có mục đích làm giải phóng fentanyl ở mức tương đối ổn định là 25 microgam/giờ (trên miếng dán có diện tích 10 cm2 hoặc 6,25 cm2). Tuy nhiên, lượng thuốc được hấp thu tùy thuộc vào từng người. Trước hết, thuốc ngấm và bão hòa vào da ngay dưới chỗ dán; sau đó đọng ở các lớp trên của da. Nồng độ thuốc trong huyết thanh tăng chậm, đạt mức ổn định sau 12 - 24 giờ và được duy trì tương đối hằng định trong thời gian dán thuốc còn lại (tổng thời gian là 72 giờ). Nồng độ đỉnh trong huyết thanh xuất hiện 24 - 72 giờ sau khi dán. Thân nhiệt tăng làm tăng nồng độ thuốc trong huyết thanh (nồng độ tăng thêm 1/3 khi thân nhiệt là 40 °C). Nồng độ ổn định trong huyết thanh của thuốc sau khi dán liên tiếp thay đổi theo cá thể, phụ thuộc vào tính thấm của da và độ thanh thải thuốc của cơ thể.",
+          "block_id": "b0024"
+        },
+        {
+          "type": "text",
+          "text": "Phân bố: Tái phân bố được cho là nguyên nhân chính khiến fentanyl có tác dụng ngắn. Sau khi tiêm tĩnh mạch, fentanyl từ máu nhanh chóng tới phổi và cơ vân rồi tới các mô mỡ ở sâu hơn.",
+          "block_id": "b0025"
+        },
+        {
+          "type": "text",
+          "text": "Sau đó, thuốc lại từ các nơi này được chuyển từ từ vào vòng đại tuần hoàn. Liều cao hoặc dùng nhiều liều nhắc lại có thể gây tích tụ thuốc và làm kéo dài tác dụng của thuốc. 80 - 85% thuốc gắn vào protein huyết tương (alpha1-acid glycoprotein, albumin và lipoprotein). Phần fentanyl tự do trong huyết tương tăng khi cơ thể bị nhiễm toan. Thể tích phân bố trung bình ở giai đoạn ổn định là 4 - 6 lít/kg. Fentanyl phân bố một phần trong dịch não tủy, nhau thai và một lượng rất nhỏ trong sữa.",
+          "block_id": "b0026"
+        },
+        {
+          "type": "text",
+          "text": "Chuyển hóa: Fentanyl được chuyển hóa mạnh ở gan (bởi isoenzym CYP3A4) và ở niêm mạc ruột.",
+          "block_id": "b0027"
+        },
+        {
+          "type": "text",
+          "text": "Thải trừ: Fentanyl chủ yếu được thải trừ (hơn 90%) bằng cách chuyển hóa sinh học thành các chất chuyển hóa không hoạt tính qua quá trình hydroxyl hóa và N-dealkyl hóa. Dưới 7% liều dùng được bài tiết dưới dạng không đổi qua nước tiểu, chỉ khoảng 1% được bài tiết dưới dạng không đổi qua phân. Các chất chuyển hóa chủ yếu được bài tiết qua nước tiểu. Tổng độ thanh thải trong huyết tương của fentanyl là 0,5 lít/giờ/kg (khoảng 0,3 - 0,7 lít/giờ/kg).",
+          "block_id": "b0028"
+        },
+        {
+          "type": "text",
+          "text": "Nửa đời thải trừ cuối cùng sau khi dùng dạng xịt dưới lưỡi là từ 5 đến 12 giờ, dung dịch xịt mũi là 3 - 4 giờ, viên ngậm tại niêm mạc má là 22 giờ, viên ngậm dưới lưỡi 11,5 - 25 giờ, viên ngậm là khoảng 7 giờ, truyền tĩnh mạch là 2 - 14 giờ, miếng dán là 20 - 27 giờ.",
+          "block_id": "b0029"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chi-inh",
+      "id": "chi-dinh",
       "title": "Chỉ định",
-      "content": "Giảm đau nặng và đau cho bệnh nhân ung thư.\n\nChú ý Dạng thuốc tiêm: Liều lượng thấp để giảm đau trong quá trình phẫu thuật ngắn. Liều cao như một thuốc giảm đau/ức chế hô hấp ở những bệnh nhân cần thở máy. Phối hợp với một loại thuốc an thần như một phần của liệu pháp giảm đau an thần. Trong điều trị các cơn đau dữ dội, chẳng hạn như cơn đau do nhồi máu cơ tim.\n\nDạng viên ngậm, viên đặt dưới lưỡi, miếng dán, dung dịch xịt mũi đơn liều được dùng để giảm đau mạn tính ở bệnh nhân bị ung thư có dung nạp opiat.\n\nDạng miếng dán được dùng để điều trị đau mạn tính vừa, nặng cần giảm đau bằng opiat (ví dụ đau do ung thư) do các thuốc giảm đau khác không có tác dụng và cần dùng liên tục opiat trong thời gian dài. Chỉ dùng cho người có dung nạp opiat để tránh nguy cơ bị suy hô hấp có thể gây tử vong.",
+      "heading_block": "b0030",
       "blocks": [
         {
           "type": "text",
-          "text": "Giảm đau nặng và đau cho bệnh nhân ung thư.\n\nChú ý Dạng thuốc tiêm: Liều lượng thấp để giảm đau trong quá trình phẫu thuật ngắn. Liều cao như một thuốc giảm đau/ức chế hô hấp ở những bệnh nhân cần thở máy. Phối hợp với một loại thuốc an thần như một phần của liệu pháp giảm đau an thần. Trong điều trị các cơn đau dữ dội, chẳng hạn như cơn đau do nhồi máu cơ tim.\n\nDạng viên ngậm, viên đặt dưới lưỡi, miếng dán, dung dịch xịt mũi đơn liều được dùng để giảm đau mạn tính ở bệnh nhân bị ung thư có dung nạp opiat.\n\nDạng miếng dán được dùng để điều trị đau mạn tính vừa, nặng cần giảm đau bằng opiat (ví dụ đau do ung thư) do các thuốc giảm đau khác không có tác dụng và cần dùng liên tục opiat trong thời gian dài. Chỉ dùng cho người có dung nạp opiat để tránh nguy cơ bị suy hô hấp có thể gây tử vong."
+          "text": "Giảm đau nặng và đau cho bệnh nhân ung thư.",
+          "block_id": "b0031"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chong-chi-inh",
-      "title": "Chống chỉ định",
-      "content": "Mẫn cảm với thuốc.\n\nSuy hô hấp cấp, người hôn mê, tổn thương đầu, tăng áp lực nội sọ, nguy cơ liệt ruột.\n\nChống chỉ định bổ sung đối với viên ngậm, viên ngậm dưới lưỡi, xịt mũi Hen phế quản cấp tính hoặc nặng trong điều kiện không được theo dõi hoặc không có thiết bị hồi sức, tắc nghẽn đường tiêu hóa, đau cấp tính hoặc đau sau phẫu thuật (bao gồm đau đầu, đau nửa đầu hoặc đau răng), người không dung nạp opioid, điều trị cơn đau cấp tính tại phòng cấp cứu.\n\nChống chỉ định bổ sung với dạng tiêm Bệnh tắc nghẽn đường thở. Dùng đồng thời với các chất ức chế monoamin oxidase hoặc trong vòng 2 tuần kể từ khi ngừng thuốc.\n\nChống chỉ định bổ sung đối với miếng dán qua da Hen phế quản cấp hoặc nặng trong điều kiện không được theo dõi hoặc không có thiết bị hồi sức; tắc nghẽn đường tiêu hóa; bệnh nhân cần điều trị ngắn hạn, kiểm soát cơn đau cấp tính hoặc đau từng cơn, đau sau phẫu thuật hoặc đau nhẹ; người không dung nạp opioid.",
+      "id": "chu-y",
+      "title": "Chú ý",
+      "heading_block": "b0032",
       "blocks": [
         {
           "type": "text",
-          "text": "Mẫn cảm với thuốc.\n\nSuy hô hấp cấp, người hôn mê, tổn thương đầu, tăng áp lực nội sọ, nguy cơ liệt ruột.\n\nChống chỉ định bổ sung đối với viên ngậm, viên ngậm dưới lưỡi, xịt mũi Hen phế quản cấp tính hoặc nặng trong điều kiện không được theo dõi hoặc không có thiết bị hồi sức, tắc nghẽn đường tiêu hóa, đau cấp tính hoặc đau sau phẫu thuật (bao gồm đau đầu, đau nửa đầu hoặc đau răng), người không dung nạp opioid, điều trị cơn đau cấp tính tại phòng cấp cứu.\n\nChống chỉ định bổ sung với dạng tiêm Bệnh tắc nghẽn đường thở. Dùng đồng thời với các chất ức chế monoamin oxidase hoặc trong vòng 2 tuần kể từ khi ngừng thuốc.\n\nChống chỉ định bổ sung đối với miếng dán qua da Hen phế quản cấp hoặc nặng trong điều kiện không được theo dõi hoặc không có thiết bị hồi sức; tắc nghẽn đường tiêu hóa; bệnh nhân cần điều trị ngắn hạn, kiểm soát cơn đau cấp tính hoặc đau từng cơn, đau sau phẫu thuật hoặc đau nhẹ; người không dung nạp opioid."
+          "text": "Dạng thuốc tiêm: Liều lượng thấp để giảm đau trong quá trình phẫu thuật ngắn. Liều cao như một thuốc giảm đau/ức chế hô hấp ở những bệnh nhân cần thở máy. Phối hợp với một loại thuốc an thần như một phần của liệu pháp giảm đau an thần. Trong điều trị các cơn đau dữ dội, chẳng hạn như cơn đau do nhồi máu cơ tim.",
+          "block_id": "b0033"
+        },
+        {
+          "type": "text",
+          "text": "Dạng viên ngậm, viên đặt dưới lưỡi, miếng dán, dung dịch xịt mũi đơn liều được dùng để giảm đau mạn tính ở bệnh nhân bị ung thư có dung nạp opiat.",
+          "block_id": "b0034"
+        },
+        {
+          "type": "text",
+          "text": "Dạng miếng dán được dùng để điều trị đau mạn tính vừa, nặng cần giảm đau bằng opiat (ví dụ đau do ung thư) do các thuốc giảm đau khác không có tác dụng và cần dùng liên tục opiat trong thời gian dài. Chỉ dùng cho người có dung nạp opiat để tránh nguy cơ bị suy hô hấp có thể gây tử vong.",
+          "block_id": "b0035"
         }
-      ],
-      "subsections": []
+      ]
+    },
+    {
+      "id": "chong-chi-dinh",
+      "title": "Chống chỉ định",
+      "heading_block": "b0036",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Mẫn cảm với thuốc.",
+          "block_id": "b0037"
+        },
+        {
+          "type": "text",
+          "text": "Suy hô hấp cấp, người hôn mê, tổn thương đầu, tăng áp lực nội sọ, nguy cơ liệt ruột.",
+          "block_id": "b0038"
+        },
+        {
+          "type": "text",
+          "text": "Chống chỉ định bổ sung đối với viên ngậm, viên ngậm dưới lưỡi, xịt mũi Hen phế quản cấp tính hoặc nặng trong điều kiện không được theo dõi hoặc không có thiết bị hồi sức, tắc nghẽn đường tiêu hóa, đau cấp tính hoặc đau sau phẫu thuật (bao gồm đau đầu, đau nửa đầu hoặc đau răng), người không dung nạp opioid, điều trị cơn đau cấp tính tại phòng cấp cứu.",
+          "block_id": "b0039"
+        },
+        {
+          "type": "subheading",
+          "text": "Chống chỉ định bổ sung với dạng tiêm",
+          "block_id": "b0040"
+        },
+        {
+          "type": "text",
+          "text": "Bệnh tắc nghẽn đường thở. Dùng đồng thời với các chất ức chế monoamin oxidase hoặc trong vòng 2 tuần kể từ khi ngừng thuốc.",
+          "block_id": "b0041"
+        },
+        {
+          "type": "subheading",
+          "text": "Chống chỉ định bổ sung đối với miếng dán qua da",
+          "block_id": "b0042"
+        },
+        {
+          "type": "text",
+          "text": "Hen phế quản cấp hoặc nặng trong điều kiện không được theo dõi hoặc không có thiết bị hồi sức; tắc nghẽn đường tiêu hóa; bệnh nhân cần điều trị ngắn hạn, kiểm soát cơn đau cấp tính hoặc đau từng cơn, đau sau phẫu thuật hoặc đau nhẹ; người không dung nạp opioid.",
+          "block_id": "b0043"
+        }
+      ]
     },
     {
       "id": "than-trong",
       "title": "Thận trọng",
-      "content": "Thận trọng cho tất cả các opioid: Suy vỏ thượng thận (khuyến cáo giảm liều), hen phế quản (tránh dùng trong hen cấp), co giật, người suy nhược (khuyến cáo giảm liều), có bệnh về đường mật, người già (khuyến cáo giảm liều), hạ huyết áp, suy giáp (khuyến cáo giảm liều), suy giảm chức năng hô hấp (tránh sử dụng ở bệnh phổi tắc nghẽn mạn tính), viêm ruột, nhược cơ, rối loạn tắc nghẽn ruột, phì đại tiền liệt tuyến, sốc, hẹp niệu đạo.\n\nPhụ thuộc thuốc: Sử dụng lặp lại opiod có thể dẫn đến phụ thuộc về thể chất và tinh thần, mặc dù hiếm khi có vấn đề về điều trị, thận trọng khi kê đơn cho người có tiền sử phụ thuộc thuốc.\n\nChăm sóc giảm nhẹ: Để giảm đau trong trường hợp nặng, không nhất thiết vì thận trọng mà tránh dùng opioid để giảm đau.\n\nThận trọng trong u não, đái tháo đường, suy giảm nhận thức.\n\nVới dạng hấp thu qua niêm mạc miệng: Tình trạng viêm niêm mạc có thể làm tăng hấp thu thuốc nên cần thận trọng trong quá trình chỉnh liều.\n\nVới dạng miếng dán: Miếng dán fentanyl không phù hợp cho điều trị đau cấp hoặc bệnh nhân cần thay đổi giảm đau nhanh do miếng dán cần thời gian dài mới đạt trạng thái ổn định nên khó để chỉnh liều nhanh. Nguy cơ suy hô hấp tử vong, đặc biệt ở người trước đó chưa điều trị bằng thuốc giảm đau opioid mạnh, chỉ nên sử dụng ở người dung nạp opioid.\n\nDạng tiêm truyền tĩnh mạch: Thận trọng khi sử dụng các liều lặp lại trong phẫu thuật, ức chế hô hấp có thể tiếp diễn dai dẳng sau phẫu thuật và đôi khi thể hiện rõ trong thời gian đầu hậu phẫu khi không theo dõi sát bệnh nhân.",
+      "heading_block": "b0044",
       "blocks": [
         {
           "type": "text",
-          "text": "Thận trọng cho tất cả các opioid: Suy vỏ thượng thận (khuyến cáo giảm liều), hen phế quản (tránh dùng trong hen cấp), co giật, người suy nhược (khuyến cáo giảm liều), có bệnh về đường mật, người già (khuyến cáo giảm liều), hạ huyết áp, suy giáp (khuyến cáo giảm liều), suy giảm chức năng hô hấp (tránh sử dụng ở bệnh phổi tắc nghẽn mạn tính), viêm ruột, nhược cơ, rối loạn tắc nghẽn ruột, phì đại tiền liệt tuyến, sốc, hẹp niệu đạo.\n\nPhụ thuộc thuốc: Sử dụng lặp lại opiod có thể dẫn đến phụ thuộc về thể chất và tinh thần, mặc dù hiếm khi có vấn đề về điều trị, thận trọng khi kê đơn cho người có tiền sử phụ thuộc thuốc.\n\nChăm sóc giảm nhẹ: Để giảm đau trong trường hợp nặng, không nhất thiết vì thận trọng mà tránh dùng opioid để giảm đau.\n\nThận trọng trong u não, đái tháo đường, suy giảm nhận thức.\n\nVới dạng hấp thu qua niêm mạc miệng: Tình trạng viêm niêm mạc có thể làm tăng hấp thu thuốc nên cần thận trọng trong quá trình chỉnh liều.\n\nVới dạng miếng dán: Miếng dán fentanyl không phù hợp cho điều trị đau cấp hoặc bệnh nhân cần thay đổi giảm đau nhanh do miếng dán cần thời gian dài mới đạt trạng thái ổn định nên khó để chỉnh liều nhanh. Nguy cơ suy hô hấp tử vong, đặc biệt ở người trước đó chưa điều trị bằng thuốc giảm đau opioid mạnh, chỉ nên sử dụng ở người dung nạp opioid.\n\nDạng tiêm truyền tĩnh mạch: Thận trọng khi sử dụng các liều lặp lại trong phẫu thuật, ức chế hô hấp có thể tiếp diễn dai dẳng sau phẫu thuật và đôi khi thể hiện rõ trong thời gian đầu hậu phẫu khi không theo dõi sát bệnh nhân."
+          "text": "Thận trọng cho tất cả các opioid: Suy vỏ thượng thận (khuyến cáo giảm liều), hen phế quản (tránh dùng trong hen cấp), co giật, người suy nhược (khuyến cáo giảm liều), có bệnh về đường mật, người già (khuyến cáo giảm liều), hạ huyết áp, suy giáp (khuyến cáo giảm liều), suy giảm chức năng hô hấp (tránh sử dụng ở bệnh phổi tắc nghẽn mạn tính), viêm ruột, nhược cơ, rối loạn tắc nghẽn ruột, phì đại tiền liệt tuyến, sốc, hẹp niệu đạo.",
+          "block_id": "b0045"
+        },
+        {
+          "type": "text",
+          "text": "Phụ thuộc thuốc: Sử dụng lặp lại opiod có thể dẫn đến phụ thuộc về thể chất và tinh thần, mặc dù hiếm khi có vấn đề về điều trị, thận trọng khi kê đơn cho người có tiền sử phụ thuộc thuốc.",
+          "block_id": "b0046"
+        },
+        {
+          "type": "text",
+          "text": "Chăm sóc giảm nhẹ: Để giảm đau trong trường hợp nặng, không nhất thiết vì thận trọng mà tránh dùng opioid để giảm đau.",
+          "block_id": "b0047"
+        },
+        {
+          "type": "text",
+          "text": "Thận trọng trong u não, đái tháo đường, suy giảm nhận thức.",
+          "block_id": "b0048"
+        },
+        {
+          "type": "text",
+          "text": "Với dạng hấp thu qua niêm mạc miệng: Tình trạng viêm niêm mạc có thể làm tăng hấp thu thuốc nên cần thận trọng trong quá trình chỉnh liều.",
+          "block_id": "b0049"
+        },
+        {
+          "type": "text",
+          "text": "Với dạng miếng dán: Miếng dán fentanyl không phù hợp cho điều trị đau cấp hoặc bệnh nhân cần thay đổi giảm đau nhanh do miếng dán cần thời gian dài mới đạt trạng thái ổn định nên khó để chỉnh liều nhanh. Nguy cơ suy hô hấp tử vong, đặc biệt ở người trước đó chưa điều trị bằng thuốc giảm đau opioid mạnh, chỉ nên sử dụng ở người dung nạp opioid.",
+          "block_id": "b0050"
+        },
+        {
+          "type": "text",
+          "text": "Dạng tiêm truyền tĩnh mạch: Thận trọng khi sử dụng các liều lặp lại trong phẫu thuật, ức chế hô hấp có thể tiếp diễn dai dẳng sau phẫu thuật và đôi khi thể hiện rõ trong thời gian đầu hậu phẫu khi không",
+          "block_id": "b0051"
+        },
+        {
+          "type": "text",
+          "text": "theo dõi sát bệnh nhân.",
+          "block_id": "b0052"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-mang-thai",
       "title": "Thời kỳ mang thai",
-      "content": "Thuốc giảm đau opioid có thể gây ức chế hô hấp ở thai nhi, tác dụng này có thể kéo dài; bởi vậy không dùng cho phụ nữ mang thai. Với phụ nữ sắp sinh (2 - 3 giờ trước khi sinh), fentanyl chỉ được chỉ định trong các trường hợp thật cần sau khi đã cân nhắc kỹ lợi ích và nguy cơ và phải theo dõi chặt chẽ tình trạng của mẹ và thai nhi. Có tài liệu khuyên không nên dùng.",
+      "heading_block": "b0053",
       "blocks": [
         {
           "type": "text",
-          "text": "Thuốc giảm đau opioid có thể gây ức chế hô hấp ở thai nhi, tác dụng này có thể kéo dài; bởi vậy không dùng cho phụ nữ mang thai. Với phụ nữ sắp sinh (2 - 3 giờ trước khi sinh), fentanyl chỉ được chỉ định trong các trường hợp thật cần sau khi đã cân nhắc kỹ lợi ích và nguy cơ và phải theo dõi chặt chẽ tình trạng của mẹ và thai nhi. Có tài liệu khuyên không nên dùng."
+          "text": "Thuốc giảm đau opioid có thể gây ức chế hô hấp ở thai nhi, tác dụng này có thể kéo dài; bởi vậy không dùng cho phụ nữ mang thai. Với phụ nữ sắp sinh (2 - 3 giờ trước khi sinh), fentanyl chỉ được chỉ định trong các trường hợp thật cần sau khi đã cân nhắc kỹ lợi ích và nguy cơ và phải theo dõi chặt chẽ tình trạng của mẹ và thai nhi. Có tài liệu khuyên không nên dùng.",
+          "block_id": "b0054"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-cho-con-bu",
       "title": "Thời kỳ cho con bú",
-      "content": "Fentanyl được bài tiết vào sữa mẹ. Do đó, không nên cho con bú trong vòng 24 giờ sau khi điều trị. Nên cân nhắc nguy cơ/lợi ích của việc cho con bú sau khi dùng fentanyl.",
+      "heading_block": "b0055",
       "blocks": [
         {
           "type": "text",
-          "text": "Fentanyl được bài tiết vào sữa mẹ. Do đó, không nên cho con bú trong vòng 24 giờ sau khi điều trị. Nên cân nhắc nguy cơ/lợi ích của việc cho con bú sau khi dùng fentanyl."
+          "text": "Fentanyl được bài tiết vào sữa mẹ. Do đó, không nên cho con bú trong vòng 24 giờ sau khi điều trị. Nên cân nhắc nguy cơ/lợi ích của việc cho con bú sau khi dùng fentanyl.",
+          "block_id": "b0056"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tac-dung-khong-mong-muon-adr",
       "title": "Tác dụng không mong muốn (ADR)",
-      "content": "Khoảng 45% trường hợp điều trị với fentanyl có thể xuất hiện ADR.\n\nRất thường gặp Tiêu hóa: buồn nôn.\n\nThường gặp TKTW: chóng mặt, đau đầu, buồn ngủ.\n\nHô hấp: khó thở.\n\nDa và mô mềm: tiết mồ hôi quá mức.\n\nTiêu hóa: viêm dạ dày, nôn, táo bón, khô miệng.\n\nToàn thân: mệt mỏi.\n\nÍt gặp Toàn thân: hội chứng cai thuốc, suy nhược, khó chịu.\n\nTổn thương, ngộ độc và tuân thủ điều trị: vô tình quá liều.\n\nMiễn dịch: mẫn cảm.\n\nChuyển hóa và dinh dưỡng: chán ăn, giảm thèm ăn.\n\nTâm thần: trầm cảm, hoang tưởng, trạng thái bối rối, mất phương hướng, tình trạng tinh thần thay đổi, lo lắng, hưng phấn, chán chường, rối loạn cảm xúc, xáo trộn trong sự chú ý, mất ngủ.\n\nTKTW: hay quên, loạn khứu giác, loạn vị giác, run rẩy, hôn mê, giảm xúc giác, rối loạn giấc ngủ.\n\nMắt: nhìn mờ.\n\nTim mạch: nhịp nhanh, nhịp chậm, hạ huyết áp.\n\nHô hấp: đau hầu họng, nghẽn họng.\n\nTiêu hóa: loét miệng, viêm loét lợi, loét môi, suy giảm khả năng làm rỗng dạ dày, đau bụng, khó tiêu, khó chịu ở dạ dày, rối loạn lưỡi, nhiệt miệng.\n\nDa và mô mềm: tổn thương da, phát ban, dị ứng ngứa, ngứa, đổ mồ hôi đêm, tăng xu hướng bầm tím.\n\nCơ - xương - khớp: đau khớp, cứng cơ xương khớp.\n\nSinh dục: rối loạn chức năng cương dương.\n\nChưa xác định được tần suất Toàn thân: đỏ bừng và nóng bừng, phù ngoại vi, sốt, hội chứng cai thuốc ở trẻ sơ sinh.\n\nTâm thần: ảo giác, lệ thuộc thuốc (nghiện thuốc), lạm dụng thuốc, mê sảng.\n\nTKTW: co giật, suy giảm ý thức, mất ý thức.\n\nHô hấp: ức chế hô hấp.\n\nTiêu hóa: sưng lưỡi, tiêu chảy.\n\nDa và mô mềm: mày đay.",
+      "heading_block": "b0057",
       "blocks": [
         {
           "type": "text",
-          "text": "Khoảng 45% trường hợp điều trị với fentanyl có thể xuất hiện ADR.\n\nRất thường gặp Tiêu hóa: buồn nôn.\n\nThường gặp TKTW: chóng mặt, đau đầu, buồn ngủ.\n\nHô hấp: khó thở.\n\nDa và mô mềm: tiết mồ hôi quá mức.\n\nTiêu hóa: viêm dạ dày, nôn, táo bón, khô miệng.\n\nToàn thân: mệt mỏi.\n\nÍt gặp Toàn thân: hội chứng cai thuốc, suy nhược, khó chịu.\n\nTổn thương, ngộ độc và tuân thủ điều trị: vô tình quá liều.\n\nMiễn dịch: mẫn cảm.\n\nChuyển hóa và dinh dưỡng: chán ăn, giảm thèm ăn.\n\nTâm thần: trầm cảm, hoang tưởng, trạng thái bối rối, mất phương hướng, tình trạng tinh thần thay đổi, lo lắng, hưng phấn, chán chường, rối loạn cảm xúc, xáo trộn trong sự chú ý, mất ngủ.\n\nTKTW: hay quên, loạn khứu giác, loạn vị giác, run rẩy, hôn mê, giảm xúc giác, rối loạn giấc ngủ.\n\nMắt: nhìn mờ.\n\nTim mạch: nhịp nhanh, nhịp chậm, hạ huyết áp.\n\nHô hấp: đau hầu họng, nghẽn họng.\n\nTiêu hóa: loét miệng, viêm loét lợi, loét môi, suy giảm khả năng làm rỗng dạ dày, đau bụng, khó tiêu, khó chịu ở dạ dày, rối loạn lưỡi, nhiệt miệng.\n\nDa và mô mềm: tổn thương da, phát ban, dị ứng ngứa, ngứa, đổ mồ hôi đêm, tăng xu hướng bầm tím.\n\nCơ - xương - khớp: đau khớp, cứng cơ xương khớp.\n\nSinh dục: rối loạn chức năng cương dương.\n\nChưa xác định được tần suất Toàn thân: đỏ bừng và nóng bừng, phù ngoại vi, sốt, hội chứng cai thuốc ở trẻ sơ sinh.\n\nTâm thần: ảo giác, lệ thuộc thuốc (nghiện thuốc), lạm dụng thuốc, mê sảng.\n\nTKTW: co giật, suy giảm ý thức, mất ý thức.\n\nHô hấp: ức chế hô hấp.\n\nTiêu hóa: sưng lưỡi, tiêu chảy.\n\nDa và mô mềm: mày đay."
+          "text": "Khoảng 45% trường hợp điều trị với fentanyl có thể xuất hiện ADR.",
+          "block_id": "b0058"
+        },
+        {
+          "type": "subheading",
+          "text": "Rất thường gặp",
+          "block_id": "b0059"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: buồn nôn.",
+          "block_id": "b0060"
+        },
+        {
+          "type": "subheading",
+          "text": "Thường gặp",
+          "block_id": "b0061"
+        },
+        {
+          "type": "text",
+          "text": "TKTW: chóng mặt, đau đầu, buồn ngủ.",
+          "block_id": "b0062"
+        },
+        {
+          "type": "text",
+          "text": "Hô hấp: khó thở.",
+          "block_id": "b0063"
+        },
+        {
+          "type": "text",
+          "text": "Da và mô mềm: tiết mồ hôi quá mức.",
+          "block_id": "b0064"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: viêm dạ dày, nôn, táo bón, khô miệng.",
+          "block_id": "b0065"
+        },
+        {
+          "type": "text",
+          "text": "Toàn thân: mệt mỏi.",
+          "block_id": "b0066"
+        },
+        {
+          "type": "subheading",
+          "text": "Ít gặp",
+          "block_id": "b0067"
+        },
+        {
+          "type": "text",
+          "text": "Toàn thân: hội chứng cai thuốc, suy nhược, khó chịu.",
+          "block_id": "b0068"
+        },
+        {
+          "type": "text",
+          "text": "Tổn thương, ngộ độc và tuân thủ điều trị: vô tình quá liều.",
+          "block_id": "b0069"
+        },
+        {
+          "type": "text",
+          "text": "Miễn dịch: mẫn cảm.",
+          "block_id": "b0070"
+        },
+        {
+          "type": "text",
+          "text": "Chuyển hóa và dinh dưỡng: chán ăn, giảm thèm ăn.",
+          "block_id": "b0071"
+        },
+        {
+          "type": "text",
+          "text": "Tâm thần: trầm cảm, hoang tưởng, trạng thái bối rối, mất phương hướng, tình trạng tinh thần thay đổi, lo lắng, hưng phấn, chán chường, rối loạn cảm xúc, xáo trộn trong sự chú ý, mất ngủ.",
+          "block_id": "b0072"
+        },
+        {
+          "type": "text",
+          "text": "TKTW: hay quên, loạn khứu giác, loạn vị giác, run rẩy, hôn mê, giảm xúc giác, rối loạn giấc ngủ.",
+          "block_id": "b0073"
+        },
+        {
+          "type": "text",
+          "text": "Mắt: nhìn mờ.",
+          "block_id": "b0074"
+        },
+        {
+          "type": "text",
+          "text": "Tim mạch: nhịp nhanh, nhịp chậm, hạ huyết áp.",
+          "block_id": "b0075"
+        },
+        {
+          "type": "text",
+          "text": "Hô hấp: đau hầu họng, nghẽn họng.",
+          "block_id": "b0076"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: loét miệng, viêm loét lợi, loét môi, suy giảm khả năng làm rỗng dạ dày, đau bụng, khó tiêu, khó chịu ở dạ dày, rối loạn lưỡi, nhiệt miệng.",
+          "block_id": "b0077"
+        },
+        {
+          "type": "text",
+          "text": "Da và mô mềm: tổn thương da, phát ban, dị ứng ngứa, ngứa, đổ mồ hôi đêm, tăng xu hướng bầm tím.",
+          "block_id": "b0078"
+        },
+        {
+          "type": "text",
+          "text": "Cơ - xương - khớp: đau khớp, cứng cơ xương khớp.",
+          "block_id": "b0079"
+        },
+        {
+          "type": "text",
+          "text": "Sinh dục: rối loạn chức năng cương dương.",
+          "block_id": "b0080"
+        },
+        {
+          "type": "subheading",
+          "text": "Chưa xác định được tần suất",
+          "block_id": "b0081"
+        },
+        {
+          "type": "text",
+          "text": "Toàn thân: đỏ bừng và nóng bừng, phù ngoại vi, sốt, hội chứng cai thuốc ở trẻ sơ sinh.",
+          "block_id": "b0082"
+        },
+        {
+          "type": "text",
+          "text": "Tâm thần: ảo giác, lệ thuộc thuốc (nghiện thuốc), lạm dụng thuốc, mê sảng.",
+          "block_id": "b0083"
+        },
+        {
+          "type": "text",
+          "text": "TKTW: co giật, suy giảm ý thức, mất ý thức.",
+          "block_id": "b0084"
+        },
+        {
+          "type": "text",
+          "text": "Hô hấp: ức chế hô hấp.",
+          "block_id": "b0085"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: sưng lưỡi, tiêu chảy.",
+          "block_id": "b0086"
+        },
+        {
+          "type": "text",
+          "text": "Da và mô mềm: mày đay.",
+          "block_id": "b0087"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "huong-dan-cach-xu-tri-adr",
       "title": "Hướng dẫn cách xử trí ADR",
-      "content": "Nhịp tim chậm: Dùng atropin.\n\nSuy hô hấp: Trong khi mổ, nếu suy hô hấp vẫn còn sau khi mổ thì phải thông khí nhân tạo kéo dài. Ngoài ra có thể phải tiêm tĩnh mạch naloxon. Phải dò liều naloxon thật cẩn thận để đạt hiệu quả mong muốn mà không ảnh hưởng đến việc kiểm soát đau sau mổ hoặc không gây tác dụng không mong muốn khác như tăng huyết áp và nhịp tim nhanh. Liều khởi đầu có thể là 0,5 microgam naloxon/kg thể trọng, tiêm tĩnh mạch. Phải tiếp tục theo dõi suy hô hấp để tiêm bổ sung naloxon nếu cần. Truyền tĩnh mạch liên tục có thể kiểm soát được các tác dụng không mong muốn của opioid.\n\nHạ huyết áp: bồi phụ nước và điện giải. Đặt người bệnh ở tư thế để máu dễ trở về tim, nếu điều kiện mổ cho phép. Nếu cần thiết, tiêm thuốc nâng huyết áp (trong hoặc sau mổ) và/hoặc naloxon (chỉ tiêm sau mổ).\n\nCứng cơ: Tiêm thuốc ức chế dẫn truyền thần kinh cơ và hỗ trợ hô hấp hoặc có thể tiêm naloxon. Sử dụng những biện pháp hỗ trợ khác nếu cần thiết.\n\nCó thể làm giảm nguy cơ cứng cơ nếu tiêm tĩnh mạch chậm và được chỉ định dùng các thuốc benzodiazepin trước khi dùng fentanyl. Có thể xảy ra suy hô hấp thứ cấp sau mổ.",
+      "heading_block": "b0088",
       "blocks": [
         {
           "type": "text",
-          "text": "Nhịp tim chậm: Dùng atropin.\n\nSuy hô hấp: Trong khi mổ, nếu suy hô hấp vẫn còn sau khi mổ thì phải thông khí nhân tạo kéo dài. Ngoài ra có thể phải tiêm tĩnh mạch naloxon. Phải dò liều naloxon thật cẩn thận để đạt hiệu quả mong muốn mà không ảnh hưởng đến việc kiểm soát đau sau mổ hoặc không gây tác dụng không mong muốn khác như tăng huyết áp và nhịp tim nhanh. Liều khởi đầu có thể là 0,5 microgam naloxon/kg thể trọng, tiêm tĩnh mạch. Phải tiếp tục theo dõi suy hô hấp để tiêm bổ sung naloxon nếu cần. Truyền tĩnh mạch liên tục có thể kiểm soát được các tác dụng không mong muốn của opioid.\n\nHạ huyết áp: bồi phụ nước và điện giải. Đặt người bệnh ở tư thế để máu dễ trở về tim, nếu điều kiện mổ cho phép. Nếu cần thiết, tiêm thuốc nâng huyết áp (trong hoặc sau mổ) và/hoặc naloxon (chỉ tiêm sau mổ).\n\nCứng cơ: Tiêm thuốc ức chế dẫn truyền thần kinh cơ và hỗ trợ hô hấp hoặc có thể tiêm naloxon. Sử dụng những biện pháp hỗ trợ khác nếu cần thiết.\n\nCó thể làm giảm nguy cơ cứng cơ nếu tiêm tĩnh mạch chậm và được chỉ định dùng các thuốc benzodiazepin trước khi dùng fentanyl. Có thể xảy ra suy hô hấp thứ cấp sau mổ."
+          "text": "Nhịp tim chậm: Dùng atropin.",
+          "block_id": "b0089"
+        },
+        {
+          "type": "text",
+          "text": "Suy hô hấp: Trong khi mổ, nếu suy hô hấp vẫn còn sau khi mổ thì phải thông khí nhân tạo kéo dài. Ngoài ra có thể phải tiêm tĩnh mạch naloxon. Phải dò liều naloxon thật cẩn thận để đạt hiệu quả mong muốn mà không ảnh hưởng đến việc kiểm soát đau sau mổ hoặc không gây tác dụng không mong muốn khác như tăng huyết áp và nhịp tim nhanh. Liều khởi đầu có thể là 0,5 microgam",
+          "block_id": "b0090"
+        },
+        {
+          "type": "text",
+          "text": "naloxon/kg thể trọng, tiêm tĩnh mạch. Phải tiếp tục theo dõi suy hô hấp để tiêm bổ sung naloxon nếu cần. Truyền tĩnh mạch liên tục có thể kiểm soát được các tác dụng không mong muốn của opioid.",
+          "block_id": "b0091"
+        },
+        {
+          "type": "text",
+          "text": "Hạ huyết áp: bồi phụ nước và điện giải. Đặt người bệnh ở tư thế để máu dễ trở về tim, nếu điều kiện mổ cho phép. Nếu cần thiết, tiêm thuốc nâng huyết áp (trong hoặc sau mổ) và/hoặc naloxon (chỉ tiêm sau mổ).",
+          "block_id": "b0092"
+        },
+        {
+          "type": "text",
+          "text": "Cứng cơ: Tiêm thuốc ức chế dẫn truyền thần kinh cơ và hỗ trợ hô hấp hoặc có thể tiêm naloxon. Sử dụng những biện pháp hỗ trợ khác nếu cần thiết.",
+          "block_id": "b0093"
+        },
+        {
+          "type": "text",
+          "text": "Có thể làm giảm nguy cơ cứng cơ nếu tiêm tĩnh mạch chậm và được chỉ định dùng các thuốc benzodiazepin trước khi dùng fentanyl. Có thể xảy ra suy hô hấp thứ cấp sau mổ.",
+          "block_id": "b0094"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "cach-dung",
-      "title": "Cách dùng",
-      "content": "Fentanyl chỉ dùng ở bệnh viện do cán bộ có kinh nghiệm về gây mê bằng đường tĩnh mạch, gây tê ngoài màng cứng và quen xử trí các tai biến của thuốc giảm đau opioid. Cơ sở phải có sẵn thuốc đối kháng opioid, thuốc hồi sức, phương tiện đặt nội khí quản và oxygen, trong và sau khi dùng fentanyl.\n\nViên ngậm: Viên ngậm được thiết kế để sử dụng ở niêm mạc, do đó nên được đặt trong miệng áp vào má và phải được di chuyển quanh miệng với mục đích tối đa hóa diện tích niêm mạc tiếp xúc với thuốc. Không được nhai, nuốt viên thuốc. Có thể dùng nước để làm ẩm niêm mạc miệng ở những người bị khô miệng. Thời gian ngậm cần trên 15 phút.\n\nViên ngậm ở niêm mạc má: Lấy viên thuốc ra khỏi vỉ ngay trước khi sử dụng. Đặt viên thuốc vào miệng giữa má và lợi để thuốc tự tan hoàn toàn. Không nhai, nuốt viên thuốc, có thể chuyển viên thuốc sang phía má bên kia. Thời gian ngậm cần trên 15 phút.\n\nViên ngậm dưới lưỡi: Nên ngậm ở phần sâu nhất dưới lưỡi. Không được nuốt, không nhai hoặc mút mà ngậm để thuốc tan hoàn toàn trong khoang dưới lưỡi. Bệnh nhân không nên ăn hoặc uống bất cứ thứ gì cho đến khi viên ngậm dưới lưỡi được hòa tan hoàn toàn. Ở những người bị khô miệng, có thể dùng nước để làm ẩm niêm mạc miệng trước khi ngậm thuốc.\n\nMiếng dán: Phải dán trên chỗ da khô, da lành, không hở ra ngoài trời, bề mặt phẳng (vùng ngực, lưng, lườn, cánh tay); dùng tay ấn lên miếng dán trong 30 giây, đảm bảo cho toàn bộ miếng dán nhất là các góc đều tiếp xúc; với trẻ nhỏ và người có rối loạn ý thức thì phải dán miếng dán ở chỗ không thể bị người dùng lấy ra và cho vào miệng.\n\nVùng da dán thuốc: Không được cạo lông mà phải nhổ lông; chỉ rửa vùng này bằng nước sạch, không dùng xà phòng, dầu, dung dịch tẩy, cồn hay hóa chất để tránh bị kích thích. Sau khi dán thuốc, bệnh nhân có thể tắm, gội hay bơi nhưng cần tránh phơi nắng, tránh tắm nước nóng, tránh để vùng có dán thuốc bị chiếu nhiệt trực tiếp vì sẽ làm tăng hấp thu thuốc, có thể dẫn đến quá liều. Phải luân chuyển vị trí dán thuốc, không dán mãi ở 1 chỗ hoặc dán đè lên chỗ dán cũ.\n\nDạng thuốc xịt mũi: Đầu của bệnh nhân thẳng (bệnh nhân ở tư thế ngồi hoặc đứng) khi dùng thuốc.\n\nDạng xịt dưới lưỡi: Nên mở thuốc ngay trước khi sử dụng. Xịt thuốc cẩn thận vào miệng, ở bên dưới lưỡi.\n\nDung dịch tiêm: Tiêm tĩnh mạch và tiêm bắp. Dung dịch fentanyl 50 microgam/ml để tiêm/truyền có thể được dùng cho cả người lớn và trẻ em qua đường tiêm tĩnh mạch dưới dạng liều bolus hoặc truyền.",
+      "id": "lieu-luong-va-cach-dung",
+      "title": "Liều lượng và cách dùng",
+      "heading_block": "b0095",
       "blocks": [
         {
-          "type": "text",
-          "text": "Fentanyl chỉ dùng ở bệnh viện do cán bộ có kinh nghiệm về gây mê bằng đường tĩnh mạch, gây tê ngoài màng cứng và quen xử trí các tai biến của thuốc giảm đau opioid. Cơ sở phải có sẵn thuốc đối kháng opioid, thuốc hồi sức, phương tiện đặt nội khí quản và oxygen, trong và sau khi dùng fentanyl.\n\nViên ngậm: Viên ngậm được thiết kế để sử dụng ở niêm mạc, do đó nên được đặt trong miệng áp vào má và phải được di chuyển quanh miệng với mục đích tối đa hóa diện tích niêm mạc tiếp xúc với thuốc. Không được nhai, nuốt viên thuốc. Có thể dùng nước để làm ẩm niêm mạc miệng ở những người bị khô miệng. Thời gian ngậm cần trên 15 phút.\n\nViên ngậm ở niêm mạc má: Lấy viên thuốc ra khỏi vỉ ngay trước khi sử dụng. Đặt viên thuốc vào miệng giữa má và lợi để thuốc tự tan hoàn toàn. Không nhai, nuốt viên thuốc, có thể chuyển viên thuốc sang phía má bên kia. Thời gian ngậm cần trên 15 phút.\n\nViên ngậm dưới lưỡi: Nên ngậm ở phần sâu nhất dưới lưỡi. Không được nuốt, không nhai hoặc mút mà ngậm để thuốc tan hoàn toàn trong khoang dưới lưỡi. Bệnh nhân không nên ăn hoặc uống bất cứ thứ gì cho đến khi viên ngậm dưới lưỡi được hòa tan hoàn toàn. Ở những người bị khô miệng, có thể dùng nước để làm ẩm niêm mạc miệng trước khi ngậm thuốc.\n\nMiếng dán: Phải dán trên chỗ da khô, da lành, không hở ra ngoài trời, bề mặt phẳng (vùng ngực, lưng, lườn, cánh tay); dùng tay ấn lên miếng dán trong 30 giây, đảm bảo cho toàn bộ miếng dán nhất là các góc đều tiếp xúc; với trẻ nhỏ và người có rối loạn ý thức thì phải dán miếng dán ở chỗ không thể bị người dùng lấy ra và cho vào miệng.\n\nVùng da dán thuốc: Không được cạo lông mà phải nhổ lông; chỉ rửa vùng này bằng nước sạch, không dùng xà phòng, dầu, dung dịch tẩy, cồn hay hóa chất để tránh bị kích thích. Sau khi dán thuốc, bệnh nhân có thể tắm, gội hay bơi nhưng cần tránh phơi nắng, tránh tắm nước nóng, tránh để vùng có dán thuốc bị chiếu nhiệt trực tiếp vì sẽ làm tăng hấp thu thuốc, có thể dẫn đến quá liều. Phải luân chuyển vị trí dán thuốc, không dán mãi ở 1 chỗ hoặc dán đè lên chỗ dán cũ.\n\nDạng thuốc xịt mũi: Đầu của bệnh nhân thẳng (bệnh nhân ở tư thế ngồi hoặc đứng) khi dùng thuốc.\n\nDạng xịt dưới lưỡi: Nên mở thuốc ngay trước khi sử dụng. Xịt thuốc cẩn thận vào miệng, ở bên dưới lưỡi.\n\nDung dịch tiêm: Tiêm tĩnh mạch và tiêm bắp. Dung dịch fentanyl 50 microgam/ml để tiêm/truyền có thể được dùng cho cả người lớn và trẻ em qua đường tiêm tĩnh mạch dưới dạng liều bolus hoặc truyền."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "lieu-luong",
-      "title": "Liều lượng",
-      "content": "Liều lượng dao động tùy theo phẫu thuật và đáp ứng của người bệnh.\n\nĐau mạn tính khó điều trị và bệnh nhân hiện đang điều trị bằng thuốc giảm đau opioid mạnh: Miếng dán qua da: Người lớn và trẻ 16 - 17 tuổi: Khởi đầu 12 microgam/giờ mỗi 72 giờ, hoặc 25 microgam/giờ mỗi 72 giờ, không nên đánh giá hiệu quả giảm đau khi sử dụng miếng dán chưa đủ 24 giờ (nồng độ fentanyl trong huyết thanh tăng dần), nên ngừng dần liệu pháp điều trị giảm đau đang dùng trước đó từ khi dán miếng dán đầu tiên, chỉnh liều 12 - 25 microgam/giờ sau mỗi 48 - 72 giờ nếu cần, có thể dùng nhiều hơn 1 miếng dán trong một khoảng thời gian (dán cùng 1 thời điểm để tránh nhầm lẫn), bổ sung thêm liệu pháp giảm đau khác nếu liều quá 300 microgam/giờ.\n\nĐau mạn tính khó điều trị và bệnh nhân hiện không điều trị bằng thuốc giảm đau opioid mạnh Miếng dán qua da: Người lớn và trẻ em 2 - 17 tuổi: Liều khởi đầu dựa trên nhu cầu opioid 24 giờ trước đó để đánh giá hiệu quả giảm đau và tăng liều.\n\nHô hấp tự nhiên: Giảm đau và tăng cường gây mê trong phẫu thuật ở bệnh nhân không phải trợ thở Tiêm tĩnh mạch chậm, tiêm bắp: Người lớn và trẻ em 12 - 17 tuổi: Khởi đầu 50 - 100 microgam (tối đa mỗi liều 200 microgam), sau đó 25 - 50 microgam nếu cần. Trẻ em 2 - 11 tuổi: Khởi đầu 1 - 3 microgam/kg, sau đó 1 - 1,25 microgam nếu cần.\n\nTruyền tĩnh mạch: Người lớn: 3 - 4,8 microgam/kg/giờ, chỉnh liều theo đáp ứng.\n\nHỗ trợ thở máy: giảm đau và tăng cường gây mê trong quá trình phẫu thuật, trong hồi sức tích cực Tiêm tĩnh mạch chậm, tiêm bắp: Người lớn và trẻ em 12 - 17 tuổi: khởi đầu 300 - 3 500 microgam, sau đó 100 - 200 microgam nếu cần. Trẻ em 2 - 11 tuổi: Khởi đầu 1 - 3 microgam/kg, sau đó 1 - 1,25 microgam nếu cần.\n\nTruyền tĩnh mạch: Người lớn: Khởi đầu 10 microgam/kg, truyền trên 10 phút, sau đó 6 microgam/kg/giờ, chỉnh liều theo đáp ứng, có thể cần đến 180 microgam/kg/giờ trong phẫu thuật tim mạch.\n\nĐau nặng ở bệnh nhân đang dùng opiod điều trị đau mạn do ung thư Viên ngậm: Người lớn và trẻ 16 - 17 tuổi: Khởi đầu 200 microgam, ngậm trong 15 phút, sau đó 200 microgam mỗi 15 phút nếu cần, không được dùng trên 2 liều cho mỗi cơn đau; nếu không đạt hiệu quả giảm đau với một liều cho các cơn đau nặng liên tiếp, tăng hàm lượng mỗi đơn vị liều (mỗi viên) đến khi đạt hiệu quả giảm đau với không quá 4 viên ngậm/ngày, nếu có trên 4 cơn đau mỗi ngày, đánh giá lại liệu pháp giảm đau trong 24 giờ.\n\nĐể tránh quá liều ở người béo phì, cân nặng dùng để tính liều là cân nặng lý tưởng.\n\nViên ngậm dưới lưỡi: Người lớn: Khởi đầu 100 microgam, sau đó 100 microgam mỗi 15 - 30 phút nếu cần, chỉnh liều theo đáp ứng, không dùng trên 2 viên trong 15 - 30 phút cho mỗi cơn đau, tối đa 800 microgam mỗi cơn đau nặng, duy trì khoảng cách tối thiểu 2 giờ giữa mỗi lần điều trị cơn đau nặng, nếu có trên 4 cơn đau mỗi ngày, đánh giá lại liệu pháp giảm đau trong 24 giờ.\n\nViên ngậm tại niêm mạc má: Người lớn: Khởi đầu 100 microgam, sau đó 100 microgam mỗi 30 phút nếu cần, chỉnh liều theo đáp ứng, không dùng trên 2 viên cho mỗi cơn đau, tối đa 800 microgam mỗi cơn đau nặng, duy trì khoảng cách tối thiểu 4 giờ giữa mỗi lần điều trị cơn đau nặng trong quá trình chỉnh liều.\n\nDung dịch xịt mũi: Người lớn: khởi đầu 50 - 100 microgam, xịt vào 1 bên mũi, sau đó 50 - 100 microgam mỗi 10 phút nếu cần, chỉnh liều theo đáp ứng, tối đa 2 lần xịt cho mỗi cơn đau và tối thiểu 4 giờ giữa mỗi lần điều trị một cơn đau, nếu có trên 4 cơn đau mỗi ngày, đánh giá lại liệu pháp giảm đau trong 24 giờ.\n\nNgười cao tuổi: Phải giảm liều.",
-      "blocks": [
+          "type": "subheading",
+          "text": "Cách dùng",
+          "block_id": "b0096"
+        },
         {
           "type": "text",
-          "text": "Liều lượng dao động tùy theo phẫu thuật và đáp ứng của người bệnh.\n\nĐau mạn tính khó điều trị và bệnh nhân hiện đang điều trị bằng thuốc giảm đau opioid mạnh: Miếng dán qua da: Người lớn và trẻ 16 - 17 tuổi: Khởi đầu 12 microgam/giờ mỗi 72 giờ, hoặc 25 microgam/giờ mỗi 72 giờ, không nên đánh giá hiệu quả giảm đau khi sử dụng miếng dán chưa đủ 24 giờ (nồng độ fentanyl trong huyết thanh tăng dần), nên ngừng dần liệu pháp điều trị giảm đau đang dùng trước đó từ khi dán miếng dán đầu tiên, chỉnh liều 12 - 25 microgam/giờ sau mỗi 48 - 72 giờ nếu cần, có thể dùng nhiều hơn 1 miếng dán trong một khoảng thời gian (dán cùng 1 thời điểm để tránh nhầm lẫn), bổ sung thêm liệu pháp giảm đau khác nếu liều quá 300 microgam/giờ.\n\nĐau mạn tính khó điều trị và bệnh nhân hiện không điều trị bằng thuốc giảm đau opioid mạnh Miếng dán qua da: Người lớn và trẻ em 2 - 17 tuổi: Liều khởi đầu dựa trên nhu cầu opioid 24 giờ trước đó để đánh giá hiệu quả giảm đau và tăng liều.\n\nHô hấp tự nhiên: Giảm đau và tăng cường gây mê trong phẫu thuật ở bệnh nhân không phải trợ thở Tiêm tĩnh mạch chậm, tiêm bắp: Người lớn và trẻ em 12 - 17 tuổi: Khởi đầu 50 - 100 microgam (tối đa mỗi liều 200 microgam), sau đó 25 - 50 microgam nếu cần. Trẻ em 2 - 11 tuổi: Khởi đầu 1 - 3 microgam/kg, sau đó 1 - 1,25 microgam nếu cần.\n\nTruyền tĩnh mạch: Người lớn: 3 - 4,8 microgam/kg/giờ, chỉnh liều theo đáp ứng.\n\nHỗ trợ thở máy: giảm đau và tăng cường gây mê trong quá trình phẫu thuật, trong hồi sức tích cực Tiêm tĩnh mạch chậm, tiêm bắp: Người lớn và trẻ em 12 - 17 tuổi: khởi đầu 300 - 3 500 microgam, sau đó 100 - 200 microgam nếu cần. Trẻ em 2 - 11 tuổi: Khởi đầu 1 - 3 microgam/kg, sau đó 1 - 1,25 microgam nếu cần.\n\nTruyền tĩnh mạch: Người lớn: Khởi đầu 10 microgam/kg, truyền trên 10 phút, sau đó 6 microgam/kg/giờ, chỉnh liều theo đáp ứng, có thể cần đến 180 microgam/kg/giờ trong phẫu thuật tim mạch.\n\nĐau nặng ở bệnh nhân đang dùng opiod điều trị đau mạn do ung thư Viên ngậm: Người lớn và trẻ 16 - 17 tuổi: Khởi đầu 200 microgam, ngậm trong 15 phút, sau đó 200 microgam mỗi 15 phút nếu cần, không được dùng trên 2 liều cho mỗi cơn đau; nếu không đạt hiệu quả giảm đau với một liều cho các cơn đau nặng liên tiếp, tăng hàm lượng mỗi đơn vị liều (mỗi viên) đến khi đạt hiệu quả giảm đau với không quá 4 viên ngậm/ngày, nếu có trên 4 cơn đau mỗi ngày, đánh giá lại liệu pháp giảm đau trong 24 giờ.\n\nĐể tránh quá liều ở người béo phì, cân nặng dùng để tính liều là cân nặng lý tưởng.\n\nViên ngậm dưới lưỡi: Người lớn: Khởi đầu 100 microgam, sau đó 100 microgam mỗi 15 - 30 phút nếu cần, chỉnh liều theo đáp ứng, không dùng trên 2 viên trong 15 - 30 phút cho mỗi cơn đau, tối đa 800 microgam mỗi cơn đau nặng, duy trì khoảng cách tối thiểu 2 giờ giữa mỗi lần điều trị cơn đau nặng, nếu có trên 4 cơn đau mỗi ngày, đánh giá lại liệu pháp giảm đau trong 24 giờ.\n\nViên ngậm tại niêm mạc má: Người lớn: Khởi đầu 100 microgam, sau đó 100 microgam mỗi 30 phút nếu cần, chỉnh liều theo đáp ứng, không dùng trên 2 viên cho mỗi cơn đau, tối đa 800 microgam mỗi cơn đau nặng, duy trì khoảng cách tối thiểu 4 giờ giữa mỗi lần điều trị cơn đau nặng trong quá trình chỉnh liều.\n\nDung dịch xịt mũi: Người lớn: khởi đầu 50 - 100 microgam, xịt vào 1 bên mũi, sau đó 50 - 100 microgam mỗi 10 phút nếu cần, chỉnh liều theo đáp ứng, tối đa 2 lần xịt cho mỗi cơn đau và tối thiểu 4 giờ giữa mỗi lần điều trị một cơn đau, nếu có trên 4 cơn đau mỗi ngày, đánh giá lại liệu pháp giảm đau trong 24 giờ.\n\nNgười cao tuổi: Phải giảm liều."
+          "text": "Fentanyl chỉ dùng ở bệnh viện do cán bộ có kinh nghiệm về gây mê bằng đường tĩnh mạch, gây tê ngoài màng cứng và quen xử trí các tai biến của thuốc giảm đau opioid. Cơ sở phải có sẵn thuốc đối kháng opioid, thuốc hồi sức, phương tiện đặt nội khí quản và oxygen, trong và sau khi dùng fentanyl.",
+          "block_id": "b0097"
+        },
+        {
+          "type": "text",
+          "text": "Viên ngậm: Viên ngậm được thiết kế để sử dụng ở niêm mạc, do đó nên được đặt trong miệng áp vào má và phải được di chuyển quanh miệng với mục đích tối đa hóa diện tích niêm mạc tiếp xúc với thuốc. Không được nhai, nuốt viên thuốc. Có thể dùng nước để làm ẩm niêm mạc miệng ở những người bị khô miệng. Thời gian ngậm cần trên 15 phút.",
+          "block_id": "b0098"
+        },
+        {
+          "type": "text",
+          "text": "Viên ngậm ở niêm mạc má: Lấy viên thuốc ra khỏi vỉ ngay trước khi sử dụng. Đặt viên thuốc vào miệng giữa má và lợi để thuốc tự tan hoàn toàn. Không nhai, nuốt viên thuốc, có thể chuyển viên thuốc sang phía má bên kia. Thời gian ngậm cần trên 15 phút.",
+          "block_id": "b0099"
+        },
+        {
+          "type": "text",
+          "text": "Viên ngậm dưới lưỡi: Nên ngậm ở phần sâu nhất dưới lưỡi. Không được nuốt, không nhai hoặc mút mà ngậm để thuốc tan hoàn toàn trong khoang dưới lưỡi. Bệnh nhân không nên ăn hoặc uống bất cứ thứ gì cho đến khi viên ngậm dưới lưỡi được hòa tan hoàn toàn. Ở những người bị khô miệng, có thể dùng nước để làm ẩm niêm mạc miệng trước khi ngậm thuốc.",
+          "block_id": "b0100"
+        },
+        {
+          "type": "text",
+          "text": "Miếng dán: Phải dán trên chỗ da khô, da lành, không hở ra ngoài trời, bề mặt phẳng (vùng ngực, lưng, lườn, cánh tay); dùng tay ấn lên miếng dán trong 30 giây, đảm bảo cho toàn bộ miếng dán nhất là các góc đều tiếp xúc; với trẻ nhỏ và người có rối loạn ý thức thì phải dán miếng dán ở chỗ không thể bị người dùng lấy ra và cho vào miệng.",
+          "block_id": "b0101"
+        },
+        {
+          "type": "text",
+          "text": "Vùng da dán thuốc: Không được cạo lông mà phải nhổ lông; chỉ rửa vùng này bằng nước sạch, không dùng xà phòng, dầu, dung dịch tẩy, cồn hay hóa chất để tránh bị kích thích. Sau khi dán thuốc, bệnh nhân có thể tắm, gội hay bơi nhưng cần tránh phơi nắng, tránh tắm nước nóng, tránh để vùng có dán thuốc bị chiếu nhiệt trực tiếp vì sẽ làm tăng hấp thu thuốc, có thể dẫn đến quá liều. Phải luân chuyển vị trí dán thuốc, không dán mãi ở 1 chỗ hoặc dán đè lên chỗ dán cũ.",
+          "block_id": "b0102"
+        },
+        {
+          "type": "text",
+          "text": "Dạng thuốc xịt mũi: Đầu của bệnh nhân thẳng (bệnh nhân ở tư thế ngồi hoặc đứng) khi dùng thuốc.",
+          "block_id": "b0103"
+        },
+        {
+          "type": "text",
+          "text": "Dạng xịt dưới lưỡi: Nên mở thuốc ngay trước khi sử dụng. Xịt thuốc cẩn thận vào miệng, ở bên dưới lưỡi.",
+          "block_id": "b0104"
+        },
+        {
+          "type": "text",
+          "text": "Dung dịch tiêm: Tiêm tĩnh mạch và tiêm bắp. Dung dịch fentanyl 50 microgam/ml để tiêm/truyền có thể được dùng cho cả người lớn và trẻ em qua đường tiêm tĩnh mạch dưới dạng liều bolus hoặc truyền.",
+          "block_id": "b0105"
+        },
+        {
+          "type": "subheading",
+          "text": "Liều lượng",
+          "block_id": "b0106"
+        },
+        {
+          "type": "text",
+          "text": "Liều lượng dao động tùy theo phẫu thuật và đáp ứng của người bệnh.",
+          "block_id": "b0107"
+        },
+        {
+          "type": "text",
+          "text": "Đau mạn tính khó điều trị và bệnh nhân hiện đang điều trị bằng thuốc giảm đau opioid mạnh:",
+          "block_id": "b0108"
+        },
+        {
+          "type": "text",
+          "text": "Miếng dán qua da: Người lớn và trẻ 16 - 17 tuổi: Khởi đầu 12 microgam/giờ mỗi 72 giờ, hoặc 25 microgam/giờ mỗi 72 giờ, không nên đánh giá hiệu quả giảm đau khi sử dụng miếng dán chưa đủ 24 giờ (nồng độ fentanyl trong huyết thanh tăng dần), nên ngừng dần liệu pháp điều trị giảm đau đang dùng trước đó từ khi dán miếng dán đầu tiên, chỉnh liều 12 - 25 microgam/giờ sau mỗi 48 - 72 giờ nếu cần, có thể dùng nhiều hơn 1 miếng dán trong một khoảng thời gian (dán cùng 1 thời điểm để tránh nhầm lẫn), bổ sung thêm liệu pháp giảm đau khác nếu liều quá 300 microgam/giờ.",
+          "block_id": "b0109"
+        },
+        {
+          "type": "text",
+          "text": "Đau mạn tính khó điều trị và bệnh nhân hiện không điều trị bằng thuốc giảm đau opioid mạnh Miếng dán qua da: Người lớn và trẻ em 2 - 17 tuổi: Liều khởi đầu dựa trên nhu cầu opioid 24 giờ trước đó để đánh giá hiệu quả giảm đau và tăng liều.",
+          "block_id": "b0110"
+        },
+        {
+          "type": "text",
+          "text": "Hô hấp tự nhiên: Giảm đau và tăng cường gây mê trong phẫu thuật ở bệnh nhân không phải trợ thở Tiêm tĩnh mạch chậm, tiêm bắp: Người lớn và trẻ em 12 - 17 tuổi:",
+          "block_id": "b0111"
+        },
+        {
+          "type": "text",
+          "text": "Khởi đầu 50 - 100 microgam (tối đa mỗi liều 200 microgam), sau đó 25 - 50 microgam nếu cần. Trẻ em 2 - 11 tuổi: Khởi đầu 1 - 3 microgam/kg, sau đó 1 - 1,25 microgam nếu cần.",
+          "block_id": "b0112"
+        },
+        {
+          "type": "text",
+          "text": "Truyền tĩnh mạch: Người lớn: 3 - 4,8 microgam/kg/giờ, chỉnh liều theo đáp ứng.",
+          "block_id": "b0113"
+        },
+        {
+          "type": "text",
+          "text": "Hỗ trợ thở máy: giảm đau và tăng cường gây mê trong quá trình phẫu thuật, trong hồi sức tích cực Tiêm tĩnh mạch chậm, tiêm bắp: Người lớn và trẻ em 12 - 17 tuổi: khởi đầu 300 - 3 500 microgam, sau đó 100 - 200 microgam nếu cần. Trẻ em 2 - 11 tuổi: Khởi đầu 1 - 3 microgam/kg, sau đó 1 - 1,25 microgam nếu cần.",
+          "block_id": "b0114"
+        },
+        {
+          "type": "text",
+          "text": "Truyền tĩnh mạch: Người lớn: Khởi đầu 10 microgam/kg, truyền trên 10 phút, sau đó 6 microgam/kg/giờ, chỉnh liều theo đáp ứng, có thể cần đến 180 microgam/kg/giờ trong phẫu thuật tim mạch.",
+          "block_id": "b0115"
+        },
+        {
+          "type": "text",
+          "text": "Đau nặng ở bệnh nhân đang dùng opiod điều trị đau mạn do ung thư Viên ngậm: Người lớn và trẻ 16 - 17 tuổi: Khởi đầu 200 microgam, ngậm trong 15 phút, sau đó 200 microgam mỗi 15 phút nếu cần, không được dùng trên 2 liều cho mỗi cơn đau; nếu không đạt hiệu quả giảm đau với một liều cho các cơn đau nặng liên tiếp, tăng hàm lượng mỗi đơn vị liều (mỗi viên) đến khi đạt hiệu quả giảm đau với không quá 4 viên ngậm/ngày, nếu có trên 4 cơn đau mỗi ngày, đánh giá lại liệu pháp giảm đau trong 24 giờ.",
+          "block_id": "b0116"
+        },
+        {
+          "type": "text",
+          "text": "Để tránh quá liều ở người béo phì, cân nặng dùng để tính liều là cân nặng lý tưởng.",
+          "block_id": "b0117"
+        },
+        {
+          "type": "text",
+          "text": "Viên ngậm dưới lưỡi: Người lớn: Khởi đầu 100 microgam, sau đó 100 microgam mỗi 15 - 30 phút nếu cần, chỉnh liều theo đáp ứng, không dùng trên 2 viên trong 15 - 30 phút cho mỗi cơn đau, tối đa 800 microgam mỗi cơn đau nặng, duy trì khoảng cách tối thiểu 2 giờ giữa mỗi lần điều trị cơn đau nặng, nếu có trên 4 cơn đau mỗi ngày, đánh giá lại liệu pháp giảm đau trong 24 giờ.",
+          "block_id": "b0118"
+        },
+        {
+          "type": "text",
+          "text": "Viên ngậm tại niêm mạc má: Người lớn: Khởi đầu 100 microgam, sau đó 100 microgam mỗi 30 phút nếu cần, chỉnh liều theo đáp ứng, không dùng trên 2 viên cho mỗi cơn đau, tối đa 800 microgam mỗi cơn đau nặng, duy trì khoảng cách tối thiểu 4 giờ giữa mỗi lần điều trị cơn đau nặng trong quá trình chỉnh liều.",
+          "block_id": "b0119"
+        },
+        {
+          "type": "text",
+          "text": "Dung dịch xịt mũi: Người lớn: khởi đầu 50 - 100 microgam, xịt vào 1 bên mũi, sau đó 50 - 100 microgam mỗi 10 phút nếu cần, chỉnh liều theo đáp ứng, tối đa 2 lần xịt cho mỗi cơn đau và tối thiểu 4 giờ giữa mỗi lần điều trị một cơn đau, nếu có trên 4 cơn đau mỗi ngày, đánh giá lại liệu pháp giảm đau trong 24 giờ.",
+          "block_id": "b0120"
+        },
+        {
+          "type": "text",
+          "text": "Người cao tuổi: Phải giảm liều.",
+          "block_id": "b0121"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-tac-thuoc",
       "title": "Tương tác thuốc",
-      "content": "Fentanyl citrat có những tương tác giống như tương tác của các opiat.\n\nSử dụng đồng thời fentanyl với các thuốc serotoninergic, như ức chế tái hấp thu serotonin chọn lọc (SSRI), hoặc ức chế tái hấp thu serotonin norepinephrin (SNRI) hoặc ức chế monoamin oxidase (IMAO), có thể làm tăng nguy cơ hội chứng serotonin, có thể đe dọa tính mạng.\n\nKhông khuyến cáo sử dụng cho những người đã dùng thuốc ức chế monoamin oxidase (IMAO) trong vòng 14 ngày vì có tác dụng nghiêm trọng và không thể đoán trước được của thuốc ức chế (IMAO) khi dùng cùng thuốc giảm đau opioid.\n\nKhông khuyến cáo sử dụng đồng thời thuốc chủ vận/thuốc đối kháng opioid (như buprenorphin, nalbuphin, pentazocin). Các thuốc này có ái lực cao với các thụ thể opioid có hoạt tính nội tại thấp, do đó đối kháng một phần với tác dụng giảm đau của fentanyl và có thể gây ra các triệu chứng cai thuốc ở những người lệ thuộc opioid.\n\nSử dụng fentanyl đồng thời với các thuốc ức chế CYP3A4 như một số kháng sinh nhóm macrolid (như clarithromycin, erythromycin, troleandomycin), dẫn xuất azol (như fluconazol, itraconazol, ketoconazol), các thuốc ức chế protease trong điều trị HIV (như fosamprenavir, nelfinavir, ritonavir), amiodaron, aprepitant, diltiazem, nefazodon, verapamil, nước bưởi có thể làm tăng sinh khả dụng và làm giảm thanh thải fentanyl. Điều này có thể dẫn đến kéo dài tác dụng opiat của thuốc, kể cả ức chế hô hấp gây tử vong.\n\nNgược lại, dùng fentanyl đồng thời với các thuốc kích thích CYP 3A4 có thể làm giảm tác dụng của fentanyl.\n\nTác dụng giảm đau của fentanyl tăng bởi các tác nhân ức chế thần kinh trung ương như: rượu, thuốc gây mê, thuốc ngủ, thuốc chống trầm cảm ba vòng, phenothiazin.\n\nTác dụng trên đường tiêu hóa của fentanyl làm giảm hấp thu một số thuốc: mexiletin, metoclopramid.\n\nHuyết áp giảm mạnh thường xảy ra khi phối hợp fentanyl với thuốc chẹn beta và thuốc chẹn kênh calci.",
+      "heading_block": "b0122",
       "blocks": [
         {
           "type": "text",
-          "text": "Fentanyl citrat có những tương tác giống như tương tác của các opiat.\n\nSử dụng đồng thời fentanyl với các thuốc serotoninergic, như ức chế tái hấp thu serotonin chọn lọc (SSRI), hoặc ức chế tái hấp thu serotonin norepinephrin (SNRI) hoặc ức chế monoamin oxidase (IMAO), có thể làm tăng nguy cơ hội chứng serotonin, có thể đe dọa tính mạng.\n\nKhông khuyến cáo sử dụng cho những người đã dùng thuốc ức chế monoamin oxidase (IMAO) trong vòng 14 ngày vì có tác dụng nghiêm trọng và không thể đoán trước được của thuốc ức chế (IMAO) khi dùng cùng thuốc giảm đau opioid.\n\nKhông khuyến cáo sử dụng đồng thời thuốc chủ vận/thuốc đối kháng opioid (như buprenorphin, nalbuphin, pentazocin). Các thuốc này có ái lực cao với các thụ thể opioid có hoạt tính nội tại thấp, do đó đối kháng một phần với tác dụng giảm đau của fentanyl và có thể gây ra các triệu chứng cai thuốc ở những người lệ thuộc opioid.\n\nSử dụng fentanyl đồng thời với các thuốc ức chế CYP3A4 như một số kháng sinh nhóm macrolid (như clarithromycin, erythromycin, troleandomycin), dẫn xuất azol (như fluconazol, itraconazol, ketoconazol), các thuốc ức chế protease trong điều trị HIV (như fosamprenavir, nelfinavir, ritonavir), amiodaron, aprepitant, diltiazem, nefazodon, verapamil, nước bưởi có thể làm tăng sinh khả dụng và làm giảm thanh thải fentanyl. Điều này có thể dẫn đến kéo dài tác dụng opiat của thuốc, kể cả ức chế hô hấp gây tử vong.\n\nNgược lại, dùng fentanyl đồng thời với các thuốc kích thích CYP 3A4 có thể làm giảm tác dụng của fentanyl.\n\nTác dụng giảm đau của fentanyl tăng bởi các tác nhân ức chế thần kinh trung ương như: rượu, thuốc gây mê, thuốc ngủ, thuốc chống trầm cảm ba vòng, phenothiazin.\n\nTác dụng trên đường tiêu hóa của fentanyl làm giảm hấp thu một số thuốc: mexiletin, metoclopramid.\n\nHuyết áp giảm mạnh thường xảy ra khi phối hợp fentanyl với thuốc chẹn beta và thuốc chẹn kênh calci."
+          "text": "Fentanyl citrat có những tương tác giống như tương tác của các opiat.",
+          "block_id": "b0123"
+        },
+        {
+          "type": "text",
+          "text": "Sử dụng đồng thời fentanyl với các thuốc serotoninergic, như ức chế tái hấp thu serotonin chọn lọc (SSRI), hoặc ức chế tái hấp thu serotonin norepinephrin (SNRI) hoặc ức chế monoamin oxidase (IMAO), có thể làm tăng nguy cơ hội chứng serotonin, có thể đe dọa tính mạng.",
+          "block_id": "b0124"
+        },
+        {
+          "type": "text",
+          "text": "Không khuyến cáo sử dụng cho những người đã dùng thuốc ức chế monoamin oxidase (IMAO) trong vòng 14 ngày vì có tác dụng nghiêm trọng và không thể đoán trước được của thuốc ức chế (IMAO) khi dùng cùng thuốc giảm đau opioid.",
+          "block_id": "b0125"
+        },
+        {
+          "type": "text",
+          "text": "Không khuyến cáo sử dụng đồng thời thuốc chủ vận/thuốc đối kháng opioid (như buprenorphin, nalbuphin, pentazocin). Các thuốc này có ái lực cao với các thụ thể opioid có hoạt tính nội tại thấp, do đó đối kháng một phần với tác dụng giảm đau của fentanyl và có thể gây ra các triệu chứng cai thuốc ở những người lệ thuộc opioid.",
+          "block_id": "b0126"
+        },
+        {
+          "type": "text",
+          "text": "Sử dụng fentanyl đồng thời với các thuốc ức chế CYP3A4 như một số kháng sinh nhóm macrolid (như clarithromycin, erythromycin, troleandomycin), dẫn xuất azol (như fluconazol, itraconazol, ketoconazol), các thuốc ức chế protease trong điều trị HIV (như fosamprenavir, nelfinavir, ritonavir), amiodaron, aprepitant, diltiazem, nefazodon, verapamil, nước bưởi có thể làm tăng sinh khả dụng và làm giảm thanh thải fentanyl. Điều này có thể dẫn đến kéo dài tác dụng opiat của thuốc, kể cả ức chế hô hấp gây tử vong.",
+          "block_id": "b0127"
+        },
+        {
+          "type": "text",
+          "text": "Ngược lại, dùng fentanyl đồng thời với các thuốc kích thích CYP 3A4 có thể làm giảm tác dụng của fentanyl.",
+          "block_id": "b0128"
+        },
+        {
+          "type": "text",
+          "text": "Tác dụng giảm đau của fentanyl tăng bởi các tác nhân ức chế thần kinh trung ương như: rượu, thuốc gây mê, thuốc ngủ, thuốc chống trầm cảm ba vòng, phenothiazin.",
+          "block_id": "b0129"
+        },
+        {
+          "type": "text",
+          "text": "Tác dụng trên đường tiêu hóa của fentanyl làm giảm hấp thu một số thuốc: mexiletin, metoclopramid.",
+          "block_id": "b0130"
+        },
+        {
+          "type": "text",
+          "text": "Huyết áp giảm mạnh thường xảy ra khi phối hợp fentanyl với thuốc chẹn beta và thuốc chẹn kênh calci.",
+          "block_id": "b0131"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-ky",
       "title": "Tương kỵ",
-      "content": "Fentanyl citrat tương kỵ với thiopenton, methohexiton natri.\n\nKết tủa sẽ tạo thành khi tiêm truyền fentanyl phối hợp với droperidol ngay sau khi tiêm nafcilin natri. Fentanyl citrat tương hợp với dung dịch glucose 5% và natri clorid 0,9%.",
+      "heading_block": "b0132",
       "blocks": [
         {
           "type": "text",
-          "text": "Fentanyl citrat tương kỵ với thiopenton, methohexiton natri.\n\nKết tủa sẽ tạo thành khi tiêm truyền fentanyl phối hợp với droperidol ngay sau khi tiêm nafcilin natri. Fentanyl citrat tương hợp với dung dịch glucose 5% và natri clorid 0,9%."
+          "text": "Fentanyl citrat tương kỵ với thiopenton, methohexiton natri.",
+          "block_id": "b0133"
+        },
+        {
+          "type": "text",
+          "text": "Kết tủa sẽ tạo thành khi tiêm truyền fentanyl phối hợp với droperidol ngay sau khi tiêm nafcilin natri. Fentanyl citrat tương hợp với dung dịch glucose 5% và natri clorid 0,9%.",
+          "block_id": "b0134"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "qua-lieu-va-xu-tri",
       "title": "Quá liều và xử trí",
-      "content": "Trong trường hợp ngộ độc, để người bệnh nằm thoải mái, điều trị suy hô hấp và sốc. Nếu có co cứng cơ ảnh hưởng đến hô hấp, có thể cần đặt nội khí quản, hỗ trợ thông khí và dùng thuốc đối kháng opioid cũng như thuốc giãn cơ.\n\nDùng thuốc giải độc naloxon hydroclorid: 0,4 - 2 mg tiêm tĩnh mạch, nhắc lại sau mỗi 2 - 3 phút, có thể dùng với liều 10 mg.\n\nNaloxon có thể tiêm dưới da, tiêm bắp, hoặc tiêm tĩnh mạch. Cần thận trọng khi sử dụng naloxon hoặc các chất đối kháng opioid khác để điều trị quá liều ở bệnh nhân duy trì opioid, do nguy cơ dẫn đến hội chứng cai thuốc cấp tính.\n\nBệnh nhân cần được theo dõi cẩn thận, giữ ấm và bù dịch. Nếu tụt huyết áp nặng và dai dẳng, theo dõi giảm thể tích máu, cần kiểm soát huyết áp bằng truyền dịch một cách phù hợp.",
+      "heading_block": "b0135",
       "blocks": [
         {
           "type": "text",
-          "text": "Trong trường hợp ngộ độc, để người bệnh nằm thoải mái, điều trị suy hô hấp và sốc. Nếu có co cứng cơ ảnh hưởng đến hô hấp, có thể cần đặt nội khí quản, hỗ trợ thông khí và dùng thuốc đối kháng opioid cũng như thuốc giãn cơ.\n\nDùng thuốc giải độc naloxon hydroclorid: 0,4 - 2 mg tiêm tĩnh mạch, nhắc lại sau mỗi 2 - 3 phút, có thể dùng với liều 10 mg.\n\nNaloxon có thể tiêm dưới da, tiêm bắp, hoặc tiêm tĩnh mạch. Cần thận trọng khi sử dụng naloxon hoặc các chất đối kháng opioid khác để điều trị quá liều ở bệnh nhân duy trì opioid, do nguy cơ dẫn đến hội chứng cai thuốc cấp tính.\n\nBệnh nhân cần được theo dõi cẩn thận, giữ ấm và bù dịch. Nếu tụt huyết áp nặng và dai dẳng, theo dõi giảm thể tích máu, cần kiểm soát huyết áp bằng truyền dịch một cách phù hợp."
+          "text": "Trong trường hợp ngộ độc, để người bệnh nằm thoải mái, điều trị suy hô hấp và sốc. Nếu có co cứng cơ ảnh hưởng đến hô hấp, có thể cần đặt nội khí quản, hỗ trợ thông khí và dùng thuốc đối kháng opioid cũng như thuốc giãn cơ.",
+          "block_id": "b0136"
+        },
+        {
+          "type": "text",
+          "text": "Dùng thuốc giải độc naloxon hydroclorid: 0,4 - 2 mg tiêm tĩnh mạch, nhắc lại sau mỗi 2 - 3 phút, có thể dùng với liều 10 mg.",
+          "block_id": "b0137"
+        },
+        {
+          "type": "text",
+          "text": "Naloxon có thể tiêm dưới da, tiêm bắp, hoặc tiêm tĩnh mạch. Cần thận trọng khi sử dụng naloxon hoặc các chất đối kháng opioid khác để điều trị quá liều ở bệnh nhân duy trì opioid, do nguy cơ dẫn đến hội chứng cai thuốc cấp tính.",
+          "block_id": "b0138"
+        },
+        {
+          "type": "text",
+          "text": "Bệnh nhân cần được theo dõi cẩn thận, giữ ấm và bù dịch. Nếu tụt huyết áp nặng và dai dẳng, theo dõi giảm thể tích máu, cần kiểm soát huyết áp bằng truyền dịch một cách phù hợp.",
+          "block_id": "b0139"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "cap-nhat-lan-cuoi",
       "title": "Cập nhật lần cuối",
-      "content": "2021.",
+      "heading_block": "b0140",
       "blocks": [
         {
           "type": "text",
-          "text": "2021."
+          "text": "2021.",
+          "block_id": "b0140"
         }
-      ],
-      "subsections": []
+      ]
     }
   ],
-  "tables": [],
   "quality": {
-    "status": "source-layout-rebuilt-v10.1-source-paragraph-boundaries",
-    "pdf_text_order": "left-column-then-right-column; visual line flow",
-    "paragraph_policy": "Paragraph boundaries are source-derived and stored only as blank lines. The client preserves those boundaries exactly; it must not create a new paragraph from label words such as “Trẻ em:” or “Người lớn:”. A lower-case continuation fragment is merged only when it follows a non-terminal source fragment; table footnotes remain separate. No client-side anchor or length-based sentence splitter is allowed.",
-    "table_policy": "source-table image inserted by PDF page/column/y position; table-cell text excluded from prose",
-    "validation": {
-      "raw_newline_inside_paragraph": false,
-      "table_count": 0,
-      "section_count": 18,
-      "client_anchor_resegmentation_disabled": true,
-      "client_length_sentence_chunking_disabled": true
-    }
+    "block_count": 140,
+    "heading_count": 14,
+    "subheading_count": 8,
+    "paragraph_count": 116,
+    "list_count": 0,
+    "table_count": 0,
+    "figure_count": 0,
+    "note_count": 2,
+    "page_count": 4
+  },
+  "tables": [],
+  "legacy_compat": {
+    "sections": "generated from v11 blocks for v10.4.5.39 renderer/chatbot compatibility"
   }
 }

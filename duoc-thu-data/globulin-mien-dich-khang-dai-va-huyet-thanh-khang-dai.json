@@ -1,11 +1,10 @@
 {
-  "schema_version": "10.1-source-paragraph-boundaries",
+  "schema_version": "11.0.0",
   "id": "globulin-mien-dich-khang-dai-va-huyet-thanh-khang-dai",
   "title": "Globulin Miễn Dịch Kháng Dại Và Huyết Thanh Kháng Dại",
   "aliases": [
-    "globulin mien dich khang dai",
-    "globulin mien dich khang dai va huyet thanh khang dai",
-    "huyet thanh khang dai"
+    "Globulin Miễn Dịch Kháng Dại/Huyết Thanh Kháng Dại",
+    "Globulin Miễn Dịch Kháng Dại và Huyết Thanh Kháng Dại"
   ],
   "source": {
     "book": "Dược thư Quốc gia Việt Nam",
@@ -28,200 +27,2160 @@
       "boundary_method": "physical-source-title-band"
     }
   },
+  "parser": {
+    "name": "medplus-duoc-thu-v11-structured-pdf-parser",
+    "method": "PyMuPDF span -> line -> block",
+    "content_source": "Duocthu2023.pdf",
+    "old_json_usage": "id/title/page-boundary metadata and existing table asset path only; old content is not used",
+    "column_order": "left column -> right column -> next page",
+    "block_model": [
+      "heading",
+      "subheading",
+      "paragraph",
+      "list",
+      "table",
+      "figure",
+      "note"
+    ],
+    "table_policy": "no OCR; preserve existing duoc-thu-assets/<id>/pXXXX-tXX.png image_path"
+  },
+  "blocks": [
+    {
+      "id": "b0001",
+      "type": "heading",
+      "level": 1,
+      "text": "GLOBULIN MIỄN DỊCH KHÁNG DẠI VÀ",
+      "page": 819,
+      "printed_page": 825,
+      "column": 1,
+      "bbox": [
+        329.8,
+        298.92,
+        524.91,
+        312.76
+      ],
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "GLOBULIN MIỄN DỊCH KHÁNG DẠI VÀ \n",
+          "bbox": [
+            329.8,
+            298.92,
+            524.91,
+            312.76
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0002",
+      "type": "heading",
+      "level": 1,
+      "text": "HUYẾT THANH KHÁNG DẠI",
+      "page": 819,
+      "printed_page": 825,
+      "column": 1,
+      "bbox": [
+        357.12,
+        311.0,
+        492.6,
+        324.84
+      ],
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "HUYẾT THANH KHÁNG DẠI",
+          "bbox": [
+            357.12,
+            311.0,
+            492.6,
+            324.84
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0003",
+      "type": "paragraph",
+      "text": "Tên chung quốc tế: Rabies immunoglobulins and rabies antisera.",
+      "page": 819,
+      "printed_page": 825,
+      "column": 1,
+      "bbox": [
+        298.88,
+        334.95,
+        549.84,
+        348.1
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tên chung quốc tế: ",
+          "bbox": [
+            298.88,
+            334.95,
+            379.11,
+            348.1
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "Rabies immunoglobulins and rabies antisera.",
+          "bbox": [
+            379.11,
+            335.1,
+            549.84,
+            347.9
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0004",
+      "type": "paragraph",
+      "text": "Mã ATC: J06BB05 (globulin miễn dịch kháng dại); J06AA06 (huyết thanh kháng dại).",
+      "page": 819,
+      "printed_page": 825,
+      "column": 1,
+      "bbox": [
+        298.88,
+        347.03,
+        553.21,
+        372.06
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0005",
+      "type": "paragraph",
+      "text": "Loại thuốc: Thuốc tạo miễn dịch thụ động.",
+      "page": 819,
+      "printed_page": 825,
+      "column": 1,
+      "bbox": [
+        298.88,
+        371.19,
+        464.6,
+        384.34
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Loại thuốc: ",
+          "bbox": [
+            298.88,
+            371.19,
+            347.97,
+            384.34
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "Thuốc tạo miễn dịch thụ động.",
+          "bbox": [
+            347.97,
+            371.34,
+            464.6,
+            384.14
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0006",
+      "type": "heading",
+      "level": 2,
+      "text": "Dạng thuốc và hàm lượng",
+      "page": 819,
+      "printed_page": 825,
+      "column": 1,
+      "bbox": [
+        298.88,
+        386.27,
+        403.8,
+        399.42
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dạng thuốc và hàm lượng",
+          "bbox": [
+            298.88,
+            386.27,
+            403.8,
+            399.42
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0007",
+      "type": "paragraph",
+      "text": "Globulin miễn dịch kháng dại: Lọ thuốc tiêm 300 đvqt/2 ml.",
+      "page": 819,
+      "printed_page": 825,
+      "column": 1,
+      "bbox": [
+        298.88,
+        398.5,
+        531.11,
+        411.3
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Globulin miễn dịch kháng dại: Lọ thuốc tiêm 300 đvqt/2 ml. ",
+          "bbox": [
+            298.88,
+            398.5,
+            531.11,
+            411.3
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0008",
+      "type": "paragraph",
+      "text": "Huyết thanh kháng dại: Lọ thuốc tiêm 1 000 đvqt/5 ml.",
+      "page": 819,
+      "printed_page": 825,
+      "column": 1,
+      "bbox": [
+        298.88,
+        410.58,
+        508.67,
+        423.38
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Huyết thanh kháng dại: Lọ thuốc tiêm 1 000 đvqt/5 ml.",
+          "bbox": [
+            298.88,
+            410.58,
+            508.67,
+            423.38
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0009",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược lực học",
+      "page": 819,
+      "printed_page": 825,
+      "column": 1,
+      "bbox": [
+        298.88,
+        425.51,
+        352.48,
+        438.66
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược lực học",
+          "bbox": [
+            298.88,
+            425.51,
+            352.48,
+            438.66
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0010",
+      "type": "paragraph",
+      "text": "Globulin miễn dịch kháng dại (RIG, Human Rabies Immune Globulin) là một chế phẩm dạng dung dịch tiêm hoặc đông khô vô khuẩn không có chí nhiệt tố. Dung dịch này chứa 10 - 18% protein trong đó lượng immunoglobulin G đơn phân tử có ít nhất 80% (gamma globulin, IgG). Dung dịch đậm đặc này được điều chế từ huyết tương hoặc huyết thanh của người trưởng thành khỏe mạnh đã được tạo miễn dịch bằng vắc xin dại. Huyết tương hoặc huyết thanh này không chứa kháng nguyên bề mặt của virus viêm gan B (HBsAg), kháng thể kháng virus viêm gan C và kháng thể kháng HIV. Chế phẩm được cô đặc bằng cách tách chiết phân đoạn trong ethanol lạnh. Hàm lượng kháng thể trung hòa virus dại được chuẩn hóa để chứa ít nhất 150 đvqt/ml.",
+      "page": 819,
+      "printed_page": 825,
+      "column": 1,
+      "bbox": [
+        298.88,
+        437.9,
+        553.22,
+        583.42
+      ],
+      "source": {
+        "line_count": 12
+      }
+    },
+    {
+      "id": "b0011",
+      "type": "paragraph",
+      "text": "Huyết thanh kháng dại (ERIG, Equine Rabies Immune Globulin):",
+      "page": 819,
+      "printed_page": 825,
+      "column": 1,
+      "bbox": [
+        298.88,
+        582.71,
+        553.21,
+        595.5
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Huyết thanh kháng dại (ERIG, Equine Rabies Immune Globulin)",
+          "bbox": [
+            298.88,
+            582.87,
+            548.2,
+            595.5
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        },
+        {
+          "text": ": ",
+          "bbox": [
+            548.2,
+            582.71,
+            553.21,
+            595.5
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0012",
+      "type": "paragraph",
+      "text": "Cứ 5 ml dung dịch tiêm chứa 1 000 đvqt (tối thiểu) kháng thể kháng dại tinh khiết (nguồn gốc huyết thanh ngựa), 15 mg (tối đa) cresol (chất bảo quản) và tá dược. ERIG hiện nay đã không còn có mặt tại Hoa Kỳ do có tỷ lệ cao xảy ra các ADR như phản ứng quá mẫn hay bệnh huyết thanh.",
+      "page": 819,
+      "printed_page": 825,
+      "column": 1,
+      "bbox": [
+        298.88,
+        594.79,
+        553.21,
+        655.91
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0013",
+      "type": "paragraph",
+      "text": "Dùng globulin miễn dịch kháng dại hoặc huyết thanh kháng dại để tạo nhanh miễn dịch thụ động tạm thời cho những người tiếp xúc với bệnh hoặc virus dại mà chưa tiêm phòng vắc xin. Kháng thể kháng dại có trong 2 chế phẩm này có tác dụng trung hòa, làm chậm sự lan tỏa virus dại, do đó các tính chất gây bệnh và gây nhiễm sẽ bị ức chế. Như vậy, RIG hoặc huyết thanh kháng dại bảo vệ được người bệnh cho tới khi các kháng thể kháng dại chủ động được sản sinh do được tiêm vắc xin dại. Tác dụng bảo vệ chống dại được đánh giá qua sự có mặt của các kháng thể kháng dại trong huyết thanh, tuy nhiên nồng độ kháng thể có tác dụng bảo vệ vẫn chưa được xác định chắc chắn. Giá trị này có sự khác nhau giữa các phòng thí nghiệm và bị ảnh hưởng bởi phương pháp xét nghiệm.",
+      "page": 819,
+      "printed_page": 825,
+      "column": 1,
+      "bbox": [
+        298.88,
+        655.19,
+        553.25,
+        800.87
+      ],
+      "source": {
+        "line_count": 12
+      }
+    },
+    {
+      "id": "b0014",
+      "type": "paragraph",
+      "text": "Tổ chức Y tế thế giới (WHO) cho rằng nồng độ kháng thể trên 0,5 đvqt/ml được coi là có tác dụng bảo vệ. Vì RIG hoặc huyết thanh kháng dại có thể ức chế một phần tạo chủ động kháng thể kháng dại, nên không được vượt quá liều khuyến cáo cho tới khi người bệnh có thể chủ động tạo kháng thể nhờ tiêm phòng vắc xin dại.",
+      "page": 820,
+      "printed_page": 826,
+      "column": 0,
+      "bbox": [
+        43.94,
+        63.32,
+        298.3,
+        124.44
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0015",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược động học",
+      "page": 820,
+      "printed_page": 826,
+      "column": 0,
+      "bbox": [
+        43.94,
+        126.57,
+        105.04,
+        139.72
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược động học",
+          "bbox": [
+            43.94,
+            126.57,
+            105.04,
+            139.72
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0016",
+      "type": "paragraph",
+      "text": "RIG hấp thu chậm theo đường tiêm bắp, kháng thể xuất hiện trong huyết thanh sau 24 giờ và vẫn có thể phát hiện được sau 21 ngày.",
+      "page": 820,
+      "printed_page": 826,
+      "column": 0,
+      "bbox": [
+        43.94,
+        138.8,
+        298.3,
+        163.68
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0017",
+      "type": "paragraph",
+      "text": "Mặc dù chưa có thông tin cụ thể, RIG có thể qua nhau thai, vì các globulin miễn dịch khác qua được hàng rào nhau thai. Hầu như tất cả các globulin miễn dịch qua nhau thai vào 4 tuần cuối thai kỳ. Thông tin về phân bố của HBIG vào sữa còn chưa có. RIG có thể vào sữa, vì các globulin miễn dịch (chẳng hạn như IgA, IgM, IgG) đều có trong sữa non. RIG có nửa đời thải trừ khoảng 21 ngày.",
+      "page": 820,
+      "printed_page": 826,
+      "column": 0,
+      "bbox": [
+        43.94,
+        162.96,
+        298.3,
+        236.16
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0018",
+      "type": "heading",
+      "level": 2,
+      "text": "Chỉ định",
+      "page": 820,
+      "printed_page": 826,
+      "column": 0,
+      "bbox": [
+        43.94,
+        238.3,
+        79.58,
+        251.45
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chỉ định",
+          "bbox": [
+            43.94,
+            238.3,
+            79.58,
+            251.45
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0019",
+      "type": "paragraph",
+      "text": "Dự phòng sau khi phơi nhiễm với virus dại ở cá thể chưa được tiêm phòng vắc xin. Kết hợp cùng với vắc xin kháng dại và các cách làm sạch vết thương trong chế độ dự phòng dại đã được chứng minh có hiệu quả 100%. Quyết định dự phòng dại phụ thuộc vào các yếu tố: Tình trạng tiêm chủng, kiểu phơi nhiễm (vết thương do cắn hay không phải do cắn), thông tin về động vật liên quan (tình trạng tiêm chủng, tình trạng tại thời điểm tấn công) và dịch tễ dại tại khu vực đó. RIG được ưu tiên lựa chọn vì kháng huyết thanh ngựa có thể gây bệnh huyết thanh và các phản ứng quá mẫn nghiêm trọng.",
+      "page": 820,
+      "printed_page": 826,
+      "column": 0,
+      "bbox": [
+        43.94,
+        250.52,
+        298.27,
+        359.97
+      ],
+      "source": {
+        "line_count": 9
+      }
+    },
+    {
+      "id": "b0020",
+      "type": "heading",
+      "level": 2,
+      "text": "Chống chỉ định",
+      "page": 820,
+      "printed_page": 826,
+      "column": 0,
+      "bbox": [
+        43.94,
+        362.1,
+        106.24,
+        375.25
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chống chỉ định",
+          "bbox": [
+            43.94,
+            362.1,
+            106.24,
+            375.25
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0021",
+      "type": "paragraph",
+      "text": "Không được dùng huyết thanh kháng dại hoặc RIG cho người trước đây đã được tạo miễn dịch bằng vắc xin dại [vắc xin tế bào lưỡng bội người (HDCV) hoặc vắc xin dại hấp phụ (RVA)] hoặc có đáp ứng kháng thể kháng dại phù hợp rõ rệt đối với một vắc xin dại khác như vắc xin dại phôi vịt, vì RIG có thể ức chế đáp ứng miễn dịch đã có trước.",
+      "page": 820,
+      "printed_page": 826,
+      "column": 0,
+      "bbox": [
+        43.94,
+        374.34,
+        298.27,
+        447.54
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0022",
+      "type": "paragraph",
+      "text": "Cân nhắc lợi ích và nguy cơ khi dùng RIG trong các trường hợp có:",
+      "page": 820,
+      "printed_page": 826,
+      "column": 0,
+      "bbox": [
+        43.94,
+        446.81,
+        298.27,
+        459.61
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cân nhắc lợi ích và nguy cơ khi dùng RIG trong các trường hợp có: ",
+          "bbox": [
+            43.94,
+            446.81,
+            298.27,
+            459.61
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0023",
+      "type": "paragraph",
+      "text": "Suy giảm globulin miễn dịch A (IgA) ở người bệnh có kháng thể kháng IgA rõ rệt (có thể có một lượng nhỏ IgA trong huyết thanh kháng dại hoặc RIG và có thể gây ra phản ứng dị ứng nặng ở người bệnh có kháng thể kháng IgA).",
+      "page": 820,
+      "printed_page": 826,
+      "column": 0,
+      "bbox": [
+        43.94,
+        458.9,
+        298.27,
+        507.94
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0024",
+      "type": "paragraph",
+      "text": "Mẫn cảm với huyết thanh kháng dại hoặc RIG. Mẫn cảm với thimerosal (có trong RIG).",
+      "page": 820,
+      "printed_page": 826,
+      "column": 0,
+      "bbox": [
+        43.94,
+        507.22,
+        298.27,
+        532.09
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0025",
+      "type": "heading",
+      "level": 2,
+      "text": "Thận trọng",
+      "page": 820,
+      "printed_page": 826,
+      "column": 0,
+      "bbox": [
+        43.94,
+        534.23,
+        90.13,
+        547.38
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thận trọng",
+          "bbox": [
+            43.94,
+            534.23,
+            90.13,
+            547.38
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ],
+      "note_role": "than trong",
+      "v11_fix": "note_title_reclassified_as_heading_alpha5"
+    },
+    {
+      "id": "b0026",
+      "type": "paragraph",
+      "text": "Các nhà sản xuất công bố rằng, các phản ứng toàn thân nặng có thể xảy ra sau khi vô ý tiêm huyết thanh kháng dại, hoặc RIG vào tĩnh mạch, vì các phản ứng tương tự như vậy đã xảy ra sau khi tiêm globulin miễn dịch vào tĩnh mạch. Tuy các phản ứng toàn thân do chế phẩm có chứa các globulin miễn dịch là hiếm gặp, nhưng cần có sẵn adrenalin để xử trí các trường hợp sốc phản vệ cấp tính nếu xảy ra.",
+      "page": 820,
+      "printed_page": 826,
+      "column": 0,
+      "bbox": [
+        43.94,
+        546.46,
+        298.29,
+        631.74
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0027",
+      "type": "paragraph",
+      "text": "Nên dùng thận trọng RIG hoặc huyết thanh kháng dại ở người có tiền sử dị ứng toàn thân với globulin miễn dịch, người bị suy giảm riêng biệt IgA, vì có thể có các kháng thể kháng IgA (hoặc hình thành các kháng thể sau khi tiêm huyết thanh kháng dại hoặc RIG), và có thể xảy ra sốc phản vệ sau khi tiêm huyết thanh kháng dại hoặc RIG hay các chế phẩm từ máu khác có chứa IgA. Tuy nhiên, hoạt tính kháng dại hình như không bị ảnh hưởng bởi phản ứng dị ứng hoặc bởi sự hiện diện của kháng thể kháng IgA.",
+      "page": 820,
+      "printed_page": 826,
+      "column": 0,
+      "bbox": [
+        43.94,
+        631.03,
+        298.27,
+        728.38
+      ],
+      "source": {
+        "line_count": 8
+      }
+    },
+    {
+      "id": "b0028",
+      "type": "paragraph",
+      "text": "Nên dùng thận trọng huyết thanh kháng dại hoặc RIG đối với người giảm tiểu cầu hoặc rối loạn về chảy máu, vì chảy máu có thể xảy ra sau khi tiêm thuốc vào bắp thịt. Có thể tiêm bắp vắc xin trong trường hợp các bác sỹ nắm rõ nguy cơ chảy máu ở bệnh nhân mắc các rối loạn chảy máu hoặc đang dùng liệu pháp chống đông và quyết định sử dụng vắc xin với độ an toàn hợp lý. Trong trường",
+      "page": 820,
+      "printed_page": 826,
+      "column": 0,
+      "bbox": [
+        43.94,
+        727.67,
+        298.28,
+        800.87
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0029",
+      "type": "paragraph",
+      "text": "hợp này, sử dụng kim tiêm cỡ 23 và ấn chặt vào vị trí tiêm trong 2 phút hoặc lâu hơn. Với những bệnh nhân đang điều trị rối loạn đông máu, vắc xin nên được tiêm không lâu sau khi dùng liều điều trị hàng ngày.",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        63.32,
+        562.22,
+        112.36
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0030",
+      "type": "paragraph",
+      "text": "RIG được sản xuất từ huyết thanh người nên có thể là phương tiện tiềm ẩn truyền virus từ người sang người. Dù đã trải qua các chương trình tinh chế song không có một quy trình nào đảm bảo loại bỏ hoàn toàn virus từ huyết thanh, mọi nghi ngờ liên quan đến việc lây nhiễm virus sau khi sử dụng RIG phải được báo ngay cho nhà sản xuất.",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        111.64,
+        562.23,
+        184.84
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0031",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ mang thai",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        186.98,
+        383.1,
+        200.13
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ mang thai",
+          "bbox": [
+            307.89,
+            186.98,
+            383.1,
+            200.13
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0032",
+      "type": "paragraph",
+      "text": "Không chống chỉ định dự phòng sau khi bị cắn đối với người mang thai vì có nguy cơ tiềm tàng do không xử lý tốt dự phòng bệnh dại.",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        199.21,
+        562.22,
+        224.09
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0033",
+      "type": "paragraph",
+      "text": "Cũng không có gì chứng tỏ tạo miễn dịch kháng dại có liên quan đến các bất thường ở bào thai và kinh nghiệm lâm sàng đối với các chế phẩm có chứa globulin miễn dịch cho thấy không có ADR rõ rệt nào đối với bào thai do globulin miễn dịch gây ra.",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        223.36,
+        562.22,
+        272.4
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0034",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ cho con bú",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        274.54,
+        386.0,
+        287.69
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ cho con bú",
+          "bbox": [
+            307.89,
+            274.54,
+            386.0,
+            287.69
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0035",
+      "type": "paragraph",
+      "text": "Hiện chưa có thông tin về sự phân bố của huyết thanh kháng dại hoặc RIG vào sữa mẹ; cũng chưa rõ nếu huyết thanh kháng dại hoặc RIG truyền sang trẻ bú mẹ có gây nguy cơ bất thường nào cho trẻ bú không.",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        286.77,
+        562.22,
+        335.81
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0036",
+      "type": "heading",
+      "level": 2,
+      "text": "Tác dụng không mong muốn (ADR)",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        337.94,
+        453.83,
+        351.09
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tác dụng không mong muốn (ADR)",
+          "bbox": [
+            307.89,
+            337.94,
+            453.83,
+            351.09
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0037",
+      "type": "paragraph",
+      "text": "Đối với RIG, hiếm thấy ADR nặng toàn thân. Vì huyết thanh kháng dại hoặc RIG được tiêm phòng cùng với vắc xin dại nên ADR thường thấy khi tiêm vắc xin dại cũng nhất thời thấy khi tiêm phòng RIG hoặc huyết thanh kháng dại.",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        350.17,
+        562.22,
+        399.21
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0038",
+      "type": "subheading",
+      "level": 3,
+      "text": "Thường gặp và rất thường gặp",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        398.66,
+        425.24,
+        411.29
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thường gặp và rất thường gặp",
+          "bbox": [
+            307.89,
+            398.66,
+            425.24,
+            411.29
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0039",
+      "type": "paragraph",
+      "text": "Tổn thương loét hay căng cứng cơ có thể xảy ra ở vị trí tiêm và có thể tồn tại một số giờ sau khi tiêm huyết thanh kháng dại hoặc RIG. Những ảnh hưởng này đã tồn tại dai dẳng tới 3 ngày ở một vài người bệnh khi dùng liều cao (chẳng hạn 40 đvqt/kg thể trọng).",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        410.58,
+        562.22,
+        459.61
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0040",
+      "type": "subheading",
+      "level": 3,
+      "text": "Ít gặp",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        459.06,
+        330.31,
+        471.69
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Ít gặp",
+          "bbox": [
+            307.89,
+            459.06,
+            330.31,
+            471.69
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0041",
+      "type": "paragraph",
+      "text": "Sốt nhẹ, mệt mỏi, đau đầu, mày đay hoặc phù mạch cũng có thể xảy ra.",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        470.98,
+        562.22,
+        493.79
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0042",
+      "type": "paragraph",
+      "text": "Phản ứng mẫn cảm đối với các lần tiêm nhắc lại đã xảy ra ở người bệnh suy giảm globulin miễn dịch.",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        495.14,
+        562.25,
+        520.02
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0043",
+      "type": "subheading",
+      "level": 3,
+      "text": "Hiếm gặp và rất hiếm gặp",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        519.46,
+        407.36,
+        532.09
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hiếm gặp và rất hiếm gặp",
+          "bbox": [
+            307.89,
+            519.46,
+            407.36,
+            532.09
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0044",
+      "type": "paragraph",
+      "text": "Hội chứng thận hư và sốc phản vệ đã xảy ra nhưng hiếm sau khi tiêm globulin miễn dịch; tuy nhiên, mối liên quan giữa các phản ứng này và huyết thanh kháng dại hoặc RIG còn chưa được thiết lập. Đối với huyết thanh kháng dại ngựa, tỷ lệ gặp sốc phản vệ và bệnh huyết thanh cao hơn nhiều so với RIG.",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        531.38,
+        562.22,
+        592.5
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0045",
+      "type": "heading",
+      "level": 2,
+      "text": "Liều lượng và cách dùng",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        594.63,
+        408.06,
+        607.78
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng và cách dùng",
+          "bbox": [
+            307.89,
+            594.63,
+            408.06,
+            607.78
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0046",
+      "type": "subheading",
+      "level": 3,
+      "text": "Cách dùng",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        606.95,
+        350.91,
+        619.67
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Cách dùng",
+          "bbox": [
+            307.89,
+            606.95,
+            350.91,
+            619.67
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0047",
+      "type": "paragraph",
+      "text": "Tiêm bắp RIG và tiêm phong bế quanh vết cắn. Không được tiêm tĩnh mạch RIG. Nếu vị trí giải phẫu cho phép, toàn bộ liều RIG nên được tiêm phong bế hoàn toàn vùng xung quanh vết thương. Với người lớn và trẻ em lớn tuổi, chỉ tiêm bắp tại cơ delta. Với trẻ nhỏ hơn có thể tiêm ở cơ delta hoặc mặt trước sau đùi. Với trẻ có khối cơ nhỏ cần tiêm RIG tại nhiều vị trí. Không nên tiêm vào vùng cơ mông để tránh tổn thương dây thần kinh hông, tiêm thẳng góc 90o, sử dụng mũi kim có độ dài hợp lý.",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        618.94,
+        562.22,
+        716.31
+      ],
+      "source": {
+        "line_count": 8
+      }
+    },
+    {
+      "id": "b0048",
+      "type": "paragraph",
+      "text": "Không được trộn lẫn RIG và vắc xin dại vào chung một bơm tiêm, cũng không được tiêm vào cùng một nơi, vì có thể xảy ra trung hoà vắc xin. Globulin miễn dịch hoặc huyết thanh kháng dại được dùng kết hợp với vắc xin dại và thường được tiêm đồng thời với liều đầu tiên của vắc xin, nên tiêm càng sớm càng tốt khi đã có chỉ định hoặc không được chậm hơn ngày thứ 7 của trị liệu bằng vắc xin.",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        715.59,
+        562.22,
+        788.79
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0049",
+      "type": "paragraph",
+      "text": "Sau 7 ngày từ khi tiêm vắc xin dại, kháng thể sinh ra do miễn dịch",
+      "page": 820,
+      "printed_page": 826,
+      "column": 1,
+      "bbox": [
+        307.89,
+        788.07,
+        562.22,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Sau 7 ngày từ khi tiêm vắc xin dại, kháng thể sinh ra do miễn dịch ",
+          "bbox": [
+            307.89,
+            788.07,
+            562.22,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0050",
+      "type": "paragraph",
+      "text": "chủ động đã xuất hiện, không cần phải sử dụng huyết thanh kháng dại. Nếu RIG và vắc xin dại tiêm muộn, cả hai có thể tiêm bất luận khoảng cách giữa phơi nhiễm và dự phòng.",
+      "page": 821,
+      "printed_page": 827,
+      "column": 0,
+      "bbox": [
+        34.93,
+        63.32,
+        289.27,
+        100.33
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0051",
+      "type": "subheading",
+      "level": 3,
+      "text": "Liều lượng",
+      "page": 821,
+      "printed_page": 827,
+      "column": 0,
+      "bbox": [
+        34.93,
+        99.72,
+        78.71,
+        112.44
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng",
+          "bbox": [
+            34.93,
+            99.72,
+            78.71,
+            112.44
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0052",
+      "type": "paragraph",
+      "text": "Với RIG: Liều thông thường cho người lớn, thiếu niên và trẻ em để tạo miễn dịch thụ động: 20 đvqt/kg thể trọng. Chỉ sử dụng một liều duy nhất trong dự phòng dại. Nếu vị trí vết thương cho phép, có thể tiêm nửa liều thuốc vào vùng xung quanh vết thương, số còn lại tiêm vào cơ delta.",
+      "page": 821,
+      "printed_page": 827,
+      "column": 0,
+      "bbox": [
+        34.93,
+        111.75,
+        289.27,
+        172.97
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0053",
+      "type": "paragraph",
+      "text": "Với huyết thanh kháng dại:",
+      "page": 821,
+      "printed_page": 827,
+      "column": 0,
+      "bbox": [
+        34.93,
+        172.29,
+        138.64,
+        185.08
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Với huyết thanh kháng dại:",
+          "bbox": [
+            34.93,
+            172.29,
+            138.64,
+            185.08
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0054",
+      "type": "paragraph",
+      "text": "Tổng liều cần tiêm là 40 đvqt/kg thể trọng. Tiêm bắp một nửa liều ở vị trí khác với nơi tiêm vắc xin, còn nửa kia được tiêm nhỏ giọt sâu vào vết thương và tiêm ngấm xung quanh vết thương. Nếu cần thiết, phải tiêm phòng chống uốn ván và dùng kháng sinh để tránh bội nhiễm.",
+      "page": 821,
+      "printed_page": 827,
+      "column": 0,
+      "bbox": [
+        34.93,
+        184.39,
+        289.26,
+        245.62
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0055",
+      "type": "paragraph",
+      "text": "Giải mẫn cảm cho người bệnh bằng phương pháp Besredka (tiêm 0,1 ml, sau đó 0,25 ml và sau cùng là phần còn lại của liều, tiêm cách nhau 15 phút mỗi lần). Nếu có ADR với huyết thanh kháng dại, lập tức điều trị ngay bằng adrenalin, thuốc kháng histamin và nếu cần, corticoid tiêm.",
+      "page": 821,
+      "printed_page": 827,
+      "column": 0,
+      "bbox": [
+        34.93,
+        244.93,
+        289.27,
+        306.15
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0056",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương tác thuốc",
+      "page": 821,
+      "printed_page": 827,
+      "column": 0,
+      "bbox": [
+        34.93,
+        308.31,
+        101.84,
+        321.46
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương tác thuốc",
+          "bbox": [
+            34.93,
+            308.31,
+            101.84,
+            321.46
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0057",
+      "type": "subheading",
+      "level": 3,
+      "text": "Với vắc xin dại:",
+      "page": 821,
+      "printed_page": 827,
+      "column": 0,
+      "bbox": [
+        34.93,
+        320.73,
+        95.67,
+        333.37
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Với vắc xin dại:",
+          "bbox": [
+            34.93,
+            320.73,
+            95.67,
+            333.37
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0058",
+      "type": "paragraph",
+      "text": "RIG và huyết thanh kháng dại thường được dùng đồng thời với vắc xin phòng dại trong dự phòng dại. Có bằng chứng cho thấy liều 20 đvqt/kg dùng đồng thời với vắc xin làm giảm nhẹ đáp ứng miễn dịch chủ động của vắc xin, bởi vậy không nên dùng RIG với liều cao hơn hoặc dùng thêm liều nhắc lại. Nếu có thể, toàn bộ liều RIG nên tiêm phong bế xung quanh vết thương.",
+      "page": 821,
+      "printed_page": 827,
+      "column": 0,
+      "bbox": [
+        34.93,
+        332.68,
+        289.27,
+        406.01
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0059",
+      "type": "subheading",
+      "level": 3,
+      "text": "Với các vắc xin khác:",
+      "page": 821,
+      "printed_page": 827,
+      "column": 0,
+      "bbox": [
+        34.93,
+        405.48,
+        117.03,
+        418.12
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Với các vắc xin khác:",
+          "bbox": [
+            34.93,
+            405.48,
+            117.03,
+            418.12
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0060",
+      "type": "paragraph",
+      "text": "Kháng thể có trong huyết thanh kháng dại hoặc RIG có thể ảnh hưởng đến đáp ứng miễn dịch của một vài loại vắc xin virus sống khác như vắc xin virus sởi, quai bị, rubella sống, vắc xin thủy đậu.",
+      "page": 821,
+      "printed_page": 827,
+      "column": 0,
+      "bbox": [
+        34.93,
+        417.43,
+        289.26,
+        454.44
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0061",
+      "type": "paragraph",
+      "text": "Các vắc xin virus sống này phải được tiêm chủng ít nhất 14 ngày trước hoặc ít nhất 4 tháng sau khi tiêm RIG hoặc huyết thanh kháng dại. Nếu các vắc xin này được tiêm trong vòng 14 ngày trước khi tiêm RIG, cần tái tiêm chủng vắc xin 4 tháng sau khi tiêm RIG.",
+      "page": 821,
+      "printed_page": 827,
+      "column": 0,
+      "bbox": [
+        34.93,
+        453.75,
+        289.26,
+        502.87
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0062",
+      "type": "paragraph",
+      "text": "Vắc xin rotavirus sống đường uống nên dùng sau 6 tuần kể từ khi sử dụng RIG.",
+      "page": 821,
+      "printed_page": 827,
+      "column": 0,
+      "bbox": [
+        34.93,
+        502.18,
+        289.26,
+        527.08
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0063",
+      "type": "paragraph",
+      "text": "Do các chế phẩm có globulin miễn dịch không ảnh hưởng tới đáp ứng miễn dịch đối với vắc xin virus bại liệt sống (OPV), vắc xin sốt vàng hoặc vắc xin thương hàn uống (Ty21a), các vắc xin bất hoạt hoặc giải độc tố nên có thể dùng các vắc xin này đồng thời hoặc trước hay sau khi dùng huyết thanh kháng dại hoặc RIG.",
+      "page": 821,
+      "printed_page": 827,
+      "column": 0,
+      "bbox": [
+        34.93,
+        526.39,
+        289.26,
+        587.62
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0064",
+      "type": "paragraph",
+      "text": "Thuốc ức chế miễn dịch hoặc các phương pháp ức chế miễn dịch như xạ trị có thể làm giảm kháng thể đáp ứng khi dự phòng dại với RIG và vắc xin dại, làm tăng nguy cơ mắc dại cho dù đã dự phòng.",
+      "page": 821,
+      "printed_page": 827,
+      "column": 0,
+      "bbox": [
+        34.93,
+        586.93,
+        289.26,
+        623.94
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0065",
+      "type": "paragraph",
+      "text": "Bởi vậy nên tránh sử dụng các liệu pháp ức chế miễn dịch khi đang dự phòng dại nếu có thể. Nếu dự phòng dại đồng thời với sử dụng thuốc ức chế miễn dịch, xét nghiệm kháng thể kháng dại nên được thực hiện để xác định đáp ứng miễn dịch hiệu quả.",
+      "page": 821,
+      "printed_page": 827,
+      "column": 0,
+      "bbox": [
+        34.93,
+        623.25,
+        289.27,
+        672.37
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0066",
+      "type": "heading",
+      "text": "Cập nhật lần cuối",
+      "page": 821,
+      "printed_page": 827,
+      "column": 0,
+      "bbox": [
+        34.93,
+        677.24,
+        130.2,
+        689.88
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2017.",
+          "bbox": [
+            34.93,
+            677.24,
+            130.2,
+            689.88
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "level": 2,
+      "v11_fix": "cap_nhat_cap_nhap_lan_cuoi_normalized_alpha8"
+    },
+    {
+      "id": "b0066",
+      "type": "paragraph",
+      "text": "2017.",
+      "page": 821,
+      "printed_page": 827,
+      "column": 0,
+      "bbox": [
+        34.93,
+        677.24,
+        130.2,
+        689.88
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2017.",
+          "bbox": [
+            34.93,
+            677.24,
+            130.2,
+            689.88
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "v11_parent_heading": "Cập nhật lần cuối"
+    }
+  ],
   "sections": [
-    {
-      "id": "thong-tin-au-chuyen-luan",
-      "title": "Thông tin đầu chuyên luận",
-      "content": "GLOBULIN MIỄN DỊCH KHÁNG DẠI VÀ HUYẾT THANH KHÁNG DẠI",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "GLOBULIN MIỄN DỊCH KHÁNG DẠI VÀ HUYẾT THANH KHÁNG DẠI"
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "ten-chung-quoc-te",
-      "title": "Tên chung quốc tế",
-      "content": "Rabies immunoglobulins and rabies antisera.\n\nMã ATC: J06BB05 (globulin miễn dịch kháng dại); J06AA06 (huyết thanh kháng dại).\n\nLoại thuốc: Thuốc tạo miễn dịch thụ động.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Rabies immunoglobulins and rabies antisera.\n\nMã ATC: J06BB05 (globulin miễn dịch kháng dại); J06AA06 (huyết thanh kháng dại).\n\nLoại thuốc: Thuốc tạo miễn dịch thụ động."
-        }
-      ],
-      "subsections": []
-    },
     {
       "id": "dang-thuoc-va-ham-luong",
       "title": "Dạng thuốc và hàm lượng",
-      "content": "Globulin miễn dịch kháng dại: Lọ thuốc tiêm 300 đvqt/2 ml.\n\nHuyết thanh kháng dại: Lọ thuốc tiêm 1 000 đvqt/5 ml.",
+      "heading_block": "b0006",
       "blocks": [
         {
           "type": "text",
-          "text": "Globulin miễn dịch kháng dại: Lọ thuốc tiêm 300 đvqt/2 ml.\n\nHuyết thanh kháng dại: Lọ thuốc tiêm 1 000 đvqt/5 ml."
+          "text": "Globulin miễn dịch kháng dại: Lọ thuốc tiêm 300 đvqt/2 ml.",
+          "block_id": "b0007"
+        },
+        {
+          "type": "text",
+          "text": "Huyết thanh kháng dại: Lọ thuốc tiêm 1 000 đvqt/5 ml.",
+          "block_id": "b0008"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "duoc-luc-hoc",
       "title": "Dược lực học",
-      "content": "Globulin miễn dịch kháng dại (RIG, Human Rabies Immune Globulin) là một chế phẩm dạng dung dịch tiêm hoặc đông khô vô khuẩn không có chí nhiệt tố. Dung dịch này chứa 10 - 18% protein trong đó lượng immunoglobulin G đơn phân tử có ít nhất 80% (gamma globulin, IgG). Dung dịch đậm đặc này được điều chế từ huyết tương hoặc huyết thanh của người trưởng thành khỏe mạnh đã được tạo miễn dịch bằng vắc xin dại. Huyết tương hoặc huyết thanh này không chứa kháng nguyên bề mặt của virus viêm gan B (HBsAg), kháng thể kháng virus viêm gan C và kháng thể kháng HIV. Chế phẩm được cô đặc bằng cách tách chiết phân đoạn trong ethanol lạnh. Hàm lượng kháng thể trung hòa virus dại được chuẩn hóa để chứa ít nhất 150 đvqt/ml.\n\nHuyết thanh kháng dại (ERIG, Equine Rabies Immune Globulin): Cứ 5 ml dung dịch tiêm chứa 1 000 đvqt (tối thiểu) kháng thể kháng dại tinh khiết (nguồn gốc huyết thanh ngựa), 15 mg (tối đa) cresol (chất bảo quản) và tá dược. ERIG hiện nay đã không còn có mặt tại Hoa Kỳ do có tỷ lệ cao xảy ra các ADR như phản ứng quá mẫn hay bệnh huyết thanh.\n\nDùng globulin miễn dịch kháng dại hoặc huyết thanh kháng dại để tạo nhanh miễn dịch thụ động tạm thời cho những người tiếp xúc với bệnh hoặc virus dại mà chưa tiêm phòng vắc xin. Kháng thể kháng dại có trong 2 chế phẩm này có tác dụng trung hòa, làm chậm sự lan tỏa virus dại, do đó các tính chất gây bệnh và gây nhiễm sẽ bị ức chế. Như vậy, RIG hoặc huyết thanh kháng dại bảo vệ được người bệnh cho tới khi các kháng thể kháng dại chủ động được sản sinh do được tiêm vắc xin dại. Tác dụng bảo vệ chống dại được đánh giá qua sự có mặt của các kháng thể kháng dại trong huyết thanh, tuy nhiên nồng độ kháng thể có tác dụng bảo vệ vẫn chưa được xác định chắc chắn. Giá trị này có sự khác nhau giữa các phòng thí nghiệm và bị ảnh hưởng bởi phương pháp xét nghiệm.\n\nTổ chức Y tế thế giới (WHO) cho rằng nồng độ kháng thể trên 0,5 đvqt/ml được coi là có tác dụng bảo vệ. Vì RIG hoặc huyết thanh kháng dại có thể ức chế một phần tạo chủ động kháng thể kháng dại, nên không được vượt quá liều khuyến cáo cho tới khi người bệnh có thể chủ động tạo kháng thể nhờ tiêm phòng vắc xin dại.",
+      "heading_block": "b0009",
       "blocks": [
         {
           "type": "text",
-          "text": "Globulin miễn dịch kháng dại (RIG, Human Rabies Immune Globulin) là một chế phẩm dạng dung dịch tiêm hoặc đông khô vô khuẩn không có chí nhiệt tố. Dung dịch này chứa 10 - 18% protein trong đó lượng immunoglobulin G đơn phân tử có ít nhất 80% (gamma globulin, IgG). Dung dịch đậm đặc này được điều chế từ huyết tương hoặc huyết thanh của người trưởng thành khỏe mạnh đã được tạo miễn dịch bằng vắc xin dại. Huyết tương hoặc huyết thanh này không chứa kháng nguyên bề mặt của virus viêm gan B (HBsAg), kháng thể kháng virus viêm gan C và kháng thể kháng HIV. Chế phẩm được cô đặc bằng cách tách chiết phân đoạn trong ethanol lạnh. Hàm lượng kháng thể trung hòa virus dại được chuẩn hóa để chứa ít nhất 150 đvqt/ml.\n\nHuyết thanh kháng dại (ERIG, Equine Rabies Immune Globulin): Cứ 5 ml dung dịch tiêm chứa 1 000 đvqt (tối thiểu) kháng thể kháng dại tinh khiết (nguồn gốc huyết thanh ngựa), 15 mg (tối đa) cresol (chất bảo quản) và tá dược. ERIG hiện nay đã không còn có mặt tại Hoa Kỳ do có tỷ lệ cao xảy ra các ADR như phản ứng quá mẫn hay bệnh huyết thanh.\n\nDùng globulin miễn dịch kháng dại hoặc huyết thanh kháng dại để tạo nhanh miễn dịch thụ động tạm thời cho những người tiếp xúc với bệnh hoặc virus dại mà chưa tiêm phòng vắc xin. Kháng thể kháng dại có trong 2 chế phẩm này có tác dụng trung hòa, làm chậm sự lan tỏa virus dại, do đó các tính chất gây bệnh và gây nhiễm sẽ bị ức chế. Như vậy, RIG hoặc huyết thanh kháng dại bảo vệ được người bệnh cho tới khi các kháng thể kháng dại chủ động được sản sinh do được tiêm vắc xin dại. Tác dụng bảo vệ chống dại được đánh giá qua sự có mặt của các kháng thể kháng dại trong huyết thanh, tuy nhiên nồng độ kháng thể có tác dụng bảo vệ vẫn chưa được xác định chắc chắn. Giá trị này có sự khác nhau giữa các phòng thí nghiệm và bị ảnh hưởng bởi phương pháp xét nghiệm.\n\nTổ chức Y tế thế giới (WHO) cho rằng nồng độ kháng thể trên 0,5 đvqt/ml được coi là có tác dụng bảo vệ. Vì RIG hoặc huyết thanh kháng dại có thể ức chế một phần tạo chủ động kháng thể kháng dại, nên không được vượt quá liều khuyến cáo cho tới khi người bệnh có thể chủ động tạo kháng thể nhờ tiêm phòng vắc xin dại."
+          "text": "Globulin miễn dịch kháng dại (RIG, Human Rabies Immune Globulin) là một chế phẩm dạng dung dịch tiêm hoặc đông khô vô khuẩn không có chí nhiệt tố. Dung dịch này chứa 10 - 18% protein trong đó lượng immunoglobulin G đơn phân tử có ít nhất 80% (gamma globulin, IgG). Dung dịch đậm đặc này được điều chế từ huyết tương hoặc huyết thanh của người trưởng thành khỏe mạnh đã được tạo miễn dịch bằng vắc xin dại. Huyết tương hoặc huyết thanh này không chứa kháng nguyên bề mặt của virus viêm gan B (HBsAg), kháng thể kháng virus viêm gan C và kháng thể kháng HIV. Chế phẩm được cô đặc bằng cách tách chiết phân đoạn trong ethanol lạnh. Hàm lượng kháng thể trung hòa virus dại được chuẩn hóa để chứa ít nhất 150 đvqt/ml.",
+          "block_id": "b0010"
+        },
+        {
+          "type": "text",
+          "text": "Huyết thanh kháng dại (ERIG, Equine Rabies Immune Globulin):",
+          "block_id": "b0011"
+        },
+        {
+          "type": "text",
+          "text": "Cứ 5 ml dung dịch tiêm chứa 1 000 đvqt (tối thiểu) kháng thể kháng dại tinh khiết (nguồn gốc huyết thanh ngựa), 15 mg (tối đa) cresol (chất bảo quản) và tá dược. ERIG hiện nay đã không còn có mặt tại Hoa Kỳ do có tỷ lệ cao xảy ra các ADR như phản ứng quá mẫn hay bệnh huyết thanh.",
+          "block_id": "b0012"
+        },
+        {
+          "type": "text",
+          "text": "Dùng globulin miễn dịch kháng dại hoặc huyết thanh kháng dại để tạo nhanh miễn dịch thụ động tạm thời cho những người tiếp xúc với bệnh hoặc virus dại mà chưa tiêm phòng vắc xin. Kháng thể kháng dại có trong 2 chế phẩm này có tác dụng trung hòa, làm chậm sự lan tỏa virus dại, do đó các tính chất gây bệnh và gây nhiễm sẽ bị ức chế. Như vậy, RIG hoặc huyết thanh kháng dại bảo vệ được người bệnh cho tới khi các kháng thể kháng dại chủ động được sản sinh do được tiêm vắc xin dại. Tác dụng bảo vệ chống dại được đánh giá qua sự có mặt của các kháng thể kháng dại trong huyết thanh, tuy nhiên nồng độ kháng thể có tác dụng bảo vệ vẫn chưa được xác định chắc chắn. Giá trị này có sự khác nhau giữa các phòng thí nghiệm và bị ảnh hưởng bởi phương pháp xét nghiệm.",
+          "block_id": "b0013"
+        },
+        {
+          "type": "text",
+          "text": "Tổ chức Y tế thế giới (WHO) cho rằng nồng độ kháng thể trên 0,5 đvqt/ml được coi là có tác dụng bảo vệ. Vì RIG hoặc huyết thanh kháng dại có thể ức chế một phần tạo chủ động kháng thể kháng dại, nên không được vượt quá liều khuyến cáo cho tới khi người bệnh có thể chủ động tạo kháng thể nhờ tiêm phòng vắc xin dại.",
+          "block_id": "b0014"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "duoc-ong-hoc",
+      "id": "duoc-dong-hoc",
       "title": "Dược động học",
-      "content": "RIG hấp thu chậm theo đường tiêm bắp, kháng thể xuất hiện trong huyết thanh sau 24 giờ và vẫn có thể phát hiện được sau 21 ngày.\n\nMặc dù chưa có thông tin cụ thể, RIG có thể qua nhau thai, vì các globulin miễn dịch khác qua được hàng rào nhau thai. Hầu như tất cả các globulin miễn dịch qua nhau thai vào 4 tuần cuối thai kỳ. Thông tin về phân bố của HBIG vào sữa còn chưa có. RIG có thể vào sữa, vì các globulin miễn dịch (chẳng hạn như IgA, IgM, IgG) đều có trong sữa non. RIG có nửa đời thải trừ khoảng 21 ngày.",
+      "heading_block": "b0015",
       "blocks": [
         {
           "type": "text",
-          "text": "RIG hấp thu chậm theo đường tiêm bắp, kháng thể xuất hiện trong huyết thanh sau 24 giờ và vẫn có thể phát hiện được sau 21 ngày.\n\nMặc dù chưa có thông tin cụ thể, RIG có thể qua nhau thai, vì các globulin miễn dịch khác qua được hàng rào nhau thai. Hầu như tất cả các globulin miễn dịch qua nhau thai vào 4 tuần cuối thai kỳ. Thông tin về phân bố của HBIG vào sữa còn chưa có. RIG có thể vào sữa, vì các globulin miễn dịch (chẳng hạn như IgA, IgM, IgG) đều có trong sữa non. RIG có nửa đời thải trừ khoảng 21 ngày."
+          "text": "RIG hấp thu chậm theo đường tiêm bắp, kháng thể xuất hiện trong huyết thanh sau 24 giờ và vẫn có thể phát hiện được sau 21 ngày.",
+          "block_id": "b0016"
+        },
+        {
+          "type": "text",
+          "text": "Mặc dù chưa có thông tin cụ thể, RIG có thể qua nhau thai, vì các globulin miễn dịch khác qua được hàng rào nhau thai. Hầu như tất cả các globulin miễn dịch qua nhau thai vào 4 tuần cuối thai kỳ. Thông tin về phân bố của HBIG vào sữa còn chưa có. RIG có thể vào sữa, vì các globulin miễn dịch (chẳng hạn như IgA, IgM, IgG) đều có trong sữa non. RIG có nửa đời thải trừ khoảng 21 ngày.",
+          "block_id": "b0017"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chi-inh",
+      "id": "chi-dinh",
       "title": "Chỉ định",
-      "content": "Dự phòng sau khi phơi nhiễm với virus dại ở cá thể chưa được tiêm phòng vắc xin. Kết hợp cùng với vắc xin kháng dại và các cách làm sạch vết thương trong chế độ dự phòng dại đã được chứng minh có hiệu quả 100%. Quyết định dự phòng dại phụ thuộc vào các yếu tố: Tình trạng tiêm chủng, kiểu phơi nhiễm (vết thương do cắn hay không phải do cắn), thông tin về động vật liên quan (tình trạng tiêm chủng, tình trạng tại thời điểm tấn công) và dịch tễ dại tại khu vực đó. RIG được ưu tiên lựa chọn vì kháng huyết thanh ngựa có thể gây bệnh huyết thanh và các phản ứng quá mẫn nghiêm trọng.",
+      "heading_block": "b0018",
       "blocks": [
         {
           "type": "text",
-          "text": "Dự phòng sau khi phơi nhiễm với virus dại ở cá thể chưa được tiêm phòng vắc xin. Kết hợp cùng với vắc xin kháng dại và các cách làm sạch vết thương trong chế độ dự phòng dại đã được chứng minh có hiệu quả 100%. Quyết định dự phòng dại phụ thuộc vào các yếu tố: Tình trạng tiêm chủng, kiểu phơi nhiễm (vết thương do cắn hay không phải do cắn), thông tin về động vật liên quan (tình trạng tiêm chủng, tình trạng tại thời điểm tấn công) và dịch tễ dại tại khu vực đó. RIG được ưu tiên lựa chọn vì kháng huyết thanh ngựa có thể gây bệnh huyết thanh và các phản ứng quá mẫn nghiêm trọng."
+          "text": "Dự phòng sau khi phơi nhiễm với virus dại ở cá thể chưa được tiêm phòng vắc xin. Kết hợp cùng với vắc xin kháng dại và các cách làm sạch vết thương trong chế độ dự phòng dại đã được chứng minh có hiệu quả 100%. Quyết định dự phòng dại phụ thuộc vào các yếu tố: Tình trạng tiêm chủng, kiểu phơi nhiễm (vết thương do cắn hay không phải do cắn), thông tin về động vật liên quan (tình trạng tiêm chủng, tình trạng tại thời điểm tấn công) và dịch tễ dại tại khu vực đó. RIG được ưu tiên lựa chọn vì kháng huyết thanh ngựa có thể gây bệnh huyết thanh và các phản ứng quá mẫn nghiêm trọng.",
+          "block_id": "b0019"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chong-chi-inh",
+      "id": "chong-chi-dinh",
       "title": "Chống chỉ định",
-      "content": "Không được dùng huyết thanh kháng dại hoặc RIG cho người trước đây đã được tạo miễn dịch bằng vắc xin dại [vắc xin tế bào lưỡng bội người (HDCV) hoặc vắc xin dại hấp phụ (RVA)] hoặc có đáp ứng kháng thể kháng dại phù hợp rõ rệt đối với một vắc xin dại khác như vắc xin dại phôi vịt, vì RIG có thể ức chế đáp ứng miễn dịch đã có trước.\n\nCân nhắc lợi ích và nguy cơ khi dùng RIG trong các trường hợp có: Suy giảm globulin miễn dịch A (IgA) ở người bệnh có kháng thể kháng IgA rõ rệt (có thể có một lượng nhỏ IgA trong huyết thanh kháng dại hoặc RIG và có thể gây ra phản ứng dị ứng nặng ở người bệnh có kháng thể kháng IgA).\n\nMẫn cảm với huyết thanh kháng dại hoặc RIG. Mẫn cảm với thimerosal (có trong RIG).",
+      "heading_block": "b0020",
       "blocks": [
         {
           "type": "text",
-          "text": "Không được dùng huyết thanh kháng dại hoặc RIG cho người trước đây đã được tạo miễn dịch bằng vắc xin dại [vắc xin tế bào lưỡng bội người (HDCV) hoặc vắc xin dại hấp phụ (RVA)] hoặc có đáp ứng kháng thể kháng dại phù hợp rõ rệt đối với một vắc xin dại khác như vắc xin dại phôi vịt, vì RIG có thể ức chế đáp ứng miễn dịch đã có trước.\n\nCân nhắc lợi ích và nguy cơ khi dùng RIG trong các trường hợp có: Suy giảm globulin miễn dịch A (IgA) ở người bệnh có kháng thể kháng IgA rõ rệt (có thể có một lượng nhỏ IgA trong huyết thanh kháng dại hoặc RIG và có thể gây ra phản ứng dị ứng nặng ở người bệnh có kháng thể kháng IgA).\n\nMẫn cảm với huyết thanh kháng dại hoặc RIG. Mẫn cảm với thimerosal (có trong RIG)."
+          "text": "Không được dùng huyết thanh kháng dại hoặc RIG cho người trước đây đã được tạo miễn dịch bằng vắc xin dại [vắc xin tế bào lưỡng bội người (HDCV) hoặc vắc xin dại hấp phụ (RVA)] hoặc có đáp ứng kháng thể kháng dại phù hợp rõ rệt đối với một vắc xin dại khác như vắc xin dại phôi vịt, vì RIG có thể ức chế đáp ứng miễn dịch đã có trước.",
+          "block_id": "b0021"
+        },
+        {
+          "type": "text",
+          "text": "Cân nhắc lợi ích và nguy cơ khi dùng RIG trong các trường hợp có:",
+          "block_id": "b0022"
+        },
+        {
+          "type": "text",
+          "text": "Suy giảm globulin miễn dịch A (IgA) ở người bệnh có kháng thể kháng IgA rõ rệt (có thể có một lượng nhỏ IgA trong huyết thanh kháng dại hoặc RIG và có thể gây ra phản ứng dị ứng nặng ở người bệnh có kháng thể kháng IgA).",
+          "block_id": "b0023"
+        },
+        {
+          "type": "text",
+          "text": "Mẫn cảm với huyết thanh kháng dại hoặc RIG. Mẫn cảm với thimerosal (có trong RIG).",
+          "block_id": "b0024"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "than-trong",
       "title": "Thận trọng",
-      "content": "Các nhà sản xuất công bố rằng, các phản ứng toàn thân nặng có thể xảy ra sau khi vô ý tiêm huyết thanh kháng dại, hoặc RIG vào tĩnh mạch, vì các phản ứng tương tự như vậy đã xảy ra sau khi tiêm globulin miễn dịch vào tĩnh mạch. Tuy các phản ứng toàn thân do chế phẩm có chứa các globulin miễn dịch là hiếm gặp, nhưng cần có sẵn adrenalin để xử trí các trường hợp sốc phản vệ cấp tính nếu xảy ra.\n\nNên dùng thận trọng RIG hoặc huyết thanh kháng dại ở người có tiền sử dị ứng toàn thân với globulin miễn dịch, người bị suy giảm riêng biệt IgA, vì có thể có các kháng thể kháng IgA (hoặc hình thành các kháng thể sau khi tiêm huyết thanh kháng dại hoặc RIG), và có thể xảy ra sốc phản vệ sau khi tiêm huyết thanh kháng dại hoặc RIG hay các chế phẩm từ máu khác có chứa IgA. Tuy nhiên, hoạt tính kháng dại hình như không bị ảnh hưởng bởi phản ứng dị ứng hoặc bởi sự hiện diện của kháng thể kháng IgA.\n\nNên dùng thận trọng huyết thanh kháng dại hoặc RIG đối với người giảm tiểu cầu hoặc rối loạn về chảy máu, vì chảy máu có thể xảy ra sau khi tiêm thuốc vào bắp thịt. Có thể tiêm bắp vắc xin trong trường hợp các bác sỹ nắm rõ nguy cơ chảy máu ở bệnh nhân mắc các rối loạn chảy máu hoặc đang dùng liệu pháp chống đông và quyết định sử dụng vắc xin với độ an toàn hợp lý. Trong trường hợp này, sử dụng kim tiêm cỡ 23 và ấn chặt vào vị trí tiêm trong 2 phút hoặc lâu hơn. Với những bệnh nhân đang điều trị rối loạn đông máu, vắc xin nên được tiêm không lâu sau khi dùng liều điều trị hàng ngày.\n\nRIG được sản xuất từ huyết thanh người nên có thể là phương tiện tiềm ẩn truyền virus từ người sang người. Dù đã trải qua các chương trình tinh chế song không có một quy trình nào đảm bảo loại bỏ hoàn toàn virus từ huyết thanh, mọi nghi ngờ liên quan đến việc lây nhiễm virus sau khi sử dụng RIG phải được báo ngay cho nhà sản xuất.",
+      "heading_block": "b0025",
       "blocks": [
         {
           "type": "text",
-          "text": "Các nhà sản xuất công bố rằng, các phản ứng toàn thân nặng có thể xảy ra sau khi vô ý tiêm huyết thanh kháng dại, hoặc RIG vào tĩnh mạch, vì các phản ứng tương tự như vậy đã xảy ra sau khi tiêm globulin miễn dịch vào tĩnh mạch. Tuy các phản ứng toàn thân do chế phẩm có chứa các globulin miễn dịch là hiếm gặp, nhưng cần có sẵn adrenalin để xử trí các trường hợp sốc phản vệ cấp tính nếu xảy ra.\n\nNên dùng thận trọng RIG hoặc huyết thanh kháng dại ở người có tiền sử dị ứng toàn thân với globulin miễn dịch, người bị suy giảm riêng biệt IgA, vì có thể có các kháng thể kháng IgA (hoặc hình thành các kháng thể sau khi tiêm huyết thanh kháng dại hoặc RIG), và có thể xảy ra sốc phản vệ sau khi tiêm huyết thanh kháng dại hoặc RIG hay các chế phẩm từ máu khác có chứa IgA. Tuy nhiên, hoạt tính kháng dại hình như không bị ảnh hưởng bởi phản ứng dị ứng hoặc bởi sự hiện diện của kháng thể kháng IgA.\n\nNên dùng thận trọng huyết thanh kháng dại hoặc RIG đối với người giảm tiểu cầu hoặc rối loạn về chảy máu, vì chảy máu có thể xảy ra sau khi tiêm thuốc vào bắp thịt. Có thể tiêm bắp vắc xin trong trường hợp các bác sỹ nắm rõ nguy cơ chảy máu ở bệnh nhân mắc các rối loạn chảy máu hoặc đang dùng liệu pháp chống đông và quyết định sử dụng vắc xin với độ an toàn hợp lý. Trong trường hợp này, sử dụng kim tiêm cỡ 23 và ấn chặt vào vị trí tiêm trong 2 phút hoặc lâu hơn. Với những bệnh nhân đang điều trị rối loạn đông máu, vắc xin nên được tiêm không lâu sau khi dùng liều điều trị hàng ngày.\n\nRIG được sản xuất từ huyết thanh người nên có thể là phương tiện tiềm ẩn truyền virus từ người sang người. Dù đã trải qua các chương trình tinh chế song không có một quy trình nào đảm bảo loại bỏ hoàn toàn virus từ huyết thanh, mọi nghi ngờ liên quan đến việc lây nhiễm virus sau khi sử dụng RIG phải được báo ngay cho nhà sản xuất."
+          "text": "Các nhà sản xuất công bố rằng, các phản ứng toàn thân nặng có thể xảy ra sau khi vô ý tiêm huyết thanh kháng dại, hoặc RIG vào tĩnh mạch, vì các phản ứng tương tự như vậy đã xảy ra sau khi tiêm globulin miễn dịch vào tĩnh mạch. Tuy các phản ứng toàn thân do chế phẩm có chứa các globulin miễn dịch là hiếm gặp, nhưng cần có sẵn adrenalin để xử trí các trường hợp sốc phản vệ cấp tính nếu xảy ra.",
+          "block_id": "b0026"
+        },
+        {
+          "type": "text",
+          "text": "Nên dùng thận trọng RIG hoặc huyết thanh kháng dại ở người có tiền sử dị ứng toàn thân với globulin miễn dịch, người bị suy giảm riêng biệt IgA, vì có thể có các kháng thể kháng IgA (hoặc hình thành các kháng thể sau khi tiêm huyết thanh kháng dại hoặc RIG), và có thể xảy ra sốc phản vệ sau khi tiêm huyết thanh kháng dại hoặc RIG hay các chế phẩm từ máu khác có chứa IgA. Tuy nhiên, hoạt tính kháng dại hình như không bị ảnh hưởng bởi phản ứng dị ứng hoặc bởi sự hiện diện của kháng thể kháng IgA.",
+          "block_id": "b0027"
+        },
+        {
+          "type": "text",
+          "text": "Nên dùng thận trọng huyết thanh kháng dại hoặc RIG đối với người giảm tiểu cầu hoặc rối loạn về chảy máu, vì chảy máu có thể xảy ra sau khi tiêm thuốc vào bắp thịt. Có thể tiêm bắp vắc xin trong trường hợp các bác sỹ nắm rõ nguy cơ chảy máu ở bệnh nhân mắc các rối loạn chảy máu hoặc đang dùng liệu pháp chống đông và quyết định sử dụng vắc xin với độ an toàn hợp lý. Trong trường",
+          "block_id": "b0028"
+        },
+        {
+          "type": "text",
+          "text": "hợp này, sử dụng kim tiêm cỡ 23 và ấn chặt vào vị trí tiêm trong 2 phút hoặc lâu hơn. Với những bệnh nhân đang điều trị rối loạn đông máu, vắc xin nên được tiêm không lâu sau khi dùng liều điều trị hàng ngày.",
+          "block_id": "b0029"
+        },
+        {
+          "type": "text",
+          "text": "RIG được sản xuất từ huyết thanh người nên có thể là phương tiện tiềm ẩn truyền virus từ người sang người. Dù đã trải qua các chương trình tinh chế song không có một quy trình nào đảm bảo loại bỏ hoàn toàn virus từ huyết thanh, mọi nghi ngờ liên quan đến việc lây nhiễm virus sau khi sử dụng RIG phải được báo ngay cho nhà sản xuất.",
+          "block_id": "b0030"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-mang-thai",
       "title": "Thời kỳ mang thai",
-      "content": "Không chống chỉ định dự phòng sau khi bị cắn đối với người mang thai vì có nguy cơ tiềm tàng do không xử lý tốt dự phòng bệnh dại.\n\nCũng không có gì chứng tỏ tạo miễn dịch kháng dại có liên quan đến các bất thường ở bào thai và kinh nghiệm lâm sàng đối với các chế phẩm có chứa globulin miễn dịch cho thấy không có ADR rõ rệt nào đối với bào thai do globulin miễn dịch gây ra.",
+      "heading_block": "b0031",
       "blocks": [
         {
           "type": "text",
-          "text": "Không chống chỉ định dự phòng sau khi bị cắn đối với người mang thai vì có nguy cơ tiềm tàng do không xử lý tốt dự phòng bệnh dại.\n\nCũng không có gì chứng tỏ tạo miễn dịch kháng dại có liên quan đến các bất thường ở bào thai và kinh nghiệm lâm sàng đối với các chế phẩm có chứa globulin miễn dịch cho thấy không có ADR rõ rệt nào đối với bào thai do globulin miễn dịch gây ra."
+          "text": "Không chống chỉ định dự phòng sau khi bị cắn đối với người mang thai vì có nguy cơ tiềm tàng do không xử lý tốt dự phòng bệnh dại.",
+          "block_id": "b0032"
+        },
+        {
+          "type": "text",
+          "text": "Cũng không có gì chứng tỏ tạo miễn dịch kháng dại có liên quan đến các bất thường ở bào thai và kinh nghiệm lâm sàng đối với các chế phẩm có chứa globulin miễn dịch cho thấy không có ADR rõ rệt nào đối với bào thai do globulin miễn dịch gây ra.",
+          "block_id": "b0033"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-cho-con-bu",
       "title": "Thời kỳ cho con bú",
-      "content": "Hiện chưa có thông tin về sự phân bố của huyết thanh kháng dại hoặc RIG vào sữa mẹ; cũng chưa rõ nếu huyết thanh kháng dại hoặc RIG truyền sang trẻ bú mẹ có gây nguy cơ bất thường nào cho trẻ bú không.",
+      "heading_block": "b0034",
       "blocks": [
         {
           "type": "text",
-          "text": "Hiện chưa có thông tin về sự phân bố của huyết thanh kháng dại hoặc RIG vào sữa mẹ; cũng chưa rõ nếu huyết thanh kháng dại hoặc RIG truyền sang trẻ bú mẹ có gây nguy cơ bất thường nào cho trẻ bú không."
+          "text": "Hiện chưa có thông tin về sự phân bố của huyết thanh kháng dại hoặc RIG vào sữa mẹ; cũng chưa rõ nếu huyết thanh kháng dại hoặc RIG truyền sang trẻ bú mẹ có gây nguy cơ bất thường nào cho trẻ bú không.",
+          "block_id": "b0035"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tac-dung-khong-mong-muon-adr",
       "title": "Tác dụng không mong muốn (ADR)",
-      "content": "Đối với RIG, hiếm thấy ADR nặng toàn thân. Vì huyết thanh kháng dại hoặc RIG được tiêm phòng cùng với vắc xin dại nên ADR thường thấy khi tiêm vắc xin dại cũng nhất thời thấy khi tiêm phòng RIG hoặc huyết thanh kháng dại.\n\nThường gặp và rất thường gặp Tổn thương loét hay căng cứng cơ có thể xảy ra ở vị trí tiêm và có thể tồn tại một số giờ sau khi tiêm huyết thanh kháng dại hoặc RIG. Những ảnh hưởng này đã tồn tại dai dẳng tới 3 ngày ở một vài người bệnh khi dùng liều cao (chẳng hạn 40 đvqt/kg thể trọng).\n\nÍt gặp Sốt nhẹ, mệt mỏi, đau đầu, mày đay hoặc phù mạch cũng có thể xảy ra.\n\nPhản ứng mẫn cảm đối với các lần tiêm nhắc lại đã xảy ra ở người bệnh suy giảm globulin miễn dịch.\n\nHiếm gặp và rất hiếm gặp Hội chứng thận hư và sốc phản vệ đã xảy ra nhưng hiếm sau khi tiêm globulin miễn dịch; tuy nhiên, mối liên quan giữa các phản ứng này và huyết thanh kháng dại hoặc RIG còn chưa được thiết lập. Đối với huyết thanh kháng dại ngựa, tỷ lệ gặp sốc phản vệ và bệnh huyết thanh cao hơn nhiều so với RIG.",
+      "heading_block": "b0036",
       "blocks": [
         {
           "type": "text",
-          "text": "Đối với RIG, hiếm thấy ADR nặng toàn thân. Vì huyết thanh kháng dại hoặc RIG được tiêm phòng cùng với vắc xin dại nên ADR thường thấy khi tiêm vắc xin dại cũng nhất thời thấy khi tiêm phòng RIG hoặc huyết thanh kháng dại.\n\nThường gặp và rất thường gặp Tổn thương loét hay căng cứng cơ có thể xảy ra ở vị trí tiêm và có thể tồn tại một số giờ sau khi tiêm huyết thanh kháng dại hoặc RIG. Những ảnh hưởng này đã tồn tại dai dẳng tới 3 ngày ở một vài người bệnh khi dùng liều cao (chẳng hạn 40 đvqt/kg thể trọng).\n\nÍt gặp Sốt nhẹ, mệt mỏi, đau đầu, mày đay hoặc phù mạch cũng có thể xảy ra.\n\nPhản ứng mẫn cảm đối với các lần tiêm nhắc lại đã xảy ra ở người bệnh suy giảm globulin miễn dịch.\n\nHiếm gặp và rất hiếm gặp Hội chứng thận hư và sốc phản vệ đã xảy ra nhưng hiếm sau khi tiêm globulin miễn dịch; tuy nhiên, mối liên quan giữa các phản ứng này và huyết thanh kháng dại hoặc RIG còn chưa được thiết lập. Đối với huyết thanh kháng dại ngựa, tỷ lệ gặp sốc phản vệ và bệnh huyết thanh cao hơn nhiều so với RIG."
+          "text": "Đối với RIG, hiếm thấy ADR nặng toàn thân. Vì huyết thanh kháng dại hoặc RIG được tiêm phòng cùng với vắc xin dại nên ADR thường thấy khi tiêm vắc xin dại cũng nhất thời thấy khi tiêm phòng RIG hoặc huyết thanh kháng dại.",
+          "block_id": "b0037"
+        },
+        {
+          "type": "subheading",
+          "text": "Thường gặp và rất thường gặp",
+          "block_id": "b0038"
+        },
+        {
+          "type": "text",
+          "text": "Tổn thương loét hay căng cứng cơ có thể xảy ra ở vị trí tiêm và có thể tồn tại một số giờ sau khi tiêm huyết thanh kháng dại hoặc RIG. Những ảnh hưởng này đã tồn tại dai dẳng tới 3 ngày ở một vài người bệnh khi dùng liều cao (chẳng hạn 40 đvqt/kg thể trọng).",
+          "block_id": "b0039"
+        },
+        {
+          "type": "subheading",
+          "text": "Ít gặp",
+          "block_id": "b0040"
+        },
+        {
+          "type": "text",
+          "text": "Sốt nhẹ, mệt mỏi, đau đầu, mày đay hoặc phù mạch cũng có thể xảy ra.",
+          "block_id": "b0041"
+        },
+        {
+          "type": "text",
+          "text": "Phản ứng mẫn cảm đối với các lần tiêm nhắc lại đã xảy ra ở người bệnh suy giảm globulin miễn dịch.",
+          "block_id": "b0042"
+        },
+        {
+          "type": "subheading",
+          "text": "Hiếm gặp và rất hiếm gặp",
+          "block_id": "b0043"
+        },
+        {
+          "type": "text",
+          "text": "Hội chứng thận hư và sốc phản vệ đã xảy ra nhưng hiếm sau khi tiêm globulin miễn dịch; tuy nhiên, mối liên quan giữa các phản ứng này và huyết thanh kháng dại hoặc RIG còn chưa được thiết lập. Đối với huyết thanh kháng dại ngựa, tỷ lệ gặp sốc phản vệ và bệnh huyết thanh cao hơn nhiều so với RIG.",
+          "block_id": "b0044"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "cach-dung",
-      "title": "Cách dùng",
-      "content": "Tiêm bắp RIG và tiêm phong bế quanh vết cắn. Không được tiêm tĩnh mạch RIG. Nếu vị trí giải phẫu cho phép, toàn bộ liều RIG nên được tiêm phong bế hoàn toàn vùng xung quanh vết thương. Với người lớn và trẻ em lớn tuổi, chỉ tiêm bắp tại cơ delta. Với trẻ nhỏ hơn có thể tiêm ở cơ delta hoặc mặt trước sau đùi. Với trẻ có khối cơ nhỏ cần tiêm RIG tại nhiều vị trí. Không nên tiêm vào vùng cơ mông để tránh tổn thương dây thần kinh hông, tiêm thẳng góc 90o, sử dụng mũi kim có độ dài hợp lý.\n\nKhông được trộn lẫn RIG và vắc xin dại vào chung một bơm tiêm, cũng không được tiêm vào cùng một nơi, vì có thể xảy ra trung hoà vắc xin. Globulin miễn dịch hoặc huyết thanh kháng dại được dùng kết hợp với vắc xin dại và thường được tiêm đồng thời với liều đầu tiên của vắc xin, nên tiêm càng sớm càng tốt khi đã có chỉ định hoặc không được chậm hơn ngày thứ 7 của trị liệu bằng vắc xin.\n\nSau 7 ngày từ khi tiêm vắc xin dại, kháng thể sinh ra do miễn dịch chủ động đã xuất hiện, không cần phải sử dụng huyết thanh kháng dại. Nếu RIG và vắc xin dại tiêm muộn, cả hai có thể tiêm bất luận khoảng cách giữa phơi nhiễm và dự phòng.",
+      "id": "lieu-luong-va-cach-dung",
+      "title": "Liều lượng và cách dùng",
+      "heading_block": "b0045",
       "blocks": [
         {
-          "type": "text",
-          "text": "Tiêm bắp RIG và tiêm phong bế quanh vết cắn. Không được tiêm tĩnh mạch RIG. Nếu vị trí giải phẫu cho phép, toàn bộ liều RIG nên được tiêm phong bế hoàn toàn vùng xung quanh vết thương. Với người lớn và trẻ em lớn tuổi, chỉ tiêm bắp tại cơ delta. Với trẻ nhỏ hơn có thể tiêm ở cơ delta hoặc mặt trước sau đùi. Với trẻ có khối cơ nhỏ cần tiêm RIG tại nhiều vị trí. Không nên tiêm vào vùng cơ mông để tránh tổn thương dây thần kinh hông, tiêm thẳng góc 90o, sử dụng mũi kim có độ dài hợp lý.\n\nKhông được trộn lẫn RIG và vắc xin dại vào chung một bơm tiêm, cũng không được tiêm vào cùng một nơi, vì có thể xảy ra trung hoà vắc xin. Globulin miễn dịch hoặc huyết thanh kháng dại được dùng kết hợp với vắc xin dại và thường được tiêm đồng thời với liều đầu tiên của vắc xin, nên tiêm càng sớm càng tốt khi đã có chỉ định hoặc không được chậm hơn ngày thứ 7 của trị liệu bằng vắc xin.\n\nSau 7 ngày từ khi tiêm vắc xin dại, kháng thể sinh ra do miễn dịch chủ động đã xuất hiện, không cần phải sử dụng huyết thanh kháng dại. Nếu RIG và vắc xin dại tiêm muộn, cả hai có thể tiêm bất luận khoảng cách giữa phơi nhiễm và dự phòng."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "lieu-luong",
-      "title": "Liều lượng",
-      "content": "Với RIG: Liều thông thường cho người lớn, thiếu niên và trẻ em để tạo miễn dịch thụ động: 20 đvqt/kg thể trọng. Chỉ sử dụng một liều duy nhất trong dự phòng dại. Nếu vị trí vết thương cho phép, có thể tiêm nửa liều thuốc vào vùng xung quanh vết thương, số còn lại tiêm vào cơ delta.\n\nVới huyết thanh kháng dại: Tổng liều cần tiêm là 40 đvqt/kg thể trọng. Tiêm bắp một nửa liều ở vị trí khác với nơi tiêm vắc xin, còn nửa kia được tiêm nhỏ giọt sâu vào vết thương và tiêm ngấm xung quanh vết thương. Nếu cần thiết, phải tiêm phòng chống uốn ván và dùng kháng sinh để tránh bội nhiễm.\n\nGiải mẫn cảm cho người bệnh bằng phương pháp Besredka (tiêm 0,1 ml, sau đó 0,25 ml và sau cùng là phần còn lại của liều, tiêm cách nhau 15 phút mỗi lần). Nếu có ADR với huyết thanh kháng dại, lập tức điều trị ngay bằng adrenalin, thuốc kháng histamin và nếu cần, corticoid tiêm.",
-      "blocks": [
+          "type": "subheading",
+          "text": "Cách dùng",
+          "block_id": "b0046"
+        },
         {
           "type": "text",
-          "text": "Với RIG: Liều thông thường cho người lớn, thiếu niên và trẻ em để tạo miễn dịch thụ động: 20 đvqt/kg thể trọng. Chỉ sử dụng một liều duy nhất trong dự phòng dại. Nếu vị trí vết thương cho phép, có thể tiêm nửa liều thuốc vào vùng xung quanh vết thương, số còn lại tiêm vào cơ delta.\n\nVới huyết thanh kháng dại: Tổng liều cần tiêm là 40 đvqt/kg thể trọng. Tiêm bắp một nửa liều ở vị trí khác với nơi tiêm vắc xin, còn nửa kia được tiêm nhỏ giọt sâu vào vết thương và tiêm ngấm xung quanh vết thương. Nếu cần thiết, phải tiêm phòng chống uốn ván và dùng kháng sinh để tránh bội nhiễm.\n\nGiải mẫn cảm cho người bệnh bằng phương pháp Besredka (tiêm 0,1 ml, sau đó 0,25 ml và sau cùng là phần còn lại của liều, tiêm cách nhau 15 phút mỗi lần). Nếu có ADR với huyết thanh kháng dại, lập tức điều trị ngay bằng adrenalin, thuốc kháng histamin và nếu cần, corticoid tiêm."
+          "text": "Tiêm bắp RIG và tiêm phong bế quanh vết cắn. Không được tiêm tĩnh mạch RIG. Nếu vị trí giải phẫu cho phép, toàn bộ liều RIG nên được tiêm phong bế hoàn toàn vùng xung quanh vết thương. Với người lớn và trẻ em lớn tuổi, chỉ tiêm bắp tại cơ delta. Với trẻ nhỏ hơn có thể tiêm ở cơ delta hoặc mặt trước sau đùi. Với trẻ có khối cơ nhỏ cần tiêm RIG tại nhiều vị trí. Không nên tiêm vào vùng cơ mông để tránh tổn thương dây thần kinh hông, tiêm thẳng góc 90o, sử dụng mũi kim có độ dài hợp lý.",
+          "block_id": "b0047"
+        },
+        {
+          "type": "text",
+          "text": "Không được trộn lẫn RIG và vắc xin dại vào chung một bơm tiêm, cũng không được tiêm vào cùng một nơi, vì có thể xảy ra trung hoà vắc xin. Globulin miễn dịch hoặc huyết thanh kháng dại được dùng kết hợp với vắc xin dại và thường được tiêm đồng thời với liều đầu tiên của vắc xin, nên tiêm càng sớm càng tốt khi đã có chỉ định hoặc không được chậm hơn ngày thứ 7 của trị liệu bằng vắc xin.",
+          "block_id": "b0048"
+        },
+        {
+          "type": "text",
+          "text": "Sau 7 ngày từ khi tiêm vắc xin dại, kháng thể sinh ra do miễn dịch",
+          "block_id": "b0049"
+        },
+        {
+          "type": "text",
+          "text": "chủ động đã xuất hiện, không cần phải sử dụng huyết thanh kháng dại. Nếu RIG và vắc xin dại tiêm muộn, cả hai có thể tiêm bất luận khoảng cách giữa phơi nhiễm và dự phòng.",
+          "block_id": "b0050"
+        },
+        {
+          "type": "subheading",
+          "text": "Liều lượng",
+          "block_id": "b0051"
+        },
+        {
+          "type": "text",
+          "text": "Với RIG: Liều thông thường cho người lớn, thiếu niên và trẻ em để tạo miễn dịch thụ động: 20 đvqt/kg thể trọng. Chỉ sử dụng một liều duy nhất trong dự phòng dại. Nếu vị trí vết thương cho phép, có thể tiêm nửa liều thuốc vào vùng xung quanh vết thương, số còn lại tiêm vào cơ delta.",
+          "block_id": "b0052"
+        },
+        {
+          "type": "text",
+          "text": "Với huyết thanh kháng dại:",
+          "block_id": "b0053"
+        },
+        {
+          "type": "text",
+          "text": "Tổng liều cần tiêm là 40 đvqt/kg thể trọng. Tiêm bắp một nửa liều ở vị trí khác với nơi tiêm vắc xin, còn nửa kia được tiêm nhỏ giọt sâu vào vết thương và tiêm ngấm xung quanh vết thương. Nếu cần thiết, phải tiêm phòng chống uốn ván và dùng kháng sinh để tránh bội nhiễm.",
+          "block_id": "b0054"
+        },
+        {
+          "type": "text",
+          "text": "Giải mẫn cảm cho người bệnh bằng phương pháp Besredka (tiêm 0,1 ml, sau đó 0,25 ml và sau cùng là phần còn lại của liều, tiêm cách nhau 15 phút mỗi lần). Nếu có ADR với huyết thanh kháng dại, lập tức điều trị ngay bằng adrenalin, thuốc kháng histamin và nếu cần, corticoid tiêm.",
+          "block_id": "b0055"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-tac-thuoc",
       "title": "Tương tác thuốc",
-      "content": "Với vắc xin dại: RIG và huyết thanh kháng dại thường được dùng đồng thời với vắc xin phòng dại trong dự phòng dại. Có bằng chứng cho thấy liều 20 đvqt/kg dùng đồng thời với vắc xin làm giảm nhẹ đáp ứng miễn dịch chủ động của vắc xin, bởi vậy không nên dùng RIG với liều cao hơn hoặc dùng thêm liều nhắc lại. Nếu có thể, toàn bộ liều RIG nên tiêm phong bế xung quanh vết thương.\n\nVới các vắc xin khác: Kháng thể có trong huyết thanh kháng dại hoặc RIG có thể ảnh hưởng đến đáp ứng miễn dịch của một vài loại vắc xin virus sống khác như vắc xin virus sởi, quai bị, rubella sống, vắc xin thủy đậu.\n\nCác vắc xin virus sống này phải được tiêm chủng ít nhất 14 ngày trước hoặc ít nhất 4 tháng sau khi tiêm RIG hoặc huyết thanh kháng dại. Nếu các vắc xin này được tiêm trong vòng 14 ngày trước khi tiêm RIG, cần tái tiêm chủng vắc xin 4 tháng sau khi tiêm RIG.\n\nVắc xin rotavirus sống đường uống nên dùng sau 6 tuần kể từ khi sử dụng RIG.\n\nDo các chế phẩm có globulin miễn dịch không ảnh hưởng tới đáp ứng miễn dịch đối với vắc xin virus bại liệt sống (OPV), vắc xin sốt vàng hoặc vắc xin thương hàn uống (Ty21a), các vắc xin bất hoạt hoặc giải độc tố nên có thể dùng các vắc xin này đồng thời hoặc trước hay sau khi dùng huyết thanh kháng dại hoặc RIG.\n\nThuốc ức chế miễn dịch hoặc các phương pháp ức chế miễn dịch như xạ trị có thể làm giảm kháng thể đáp ứng khi dự phòng dại với RIG và vắc xin dại, làm tăng nguy cơ mắc dại cho dù đã dự phòng.\n\nBởi vậy nên tránh sử dụng các liệu pháp ức chế miễn dịch khi đang dự phòng dại nếu có thể. Nếu dự phòng dại đồng thời với sử dụng thuốc ức chế miễn dịch, xét nghiệm kháng thể kháng dại nên được thực hiện để xác định đáp ứng miễn dịch hiệu quả.",
+      "heading_block": "b0056",
       "blocks": [
         {
+          "type": "subheading",
+          "text": "Với vắc xin dại:",
+          "block_id": "b0057"
+        },
+        {
           "type": "text",
-          "text": "Với vắc xin dại: RIG và huyết thanh kháng dại thường được dùng đồng thời với vắc xin phòng dại trong dự phòng dại. Có bằng chứng cho thấy liều 20 đvqt/kg dùng đồng thời với vắc xin làm giảm nhẹ đáp ứng miễn dịch chủ động của vắc xin, bởi vậy không nên dùng RIG với liều cao hơn hoặc dùng thêm liều nhắc lại. Nếu có thể, toàn bộ liều RIG nên tiêm phong bế xung quanh vết thương.\n\nVới các vắc xin khác: Kháng thể có trong huyết thanh kháng dại hoặc RIG có thể ảnh hưởng đến đáp ứng miễn dịch của một vài loại vắc xin virus sống khác như vắc xin virus sởi, quai bị, rubella sống, vắc xin thủy đậu.\n\nCác vắc xin virus sống này phải được tiêm chủng ít nhất 14 ngày trước hoặc ít nhất 4 tháng sau khi tiêm RIG hoặc huyết thanh kháng dại. Nếu các vắc xin này được tiêm trong vòng 14 ngày trước khi tiêm RIG, cần tái tiêm chủng vắc xin 4 tháng sau khi tiêm RIG.\n\nVắc xin rotavirus sống đường uống nên dùng sau 6 tuần kể từ khi sử dụng RIG.\n\nDo các chế phẩm có globulin miễn dịch không ảnh hưởng tới đáp ứng miễn dịch đối với vắc xin virus bại liệt sống (OPV), vắc xin sốt vàng hoặc vắc xin thương hàn uống (Ty21a), các vắc xin bất hoạt hoặc giải độc tố nên có thể dùng các vắc xin này đồng thời hoặc trước hay sau khi dùng huyết thanh kháng dại hoặc RIG.\n\nThuốc ức chế miễn dịch hoặc các phương pháp ức chế miễn dịch như xạ trị có thể làm giảm kháng thể đáp ứng khi dự phòng dại với RIG và vắc xin dại, làm tăng nguy cơ mắc dại cho dù đã dự phòng.\n\nBởi vậy nên tránh sử dụng các liệu pháp ức chế miễn dịch khi đang dự phòng dại nếu có thể. Nếu dự phòng dại đồng thời với sử dụng thuốc ức chế miễn dịch, xét nghiệm kháng thể kháng dại nên được thực hiện để xác định đáp ứng miễn dịch hiệu quả."
+          "text": "RIG và huyết thanh kháng dại thường được dùng đồng thời với vắc xin phòng dại trong dự phòng dại. Có bằng chứng cho thấy liều 20 đvqt/kg dùng đồng thời với vắc xin làm giảm nhẹ đáp ứng miễn dịch chủ động của vắc xin, bởi vậy không nên dùng RIG với liều cao hơn hoặc dùng thêm liều nhắc lại. Nếu có thể, toàn bộ liều RIG nên tiêm phong bế xung quanh vết thương.",
+          "block_id": "b0058"
+        },
+        {
+          "type": "subheading",
+          "text": "Với các vắc xin khác:",
+          "block_id": "b0059"
+        },
+        {
+          "type": "text",
+          "text": "Kháng thể có trong huyết thanh kháng dại hoặc RIG có thể ảnh hưởng đến đáp ứng miễn dịch của một vài loại vắc xin virus sống khác như vắc xin virus sởi, quai bị, rubella sống, vắc xin thủy đậu.",
+          "block_id": "b0060"
+        },
+        {
+          "type": "text",
+          "text": "Các vắc xin virus sống này phải được tiêm chủng ít nhất 14 ngày trước hoặc ít nhất 4 tháng sau khi tiêm RIG hoặc huyết thanh kháng dại. Nếu các vắc xin này được tiêm trong vòng 14 ngày trước khi tiêm RIG, cần tái tiêm chủng vắc xin 4 tháng sau khi tiêm RIG.",
+          "block_id": "b0061"
+        },
+        {
+          "type": "text",
+          "text": "Vắc xin rotavirus sống đường uống nên dùng sau 6 tuần kể từ khi sử dụng RIG.",
+          "block_id": "b0062"
+        },
+        {
+          "type": "text",
+          "text": "Do các chế phẩm có globulin miễn dịch không ảnh hưởng tới đáp ứng miễn dịch đối với vắc xin virus bại liệt sống (OPV), vắc xin sốt vàng hoặc vắc xin thương hàn uống (Ty21a), các vắc xin bất hoạt hoặc giải độc tố nên có thể dùng các vắc xin này đồng thời hoặc trước hay sau khi dùng huyết thanh kháng dại hoặc RIG.",
+          "block_id": "b0063"
+        },
+        {
+          "type": "text",
+          "text": "Thuốc ức chế miễn dịch hoặc các phương pháp ức chế miễn dịch như xạ trị có thể làm giảm kháng thể đáp ứng khi dự phòng dại với RIG và vắc xin dại, làm tăng nguy cơ mắc dại cho dù đã dự phòng.",
+          "block_id": "b0064"
+        },
+        {
+          "type": "text",
+          "text": "Bởi vậy nên tránh sử dụng các liệu pháp ức chế miễn dịch khi đang dự phòng dại nếu có thể. Nếu dự phòng dại đồng thời với sử dụng thuốc ức chế miễn dịch, xét nghiệm kháng thể kháng dại nên được thực hiện để xác định đáp ứng miễn dịch hiệu quả.",
+          "block_id": "b0065"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "cap-nhat-lan-cuoi",
       "title": "Cập nhật lần cuối",
-      "content": "2017.",
+      "heading_block": "b0066",
       "blocks": [
         {
           "type": "text",
-          "text": "2017."
+          "text": "2017.",
+          "block_id": "b0066"
         }
-      ],
-      "subsections": []
+      ]
     }
   ],
-  "tables": [],
   "quality": {
-    "status": "source-layout-rebuilt-v10.1-source-paragraph-boundaries",
-    "pdf_text_order": "left-column-then-right-column; visual line flow",
-    "paragraph_policy": "Paragraph boundaries are source-derived and stored only as blank lines. The client preserves those boundaries exactly; it must not create a new paragraph from label words such as “Trẻ em:” or “Người lớn:”. A lower-case continuation fragment is merged only when it follows a non-terminal source fragment; table footnotes remain separate. No client-side anchor or length-based sentence splitter is allowed.",
-    "table_policy": "source-table image inserted by PDF page/column/y position; table-cell text excluded from prose",
-    "validation": {
-      "raw_newline_inside_paragraph": false,
-      "table_count": 0,
-      "section_count": 15,
-      "client_anchor_resegmentation_disabled": true,
-      "client_length_sentence_chunking_disabled": true
-    }
+    "block_count": 66,
+    "heading_count": 12,
+    "subheading_count": 7,
+    "paragraph_count": 46,
+    "list_count": 0,
+    "table_count": 0,
+    "figure_count": 0,
+    "note_count": 1,
+    "page_count": 3
+  },
+  "tables": [],
+  "legacy_compat": {
+    "sections": "generated from v11 blocks for v10.4.5.39 renderer/chatbot compatibility"
   }
 }

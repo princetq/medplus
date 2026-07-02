@@ -2018,6 +2018,8 @@ body.dark-mode #hdsd-content table td {
   #hdsd-content .medplus-hdsd-table-scroll.hdsd-cols-many > table {min-width:1140px!important}
 }
 
+
+.duoc-v11-intro{margin-bottom:12px;border-radius:12px;background:rgba(232,245,233,.35)}.duoc-v11-list{margin:0 0 10px 1.2em;line-height:1.7}.duoc-note{border-left:4px solid var(--color-accent);padding-left:12px;background:rgba(232,245,233,.35);border-radius:8px}
 </style>
 
 
@@ -2669,7 +2671,7 @@ body.dark-mode #hdsd-content .hdsd-table-scroll-force td{
 <script>
 (function(){
 'use strict';
-const INDEX_URL='./duoc-thu-data/index.json?v=10.4.5.18', DATA_BASE='./duoc-thu-data/', MEDPLUS_JSON_URL='./medplus.json';
+const INDEX_URL='./duoc-thu-data/index.json?v=11.0.0', DATA_BASE='./duoc-thu-data/', MEDPLUS_JSON_URL='./medplus.json';
 const DUOC_THU_PDF_URL = (window.MEDPLUS_DUOC_THU_PDF_URL || './duoc-thu-data/pages/');
 const PAGE_SIZE=36, LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 let indexRecords=[],recordCache=new Map(),filteredResults=[],visibleCount=0,activeLetter='',lastQuery='',appendBusy=false,revealObserver=null,loadObserver=null;
@@ -2742,21 +2744,17 @@ function score(r,query){
 function initialOf(r){const n=norm(r.title);return n?n.charAt(0).toUpperCase():''}
 function highlight(v,query){const t=esc(v);if(!query)return t;const words=Array.from(new Set(query.split(' ').filter(x=>x.length>=3))).sort((a,b)=>b.length-a.length);if(!words.length)return t;const re=new RegExp('('+words.map(x=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','ig');return t.replace(re,'<mark>$1</mark>')}
 function cardDrugTypeFromRecord(rec){
-  const sections=Array.isArray(rec&&rec.sections)?rec.sections:[];
   const parts=[];
-  sections.forEach(function(sec){
-    if(!sec)return;
+  if(Array.isArray(rec&&rec.blocks))rec.blocks.slice(0,12).forEach(function(b){if(b&&b.text)parts.push(String(b.text));});
+  const sections=Array.isArray(rec&&rec.sections)?rec.sections:[];
+  sections.slice(0,2).forEach(function(sec){
     if(sec.content)parts.push(String(sec.content));
-    if(Array.isArray(sec.blocks))sec.blocks.forEach(function(b){if(b&&b.type==='text'&&b.text)parts.push(String(b.text))});
-    if(Array.isArray(sec.subsections))sec.subsections.forEach(function(sub){
-      if(sub&&sub.content)parts.push(String(sub.content));
-      if(sub&&Array.isArray(sub.blocks))sub.blocks.forEach(function(b){if(b&&b.type==='text'&&b.text)parts.push(String(b.text))});
-    });
+    if(Array.isArray(sec.blocks))sec.blocks.forEach(function(b){if(b&&b.type==='text'&&b.text)parts.push(String(b.text));});
   });
   const text=parts.join('\n').replace(/\r/g,'');
   const m=text.match(/(?:^|\n)\s*Loại\s+thuốc\s*:\s*([^\n]+)/i);
   if(!m)return 'Chuyên luận thuốc';
-  return m[1].replace(/\s+/g,' ').trim().replace(/[;,.\s]+$/,'')||'Chuyên luận thuốc';
+  return m[1].replace(/\s+/g,' ').trim().replace(/[;,\.\s]+$/,'')||'Chuyên luận thuốc';
 }
 function hydrateCardDrugTypes(){
   list.querySelectorAll('.duoc-card-type[data-duoc-id]').forEach(function(el){
@@ -2822,7 +2820,11 @@ function findTable(rec,id){return(rec.tables||[]).find(function(t){return t&&t.i
 function printedPage(rec,t){const pdf=(rec.source||{}).pdf_pages||{},printed=(rec.source||{}).printed_pages||{},n=Number(t&&t.source_pdf_page);return Number.isFinite(n)&&Number.isFinite(Number(pdf.start))&&Number.isFinite(Number(printed.start))?Number(printed.start)+(n-Number(pdf.start)):(n||'')}
 function assetUrl(path){const raw=String(path||'').replace(/\\/g,'/').replace(/^\.\//,'');try{return new URL(raw,document.baseURI).href}catch(e){return encodeURI(raw)}}
 function renderTable(rec,t){if(!t||!t.image_path)return '';const src=assetUrl(t.image_path);return '<figure class="duoc-table-figure" data-duoc-table-id="'+esc(t.id||'')+'"><figcaption><b>Bảng gốc từ Dược thư</b>'+(printedPage(rec,t)?' - tr. '+esc(printedPage(rec,t)):'')+'</figcaption><img class="duoc-table-image" loading="lazy" decoding="async" alt="Bảng gốc từ Dược thư" src="'+esc(src)+'" onerror="var f=this.closest(\'figure\');if(f)f.classList.add(\'duoc-table-image-error\');this.remove();"><div class="duoc-table-image-error-text">Không tải được ảnh bảng. Hãy kiểm tra thư mục duoc-thu-assets.</div></figure>'}
-function renderNode(rec,node){if(!node)return '';const blocks=Array.isArray(node.blocks)&&node.blocks.length?node.blocks:(String(node.content||'').trim()?[{type:'text',text:String(node.content||'')}]:[]);return blocks.map(function(b){if(!b)return '';if(b.type==='table')return renderTable(rec,findTable(rec,b.table_id));if(b.type==='text')return '<div class="duoc-text">'+renderText(b.text||'')+'</div>';return ''}).join('')}
+function duocV11BlockMap(rec){if(!rec.__v11BlockMap){rec.__v11BlockMap={};(rec.blocks||[]).forEach(function(b){if(b&&b.id)rec.__v11BlockMap[b.id]=b;});}return rec.__v11BlockMap}
+function duocV11ResolveBlock(rec,b){if(!b)return null;if(typeof b==='string')return duocV11BlockMap(rec)[b]||null;if(b.block_id)return duocV11BlockMap(rec)[b.block_id]||b;return b}
+function duocV11IntroBlocks(rec){const out=[];const blocks=Array.isArray(rec.blocks)?rec.blocks:[];for(let i=0;i<blocks.length;i++){const b=blocks[i];if(!b)continue;if(i>0&&b.type==='heading'&&Number(b.level||2)<=2)break;out.push(b)}return out}
+function duocV11RenderBlock(rec,b){b=duocV11ResolveBlock(rec,b);if(!b)return '';const type=b.type||'paragraph';if(type==='table'){return renderTable(rec,{id:b.table_id||b.id,image_path:b.image_path||b.image,image:b.image||b.image_path,source_pdf_page:b.page,printed_page:b.printed_page,bbox:b.bbox})}if(type==='figure'){const src=assetUrl(b.image_path||b.image||'');return src?'<figure class="duoc-table-figure"><figcaption><b>Hình gốc từ Dược thư</b></figcaption><img class="duoc-table-image" loading="lazy" decoding="async" alt="Hình gốc từ Dược thư" src="'+esc(src)+'"></figure>':''}if(type==='list'){const items=Array.isArray(b.items)?b.items:String(b.text||'').split(/\n+/);return '<ul class="duoc-v11-list">'+items.filter(Boolean).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>'}if(type==='subheading'){return '<div class="duoc-subsection"><b>'+esc(String(b.text||'').toLocaleUpperCase('vi-VN'))+'</b></div>'}if(type==='note'){return '<div class="duoc-text duoc-note"><p class="duoc-paragraph">'+esc(b.text||'')+'</p></div>'}if(type==='heading'){return ''}return '<div class="duoc-text">'+renderText(b.text||'')+'</div>'}
+function renderNode(rec,node){if(!node)return '';const blocks=Array.isArray(node.blocks)&&node.blocks.length?node.blocks:(String(node.content||'').trim()?[{type:'text',text:String(node.content||'')}]:[]);return blocks.map(function(b){if(!b)return '';if(typeof b==='string'||b.block_id)return duocV11RenderBlock(rec,b);if(b.type==='table')return renderTable(rec,findTable(rec,b.table_id)||b);if(b.type==='figure')return duocV11RenderBlock(rec,b);if(b.type==='subheading')return '<div class="duoc-subsection"><b>'+esc(String(b.text||'').toLocaleUpperCase('vi-VN'))+'</b></div>';if(b.type==='text')return '<div class="duoc-text">'+renderText(b.text||'')+'</div>';return duocV11RenderBlock(rec,b)}).join('')}
 
 let medplusDrugPromise=null, lastBrandMatches=[], lastBrandContext=null;
 function uniqueText(arr){const seen=new Set();return (arr||[]).map(function(x){return String(x||'').trim()}).filter(function(x){const k=norm(x);if(!k||seen.has(k))return false;seen.add(k);return true})}
@@ -3091,7 +3093,9 @@ function renderRecord(rec){
     +'<div class="duoc-modal-head"><h2>'+esc(rec.title)+'</h2><p>'+esc((source.book||'Dược thư Quốc gia Việt Nam')+', '+(source.edition||'2023')+', '+pages+'.')+'</p>'
     +'<div class="duoc-modal-actions"><button type="button" class="duoc-brand-open-btn" data-duoc-brand-record="'+esc(rec.id||'')+'" title="Mở biệt dược/HDSD liên quan"><span>BIỆT DƯỢC</span><span class="duoc-brand-count">…</span></button></div>'
     +'</div></div><div class="duoc-modal-body">';
-  (rec.sections||[]).forEach(function(sec,i){
+  const intro=duocV11IntroBlocks(rec).filter(function(b){return !(b.type==='heading'&&Number(b.level||1)===1)});
+  if(intro.length){h+='<div class="duoc-section-body duoc-v11-intro">'+intro.map(function(b){return duocV11RenderBlock(rec,b)}).join('')+'</div>'}
+  (rec.sections||[]).forEach(function(sec){
     const parent=renderNode(rec,sec),children=sec.render_mode==='children_only'&&Array.isArray(sec.subsections)&&sec.subsections.length;
     const title=String(sec.title||'').toLocaleUpperCase('vi-VN');
     h+='<details class="duoc-section"><summary>'+esc(title)+'</summary>';

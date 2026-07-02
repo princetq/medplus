@@ -1,11 +1,9 @@
 {
-  "schema_version": "10.1-source-paragraph-boundaries",
+  "schema_version": "11.0.0",
   "id": "bleomycin",
   "title": "Bleomycin",
   "aliases": [
-    "bleomycin",
-    "bleomycin sulfat",
-    "bleomycin sulfate"
+    "Bleomycin"
   ],
   "source": {
     "book": "Dược thư Quốc gia Việt Nam",
@@ -28,244 +26,3449 @@
       "boundary_method": "physical-source-title-band"
     }
   },
-  "sections": [
+  "parser": {
+    "name": "medplus-duoc-thu-v11-structured-pdf-parser",
+    "method": "PyMuPDF span -> line -> block",
+    "content_source": "Duocthu2023.pdf",
+    "old_json_usage": "id/title/page-boundary metadata and existing table asset path only; old content is not used",
+    "column_order": "left column -> right column -> next page",
+    "block_model": [
+      "heading",
+      "subheading",
+      "paragraph",
+      "list",
+      "table",
+      "figure",
+      "note"
+    ],
+    "table_policy": "no OCR; preserve existing duoc-thu-assets/<id>/pXXXX-tXX.png image_path"
+  },
+  "blocks": [
     {
-      "id": "thong-tin-au-chuyen-luan",
-      "title": "Thông tin đầu chuyên luận",
-      "content": "BLEOMYCIN",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "BLEOMYCIN"
-        }
+      "id": "b0001",
+      "type": "heading",
+      "level": 1,
+      "text": "BLEOMYCIN",
+      "page": 300,
+      "printed_page": 306,
+      "column": 0,
+      "bbox": [
+        138.02,
+        577.98,
+        200.8,
+        591.82
       ],
-      "subsections": []
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "BLEOMYCIN",
+          "bbox": [
+            138.02,
+            577.98,
+            200.8,
+            591.82
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
     },
     {
-      "id": "ten-chung-quoc-te",
-      "title": "Tên chung quốc tế",
-      "content": "Bleomycin.\n\nMã ATC: L01DC01.\n\nLoại thuốc: Thuốc chống ung thư, kháng sinh độc tế bào.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Bleomycin.\n\nMã ATC: L01DC01.\n\nLoại thuốc: Thuốc chống ung thư, kháng sinh độc tế bào."
-        }
+      "id": "b0002",
+      "type": "paragraph",
+      "text": "Tên chung quốc tế: Bleomycin.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 0,
+      "bbox": [
+        43.43,
+        601.72,
+        170.11,
+        614.87
       ],
-      "subsections": []
-    },
-    {
-      "id": "dang-thuoc-va-ham-luong",
-      "title": "Dạng thuốc và hàm lượng",
-      "content": "Lọ bột đông khô bleomycin sulfat để pha tiêm, chứa 15 hoặc 30 đơn vị Dược điển Mỹ (đơn vị USP), tương đương 15 000 hoặc 30 000 đvqt (IU).",
-      "blocks": [
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
         {
-          "type": "text",
-          "text": "Lọ bột đông khô bleomycin sulfat để pha tiêm, chứa 15 hoặc 30 đơn vị Dược điển Mỹ (đơn vị USP), tương đương 15 000 hoặc 30 000 đvqt (IU)."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "duoc-luc-hoc",
-      "title": "Dược lực học",
-      "content": "Bleomycin là một hỗn hợp kháng sinh glycopeptid có tác dụng độc với tế bào, tạo ra bởi xạ khuẩn Streptomyces verticillus, trong đó bleomycin A2 và bleomycin B2 là thành phần chính. Cơ chế tác dụng của bleomycin là làm đứt các đoạn DNA; một phần do thuốc liên kết trực tiếp với DNA và một phần do tạo thành các gốc tự do.\n\nDo ức chế sự tổng hợp DNA nên thuốc có tác dụng ức chế sự phân chia và tăng trưởng của tế bào khối u. Thuốc có tác dụng đặc hiệu trên DNA và không ảnh hưởng đến sự tổng hợp RNA hoặc protein của tế bào khối u. Tác dụng tối đa trong chu trình phân bào xảy ra trong pha M, và trong quá trình chuyển từ pha G1 đến pha S, nhưng pha G2 cũng rất nhạy cảm với bleomycin.\n\nKhi tiêm tĩnh mạch, thuốc có thể có tác dụng giống như histamin lên huyết áp và làm tăng thân nhiệt.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Bleomycin là một hỗn hợp kháng sinh glycopeptid có tác dụng độc với tế bào, tạo ra bởi xạ khuẩn Streptomyces verticillus, trong đó bleomycin A2 và bleomycin B2 là thành phần chính. Cơ chế tác dụng của bleomycin là làm đứt các đoạn DNA; một phần do thuốc liên kết trực tiếp với DNA và một phần do tạo thành các gốc tự do.\n\nDo ức chế sự tổng hợp DNA nên thuốc có tác dụng ức chế sự phân chia và tăng trưởng của tế bào khối u. Thuốc có tác dụng đặc hiệu trên DNA và không ảnh hưởng đến sự tổng hợp RNA hoặc protein của tế bào khối u. Tác dụng tối đa trong chu trình phân bào xảy ra trong pha M, và trong quá trình chuyển từ pha G1 đến pha S, nhưng pha G2 cũng rất nhạy cảm với bleomycin.\n\nKhi tiêm tĩnh mạch, thuốc có thể có tác dụng giống như histamin lên huyết áp và làm tăng thân nhiệt."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "duoc-ong-hoc",
-      "title": "Dược động học",
-      "content": "Hấp thu: Bleomycin ít được hấp thu theo đường tiêu hóa nhưng được hấp thu nhanh qua đường tiêm, qua phúc mạc và màng phổi.\n\nSau khi tiêm tĩnh mạch liều 15 000 đvqt/m2, nồng độ trong huyết thanh đạt được từ 1 - 10 đvqt. Sinh khả dụng sau tiêm bắp là 100% và thuốc đạt nồng độ tối đa trong máu sau khoảng 30 phút. Sinh khả dụng của thuốc khi dùng theo đường phúc mạc hoặc màng phổi là 45%.\n\nPhân bố: Tỷ lệ gắn vào protein huyết tương thấp. Thể tích phân bố khoảng 0,27 ± 0,09 lít/kg. Nồng độ thuốc trong dịch não tủy thấp.\n\nSau khi được tiêm, bleomycin được phân bố chủ yếu ở da, phổi, thận, phúc mạc và hệ bạch huyết. Thuốc đi qua được hàng rào nhau thai. Nồng độ thuốc trong khối ung thư da và phổi cao hơn ở mô tạo máu. Nồng độ thuốc trong tủy xương thấp có thể là do nồng độ các enzym gây thoái hóa bleomycin ở trong tủy xương cao.\n\nChuyển hóa: Bleomycin bị thoái hóa thành chất chuyển hóa không có hoạt tính chủ yếu ở huyết tương, gan, lách, ruột non và tủy xương, một số ít ở da và ở phổi. Thuốc bị mất tác dụng ở các mô bởi enzym xúc tác thủy phân đặc hiệu bleomycinhydrolase, enzym này có rất ít trong da và phổi, đây là hai vị trí xuất hiện độc tính chính của thuốc.\n\nThải trừ: Sau khi tiêm tĩnh mạch một liều, nửa đời thải trừ của thuốc là khoảng 3 giờ với 2 pha thải trừ: nửa đời của pha đầu là 24 phút và của pha cuối là 2 - 4 giờ. Nếu truyền tĩnh mạch liên tục thì sự đào thải kéo dài hơn với nửa đời thải trừ là 9 giờ. Hai phần ba liều được đào thải theo nước tiểu dưới dạng không đổi; tốc độ đào thải do chức năng thận quyết định. Khi tiêm tĩnh mạch, thuốc được đào thải nhanh hơn khi tiêm bắp. Với người bệnh có chức năng thận bình thường, khoảng 70% liều được bài tiết dưới dạng không đổi qua nước tiểu trong vòng 24 giờ. Ở người bị suy thận mức độ vừa (Clcr < 35 ml/phút) chỉ có 20% liều tiêm được đào thải qua nước tiểu; điều này cho thấy có sự tích lũy thuốc ở người bệnh bị suy thận nặng.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Hấp thu: Bleomycin ít được hấp thu theo đường tiêu hóa nhưng được hấp thu nhanh qua đường tiêm, qua phúc mạc và màng phổi.\n\nSau khi tiêm tĩnh mạch liều 15 000 đvqt/m2, nồng độ trong huyết thanh đạt được từ 1 - 10 đvqt. Sinh khả dụng sau tiêm bắp là 100% và thuốc đạt nồng độ tối đa trong máu sau khoảng 30 phút. Sinh khả dụng của thuốc khi dùng theo đường phúc mạc hoặc màng phổi là 45%.\n\nPhân bố: Tỷ lệ gắn vào protein huyết tương thấp. Thể tích phân bố khoảng 0,27 ± 0,09 lít/kg. Nồng độ thuốc trong dịch não tủy thấp.\n\nSau khi được tiêm, bleomycin được phân bố chủ yếu ở da, phổi, thận, phúc mạc và hệ bạch huyết. Thuốc đi qua được hàng rào nhau thai. Nồng độ thuốc trong khối ung thư da và phổi cao hơn ở mô tạo máu. Nồng độ thuốc trong tủy xương thấp có thể là do nồng độ các enzym gây thoái hóa bleomycin ở trong tủy xương cao.\n\nChuyển hóa: Bleomycin bị thoái hóa thành chất chuyển hóa không có hoạt tính chủ yếu ở huyết tương, gan, lách, ruột non và tủy xương, một số ít ở da và ở phổi. Thuốc bị mất tác dụng ở các mô bởi enzym xúc tác thủy phân đặc hiệu bleomycinhydrolase, enzym này có rất ít trong da và phổi, đây là hai vị trí xuất hiện độc tính chính của thuốc.\n\nThải trừ: Sau khi tiêm tĩnh mạch một liều, nửa đời thải trừ của thuốc là khoảng 3 giờ với 2 pha thải trừ: nửa đời của pha đầu là 24 phút và của pha cuối là 2 - 4 giờ. Nếu truyền tĩnh mạch liên tục thì sự đào thải kéo dài hơn với nửa đời thải trừ là 9 giờ. Hai phần ba liều được đào thải theo nước tiểu dưới dạng không đổi; tốc độ đào thải do chức năng thận quyết định. Khi tiêm tĩnh mạch, thuốc được đào thải nhanh hơn khi tiêm bắp. Với người bệnh có chức năng thận bình thường, khoảng 70% liều được bài tiết dưới dạng không đổi qua nước tiểu trong vòng 24 giờ. Ở người bị suy thận mức độ vừa (Clcr < 35 ml/phút) chỉ có 20% liều tiêm được đào thải qua nước tiểu; điều này cho thấy có sự tích lũy thuốc ở người bệnh bị suy thận nặng."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "chi-inh",
-      "title": "Chỉ định",
-      "content": "Các u lympho Hodgkin hoặc không Hodgkin.\n\nUng thư biểu mô tế bào vảy ở đầu, cổ, cổ tử cung và cơ quan sinh dục ngoài.\n\nUng thư tinh hoàn.\n\nUng thư tế bào mầm buồng trứng.\n\nTràn dịch màng phổi ác tính.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Các u lympho Hodgkin hoặc không Hodgkin.\n\nUng thư biểu mô tế bào vảy ở đầu, cổ, cổ tử cung và cơ quan sinh dục ngoài.\n\nUng thư tinh hoàn.\n\nUng thư tế bào mầm buồng trứng.\n\nTràn dịch màng phổi ác tính."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "chong-chi-inh",
-      "title": "Chống chỉ định",
-      "content": "Mẫn cảm với thuốc.\n\nNhiễm khuẩn phổi cấp hoặc chức năng phổi bị suy giảm nặng.\n\nTrường hợp mất điều vận (thất điều).",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Mẫn cảm với thuốc.\n\nNhiễm khuẩn phổi cấp hoặc chức năng phổi bị suy giảm nặng.\n\nTrường hợp mất điều vận (thất điều)."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "than-trong",
-      "title": "Thận trọng",
-      "content": "Bleomycin độc ngay cả khi được dùng với liều thấp. Thuốc phải được dùng dưới sự giám sát của thầy thuốc chuyên khoa ung thư có kinh nghiệm về hóa trị liệu và ở cơ sở y tế có đầy đủ phương tiện chẩn đoán, điều trị và can thiệp khi có biến chứng. Phải theo dõi chặt chẽ và thường xuyên bệnh nhân trong và sau khi điều trị bằng bleomycin.\n\nPhải thử liều bleomycin ở tất cả mọi bệnh nhân bị u lympho trước khi trị liệu chính thức để tránh nguy cơ phản vệ.\n\nSử dụng hết sức thận trọng với những người bệnh bị suy thận, người bệnh có chức năng phổi hoặc thận giảm, người bệnh có u lympho, người bệnh dùng đồng thời các thuốc độc với thận (như methotrexat liều cao, aminoglycosid).\n\nThận trọng khi dùng cho bệnh nhân trên 70 tuổi, đặc biệt khi dùng với tổng liều trên 400 000 đvqt do nguy cơ viêm phổi và xơ phổi.\n\nThận trọng khi dùng cho người đã được xạ trị, nhất là ở vùng ngực.\n\nThận trọng khi dùng cho bệnh nhân trong độ tuổi sinh sản, cần chú ý tác động của thuốc trên các cơ quan sinh sản.\n\nNồng độ oxy trên 30% có nguy cơ cao gây xơ hóa phổi cho người đang dùng thuốc. Nếu phải phẫu thuật cho người đang dùng bleomycin thì cần cho người bệnh thở không khí có nồng độ oxy khoảng 25% trong và sau khi mổ; phải theo dõi việc truyền dịch cẩn thận (dùng dung dịch keo thay vì dịch truyền tinh thể).",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Bleomycin độc ngay cả khi được dùng với liều thấp. Thuốc phải được dùng dưới sự giám sát của thầy thuốc chuyên khoa ung thư có kinh nghiệm về hóa trị liệu và ở cơ sở y tế có đầy đủ phương tiện chẩn đoán, điều trị và can thiệp khi có biến chứng. Phải theo dõi chặt chẽ và thường xuyên bệnh nhân trong và sau khi điều trị bằng bleomycin.\n\nPhải thử liều bleomycin ở tất cả mọi bệnh nhân bị u lympho trước khi trị liệu chính thức để tránh nguy cơ phản vệ.\n\nSử dụng hết sức thận trọng với những người bệnh bị suy thận, người bệnh có chức năng phổi hoặc thận giảm, người bệnh có u lympho, người bệnh dùng đồng thời các thuốc độc với thận (như methotrexat liều cao, aminoglycosid).\n\nThận trọng khi dùng cho bệnh nhân trên 70 tuổi, đặc biệt khi dùng với tổng liều trên 400 000 đvqt do nguy cơ viêm phổi và xơ phổi.\n\nThận trọng khi dùng cho người đã được xạ trị, nhất là ở vùng ngực.\n\nThận trọng khi dùng cho bệnh nhân trong độ tuổi sinh sản, cần chú ý tác động của thuốc trên các cơ quan sinh sản.\n\nNồng độ oxy trên 30% có nguy cơ cao gây xơ hóa phổi cho người đang dùng thuốc. Nếu phải phẫu thuật cho người đang dùng bleomycin thì cần cho người bệnh thở không khí có nồng độ oxy khoảng 25% trong và sau khi mổ; phải theo dõi việc truyền dịch cẩn thận (dùng dung dịch keo thay vì dịch truyền tinh thể)."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "thoi-ky-mang-thai",
-      "title": "Thời kỳ mang thai",
-      "content": "Bleomycin gây quái thai trên động vật thực nghiệm, không có dữ liệu trên phụ nữ mang thai. Phụ nữ trong độ tuổi sinh đẻ phải tránh mang thai trong quá trình được điều trị bằng bleomycin. Nếu chỉ định thuốc cho bệnh nhân đang mang thai hoặc bệnh nhân mang thai trong quá trình dùng thuốc thì phải thông báo cho bệnh nhân nguy cơ đối với thai.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Bleomycin gây quái thai trên động vật thực nghiệm, không có dữ liệu trên phụ nữ mang thai. Phụ nữ trong độ tuổi sinh đẻ phải tránh mang thai trong quá trình được điều trị bằng bleomycin. Nếu chỉ định thuốc cho bệnh nhân đang mang thai hoặc bệnh nhân mang thai trong quá trình dùng thuốc thì phải thông báo cho bệnh nhân nguy cơ đối với thai."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "thoi-ky-cho-con-bu",
-      "title": "Thời kỳ cho con bú",
-      "content": "Không rõ thuốc có được bài tiết theo sữa hay không. Người bệnh dùng bleomycin không nên cho con bú.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Không rõ thuốc có được bài tiết theo sữa hay không. Người bệnh dùng bleomycin không nên cho con bú."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "tac-dung-khong-mong-muon-adr",
-      "title": "Tác dụng không mong muốn (ADR)",
-      "content": "Khác với nhiều hóa trị liệu khác, bleomycin tương đối ít độc với tủy xương. Bleomycin có nhiều tác dụng phụ; thường gặp nhất là những phản ứng trên da và phổi.\n\nKhoảng trên 50% người bệnh có thể gặp một vài loại phản ứng phụ. Điển hình nhất là độc tính với phổi, có thể gặp trên 25% những người bệnh đã điều trị. Khoảng 10 - 15% trường hợp này tiến triển thành xơ hóa phổi và nên lưu ý rằng quá trình này có thể dẫn đến tử vong. Nguy cơ xơ hóa phổi tăng trong trường hợp đã có suy giảm chức năng phổi. Mức độ nhạy cảm của từng cá thể rất khác nhau, nhưng có nguy cơ cao trong trường hợp sử dụng tổng liều trên 200 đv USP, bệnh nhân lớn hơn 40 tuổi, bệnh nhân có mức lọc cầu thận nhỏ hơn 80 ml/phút hoặc bệnh ở giai đoạn tiến triển.\n\nCác yếu tố nguy cơ khác bao gồm: hút thuốc lá, có tiền sử xạ trị hoặc phải thở oxy (đặc biệt là oxy liều cao).\n\nThường gặp Toàn thân: tăng thân nhiệt vào ngày tiêm, ớn lạnh, xuất huyết.\n\nTiêu hóa: nôn, buồn nôn, viêm miệng, chán ăn, sút cân.\n\nDa: ngoại ban, ngứa, rụng tóc, đổi móng, tăng sắc tố, da dày lên, mụn nước, tăng nhạy cảm đau, nổi vân.\n\nHô hấp: viêm phổi kẽ, xơ hóa phổi.\n\nÍt gặp Toàn thân: đau chỗ tiêm, co thắt hoặc chai cứng vùng tiêm, khó chịu, mệt mỏi. Mất định hướng, hành vi hung hãn.\n\nMáu: giảm bạch cầu có hồi phục, giảm tiểu cầu.\n\nTiêu hóa: viêm thực quản, tiêu chảy.\n\nTiết niệu - sinh dục: đái ra máu, viêm bàng quang, viêm bàng quang xuất huyết.\n\nThận: độc lên thận, rối loạn chức năng thận thể hiện qua các xét nghiệm thăm dò chức năng.\n\nGan: độc lên gan, rối loạn chức năng gan thể hiện qua các xét nghiệm thăm dò chức năng.\n\nPhản ứng dị ứng: phản vệ (huyết áp hạ, sốt, rét run, lú lẫn, thở khò khè) có thể dẫn tới tử vong nếu không được điều trị.\n\nTim - mạch: tràn dịch màng phổi, màng tim, nhồi máu cơ tim, tai biến mạch não, huyết khối mạch nhỏ, viêm động mạch não, hội chứng Reynaud, viêm tĩnh mạch, phì đại tĩnh mạch.\n\nHiếm gặp và rất hiếm gặp Máu: sốt giảm bạch cầu trung tính.\n\nTim - mạch: huyết khối động mạch, huyết khối tĩnh mạch sâu.\n\nToàn thân: hội chứng ly giải khối u.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Khác với nhiều hóa trị liệu khác, bleomycin tương đối ít độc với tủy xương. Bleomycin có nhiều tác dụng phụ; thường gặp nhất là những phản ứng trên da và phổi.\n\nKhoảng trên 50% người bệnh có thể gặp một vài loại phản ứng phụ. Điển hình nhất là độc tính với phổi, có thể gặp trên 25% những người bệnh đã điều trị. Khoảng 10 - 15% trường hợp này tiến triển thành xơ hóa phổi và nên lưu ý rằng quá trình này có thể dẫn đến tử vong. Nguy cơ xơ hóa phổi tăng trong trường hợp đã có suy giảm chức năng phổi. Mức độ nhạy cảm của từng cá thể rất khác nhau, nhưng có nguy cơ cao trong trường hợp sử dụng tổng liều trên 200 đv USP, bệnh nhân lớn hơn 40 tuổi, bệnh nhân có mức lọc cầu thận nhỏ hơn 80 ml/phút hoặc bệnh ở giai đoạn tiến triển.\n\nCác yếu tố nguy cơ khác bao gồm: hút thuốc lá, có tiền sử xạ trị hoặc phải thở oxy (đặc biệt là oxy liều cao).\n\nThường gặp Toàn thân: tăng thân nhiệt vào ngày tiêm, ớn lạnh, xuất huyết.\n\nTiêu hóa: nôn, buồn nôn, viêm miệng, chán ăn, sút cân.\n\nDa: ngoại ban, ngứa, rụng tóc, đổi móng, tăng sắc tố, da dày lên, mụn nước, tăng nhạy cảm đau, nổi vân.\n\nHô hấp: viêm phổi kẽ, xơ hóa phổi.\n\nÍt gặp Toàn thân: đau chỗ tiêm, co thắt hoặc chai cứng vùng tiêm, khó chịu, mệt mỏi. Mất định hướng, hành vi hung hãn.\n\nMáu: giảm bạch cầu có hồi phục, giảm tiểu cầu.\n\nTiêu hóa: viêm thực quản, tiêu chảy.\n\nTiết niệu - sinh dục: đái ra máu, viêm bàng quang, viêm bàng quang xuất huyết.\n\nThận: độc lên thận, rối loạn chức năng thận thể hiện qua các xét nghiệm thăm dò chức năng.\n\nGan: độc lên gan, rối loạn chức năng gan thể hiện qua các xét nghiệm thăm dò chức năng.\n\nPhản ứng dị ứng: phản vệ (huyết áp hạ, sốt, rét run, lú lẫn, thở khò khè) có thể dẫn tới tử vong nếu không được điều trị.\n\nTim - mạch: tràn dịch màng phổi, màng tim, nhồi máu cơ tim, tai biến mạch não, huyết khối mạch nhỏ, viêm động mạch não, hội chứng Reynaud, viêm tĩnh mạch, phì đại tĩnh mạch.\n\nHiếm gặp và rất hiếm gặp Máu: sốt giảm bạch cầu trung tính.\n\nTim - mạch: huyết khối động mạch, huyết khối tĩnh mạch sâu.\n\nToàn thân: hội chứng ly giải khối u."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "huong-dan-cach-xu-tri-adr",
-      "title": "Hướng dẫn cách xử trí ADR",
-      "content": "Bệnh nhân điều trị bằng bleomycin cần được giám sát X-quang phổi mỗi 1 - 2 tuần cho đến khi kết thúc 4 tuần điều trị và tiếp tục được giám sát lâm sàng đến sau khi kết thúc điều trị 2 tháng. Nếu xuất hiện khó thở hoặc thâm nhiễm phổi không do bệnh lý ung thư hoặc bệnh phổi có từ trước, cần ngừng dùng ngay bleomycin và điều trị cho bệnh nhân bằng corticoid và kháng sinh phổ rộng.\n\nNếu có biểu hiện của sốc thì cần ngừng thuốc ngay và điều trị triệu chứng kịp thời.\n\nTác dụng phụ khi tiêm bleomycin vào khoang màng phổi: đau ngực và sốt (có thể dùng opiat trước khi tiêm hoặc cho lidocain vào ống mở thông lồng ngực để giảm đau; có thể dùng thuốc hạ sốt).\n\nNếu thấy đau vị trí tiêm bắp, cần thay đổi vị trí tiêm thường xuyên.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Bệnh nhân điều trị bằng bleomycin cần được giám sát X-quang phổi mỗi 1 - 2 tuần cho đến khi kết thúc 4 tuần điều trị và tiếp tục được giám sát lâm sàng đến sau khi kết thúc điều trị 2 tháng. Nếu xuất hiện khó thở hoặc thâm nhiễm phổi không do bệnh lý ung thư hoặc bệnh phổi có từ trước, cần ngừng dùng ngay bleomycin và điều trị cho bệnh nhân bằng corticoid và kháng sinh phổ rộng.\n\nNếu có biểu hiện của sốc thì cần ngừng thuốc ngay và điều trị triệu chứng kịp thời.\n\nTác dụng phụ khi tiêm bleomycin vào khoang màng phổi: đau ngực và sốt (có thể dùng opiat trước khi tiêm hoặc cho lidocain vào ống mở thông lồng ngực để giảm đau; có thể dùng thuốc hạ sốt).\n\nNếu thấy đau vị trí tiêm bắp, cần thay đổi vị trí tiêm thường xuyên."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "lieu-luong-va-cach-dung",
-      "title": "Liều lượng và cách dùng",
-      "content": "Bleomycin thường được dùng qua đường tiêm bắp, tĩnh mạch, dưới da, trong động mạch và tiêm trong màng phổi. Người bệnh điều trị với bleomycin cần phải chụp X-quang ngực hàng tuần. Liều lượng căn cứ vào dung nạp thuốc của bệnh nhân và tiến triển lâm sàng sao cho đạt được kết quả điều trị tốt nhất với ít tác dụng phụ nhất.\n\nLiều dưới đây là liều tính theo đơn vị USP (đv USP). Nếu hàm lượng thuốc ghi trên chế phẩm lưu hành theo đvqt (IU) hoặc theo mg thì phải quy ra đv USP hoặc theo tờ hướng dẫn dùng thuốc của nhà sản xuất.\n\nTiêm bắp hoặc tiêm dưới da: Liều theo yêu cầu (lọ thuốc 15 đv USP hoặc 30 đv USP) được hòa tan trong 1 - 5 ml hoặc 2 - 10 ml nước cất vô khuẩn pha tiêm hay dung dịch tiêm natri clorid 0,9%.\n\nDung dịch tiêm tĩnh mạch: Pha lọ thuốc 15 - 30 đv USP trong 5 ml hoặc 10 ml dung dịch tiêm natri clorid 0,9% tương ứng rồi tiêm chậm trong khoảng 10 phút.\n\nDung dịch tiêm vào trong màng phổi: Pha 60 đv USP thuốc trong 50 - 100 ml dung dịch tiêm natri clorid 0,9% và đưa thuốc qua một ống mở thông lồng ngực sau khi đã dẫn lưu dịch màng phổi và đảm bảo đã hết tình trạng xẹp phổi. Thời gian lưu ống thông ngực sau khi gây dính màng phổi tùy thuộc vào tình trạng lâm sàng.\n\nNgười lớn U lympho Hodgkin: Dùng liều thăm dò ≤ 2 đv USP trong 2 liều đầu. Nếu không có phản ứng cấp thì có thể dùng liều theo phác đồ: 0,25 - 0,5 đv USP/kg (10 - 20 đv USP/m2) tiêm tĩnh mạch, tiêm bắp hoặc dưới da; 1 lần/tuần hoặc 2 lần/tuần. Khi kích thước khối u giảm được 50% thì có thể dùng liều duy trì 1 đv USP/ngày hoặc 5 đv USP/tuần tiêm bắp hoặc tĩnh mạch. Nếu thuốc có tác dụng thì thường bệnh có cải thiện trong vòng 2 tuần.\n\nU lympho không Hodgkin: Dùng liều thăm dò ≤ 2 đv USP trong 2 liều đầu. Nếu không có phản ứng cấp thì có thể dùng liều theo phác đồ: 0,25 - 0,5 đv USP/kg (10 - 20 đv USP/m2) tiêm tĩnh mạch, tiêm bắp hoặc dưới da; 1 lần/tuần hoặc 2 lần/tuần.\n\nUng thư biểu mô tế bào vảy, ung thư tinh hoàn: 0,25 - 0,5 đv USP/kg (10 - 20 đv USP/m2), tiêm tĩnh mạch, tiêm bắp hoặc tiêm dưới da 1 - 2 lần/tuần. Nếu thuốc có tác dụng thì thường bệnh có cải thiện trong vòng 2 tuần.\n\nUng thư tế bào mầm buồng trứng: Bleomycin tiêm tĩnh mạch 30 đv USP mỗi liều các ngày 1, 8 và 15 của chu kỳ 21 ngày trong 3 chu kỳ (kết hợp với etoposid và cisplatin).\n\nTràn dịch màng phổi: Tiêm trong màng phổi 1 liều duy nhất 50 - 60 đv USP (không quá 1 đv USP/kg hoặc 40 đv USP/m2 ở người già).\n\nNgười suy thận: Cần giảm liều như sau:\n\nTrẻ em Chỉ sử dụng bleomycin cho trẻ em trong những trường hợp đặc biệt và tại những cơ sở y tế chuyên khoa. Cách tính liều dùng cho trẻ theo các phác đồ được chỉ định thường dựa trên diện tích bề mặt cơ thể và theo khuyến cáo trong các hướng dẫn điều trị, có thể cần hiệu chỉnh tùy theo các đặc điểm của bệnh nhi.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Bleomycin thường được dùng qua đường tiêm bắp, tĩnh mạch, dưới da, trong động mạch và tiêm trong màng phổi. Người bệnh điều trị với bleomycin cần phải chụp X-quang ngực hàng tuần. Liều lượng căn cứ vào dung nạp thuốc của bệnh nhân và tiến triển lâm sàng sao cho đạt được kết quả điều trị tốt nhất với ít tác dụng phụ nhất.\n\nLiều dưới đây là liều tính theo đơn vị USP (đv USP). Nếu hàm lượng thuốc ghi trên chế phẩm lưu hành theo đvqt (IU) hoặc theo mg thì phải quy ra đv USP hoặc theo tờ hướng dẫn dùng thuốc của nhà sản xuất.\n\nTiêm bắp hoặc tiêm dưới da: Liều theo yêu cầu (lọ thuốc 15 đv USP hoặc 30 đv USP) được hòa tan trong 1 - 5 ml hoặc 2 - 10 ml nước cất vô khuẩn pha tiêm hay dung dịch tiêm natri clorid 0,9%.\n\nDung dịch tiêm tĩnh mạch: Pha lọ thuốc 15 - 30 đv USP trong 5 ml hoặc 10 ml dung dịch tiêm natri clorid 0,9% tương ứng rồi tiêm chậm trong khoảng 10 phút.\n\nDung dịch tiêm vào trong màng phổi: Pha 60 đv USP thuốc trong 50 - 100 ml dung dịch tiêm natri clorid 0,9% và đưa thuốc qua một ống mở thông lồng ngực sau khi đã dẫn lưu dịch màng phổi và đảm bảo đã hết tình trạng xẹp phổi. Thời gian lưu ống thông ngực sau khi gây dính màng phổi tùy thuộc vào tình trạng lâm sàng.\n\nNgười lớn U lympho Hodgkin: Dùng liều thăm dò ≤ 2 đv USP trong 2 liều đầu. Nếu không có phản ứng cấp thì có thể dùng liều theo phác đồ: 0,25 - 0,5 đv USP/kg (10 - 20 đv USP/m2) tiêm tĩnh mạch, tiêm bắp hoặc dưới da; 1 lần/tuần hoặc 2 lần/tuần. Khi kích thước khối u giảm được 50% thì có thể dùng liều duy trì 1 đv USP/ngày hoặc 5 đv USP/tuần tiêm bắp hoặc tĩnh mạch. Nếu thuốc có tác dụng thì thường bệnh có cải thiện trong vòng 2 tuần.\n\nU lympho không Hodgkin: Dùng liều thăm dò ≤ 2 đv USP trong 2 liều đầu. Nếu không có phản ứng cấp thì có thể dùng liều theo phác đồ: 0,25 - 0,5 đv USP/kg (10 - 20 đv USP/m2) tiêm tĩnh mạch, tiêm bắp hoặc dưới da; 1 lần/tuần hoặc 2 lần/tuần.\n\nUng thư biểu mô tế bào vảy, ung thư tinh hoàn: 0,25 - 0,5 đv USP/kg (10 - 20 đv USP/m2), tiêm tĩnh mạch, tiêm bắp hoặc tiêm dưới da 1 - 2 lần/tuần. Nếu thuốc có tác dụng thì thường bệnh có cải thiện trong vòng 2 tuần.\n\nUng thư tế bào mầm buồng trứng: Bleomycin tiêm tĩnh mạch 30 đv USP mỗi liều các ngày 1, 8 và 15 của chu kỳ 21 ngày trong 3 chu kỳ (kết hợp với etoposid và cisplatin).\n\nTràn dịch màng phổi: Tiêm trong màng phổi 1 liều duy nhất 50 - 60 đv USP (không quá 1 đv USP/kg hoặc 40 đv USP/m2 ở người già).\n\nNgười suy thận: Cần giảm liều như sau:"
+          "text": "Tên chung quốc tế: ",
+          "bbox": [
+            43.43,
+            601.72,
+            123.66,
+            614.87
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
         },
         {
-          "type": "table",
-          "table_id": "p0302-t01"
+          "text": "Bleomycin. ",
+          "bbox": [
+            123.66,
+            601.87,
+            170.11,
+            614.67
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0003",
+      "type": "paragraph",
+      "text": "Mã ATC: L01DC01.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 0,
+      "bbox": [
+        43.43,
+        613.59,
+        124.27,
+        626.73
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mã ATC: ",
+          "bbox": [
+            43.43,
+            613.59,
+            83.89,
+            626.73
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
         },
         {
-          "type": "text",
-          "text": "Trẻ em Chỉ sử dụng bleomycin cho trẻ em trong những trường hợp đặc biệt và tại những cơ sở y tế chuyên khoa. Cách tính liều dùng cho trẻ theo các phác đồ được chỉ định thường dựa trên diện tích bề mặt cơ thể và theo khuyến cáo trong các hướng dẫn điều trị, có thể cần hiệu chỉnh tùy theo các đặc điểm của bệnh nhi."
+          "text": "L01DC01.",
+          "bbox": [
+            83.89,
+            613.74,
+            124.27,
+            626.53
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "tuong-tac-thuoc",
-      "title": "Tương tác thuốc",
-      "content": "Thuốc có độc tính với phổi: Bleomycin làm tăng độc tính trên phổi khi kết hợp với một số thuốc có độc tính với phổi như carmustin, mitomycin, cyclophosphamid, methotrexat và gemcitabin; đặc biệt là khi kết hợp với cisplatin. Do đó thường không kết hợp bleomycin với cisplatin mà chỉ sử dụng cisplatin sau khi đã kết thúc sử dụng bleomycin.\n\nKết hợp bleomycin, vinblastin và cisplatin có thể làm giảm độ lọc của cầu thận nên cần thận trọng ở bệnh nhân suy giảm nặng chức năng thận.\n\nVinca alkaloid: Ở bệnh nhân ung thư tinh hoàn, kết hợp bleomycin với vinca alkaloid có thể gây hội chứng Raynaud với các triệu chứng của thiếu máu cục bộ chi, có thể gây hoại tử các phần ngoại vi như ngón tay, chân,...\n\nBệnh nhân đã hoặc đang xạ trị ngực có tần suất và mức độ của độc tính trên phổi khi sử dụng bleomycin tăng đáng kể.\n\nBệnh nhân đã hoặc đang xạ trị đầu hoặc cổ có thể có tăng viêm miệng và làm nặng thêm viêm nứt góc miệng, dẫn đến viêm niêm mạc họng và khàn giọng khi sử dụng bleomycin.\n\nNồng độ oxygen hít vào trên 35% có thể gây suy hô hấp cấp, xơ phổi ở những người bệnh điều trị bằng bleomycin.\n\nSử dụng các thuốc kích thích bạch cầu sau khi sử dụng bleomycin làm tăng bạch cầu hạt trung tính và các gốc tự do dẫn đến tăng nguy cơ tổn thương phổi.\n\nCác vitamin (acid ascorbic, riboflavin) bất hoạt bleomycin in vitro.\n\nDigoxin: Có thể làm giảm tác dụng của digoxin do giảm sinh khả dụng đường uống của digoxin.\n\nPhenytoin: Có thể làm giảm tác dụng của phenytoin.\n\nMột số kháng sinh như gentamicin, amikacin và ticarcilin: Bleomycin có thể làm giảm tác dụng kìm khuẩn của kháng sinh.\n\nCiclosporin hoặc tacrolimus: Có thể gây ức chế miễn dịch quá mức và nguy cơ gây tăng sinh mô bạch huyết.\n\nClozapin: Tránh kết hợp bleomycin với clozapin do làm tăng nguy cơ gây chứng mất bạch cầu hạt.\n\nVắc xin sống: Có thể gây nhiễm khuẩn nặng, đe dọa tới tính mạng người bệnh nên tránh sử dụng đồng thời.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Thuốc có độc tính với phổi: Bleomycin làm tăng độc tính trên phổi khi kết hợp với một số thuốc có độc tính với phổi như carmustin, mitomycin, cyclophosphamid, methotrexat và gemcitabin; đặc biệt là khi kết hợp với cisplatin. Do đó thường không kết hợp bleomycin với cisplatin mà chỉ sử dụng cisplatin sau khi đã kết thúc sử dụng bleomycin.\n\nKết hợp bleomycin, vinblastin và cisplatin có thể làm giảm độ lọc của cầu thận nên cần thận trọng ở bệnh nhân suy giảm nặng chức năng thận.\n\nVinca alkaloid: Ở bệnh nhân ung thư tinh hoàn, kết hợp bleomycin với vinca alkaloid có thể gây hội chứng Raynaud với các triệu chứng của thiếu máu cục bộ chi, có thể gây hoại tử các phần ngoại vi như ngón tay, chân,...\n\nBệnh nhân đã hoặc đang xạ trị ngực có tần suất và mức độ của độc tính trên phổi khi sử dụng bleomycin tăng đáng kể.\n\nBệnh nhân đã hoặc đang xạ trị đầu hoặc cổ có thể có tăng viêm miệng và làm nặng thêm viêm nứt góc miệng, dẫn đến viêm niêm mạc họng và khàn giọng khi sử dụng bleomycin.\n\nNồng độ oxygen hít vào trên 35% có thể gây suy hô hấp cấp, xơ phổi ở những người bệnh điều trị bằng bleomycin.\n\nSử dụng các thuốc kích thích bạch cầu sau khi sử dụng bleomycin làm tăng bạch cầu hạt trung tính và các gốc tự do dẫn đến tăng nguy cơ tổn thương phổi.\n\nCác vitamin (acid ascorbic, riboflavin) bất hoạt bleomycin in vitro.\n\nDigoxin: Có thể làm giảm tác dụng của digoxin do giảm sinh khả dụng đường uống của digoxin.\n\nPhenytoin: Có thể làm giảm tác dụng của phenytoin.\n\nMột số kháng sinh như gentamicin, amikacin và ticarcilin: Bleomycin có thể làm giảm tác dụng kìm khuẩn của kháng sinh.\n\nCiclosporin hoặc tacrolimus: Có thể gây ức chế miễn dịch quá mức và nguy cơ gây tăng sinh mô bạch huyết.\n\nClozapin: Tránh kết hợp bleomycin với clozapin do làm tăng nguy cơ gây chứng mất bạch cầu hạt.\n\nVắc xin sống: Có thể gây nhiễm khuẩn nặng, đe dọa tới tính mạng người bệnh nên tránh sử dụng đồng thời."
-        }
+      "id": "b0004",
+      "type": "paragraph",
+      "text": "Loại thuốc: Thuốc chống ung thư, kháng sinh độc tế bào.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 0,
+      "bbox": [
+        43.43,
+        625.46,
+        266.27,
+        638.61
       ],
-      "subsections": []
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Loại thuốc: ",
+          "bbox": [
+            43.43,
+            625.46,
+            92.52,
+            638.61
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "Thuốc chống ung thư, kháng sinh độc tế bào. ",
+          "bbox": [
+            92.52,
+            625.61,
+            266.27,
+            638.41
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
     },
     {
-      "id": "tuong-ky",
-      "title": "Tương kỵ",
-      "content": "Tương kỵ với các cation hóa trị II (đặc biệt là đồng) và các hợp chất có nhóm sulfhydryl do tạo phức chelat.\n\nKhông trộn lẫn dung dịch bleomycin với dung dịch các acid amin thiết yếu, acid ascorbic, dexamethason, aminophylin hoặc furosemid.\n\nKhông pha thuốc hoặc pha loãng với các dung dịch có đường như glucose (vì mất hoạt tính).",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Tương kỵ với các cation hóa trị II (đặc biệt là đồng) và các hợp chất có nhóm sulfhydryl do tạo phức chelat.\n\nKhông trộn lẫn dung dịch bleomycin với dung dịch các acid amin thiết yếu, acid ascorbic, dexamethason, aminophylin hoặc furosemid.\n\nKhông pha thuốc hoặc pha loãng với các dung dịch có đường như glucose (vì mất hoạt tính)."
-        }
+      "id": "b0005",
+      "type": "heading",
+      "level": 2,
+      "text": "Dạng thuốc và hàm lượng",
+      "page": 300,
+      "printed_page": 306,
+      "column": 0,
+      "bbox": [
+        43.43,
+        640.49,
+        148.35,
+        653.64
       ],
-      "subsections": []
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dạng thuốc và hàm lượng",
+          "bbox": [
+            43.43,
+            640.49,
+            148.35,
+            653.64
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
     },
     {
-      "id": "qua-lieu-va-xu-tri",
-      "title": "Quá liều và xử trí",
-      "content": "Triệu chứng: Tụt huyết áp, sốt, mạch nhanh và các triệu chứng toàn thân của sốc.\n\nXử trí: Không có thuốc giải độc đặc hiệu và không thể loại bỏ thuốc qua thẩm phân. Chủ yếu là điều trị triệu chứng. Trong trường hợp có biến chứng hô hấp, người bệnh phải được điều trị bằng corticoid và kháng sinh phổ rộng. Cần lưu ý phản ứng trên phổi (xơ phổi) do quá liều thường không hồi phục, trừ trường hợp phát hiện được ở giai đoạn sớm.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Triệu chứng: Tụt huyết áp, sốt, mạch nhanh và các triệu chứng toàn thân của sốc.\n\nXử trí: Không có thuốc giải độc đặc hiệu và không thể loại bỏ thuốc qua thẩm phân. Chủ yếu là điều trị triệu chứng. Trong trường hợp có biến chứng hô hấp, người bệnh phải được điều trị bằng corticoid và kháng sinh phổ rộng. Cần lưu ý phản ứng trên phổi (xơ phổi) do quá liều thường không hồi phục, trừ trường hợp phát hiện được ở giai đoạn sớm."
-        }
+      "id": "b0006",
+      "type": "paragraph",
+      "text": "Lọ bột đông khô bleomycin sulfat để pha tiêm, chứa 15 hoặc 30 đơn vị Dược điển Mỹ (đơn vị USP), tương đương 15 000 hoặc 30 000 đvqt (IU).",
+      "page": 300,
+      "printed_page": 306,
+      "column": 0,
+      "bbox": [
+        43.43,
+        652.68,
+        297.76,
+        689.55
       ],
-      "subsections": []
+      "source": {
+        "line_count": 3
+      }
     },
     {
-      "id": "cap-nhat-lan-cuoi",
-      "title": "Cập nhật lần cuối",
-      "content": "2021.",
-      "blocks": [
+      "id": "b0007",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược lực học",
+      "page": 300,
+      "printed_page": 306,
+      "column": 0,
+      "bbox": [
+        43.43,
+        691.64,
+        97.03,
+        704.79
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
         {
-          "type": "text",
-          "text": "2021."
+          "text": "Dược lực học",
+          "bbox": [
+            43.43,
+            691.64,
+            97.03,
+            704.79
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0008",
+      "type": "paragraph",
+      "text": "Bleomycin là một hỗn hợp kháng sinh glycopeptid có tác dụng độc với tế bào, tạo ra bởi xạ khuẩn Streptomyces verticillus, trong đó bleomycin A2 và bleomycin B2 là thành phần chính. Cơ chế tác dụng của bleomycin là làm đứt các đoạn DNA; một phần do thuốc liên kết trực tiếp với DNA và một phần do tạo thành các gốc tự do.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 0,
+      "bbox": [
+        43.43,
+        703.83,
+        297.77,
+        764.76
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0009",
+      "type": "paragraph",
+      "text": "Do ức chế sự tổng hợp DNA nên thuốc có tác dụng ức chế sự phân chia và tăng trưởng của tế bào khối u. Thuốc có tác dụng đặc hiệu trên DNA và không ảnh hưởng đến sự tổng hợp RNA hoặc protein",
+      "page": 300,
+      "printed_page": 306,
+      "column": 0,
+      "bbox": [
+        43.43,
+        764.0,
+        297.77,
+        800.87
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0010",
+      "type": "paragraph",
+      "text": "của tế bào khối u. Tác dụng tối đa trong chu trình phân bào xảy ra trong pha M, và trong quá trình chuyển từ pha G1 đến pha S, nhưng pha G2 cũng rất nhạy cảm với bleomycin.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        63.32,
+        561.71,
+        102.22
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0011",
+      "type": "paragraph",
+      "text": "Khi tiêm tĩnh mạch, thuốc có thể có tác dụng giống như histamin lên huyết áp và làm tăng thân nhiệt.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        99.56,
+        561.72,
+        124.44
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0012",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược động học",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        126.57,
+        370.86,
+        139.72
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược động học ",
+          "bbox": [
+            307.38,
+            126.57,
+            370.86,
+            139.72
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0013",
+      "type": "paragraph",
+      "text": "Hấp thu: Bleomycin ít được hấp thu theo đường tiêu hóa nhưng được hấp thu nhanh qua đường tiêm, qua phúc mạc và màng phổi.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        138.8,
+        561.72,
+        163.69
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0014",
+      "type": "paragraph",
+      "text": "Sau khi tiêm tĩnh mạch liều 15 000 đvqt/m2, nồng độ trong huyết thanh đạt được từ 1 - 10 đvqt. Sinh khả dụng sau tiêm bắp là 100% và thuốc đạt nồng độ tối đa trong máu sau khoảng 30 phút. Sinh khả dụng của thuốc khi dùng theo đường phúc mạc hoặc màng phổi là 45%.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        162.96,
+        561.72,
+        224.09
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0015",
+      "type": "paragraph",
+      "text": "Phân bố: Tỷ lệ gắn vào protein huyết tương thấp. Thể tích phân bố khoảng 0,27 ± 0,09 lít/kg. Nồng độ thuốc trong dịch não tủy thấp.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        223.36,
+        561.72,
+        248.24
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0016",
+      "type": "paragraph",
+      "text": "Sau khi được tiêm, bleomycin được phân bố chủ yếu ở da, phổi, thận, phúc mạc và hệ bạch huyết. Thuốc đi qua được hàng rào nhau thai. Nồng độ thuốc trong khối ung thư da và phổi cao hơn ở mô tạo máu. Nồng độ thuốc trong tủy xương thấp có thể là do nồng độ các enzym gây thoái hóa bleomycin ở trong tủy xương cao.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        247.53,
+        561.72,
+        308.65
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0017",
+      "type": "paragraph",
+      "text": "Chuyển hóa: Bleomycin bị thoái hóa thành chất chuyển hóa không có hoạt tính chủ yếu ở huyết tương, gan, lách, ruột non và tủy xương, một số ít ở da và ở phổi. Thuốc bị mất tác dụng ở các mô bởi enzym xúc tác thủy phân đặc hiệu bleomycinhydrolase, enzym này có rất ít trong da và phổi, đây là hai vị trí xuất hiện độc tính chính của thuốc.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        307.93,
+        561.72,
+        381.13
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0018",
+      "type": "paragraph",
+      "text": "Thải trừ: Sau khi tiêm tĩnh mạch một liều, nửa đời thải trừ của thuốc là khoảng 3 giờ với 2 pha thải trừ: nửa đời của pha đầu là 24 phút và của pha cuối là 2 - 4 giờ. Nếu truyền tĩnh mạch liên tục thì sự đào thải kéo dài hơn với nửa đời thải trừ là 9 giờ. Hai phần ba liều được đào thải theo nước tiểu dưới dạng không đổi; tốc độ đào thải do chức năng thận quyết định. Khi tiêm tĩnh mạch, thuốc được đào thải nhanh hơn khi tiêm bắp. Với người bệnh có chức năng thận bình thường, khoảng 70% liều được bài tiết dưới dạng không đổi qua nước tiểu trong vòng 24 giờ. Ở người bị suy thận mức độ vừa (Clcr < 35 ml/phút) chỉ có 20% liều tiêm được đào thải qua nước tiểu; điều này cho thấy có sự tích lũy thuốc ở người bệnh bị suy thận nặng.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        380.42,
+        561.72,
+        526.1
+      ],
+      "source": {
+        "line_count": 12
+      }
+    },
+    {
+      "id": "b0019",
+      "type": "heading",
+      "level": 2,
+      "text": "Chỉ định",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        528.23,
+        345.4,
+        541.38
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chỉ định ",
+          "bbox": [
+            307.38,
+            528.23,
+            345.4,
+            541.38
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0020",
+      "type": "paragraph",
+      "text": "Các u lympho Hodgkin hoặc không Hodgkin.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        540.46,
+        480.75,
+        553.26
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Các u lympho Hodgkin hoặc không Hodgkin.",
+          "bbox": [
+            307.38,
+            540.46,
+            480.75,
+            553.26
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0021",
+      "type": "paragraph",
+      "text": "Ung thư biểu mô tế bào vảy ở đầu, cổ, cổ tử cung và cơ quan sinh dục ngoài.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        552.54,
+        561.71,
+        577.42
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0022",
+      "type": "paragraph",
+      "text": "Ung thư tinh hoàn.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        576.71,
+        379.03,
+        589.5
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Ung thư tinh hoàn.",
+          "bbox": [
+            307.38,
+            576.71,
+            379.03,
+            589.5
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0023",
+      "type": "paragraph",
+      "text": "Ung thư tế bào mầm buồng trứng.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        588.78,
+        436.69,
+        601.58
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Ung thư tế bào mầm buồng trứng.",
+          "bbox": [
+            307.38,
+            588.78,
+            436.69,
+            601.58
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0024",
+      "type": "paragraph",
+      "text": "Tràn dịch màng phổi ác tính.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        600.87,
+        416.81,
+        613.66
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tràn dịch màng phổi ác tính.",
+          "bbox": [
+            307.38,
+            600.87,
+            416.81,
+            613.66
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0025",
+      "type": "heading",
+      "level": 2,
+      "text": "Chống chỉ định",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        615.79,
+        369.68,
+        628.94
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chống chỉ định",
+          "bbox": [
+            307.38,
+            615.79,
+            369.68,
+            628.94
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0026",
+      "type": "paragraph",
+      "text": "Mẫn cảm với thuốc.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        628.03,
+        383.65,
+        640.82
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mẫn cảm với thuốc.",
+          "bbox": [
+            307.38,
+            628.03,
+            383.65,
+            640.82
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0027",
+      "type": "paragraph",
+      "text": "Nhiễm khuẩn phổi cấp hoặc chức năng phổi bị suy giảm nặng.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        640.11,
+        544.72,
+        652.91
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Nhiễm khuẩn phổi cấp hoặc chức năng phổi bị suy giảm nặng.",
+          "bbox": [
+            307.38,
+            640.11,
+            544.72,
+            652.91
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0028",
+      "type": "paragraph",
+      "text": "Trường hợp mất điều vận (thất điều).",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        652.18,
+        448.1,
+        664.98
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Trường hợp mất điều vận (thất điều).",
+          "bbox": [
+            307.38,
+            652.18,
+            448.1,
+            664.98
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0029",
+      "type": "heading",
+      "level": 2,
+      "text": "Thận trọng",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        667.12,
+        353.57,
+        680.27
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thận trọng",
+          "bbox": [
+            307.38,
+            667.12,
+            353.57,
+            680.27
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
         }
       ],
-      "subsections": []
-    }
-  ],
-  "tables": [
+      "note_role": "than trong",
+      "v11_fix": "note_title_reclassified_as_heading_alpha5"
+    },
     {
-      "id": "p0302-t01",
-      "image_path": "duoc-thu-assets/bleomycin/p0302-t01.png",
-      "source_pdf_page": 302,
+      "id": "b0030",
+      "type": "paragraph",
+      "text": "Bleomycin độc ngay cả khi được dùng với liều thấp. Thuốc phải được dùng dưới sự giám sát của thầy thuốc chuyên khoa ung thư có kinh nghiệm về hóa trị liệu và ở cơ sở y tế có đầy đủ phương tiện chẩn đoán, điều trị và can thiệp khi có biến chứng. Phải theo dõi chặt chẽ và thường xuyên bệnh nhân trong và sau khi điều trị bằng bleomycin.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        679.35,
+        561.72,
+        752.55
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0031",
+      "type": "paragraph",
+      "text": "Phải thử liều bleomycin ở tất cả mọi bệnh nhân bị u lympho trước khi trị liệu chính thức để tránh nguy cơ phản vệ.",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        751.83,
+        561.72,
+        776.71
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0032",
+      "type": "paragraph",
+      "text": "Sử dụng hết sức thận trọng với những người bệnh bị suy thận, người bệnh có chức năng phổi hoặc thận giảm, người bệnh có u",
+      "page": 300,
+      "printed_page": 306,
+      "column": 1,
+      "bbox": [
+        307.38,
+        775.99,
+        561.71,
+        800.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0033",
+      "type": "paragraph",
+      "text": "lympho, người bệnh dùng đồng thời các thuốc độc với thận (như methotrexat liều cao, aminoglycosid).",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        63.32,
+        289.76,
+        88.2
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0034",
+      "type": "paragraph",
+      "text": "Thận trọng khi dùng cho bệnh nhân trên 70 tuổi, đặc biệt khi dùng với tổng liều trên 400 000 đvqt do nguy cơ viêm phổi và xơ phổi.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        87.49,
+        289.76,
+        112.37
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0035",
+      "type": "paragraph",
+      "text": "Thận trọng khi dùng cho người đã được xạ trị, nhất là ở vùng ngực.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        111.65,
+        287.39,
+        124.45
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thận trọng khi dùng cho người đã được xạ trị, nhất là ở vùng ngực.",
+          "bbox": [
+            35.43,
+            111.65,
+            287.39,
+            124.45
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0036",
+      "type": "paragraph",
+      "text": "Thận trọng khi dùng cho bệnh nhân trong độ tuổi sinh sản, cần chú ý tác động của thuốc trên các cơ quan sinh sản.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        123.73,
+        289.76,
+        148.61
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0037",
+      "type": "paragraph",
+      "text": "Nồng độ oxy trên 30% có nguy cơ cao gây xơ hóa phổi cho người đang dùng thuốc. Nếu phải phẫu thuật cho người đang dùng bleomycin thì cần cho người bệnh thở không khí có nồng độ oxy khoảng 25% trong và sau khi mổ; phải theo dõi việc truyền dịch cẩn thận (dùng dung dịch keo thay vì dịch truyền tinh thể).",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        147.9,
+        289.77,
+        209.02
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0038",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ mang thai",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        211.16,
+        110.64,
+        224.3
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ mang thai",
+          "bbox": [
+            35.43,
+            211.16,
+            110.64,
+            224.3
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0039",
+      "type": "paragraph",
+      "text": "Bleomycin gây quái thai trên động vật thực nghiệm, không có dữ liệu trên phụ nữ mang thai. Phụ nữ trong độ tuổi sinh đẻ phải tránh mang thai trong quá trình được điều trị bằng bleomycin. Nếu chỉ định thuốc cho bệnh nhân đang mang thai hoặc bệnh nhân mang thai trong quá trình dùng thuốc thì phải thông báo cho bệnh nhân nguy cơ đối với thai.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        223.38,
+        289.77,
+        296.59
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0040",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ cho con bú",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        298.73,
+        113.55,
+        311.88
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ cho con bú",
+          "bbox": [
+            35.43,
+            298.73,
+            113.55,
+            311.88
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0041",
+      "type": "paragraph",
+      "text": "Không rõ thuốc có được bài tiết theo sữa hay không. Người bệnh dùng bleomycin không nên cho con bú.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        310.96,
+        289.76,
+        335.83
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0042",
+      "type": "heading",
+      "level": 2,
+      "text": "Tác dụng không mong muốn (ADR)",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        337.97,
+        181.38,
+        351.12
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tác dụng không mong muốn (ADR)",
+          "bbox": [
+            35.43,
+            337.97,
+            181.38,
+            351.12
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0043",
+      "type": "paragraph",
+      "text": "Khác với nhiều hóa trị liệu khác, bleomycin tương đối ít độc với tủy xương. Bleomycin có nhiều tác dụng phụ; thường gặp nhất là những phản ứng trên da và phổi.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        350.21,
+        289.77,
+        387.16
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0044",
+      "type": "paragraph",
+      "text": "Khoảng trên 50% người bệnh có thể gặp một vài loại phản ứng phụ. Điển hình nhất là độc tính với phổi, có thể gặp trên 25% những người bệnh đã điều trị. Khoảng 10 - 15% trường hợp này tiến triển thành xơ hóa phổi và nên lưu ý rằng quá trình này có thể dẫn đến tử vong. Nguy cơ xơ hóa phổi tăng trong trường hợp đã có suy giảm chức năng phổi. Mức độ nhạy cảm của từng cá thể rất khác nhau, nhưng có nguy cơ cao trong trường hợp sử dụng tổng liều trên 200 đv USP, bệnh nhân lớn hơn 40 tuổi, bệnh nhân có mức lọc cầu thận nhỏ hơn 80 ml/phút hoặc bệnh ở giai đoạn tiến triển.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        386.45,
+        289.77,
+        495.9
+      ],
+      "source": {
+        "line_count": 9
+      }
+    },
+    {
+      "id": "b0045",
+      "type": "paragraph",
+      "text": "Các yếu tố nguy cơ khác bao gồm: hút thuốc lá, có tiền sử xạ trị hoặc phải thở oxy (đặc biệt là oxy liều cao).",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        495.19,
+        289.76,
+        520.07
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0046",
+      "type": "subheading",
+      "level": 3,
+      "text": "Thường gặp",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        519.52,
+        81.84,
+        532.15
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thường gặp",
+          "bbox": [
+            35.43,
+            519.52,
+            81.84,
+            532.15
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0047",
+      "type": "paragraph",
+      "text": "Toàn thân: tăng thân nhiệt vào ngày tiêm, ớn lạnh, xuất huyết.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        531.43,
+        270.94,
+        544.23
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Toàn thân: tăng thân nhiệt vào ngày tiêm, ớn lạnh, xuất huyết.",
+          "bbox": [
+            35.43,
+            531.43,
+            270.94,
+            544.23
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0048",
+      "type": "paragraph",
+      "text": "Tiêu hóa: nôn, buồn nôn, viêm miệng, chán ăn, sút cân.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        543.51,
+        245.92,
+        556.31
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêu hóa: nôn, buồn nôn, viêm miệng, chán ăn, sút cân.",
+          "bbox": [
+            35.43,
+            543.51,
+            245.92,
+            556.31
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0049",
+      "type": "paragraph",
+      "text": "Da: ngoại ban, ngứa, rụng tóc, đổi móng, tăng sắc tố, da dày lên, mụn nước, tăng nhạy cảm đau, nổi vân.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        555.6,
+        289.77,
+        580.48
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0050",
+      "type": "paragraph",
+      "text": "Hô hấp: viêm phổi kẽ, xơ hóa phổi.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        579.77,
+        170.02,
+        592.56
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Hô hấp: viêm phổi kẽ, xơ hóa phổi.",
+          "bbox": [
+            35.43,
+            579.77,
+            170.02,
+            592.56
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0051",
+      "type": "subheading",
+      "level": 3,
+      "text": "Ít gặp",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        592.0,
+        57.86,
+        604.64
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Ít gặp",
+          "bbox": [
+            35.43,
+            592.0,
+            57.86,
+            604.64
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0052",
+      "type": "paragraph",
+      "text": "Toàn thân: đau chỗ tiêm, co thắt hoặc chai cứng vùng tiêm, khó chịu, mệt mỏi. Mất định hướng, hành vi hung hãn.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        604.92,
+        289.76,
+        630.8
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0053",
+      "type": "paragraph",
+      "text": "Máu: giảm bạch cầu có hồi phục, giảm tiểu cầu.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        631.09,
+        217.75,
+        643.89
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Máu: giảm bạch cầu có hồi phục, giảm tiểu cầu.",
+          "bbox": [
+            35.43,
+            631.09,
+            217.75,
+            643.89
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0054",
+      "type": "paragraph",
+      "text": "Tiêu hóa: viêm thực quản, tiêu chảy.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        644.18,
+        173.64,
+        656.97
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêu hóa: viêm thực quản, tiêu chảy.",
+          "bbox": [
+            35.43,
+            644.18,
+            173.64,
+            656.97
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0055",
+      "type": "paragraph",
+      "text": "Tiết niệu - sinh dục: đái ra máu, viêm bàng quang, viêm bàng quang xuất huyết.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        657.26,
+        289.77,
+        683.14
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0056",
+      "type": "paragraph",
+      "text": "Thận: độc lên thận, rối loạn chức năng thận thể hiện qua các xét nghiệm thăm dò chức năng.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        683.42,
+        289.76,
+        709.3
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0057",
+      "type": "paragraph",
+      "text": "Gan: độc lên gan, rối loạn chức năng gan thể hiện qua các xét nghiệm thăm dò chức năng.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        709.58,
+        289.77,
+        735.46
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0058",
+      "type": "paragraph",
+      "text": "Phản ứng dị ứng: phản vệ (huyết áp hạ, sốt, rét run, lú lẫn, thở khò khè) có thể dẫn tới tử vong nếu không được điều trị.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        735.75,
+        289.76,
+        761.62
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0059",
+      "type": "paragraph",
+      "text": "Tim - mạch: tràn dịch màng phổi, màng tim, nhồi máu cơ tim, tai biến mạch não, huyết khối mạch nhỏ, viêm động mạch não, hội chứng Reynaud, viêm tĩnh mạch, phì đại tĩnh mạch.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 0,
+      "bbox": [
+        35.43,
+        761.91,
+        289.77,
+        800.87
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0060",
+      "type": "subheading",
+      "level": 3,
+      "text": "Hiếm gặp và rất hiếm gặp",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        63.49,
+        398.86,
+        76.12
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hiếm gặp và rất hiếm gặp",
+          "bbox": [
+            299.38,
+            63.49,
+            398.86,
+            76.12
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0061",
+      "type": "paragraph",
+      "text": "Máu: sốt giảm bạch cầu trung tính.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        75.52,
+        432.11,
+        88.31
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Máu: sốt giảm bạch cầu trung tính.",
+          "bbox": [
+            299.38,
+            75.52,
+            432.11,
+            88.31
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0062",
+      "type": "paragraph",
+      "text": "Tim - mạch: huyết khối động mạch, huyết khối tĩnh mạch sâu.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        87.69,
+        535.74,
+        100.49
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tim - mạch: huyết khối động mạch, huyết khối tĩnh mạch sâu.",
+          "bbox": [
+            299.38,
+            87.69,
+            535.74,
+            100.49
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0063",
+      "type": "paragraph",
+      "text": "Toàn thân: hội chứng ly giải khối u.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        99.87,
+        435.28,
+        112.67
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Toàn thân: hội chứng ly giải khối u.",
+          "bbox": [
+            299.38,
+            99.87,
+            435.28,
+            112.67
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0064",
+      "type": "heading",
+      "level": 2,
+      "text": "Hướng dẫn cách xử trí ADR",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        114.9,
+        416.32,
+        128.05
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hướng dẫn cách xử trí ADR ",
+          "bbox": [
+            299.38,
+            114.9,
+            416.32,
+            128.05
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0065",
+      "type": "paragraph",
+      "text": "Bệnh nhân điều trị bằng bleomycin cần được giám sát X-quang phổi mỗi 1 - 2 tuần cho đến khi kết thúc 4 tuần điều trị và tiếp tục được giám sát lâm sàng đến sau khi kết thúc điều trị 2 tháng. Nếu xuất hiện khó thở hoặc thâm nhiễm phổi không do bệnh lý ung thư hoặc bệnh phổi có từ trước, cần ngừng dùng ngay bleomycin và điều trị cho bệnh nhân bằng corticoid và kháng sinh phổ rộng.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        127.24,
+        553.72,
+        200.94
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0066",
+      "type": "paragraph",
+      "text": "Nếu có biểu hiện của sốc thì cần ngừng thuốc ngay và điều trị triệu chứng kịp thời.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        200.34,
+        553.72,
+        225.31
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0067",
+      "type": "paragraph",
+      "text": "Tác dụng phụ khi tiêm bleomycin vào khoang màng phổi: đau ngực và sốt (có thể dùng opiat trước khi tiêm hoặc cho lidocain vào ống mở thông lồng ngực để giảm đau; có thể dùng thuốc hạ sốt).",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        224.69,
+        553.72,
+        261.86
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0068",
+      "type": "paragraph",
+      "text": "Nếu thấy đau vị trí tiêm bắp, cần thay đổi vị trí tiêm thường xuyên.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        261.24,
+        551.34,
+        274.04
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Nếu thấy đau vị trí tiêm bắp, cần thay đổi vị trí tiêm thường xuyên.",
+          "bbox": [
+            299.38,
+            261.24,
+            551.34,
+            274.04
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0069",
+      "type": "heading",
+      "level": 2,
+      "text": "Liều lượng và cách dùng",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        276.27,
+        401.94,
+        289.42
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng và cách dùng ",
+          "bbox": [
+            299.38,
+            276.27,
+            401.94,
+            289.42
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0070",
+      "type": "paragraph",
+      "text": "Bleomycin thường được dùng qua đường tiêm bắp, tĩnh mạch, dưới da, trong động mạch và tiêm trong màng phổi. Người bệnh điều trị với bleomycin cần phải chụp X-quang ngực hàng tuần. Liều lượng căn cứ vào dung nạp thuốc của bệnh nhân và tiến triển lâm sàng sao cho đạt được kết quả điều trị tốt nhất với ít tác dụng phụ nhất.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        288.61,
+        553.72,
+        350.13
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0071",
+      "type": "paragraph",
+      "text": "Liều dưới đây là liều tính theo đơn vị USP (đv USP). Nếu hàm lượng thuốc ghi trên chế phẩm lưu hành theo đvqt (IU) hoặc theo mg thì phải quy ra đv USP hoặc theo tờ hướng dẫn dùng thuốc của nhà sản xuất.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        349.51,
+        553.72,
+        398.86
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0072",
+      "type": "paragraph",
+      "text": "Tiêm bắp hoặc tiêm dưới da: Liều theo yêu cầu (lọ thuốc 15 đv USP hoặc 30 đv USP) được hòa tan trong 1 - 5 ml hoặc 2 - 10 ml nước cất vô khuẩn pha tiêm hay dung dịch tiêm natri clorid 0,9%.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        398.25,
+        553.75,
+        435.4
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0073",
+      "type": "paragraph",
+      "text": "Dung dịch tiêm tĩnh mạch: Pha lọ thuốc 15 - 30 đv USP trong 5 ml hoặc 10 ml dung dịch tiêm natri clorid 0,9% tương ứng rồi tiêm chậm trong khoảng 10 phút.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        434.8,
+        553.74,
+        471.95
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0074",
+      "type": "paragraph",
+      "text": "Dung dịch tiêm vào trong màng phổi: Pha 60 đv USP thuốc trong 50 - 100 ml dung dịch tiêm natri clorid 0,9% và đưa thuốc qua một ống mở thông lồng ngực sau khi đã dẫn lưu dịch màng phổi và đảm bảo đã hết tình trạng xẹp phổi. Thời gian lưu ống thông ngực sau khi gây dính màng phổi tùy thuộc vào tình trạng lâm sàng.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        471.34,
+        553.72,
+        532.86
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0075",
+      "type": "subheading",
+      "level": 3,
+      "text": "Người lớn",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        533.29,
+        339.82,
+        546.01
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Người lớn",
+          "bbox": [
+            299.38,
+            533.29,
+            339.82,
+            546.01
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0076",
+      "type": "paragraph",
+      "text": "U lympho Hodgkin: Dùng liều thăm dò ≤ 2 đv USP trong 2 liều đầu. Nếu không có phản ứng cấp thì có thể dùng liều theo phác đồ:",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        544.44,
+        553.72,
+        569.41
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0077",
+      "type": "paragraph",
+      "text": "0,25 - 0,5 đv USP/kg (10 - 20 đv USP/m2) tiêm tĩnh mạch, tiêm bắp hoặc dưới da; 1 lần/tuần hoặc 2 lần/tuần. Khi kích thước khối u giảm được 50% thì có thể dùng liều duy trì 1 đv USP/ngày hoặc 5 đv USP/tuần tiêm bắp hoặc tĩnh mạch. Nếu thuốc có tác dụng thì thường bệnh có cải thiện trong vòng 2 tuần.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        568.79,
+        553.72,
+        630.33
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0078",
+      "type": "paragraph",
+      "text": "U lympho không Hodgkin: Dùng liều thăm dò ≤ 2 đv USP trong 2 liều đầu. Nếu không có phản ứng cấp thì có thể dùng liều theo phác đồ: 0,25 - 0,5 đv USP/kg (10 - 20 đv USP/m2) tiêm tĩnh mạch, tiêm bắp hoặc dưới da; 1 lần/tuần hoặc 2 lần/tuần.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        629.71,
+        553.73,
+        679.05
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0079",
+      "type": "paragraph",
+      "text": "Ung thư biểu mô tế bào vảy, ung thư tinh hoàn: 0,25 - 0,5 đv USP/kg (10 - 20 đv USP/m2), tiêm tĩnh mạch, tiêm bắp hoặc tiêm dưới da 1 - 2 lần/tuần. Nếu thuốc có tác dụng thì thường bệnh có cải thiện trong vòng 2 tuần.",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        678.43,
+        553.72,
+        727.78
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0080",
+      "type": "paragraph",
+      "text": "Ung thư tế bào mầm buồng trứng: Bleomycin tiêm tĩnh mạch 30 đv USP mỗi liều các ngày 1, 8 và 15 của chu kỳ 21 ngày trong 3 chu kỳ (kết hợp với etoposid và cisplatin).",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        727.16,
+        553.72,
+        764.32
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0081",
+      "type": "paragraph",
+      "text": "Tràn dịch màng phổi: Tiêm trong màng phổi 1 liều duy nhất 50 - 60 đv USP (không quá 1 đv USP/kg hoặc 40 đv USP/m2 ở người già).",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        763.71,
+        553.72,
+        788.69
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0082",
+      "type": "paragraph",
+      "text": "Người suy thận: Cần giảm liều như sau:",
+      "page": 301,
+      "printed_page": 307,
+      "column": 1,
+      "bbox": [
+        299.38,
+        788.07,
+        451.21,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Người suy thận:",
+          "bbox": [
+            299.38,
+            788.23,
+            360.83,
+            800.87
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        },
+        {
+          "text": " Cần giảm liều như sau:",
+          "bbox": [
+            360.83,
+            788.07,
+            451.21,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0083",
+      "type": "table",
+      "text": "Bảng từ PDF gốc",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
       "bbox": [
         43.43,
         66.68,
         295.22,
         191.59
+      ],
+      "source": {
+        "pdf_extraction": "geometry"
+      },
+      "table_id": "p0302-t01",
+      "image": "duoc-thu-assets/bleomycin/p0302-t01.png",
+      "image_path": "duoc-thu-assets/bleomycin/p0302-t01.png"
+    },
+    {
+      "id": "b0084",
+      "type": "subheading",
+      "level": 3,
+      "text": "Trẻ em",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        195.71,
+        70.78,
+        208.43
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Trẻ em",
+          "bbox": [
+            43.43,
+            195.71,
+            70.78,
+            208.43
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0085",
+      "type": "paragraph",
+      "text": "Chỉ sử dụng bleomycin cho trẻ em trong những trường hợp đặc biệt và tại những cơ sở y tế chuyên khoa. Cách tính liều dùng cho trẻ theo các phác đồ được chỉ định thường dựa trên diện tích bề mặt cơ thể và theo khuyến cáo trong các hướng dẫn điều trị, có thể cần hiệu chỉnh tùy theo các đặc điểm của bệnh nhi.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        207.83,
+        297.77,
+        269.4
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0086",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương tác thuốc",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        271.64,
+        110.34,
+        284.79
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương tác thuốc",
+          "bbox": [
+            43.43,
+            271.64,
+            110.34,
+            284.79
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0087",
+      "type": "paragraph",
+      "text": "Thuốc có độc tính với phổi: Bleomycin làm tăng độc tính trên phổi khi kết hợp với một số thuốc có độc tính với phổi như carmustin, mitomycin, cyclophosphamid, methotrexat và gemcitabin; đặc biệt là khi kết hợp với cisplatin. Do đó thường không kết hợp bleomycin với cisplatin mà chỉ sử dụng cisplatin sau khi đã kết thúc sử dụng bleomycin.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        283.99,
+        297.78,
+        357.75
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0088",
+      "type": "paragraph",
+      "text": "Kết hợp bleomycin, vinblastin và cisplatin có thể làm giảm độ lọc của cầu thận nên cần thận trọng ở bệnh nhân suy giảm nặng chức năng thận.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        357.14,
+        297.77,
+        394.32
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0089",
+      "type": "paragraph",
+      "text": "Vinca alkaloid: Ở bệnh nhân ung thư tinh hoàn, kết hợp bleomycin với vinca alkaloid có thể gây hội chứng Raynaud với các triệu chứng của thiếu máu cục bộ chi, có thể gây hoại tử các phần ngoại vi như ngón tay, chân,...",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        393.72,
+        297.77,
+        443.09
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0090",
+      "type": "paragraph",
+      "text": "Bệnh nhân đã hoặc đang xạ trị ngực có tần suất và mức độ của độc tính trên phổi khi sử dụng bleomycin tăng đáng kể.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        442.49,
+        297.77,
+        467.48
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0091",
+      "type": "paragraph",
+      "text": "Bệnh nhân đã hoặc đang xạ trị đầu hoặc cổ có thể có tăng viêm miệng và làm nặng thêm viêm nứt góc miệng, dẫn đến viêm niêm mạc họng và khàn giọng khi sử dụng bleomycin.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        466.87,
+        297.77,
+        504.06
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0092",
+      "type": "paragraph",
+      "text": "Nồng độ oxygen hít vào trên 35% có thể gây suy hô hấp cấp, xơ phổi ở những người bệnh điều trị bằng bleomycin.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        503.45,
+        297.76,
+        528.44
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0093",
+      "type": "paragraph",
+      "text": "Sử dụng các thuốc kích thích bạch cầu sau khi sử dụng bleomycin làm tăng bạch cầu hạt trung tính và các gốc tự do dẫn đến tăng nguy cơ tổn thương phổi.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        527.84,
+        297.77,
+        565.02
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0094",
+      "type": "paragraph",
+      "text": "Các vitamin (acid ascorbic, riboflavin) bất hoạt bleomycin in vitro.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        564.41,
+        295.39,
+        577.21
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Các vitamin (acid ascorbic, riboflavin) bất hoạt bleomycin ",
+          "bbox": [
+            43.43,
+            564.41,
+            266.06,
+            577.21
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "in vitro",
+          "bbox": [
+            265.85,
+            564.58,
+            293.01,
+            577.21
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        },
+        {
+          "text": ".",
+          "bbox": [
+            293.01,
+            564.41,
+            295.39,
+            577.21
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0095",
+      "type": "paragraph",
+      "text": "Digoxin: Có thể làm giảm tác dụng của digoxin do giảm sinh khả dụng đường uống của digoxin.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        575.61,
+        297.76,
+        599.6
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0096",
+      "type": "paragraph",
+      "text": "Phenytoin: Có thể làm giảm tác dụng của phenytoin.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        597.99,
+        243.19,
+        610.79
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Phenytoin: Có thể làm giảm tác dụng của phenytoin.",
+          "bbox": [
+            43.43,
+            597.99,
+            243.19,
+            610.79
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0097",
+      "type": "paragraph",
+      "text": "Một số kháng sinh như gentamicin, amikacin và ticarcilin:",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        609.18,
+        297.77,
+        621.98
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Một số kháng sinh như gentamicin, amikacin và ticarcilin: ",
+          "bbox": [
+            43.43,
+            609.18,
+            297.77,
+            621.98
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0098",
+      "type": "paragraph",
+      "text": "Bleomycin có thể làm giảm tác dụng kìm khuẩn của kháng sinh.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        620.38,
+        287.77,
+        633.17
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Bleomycin có thể làm giảm tác dụng kìm khuẩn của kháng sinh.",
+          "bbox": [
+            43.43,
+            620.38,
+            287.77,
+            633.17
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0099",
+      "type": "paragraph",
+      "text": "Ciclosporin hoặc tacrolimus: Có thể gây ức chế miễn dịch quá mức và nguy cơ gây tăng sinh mô bạch huyết.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        631.57,
+        297.76,
+        655.56
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0100",
+      "type": "paragraph",
+      "text": "Clozapin: Tránh kết hợp bleomycin với clozapin do làm tăng nguy cơ gây chứng mất bạch cầu hạt.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        653.95,
+        297.76,
+        677.94
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0101",
+      "type": "paragraph",
+      "text": "Vắc xin sống: Có thể gây nhiễm khuẩn nặng, đe dọa tới tính mạng người bệnh nên tránh sử dụng đồng thời.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        676.34,
+        297.79,
+        700.33
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0102",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương kỵ",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        702.57,
+        83.17,
+        715.72
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương kỵ",
+          "bbox": [
+            43.43,
+            702.57,
+            83.17,
+            715.72
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0103",
+      "type": "paragraph",
+      "text": "Tương kỵ với các cation hóa trị II (đặc biệt là đồng) và các hợp chất có nhóm sulfhydryl do tạo phức chelat.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        714.92,
+        297.77,
+        739.91
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0104",
+      "type": "paragraph",
+      "text": "Không trộn lẫn dung dịch bleomycin với dung dịch các acid amin thiết yếu, acid ascorbic, dexamethason, aminophylin hoặc furosemid.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        739.3,
+        297.77,
+        776.48
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0105",
+      "type": "paragraph",
+      "text": "Không pha thuốc hoặc pha loãng với các dung dịch có đường như glucose (vì mất hoạt tính).",
+      "page": 302,
+      "printed_page": 308,
+      "column": 0,
+      "bbox": [
+        43.43,
+        775.88,
+        297.76,
+        800.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0106",
+      "type": "heading",
+      "level": 2,
+      "text": "Quá liều và xử trí",
+      "page": 302,
+      "printed_page": 308,
+      "column": 1,
+      "bbox": [
+        307.39,
+        63.02,
+        379.06,
+        76.16
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Quá liều và xử trí",
+          "bbox": [
+            307.39,
+            63.02,
+            379.06,
+            76.16
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0107",
+      "type": "paragraph",
+      "text": "Triệu chứng: Tụt huyết áp, sốt, mạch nhanh và các triệu chứng toàn thân của sốc.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 1,
+      "bbox": [
+        307.39,
+        75.37,
+        561.72,
+        100.37
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0108",
+      "type": "paragraph",
+      "text": "Xử trí: Không có thuốc giải độc đặc hiệu và không thể loại bỏ thuốc qua thẩm phân. Chủ yếu là điều trị triệu chứng. Trong trường hợp có biến chứng hô hấp, người bệnh phải được điều trị bằng corticoid và kháng sinh phổ rộng. Cần lưu ý phản ứng trên phổi (xơ phổi) do quá liều thường không hồi phục, trừ trường hợp phát hiện được ở giai đoạn sớm.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 1,
+      "bbox": [
+        307.39,
+        99.78,
+        561.72,
+        173.59
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0109",
+      "type": "heading",
+      "text": "Cập nhật lần cuối",
+      "page": 302,
+      "printed_page": 308,
+      "column": 1,
+      "bbox": [
+        307.39,
+        178.55,
+        402.65,
+        191.19
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2021.",
+          "bbox": [
+            307.39,
+            178.55,
+            402.65,
+            191.19
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "level": 2,
+      "v11_fix": "cap_nhat_cap_nhap_lan_cuoi_normalized_alpha8"
+    },
+    {
+      "id": "b0109",
+      "type": "paragraph",
+      "text": "2021.",
+      "page": 302,
+      "printed_page": 308,
+      "column": 1,
+      "bbox": [
+        307.39,
+        178.55,
+        402.65,
+        191.19
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2021.",
+          "bbox": [
+            307.39,
+            178.55,
+            402.65,
+            191.19
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "v11_parent_heading": "Cập nhật lần cuối"
+    }
+  ],
+  "sections": [
+    {
+      "id": "dang-thuoc-va-ham-luong",
+      "title": "Dạng thuốc và hàm lượng",
+      "heading_block": "b0005",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Lọ bột đông khô bleomycin sulfat để pha tiêm, chứa 15 hoặc 30 đơn vị Dược điển Mỹ (đơn vị USP), tương đương 15 000 hoặc 30 000 đvqt (IU).",
+          "block_id": "b0006"
+        }
+      ]
+    },
+    {
+      "id": "duoc-luc-hoc",
+      "title": "Dược lực học",
+      "heading_block": "b0007",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Bleomycin là một hỗn hợp kháng sinh glycopeptid có tác dụng độc với tế bào, tạo ra bởi xạ khuẩn Streptomyces verticillus, trong đó bleomycin A2 và bleomycin B2 là thành phần chính. Cơ chế tác dụng của bleomycin là làm đứt các đoạn DNA; một phần do thuốc liên kết trực tiếp với DNA và một phần do tạo thành các gốc tự do.",
+          "block_id": "b0008"
+        },
+        {
+          "type": "text",
+          "text": "Do ức chế sự tổng hợp DNA nên thuốc có tác dụng ức chế sự phân chia và tăng trưởng của tế bào khối u. Thuốc có tác dụng đặc hiệu trên DNA và không ảnh hưởng đến sự tổng hợp RNA hoặc protein",
+          "block_id": "b0009"
+        },
+        {
+          "type": "text",
+          "text": "của tế bào khối u. Tác dụng tối đa trong chu trình phân bào xảy ra trong pha M, và trong quá trình chuyển từ pha G1 đến pha S, nhưng pha G2 cũng rất nhạy cảm với bleomycin.",
+          "block_id": "b0010"
+        },
+        {
+          "type": "text",
+          "text": "Khi tiêm tĩnh mạch, thuốc có thể có tác dụng giống như histamin lên huyết áp và làm tăng thân nhiệt.",
+          "block_id": "b0011"
+        }
+      ]
+    },
+    {
+      "id": "duoc-dong-hoc",
+      "title": "Dược động học",
+      "heading_block": "b0012",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Hấp thu: Bleomycin ít được hấp thu theo đường tiêu hóa nhưng được hấp thu nhanh qua đường tiêm, qua phúc mạc và màng phổi.",
+          "block_id": "b0013"
+        },
+        {
+          "type": "text",
+          "text": "Sau khi tiêm tĩnh mạch liều 15 000 đvqt/m2, nồng độ trong huyết thanh đạt được từ 1 - 10 đvqt. Sinh khả dụng sau tiêm bắp là 100% và thuốc đạt nồng độ tối đa trong máu sau khoảng 30 phút. Sinh khả dụng của thuốc khi dùng theo đường phúc mạc hoặc màng phổi là 45%.",
+          "block_id": "b0014"
+        },
+        {
+          "type": "text",
+          "text": "Phân bố: Tỷ lệ gắn vào protein huyết tương thấp. Thể tích phân bố khoảng 0,27 ± 0,09 lít/kg. Nồng độ thuốc trong dịch não tủy thấp.",
+          "block_id": "b0015"
+        },
+        {
+          "type": "text",
+          "text": "Sau khi được tiêm, bleomycin được phân bố chủ yếu ở da, phổi, thận, phúc mạc và hệ bạch huyết. Thuốc đi qua được hàng rào nhau thai. Nồng độ thuốc trong khối ung thư da và phổi cao hơn ở mô tạo máu. Nồng độ thuốc trong tủy xương thấp có thể là do nồng độ các enzym gây thoái hóa bleomycin ở trong tủy xương cao.",
+          "block_id": "b0016"
+        },
+        {
+          "type": "text",
+          "text": "Chuyển hóa: Bleomycin bị thoái hóa thành chất chuyển hóa không có hoạt tính chủ yếu ở huyết tương, gan, lách, ruột non và tủy xương, một số ít ở da và ở phổi. Thuốc bị mất tác dụng ở các mô bởi enzym xúc tác thủy phân đặc hiệu bleomycinhydrolase, enzym này có rất ít trong da và phổi, đây là hai vị trí xuất hiện độc tính chính của thuốc.",
+          "block_id": "b0017"
+        },
+        {
+          "type": "text",
+          "text": "Thải trừ: Sau khi tiêm tĩnh mạch một liều, nửa đời thải trừ của thuốc là khoảng 3 giờ với 2 pha thải trừ: nửa đời của pha đầu là 24 phút và của pha cuối là 2 - 4 giờ. Nếu truyền tĩnh mạch liên tục thì sự đào thải kéo dài hơn với nửa đời thải trừ là 9 giờ. Hai phần ba liều được đào thải theo nước tiểu dưới dạng không đổi; tốc độ đào thải do chức năng thận quyết định. Khi tiêm tĩnh mạch, thuốc được đào thải nhanh hơn khi tiêm bắp. Với người bệnh có chức năng thận bình thường, khoảng 70% liều được bài tiết dưới dạng không đổi qua nước tiểu trong vòng 24 giờ. Ở người bị suy thận mức độ vừa (Clcr < 35 ml/phút) chỉ có 20% liều tiêm được đào thải qua nước tiểu; điều này cho thấy có sự tích lũy thuốc ở người bệnh bị suy thận nặng.",
+          "block_id": "b0018"
+        }
+      ]
+    },
+    {
+      "id": "chi-dinh",
+      "title": "Chỉ định",
+      "heading_block": "b0019",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Các u lympho Hodgkin hoặc không Hodgkin.",
+          "block_id": "b0020"
+        },
+        {
+          "type": "text",
+          "text": "Ung thư biểu mô tế bào vảy ở đầu, cổ, cổ tử cung và cơ quan sinh dục ngoài.",
+          "block_id": "b0021"
+        },
+        {
+          "type": "text",
+          "text": "Ung thư tinh hoàn.",
+          "block_id": "b0022"
+        },
+        {
+          "type": "text",
+          "text": "Ung thư tế bào mầm buồng trứng.",
+          "block_id": "b0023"
+        },
+        {
+          "type": "text",
+          "text": "Tràn dịch màng phổi ác tính.",
+          "block_id": "b0024"
+        }
+      ]
+    },
+    {
+      "id": "chong-chi-dinh",
+      "title": "Chống chỉ định",
+      "heading_block": "b0025",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Mẫn cảm với thuốc.",
+          "block_id": "b0026"
+        },
+        {
+          "type": "text",
+          "text": "Nhiễm khuẩn phổi cấp hoặc chức năng phổi bị suy giảm nặng.",
+          "block_id": "b0027"
+        },
+        {
+          "type": "text",
+          "text": "Trường hợp mất điều vận (thất điều).",
+          "block_id": "b0028"
+        }
+      ]
+    },
+    {
+      "id": "than-trong",
+      "title": "Thận trọng",
+      "heading_block": "b0029",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Bleomycin độc ngay cả khi được dùng với liều thấp. Thuốc phải được dùng dưới sự giám sát của thầy thuốc chuyên khoa ung thư có kinh nghiệm về hóa trị liệu và ở cơ sở y tế có đầy đủ phương tiện chẩn đoán, điều trị và can thiệp khi có biến chứng. Phải theo dõi chặt chẽ và thường xuyên bệnh nhân trong và sau khi điều trị bằng bleomycin.",
+          "block_id": "b0030"
+        },
+        {
+          "type": "text",
+          "text": "Phải thử liều bleomycin ở tất cả mọi bệnh nhân bị u lympho trước khi trị liệu chính thức để tránh nguy cơ phản vệ.",
+          "block_id": "b0031"
+        },
+        {
+          "type": "text",
+          "text": "Sử dụng hết sức thận trọng với những người bệnh bị suy thận, người bệnh có chức năng phổi hoặc thận giảm, người bệnh có u",
+          "block_id": "b0032"
+        },
+        {
+          "type": "text",
+          "text": "lympho, người bệnh dùng đồng thời các thuốc độc với thận (như methotrexat liều cao, aminoglycosid).",
+          "block_id": "b0033"
+        },
+        {
+          "type": "text",
+          "text": "Thận trọng khi dùng cho bệnh nhân trên 70 tuổi, đặc biệt khi dùng với tổng liều trên 400 000 đvqt do nguy cơ viêm phổi và xơ phổi.",
+          "block_id": "b0034"
+        },
+        {
+          "type": "text",
+          "text": "Thận trọng khi dùng cho người đã được xạ trị, nhất là ở vùng ngực.",
+          "block_id": "b0035"
+        },
+        {
+          "type": "text",
+          "text": "Thận trọng khi dùng cho bệnh nhân trong độ tuổi sinh sản, cần chú ý tác động của thuốc trên các cơ quan sinh sản.",
+          "block_id": "b0036"
+        },
+        {
+          "type": "text",
+          "text": "Nồng độ oxy trên 30% có nguy cơ cao gây xơ hóa phổi cho người đang dùng thuốc. Nếu phải phẫu thuật cho người đang dùng bleomycin thì cần cho người bệnh thở không khí có nồng độ oxy khoảng 25% trong và sau khi mổ; phải theo dõi việc truyền dịch cẩn thận (dùng dung dịch keo thay vì dịch truyền tinh thể).",
+          "block_id": "b0037"
+        }
+      ]
+    },
+    {
+      "id": "thoi-ky-mang-thai",
+      "title": "Thời kỳ mang thai",
+      "heading_block": "b0038",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Bleomycin gây quái thai trên động vật thực nghiệm, không có dữ liệu trên phụ nữ mang thai. Phụ nữ trong độ tuổi sinh đẻ phải tránh mang thai trong quá trình được điều trị bằng bleomycin. Nếu chỉ định thuốc cho bệnh nhân đang mang thai hoặc bệnh nhân mang thai trong quá trình dùng thuốc thì phải thông báo cho bệnh nhân nguy cơ đối với thai.",
+          "block_id": "b0039"
+        }
+      ]
+    },
+    {
+      "id": "thoi-ky-cho-con-bu",
+      "title": "Thời kỳ cho con bú",
+      "heading_block": "b0040",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Không rõ thuốc có được bài tiết theo sữa hay không. Người bệnh dùng bleomycin không nên cho con bú.",
+          "block_id": "b0041"
+        }
+      ]
+    },
+    {
+      "id": "tac-dung-khong-mong-muon-adr",
+      "title": "Tác dụng không mong muốn (ADR)",
+      "heading_block": "b0042",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Khác với nhiều hóa trị liệu khác, bleomycin tương đối ít độc với tủy xương. Bleomycin có nhiều tác dụng phụ; thường gặp nhất là những phản ứng trên da và phổi.",
+          "block_id": "b0043"
+        },
+        {
+          "type": "text",
+          "text": "Khoảng trên 50% người bệnh có thể gặp một vài loại phản ứng phụ. Điển hình nhất là độc tính với phổi, có thể gặp trên 25% những người bệnh đã điều trị. Khoảng 10 - 15% trường hợp này tiến triển thành xơ hóa phổi và nên lưu ý rằng quá trình này có thể dẫn đến tử vong. Nguy cơ xơ hóa phổi tăng trong trường hợp đã có suy giảm chức năng phổi. Mức độ nhạy cảm của từng cá thể rất khác nhau, nhưng có nguy cơ cao trong trường hợp sử dụng tổng liều trên 200 đv USP, bệnh nhân lớn hơn 40 tuổi, bệnh nhân có mức lọc cầu thận nhỏ hơn 80 ml/phút hoặc bệnh ở giai đoạn tiến triển.",
+          "block_id": "b0044"
+        },
+        {
+          "type": "text",
+          "text": "Các yếu tố nguy cơ khác bao gồm: hút thuốc lá, có tiền sử xạ trị hoặc phải thở oxy (đặc biệt là oxy liều cao).",
+          "block_id": "b0045"
+        },
+        {
+          "type": "subheading",
+          "text": "Thường gặp",
+          "block_id": "b0046"
+        },
+        {
+          "type": "text",
+          "text": "Toàn thân: tăng thân nhiệt vào ngày tiêm, ớn lạnh, xuất huyết.",
+          "block_id": "b0047"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: nôn, buồn nôn, viêm miệng, chán ăn, sút cân.",
+          "block_id": "b0048"
+        },
+        {
+          "type": "text",
+          "text": "Da: ngoại ban, ngứa, rụng tóc, đổi móng, tăng sắc tố, da dày lên, mụn nước, tăng nhạy cảm đau, nổi vân.",
+          "block_id": "b0049"
+        },
+        {
+          "type": "text",
+          "text": "Hô hấp: viêm phổi kẽ, xơ hóa phổi.",
+          "block_id": "b0050"
+        },
+        {
+          "type": "subheading",
+          "text": "Ít gặp",
+          "block_id": "b0051"
+        },
+        {
+          "type": "text",
+          "text": "Toàn thân: đau chỗ tiêm, co thắt hoặc chai cứng vùng tiêm, khó chịu, mệt mỏi. Mất định hướng, hành vi hung hãn.",
+          "block_id": "b0052"
+        },
+        {
+          "type": "text",
+          "text": "Máu: giảm bạch cầu có hồi phục, giảm tiểu cầu.",
+          "block_id": "b0053"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: viêm thực quản, tiêu chảy.",
+          "block_id": "b0054"
+        },
+        {
+          "type": "text",
+          "text": "Tiết niệu - sinh dục: đái ra máu, viêm bàng quang, viêm bàng quang xuất huyết.",
+          "block_id": "b0055"
+        },
+        {
+          "type": "text",
+          "text": "Thận: độc lên thận, rối loạn chức năng thận thể hiện qua các xét nghiệm thăm dò chức năng.",
+          "block_id": "b0056"
+        },
+        {
+          "type": "text",
+          "text": "Gan: độc lên gan, rối loạn chức năng gan thể hiện qua các xét nghiệm thăm dò chức năng.",
+          "block_id": "b0057"
+        },
+        {
+          "type": "text",
+          "text": "Phản ứng dị ứng: phản vệ (huyết áp hạ, sốt, rét run, lú lẫn, thở khò khè) có thể dẫn tới tử vong nếu không được điều trị.",
+          "block_id": "b0058"
+        },
+        {
+          "type": "text",
+          "text": "Tim - mạch: tràn dịch màng phổi, màng tim, nhồi máu cơ tim, tai biến mạch não, huyết khối mạch nhỏ, viêm động mạch não, hội chứng Reynaud, viêm tĩnh mạch, phì đại tĩnh mạch.",
+          "block_id": "b0059"
+        },
+        {
+          "type": "subheading",
+          "text": "Hiếm gặp và rất hiếm gặp",
+          "block_id": "b0060"
+        },
+        {
+          "type": "text",
+          "text": "Máu: sốt giảm bạch cầu trung tính.",
+          "block_id": "b0061"
+        },
+        {
+          "type": "text",
+          "text": "Tim - mạch: huyết khối động mạch, huyết khối tĩnh mạch sâu.",
+          "block_id": "b0062"
+        },
+        {
+          "type": "text",
+          "text": "Toàn thân: hội chứng ly giải khối u.",
+          "block_id": "b0063"
+        }
+      ]
+    },
+    {
+      "id": "huong-dan-cach-xu-tri-adr",
+      "title": "Hướng dẫn cách xử trí ADR",
+      "heading_block": "b0064",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Bệnh nhân điều trị bằng bleomycin cần được giám sát X-quang phổi mỗi 1 - 2 tuần cho đến khi kết thúc 4 tuần điều trị và tiếp tục được giám sát lâm sàng đến sau khi kết thúc điều trị 2 tháng. Nếu xuất hiện khó thở hoặc thâm nhiễm phổi không do bệnh lý ung thư hoặc bệnh phổi có từ trước, cần ngừng dùng ngay bleomycin và điều trị cho bệnh nhân bằng corticoid và kháng sinh phổ rộng.",
+          "block_id": "b0065"
+        },
+        {
+          "type": "text",
+          "text": "Nếu có biểu hiện của sốc thì cần ngừng thuốc ngay và điều trị triệu chứng kịp thời.",
+          "block_id": "b0066"
+        },
+        {
+          "type": "text",
+          "text": "Tác dụng phụ khi tiêm bleomycin vào khoang màng phổi: đau ngực và sốt (có thể dùng opiat trước khi tiêm hoặc cho lidocain vào ống mở thông lồng ngực để giảm đau; có thể dùng thuốc hạ sốt).",
+          "block_id": "b0067"
+        },
+        {
+          "type": "text",
+          "text": "Nếu thấy đau vị trí tiêm bắp, cần thay đổi vị trí tiêm thường xuyên.",
+          "block_id": "b0068"
+        }
+      ]
+    },
+    {
+      "id": "lieu-luong-va-cach-dung",
+      "title": "Liều lượng và cách dùng",
+      "heading_block": "b0069",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Bleomycin thường được dùng qua đường tiêm bắp, tĩnh mạch, dưới da, trong động mạch và tiêm trong màng phổi. Người bệnh điều trị với bleomycin cần phải chụp X-quang ngực hàng tuần. Liều lượng căn cứ vào dung nạp thuốc của bệnh nhân và tiến triển lâm sàng sao cho đạt được kết quả điều trị tốt nhất với ít tác dụng phụ nhất.",
+          "block_id": "b0070"
+        },
+        {
+          "type": "text",
+          "text": "Liều dưới đây là liều tính theo đơn vị USP (đv USP). Nếu hàm lượng thuốc ghi trên chế phẩm lưu hành theo đvqt (IU) hoặc theo mg thì phải quy ra đv USP hoặc theo tờ hướng dẫn dùng thuốc của nhà sản xuất.",
+          "block_id": "b0071"
+        },
+        {
+          "type": "text",
+          "text": "Tiêm bắp hoặc tiêm dưới da: Liều theo yêu cầu (lọ thuốc 15 đv USP hoặc 30 đv USP) được hòa tan trong 1 - 5 ml hoặc 2 - 10 ml nước cất vô khuẩn pha tiêm hay dung dịch tiêm natri clorid 0,9%.",
+          "block_id": "b0072"
+        },
+        {
+          "type": "text",
+          "text": "Dung dịch tiêm tĩnh mạch: Pha lọ thuốc 15 - 30 đv USP trong 5 ml hoặc 10 ml dung dịch tiêm natri clorid 0,9% tương ứng rồi tiêm chậm trong khoảng 10 phút.",
+          "block_id": "b0073"
+        },
+        {
+          "type": "text",
+          "text": "Dung dịch tiêm vào trong màng phổi: Pha 60 đv USP thuốc trong 50 - 100 ml dung dịch tiêm natri clorid 0,9% và đưa thuốc qua một ống mở thông lồng ngực sau khi đã dẫn lưu dịch màng phổi và đảm bảo đã hết tình trạng xẹp phổi. Thời gian lưu ống thông ngực sau khi gây dính màng phổi tùy thuộc vào tình trạng lâm sàng.",
+          "block_id": "b0074"
+        },
+        {
+          "type": "subheading",
+          "text": "Người lớn",
+          "block_id": "b0075"
+        },
+        {
+          "type": "text",
+          "text": "U lympho Hodgkin: Dùng liều thăm dò ≤ 2 đv USP trong 2 liều đầu. Nếu không có phản ứng cấp thì có thể dùng liều theo phác đồ:",
+          "block_id": "b0076"
+        },
+        {
+          "type": "text",
+          "text": "0,25 - 0,5 đv USP/kg (10 - 20 đv USP/m2) tiêm tĩnh mạch, tiêm bắp hoặc dưới da; 1 lần/tuần hoặc 2 lần/tuần. Khi kích thước khối u giảm được 50% thì có thể dùng liều duy trì 1 đv USP/ngày hoặc 5 đv USP/tuần tiêm bắp hoặc tĩnh mạch. Nếu thuốc có tác dụng thì thường bệnh có cải thiện trong vòng 2 tuần.",
+          "block_id": "b0077"
+        },
+        {
+          "type": "text",
+          "text": "U lympho không Hodgkin: Dùng liều thăm dò ≤ 2 đv USP trong 2 liều đầu. Nếu không có phản ứng cấp thì có thể dùng liều theo phác đồ: 0,25 - 0,5 đv USP/kg (10 - 20 đv USP/m2) tiêm tĩnh mạch, tiêm bắp hoặc dưới da; 1 lần/tuần hoặc 2 lần/tuần.",
+          "block_id": "b0078"
+        },
+        {
+          "type": "text",
+          "text": "Ung thư biểu mô tế bào vảy, ung thư tinh hoàn: 0,25 - 0,5 đv USP/kg (10 - 20 đv USP/m2), tiêm tĩnh mạch, tiêm bắp hoặc tiêm dưới da 1 - 2 lần/tuần. Nếu thuốc có tác dụng thì thường bệnh có cải thiện trong vòng 2 tuần.",
+          "block_id": "b0079"
+        },
+        {
+          "type": "text",
+          "text": "Ung thư tế bào mầm buồng trứng: Bleomycin tiêm tĩnh mạch 30 đv USP mỗi liều các ngày 1, 8 và 15 của chu kỳ 21 ngày trong 3 chu kỳ (kết hợp với etoposid và cisplatin).",
+          "block_id": "b0080"
+        },
+        {
+          "type": "text",
+          "text": "Tràn dịch màng phổi: Tiêm trong màng phổi 1 liều duy nhất 50 - 60 đv USP (không quá 1 đv USP/kg hoặc 40 đv USP/m2 ở người già).",
+          "block_id": "b0081"
+        },
+        {
+          "type": "text",
+          "text": "Người suy thận: Cần giảm liều như sau:",
+          "block_id": "b0082"
+        },
+        {
+          "type": "table",
+          "table_id": "p0302-t01",
+          "block_id": "b0083"
+        },
+        {
+          "type": "subheading",
+          "text": "Trẻ em",
+          "block_id": "b0084"
+        },
+        {
+          "type": "text",
+          "text": "Chỉ sử dụng bleomycin cho trẻ em trong những trường hợp đặc biệt và tại những cơ sở y tế chuyên khoa. Cách tính liều dùng cho trẻ theo các phác đồ được chỉ định thường dựa trên diện tích bề mặt cơ thể và theo khuyến cáo trong các hướng dẫn điều trị, có thể cần hiệu chỉnh tùy theo các đặc điểm của bệnh nhi.",
+          "block_id": "b0085"
+        }
+      ]
+    },
+    {
+      "id": "tuong-tac-thuoc",
+      "title": "Tương tác thuốc",
+      "heading_block": "b0086",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Thuốc có độc tính với phổi: Bleomycin làm tăng độc tính trên phổi khi kết hợp với một số thuốc có độc tính với phổi như carmustin, mitomycin, cyclophosphamid, methotrexat và gemcitabin; đặc biệt là khi kết hợp với cisplatin. Do đó thường không kết hợp bleomycin với cisplatin mà chỉ sử dụng cisplatin sau khi đã kết thúc sử dụng bleomycin.",
+          "block_id": "b0087"
+        },
+        {
+          "type": "text",
+          "text": "Kết hợp bleomycin, vinblastin và cisplatin có thể làm giảm độ lọc của cầu thận nên cần thận trọng ở bệnh nhân suy giảm nặng chức năng thận.",
+          "block_id": "b0088"
+        },
+        {
+          "type": "text",
+          "text": "Vinca alkaloid: Ở bệnh nhân ung thư tinh hoàn, kết hợp bleomycin với vinca alkaloid có thể gây hội chứng Raynaud với các triệu chứng của thiếu máu cục bộ chi, có thể gây hoại tử các phần ngoại vi như ngón tay, chân,...",
+          "block_id": "b0089"
+        },
+        {
+          "type": "text",
+          "text": "Bệnh nhân đã hoặc đang xạ trị ngực có tần suất và mức độ của độc tính trên phổi khi sử dụng bleomycin tăng đáng kể.",
+          "block_id": "b0090"
+        },
+        {
+          "type": "text",
+          "text": "Bệnh nhân đã hoặc đang xạ trị đầu hoặc cổ có thể có tăng viêm miệng và làm nặng thêm viêm nứt góc miệng, dẫn đến viêm niêm mạc họng và khàn giọng khi sử dụng bleomycin.",
+          "block_id": "b0091"
+        },
+        {
+          "type": "text",
+          "text": "Nồng độ oxygen hít vào trên 35% có thể gây suy hô hấp cấp, xơ phổi ở những người bệnh điều trị bằng bleomycin.",
+          "block_id": "b0092"
+        },
+        {
+          "type": "text",
+          "text": "Sử dụng các thuốc kích thích bạch cầu sau khi sử dụng bleomycin làm tăng bạch cầu hạt trung tính và các gốc tự do dẫn đến tăng nguy cơ tổn thương phổi.",
+          "block_id": "b0093"
+        },
+        {
+          "type": "text",
+          "text": "Các vitamin (acid ascorbic, riboflavin) bất hoạt bleomycin in vitro.",
+          "block_id": "b0094"
+        },
+        {
+          "type": "text",
+          "text": "Digoxin: Có thể làm giảm tác dụng của digoxin do giảm sinh khả dụng đường uống của digoxin.",
+          "block_id": "b0095"
+        },
+        {
+          "type": "text",
+          "text": "Phenytoin: Có thể làm giảm tác dụng của phenytoin.",
+          "block_id": "b0096"
+        },
+        {
+          "type": "text",
+          "text": "Một số kháng sinh như gentamicin, amikacin và ticarcilin:",
+          "block_id": "b0097"
+        },
+        {
+          "type": "text",
+          "text": "Bleomycin có thể làm giảm tác dụng kìm khuẩn của kháng sinh.",
+          "block_id": "b0098"
+        },
+        {
+          "type": "text",
+          "text": "Ciclosporin hoặc tacrolimus: Có thể gây ức chế miễn dịch quá mức và nguy cơ gây tăng sinh mô bạch huyết.",
+          "block_id": "b0099"
+        },
+        {
+          "type": "text",
+          "text": "Clozapin: Tránh kết hợp bleomycin với clozapin do làm tăng nguy cơ gây chứng mất bạch cầu hạt.",
+          "block_id": "b0100"
+        },
+        {
+          "type": "text",
+          "text": "Vắc xin sống: Có thể gây nhiễm khuẩn nặng, đe dọa tới tính mạng người bệnh nên tránh sử dụng đồng thời.",
+          "block_id": "b0101"
+        }
+      ]
+    },
+    {
+      "id": "tuong-ky",
+      "title": "Tương kỵ",
+      "heading_block": "b0102",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Tương kỵ với các cation hóa trị II (đặc biệt là đồng) và các hợp chất có nhóm sulfhydryl do tạo phức chelat.",
+          "block_id": "b0103"
+        },
+        {
+          "type": "text",
+          "text": "Không trộn lẫn dung dịch bleomycin với dung dịch các acid amin thiết yếu, acid ascorbic, dexamethason, aminophylin hoặc furosemid.",
+          "block_id": "b0104"
+        },
+        {
+          "type": "text",
+          "text": "Không pha thuốc hoặc pha loãng với các dung dịch có đường như glucose (vì mất hoạt tính).",
+          "block_id": "b0105"
+        }
+      ]
+    },
+    {
+      "id": "qua-lieu-va-xu-tri",
+      "title": "Quá liều và xử trí",
+      "heading_block": "b0106",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Triệu chứng: Tụt huyết áp, sốt, mạch nhanh và các triệu chứng toàn thân của sốc.",
+          "block_id": "b0107"
+        },
+        {
+          "type": "text",
+          "text": "Xử trí: Không có thuốc giải độc đặc hiệu và không thể loại bỏ thuốc qua thẩm phân. Chủ yếu là điều trị triệu chứng. Trong trường hợp có biến chứng hô hấp, người bệnh phải được điều trị bằng corticoid và kháng sinh phổ rộng. Cần lưu ý phản ứng trên phổi (xơ phổi) do quá liều thường không hồi phục, trừ trường hợp phát hiện được ở giai đoạn sớm.",
+          "block_id": "b0108"
+        }
+      ]
+    },
+    {
+      "id": "cap-nhat-lan-cuoi",
+      "title": "Cập nhật lần cuối",
+      "heading_block": "b0109",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "2021.",
+          "block_id": "b0109"
+        }
       ]
     }
   ],
   "quality": {
-    "status": "source-layout-rebuilt-v10.1-source-paragraph-boundaries",
-    "pdf_text_order": "left-column-then-right-column; visual line flow",
-    "paragraph_policy": "Paragraph boundaries are source-derived and stored only as blank lines. The client preserves those boundaries exactly; it must not create a new paragraph from label words such as “Trẻ em:” or “Người lớn:”. A lower-case continuation fragment is merged only when it follows a non-terminal source fragment; table footnotes remain separate. No client-side anchor or length-based sentence splitter is allowed.",
-    "table_policy": "source-table image inserted by PDF page/column/y position; table-cell text excluded from prose",
-    "validation": {
-      "raw_newline_inside_paragraph": false,
-      "table_count": 1,
-      "section_count": 17,
-      "client_anchor_resegmentation_disabled": true,
-      "client_length_sentence_chunking_disabled": true
+    "block_count": 109,
+    "heading_count": 14,
+    "subheading_count": 5,
+    "paragraph_count": 88,
+    "list_count": 0,
+    "table_count": 1,
+    "figure_count": 0,
+    "note_count": 1,
+    "page_count": 3
+  },
+  "tables": [
+    {
+      "id": "p0302-t01",
+      "image_path": "duoc-thu-assets/bleomycin/p0302-t01.png",
+      "image": "duoc-thu-assets/bleomycin/p0302-t01.png",
+      "source_pdf_page": 302,
+      "printed_page": 308,
+      "bbox": [
+        43.43,
+        66.68,
+        295.22,
+        191.59
+      ],
+      "block_id": "b0083"
     }
+  ],
+  "legacy_compat": {
+    "sections": "generated from v11 blocks for v10.4.5.39 renderer/chatbot compatibility"
   }
 }

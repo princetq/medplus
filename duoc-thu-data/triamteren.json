@@ -1,9 +1,9 @@
 {
-  "schema_version": "10.1-source-paragraph-boundaries",
+  "schema_version": "11.0.0",
   "id": "triamteren",
   "title": "Triamteren",
   "aliases": [
-    "triamteren"
+    "Triamteren"
   ],
   "source": {
     "book": "Dược thư Quốc gia Việt Nam",
@@ -26,224 +26,2555 @@
       "boundary_method": "physical-source-title-band"
     }
   },
+  "parser": {
+    "name": "medplus-duoc-thu-v11-structured-pdf-parser",
+    "method": "PyMuPDF span -> line -> block",
+    "content_source": "Duocthu2023.pdf",
+    "old_json_usage": "id/title/page-boundary metadata and existing table asset path only; old content is not used",
+    "column_order": "left column -> right column -> next page",
+    "block_model": [
+      "heading",
+      "subheading",
+      "paragraph",
+      "list",
+      "table",
+      "figure",
+      "note"
+    ],
+    "table_policy": "no OCR; preserve existing duoc-thu-assets/<id>/pXXXX-tXX.png image_path"
+  },
+  "blocks": [
+    {
+      "id": "b0001",
+      "type": "heading",
+      "level": 1,
+      "text": "TRIAMTEREN",
+      "page": 1618,
+      "printed_page": 1624,
+      "column": 1,
+      "bbox": [
+        390.91,
+        398.14,
+        459.8,
+        411.98
+      ],
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "TRIAMTEREN",
+          "bbox": [
+            390.91,
+            398.14,
+            459.8,
+            411.98
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0002",
+      "type": "paragraph",
+      "text": "Tên chung quốc tế: Triamterene.",
+      "page": 1618,
+      "printed_page": 1624,
+      "column": 1,
+      "bbox": [
+        299.39,
+        421.55,
+        427.39,
+        434.7
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tên chung quốc tế",
+          "bbox": [
+            299.39,
+            421.55,
+            374.07,
+            434.7
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": ": Triamterene.",
+          "bbox": [
+            374.08,
+            421.7,
+            427.39,
+            434.5
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0003",
+      "type": "paragraph",
+      "text": "Mã ATC: C03DB02.",
+      "page": 1618,
+      "printed_page": 1624,
+      "column": 1,
+      "bbox": [
+        299.39,
+        433.1,
+        380.75,
+        446.24
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mã ATC: ",
+          "bbox": [
+            299.39,
+            433.1,
+            339.84,
+            446.24
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "C03DB02.",
+          "bbox": [
+            339.84,
+            433.25,
+            380.75,
+            446.04
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0004",
+      "type": "paragraph",
+      "text": "Loại thuốc: Thuốc lợi tiểu giữ kali.",
+      "page": 1618,
+      "printed_page": 1624,
+      "column": 1,
+      "bbox": [
+        299.39,
+        444.64,
+        435.97,
+        457.79
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Loại thuốc: ",
+          "bbox": [
+            299.39,
+            444.64,
+            348.47,
+            457.79
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "Thuốc lợi tiểu giữ kali.",
+          "bbox": [
+            348.47,
+            444.79,
+            435.97,
+            457.59
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0005",
+      "type": "heading",
+      "level": 2,
+      "text": "Dạng thuốc và hàm lượng",
+      "page": 1618,
+      "printed_page": 1624,
+      "column": 1,
+      "bbox": [
+        299.39,
+        459.69,
+        404.3,
+        472.84
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dạng thuốc và hàm lượng",
+          "bbox": [
+            299.39,
+            459.69,
+            404.3,
+            472.84
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0006",
+      "type": "paragraph",
+      "text": "Viên nang: 50 mg, 100 mg.",
+      "page": 1618,
+      "printed_page": 1624,
+      "column": 1,
+      "bbox": [
+        299.39,
+        471.89,
+        403.05,
+        484.68
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Viên nang: 50 mg, 100 mg.",
+          "bbox": [
+            299.39,
+            471.89,
+            403.05,
+            484.68
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0007",
+      "type": "paragraph",
+      "text": "Viên nén: 50 mg, 100 mg.",
+      "page": 1618,
+      "printed_page": 1624,
+      "column": 1,
+      "bbox": [
+        299.39,
+        483.93,
+        398.3,
+        496.73
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Viên nén: 50 mg, 100 mg.",
+          "bbox": [
+            299.39,
+            483.93,
+            398.3,
+            496.73
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0008",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược lực học",
+      "page": 1618,
+      "printed_page": 1624,
+      "column": 1,
+      "bbox": [
+        299.39,
+        498.82,
+        352.98,
+        511.97
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược lực học",
+          "bbox": [
+            299.39,
+            498.82,
+            352.98,
+            511.97
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0009",
+      "type": "paragraph",
+      "text": "Triamteren là thuốc lợi tiểu yếu giữ kali, tác dụng trực tiếp lên ống lượn xa của nephron, để ức chế tái hấp thu ion Na+ và ức chế bài tiết ion K+, H+. Triamteren không ức chế cạnh tranh aldosteron và có hoạt tính không phụ thuộc nồng độ aldosteron. Triamteren không ức chế carbonic anhydrase. Triamteren làm tăng thải trừ ion Na+, Ca+2, Mg+2, HCO3",
+      "page": 1618,
+      "printed_page": 1624,
+      "column": 1,
+      "bbox": [
+        299.39,
+        511.02,
+        553.72,
+        585.99
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0010",
+      "type": "list",
+      "text": "-. Trong huyết thanh, nồng độ ion K+, Clthường tăng và nồng độ ion HCO3",
+      "page": 1618,
+      "printed_page": 1624,
+      "column": 1,
+      "bbox": [
+        299.39,
+        571.25,
+        553.71,
+        598.04
+      ],
+      "source": {
+        "line_count": 2
+      },
+      "items": [
+        ". Trong huyết thanh, nồng độ ion K+, Cl-",
+        "thường tăng và nồng độ ion HCO3"
+      ]
+    },
+    {
+      "id": "b0011",
+      "type": "list",
+      "text": "- thường xuyên giảm trong quá trình điều trị bằng triamteren.",
+      "page": 1618,
+      "printed_page": 1624,
+      "column": 1,
+      "bbox": [
+        299.39,
+        583.3,
+        553.72,
+        608.14
+      ],
+      "source": {
+        "line_count": 2
+      },
+      "items": [
+        "thường xuyên giảm trong quá",
+        "trình điều trị bằng triamteren."
+      ]
+    },
+    {
+      "id": "b0012",
+      "type": "paragraph",
+      "text": "Triamteren có thể làm giảm dự trữ kiềm, nên có thể gây nhiễm toan chuyển hóa, pH nước tiểu tăng nhẹ.",
+      "page": 1618,
+      "printed_page": 1624,
+      "column": 1,
+      "bbox": [
+        299.39,
+        607.39,
+        553.72,
+        632.23
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0013",
+      "type": "paragraph",
+      "text": "Tốc độ lọc ở cầu thận giảm khi dùng thuốc hàng ngày, nhưng không giảm khi dùng thuốc ngắt quãng, gợi ý một tác dụng phục hồi đối với lưu lượng máu ở thận. Lưu lượng tim giảm. Khác với các thuốc lợi tiểu khác, triamteren không ức chế sự thải trừ acid uric, tuy nhiên, nồng độ acid uric trong huyết thanh có thể tăng ở một số người bệnh, đặc biệt người dễ mắc bệnh gút. Triamteren dùng đơn độc ít hoặc không có tác dụng hạ huyết áp. Thuốc không gây đái tháo đường hoặc không làm thay đổi chuyển hóa glucid. In vitro, thuốc ức chế dehydrofolat reductase nhưng in vivo, không ngăn cản sử dụng acid folic. Triamteren làm tăng natri niệu và giảm kali niệu của các thuốc lợi tiểu khác. Thuốc được dùng chủ yếu như một thuốc bổ trợ cho thuốc lợi tiểu thiazid hoặc lợi tiểu quai để giữ lại kali cho người bệnh có nguy cơ bị giảm kali huyết do điều trị phù kháng thuốc do xơ gan, suy tim và hội chứng thận hư. Phải",
+      "page": 1618,
+      "printed_page": 1624,
+      "column": 1,
+      "bbox": [
+        299.39,
+        631.48,
+        553.72,
+        800.87
+      ],
+      "source": {
+        "line_count": 14
+      }
+    },
+    {
+      "id": "b0014",
+      "type": "paragraph",
+      "text": "ngừng triamteren dần dần vì theo lý thuyết, nếu ngừng đột ngột, kali niệu tăng trở lại.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 0,
+      "bbox": [
+        43.43,
+        63.32,
+        297.77,
+        88.32
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0015",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược động học",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 0,
+      "bbox": [
+        43.43,
+        90.58,
+        104.54,
+        103.73
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược động học",
+          "bbox": [
+            43.43,
+            90.58,
+            104.54,
+            103.73
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0016",
+      "type": "paragraph",
+      "text": "Hấp thu: Triamteren được hấp thu nhanh qua dạ dày - ruột, nhưng không hoàn toàn (30 - 70%). Tác dụng lợi tiểu xuất hiện trong vòng 2 - 4 giờ và giảm trong vòng 7 - 9 giờ sau khi uống thuốc tuy tổng thời gian tác dụng có thể là 24 giờ hoặc lâu hơn. Tác dụng điều trị tối đa có thể phải sau vài ngày dùng thuốc mới đạt. Nồng độ đỉnh trong huyết tương 0,05 - 0,28 microgam/ml đạt được trong vòng 2 - 4 giờ sau khi cho uống một liều duy nhất 100 - 200 mg.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 0,
+      "bbox": [
+        43.43,
+        102.93,
+        297.77,
+        189.86
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0017",
+      "type": "paragraph",
+      "text": "Phân bố: Ở động vật, triamteren đã được thấy trong não, tim, dịch mắt, mỡ, gan và cơ xương. Thuốc được phân bố vào mật. Thuốc liên kết 67% với protein huyết tương. Triamteren đi qua nhau thai ở động vật. Chưa biết thuốc có vào sữa mẹ hay không, tuy ở động vật, có một lượng rất nhỏ thuốc vào sữa mẹ.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 0,
+      "bbox": [
+        43.43,
+        189.42,
+        297.77,
+        251.63
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0018",
+      "type": "paragraph",
+      "text": "Chuyển hóa, thải trừ: Thuốc bị chuyển hóa mạnh chủ yếu bởi cytochrom P450 1A2. Chất chuyển hóa là 6-p-hydroxytriamteren và chất liên hợp sulfat của nó đã được ghi nhận. Nửa đời thải trừ của thuốc trong huyết tương là 100 - 150 phút. Triamteren thải trừ chủ yếu qua nước tiểu dưới dạng không biến đổi và dạng chuyển hóa của thuốc có thể làm nước tiểu có màu xanh nhạt.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 0,
+      "bbox": [
+        43.43,
+        251.19,
+        297.77,
+        325.76
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0019",
+      "type": "paragraph",
+      "text": "Độ thanh thải ở thận của triamteren và hydroxytriamteren sulfat giảm ở người cao tuổi khi điều trị kết hợp triamteren với hydroclorothiazid, chủ yếu là do chức năng thận giảm vì tuổi cao.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 0,
+      "bbox": [
+        43.43,
+        325.31,
+        297.77,
+        362.82
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0020",
+      "type": "heading",
+      "level": 2,
+      "text": "Chỉ định",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 0,
+      "bbox": [
+        43.43,
+        368.23,
+        79.08,
+        381.37
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chỉ định",
+          "bbox": [
+            43.43,
+            368.23,
+            79.08,
+            381.37
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0021",
+      "type": "paragraph",
+      "text": "Triamteren được chỉ định như một thuốc hỗ trợ trong điều trị trạng thái phù khi suy tim sung huyết, xơ gan, hội chứng thận hư, thường liên quan đến tăng aldosteron thứ phát và trong điều trị phù do dùng steroid và phù không rõ nguyên nhân và tăng huyết áp.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 0,
+      "bbox": [
+        43.43,
+        380.73,
+        297.77,
+        430.59
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0022",
+      "type": "paragraph",
+      "text": "Triamteren không được dùng đơn độc như một liệu pháp ban đầu để điều trị suy tim sung huyết nặng, vì tác dụng điều trị tối đa có thể chậm. Tuy vậy, thuốc có thể dùng phối hợp ngay từ đầu với các thuốc lợi tiểu mạnh hơn và tác dụng nhanh hơn, ví dụ các thiazid, clorthalidon, furosemid hoặc acid ethacrynic. Sự phối hợp này rất tốt vì điều hòa cân bằng được việc thải và giữ kali trong huyết tương.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 0,
+      "bbox": [
+        43.43,
+        430.15,
+        297.81,
+        504.72
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0023",
+      "type": "paragraph",
+      "text": "Triamteren đơn độc có ít hoặc không có tác dụng giảm huyết áp; tuy vậy, có thể dùng thuốc phối hợp với một thuốc lợi tiểu khác hoặc với một thuốc chống tăng huyết áp để điều trị tăng huyết áp nhẹ hoặc vừa.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 0,
+      "bbox": [
+        43.43,
+        504.28,
+        297.76,
+        554.14
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0024",
+      "type": "heading",
+      "level": 2,
+      "text": "Chống chỉ định",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 0,
+      "bbox": [
+        43.43,
+        559.54,
+        105.73,
+        572.69
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chống chỉ định",
+          "bbox": [
+            43.43,
+            559.54,
+            105.73,
+            572.69
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0025",
+      "type": "paragraph",
+      "text": "Người bệnh bị suy thận nặng (Clcr < 10 ml/phút) hoặc suy thận đang tiến triển, bệnh gan nặng, chứng kali huyết cao mắc sẵn hoặc do thuốc.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 0,
+      "bbox": [
+        43.43,
+        572.05,
+        297.77,
+        609.55
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0026",
+      "type": "paragraph",
+      "text": "Mẫn cảm với thuốc.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 0,
+      "bbox": [
+        43.43,
+        609.11,
+        119.7,
+        621.91
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mẫn cảm với thuốc.",
+          "bbox": [
+            43.43,
+            609.11,
+            119.7,
+            621.91
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0027",
+      "type": "paragraph",
+      "text": "Chứng tăng acid uric huyết hoặc bệnh gút. Có tiền sử sỏi thận.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 0,
+      "bbox": [
+        43.43,
+        621.47,
+        280.66,
+        634.26
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Chứng tăng acid uric huyết hoặc bệnh gút. Có tiền sử sỏi thận.",
+          "bbox": [
+            43.43,
+            621.47,
+            280.66,
+            634.26
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0028",
+      "type": "paragraph",
+      "text": "Tránh dùng triamteren cho người bệnh nặng khi có thể xảy ra nhiễm toan hô hấp hoặc nhiễm toan chuyển hóa; nhiễm toan làm kali huyết tăng nhanh.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 0,
+      "bbox": [
+        43.43,
+        633.82,
+        297.77,
+        671.33
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0029",
+      "type": "heading",
+      "level": 2,
+      "text": "Thận trọng",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 0,
+      "bbox": [
+        43.43,
+        676.73,
+        89.62,
+        689.88
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thận trọng",
+          "bbox": [
+            43.43,
+            676.73,
+            89.62,
+            689.88
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ],
+      "note_role": "than trong",
+      "v11_fix": "note_title_reclassified_as_heading_alpha5"
+    },
+    {
+      "id": "b0030",
+      "type": "paragraph",
+      "text": "Khi dùng thuốc trong một thời gian dài, phải giám sát dấu hiệu mất cân bằng điện giải, đặc biệt với người bệnh bị suy tim, bệnh thận, xơ gan. Phải kiểm tra định kỳ nồng độ kali huyết thanh, đặc biệt ở người bệnh cao tuổi, xơ gan, đái tháo đường, suy giảm chức năng thận, hoặc khi thay đổi liều. Nếu kali huyết tăng, cần ngừng thuốc ngay.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 0,
+      "bbox": [
+        43.43,
+        689.24,
+        297.77,
+        763.81
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0031",
+      "type": "paragraph",
+      "text": "Đối với những người bệnh có suy giảm dự trữ acid folic như người bệnh xơ gan, nghiện rượu cần thận trọng vì có thể tăng nguy cơ thiếu máu hồng cầu khổng lồ.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 0,
+      "bbox": [
+        43.43,
+        763.36,
+        297.77,
+        800.87
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0032",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ mang thai",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        63.02,
+        382.6,
+        76.16
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ mang thai",
+          "bbox": [
+            307.39,
+            63.02,
+            382.6,
+            76.16
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0033",
+      "type": "paragraph",
+      "text": "Chưa có nghiên cứu đầy đủ về dùng triamteren cho người mang thai nên chỉ dùng thuốc trong thời kỳ mang thai khi lợi ích do thuốc đem lại hơn hẳn nguy cơ cho thai nhi.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        75.36,
+        561.72,
+        112.54
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0034",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ cho con bú",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        117.78,
+        385.5,
+        130.93
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ cho con bú",
+          "bbox": [
+            307.39,
+            117.78,
+            385.5,
+            130.93
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0035",
+      "type": "paragraph",
+      "text": "Thuốc đào thải qua sữa mẹ, nên không dùng thuốc trong thời kỳ cho con bú. Nếu cần thiết dùng, không nên cho con bú.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        130.12,
+        561.71,
+        155.11
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0036",
+      "type": "heading",
+      "level": 2,
+      "text": "Tác dụng không mong muốn (ADR)",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        160.36,
+        453.33,
+        173.5
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tác dụng không mong muốn (ADR)",
+          "bbox": [
+            307.39,
+            160.36,
+            453.33,
+            173.5
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0037",
+      "type": "subheading",
+      "level": 3,
+      "text": "Thường gặp hoặc rất thường gặp",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        172.86,
+        434.24,
+        185.5
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thường gặp hoặc rất thường gặp",
+          "bbox": [
+            307.39,
+            172.86,
+            434.24,
+            185.5
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0038",
+      "type": "paragraph",
+      "text": "Tim mạch: hạ huyết áp, phù, suy tim sung huyết, nhịp tim chậm.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        184.89,
+        552.46,
+        197.69
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tim mạch: hạ huyết áp, phù, suy tim sung huyết, nhịp tim chậm.",
+          "bbox": [
+            307.39,
+            184.89,
+            552.46,
+            197.69
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0039",
+      "type": "paragraph",
+      "text": "Thần kinh: chóng mặt, đau đầu, mệt.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        197.08,
+        446.97,
+        209.88
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thần kinh: chóng mặt, đau đầu, mệt.",
+          "bbox": [
+            307.39,
+            197.08,
+            446.97,
+            209.88
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0040",
+      "type": "paragraph",
+      "text": "Da: phát ban, nhạy cảm ánh sáng.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        209.27,
+        435.61,
+        222.07
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Da: phát ban, nhạy cảm ánh sáng.",
+          "bbox": [
+            307.39,
+            209.27,
+            435.61,
+            222.07
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0041",
+      "type": "paragraph",
+      "text": "Tiêu hóa: buồn nôn, táo bón.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        221.46,
+        416.56,
+        234.26
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêu hóa: buồn nôn, táo bón.",
+          "bbox": [
+            307.39,
+            221.46,
+            416.56,
+            234.26
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0042",
+      "type": "paragraph",
+      "text": "Hô hấp: khó thở.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        233.66,
+        371.52,
+        246.45
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Hô hấp: khó thở.",
+          "bbox": [
+            307.39,
+            233.66,
+            371.52,
+            246.45
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0043",
+      "type": "paragraph",
+      "text": "Tiết niệu: nước tiểu màu xanh nhạt, sỏi thận ở những người bệnh nhạy cảm.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        245.85,
+        561.72,
+        270.83
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0044",
+      "type": "subheading",
+      "level": 3,
+      "text": "Hiếm gặp hoặc rất hiếm gặp",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        270.39,
+        416.36,
+        283.03
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hiếm gặp hoặc rất hiếm gặp",
+          "bbox": [
+            307.39,
+            270.39,
+            416.36,
+            283.03
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0045",
+      "type": "paragraph",
+      "text": "Toàn thân: mất nước, đỏ mặt, chuột rút, ỉa chảy.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        282.42,
+        489.07,
+        295.22
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Toàn thân: mất nước, đỏ mặt, chuột rút, ỉa chảy.",
+          "bbox": [
+            307.39,
+            282.42,
+            489.07,
+            295.22
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0046",
+      "type": "paragraph",
+      "text": "Nội tiết: chứng vú to ở đàn ông, phụ nữ chảy máu sau thời kỳ mãn kinh.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        294.61,
+        559.37,
+        307.41
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Nội tiết: chứng vú to ở đàn ông, phụ nữ chảy máu sau thời kỳ mãn kinh.",
+          "bbox": [
+            307.39,
+            294.61,
+            559.37,
+            307.41
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0047",
+      "type": "paragraph",
+      "text": "Chuyển hóa: giảm natri huyết, tăng kali huyết, nhiễm acid chuyển hóa tăng clor, tăng acid uric huyết.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        306.8,
+        561.72,
+        331.79
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0048",
+      "type": "paragraph",
+      "text": "Máu: giảm bạch cầu hạt, tăng bạch cầu ưa eosin.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        331.19,
+        492.2,
+        343.98
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Máu: giảm bạch cầu hạt, tăng bạch cầu ưa eosin.",
+          "bbox": [
+            307.39,
+            331.19,
+            492.2,
+            343.98
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0049",
+      "type": "heading",
+      "level": 2,
+      "text": "Hướng dẫn cách xử trí ADR",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        349.23,
+        421.95,
+        362.37
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hướng dẫn cách xử trí ADR",
+          "bbox": [
+            307.39,
+            349.23,
+            421.95,
+            362.37
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0050",
+      "type": "paragraph",
+      "text": "Thông thường ADR của triamteren nhẹ và hết khi ngừng thuốc.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        361.57,
+        561.72,
+        374.36
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thông thường ADR của triamteren nhẹ và hết khi ngừng thuốc. ",
+          "bbox": [
+            307.39,
+            361.57,
+            561.72,
+            374.36
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0051",
+      "type": "paragraph",
+      "text": "Người bệnh điều trị lâu phải được giảm sát dấu hiệu mất cân bằng điện giải; nếu tăng kali huyết, phải ngừng thuốc ngay. Có thể giảm thiểu buồn nôn bằng cách cho uống thuốc sau bữa ăn.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        373.76,
+        561.72,
+        410.94
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0052",
+      "type": "heading",
+      "level": 2,
+      "text": "Liều lượng và cách dùng",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        416.18,
+        407.56,
+        429.33
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng và cách dùng",
+          "bbox": [
+            307.39,
+            416.18,
+            407.56,
+            429.33
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0053",
+      "type": "paragraph",
+      "text": "Cách dùng: Hiếm khi dùng triamteren đơn độc.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        428.52,
+        489.74,
+        441.32
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cách dùng: ",
+          "bbox": [
+            307.39,
+            428.6,
+            355.95,
+            441.32
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        },
+        {
+          "text": "Hiếm khi dùng triamteren đơn độc.",
+          "bbox": [
+            355.95,
+            428.52,
+            489.74,
+            441.32
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0054",
+      "type": "paragraph",
+      "text": "Dùng triamteren theo đường uống. Liều lượng triamteren tùy thuộc tình trạng bệnh và đáp ứng của từng người bệnh. Về mặt lý thuyết ngừng thuốc đột ngột có thể gây tăng kali niệu, do đó phải ngừng thuốc dần dần. Thuốc phải chia thành 2 liều nhỏ, uống sau bữa ăn sáng và trưa.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        440.72,
+        561.72,
+        502.28
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0055",
+      "type": "subheading",
+      "level": 3,
+      "text": "Liều lượng",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        501.75,
+        351.17,
+        514.47
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng",
+          "bbox": [
+            307.39,
+            501.75,
+            351.17,
+            514.47
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0056",
+      "type": "subheading",
+      "level": 3,
+      "text": "Người lớn:",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        514.03,
+        349.37,
+        526.66
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Người lớn:",
+          "bbox": [
+            307.39,
+            514.03,
+            349.37,
+            526.66
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0057",
+      "type": "paragraph",
+      "text": "Liều khởi đầu: 100 mg, ngày uống 2 lần, sau bữa ăn. Một khi đã kiểm soát được phù, liều duy trì sau đó là 100 mg/ngày hoặc cách một ngày một lần. Không được dùng quá 300 mg/ngày.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        526.06,
+        561.72,
+        563.23
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0058",
+      "type": "paragraph",
+      "text": "Nếu dùng kết hợp triamteren với các thuốc lợi tiểu khác, thì cần phải giảm liều đầu tiên của mỗi thuốc và sau đó điều chỉnh liều cho thích hợp.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        562.63,
+        561.72,
+        599.81
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0059",
+      "type": "paragraph",
+      "text": "Điều trị tăng huyết áp (thường kết hợp triamteren với một thuốc lợi tiểu thải kali), liều khởi đầu là 25 mg/lần, ngày một lần, sau đó có thể tăng liều nhưng không quá 100 mg/ngày.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        599.2,
+        561.72,
+        636.38
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0060",
+      "type": "subheading",
+      "level": 3,
+      "text": "Trẻ em:",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        635.94,
+        336.67,
+        648.57
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Trẻ em:",
+          "bbox": [
+            307.39,
+            635.94,
+            336.67,
+            648.57
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0061",
+      "type": "paragraph",
+      "text": "Liều khởi đầu: Uống 2 - 4 mg/kg/ngày hoặc cách một ngày, uống 1 lần hoặc chia làm 2 liều.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        647.97,
+        561.71,
+        672.96
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0062",
+      "type": "paragraph",
+      "text": "Liều duy trì: Uống tăng dần tới 6 mg/kg/ngày, không dùng quá 300 mg/ngày, chia làm nhiều liều nhỏ.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        672.35,
+        561.71,
+        697.34
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0063",
+      "type": "paragraph",
+      "text": "Người suy thận: Không được dùng thuốc khi Clcr < 10 ml/phút.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        696.73,
+        547.52,
+        711.48
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Người suy thận: ",
+          "bbox": [
+            307.39,
+            696.9,
+            371.21,
+            709.53
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        },
+        {
+          "text": "Không được dùng thuốc khi Cl",
+          "bbox": [
+            371.2,
+            696.73,
+            489.31,
+            709.53
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "cr",
+          "bbox": [
+            489.3,
+            704.02,
+            493.6,
+            711.48
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 5.54,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": " < 10 ml/phút.",
+          "bbox": [
+            493.6,
+            696.73,
+            547.52,
+            709.53
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0064",
+      "type": "paragraph",
+      "text": "Người bị bệnh gan: Cần giảm liều khi xơ gan.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        708.93,
+        482.57,
+        721.72
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Người bị bệnh gan:",
+          "bbox": [
+            307.39,
+            709.09,
+            381.76,
+            721.72
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        },
+        {
+          "text": " Cần giảm liều khi xơ gan.",
+          "bbox": [
+            381.76,
+            708.93,
+            482.57,
+            721.72
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0065",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương tác thuốc",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        726.96,
+        374.29,
+        740.11
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương tác thuốc",
+          "bbox": [
+            307.39,
+            726.96,
+            374.29,
+            740.11
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0066",
+      "type": "paragraph",
+      "text": "Dùng triamteren cùng với amilorid, spironolacton, thuốc ức chế enzym chuyển đổi angiotensin (như enalapril, captopril) sẽ có nguy cơ cao tăng kali huyết.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        739.31,
+        561.72,
+        776.49
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0067",
+      "type": "paragraph",
+      "text": "Dùng đồng thời triamteren với thuốc chống viêm không steroid, đặc biệt là indomethacin, có thể có hại tới chức năng thận.",
+      "page": 1619,
+      "printed_page": 1625,
+      "column": 1,
+      "bbox": [
+        307.39,
+        775.88,
+        561.72,
+        800.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0068",
+      "type": "paragraph",
+      "text": "Dùng kết hợp triamteren với thuốc bổ sung kali hay các thuốc có chứa kali (như benzylpenicilin kali), các chế phẩm khác có chứa kali (như muối thay thế, sữa ít muối) có nhiều nguy cơ tăng kali huyết hơn. Nên tránh dùng kết hợp với các chất trên.",
+      "page": 1620,
+      "printed_page": 1626,
+      "column": 0,
+      "bbox": [
+        35.43,
+        63.32,
+        289.77,
+        113.56
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0069",
+      "type": "paragraph",
+      "text": "Không dùng kết hợp lithi với triamteren do triamteren làm giảm độ thanh thải lithi ở thận và tăng độc tính của lithi.",
+      "page": 1620,
+      "printed_page": 1626,
+      "column": 0,
+      "bbox": [
+        35.43,
+        113.24,
+        289.76,
+        138.52
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0070",
+      "type": "heading",
+      "level": 2,
+      "text": "Quá liều và xử trí",
+      "page": 1620,
+      "printed_page": 1626,
+      "column": 0,
+      "bbox": [
+        35.43,
+        144.05,
+        107.11,
+        157.2
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Quá liều và xử trí",
+          "bbox": [
+            35.43,
+            144.05,
+            107.11,
+            157.2
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0071",
+      "type": "paragraph",
+      "text": "Triệu chứng: Dùng triamteren quá liều gây mất cân bằng điện giải, đặc biệt là kali huyết cao. Buồn nôn, nôn hay các rối loạn về tiêu hóa khác, có thể yếu cơ. Đôi khi xuất hiện triệu chứng hạ huyết áp, đặc biệt khi dùng kết hợp với hydroclorothiazid, hoặc thuốc lợi tiểu khác, hoặc thuốc hạ huyết áp.",
+      "page": 1620,
+      "printed_page": 1626,
+      "column": 0,
+      "bbox": [
+        35.43,
+        156.69,
+        289.77,
+        219.4
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0072",
+      "type": "paragraph",
+      "text": "Điều trị: Cần rửa dạ dày ngay, điều trị triệu chứng và kiểm tra chức năng thận và nồng độ chất điện giải trong huyết tương. Kali huyết cao rất nguy hại cho tim, vì vậy phải dùng chất đối kháng của kali khi kali huyết cao: Calci gluconat; đẩy K+ vào trong tế bào bằng insulin + glucose 30%; điều trị tình trạng toan máu.",
+      "page": 1620,
+      "printed_page": 1626,
+      "column": 0,
+      "bbox": [
+        35.43,
+        219.09,
+        289.77,
+        281.81
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0073",
+      "type": "heading",
+      "text": "Cập nhật lần cuối",
+      "page": 1620,
+      "printed_page": 1626,
+      "column": 0,
+      "bbox": [
+        35.43,
+        287.65,
+        133.07,
+        300.29
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2018. ",
+          "bbox": [
+            35.43,
+            287.65,
+            133.07,
+            300.29
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "level": 2,
+      "v11_fix": "cap_nhat_cap_nhap_lan_cuoi_normalized_alpha8"
+    },
+    {
+      "id": "b0073",
+      "type": "paragraph",
+      "text": "2018.",
+      "page": 1620,
+      "printed_page": 1626,
+      "column": 0,
+      "bbox": [
+        35.43,
+        287.65,
+        133.07,
+        300.29
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2018. ",
+          "bbox": [
+            35.43,
+            287.65,
+            133.07,
+            300.29
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "v11_parent_heading": "Cập nhật lần cuối"
+    }
+  ],
   "sections": [
-    {
-      "id": "thong-tin-au-chuyen-luan",
-      "title": "Thông tin đầu chuyên luận",
-      "content": "TRIAMTEREN",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "TRIAMTEREN"
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "ten-chung-quoc-te",
-      "title": "Tên chung quốc tế",
-      "content": "Triamterene.\n\nMã ATC: C03DB02.\n\nLoại thuốc: Thuốc lợi tiểu giữ kali.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Triamterene.\n\nMã ATC: C03DB02.\n\nLoại thuốc: Thuốc lợi tiểu giữ kali."
-        }
-      ],
-      "subsections": []
-    },
     {
       "id": "dang-thuoc-va-ham-luong",
       "title": "Dạng thuốc và hàm lượng",
-      "content": "Viên nang: 50 mg, 100 mg.\n\nViên nén: 50 mg, 100 mg.",
+      "heading_block": "b0005",
       "blocks": [
         {
           "type": "text",
-          "text": "Viên nang: 50 mg, 100 mg.\n\nViên nén: 50 mg, 100 mg."
+          "text": "Viên nang: 50 mg, 100 mg.",
+          "block_id": "b0006"
+        },
+        {
+          "type": "text",
+          "text": "Viên nén: 50 mg, 100 mg.",
+          "block_id": "b0007"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "duoc-luc-hoc",
       "title": "Dược lực học",
-      "content": "Triamteren là thuốc lợi tiểu yếu giữ kali, tác dụng trực tiếp lên ống lượn xa của nephron, để ức chế tái hấp thu ion Na+ và ức chế bài tiết ion K+, H+. Triamteren không ức chế cạnh tranh aldosteron và có hoạt tính không phụ thuộc nồng độ aldosteron. Triamteren không ức chế carbonic anhydrase. Triamteren làm tăng thải trừ ion Na+, Ca+2, Mg+2, HCO3 -. Trong huyết thanh, nồng độ ion K+, Clthường tăng và nồng độ ion HCO3 - thường xuyên giảm trong quá trình điều trị bằng triamteren.\n\nTriamteren có thể làm giảm dự trữ kiềm, nên có thể gây nhiễm toan chuyển hóa, pH nước tiểu tăng nhẹ.\n\nTốc độ lọc ở cầu thận giảm khi dùng thuốc hàng ngày, nhưng không giảm khi dùng thuốc ngắt quãng, gợi ý một tác dụng phục hồi đối với lưu lượng máu ở thận. Lưu lượng tim giảm. Khác với các thuốc lợi tiểu khác, triamteren không ức chế sự thải trừ acid uric, tuy nhiên, nồng độ acid uric trong huyết thanh có thể tăng ở một số người bệnh, đặc biệt người dễ mắc bệnh gút. Triamteren dùng đơn độc ít hoặc không có tác dụng hạ huyết áp. Thuốc không gây đái tháo đường hoặc không làm thay đổi chuyển hóa glucid. In vitro, thuốc ức chế dehydrofolat reductase nhưng in vivo, không ngăn cản sử dụng acid folic. Triamteren làm tăng natri niệu và giảm kali niệu của các thuốc lợi tiểu khác. Thuốc được dùng chủ yếu như một thuốc bổ trợ cho thuốc lợi tiểu thiazid hoặc lợi tiểu quai để giữ lại kali cho người bệnh có nguy cơ bị giảm kali huyết do điều trị phù kháng thuốc do xơ gan, suy tim và hội chứng thận hư. Phải ngừng triamteren dần dần vì theo lý thuyết, nếu ngừng đột ngột, kali niệu tăng trở lại.",
+      "heading_block": "b0008",
       "blocks": [
         {
           "type": "text",
-          "text": "Triamteren là thuốc lợi tiểu yếu giữ kali, tác dụng trực tiếp lên ống lượn xa của nephron, để ức chế tái hấp thu ion Na+ và ức chế bài tiết ion K+, H+. Triamteren không ức chế cạnh tranh aldosteron và có hoạt tính không phụ thuộc nồng độ aldosteron. Triamteren không ức chế carbonic anhydrase. Triamteren làm tăng thải trừ ion Na+, Ca+2, Mg+2, HCO3 -. Trong huyết thanh, nồng độ ion K+, Clthường tăng và nồng độ ion HCO3 - thường xuyên giảm trong quá trình điều trị bằng triamteren.\n\nTriamteren có thể làm giảm dự trữ kiềm, nên có thể gây nhiễm toan chuyển hóa, pH nước tiểu tăng nhẹ.\n\nTốc độ lọc ở cầu thận giảm khi dùng thuốc hàng ngày, nhưng không giảm khi dùng thuốc ngắt quãng, gợi ý một tác dụng phục hồi đối với lưu lượng máu ở thận. Lưu lượng tim giảm. Khác với các thuốc lợi tiểu khác, triamteren không ức chế sự thải trừ acid uric, tuy nhiên, nồng độ acid uric trong huyết thanh có thể tăng ở một số người bệnh, đặc biệt người dễ mắc bệnh gút. Triamteren dùng đơn độc ít hoặc không có tác dụng hạ huyết áp. Thuốc không gây đái tháo đường hoặc không làm thay đổi chuyển hóa glucid. In vitro, thuốc ức chế dehydrofolat reductase nhưng in vivo, không ngăn cản sử dụng acid folic. Triamteren làm tăng natri niệu và giảm kali niệu của các thuốc lợi tiểu khác. Thuốc được dùng chủ yếu như một thuốc bổ trợ cho thuốc lợi tiểu thiazid hoặc lợi tiểu quai để giữ lại kali cho người bệnh có nguy cơ bị giảm kali huyết do điều trị phù kháng thuốc do xơ gan, suy tim và hội chứng thận hư. Phải ngừng triamteren dần dần vì theo lý thuyết, nếu ngừng đột ngột, kali niệu tăng trở lại."
+          "text": "Triamteren là thuốc lợi tiểu yếu giữ kali, tác dụng trực tiếp lên ống lượn xa của nephron, để ức chế tái hấp thu ion Na+ và ức chế bài tiết ion K+, H+. Triamteren không ức chế cạnh tranh aldosteron và có hoạt tính không phụ thuộc nồng độ aldosteron. Triamteren không ức chế carbonic anhydrase. Triamteren làm tăng thải trừ ion Na+, Ca+2, Mg+2, HCO3",
+          "block_id": "b0009"
+        },
+        {
+          "type": "text",
+          "text": ". Trong huyết thanh, nồng độ ion K+, Cl-\nthường tăng và nồng độ ion HCO3",
+          "block_id": "b0010"
+        },
+        {
+          "type": "text",
+          "text": "thường xuyên giảm trong quá\ntrình điều trị bằng triamteren.",
+          "block_id": "b0011"
+        },
+        {
+          "type": "text",
+          "text": "Triamteren có thể làm giảm dự trữ kiềm, nên có thể gây nhiễm toan chuyển hóa, pH nước tiểu tăng nhẹ.",
+          "block_id": "b0012"
+        },
+        {
+          "type": "text",
+          "text": "Tốc độ lọc ở cầu thận giảm khi dùng thuốc hàng ngày, nhưng không giảm khi dùng thuốc ngắt quãng, gợi ý một tác dụng phục hồi đối với lưu lượng máu ở thận. Lưu lượng tim giảm. Khác với các thuốc lợi tiểu khác, triamteren không ức chế sự thải trừ acid uric, tuy nhiên, nồng độ acid uric trong huyết thanh có thể tăng ở một số người bệnh, đặc biệt người dễ mắc bệnh gút. Triamteren dùng đơn độc ít hoặc không có tác dụng hạ huyết áp. Thuốc không gây đái tháo đường hoặc không làm thay đổi chuyển hóa glucid. In vitro, thuốc ức chế dehydrofolat reductase nhưng in vivo, không ngăn cản sử dụng acid folic. Triamteren làm tăng natri niệu và giảm kali niệu của các thuốc lợi tiểu khác. Thuốc được dùng chủ yếu như một thuốc bổ trợ cho thuốc lợi tiểu thiazid hoặc lợi tiểu quai để giữ lại kali cho người bệnh có nguy cơ bị giảm kali huyết do điều trị phù kháng thuốc do xơ gan, suy tim và hội chứng thận hư. Phải",
+          "block_id": "b0013"
+        },
+        {
+          "type": "text",
+          "text": "ngừng triamteren dần dần vì theo lý thuyết, nếu ngừng đột ngột, kali niệu tăng trở lại.",
+          "block_id": "b0014"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "duoc-ong-hoc",
+      "id": "duoc-dong-hoc",
       "title": "Dược động học",
-      "content": "Hấp thu: Triamteren được hấp thu nhanh qua dạ dày - ruột, nhưng không hoàn toàn (30 - 70%). Tác dụng lợi tiểu xuất hiện trong vòng 2 - 4 giờ và giảm trong vòng 7 - 9 giờ sau khi uống thuốc tuy tổng thời gian tác dụng có thể là 24 giờ hoặc lâu hơn. Tác dụng điều trị tối đa có thể phải sau vài ngày dùng thuốc mới đạt. Nồng độ đỉnh trong huyết tương 0,05 - 0,28 microgam/ml đạt được trong vòng 2 - 4 giờ sau khi cho uống một liều duy nhất 100 - 200 mg.\n\nPhân bố: Ở động vật, triamteren đã được thấy trong não, tim, dịch mắt, mỡ, gan và cơ xương. Thuốc được phân bố vào mật. Thuốc liên kết 67% với protein huyết tương. Triamteren đi qua nhau thai ở động vật. Chưa biết thuốc có vào sữa mẹ hay không, tuy ở động vật, có một lượng rất nhỏ thuốc vào sữa mẹ.\n\nChuyển hóa, thải trừ: Thuốc bị chuyển hóa mạnh chủ yếu bởi cytochrom P450 1A2. Chất chuyển hóa là 6-p-hydroxytriamteren và chất liên hợp sulfat của nó đã được ghi nhận. Nửa đời thải trừ của thuốc trong huyết tương là 100 - 150 phút. Triamteren thải trừ chủ yếu qua nước tiểu dưới dạng không biến đổi và dạng chuyển hóa của thuốc có thể làm nước tiểu có màu xanh nhạt.\n\nĐộ thanh thải ở thận của triamteren và hydroxytriamteren sulfat giảm ở người cao tuổi khi điều trị kết hợp triamteren với hydroclorothiazid, chủ yếu là do chức năng thận giảm vì tuổi cao.",
+      "heading_block": "b0015",
       "blocks": [
         {
           "type": "text",
-          "text": "Hấp thu: Triamteren được hấp thu nhanh qua dạ dày - ruột, nhưng không hoàn toàn (30 - 70%). Tác dụng lợi tiểu xuất hiện trong vòng 2 - 4 giờ và giảm trong vòng 7 - 9 giờ sau khi uống thuốc tuy tổng thời gian tác dụng có thể là 24 giờ hoặc lâu hơn. Tác dụng điều trị tối đa có thể phải sau vài ngày dùng thuốc mới đạt. Nồng độ đỉnh trong huyết tương 0,05 - 0,28 microgam/ml đạt được trong vòng 2 - 4 giờ sau khi cho uống một liều duy nhất 100 - 200 mg.\n\nPhân bố: Ở động vật, triamteren đã được thấy trong não, tim, dịch mắt, mỡ, gan và cơ xương. Thuốc được phân bố vào mật. Thuốc liên kết 67% với protein huyết tương. Triamteren đi qua nhau thai ở động vật. Chưa biết thuốc có vào sữa mẹ hay không, tuy ở động vật, có một lượng rất nhỏ thuốc vào sữa mẹ.\n\nChuyển hóa, thải trừ: Thuốc bị chuyển hóa mạnh chủ yếu bởi cytochrom P450 1A2. Chất chuyển hóa là 6-p-hydroxytriamteren và chất liên hợp sulfat của nó đã được ghi nhận. Nửa đời thải trừ của thuốc trong huyết tương là 100 - 150 phút. Triamteren thải trừ chủ yếu qua nước tiểu dưới dạng không biến đổi và dạng chuyển hóa của thuốc có thể làm nước tiểu có màu xanh nhạt.\n\nĐộ thanh thải ở thận của triamteren và hydroxytriamteren sulfat giảm ở người cao tuổi khi điều trị kết hợp triamteren với hydroclorothiazid, chủ yếu là do chức năng thận giảm vì tuổi cao."
+          "text": "Hấp thu: Triamteren được hấp thu nhanh qua dạ dày - ruột, nhưng không hoàn toàn (30 - 70%). Tác dụng lợi tiểu xuất hiện trong vòng 2 - 4 giờ và giảm trong vòng 7 - 9 giờ sau khi uống thuốc tuy tổng thời gian tác dụng có thể là 24 giờ hoặc lâu hơn. Tác dụng điều trị tối đa có thể phải sau vài ngày dùng thuốc mới đạt. Nồng độ đỉnh trong huyết tương 0,05 - 0,28 microgam/ml đạt được trong vòng 2 - 4 giờ sau khi cho uống một liều duy nhất 100 - 200 mg.",
+          "block_id": "b0016"
+        },
+        {
+          "type": "text",
+          "text": "Phân bố: Ở động vật, triamteren đã được thấy trong não, tim, dịch mắt, mỡ, gan và cơ xương. Thuốc được phân bố vào mật. Thuốc liên kết 67% với protein huyết tương. Triamteren đi qua nhau thai ở động vật. Chưa biết thuốc có vào sữa mẹ hay không, tuy ở động vật, có một lượng rất nhỏ thuốc vào sữa mẹ.",
+          "block_id": "b0017"
+        },
+        {
+          "type": "text",
+          "text": "Chuyển hóa, thải trừ: Thuốc bị chuyển hóa mạnh chủ yếu bởi cytochrom P450 1A2. Chất chuyển hóa là 6-p-hydroxytriamteren và chất liên hợp sulfat của nó đã được ghi nhận. Nửa đời thải trừ của thuốc trong huyết tương là 100 - 150 phút. Triamteren thải trừ chủ yếu qua nước tiểu dưới dạng không biến đổi và dạng chuyển hóa của thuốc có thể làm nước tiểu có màu xanh nhạt.",
+          "block_id": "b0018"
+        },
+        {
+          "type": "text",
+          "text": "Độ thanh thải ở thận của triamteren và hydroxytriamteren sulfat giảm ở người cao tuổi khi điều trị kết hợp triamteren với hydroclorothiazid, chủ yếu là do chức năng thận giảm vì tuổi cao.",
+          "block_id": "b0019"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chi-inh",
+      "id": "chi-dinh",
       "title": "Chỉ định",
-      "content": "Triamteren được chỉ định như một thuốc hỗ trợ trong điều trị trạng thái phù khi suy tim sung huyết, xơ gan, hội chứng thận hư, thường liên quan đến tăng aldosteron thứ phát và trong điều trị phù do dùng steroid và phù không rõ nguyên nhân và tăng huyết áp.\n\nTriamteren không được dùng đơn độc như một liệu pháp ban đầu để điều trị suy tim sung huyết nặng, vì tác dụng điều trị tối đa có thể chậm. Tuy vậy, thuốc có thể dùng phối hợp ngay từ đầu với các thuốc lợi tiểu mạnh hơn và tác dụng nhanh hơn, ví dụ các thiazid, clorthalidon, furosemid hoặc acid ethacrynic. Sự phối hợp này rất tốt vì điều hòa cân bằng được việc thải và giữ kali trong huyết tương.\n\nTriamteren đơn độc có ít hoặc không có tác dụng giảm huyết áp; tuy vậy, có thể dùng thuốc phối hợp với một thuốc lợi tiểu khác hoặc với một thuốc chống tăng huyết áp để điều trị tăng huyết áp nhẹ hoặc vừa.",
+      "heading_block": "b0020",
       "blocks": [
         {
           "type": "text",
-          "text": "Triamteren được chỉ định như một thuốc hỗ trợ trong điều trị trạng thái phù khi suy tim sung huyết, xơ gan, hội chứng thận hư, thường liên quan đến tăng aldosteron thứ phát và trong điều trị phù do dùng steroid và phù không rõ nguyên nhân và tăng huyết áp.\n\nTriamteren không được dùng đơn độc như một liệu pháp ban đầu để điều trị suy tim sung huyết nặng, vì tác dụng điều trị tối đa có thể chậm. Tuy vậy, thuốc có thể dùng phối hợp ngay từ đầu với các thuốc lợi tiểu mạnh hơn và tác dụng nhanh hơn, ví dụ các thiazid, clorthalidon, furosemid hoặc acid ethacrynic. Sự phối hợp này rất tốt vì điều hòa cân bằng được việc thải và giữ kali trong huyết tương.\n\nTriamteren đơn độc có ít hoặc không có tác dụng giảm huyết áp; tuy vậy, có thể dùng thuốc phối hợp với một thuốc lợi tiểu khác hoặc với một thuốc chống tăng huyết áp để điều trị tăng huyết áp nhẹ hoặc vừa."
+          "text": "Triamteren được chỉ định như một thuốc hỗ trợ trong điều trị trạng thái phù khi suy tim sung huyết, xơ gan, hội chứng thận hư, thường liên quan đến tăng aldosteron thứ phát và trong điều trị phù do dùng steroid và phù không rõ nguyên nhân và tăng huyết áp.",
+          "block_id": "b0021"
+        },
+        {
+          "type": "text",
+          "text": "Triamteren không được dùng đơn độc như một liệu pháp ban đầu để điều trị suy tim sung huyết nặng, vì tác dụng điều trị tối đa có thể chậm. Tuy vậy, thuốc có thể dùng phối hợp ngay từ đầu với các thuốc lợi tiểu mạnh hơn và tác dụng nhanh hơn, ví dụ các thiazid, clorthalidon, furosemid hoặc acid ethacrynic. Sự phối hợp này rất tốt vì điều hòa cân bằng được việc thải và giữ kali trong huyết tương.",
+          "block_id": "b0022"
+        },
+        {
+          "type": "text",
+          "text": "Triamteren đơn độc có ít hoặc không có tác dụng giảm huyết áp; tuy vậy, có thể dùng thuốc phối hợp với một thuốc lợi tiểu khác hoặc với một thuốc chống tăng huyết áp để điều trị tăng huyết áp nhẹ hoặc vừa.",
+          "block_id": "b0023"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chong-chi-inh",
+      "id": "chong-chi-dinh",
       "title": "Chống chỉ định",
-      "content": "Người bệnh bị suy thận nặng (Clcr < 10 ml/phút) hoặc suy thận đang tiến triển, bệnh gan nặng, chứng kali huyết cao mắc sẵn hoặc do thuốc.\n\nMẫn cảm với thuốc.\n\nChứng tăng acid uric huyết hoặc bệnh gút. Có tiền sử sỏi thận.\n\nTránh dùng triamteren cho người bệnh nặng khi có thể xảy ra nhiễm toan hô hấp hoặc nhiễm toan chuyển hóa; nhiễm toan làm kali huyết tăng nhanh.",
+      "heading_block": "b0024",
       "blocks": [
         {
           "type": "text",
-          "text": "Người bệnh bị suy thận nặng (Clcr < 10 ml/phút) hoặc suy thận đang tiến triển, bệnh gan nặng, chứng kali huyết cao mắc sẵn hoặc do thuốc.\n\nMẫn cảm với thuốc.\n\nChứng tăng acid uric huyết hoặc bệnh gút. Có tiền sử sỏi thận.\n\nTránh dùng triamteren cho người bệnh nặng khi có thể xảy ra nhiễm toan hô hấp hoặc nhiễm toan chuyển hóa; nhiễm toan làm kali huyết tăng nhanh."
+          "text": "Người bệnh bị suy thận nặng (Clcr < 10 ml/phút) hoặc suy thận đang tiến triển, bệnh gan nặng, chứng kali huyết cao mắc sẵn hoặc do thuốc.",
+          "block_id": "b0025"
+        },
+        {
+          "type": "text",
+          "text": "Mẫn cảm với thuốc.",
+          "block_id": "b0026"
+        },
+        {
+          "type": "text",
+          "text": "Chứng tăng acid uric huyết hoặc bệnh gút. Có tiền sử sỏi thận.",
+          "block_id": "b0027"
+        },
+        {
+          "type": "text",
+          "text": "Tránh dùng triamteren cho người bệnh nặng khi có thể xảy ra nhiễm toan hô hấp hoặc nhiễm toan chuyển hóa; nhiễm toan làm kali huyết tăng nhanh.",
+          "block_id": "b0028"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "than-trong",
       "title": "Thận trọng",
-      "content": "Khi dùng thuốc trong một thời gian dài, phải giám sát dấu hiệu mất cân bằng điện giải, đặc biệt với người bệnh bị suy tim, bệnh thận, xơ gan. Phải kiểm tra định kỳ nồng độ kali huyết thanh, đặc biệt ở người bệnh cao tuổi, xơ gan, đái tháo đường, suy giảm chức năng thận, hoặc khi thay đổi liều. Nếu kali huyết tăng, cần ngừng thuốc ngay.\n\nĐối với những người bệnh có suy giảm dự trữ acid folic như người bệnh xơ gan, nghiện rượu cần thận trọng vì có thể tăng nguy cơ thiếu máu hồng cầu khổng lồ.",
+      "heading_block": "b0029",
       "blocks": [
         {
           "type": "text",
-          "text": "Khi dùng thuốc trong một thời gian dài, phải giám sát dấu hiệu mất cân bằng điện giải, đặc biệt với người bệnh bị suy tim, bệnh thận, xơ gan. Phải kiểm tra định kỳ nồng độ kali huyết thanh, đặc biệt ở người bệnh cao tuổi, xơ gan, đái tháo đường, suy giảm chức năng thận, hoặc khi thay đổi liều. Nếu kali huyết tăng, cần ngừng thuốc ngay.\n\nĐối với những người bệnh có suy giảm dự trữ acid folic như người bệnh xơ gan, nghiện rượu cần thận trọng vì có thể tăng nguy cơ thiếu máu hồng cầu khổng lồ."
+          "text": "Khi dùng thuốc trong một thời gian dài, phải giám sát dấu hiệu mất cân bằng điện giải, đặc biệt với người bệnh bị suy tim, bệnh thận, xơ gan. Phải kiểm tra định kỳ nồng độ kali huyết thanh, đặc biệt ở người bệnh cao tuổi, xơ gan, đái tháo đường, suy giảm chức năng thận, hoặc khi thay đổi liều. Nếu kali huyết tăng, cần ngừng thuốc ngay.",
+          "block_id": "b0030"
+        },
+        {
+          "type": "text",
+          "text": "Đối với những người bệnh có suy giảm dự trữ acid folic như người bệnh xơ gan, nghiện rượu cần thận trọng vì có thể tăng nguy cơ thiếu máu hồng cầu khổng lồ.",
+          "block_id": "b0031"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-mang-thai",
       "title": "Thời kỳ mang thai",
-      "content": "Chưa có nghiên cứu đầy đủ về dùng triamteren cho người mang thai nên chỉ dùng thuốc trong thời kỳ mang thai khi lợi ích do thuốc đem lại hơn hẳn nguy cơ cho thai nhi.",
+      "heading_block": "b0032",
       "blocks": [
         {
           "type": "text",
-          "text": "Chưa có nghiên cứu đầy đủ về dùng triamteren cho người mang thai nên chỉ dùng thuốc trong thời kỳ mang thai khi lợi ích do thuốc đem lại hơn hẳn nguy cơ cho thai nhi."
+          "text": "Chưa có nghiên cứu đầy đủ về dùng triamteren cho người mang thai nên chỉ dùng thuốc trong thời kỳ mang thai khi lợi ích do thuốc đem lại hơn hẳn nguy cơ cho thai nhi.",
+          "block_id": "b0033"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-cho-con-bu",
       "title": "Thời kỳ cho con bú",
-      "content": "Thuốc đào thải qua sữa mẹ, nên không dùng thuốc trong thời kỳ cho con bú. Nếu cần thiết dùng, không nên cho con bú.",
+      "heading_block": "b0034",
       "blocks": [
         {
           "type": "text",
-          "text": "Thuốc đào thải qua sữa mẹ, nên không dùng thuốc trong thời kỳ cho con bú. Nếu cần thiết dùng, không nên cho con bú."
+          "text": "Thuốc đào thải qua sữa mẹ, nên không dùng thuốc trong thời kỳ cho con bú. Nếu cần thiết dùng, không nên cho con bú.",
+          "block_id": "b0035"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tac-dung-khong-mong-muon-adr",
       "title": "Tác dụng không mong muốn (ADR)",
-      "content": "Thường gặp hoặc rất thường gặp Tim mạch: hạ huyết áp, phù, suy tim sung huyết, nhịp tim chậm.\n\nThần kinh: chóng mặt, đau đầu, mệt.\n\nDa: phát ban, nhạy cảm ánh sáng.\n\nTiêu hóa: buồn nôn, táo bón.\n\nHô hấp: khó thở.\n\nTiết niệu: nước tiểu màu xanh nhạt, sỏi thận ở những người bệnh nhạy cảm.\n\nHiếm gặp hoặc rất hiếm gặp Toàn thân: mất nước, đỏ mặt, chuột rút, ỉa chảy.\n\nNội tiết: chứng vú to ở đàn ông, phụ nữ chảy máu sau thời kỳ mãn kinh.\n\nChuyển hóa: giảm natri huyết, tăng kali huyết, nhiễm acid chuyển hóa tăng clor, tăng acid uric huyết.\n\nMáu: giảm bạch cầu hạt, tăng bạch cầu ưa eosin.",
+      "heading_block": "b0036",
       "blocks": [
         {
+          "type": "subheading",
+          "text": "Thường gặp hoặc rất thường gặp",
+          "block_id": "b0037"
+        },
+        {
           "type": "text",
-          "text": "Thường gặp hoặc rất thường gặp Tim mạch: hạ huyết áp, phù, suy tim sung huyết, nhịp tim chậm.\n\nThần kinh: chóng mặt, đau đầu, mệt.\n\nDa: phát ban, nhạy cảm ánh sáng.\n\nTiêu hóa: buồn nôn, táo bón.\n\nHô hấp: khó thở.\n\nTiết niệu: nước tiểu màu xanh nhạt, sỏi thận ở những người bệnh nhạy cảm.\n\nHiếm gặp hoặc rất hiếm gặp Toàn thân: mất nước, đỏ mặt, chuột rút, ỉa chảy.\n\nNội tiết: chứng vú to ở đàn ông, phụ nữ chảy máu sau thời kỳ mãn kinh.\n\nChuyển hóa: giảm natri huyết, tăng kali huyết, nhiễm acid chuyển hóa tăng clor, tăng acid uric huyết.\n\nMáu: giảm bạch cầu hạt, tăng bạch cầu ưa eosin."
+          "text": "Tim mạch: hạ huyết áp, phù, suy tim sung huyết, nhịp tim chậm.",
+          "block_id": "b0038"
+        },
+        {
+          "type": "text",
+          "text": "Thần kinh: chóng mặt, đau đầu, mệt.",
+          "block_id": "b0039"
+        },
+        {
+          "type": "text",
+          "text": "Da: phát ban, nhạy cảm ánh sáng.",
+          "block_id": "b0040"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: buồn nôn, táo bón.",
+          "block_id": "b0041"
+        },
+        {
+          "type": "text",
+          "text": "Hô hấp: khó thở.",
+          "block_id": "b0042"
+        },
+        {
+          "type": "text",
+          "text": "Tiết niệu: nước tiểu màu xanh nhạt, sỏi thận ở những người bệnh nhạy cảm.",
+          "block_id": "b0043"
+        },
+        {
+          "type": "subheading",
+          "text": "Hiếm gặp hoặc rất hiếm gặp",
+          "block_id": "b0044"
+        },
+        {
+          "type": "text",
+          "text": "Toàn thân: mất nước, đỏ mặt, chuột rút, ỉa chảy.",
+          "block_id": "b0045"
+        },
+        {
+          "type": "text",
+          "text": "Nội tiết: chứng vú to ở đàn ông, phụ nữ chảy máu sau thời kỳ mãn kinh.",
+          "block_id": "b0046"
+        },
+        {
+          "type": "text",
+          "text": "Chuyển hóa: giảm natri huyết, tăng kali huyết, nhiễm acid chuyển hóa tăng clor, tăng acid uric huyết.",
+          "block_id": "b0047"
+        },
+        {
+          "type": "text",
+          "text": "Máu: giảm bạch cầu hạt, tăng bạch cầu ưa eosin.",
+          "block_id": "b0048"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "huong-dan-cach-xu-tri-adr",
       "title": "Hướng dẫn cách xử trí ADR",
-      "content": "Thông thường ADR của triamteren nhẹ và hết khi ngừng thuốc.\n\nNgười bệnh điều trị lâu phải được giảm sát dấu hiệu mất cân bằng điện giải; nếu tăng kali huyết, phải ngừng thuốc ngay. Có thể giảm thiểu buồn nôn bằng cách cho uống thuốc sau bữa ăn.",
+      "heading_block": "b0049",
       "blocks": [
         {
           "type": "text",
-          "text": "Thông thường ADR của triamteren nhẹ và hết khi ngừng thuốc.\n\nNgười bệnh điều trị lâu phải được giảm sát dấu hiệu mất cân bằng điện giải; nếu tăng kali huyết, phải ngừng thuốc ngay. Có thể giảm thiểu buồn nôn bằng cách cho uống thuốc sau bữa ăn."
+          "text": "Thông thường ADR của triamteren nhẹ và hết khi ngừng thuốc.",
+          "block_id": "b0050"
+        },
+        {
+          "type": "text",
+          "text": "Người bệnh điều trị lâu phải được giảm sát dấu hiệu mất cân bằng điện giải; nếu tăng kali huyết, phải ngừng thuốc ngay. Có thể giảm thiểu buồn nôn bằng cách cho uống thuốc sau bữa ăn.",
+          "block_id": "b0051"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "lieu-luong-va-cach-dung",
       "title": "Liều lượng và cách dùng",
-      "content": "Cách dùng: Hiếm khi dùng triamteren đơn độc.\n\nDùng triamteren theo đường uống. Liều lượng triamteren tùy thuộc tình trạng bệnh và đáp ứng của từng người bệnh. Về mặt lý thuyết ngừng thuốc đột ngột có thể gây tăng kali niệu, do đó phải ngừng thuốc dần dần. Thuốc phải chia thành 2 liều nhỏ, uống sau bữa ăn sáng và trưa.",
+      "heading_block": "b0052",
       "blocks": [
         {
           "type": "text",
-          "text": "Cách dùng: Hiếm khi dùng triamteren đơn độc.\n\nDùng triamteren theo đường uống. Liều lượng triamteren tùy thuộc tình trạng bệnh và đáp ứng của từng người bệnh. Về mặt lý thuyết ngừng thuốc đột ngột có thể gây tăng kali niệu, do đó phải ngừng thuốc dần dần. Thuốc phải chia thành 2 liều nhỏ, uống sau bữa ăn sáng và trưa."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "lieu-luong",
-      "title": "Liều lượng",
-      "content": "Người lớn: Liều khởi đầu: 100 mg, ngày uống 2 lần, sau bữa ăn. Một khi đã kiểm soát được phù, liều duy trì sau đó là 100 mg/ngày hoặc cách một ngày một lần. Không được dùng quá 300 mg/ngày.\n\nNếu dùng kết hợp triamteren với các thuốc lợi tiểu khác, thì cần phải giảm liều đầu tiên của mỗi thuốc và sau đó điều chỉnh liều cho thích hợp.\n\nĐiều trị tăng huyết áp (thường kết hợp triamteren với một thuốc lợi tiểu thải kali), liều khởi đầu là 25 mg/lần, ngày một lần, sau đó có thể tăng liều nhưng không quá 100 mg/ngày.\n\nTrẻ em: Liều khởi đầu: Uống 2 - 4 mg/kg/ngày hoặc cách một ngày, uống 1 lần hoặc chia làm 2 liều.\n\nLiều duy trì: Uống tăng dần tới 6 mg/kg/ngày, không dùng quá 300 mg/ngày, chia làm nhiều liều nhỏ.\n\nNgười suy thận: Không được dùng thuốc khi Clcr < 10 ml/phút.\n\nNgười bị bệnh gan: Cần giảm liều khi xơ gan.",
-      "blocks": [
+          "text": "Cách dùng: Hiếm khi dùng triamteren đơn độc.",
+          "block_id": "b0053"
+        },
         {
           "type": "text",
-          "text": "Người lớn: Liều khởi đầu: 100 mg, ngày uống 2 lần, sau bữa ăn. Một khi đã kiểm soát được phù, liều duy trì sau đó là 100 mg/ngày hoặc cách một ngày một lần. Không được dùng quá 300 mg/ngày.\n\nNếu dùng kết hợp triamteren với các thuốc lợi tiểu khác, thì cần phải giảm liều đầu tiên của mỗi thuốc và sau đó điều chỉnh liều cho thích hợp.\n\nĐiều trị tăng huyết áp (thường kết hợp triamteren với một thuốc lợi tiểu thải kali), liều khởi đầu là 25 mg/lần, ngày một lần, sau đó có thể tăng liều nhưng không quá 100 mg/ngày.\n\nTrẻ em: Liều khởi đầu: Uống 2 - 4 mg/kg/ngày hoặc cách một ngày, uống 1 lần hoặc chia làm 2 liều.\n\nLiều duy trì: Uống tăng dần tới 6 mg/kg/ngày, không dùng quá 300 mg/ngày, chia làm nhiều liều nhỏ.\n\nNgười suy thận: Không được dùng thuốc khi Clcr < 10 ml/phút.\n\nNgười bị bệnh gan: Cần giảm liều khi xơ gan."
+          "text": "Dùng triamteren theo đường uống. Liều lượng triamteren tùy thuộc tình trạng bệnh và đáp ứng của từng người bệnh. Về mặt lý thuyết ngừng thuốc đột ngột có thể gây tăng kali niệu, do đó phải ngừng thuốc dần dần. Thuốc phải chia thành 2 liều nhỏ, uống sau bữa ăn sáng và trưa.",
+          "block_id": "b0054"
+        },
+        {
+          "type": "subheading",
+          "text": "Liều lượng",
+          "block_id": "b0055"
+        },
+        {
+          "type": "subheading",
+          "text": "Người lớn:",
+          "block_id": "b0056"
+        },
+        {
+          "type": "text",
+          "text": "Liều khởi đầu: 100 mg, ngày uống 2 lần, sau bữa ăn. Một khi đã kiểm soát được phù, liều duy trì sau đó là 100 mg/ngày hoặc cách một ngày một lần. Không được dùng quá 300 mg/ngày.",
+          "block_id": "b0057"
+        },
+        {
+          "type": "text",
+          "text": "Nếu dùng kết hợp triamteren với các thuốc lợi tiểu khác, thì cần phải giảm liều đầu tiên của mỗi thuốc và sau đó điều chỉnh liều cho thích hợp.",
+          "block_id": "b0058"
+        },
+        {
+          "type": "text",
+          "text": "Điều trị tăng huyết áp (thường kết hợp triamteren với một thuốc lợi tiểu thải kali), liều khởi đầu là 25 mg/lần, ngày một lần, sau đó có thể tăng liều nhưng không quá 100 mg/ngày.",
+          "block_id": "b0059"
+        },
+        {
+          "type": "subheading",
+          "text": "Trẻ em:",
+          "block_id": "b0060"
+        },
+        {
+          "type": "text",
+          "text": "Liều khởi đầu: Uống 2 - 4 mg/kg/ngày hoặc cách một ngày, uống 1 lần hoặc chia làm 2 liều.",
+          "block_id": "b0061"
+        },
+        {
+          "type": "text",
+          "text": "Liều duy trì: Uống tăng dần tới 6 mg/kg/ngày, không dùng quá 300 mg/ngày, chia làm nhiều liều nhỏ.",
+          "block_id": "b0062"
+        },
+        {
+          "type": "text",
+          "text": "Người suy thận: Không được dùng thuốc khi Clcr < 10 ml/phút.",
+          "block_id": "b0063"
+        },
+        {
+          "type": "text",
+          "text": "Người bị bệnh gan: Cần giảm liều khi xơ gan.",
+          "block_id": "b0064"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-tac-thuoc",
       "title": "Tương tác thuốc",
-      "content": "Dùng triamteren cùng với amilorid, spironolacton, thuốc ức chế enzym chuyển đổi angiotensin (như enalapril, captopril) sẽ có nguy cơ cao tăng kali huyết.\n\nDùng đồng thời triamteren với thuốc chống viêm không steroid, đặc biệt là indomethacin, có thể có hại tới chức năng thận.\n\nDùng kết hợp triamteren với thuốc bổ sung kali hay các thuốc có chứa kali (như benzylpenicilin kali), các chế phẩm khác có chứa kali (như muối thay thế, sữa ít muối) có nhiều nguy cơ tăng kali huyết hơn. Nên tránh dùng kết hợp với các chất trên.\n\nKhông dùng kết hợp lithi với triamteren do triamteren làm giảm độ thanh thải lithi ở thận và tăng độc tính của lithi.",
+      "heading_block": "b0065",
       "blocks": [
         {
           "type": "text",
-          "text": "Dùng triamteren cùng với amilorid, spironolacton, thuốc ức chế enzym chuyển đổi angiotensin (như enalapril, captopril) sẽ có nguy cơ cao tăng kali huyết.\n\nDùng đồng thời triamteren với thuốc chống viêm không steroid, đặc biệt là indomethacin, có thể có hại tới chức năng thận.\n\nDùng kết hợp triamteren với thuốc bổ sung kali hay các thuốc có chứa kali (như benzylpenicilin kali), các chế phẩm khác có chứa kali (như muối thay thế, sữa ít muối) có nhiều nguy cơ tăng kali huyết hơn. Nên tránh dùng kết hợp với các chất trên.\n\nKhông dùng kết hợp lithi với triamteren do triamteren làm giảm độ thanh thải lithi ở thận và tăng độc tính của lithi."
+          "text": "Dùng triamteren cùng với amilorid, spironolacton, thuốc ức chế enzym chuyển đổi angiotensin (như enalapril, captopril) sẽ có nguy cơ cao tăng kali huyết.",
+          "block_id": "b0066"
+        },
+        {
+          "type": "text",
+          "text": "Dùng đồng thời triamteren với thuốc chống viêm không steroid, đặc biệt là indomethacin, có thể có hại tới chức năng thận.",
+          "block_id": "b0067"
+        },
+        {
+          "type": "text",
+          "text": "Dùng kết hợp triamteren với thuốc bổ sung kali hay các thuốc có chứa kali (như benzylpenicilin kali), các chế phẩm khác có chứa kali (như muối thay thế, sữa ít muối) có nhiều nguy cơ tăng kali huyết hơn. Nên tránh dùng kết hợp với các chất trên.",
+          "block_id": "b0068"
+        },
+        {
+          "type": "text",
+          "text": "Không dùng kết hợp lithi với triamteren do triamteren làm giảm độ thanh thải lithi ở thận và tăng độc tính của lithi.",
+          "block_id": "b0069"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "qua-lieu-va-xu-tri",
       "title": "Quá liều và xử trí",
-      "content": "Triệu chứng: Dùng triamteren quá liều gây mất cân bằng điện giải, đặc biệt là kali huyết cao. Buồn nôn, nôn hay các rối loạn về tiêu hóa khác, có thể yếu cơ. Đôi khi xuất hiện triệu chứng hạ huyết áp, đặc biệt khi dùng kết hợp với hydroclorothiazid, hoặc thuốc lợi tiểu khác, hoặc thuốc hạ huyết áp.\n\nĐiều trị: Cần rửa dạ dày ngay, điều trị triệu chứng và kiểm tra chức năng thận và nồng độ chất điện giải trong huyết tương. Kali huyết cao rất nguy hại cho tim, vì vậy phải dùng chất đối kháng của kali khi kali huyết cao: Calci gluconat; đẩy K+ vào trong tế bào bằng insulin + glucose 30%; điều trị tình trạng toan máu.",
+      "heading_block": "b0070",
       "blocks": [
         {
           "type": "text",
-          "text": "Triệu chứng: Dùng triamteren quá liều gây mất cân bằng điện giải, đặc biệt là kali huyết cao. Buồn nôn, nôn hay các rối loạn về tiêu hóa khác, có thể yếu cơ. Đôi khi xuất hiện triệu chứng hạ huyết áp, đặc biệt khi dùng kết hợp với hydroclorothiazid, hoặc thuốc lợi tiểu khác, hoặc thuốc hạ huyết áp.\n\nĐiều trị: Cần rửa dạ dày ngay, điều trị triệu chứng và kiểm tra chức năng thận và nồng độ chất điện giải trong huyết tương. Kali huyết cao rất nguy hại cho tim, vì vậy phải dùng chất đối kháng của kali khi kali huyết cao: Calci gluconat; đẩy K+ vào trong tế bào bằng insulin + glucose 30%; điều trị tình trạng toan máu."
+          "text": "Triệu chứng: Dùng triamteren quá liều gây mất cân bằng điện giải, đặc biệt là kali huyết cao. Buồn nôn, nôn hay các rối loạn về tiêu hóa khác, có thể yếu cơ. Đôi khi xuất hiện triệu chứng hạ huyết áp, đặc biệt khi dùng kết hợp với hydroclorothiazid, hoặc thuốc lợi tiểu khác, hoặc thuốc hạ huyết áp.",
+          "block_id": "b0071"
+        },
+        {
+          "type": "text",
+          "text": "Điều trị: Cần rửa dạ dày ngay, điều trị triệu chứng và kiểm tra chức năng thận và nồng độ chất điện giải trong huyết tương. Kali huyết cao rất nguy hại cho tim, vì vậy phải dùng chất đối kháng của kali khi kali huyết cao: Calci gluconat; đẩy K+ vào trong tế bào bằng insulin + glucose 30%; điều trị tình trạng toan máu.",
+          "block_id": "b0072"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "cap-nhat-lan-cuoi",
       "title": "Cập nhật lần cuối",
-      "content": "2018.",
+      "heading_block": "b0073",
       "blocks": [
         {
           "type": "text",
-          "text": "2018."
+          "text": "2018.",
+          "block_id": "b0073"
         }
-      ],
-      "subsections": []
+      ]
     }
   ],
-  "tables": [],
   "quality": {
-    "status": "source-layout-rebuilt-v10.1-source-paragraph-boundaries",
-    "pdf_text_order": "left-column-then-right-column; visual line flow",
-    "paragraph_policy": "Paragraph boundaries are source-derived and stored only as blank lines. The client preserves those boundaries exactly; it must not create a new paragraph from label words such as “Trẻ em:” or “Người lớn:”. A lower-case continuation fragment is merged only when it follows a non-terminal source fragment; table footnotes remain separate. No client-side anchor or length-based sentence splitter is allowed.",
-    "table_policy": "source-table image inserted by PDF page/column/y position; table-cell text excluded from prose",
-    "validation": {
-      "raw_newline_inside_paragraph": false,
-      "table_count": 0,
-      "section_count": 17,
-      "client_anchor_resegmentation_disabled": true,
-      "client_length_sentence_chunking_disabled": true
-    }
+    "block_count": 73,
+    "heading_count": 13,
+    "subheading_count": 5,
+    "paragraph_count": 52,
+    "list_count": 2,
+    "table_count": 0,
+    "figure_count": 0,
+    "note_count": 1,
+    "page_count": 3
+  },
+  "tables": [],
+  "legacy_compat": {
+    "sections": "generated from v11 blocks for v10.4.5.39 renderer/chatbot compatibility"
   }
 }

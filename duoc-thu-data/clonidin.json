@@ -1,5 +1,5 @@
 {
-  "schema_version": "10.1-source-paragraph-boundaries",
+  "schema_version": "11.0.0",
   "id": "clonidin",
   "title": "Clonidin",
   "aliases": [
@@ -26,212 +26,4351 @@
       "boundary_method": "physical-source-title-band"
     }
   },
+  "parser": {
+    "name": "medplus-duoc-thu-v11-structured-pdf-parser",
+    "method": "PyMuPDF span -> line -> block",
+    "content_source": "Duocthu2023.pdf",
+    "old_json_usage": "id/title/page-boundary metadata and existing table asset path only; old content is not used",
+    "column_order": "left column -> right column -> next page",
+    "block_model": [
+      "heading",
+      "subheading",
+      "paragraph",
+      "list",
+      "table",
+      "figure",
+      "note"
+    ],
+    "table_policy": "no OCR; preserve existing duoc-thu-assets/<id>/pXXXX-tXX.png image_path"
+  },
+  "blocks": [
+    {
+      "id": "b0001",
+      "type": "heading",
+      "level": 1,
+      "text": "CLONIDIN",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        135.85,
+        62.83,
+        186.96,
+        76.67
+      ],
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "CLONIDIN",
+          "bbox": [
+            135.85,
+            62.83,
+            186.96,
+            76.67
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0002",
+      "type": "paragraph",
+      "text": "Tên chung quốc tế: Clonidine.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        86.37,
+        155.52,
+        99.52
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tên chung quốc tế: ",
+          "bbox": [
+            35.43,
+            86.37,
+            115.66,
+            99.52
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "Clonidine.",
+          "bbox": [
+            115.66,
+            86.52,
+            155.52,
+            99.32
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0003",
+      "type": "paragraph",
+      "text": "Mã ATC: C02AC01, N02CX02, S01EA04.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        98.05,
+        202.3,
+        111.19
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mã ATC: ",
+          "bbox": [
+            35.43,
+            98.05,
+            75.89,
+            111.19
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "C02AC01, N02CX02, S01EA04.",
+          "bbox": [
+            75.89,
+            98.2,
+            202.3,
+            110.99
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0004",
+      "type": "paragraph",
+      "text": "Loại thuốc: Thuốc chủ vận chọn lọc alpha2-adrenergic. Thuốc chống tăng huyết áp.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        109.72,
+        289.76,
+        134.35
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0005",
+      "type": "heading",
+      "level": 2,
+      "text": "Dạng thuốc và hàm lượng",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        136.57,
+        140.35,
+        149.72
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dạng thuốc và hàm lượng",
+          "bbox": [
+            35.43,
+            136.57,
+            140.35,
+            149.72
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0006",
+      "type": "paragraph",
+      "text": "Các chế phẩm dùng dạng clonidin hydroclorid.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        148.9,
+        214.06,
+        161.7
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Các chế phẩm dùng dạng clonidin hydroclorid.",
+          "bbox": [
+            35.43,
+            148.9,
+            214.06,
+            161.7
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0007",
+      "type": "paragraph",
+      "text": "Thuốc tiêm: 100 microgam/ml (10 ml), 500 microgam/ml (10 ml), 150 microgam/ml (1 ml).",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        161.08,
+        289.76,
+        186.05
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0008",
+      "type": "paragraph",
+      "text": "Hệ trị liệu qua da: 0,1 mg/24 giờ (2,5 mg/3,5 cm2); 0,2 mg/24 giờ (5 mg/7 cm2); 0,3 mg/24 giờ (7,5 mg/10,5 cm2).",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        185.43,
+        289.76,
+        210.41
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0009",
+      "type": "paragraph",
+      "text": "Viên nén: 0,025 mg ; 0,1 mg; 0,15 mg; 0,2 mg; 0,3 mg.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        209.79,
+        245.46,
+        222.58
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Viên nén: 0,025 mg ; 0,1 mg; 0,15 mg; 0,2 mg; 0,3 mg.",
+          "bbox": [
+            35.43,
+            209.79,
+            245.46,
+            222.58
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0010",
+      "type": "paragraph",
+      "text": "Dung dịch uống: 50 microgam/5 ml (100 ml).",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        221.96,
+        209.58,
+        234.76
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Dung dịch uống: 50 microgam/5 ml (100 ml).",
+          "bbox": [
+            35.43,
+            221.96,
+            209.58,
+            234.76
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0011",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược lực học",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        236.99,
+        89.03,
+        250.13
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược lực học",
+          "bbox": [
+            35.43,
+            236.99,
+            89.03,
+            250.13
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0012",
+      "type": "paragraph",
+      "text": "Clonidin là thuốc chủ vận chọn lọc alpha2-adrenergic trên TKTW, ức chế trung tâm vận mạch giao cảm ở hành não làm giảm hoạt động của hệ giao cảm ngoại vi, giảm sức cản mạch máu ngoại vi và mạch thận nên làm hạ huyết áp tâm thu, tâm trương và chậm nhịp tim.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        249.31,
+        289.77,
+        310.82
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0013",
+      "type": "paragraph",
+      "text": "Mặt khác, những thụ thể noradrenergic gắn với imidazolin có ở não và ở những mô ngoại biên cũng có thể làm trung gian cho tác dụng hạ huyết áp của clonidin.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        310.2,
+        289.77,
+        347.35
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0014",
+      "type": "paragraph",
+      "text": "Clonidin làm giảm tiết ở những sợi tiền hạch giao cảm của thần kinh tạng cũng như ở những sợi hậu hạch giao cảm của những dây thần kinh tim.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        346.72,
+        289.76,
+        383.87
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0015",
+      "type": "paragraph",
+      "text": "Ngoài ra, tác dụng chống tăng huyết áp của clonidin còn có thể thông qua sự hoạt hóa những thụ thể alpha2 trước synap, làm giảm tiết noradrenalin từ những đầu tận dây thần kinh giao cảm ngoại biên. Clonidin làm giảm bài tiết qua nước tiểu và nồng độ noradrenalin trong huyết tương. Ngoài ra thuốc còn làm giảm nồng độ renin và aldosteron ở một số người bệnh tăng huyết áp.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        383.25,
+        289.77,
+        456.93
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0016",
+      "type": "paragraph",
+      "text": "Tác dụng dược lý chủ yếu của clonidin bao gồm những thay đổi về huyết áp và nhịp tim. Tuy nhiên, thuốc còn có những tác dụng quan trọng khác như giảm đau, giảm các triệu chứng khi cai các chất dạng thuốc phiện, hạ nhãn áp... Khoảng 2 giờ sau khi dùng thuốc đã thấy tác dụng chống tăng huyết áp tối đa, và thời gian tác dụng kéo dài phụ thuộc vào liều. Khoảng 10 giờ sau một liều duy nhất 75 microgam, tác dụng chống tăng huyết áp tối đa vẫn còn 70 - 75%. Khoảng 24 đến 48 giờ sau đó, thường huyết áp không bị ảnh hưởng.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        456.31,
+        289.77,
+        566.52
+      ],
+      "source": {
+        "line_count": 9
+      }
+    },
+    {
+      "id": "b0017",
+      "type": "paragraph",
+      "text": "Có thể phối hợp clonidin với phần lớn những thuốc chống tăng huyết áp và với thuốc lợi tiểu.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        565.9,
+        289.77,
+        590.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0018",
+      "type": "paragraph",
+      "text": "Tiêm ngoài màng cứng clonidin có thể làm giảm đau tại các thụ thể adrenergic alpha2 trước synap và sau synap ở cột sống do ngăn cản truyền tín hiệu đau; chỉ xảy ra giảm đau ở những vùng cơ thể được phân bố thần kinh bởi những đoạn tủy sống có đủ nồng độ gây giảm đau của clonidin. Do clonidin tác dụng qua thụ thể alpha2 ở não (ở nhân lục, locus ceruleus) nên làm giảm những triệu chứng cai thuốc xảy ra ở những người bệnh ngừng sử dụng những chất dạng thuốc phiện.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        590.25,
+        289.77,
+        688.28
+      ],
+      "source": {
+        "line_count": 8
+      }
+    },
+    {
+      "id": "b0019",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược động học",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        690.51,
+        96.54,
+        703.66
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược động học",
+          "bbox": [
+            35.43,
+            690.51,
+            96.54,
+            703.66
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0020",
+      "type": "paragraph",
+      "text": "Hấp thu: Clonidin sau khi uống được hấp thu tốt và sinh khả dụng tuyệt đối là 70% đến 80%. Có sự tương quan chặt chẽ giữa nồng độ clonidin trong huyết tương và tác dụng chống tăng huyết áp của thuốc. Sau khi uống nồng độ đỉnh trong huyết tương và tác dụng hạ huyết áp tối đa từ 1 - 3 giờ. Thức ăn không ảnh hưởng đến dược động học của clonidin.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        702.84,
+        289.77,
+        776.52
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0021",
+      "type": "paragraph",
+      "text": "Thuốc được hấp thu qua da, da vùng trước ngực và cánh tay hấp thu thuốc nhanh hơn các vùng khác. Sau khi dán thuốc trên da 2 - 3",
+      "page": 473,
+      "printed_page": 479,
+      "column": 0,
+      "bbox": [
+        35.43,
+        775.9,
+        289.76,
+        800.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0022",
+      "type": "paragraph",
+      "text": "ngày có thể đạt được nồng độ điều trị trong máu. Do vậy, có thể dùng dạng dán chứa clonidin thay thế cho dạng uống. Khi dùng dạng dán trên da tốc độ giải phóng thuốc gần như không đổi trong một tuần; sau khi bóc bỏ miếng dán, nồng độ thuốc trong huyết tương vẫn ổn định trong khoảng 8 giờ, sau đó giảm dần với nửa đời thải trừ khoảng 20 giờ; sự giảm này làm cho huyết áp dần dần trở lại như trước điều trị.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        63.32,
+        553.72,
+        149.23
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0023",
+      "type": "paragraph",
+      "text": "Phân bố: Trong máu thuốc được gắn vào protein với tỷ lệ 20 - 40%.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        148.62,
+        553.74,
+        161.42
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Phân bố:",
+          "bbox": [
+            299.39,
+            148.78,
+            333.76,
+            161.42
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        },
+        {
+          "text": " Trong máu thuốc được gắn vào protein với tỷ lệ 20 - 40%. ",
+          "bbox": [
+            333.67,
+            148.62,
+            553.74,
+            161.42
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0024",
+      "type": "paragraph",
+      "text": "Clonidin tan trong lipid nên được phân bố vào hầu hết các tổ chức trong cơ thể và có thể tích phân bố 2,1 ± 0,4 lít/kg nên việc loại bỏ clonidin ra khỏi cơ thể bằng thẩm tách máu sẽ không hiệu quả.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        160.8,
+        553.72,
+        197.97
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0025",
+      "type": "paragraph",
+      "text": "Trong cơ thể thuốc được tập trung nồng độ cao nhất ở thận, gan, dạ dày - ruột. Mặc dù được phân bố vào dịch não tủy nhưng nồng độ trong não đạt được rất thấp. Thuốc có thể qua nhau thai và được bài tiết vào sữa mẹ.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        197.36,
+        553.72,
+        246.71
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0026",
+      "type": "paragraph",
+      "text": "Chuyển hóa: Sau khi uống, khoảng 50% liều hấp thu của clonidin được chuyển hóa tại gan tạo ra 4 chất chuyển hóa không còn hoạt tính. Thuốc có chu kỳ gan ruột.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        246.1,
+        553.72,
+        283.27
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0027",
+      "type": "paragraph",
+      "text": "Thải trừ: Thuốc được thải trừ chủ yếu qua thận dưới dạng đã chuyển hóa hoặc chưa chuyển hóa. Sau khi uống, khoảng 40% đến 60% liều hấp thu của clonidin được tìm thấy trong nước tiểu dưới dạng chưa chuyển hóa trong 24 giờ. Ở người có chức năng thận bình thường, nửa đời thải trừ của thuốc dao động từ 6 đến 24 giờ.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        282.66,
+        553.72,
+        344.2
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0028",
+      "type": "paragraph",
+      "text": "Đối với người có chức năng thận giảm, nửa đời thải trừ của thuốc có thể kéo dài tới 41 giờ, do đó cần phải điều chỉnh liều lượng đối với người bệnh suy thận nặng.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        343.58,
+        553.72,
+        380.75
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0029",
+      "type": "heading",
+      "level": 2,
+      "text": "Chỉ định",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        382.99,
+        335.03,
+        396.14
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chỉ định",
+          "bbox": [
+            299.39,
+            382.99,
+            335.03,
+            396.14
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0030",
+      "type": "paragraph",
+      "text": "Điều trị tăng huyết áp, dùng một mình hoặc phối hợp với những thuốc chống tăng huyết áp khác.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        395.33,
+        553.72,
+        420.31
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0031",
+      "type": "paragraph",
+      "text": "Điều trị đau: Phối hợp với opioid để điều trị đau nặng ở bệnh nhân ung thư không thuyên giảm đầy đủ bằng thuốc giảm đau opioid (có hiệu lực nhất ở người bệnh có đau do bệnh thần kinh).",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        419.7,
+        553.72,
+        456.86
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0032",
+      "type": "paragraph",
+      "text": "Những chỉ định khác của clonidin gồm: Dự phòng bệnh đau nửa đầu hoặc đau đầu do mạch máu tái phát, rối loạn vận mạch kỳ mãn kinh được đặc trưng bởi nóng bừng.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        456.25,
+        553.72,
+        493.42
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0033",
+      "type": "heading",
+      "level": 2,
+      "text": "Chống chỉ định",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        495.66,
+        361.69,
+        508.81
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chống chỉ định",
+          "bbox": [
+            299.39,
+            495.66,
+            361.69,
+            508.81
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0034",
+      "type": "paragraph",
+      "text": "Quá mẫn với clonidin hydroclorid.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        507.99,
+        431.33,
+        520.79
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Quá mẫn với clonidin hydroclorid.",
+          "bbox": [
+            299.39,
+            507.99,
+            431.33,
+            520.79
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0035",
+      "type": "paragraph",
+      "text": "Rối loạn nhịp chậm nặng do hội chứng suy nút xoang hoặc blốc nhĩ thất độ 2 và độ 3.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        520.18,
+        553.72,
+        545.16
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0036",
+      "type": "heading",
+      "level": 2,
+      "text": "Thận trọng",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        547.4,
+        345.57,
+        560.55
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thận trọng",
+          "bbox": [
+            299.39,
+            547.4,
+            345.57,
+            560.55
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ],
+      "note_role": "than trong",
+      "v11_fix": "note_title_reclassified_as_heading_alpha5"
+    },
+    {
+      "id": "b0037",
+      "type": "paragraph",
+      "text": "Dùng thận trọng đối với người có bệnh mạch não, suy động mạch vành, suy tim và bệnh Raynaud hoặc bệnh mạch máu ngoại vi khác.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        559.74,
+        553.72,
+        585.22
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0038",
+      "type": "paragraph",
+      "text": "Tùy thuộc vào liều dùng, clonidin có thể gây ra nhịp tim chậm.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        585.11,
+        553.72,
+        597.9
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tùy thuộc vào liều dùng, clonidin có thể gây ra nhịp tim chậm. \n",
+          "bbox": [
+            299.39,
+            585.11,
+            553.72,
+            597.9
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0039",
+      "type": "paragraph",
+      "text": "Ở những bệnh nhân có bất thường dẫn truyền tim từ trước, loạn nhịp tim đã được quan sát thấy sau khi dùng clonidin liều cao.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        597.79,
+        553.72,
+        623.27
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0040",
+      "type": "paragraph",
+      "text": "Những bệnh nhân có tiền sử trầm cảm đã biết nên được giám sát cẩn thận khi điều trị lâu dài với clonidin vì đã có báo cáo về các đợt trầm cảm xuất hiện thêm trong khi điều trị bằng clonidin đường uống ở những bệnh nhân này.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        623.16,
+        553.72,
+        674.02
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0041",
+      "type": "paragraph",
+      "text": "Clonidin không có tác dụng trong điều trị tăng huyết áp do u tế bào ưa crôm.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        673.9,
+        553.72,
+        699.39
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0042",
+      "type": "paragraph",
+      "text": "Clonidin và các chất chuyển hóa của nó được bài tiết nhiều qua nước tiểu. Cần theo dõi cẩn thận ở bệnh nhân suy thận. Vì chỉ một lượng tối thiểu clonidin được loại bỏ trong quá trình thẩm tách máu định kỳ nên không cần phải bổ sung clonidin sau khi lọc máu.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        699.28,
+        553.73,
+        750.13
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0043",
+      "type": "paragraph",
+      "text": "Không ngừng thuốc đột ngột vì huyết áp có thể tăng nhanh trở lại và những triệu chứng do tăng quá mức hệ giao cảm (tăng tần số tim, run, kích động, bồn chồn, mất ngủ, ra mồ hôi, đánh trống ngực). Có nguy cơ tăng huyết áp hồi ứng nghiêm trọng.",
+      "page": 473,
+      "printed_page": 479,
+      "column": 1,
+      "bbox": [
+        299.39,
+        750.02,
+        553.72,
+        800.87
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0044",
+      "type": "paragraph",
+      "text": "Nếu phải ngừng thuốc, cần giảm dần liều trong 2 - 4 ngày.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        63.32,
+        264.83,
+        76.12
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Nếu phải ngừng thuốc, cần giảm dần liều trong 2 - 4 ngày.",
+          "bbox": [
+            43.43,
+            63.32,
+            264.83,
+            76.12
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0045",
+      "type": "paragraph",
+      "text": "Huyết áp tăng quá mức sau khi ngừng dùng clonidin có thể được điều trị bằng cách dùng clonidin hoặc bằng các thuốc chẹn alpha và beta adrenoceptor. Nếu phải ngừng điều trị ở những bệnh nhân dùng đồng thời thuốc chẹn beta và clonidin thì thuốc chẹn beta nên được ngừng vài ngày trước khi ngừng dần dần clonidin.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        75.85,
+        297.77,
+        138.77
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0046",
+      "type": "paragraph",
+      "text": "Không dùng clonidin để làm giảm đau trong sản khoa, sau khi đẻ hoặc xung quanh thời gian phẫu thuật, hoặc ở những người không ổn định vững chắc về huyết động do không thể chịu đựng huyết áp thấp và nhịp tim chậm.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        138.5,
+        297.77,
+        188.88
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0047",
+      "type": "paragraph",
+      "text": "Nên dùng thuốc tiêm clonidin qua một dụng cụ tiêm truyền liên tục ngoài màng cứng.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        188.62,
+        297.77,
+        213.94
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0048",
+      "type": "paragraph",
+      "text": "Do thuốc gây ức chế TKTW nên không dùng thuốc khi lái tàu xe, vận hành máy móc, làm trên giàn giáo xây dựng hoặc những công việc cần phải tập trung cao.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        213.68,
+        297.76,
+        250.53
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0049",
+      "type": "paragraph",
+      "text": "Cần thông báo nguy cơ giảm tiết nước mắt cho những bệnh nhân đeo kính áp tròng.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        249.77,
+        297.76,
+        274.59
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0050",
+      "type": "paragraph",
+      "text": "Các ADR nghiêm trọng, bao gồm đột tử, đã được báo cáo khi sử dụng đồng thời với methylphenidat. Tính an toàn của việc sử dụng methylphenidat kết hợp với clonidin chưa được đánh giá một cách hệ thống.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        273.83,
+        297.77,
+        322.71
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0051",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ mang thai",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        324.79,
+        118.64,
+        337.94
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ mang thai",
+          "bbox": [
+            43.43,
+            324.79,
+            118.64,
+            337.94
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0052",
+      "type": "paragraph",
+      "text": "Có rất ít dữ liệu về việc sử dụng clonidin ở phụ nữ mang thai.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        336.97,
+        297.77,
+        349.77
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Có rất ít dữ liệu về việc sử dụng clonidin ở phụ nữ mang thai. ",
+          "bbox": [
+            43.43,
+            336.97,
+            297.77,
+            349.77
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0053",
+      "type": "paragraph",
+      "text": "Thuốc này chỉ nên được sử dụng trong thai kỳ nếu được bác sĩ cho là cần thiết. Nên theo dõi cẩn thận mẹ và con.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        349.0,
+        297.76,
+        373.83
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0054",
+      "type": "paragraph",
+      "text": "Clonidin đi qua hàng rào nhau thai và có thể làm giảm nhịp tim của thai nhi. Không thể loại trừ việc tăng huyết áp thoáng qua ở trẻ sơ sinh sau sinh.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        373.06,
+        297.76,
+        409.92
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0055",
+      "type": "paragraph",
+      "text": "Không có kinh nghiệm đầy đủ về ảnh hưởng lâu dài của phơi nhiễm trước khi sinh.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        409.15,
+        297.77,
+        433.98
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0056",
+      "type": "paragraph",
+      "text": "Trong thời kỳ mang thai, các dạng uống của clonidin nên được ưu tiên hơn. Nên tránh tiêm clonidin vào tĩnh mạch.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        433.21,
+        297.77,
+        458.04
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0057",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ cho con bú",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        460.12,
+        121.55,
+        473.27
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ cho con bú",
+          "bbox": [
+            43.43,
+            460.12,
+            121.55,
+            473.27
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0058",
+      "type": "paragraph",
+      "text": "Clonidin được bài tiết qua sữa. Tuy nhiên, không có đủ thông tin về ảnh hưởng đối với trẻ sơ sinh. Do đó, việc sử dụng clonidin không được khuyến cáo trong thời kỳ cho con bú.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        472.3,
+        297.77,
+        509.16
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0059",
+      "type": "heading",
+      "level": 2,
+      "text": "Tác dụng không mong muốn (ADR)",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        511.24,
+        189.38,
+        524.39
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tác dụng không mong muốn (ADR)",
+          "bbox": [
+            43.43,
+            511.24,
+            189.38,
+            524.39
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0060",
+      "type": "paragraph",
+      "text": "Tùy theo đường dùng clonidin mà tỷ lệ các ADR xảy ra khác nhau.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        523.42,
+        297.79,
+        536.22
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tùy theo đường dùng clonidin mà tỷ lệ các ADR xảy ra khác nhau. ",
+          "bbox": [
+            43.43,
+            523.42,
+            297.79,
+            536.22
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0061",
+      "type": "paragraph",
+      "text": "Tỷ lệ các ADR gặp với tỷ lệ cao nhất khi dùng clonidin đường uống.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        535.45,
+        291.94,
+        548.25
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tỷ lệ các ADR gặp với tỷ lệ cao nhất khi dùng clonidin đường uống.",
+          "bbox": [
+            43.43,
+            535.45,
+            291.94,
+            548.25
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0062",
+      "type": "paragraph",
+      "text": "ADR chủ yếu của clonidin là khô miệng và buồn ngủ (khoảng 40%). Có thể xảy ra loạn chức năng sinh dục. Đã nhận xét thấy nhịp tim chậm rõ rệt ở một số trường hợp. Những ADR này phụ thuộc vào liều.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        547.48,
+        297.77,
+        596.36
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0063",
+      "type": "paragraph",
+      "text": "Dùng miếng dán chứa clonidin thấm qua da gây các ADR giống như khi dùng đường uống nhưng tỷ lệ thấp hơn và ít trầm trọng hơn. Ngoài ra, dạng này còn có thể gây viêm da tiếp xúc.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        595.6,
+        297.76,
+        632.45
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0064",
+      "type": "paragraph",
+      "text": "Những phản ứng cai thuốc đã xảy ra khi ngừng thuốc đột ngột sau liệu pháp dài hạn với clonidin ở một số người bệnh tăng huyết áp.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        631.69,
+        297.77,
+        656.51
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0065",
+      "type": "paragraph",
+      "text": "Cũng có nguy cơ xảy ra tăng huyết áp hồi ứng nghiêm trọng khi ngừng thuốc đột ngột.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        655.75,
+        297.76,
+        680.57
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0066",
+      "type": "subheading",
+      "level": 3,
+      "text": "Rất thường gặp",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        679.97,
+        102.77,
+        692.6
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Rất thường gặp",
+          "bbox": [
+            43.43,
+            679.97,
+            102.77,
+            692.6
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0067",
+      "type": "paragraph",
+      "text": "Thần kinh: chóng mặt, an thần.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        691.84,
+        161.91,
+        704.63
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thần kinh: chóng mặt, an thần.",
+          "bbox": [
+            43.43,
+            691.84,
+            161.91,
+            704.63
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0068",
+      "type": "paragraph",
+      "text": "Tim mạch: tụt huyết áp tư thế đứng.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        703.87,
+        180.06,
+        716.66
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tim mạch: tụt huyết áp tư thế đứng.",
+          "bbox": [
+            43.43,
+            703.87,
+            180.06,
+            716.66
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0069",
+      "type": "paragraph",
+      "text": "Tiêu hóa: khô miệng.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        715.89,
+        124.37,
+        728.69
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêu hóa: khô miệng.",
+          "bbox": [
+            43.43,
+            715.89,
+            124.37,
+            728.69
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0070",
+      "type": "subheading",
+      "level": 3,
+      "text": "Thường gặp",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        728.09,
+        89.84,
+        740.72
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thường gặp",
+          "bbox": [
+            43.43,
+            728.09,
+            89.84,
+            740.72
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0071",
+      "type": "paragraph",
+      "text": "Tâm thần: trầm cảm, rối loạn giấc ngủ.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        739.95,
+        191.45,
+        752.75
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tâm thần: trầm cảm, rối loạn giấc ngủ.",
+          "bbox": [
+            43.43,
+            739.95,
+            191.45,
+            752.75
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0072",
+      "type": "paragraph",
+      "text": "Thần kinh: đau đầu.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        751.98,
+        119.42,
+        764.78
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thần kinh: đau đầu.",
+          "bbox": [
+            43.43,
+            751.98,
+            119.42,
+            764.78
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0073",
+      "type": "paragraph",
+      "text": "Toàn thân: mệt mỏi.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        764.01,
+        119.82,
+        776.81
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Toàn thân: mệt mỏi.",
+          "bbox": [
+            43.43,
+            764.01,
+            119.82,
+            776.81
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0074",
+      "type": "paragraph",
+      "text": "Tiêu hóa: buồn nôn, nôn, đau tuyến nước bọt, táo bón.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        776.04,
+        249.59,
+        788.84
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêu hóa: buồn nôn, nôn, đau tuyến nước bọt, táo bón.",
+          "bbox": [
+            43.43,
+            776.04,
+            249.59,
+            788.84
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0075",
+      "type": "paragraph",
+      "text": "Sinh dục: rối loạn cương dương.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 0,
+      "bbox": [
+        43.43,
+        788.07,
+        166.7,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Sinh dục: rối loạn cương dương.",
+          "bbox": [
+            43.43,
+            788.07,
+            166.7,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0076",
+      "type": "subheading",
+      "level": 3,
+      "text": "Ít gặp",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        63.49,
+        329.81,
+        76.13
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Ít gặp",
+          "bbox": [
+            307.39,
+            63.49,
+            329.81,
+            76.13
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0077",
+      "type": "paragraph",
+      "text": "Tâm thần: ảo giác, ác mộng.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        75.41,
+        415.3,
+        88.2
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tâm thần: ảo giác, ác mộng.",
+          "bbox": [
+            307.39,
+            75.41,
+            415.3,
+            88.2
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0078",
+      "type": "paragraph",
+      "text": "Thần kinh: dị cảm.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        87.48,
+        379.16,
+        100.28
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thần kinh: dị cảm.",
+          "bbox": [
+            307.39,
+            87.48,
+            379.16,
+            100.28
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0079",
+      "type": "paragraph",
+      "text": "Tim mạch: nhịp chậm xoang, hiện tượng Raynaud.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        99.56,
+        500.61,
+        112.35
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tim mạch: nhịp chậm xoang, hiện tượng Raynaud.",
+          "bbox": [
+            307.39,
+            99.56,
+            500.61,
+            112.35
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0080",
+      "type": "paragraph",
+      "text": "Da: ngứa, phát ban, mày đay.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        111.63,
+        418.5,
+        124.43
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Da: ngứa, phát ban, mày đay.",
+          "bbox": [
+            307.39,
+            111.63,
+            418.5,
+            124.43
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0081",
+      "type": "subheading",
+      "level": 3,
+      "text": "Hiếm gặp",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        123.87,
+        344.59,
+        136.5
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hiếm gặp",
+          "bbox": [
+            307.39,
+            123.87,
+            344.59,
+            136.5
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0082",
+      "type": "paragraph",
+      "text": "Nội tiết: chứng vú to ở nam giới.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        135.78,
+        432.37,
+        148.58
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Nội tiết: chứng vú to ở nam giới.",
+          "bbox": [
+            307.39,
+            135.78,
+            432.37,
+            148.58
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0083",
+      "type": "paragraph",
+      "text": "Tim mạch: blốc nhĩ thất.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        147.85,
+        400.73,
+        160.65
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tim mạch: blốc nhĩ thất.",
+          "bbox": [
+            307.39,
+            147.85,
+            400.73,
+            160.65
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0084",
+      "type": "paragraph",
+      "text": "Hô hấp: khô mũi.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        159.93,
+        373.89,
+        172.73
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Hô hấp: khô mũi.",
+          "bbox": [
+            307.39,
+            159.93,
+            373.89,
+            172.73
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0085",
+      "type": "paragraph",
+      "text": "Tiêu hóa: giả tắc đại tràng.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        172.0,
+        408.89,
+        184.8
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêu hóa: giả tắc đại tràng.",
+          "bbox": [
+            307.39,
+            172.0,
+            408.89,
+            184.8
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0086",
+      "type": "paragraph",
+      "text": "Da: rụng tóc.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        184.08,
+        357.25,
+        196.88
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Da: rụng tóc.",
+          "bbox": [
+            307.39,
+            184.08,
+            357.25,
+            196.88
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0087",
+      "type": "paragraph",
+      "text": "Xét nghiệm: tăng glucose huyết.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        196.15,
+        430.61,
+        208.95
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Xét nghiệm: tăng glucose huyết.",
+          "bbox": [
+            307.39,
+            196.15,
+            430.61,
+            208.95
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0088",
+      "type": "paragraph",
+      "text": "Mắt: giảm tiết nước mắt.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        208.23,
+        401.74,
+        221.03
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mắt: giảm tiết nước mắt.",
+          "bbox": [
+            307.39,
+            208.23,
+            401.74,
+            221.03
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0089",
+      "type": "subheading",
+      "level": 3,
+      "text": "Chưa xác định được tần suất",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        220.47,
+        417.55,
+        233.1
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chưa xác định được tần suất",
+          "bbox": [
+            307.39,
+            220.47,
+            417.55,
+            233.1
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0090",
+      "type": "paragraph",
+      "text": "Tâm thần: trạng thái lú lẫn, giảm ham muốn tình dục.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        232.38,
+        510.57,
+        245.18
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tâm thần: trạng thái lú lẫn, giảm ham muốn tình dục.",
+          "bbox": [
+            307.39,
+            232.38,
+            510.57,
+            245.18
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0091",
+      "type": "paragraph",
+      "text": "Mắt: rối loạn điều tiết.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        244.45,
+        392.62,
+        257.25
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mắt: rối loạn điều tiết.",
+          "bbox": [
+            307.39,
+            244.45,
+            392.62,
+            257.25
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0092",
+      "type": "paragraph",
+      "text": "Tim mạch: loạn nhịp chậm.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        256.53,
+        411.81,
+        269.32
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tim mạch: loạn nhịp chậm.",
+          "bbox": [
+            307.39,
+            256.53,
+            411.81,
+            269.32
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0093",
+      "type": "heading",
+      "level": 2,
+      "text": "Hướng dẫn cách xử trí ADR",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        271.45,
+        421.95,
+        284.6
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hướng dẫn cách xử trí ADR",
+          "bbox": [
+            307.39,
+            271.45,
+            421.95,
+            284.6
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0094",
+      "type": "paragraph",
+      "text": "Những thông số cần theo dõi cẩn thận: huyết áp đo ở tư thế đứng và ngồi/nằm ngửa, tần số và độ sâu hô hấp, sự giảm đau, trạng thái tâm thần, nhịp tim chậm (có thể điều trị bằng atropin).",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        283.68,
+        561.72,
+        320.62
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0095",
+      "type": "paragraph",
+      "text": "Khi xảy ra những ADR có thể giảm liều lượng thuốc. Phải đặt miếng dán chứa clonidin mỗi tuần một lần vào lúc đi ngủ, trên một vùng sạch sẽ, không có lông ở phần trên và mặt ngoài của cánh tay hoặc ngực; thay đổi luân phiên những chỗ dán mỗi tuần một lần.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        319.9,
+        561.72,
+        368.92
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0096",
+      "type": "paragraph",
+      "text": "Khi ngừng thuốc phải giảm dần liều trong 2 - 4 ngày để tránh tăng huyết áp hồi ứng; trong khi tiêm ngoài màng cứng theo dõi cẩn thận trạng thái tim mạch và hô hấp.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        368.2,
+        561.72,
+        405.15
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0097",
+      "type": "paragraph",
+      "text": "Người bệnh không ngừng dùng thuốc nếu chưa có chỉ dẫn của thầy thuốc; kiểm tra hàng ngày để biết chắc là miếng dán hãy còn tại chỗ; thuốc có thể gây ngủ gà, suy giảm sự phối hợp và óc suy xét; phải hết sức thận trọng khi lái xe hoặc vận hành máy móc.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        404.43,
+        561.72,
+        453.45
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0098",
+      "type": "heading",
+      "level": 2,
+      "text": "Liều lượng và cách dùng",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        455.57,
+        407.56,
+        468.72
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng và cách dùng",
+          "bbox": [
+            307.39,
+            455.57,
+            407.56,
+            468.72
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0099",
+      "type": "subheading",
+      "level": 3,
+      "text": "Tăng huyết áp",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        467.88,
+        363.86,
+        480.6
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tăng huyết áp",
+          "bbox": [
+            307.39,
+            467.88,
+            363.86,
+            480.6
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0100",
+      "type": "subheading",
+      "level": 3,
+      "text": "Người lớn:",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        480.04,
+        349.37,
+        492.67
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Người lớn:",
+          "bbox": [
+            307.39,
+            480.04,
+            349.37,
+            492.67
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0101",
+      "type": "paragraph",
+      "text": "Uống: Khởi đầu 0,05 - 0,1 mg/lần, mỗi ngày 2 - 3 lần, tăng liều mỗi 2 - 3 ngày tùy theo đáp ứng của bệnh nhân. Hầu hết bệnh nhân được kiểm soát với khoảng liều 0,3 - 1,2 mg/ngày, tuy nhiên một số bệnh nhân có thể đòi hỏi liều hàng ngày cao hơn, ví dụ 1,8 mg trở lên. Các nghiên cứu đã chỉ ra rằng 2,4 mg là liều tối đa hiệu quả hàng ngày, nhưng liều cao như vậy hiếm khi được sử dụng.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        491.95,
+        561.72,
+        563.87
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0102",
+      "type": "paragraph",
+      "text": "Hệ điều trị qua da (miếng dán): Cứ cách 7 ngày dán 1 lần ở vùng da nguyên vẹn không có lông (vùng trên ngoài cánh tay hoặc vùng ngực). Mỗi miếng dán mới được dán trên một vị trí da khác vị trí dán trước đó. Đã có một số báo cáo hiếm hoi về việc cần thay miếng dán trước 7 ngày để duy trì kiểm soát huyết áp. Khởi đầu dùng miếng dán giải phóng 0,1 mg/ngày. Có thể điều chỉnh tăng liều sau 1 hoặc 2 tuần khi chưa đạt được mức giảm huyết áp mong muốn. Liều lớn hơn 2 miếng dán 0,3 mg thường không liên quan đến tăng hiệu quả.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        562.9,
+        561.72,
+        670.3
+      ],
+      "source": {
+        "line_count": 9
+      }
+    },
+    {
+      "id": "b0103",
+      "type": "paragraph",
+      "text": "Tiêm tĩnh mạch chậm: Trong cơn tăng huyết áp, nên tiêm tĩnh mạch chậm 150 - 300 microgam. Liều này có thể được lặp lại lên đến tối đa là 750 microgam trong khoảng thời gian 24 giờ. Tiêm tĩnh mạch clonidin nên được tiêm chậm trong 10 - 15 phút để tránh hiệu ứng tăng huyết áp thoáng qua có thể xảy ra.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        669.32,
+        561.72,
+        729.42
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0104",
+      "type": "subheading",
+      "level": 3,
+      "text": "Người cao tuổi:",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        728.61,
+        367.78,
+        741.24
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Người cao tuổi:",
+          "bbox": [
+            307.39,
+            728.61,
+            367.78,
+            741.24
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0105",
+      "type": "paragraph",
+      "text": "Không có thông tin cụ thể về việc sử dụng clonidin này ở người cao tuổi.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        740.27,
+        561.72,
+        764.89
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0106",
+      "type": "paragraph",
+      "text": "Các thử nghiệm lâm sàng đã bao gồm những bệnh nhân trên 65 tuổi và không có phản ứng phụ đặc trưng cho nhóm tuổi này đã được báo cáo.",
+      "page": 474,
+      "printed_page": 480,
+      "column": 1,
+      "bbox": [
+        307.39,
+        763.92,
+        561.72,
+        800.87
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0107",
+      "type": "subheading",
+      "level": 3,
+      "text": "Người suy thận:",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        63.49,
+        96.88,
+        76.13
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Người suy thận:",
+          "bbox": [
+            35.43,
+            63.49,
+            96.88,
+            76.13
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0108",
+      "type": "paragraph",
+      "text": "Liều khởi đầu thấp hơn có thể có lợi cho bệnh nhân suy thận. Liều dùng phải được điều chỉnh theo đáp ứng hạ huyết áp và mức độ suy thận của từng bệnh nhân. Bệnh nhân cần được theo dõi cẩn thận. Vì chỉ loại bỏ một lượng tối thiểu clonidin trong quá trình thẩm tách máu định kỳ, nên không cần dùng clonidin bổ sung sau khi lọc máu.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        75.36,
+        289.77,
+        148.3
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0109",
+      "type": "subheading",
+      "level": 3,
+      "text": "Tăng huyết áp nặng ở trẻ em 2 - 17 tuổi:",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        147.7,
+        189.86,
+        160.33
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tăng huyết áp nặng ở trẻ em 2 - 17 tuổi:",
+          "bbox": [
+            35.43,
+            147.7,
+            189.86,
+            160.33
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0110",
+      "type": "paragraph",
+      "text": "Uống: Khởi đầu 0,5 - 1 microgam/kg 3 lần một ngày, sau đó tăng liều dần nếu cần thiết đến 25 microgam/kg/ngày chia làm nhiều lần; tối đa 1,2 mg/ngày.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        159.56,
+        289.77,
+        196.42
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0111",
+      "type": "paragraph",
+      "text": "Tiêm tĩnh mạch chậm: 2 - 6 microgam/kg (tối đa mỗi liều 300 microgam) cho một liều.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        195.65,
+        289.77,
+        220.48
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0112",
+      "type": "paragraph",
+      "text": "Giảm đau: Tiêm truyền ngoài màng cứng.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        219.78,
+        196.04,
+        232.5
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Giảm đau:",
+          "bbox": [
+            35.43,
+            219.78,
+            77.39,
+            232.5
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        },
+        {
+          "text": " Tiêm truyền ngoài màng cứng.",
+          "bbox": [
+            77.39,
+            219.87,
+            196.04,
+            232.5
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0113",
+      "type": "paragraph",
+      "text": "Người lớn:",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        231.74,
+        79.67,
+        244.53
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Người lớn: ",
+          "bbox": [
+            35.43,
+            231.74,
+            79.67,
+            244.53
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0114",
+      "type": "paragraph",
+      "text": "Liều khởi đầu được khuyến cáo của clonidin để truyền liên tục ngoài màng cứng là 30 microgam/giờ. Mặc dù liều lượng có thể được điều chỉnh tăng hoặc giảm tùy thuộc vào mức độ giảm đau và sự xuất hiện của các tác dụng phụ, kinh nghiệm với liều trên 40 microgam/giờ là hạn chế.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        243.77,
+        289.77,
+        304.68
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0115",
+      "type": "paragraph",
+      "text": "Dự phòng bệnh đau nửa đầu hoặc đau đầu do mạch máu tái phát, rối loạn vận mạch kỳ mãn kinh Người lớn:",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        303.99,
+        289.76,
+        340.77
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0116",
+      "type": "paragraph",
+      "text": "Khởi đầu uống 50 microgam, 2 lần/ngày. Nếu tình trạng không thuyên giảm sau 2 tuần, tăng lên 75 microgam, 2 lần/ngày.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        340.0,
+        289.76,
+        364.82
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0117",
+      "type": "paragraph",
+      "text": "Thời gian điều trị phụ thuộc vào mức độ nghiêm trọng của tình trạng. Nếu các triệu chứng tiếp tục xảy ra, bệnh nhân nên được thông báo rằng có thể mất 2 - 4 tuần cho đến khi clonidin phát huy hết tác dụng.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        364.06,
+        289.77,
+        412.94
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0118",
+      "type": "paragraph",
+      "text": "Khi cần ngừng điều trị với clonidin, phải giảm liều dần dần trong vài ngày (2 - 4 ngày). Trong trường hợp ngừng thuốc quá nhanh như khi quên uống thuốc, có thể xảy ra những triệu chứng cai thuốc, bao gồm đánh trống ngực, bồn chồn, tình trạng kích động, bồn chồn vận động và trong một số trường hợp có tăng huyết áp hồi ứng cao hơn mức huyết áp ban đầu trước khi bắt đầu điều trị.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        412.17,
+        289.77,
+        485.11
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0119",
+      "type": "paragraph",
+      "text": "Kiểu ADR này thường thấy chủ yếu ở người có tăng huyết áp rất nặng, đang được điều trị đồng thời với những thuốc chống tăng huyết áp khác. Vì thế thuốc chẹn beta và clonidin có thể gây những tác dụng bùng phát huyết áp khi ngừng thuốc. Nếu xuất hiện những triệu chứng như vậy khi ngừng thuốc, cần bắt đầu điều trị lại với clonidin và lần ngừng clonidin này phải từ từ. Nếu tiêm nhanh tĩnh mạch, có nguy cơ xảy ra tăng huyết áp nghịch thường. Khi có u tế bào ưa crôm, clonidin không có tác dụng.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        484.35,
+        289.77,
+        581.35
+      ],
+      "source": {
+        "line_count": 8
+      }
+    },
+    {
+      "id": "b0120",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương tác thuốc",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        583.43,
+        102.34,
+        596.58
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương tác thuốc",
+          "bbox": [
+            35.43,
+            583.43,
+            102.34,
+            596.58
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0121",
+      "type": "paragraph",
+      "text": "Những thuốc chống trầm cảm 3 vòng đối kháng với tác dụng gây hạ huyết áp của clonidin.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        595.61,
+        289.77,
+        620.43
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0122",
+      "type": "paragraph",
+      "text": "Những thuốc chẹn beta có thể làm tăng khả năng chậm nhịp tim ở người đang dùng clonidin và có thể làm tăng nguy cơ tăng huyết áp hồi ứng nặng khi ngừng thuốc, do đó phải ngừng thuốc chẹn beta trong ít ngày (7 - 10 ngày) trước khi bắt đầu điều trị với clonidin.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        619.67,
+        289.77,
+        668.55
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0123",
+      "type": "paragraph",
+      "text": "Vì clonidin gây chậm nhịp tim và ức chế dẫn truyền nhĩ thất nên phải hết sức thận trọng khi phối hợp với guanethidin, thuốc chẹn kênh calci, glycosid tim. Nhịp chậm xoang dẫn đến nhập viện và đặt máy tạo nhịp tim đã được báo cáo liên quan đến việc sử dụng đồng thời clonidin với diltiazem hoặc verapamil.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        667.78,
+        289.77,
+        728.7
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0124",
+      "type": "paragraph",
+      "text": "Không thể loại trừ việc dùng đồng thời clonidin với thuốc chẹn beta sẽ gây ra hoặc làm tăng các rối loạn mạch máu ngoại vi.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        727.93,
+        289.77,
+        752.75
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0125",
+      "type": "paragraph",
+      "text": "Các thuốc có đặc tính chẹn receptor alpha2, ví dụ như mirtazapin, có thể loại bỏ tác dụng qua trung gian receptor alpha2 của clonidin theo cách phụ thuộc liều.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        751.99,
+        289.77,
+        788.84
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0126",
+      "type": "paragraph",
+      "text": "Những thuốc chống trầm cảm ba vòng làm tăng nguy cơ của đáp",
+      "page": 475,
+      "printed_page": 481,
+      "column": 0,
+      "bbox": [
+        35.43,
+        788.07,
+        289.77,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Những thuốc chống trầm cảm ba vòng làm tăng nguy cơ của đáp ",
+          "bbox": [
+            35.43,
+            788.07,
+            289.77,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0127",
+      "type": "paragraph",
+      "text": "ứng tăng huyết áp khi ngừng clonidin đột ngột.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 1,
+      "bbox": [
+        299.39,
+        63.32,
+        478.31,
+        76.12
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "ứng tăng huyết áp khi ngừng clonidin đột ngột.",
+          "bbox": [
+            299.39,
+            63.32,
+            478.31,
+            76.12
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0128",
+      "type": "paragraph",
+      "text": "Những thuốc giảm đau gây ngủ có thể làm tăng tác dụng gây hạ huyết áp của clonidin. Ethanol và barbiturat có thể làm tăng sự ức chế hệ TKTW.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 1,
+      "bbox": [
+        299.39,
+        75.37,
+        553.72,
+        112.28
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0129",
+      "type": "paragraph",
+      "text": "Tiêm ngoài màng cứng clonidin có thể kéo dài tác dụng phong bế cảm giác và vận động của những thuốc gây tê.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 1,
+      "bbox": [
+        299.39,
+        111.54,
+        553.72,
+        136.39
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0130",
+      "type": "paragraph",
+      "text": "Clonidin có thể làm tăng tác dụng của alcol và thuốc ức chế TKTW.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 1,
+      "bbox": [
+        299.39,
+        135.64,
+        551.34,
+        148.44
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Clonidin có thể làm tăng tác dụng của alcol và thuốc ức chế TKTW.",
+          "bbox": [
+            299.39,
+            135.64,
+            551.34,
+            148.44
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0131",
+      "type": "paragraph",
+      "text": "Dựa trên những quan sát ở bệnh nhân trong tình trạng mê sảng do rượu, liều cao clonidin tiêm tĩnh mạch có thể làm tăng khả năng gây loạn nhịp tim (kéo dài QT, rung thất) của liều cao haloperidol tiêm tĩnh mạch. Mối quan hệ nhân quả và sự phù hợp đối với điều trị hạ huyết áp chưa được thiết lập.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 1,
+      "bbox": [
+        299.39,
+        147.7,
+        553.72,
+        208.71
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0132",
+      "type": "paragraph",
+      "text": "Clonidin có tác dụng hiệp đồng với các thuốc điều trị tăng huyết áp khác nên khi phối hợp cần phải chỉnh liều cẩn thận.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 1,
+      "bbox": [
+        299.39,
+        207.96,
+        553.72,
+        232.81
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0133",
+      "type": "paragraph",
+      "text": "Các thuốc làm tăng huyết áp hoặc có tác dụng giữ ion natri (Na+) và giữ nước như thuốc chống viêm không steroid có thể làm giảm tác dụng điều trị của clonidin.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 1,
+      "bbox": [
+        299.39,
+        232.07,
+        553.72,
+        268.97
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0134",
+      "type": "paragraph",
+      "text": "Amitriptylin kết hợp với clonidin làm tăng biểu hiện tổn thương giác mạc ở chuột cống.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 1,
+      "bbox": [
+        299.39,
+        268.23,
+        553.72,
+        293.08
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0135",
+      "type": "heading",
+      "level": 2,
+      "text": "Quá liều và xử trí",
+      "page": 475,
+      "printed_page": 481,
+      "column": 1,
+      "bbox": [
+        299.39,
+        295.19,
+        371.06,
+        308.34
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Quá liều và xử trí",
+          "bbox": [
+            299.39,
+            295.19,
+            371.06,
+            308.34
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0136",
+      "type": "paragraph",
+      "text": "Triệu chứng: Tăng huyết áp có thể xuất hiện sớm và có thể sau đó là hạ huyết áp, nhịp tim chậm, ức chế hô hấp, hạ thân nhiệt, buồn ngủ, giảm hoặc không có phản xạ, yếu, khó chịu và co đồng tử. Tần suất ức chế TKTW ở trẻ em có thể cao hơn so với người lớn. Dùng quá liều lượng lớn có thể gây ra giảm dẫn truyền tim có thể hồi phục hoặc rối loạn nhịp tim, ngừng thở, hôn mê và co giật. Các dấu hiệu và triệu chứng của quá liều thường xảy ra trong vòng 30 phút đến hai giờ sau khi phơi nhiễm với thuốc. Chỉ cần 0,1 mg clonidin đã tạo ra các dấu hiệu ngộ độc ở trẻ em.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 1,
+      "bbox": [
+        299.39,
+        307.39,
+        553.75,
+        416.62
+      ],
+      "source": {
+        "line_count": 9
+      }
+    },
+    {
+      "id": "b0137",
+      "type": "paragraph",
+      "text": "Xử trí: Không có thuốc giải độc đặc hiệu. Quá liều clonidin có thể nhanh chóng dẫn đến ức chế TKTW; do đó, gây nôn bằng sirô ipecac không được khuyến cáo. Rửa dạ dày có thể được chỉ định khi mới uống phải gần đây và/hoặc uống nhiều. Sử dụng than hoạt và/hoặc thuốc tẩy có thể có lợi. Chăm sóc hỗ trợ có thể bao gồm atropin sulfat đối với nhịp tim chậm, dịch truyền tĩnh mạch và/hoặc thuốc vận mạch đối với hạ huyết áp và thuốc giãn mạch cho tăng huyết áp. Có thể dùng naloxon để điều trị suy hô hấp do clonidin, hạ huyết áp và/hoặc hôn mê; nên theo dõi huyết áp vì việc sử dụng naloxon đôi khi dẫn đến tăng huyết áp nghịch thường. Lọc máu không có khả năng tăng cường thải trừ clonidin một cách đáng kể.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 1,
+      "bbox": [
+        299.39,
+        415.87,
+        553.72,
+        549.21
+      ],
+      "source": {
+        "line_count": 11
+      }
+    },
+    {
+      "id": "b0138",
+      "type": "heading",
+      "text": "Cập nhật lần cuối",
+      "page": 475,
+      "printed_page": 481,
+      "column": 1,
+      "bbox": [
+        299.39,
+        554.03,
+        394.65,
+        566.66
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2020.",
+          "bbox": [
+            299.39,
+            554.03,
+            394.65,
+            566.66
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "level": 2,
+      "v11_fix": "cap_nhat_cap_nhap_lan_cuoi_normalized_alpha8"
+    },
+    {
+      "id": "b0138",
+      "type": "paragraph",
+      "text": "2020.",
+      "page": 475,
+      "printed_page": 481,
+      "column": 1,
+      "bbox": [
+        299.39,
+        554.03,
+        394.65,
+        566.66
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2020.",
+          "bbox": [
+            299.39,
+            554.03,
+            394.65,
+            566.66
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "v11_parent_heading": "Cập nhật lần cuối"
+    }
+  ],
   "sections": [
-    {
-      "id": "thong-tin-au-chuyen-luan",
-      "title": "Thông tin đầu chuyên luận",
-      "content": "CLONIDIN",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "CLONIDIN"
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "ten-chung-quoc-te",
-      "title": "Tên chung quốc tế",
-      "content": "Clonidine.\n\nMã ATC: C02AC01, N02CX02, S01EA04.\n\nLoại thuốc: Thuốc chủ vận chọn lọc alpha2-adrenergic. Thuốc chống tăng huyết áp.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Clonidine.\n\nMã ATC: C02AC01, N02CX02, S01EA04.\n\nLoại thuốc: Thuốc chủ vận chọn lọc alpha2-adrenergic. Thuốc chống tăng huyết áp."
-        }
-      ],
-      "subsections": []
-    },
     {
       "id": "dang-thuoc-va-ham-luong",
       "title": "Dạng thuốc và hàm lượng",
-      "content": "Các chế phẩm dùng dạng clonidin hydroclorid.\n\nThuốc tiêm: 100 microgam/ml (10 ml), 500 microgam/ml (10 ml), 150 microgam/ml (1 ml).\n\nHệ trị liệu qua da: 0,1 mg/24 giờ (2,5 mg/3,5 cm2); 0,2 mg/24 giờ (5 mg/7 cm2); 0,3 mg/24 giờ (7,5 mg/10,5 cm2).\n\nViên nén: 0,025 mg ; 0,1 mg; 0,15 mg; 0,2 mg; 0,3 mg.\n\nDung dịch uống: 50 microgam/5 ml (100 ml).",
+      "heading_block": "b0005",
       "blocks": [
         {
           "type": "text",
-          "text": "Các chế phẩm dùng dạng clonidin hydroclorid.\n\nThuốc tiêm: 100 microgam/ml (10 ml), 500 microgam/ml (10 ml), 150 microgam/ml (1 ml).\n\nHệ trị liệu qua da: 0,1 mg/24 giờ (2,5 mg/3,5 cm2); 0,2 mg/24 giờ (5 mg/7 cm2); 0,3 mg/24 giờ (7,5 mg/10,5 cm2).\n\nViên nén: 0,025 mg ; 0,1 mg; 0,15 mg; 0,2 mg; 0,3 mg.\n\nDung dịch uống: 50 microgam/5 ml (100 ml)."
+          "text": "Các chế phẩm dùng dạng clonidin hydroclorid.",
+          "block_id": "b0006"
+        },
+        {
+          "type": "text",
+          "text": "Thuốc tiêm: 100 microgam/ml (10 ml), 500 microgam/ml (10 ml), 150 microgam/ml (1 ml).",
+          "block_id": "b0007"
+        },
+        {
+          "type": "text",
+          "text": "Hệ trị liệu qua da: 0,1 mg/24 giờ (2,5 mg/3,5 cm2); 0,2 mg/24 giờ (5 mg/7 cm2); 0,3 mg/24 giờ (7,5 mg/10,5 cm2).",
+          "block_id": "b0008"
+        },
+        {
+          "type": "text",
+          "text": "Viên nén: 0,025 mg ; 0,1 mg; 0,15 mg; 0,2 mg; 0,3 mg.",
+          "block_id": "b0009"
+        },
+        {
+          "type": "text",
+          "text": "Dung dịch uống: 50 microgam/5 ml (100 ml).",
+          "block_id": "b0010"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "duoc-luc-hoc",
       "title": "Dược lực học",
-      "content": "Clonidin là thuốc chủ vận chọn lọc alpha2-adrenergic trên TKTW, ức chế trung tâm vận mạch giao cảm ở hành não làm giảm hoạt động của hệ giao cảm ngoại vi, giảm sức cản mạch máu ngoại vi và mạch thận nên làm hạ huyết áp tâm thu, tâm trương và chậm nhịp tim.\n\nMặt khác, những thụ thể noradrenergic gắn với imidazolin có ở não và ở những mô ngoại biên cũng có thể làm trung gian cho tác dụng hạ huyết áp của clonidin.\n\nClonidin làm giảm tiết ở những sợi tiền hạch giao cảm của thần kinh tạng cũng như ở những sợi hậu hạch giao cảm của những dây thần kinh tim.\n\nNgoài ra, tác dụng chống tăng huyết áp của clonidin còn có thể thông qua sự hoạt hóa những thụ thể alpha2 trước synap, làm giảm tiết noradrenalin từ những đầu tận dây thần kinh giao cảm ngoại biên. Clonidin làm giảm bài tiết qua nước tiểu và nồng độ noradrenalin trong huyết tương. Ngoài ra thuốc còn làm giảm nồng độ renin và aldosteron ở một số người bệnh tăng huyết áp.\n\nTác dụng dược lý chủ yếu của clonidin bao gồm những thay đổi về huyết áp và nhịp tim. Tuy nhiên, thuốc còn có những tác dụng quan trọng khác như giảm đau, giảm các triệu chứng khi cai các chất dạng thuốc phiện, hạ nhãn áp... Khoảng 2 giờ sau khi dùng thuốc đã thấy tác dụng chống tăng huyết áp tối đa, và thời gian tác dụng kéo dài phụ thuộc vào liều. Khoảng 10 giờ sau một liều duy nhất 75 microgam, tác dụng chống tăng huyết áp tối đa vẫn còn 70 - 75%. Khoảng 24 đến 48 giờ sau đó, thường huyết áp không bị ảnh hưởng.\n\nCó thể phối hợp clonidin với phần lớn những thuốc chống tăng huyết áp và với thuốc lợi tiểu.\n\nTiêm ngoài màng cứng clonidin có thể làm giảm đau tại các thụ thể adrenergic alpha2 trước synap và sau synap ở cột sống do ngăn cản truyền tín hiệu đau; chỉ xảy ra giảm đau ở những vùng cơ thể được phân bố thần kinh bởi những đoạn tủy sống có đủ nồng độ gây giảm đau của clonidin. Do clonidin tác dụng qua thụ thể alpha2 ở não (ở nhân lục, locus ceruleus) nên làm giảm những triệu chứng cai thuốc xảy ra ở những người bệnh ngừng sử dụng những chất dạng thuốc phiện.",
+      "heading_block": "b0011",
       "blocks": [
         {
           "type": "text",
-          "text": "Clonidin là thuốc chủ vận chọn lọc alpha2-adrenergic trên TKTW, ức chế trung tâm vận mạch giao cảm ở hành não làm giảm hoạt động của hệ giao cảm ngoại vi, giảm sức cản mạch máu ngoại vi và mạch thận nên làm hạ huyết áp tâm thu, tâm trương và chậm nhịp tim.\n\nMặt khác, những thụ thể noradrenergic gắn với imidazolin có ở não và ở những mô ngoại biên cũng có thể làm trung gian cho tác dụng hạ huyết áp của clonidin.\n\nClonidin làm giảm tiết ở những sợi tiền hạch giao cảm của thần kinh tạng cũng như ở những sợi hậu hạch giao cảm của những dây thần kinh tim.\n\nNgoài ra, tác dụng chống tăng huyết áp của clonidin còn có thể thông qua sự hoạt hóa những thụ thể alpha2 trước synap, làm giảm tiết noradrenalin từ những đầu tận dây thần kinh giao cảm ngoại biên. Clonidin làm giảm bài tiết qua nước tiểu và nồng độ noradrenalin trong huyết tương. Ngoài ra thuốc còn làm giảm nồng độ renin và aldosteron ở một số người bệnh tăng huyết áp.\n\nTác dụng dược lý chủ yếu của clonidin bao gồm những thay đổi về huyết áp và nhịp tim. Tuy nhiên, thuốc còn có những tác dụng quan trọng khác như giảm đau, giảm các triệu chứng khi cai các chất dạng thuốc phiện, hạ nhãn áp... Khoảng 2 giờ sau khi dùng thuốc đã thấy tác dụng chống tăng huyết áp tối đa, và thời gian tác dụng kéo dài phụ thuộc vào liều. Khoảng 10 giờ sau một liều duy nhất 75 microgam, tác dụng chống tăng huyết áp tối đa vẫn còn 70 - 75%. Khoảng 24 đến 48 giờ sau đó, thường huyết áp không bị ảnh hưởng.\n\nCó thể phối hợp clonidin với phần lớn những thuốc chống tăng huyết áp và với thuốc lợi tiểu.\n\nTiêm ngoài màng cứng clonidin có thể làm giảm đau tại các thụ thể adrenergic alpha2 trước synap và sau synap ở cột sống do ngăn cản truyền tín hiệu đau; chỉ xảy ra giảm đau ở những vùng cơ thể được phân bố thần kinh bởi những đoạn tủy sống có đủ nồng độ gây giảm đau của clonidin. Do clonidin tác dụng qua thụ thể alpha2 ở não (ở nhân lục, locus ceruleus) nên làm giảm những triệu chứng cai thuốc xảy ra ở những người bệnh ngừng sử dụng những chất dạng thuốc phiện."
+          "text": "Clonidin là thuốc chủ vận chọn lọc alpha2-adrenergic trên TKTW, ức chế trung tâm vận mạch giao cảm ở hành não làm giảm hoạt động của hệ giao cảm ngoại vi, giảm sức cản mạch máu ngoại vi và mạch thận nên làm hạ huyết áp tâm thu, tâm trương và chậm nhịp tim.",
+          "block_id": "b0012"
+        },
+        {
+          "type": "text",
+          "text": "Mặt khác, những thụ thể noradrenergic gắn với imidazolin có ở não và ở những mô ngoại biên cũng có thể làm trung gian cho tác dụng hạ huyết áp của clonidin.",
+          "block_id": "b0013"
+        },
+        {
+          "type": "text",
+          "text": "Clonidin làm giảm tiết ở những sợi tiền hạch giao cảm của thần kinh tạng cũng như ở những sợi hậu hạch giao cảm của những dây thần kinh tim.",
+          "block_id": "b0014"
+        },
+        {
+          "type": "text",
+          "text": "Ngoài ra, tác dụng chống tăng huyết áp của clonidin còn có thể thông qua sự hoạt hóa những thụ thể alpha2 trước synap, làm giảm tiết noradrenalin từ những đầu tận dây thần kinh giao cảm ngoại biên. Clonidin làm giảm bài tiết qua nước tiểu và nồng độ noradrenalin trong huyết tương. Ngoài ra thuốc còn làm giảm nồng độ renin và aldosteron ở một số người bệnh tăng huyết áp.",
+          "block_id": "b0015"
+        },
+        {
+          "type": "text",
+          "text": "Tác dụng dược lý chủ yếu của clonidin bao gồm những thay đổi về huyết áp và nhịp tim. Tuy nhiên, thuốc còn có những tác dụng quan trọng khác như giảm đau, giảm các triệu chứng khi cai các chất dạng thuốc phiện, hạ nhãn áp... Khoảng 2 giờ sau khi dùng thuốc đã thấy tác dụng chống tăng huyết áp tối đa, và thời gian tác dụng kéo dài phụ thuộc vào liều. Khoảng 10 giờ sau một liều duy nhất 75 microgam, tác dụng chống tăng huyết áp tối đa vẫn còn 70 - 75%. Khoảng 24 đến 48 giờ sau đó, thường huyết áp không bị ảnh hưởng.",
+          "block_id": "b0016"
+        },
+        {
+          "type": "text",
+          "text": "Có thể phối hợp clonidin với phần lớn những thuốc chống tăng huyết áp và với thuốc lợi tiểu.",
+          "block_id": "b0017"
+        },
+        {
+          "type": "text",
+          "text": "Tiêm ngoài màng cứng clonidin có thể làm giảm đau tại các thụ thể adrenergic alpha2 trước synap và sau synap ở cột sống do ngăn cản truyền tín hiệu đau; chỉ xảy ra giảm đau ở những vùng cơ thể được phân bố thần kinh bởi những đoạn tủy sống có đủ nồng độ gây giảm đau của clonidin. Do clonidin tác dụng qua thụ thể alpha2 ở não (ở nhân lục, locus ceruleus) nên làm giảm những triệu chứng cai thuốc xảy ra ở những người bệnh ngừng sử dụng những chất dạng thuốc phiện.",
+          "block_id": "b0018"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "duoc-ong-hoc",
+      "id": "duoc-dong-hoc",
       "title": "Dược động học",
-      "content": "Hấp thu: Clonidin sau khi uống được hấp thu tốt và sinh khả dụng tuyệt đối là 70% đến 80%. Có sự tương quan chặt chẽ giữa nồng độ clonidin trong huyết tương và tác dụng chống tăng huyết áp của thuốc. Sau khi uống nồng độ đỉnh trong huyết tương và tác dụng hạ huyết áp tối đa từ 1 - 3 giờ. Thức ăn không ảnh hưởng đến dược động học của clonidin.\n\nThuốc được hấp thu qua da, da vùng trước ngực và cánh tay hấp thu thuốc nhanh hơn các vùng khác. Sau khi dán thuốc trên da 2 - 3 ngày có thể đạt được nồng độ điều trị trong máu. Do vậy, có thể dùng dạng dán chứa clonidin thay thế cho dạng uống. Khi dùng dạng dán trên da tốc độ giải phóng thuốc gần như không đổi trong một tuần; sau khi bóc bỏ miếng dán, nồng độ thuốc trong huyết tương vẫn ổn định trong khoảng 8 giờ, sau đó giảm dần với nửa đời thải trừ khoảng 20 giờ; sự giảm này làm cho huyết áp dần dần trở lại như trước điều trị.\n\nPhân bố: Trong máu thuốc được gắn vào protein với tỷ lệ 20 - 40%.\n\nClonidin tan trong lipid nên được phân bố vào hầu hết các tổ chức trong cơ thể và có thể tích phân bố 2,1 ± 0,4 lít/kg nên việc loại bỏ clonidin ra khỏi cơ thể bằng thẩm tách máu sẽ không hiệu quả.\n\nTrong cơ thể thuốc được tập trung nồng độ cao nhất ở thận, gan, dạ dày - ruột. Mặc dù được phân bố vào dịch não tủy nhưng nồng độ trong não đạt được rất thấp. Thuốc có thể qua nhau thai và được bài tiết vào sữa mẹ.\n\nChuyển hóa: Sau khi uống, khoảng 50% liều hấp thu của clonidin được chuyển hóa tại gan tạo ra 4 chất chuyển hóa không còn hoạt tính. Thuốc có chu kỳ gan ruột.\n\nThải trừ: Thuốc được thải trừ chủ yếu qua thận dưới dạng đã chuyển hóa hoặc chưa chuyển hóa. Sau khi uống, khoảng 40% đến 60% liều hấp thu của clonidin được tìm thấy trong nước tiểu dưới dạng chưa chuyển hóa trong 24 giờ. Ở người có chức năng thận bình thường, nửa đời thải trừ của thuốc dao động từ 6 đến 24 giờ.\n\nĐối với người có chức năng thận giảm, nửa đời thải trừ của thuốc có thể kéo dài tới 41 giờ, do đó cần phải điều chỉnh liều lượng đối với người bệnh suy thận nặng.",
+      "heading_block": "b0019",
       "blocks": [
         {
           "type": "text",
-          "text": "Hấp thu: Clonidin sau khi uống được hấp thu tốt và sinh khả dụng tuyệt đối là 70% đến 80%. Có sự tương quan chặt chẽ giữa nồng độ clonidin trong huyết tương và tác dụng chống tăng huyết áp của thuốc. Sau khi uống nồng độ đỉnh trong huyết tương và tác dụng hạ huyết áp tối đa từ 1 - 3 giờ. Thức ăn không ảnh hưởng đến dược động học của clonidin.\n\nThuốc được hấp thu qua da, da vùng trước ngực và cánh tay hấp thu thuốc nhanh hơn các vùng khác. Sau khi dán thuốc trên da 2 - 3 ngày có thể đạt được nồng độ điều trị trong máu. Do vậy, có thể dùng dạng dán chứa clonidin thay thế cho dạng uống. Khi dùng dạng dán trên da tốc độ giải phóng thuốc gần như không đổi trong một tuần; sau khi bóc bỏ miếng dán, nồng độ thuốc trong huyết tương vẫn ổn định trong khoảng 8 giờ, sau đó giảm dần với nửa đời thải trừ khoảng 20 giờ; sự giảm này làm cho huyết áp dần dần trở lại như trước điều trị.\n\nPhân bố: Trong máu thuốc được gắn vào protein với tỷ lệ 20 - 40%.\n\nClonidin tan trong lipid nên được phân bố vào hầu hết các tổ chức trong cơ thể và có thể tích phân bố 2,1 ± 0,4 lít/kg nên việc loại bỏ clonidin ra khỏi cơ thể bằng thẩm tách máu sẽ không hiệu quả.\n\nTrong cơ thể thuốc được tập trung nồng độ cao nhất ở thận, gan, dạ dày - ruột. Mặc dù được phân bố vào dịch não tủy nhưng nồng độ trong não đạt được rất thấp. Thuốc có thể qua nhau thai và được bài tiết vào sữa mẹ.\n\nChuyển hóa: Sau khi uống, khoảng 50% liều hấp thu của clonidin được chuyển hóa tại gan tạo ra 4 chất chuyển hóa không còn hoạt tính. Thuốc có chu kỳ gan ruột.\n\nThải trừ: Thuốc được thải trừ chủ yếu qua thận dưới dạng đã chuyển hóa hoặc chưa chuyển hóa. Sau khi uống, khoảng 40% đến 60% liều hấp thu của clonidin được tìm thấy trong nước tiểu dưới dạng chưa chuyển hóa trong 24 giờ. Ở người có chức năng thận bình thường, nửa đời thải trừ của thuốc dao động từ 6 đến 24 giờ.\n\nĐối với người có chức năng thận giảm, nửa đời thải trừ của thuốc có thể kéo dài tới 41 giờ, do đó cần phải điều chỉnh liều lượng đối với người bệnh suy thận nặng."
+          "text": "Hấp thu: Clonidin sau khi uống được hấp thu tốt và sinh khả dụng tuyệt đối là 70% đến 80%. Có sự tương quan chặt chẽ giữa nồng độ clonidin trong huyết tương và tác dụng chống tăng huyết áp của thuốc. Sau khi uống nồng độ đỉnh trong huyết tương và tác dụng hạ huyết áp tối đa từ 1 - 3 giờ. Thức ăn không ảnh hưởng đến dược động học của clonidin.",
+          "block_id": "b0020"
+        },
+        {
+          "type": "text",
+          "text": "Thuốc được hấp thu qua da, da vùng trước ngực và cánh tay hấp thu thuốc nhanh hơn các vùng khác. Sau khi dán thuốc trên da 2 - 3",
+          "block_id": "b0021"
+        },
+        {
+          "type": "text",
+          "text": "ngày có thể đạt được nồng độ điều trị trong máu. Do vậy, có thể dùng dạng dán chứa clonidin thay thế cho dạng uống. Khi dùng dạng dán trên da tốc độ giải phóng thuốc gần như không đổi trong một tuần; sau khi bóc bỏ miếng dán, nồng độ thuốc trong huyết tương vẫn ổn định trong khoảng 8 giờ, sau đó giảm dần với nửa đời thải trừ khoảng 20 giờ; sự giảm này làm cho huyết áp dần dần trở lại như trước điều trị.",
+          "block_id": "b0022"
+        },
+        {
+          "type": "text",
+          "text": "Phân bố: Trong máu thuốc được gắn vào protein với tỷ lệ 20 - 40%.",
+          "block_id": "b0023"
+        },
+        {
+          "type": "text",
+          "text": "Clonidin tan trong lipid nên được phân bố vào hầu hết các tổ chức trong cơ thể và có thể tích phân bố 2,1 ± 0,4 lít/kg nên việc loại bỏ clonidin ra khỏi cơ thể bằng thẩm tách máu sẽ không hiệu quả.",
+          "block_id": "b0024"
+        },
+        {
+          "type": "text",
+          "text": "Trong cơ thể thuốc được tập trung nồng độ cao nhất ở thận, gan, dạ dày - ruột. Mặc dù được phân bố vào dịch não tủy nhưng nồng độ trong não đạt được rất thấp. Thuốc có thể qua nhau thai và được bài tiết vào sữa mẹ.",
+          "block_id": "b0025"
+        },
+        {
+          "type": "text",
+          "text": "Chuyển hóa: Sau khi uống, khoảng 50% liều hấp thu của clonidin được chuyển hóa tại gan tạo ra 4 chất chuyển hóa không còn hoạt tính. Thuốc có chu kỳ gan ruột.",
+          "block_id": "b0026"
+        },
+        {
+          "type": "text",
+          "text": "Thải trừ: Thuốc được thải trừ chủ yếu qua thận dưới dạng đã chuyển hóa hoặc chưa chuyển hóa. Sau khi uống, khoảng 40% đến 60% liều hấp thu của clonidin được tìm thấy trong nước tiểu dưới dạng chưa chuyển hóa trong 24 giờ. Ở người có chức năng thận bình thường, nửa đời thải trừ của thuốc dao động từ 6 đến 24 giờ.",
+          "block_id": "b0027"
+        },
+        {
+          "type": "text",
+          "text": "Đối với người có chức năng thận giảm, nửa đời thải trừ của thuốc có thể kéo dài tới 41 giờ, do đó cần phải điều chỉnh liều lượng đối với người bệnh suy thận nặng.",
+          "block_id": "b0028"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chi-inh",
+      "id": "chi-dinh",
       "title": "Chỉ định",
-      "content": "Điều trị tăng huyết áp, dùng một mình hoặc phối hợp với những thuốc chống tăng huyết áp khác.\n\nĐiều trị đau: Phối hợp với opioid để điều trị đau nặng ở bệnh nhân ung thư không thuyên giảm đầy đủ bằng thuốc giảm đau opioid (có hiệu lực nhất ở người bệnh có đau do bệnh thần kinh).\n\nNhững chỉ định khác của clonidin gồm: Dự phòng bệnh đau nửa đầu hoặc đau đầu do mạch máu tái phát, rối loạn vận mạch kỳ mãn kinh được đặc trưng bởi nóng bừng.",
+      "heading_block": "b0029",
       "blocks": [
         {
           "type": "text",
-          "text": "Điều trị tăng huyết áp, dùng một mình hoặc phối hợp với những thuốc chống tăng huyết áp khác.\n\nĐiều trị đau: Phối hợp với opioid để điều trị đau nặng ở bệnh nhân ung thư không thuyên giảm đầy đủ bằng thuốc giảm đau opioid (có hiệu lực nhất ở người bệnh có đau do bệnh thần kinh).\n\nNhững chỉ định khác của clonidin gồm: Dự phòng bệnh đau nửa đầu hoặc đau đầu do mạch máu tái phát, rối loạn vận mạch kỳ mãn kinh được đặc trưng bởi nóng bừng."
+          "text": "Điều trị tăng huyết áp, dùng một mình hoặc phối hợp với những thuốc chống tăng huyết áp khác.",
+          "block_id": "b0030"
+        },
+        {
+          "type": "text",
+          "text": "Điều trị đau: Phối hợp với opioid để điều trị đau nặng ở bệnh nhân ung thư không thuyên giảm đầy đủ bằng thuốc giảm đau opioid (có hiệu lực nhất ở người bệnh có đau do bệnh thần kinh).",
+          "block_id": "b0031"
+        },
+        {
+          "type": "text",
+          "text": "Những chỉ định khác của clonidin gồm: Dự phòng bệnh đau nửa đầu hoặc đau đầu do mạch máu tái phát, rối loạn vận mạch kỳ mãn kinh được đặc trưng bởi nóng bừng.",
+          "block_id": "b0032"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chong-chi-inh",
+      "id": "chong-chi-dinh",
       "title": "Chống chỉ định",
-      "content": "Quá mẫn với clonidin hydroclorid.\n\nRối loạn nhịp chậm nặng do hội chứng suy nút xoang hoặc blốc nhĩ thất độ 2 và độ 3.",
+      "heading_block": "b0033",
       "blocks": [
         {
           "type": "text",
-          "text": "Quá mẫn với clonidin hydroclorid.\n\nRối loạn nhịp chậm nặng do hội chứng suy nút xoang hoặc blốc nhĩ thất độ 2 và độ 3."
+          "text": "Quá mẫn với clonidin hydroclorid.",
+          "block_id": "b0034"
+        },
+        {
+          "type": "text",
+          "text": "Rối loạn nhịp chậm nặng do hội chứng suy nút xoang hoặc blốc nhĩ thất độ 2 và độ 3.",
+          "block_id": "b0035"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "than-trong",
       "title": "Thận trọng",
-      "content": "Dùng thận trọng đối với người có bệnh mạch não, suy động mạch vành, suy tim và bệnh Raynaud hoặc bệnh mạch máu ngoại vi khác.\n\nTùy thuộc vào liều dùng, clonidin có thể gây ra nhịp tim chậm.\n\nỞ những bệnh nhân có bất thường dẫn truyền tim từ trước, loạn nhịp tim đã được quan sát thấy sau khi dùng clonidin liều cao.\n\nNhững bệnh nhân có tiền sử trầm cảm đã biết nên được giám sát cẩn thận khi điều trị lâu dài với clonidin vì đã có báo cáo về các đợt trầm cảm xuất hiện thêm trong khi điều trị bằng clonidin đường uống ở những bệnh nhân này.\n\nClonidin không có tác dụng trong điều trị tăng huyết áp do u tế bào ưa crôm.\n\nClonidin và các chất chuyển hóa của nó được bài tiết nhiều qua nước tiểu. Cần theo dõi cẩn thận ở bệnh nhân suy thận. Vì chỉ một lượng tối thiểu clonidin được loại bỏ trong quá trình thẩm tách máu định kỳ nên không cần phải bổ sung clonidin sau khi lọc máu.\n\nKhông ngừng thuốc đột ngột vì huyết áp có thể tăng nhanh trở lại và những triệu chứng do tăng quá mức hệ giao cảm (tăng tần số tim, run, kích động, bồn chồn, mất ngủ, ra mồ hôi, đánh trống ngực). Có nguy cơ tăng huyết áp hồi ứng nghiêm trọng.\n\nNếu phải ngừng thuốc, cần giảm dần liều trong 2 - 4 ngày.\n\nHuyết áp tăng quá mức sau khi ngừng dùng clonidin có thể được điều trị bằng cách dùng clonidin hoặc bằng các thuốc chẹn alpha và beta adrenoceptor. Nếu phải ngừng điều trị ở những bệnh nhân dùng đồng thời thuốc chẹn beta và clonidin thì thuốc chẹn beta nên được ngừng vài ngày trước khi ngừng dần dần clonidin.\n\nKhông dùng clonidin để làm giảm đau trong sản khoa, sau khi đẻ hoặc xung quanh thời gian phẫu thuật, hoặc ở những người không ổn định vững chắc về huyết động do không thể chịu đựng huyết áp thấp và nhịp tim chậm.\n\nNên dùng thuốc tiêm clonidin qua một dụng cụ tiêm truyền liên tục ngoài màng cứng.\n\nDo thuốc gây ức chế TKTW nên không dùng thuốc khi lái tàu xe, vận hành máy móc, làm trên giàn giáo xây dựng hoặc những công việc cần phải tập trung cao.\n\nCần thông báo nguy cơ giảm tiết nước mắt cho những bệnh nhân đeo kính áp tròng.\n\nCác ADR nghiêm trọng, bao gồm đột tử, đã được báo cáo khi sử dụng đồng thời với methylphenidat. Tính an toàn của việc sử dụng methylphenidat kết hợp với clonidin chưa được đánh giá một cách hệ thống.",
+      "heading_block": "b0036",
       "blocks": [
         {
           "type": "text",
-          "text": "Dùng thận trọng đối với người có bệnh mạch não, suy động mạch vành, suy tim và bệnh Raynaud hoặc bệnh mạch máu ngoại vi khác.\n\nTùy thuộc vào liều dùng, clonidin có thể gây ra nhịp tim chậm.\n\nỞ những bệnh nhân có bất thường dẫn truyền tim từ trước, loạn nhịp tim đã được quan sát thấy sau khi dùng clonidin liều cao.\n\nNhững bệnh nhân có tiền sử trầm cảm đã biết nên được giám sát cẩn thận khi điều trị lâu dài với clonidin vì đã có báo cáo về các đợt trầm cảm xuất hiện thêm trong khi điều trị bằng clonidin đường uống ở những bệnh nhân này.\n\nClonidin không có tác dụng trong điều trị tăng huyết áp do u tế bào ưa crôm.\n\nClonidin và các chất chuyển hóa của nó được bài tiết nhiều qua nước tiểu. Cần theo dõi cẩn thận ở bệnh nhân suy thận. Vì chỉ một lượng tối thiểu clonidin được loại bỏ trong quá trình thẩm tách máu định kỳ nên không cần phải bổ sung clonidin sau khi lọc máu.\n\nKhông ngừng thuốc đột ngột vì huyết áp có thể tăng nhanh trở lại và những triệu chứng do tăng quá mức hệ giao cảm (tăng tần số tim, run, kích động, bồn chồn, mất ngủ, ra mồ hôi, đánh trống ngực). Có nguy cơ tăng huyết áp hồi ứng nghiêm trọng.\n\nNếu phải ngừng thuốc, cần giảm dần liều trong 2 - 4 ngày.\n\nHuyết áp tăng quá mức sau khi ngừng dùng clonidin có thể được điều trị bằng cách dùng clonidin hoặc bằng các thuốc chẹn alpha và beta adrenoceptor. Nếu phải ngừng điều trị ở những bệnh nhân dùng đồng thời thuốc chẹn beta và clonidin thì thuốc chẹn beta nên được ngừng vài ngày trước khi ngừng dần dần clonidin.\n\nKhông dùng clonidin để làm giảm đau trong sản khoa, sau khi đẻ hoặc xung quanh thời gian phẫu thuật, hoặc ở những người không ổn định vững chắc về huyết động do không thể chịu đựng huyết áp thấp và nhịp tim chậm.\n\nNên dùng thuốc tiêm clonidin qua một dụng cụ tiêm truyền liên tục ngoài màng cứng.\n\nDo thuốc gây ức chế TKTW nên không dùng thuốc khi lái tàu xe, vận hành máy móc, làm trên giàn giáo xây dựng hoặc những công việc cần phải tập trung cao.\n\nCần thông báo nguy cơ giảm tiết nước mắt cho những bệnh nhân đeo kính áp tròng.\n\nCác ADR nghiêm trọng, bao gồm đột tử, đã được báo cáo khi sử dụng đồng thời với methylphenidat. Tính an toàn của việc sử dụng methylphenidat kết hợp với clonidin chưa được đánh giá một cách hệ thống."
+          "text": "Dùng thận trọng đối với người có bệnh mạch não, suy động mạch vành, suy tim và bệnh Raynaud hoặc bệnh mạch máu ngoại vi khác.",
+          "block_id": "b0037"
+        },
+        {
+          "type": "text",
+          "text": "Tùy thuộc vào liều dùng, clonidin có thể gây ra nhịp tim chậm.",
+          "block_id": "b0038"
+        },
+        {
+          "type": "text",
+          "text": "Ở những bệnh nhân có bất thường dẫn truyền tim từ trước, loạn nhịp tim đã được quan sát thấy sau khi dùng clonidin liều cao.",
+          "block_id": "b0039"
+        },
+        {
+          "type": "text",
+          "text": "Những bệnh nhân có tiền sử trầm cảm đã biết nên được giám sát cẩn thận khi điều trị lâu dài với clonidin vì đã có báo cáo về các đợt trầm cảm xuất hiện thêm trong khi điều trị bằng clonidin đường uống ở những bệnh nhân này.",
+          "block_id": "b0040"
+        },
+        {
+          "type": "text",
+          "text": "Clonidin không có tác dụng trong điều trị tăng huyết áp do u tế bào ưa crôm.",
+          "block_id": "b0041"
+        },
+        {
+          "type": "text",
+          "text": "Clonidin và các chất chuyển hóa của nó được bài tiết nhiều qua nước tiểu. Cần theo dõi cẩn thận ở bệnh nhân suy thận. Vì chỉ một lượng tối thiểu clonidin được loại bỏ trong quá trình thẩm tách máu định kỳ nên không cần phải bổ sung clonidin sau khi lọc máu.",
+          "block_id": "b0042"
+        },
+        {
+          "type": "text",
+          "text": "Không ngừng thuốc đột ngột vì huyết áp có thể tăng nhanh trở lại và những triệu chứng do tăng quá mức hệ giao cảm (tăng tần số tim, run, kích động, bồn chồn, mất ngủ, ra mồ hôi, đánh trống ngực). Có nguy cơ tăng huyết áp hồi ứng nghiêm trọng.",
+          "block_id": "b0043"
+        },
+        {
+          "type": "text",
+          "text": "Nếu phải ngừng thuốc, cần giảm dần liều trong 2 - 4 ngày.",
+          "block_id": "b0044"
+        },
+        {
+          "type": "text",
+          "text": "Huyết áp tăng quá mức sau khi ngừng dùng clonidin có thể được điều trị bằng cách dùng clonidin hoặc bằng các thuốc chẹn alpha và beta adrenoceptor. Nếu phải ngừng điều trị ở những bệnh nhân dùng đồng thời thuốc chẹn beta và clonidin thì thuốc chẹn beta nên được ngừng vài ngày trước khi ngừng dần dần clonidin.",
+          "block_id": "b0045"
+        },
+        {
+          "type": "text",
+          "text": "Không dùng clonidin để làm giảm đau trong sản khoa, sau khi đẻ hoặc xung quanh thời gian phẫu thuật, hoặc ở những người không ổn định vững chắc về huyết động do không thể chịu đựng huyết áp thấp và nhịp tim chậm.",
+          "block_id": "b0046"
+        },
+        {
+          "type": "text",
+          "text": "Nên dùng thuốc tiêm clonidin qua một dụng cụ tiêm truyền liên tục ngoài màng cứng.",
+          "block_id": "b0047"
+        },
+        {
+          "type": "text",
+          "text": "Do thuốc gây ức chế TKTW nên không dùng thuốc khi lái tàu xe, vận hành máy móc, làm trên giàn giáo xây dựng hoặc những công việc cần phải tập trung cao.",
+          "block_id": "b0048"
+        },
+        {
+          "type": "text",
+          "text": "Cần thông báo nguy cơ giảm tiết nước mắt cho những bệnh nhân đeo kính áp tròng.",
+          "block_id": "b0049"
+        },
+        {
+          "type": "text",
+          "text": "Các ADR nghiêm trọng, bao gồm đột tử, đã được báo cáo khi sử dụng đồng thời với methylphenidat. Tính an toàn của việc sử dụng methylphenidat kết hợp với clonidin chưa được đánh giá một cách hệ thống.",
+          "block_id": "b0050"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-mang-thai",
       "title": "Thời kỳ mang thai",
-      "content": "Có rất ít dữ liệu về việc sử dụng clonidin ở phụ nữ mang thai.\n\nThuốc này chỉ nên được sử dụng trong thai kỳ nếu được bác sĩ cho là cần thiết. Nên theo dõi cẩn thận mẹ và con.\n\nClonidin đi qua hàng rào nhau thai và có thể làm giảm nhịp tim của thai nhi. Không thể loại trừ việc tăng huyết áp thoáng qua ở trẻ sơ sinh sau sinh.\n\nKhông có kinh nghiệm đầy đủ về ảnh hưởng lâu dài của phơi nhiễm trước khi sinh.\n\nTrong thời kỳ mang thai, các dạng uống của clonidin nên được ưu tiên hơn. Nên tránh tiêm clonidin vào tĩnh mạch.",
+      "heading_block": "b0051",
       "blocks": [
         {
           "type": "text",
-          "text": "Có rất ít dữ liệu về việc sử dụng clonidin ở phụ nữ mang thai.\n\nThuốc này chỉ nên được sử dụng trong thai kỳ nếu được bác sĩ cho là cần thiết. Nên theo dõi cẩn thận mẹ và con.\n\nClonidin đi qua hàng rào nhau thai và có thể làm giảm nhịp tim của thai nhi. Không thể loại trừ việc tăng huyết áp thoáng qua ở trẻ sơ sinh sau sinh.\n\nKhông có kinh nghiệm đầy đủ về ảnh hưởng lâu dài của phơi nhiễm trước khi sinh.\n\nTrong thời kỳ mang thai, các dạng uống của clonidin nên được ưu tiên hơn. Nên tránh tiêm clonidin vào tĩnh mạch."
+          "text": "Có rất ít dữ liệu về việc sử dụng clonidin ở phụ nữ mang thai.",
+          "block_id": "b0052"
+        },
+        {
+          "type": "text",
+          "text": "Thuốc này chỉ nên được sử dụng trong thai kỳ nếu được bác sĩ cho là cần thiết. Nên theo dõi cẩn thận mẹ và con.",
+          "block_id": "b0053"
+        },
+        {
+          "type": "text",
+          "text": "Clonidin đi qua hàng rào nhau thai và có thể làm giảm nhịp tim của thai nhi. Không thể loại trừ việc tăng huyết áp thoáng qua ở trẻ sơ sinh sau sinh.",
+          "block_id": "b0054"
+        },
+        {
+          "type": "text",
+          "text": "Không có kinh nghiệm đầy đủ về ảnh hưởng lâu dài của phơi nhiễm trước khi sinh.",
+          "block_id": "b0055"
+        },
+        {
+          "type": "text",
+          "text": "Trong thời kỳ mang thai, các dạng uống của clonidin nên được ưu tiên hơn. Nên tránh tiêm clonidin vào tĩnh mạch.",
+          "block_id": "b0056"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-cho-con-bu",
       "title": "Thời kỳ cho con bú",
-      "content": "Clonidin được bài tiết qua sữa. Tuy nhiên, không có đủ thông tin về ảnh hưởng đối với trẻ sơ sinh. Do đó, việc sử dụng clonidin không được khuyến cáo trong thời kỳ cho con bú.",
+      "heading_block": "b0057",
       "blocks": [
         {
           "type": "text",
-          "text": "Clonidin được bài tiết qua sữa. Tuy nhiên, không có đủ thông tin về ảnh hưởng đối với trẻ sơ sinh. Do đó, việc sử dụng clonidin không được khuyến cáo trong thời kỳ cho con bú."
+          "text": "Clonidin được bài tiết qua sữa. Tuy nhiên, không có đủ thông tin về ảnh hưởng đối với trẻ sơ sinh. Do đó, việc sử dụng clonidin không được khuyến cáo trong thời kỳ cho con bú.",
+          "block_id": "b0058"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tac-dung-khong-mong-muon-adr",
       "title": "Tác dụng không mong muốn (ADR)",
-      "content": "Tùy theo đường dùng clonidin mà tỷ lệ các ADR xảy ra khác nhau.\n\nTỷ lệ các ADR gặp với tỷ lệ cao nhất khi dùng clonidin đường uống.\n\nADR chủ yếu của clonidin là khô miệng và buồn ngủ (khoảng 40%). Có thể xảy ra loạn chức năng sinh dục. Đã nhận xét thấy nhịp tim chậm rõ rệt ở một số trường hợp. Những ADR này phụ thuộc vào liều.\n\nDùng miếng dán chứa clonidin thấm qua da gây các ADR giống như khi dùng đường uống nhưng tỷ lệ thấp hơn và ít trầm trọng hơn. Ngoài ra, dạng này còn có thể gây viêm da tiếp xúc.\n\nNhững phản ứng cai thuốc đã xảy ra khi ngừng thuốc đột ngột sau liệu pháp dài hạn với clonidin ở một số người bệnh tăng huyết áp.\n\nCũng có nguy cơ xảy ra tăng huyết áp hồi ứng nghiêm trọng khi ngừng thuốc đột ngột.\n\nRất thường gặp Thần kinh: chóng mặt, an thần.\n\nTim mạch: tụt huyết áp tư thế đứng.\n\nTiêu hóa: khô miệng.\n\nThường gặp Tâm thần: trầm cảm, rối loạn giấc ngủ.\n\nThần kinh: đau đầu.\n\nToàn thân: mệt mỏi.\n\nTiêu hóa: buồn nôn, nôn, đau tuyến nước bọt, táo bón.\n\nSinh dục: rối loạn cương dương.\n\nÍt gặp Tâm thần: ảo giác, ác mộng.\n\nThần kinh: dị cảm.\n\nTim mạch: nhịp chậm xoang, hiện tượng Raynaud.\n\nDa: ngứa, phát ban, mày đay.\n\nHiếm gặp Nội tiết: chứng vú to ở nam giới.\n\nTim mạch: blốc nhĩ thất.\n\nHô hấp: khô mũi.\n\nTiêu hóa: giả tắc đại tràng.\n\nDa: rụng tóc.\n\nXét nghiệm: tăng glucose huyết.\n\nMắt: giảm tiết nước mắt.\n\nChưa xác định được tần suất Tâm thần: trạng thái lú lẫn, giảm ham muốn tình dục.\n\nMắt: rối loạn điều tiết.\n\nTim mạch: loạn nhịp chậm.",
+      "heading_block": "b0059",
       "blocks": [
         {
           "type": "text",
-          "text": "Tùy theo đường dùng clonidin mà tỷ lệ các ADR xảy ra khác nhau.\n\nTỷ lệ các ADR gặp với tỷ lệ cao nhất khi dùng clonidin đường uống.\n\nADR chủ yếu của clonidin là khô miệng và buồn ngủ (khoảng 40%). Có thể xảy ra loạn chức năng sinh dục. Đã nhận xét thấy nhịp tim chậm rõ rệt ở một số trường hợp. Những ADR này phụ thuộc vào liều.\n\nDùng miếng dán chứa clonidin thấm qua da gây các ADR giống như khi dùng đường uống nhưng tỷ lệ thấp hơn và ít trầm trọng hơn. Ngoài ra, dạng này còn có thể gây viêm da tiếp xúc.\n\nNhững phản ứng cai thuốc đã xảy ra khi ngừng thuốc đột ngột sau liệu pháp dài hạn với clonidin ở một số người bệnh tăng huyết áp.\n\nCũng có nguy cơ xảy ra tăng huyết áp hồi ứng nghiêm trọng khi ngừng thuốc đột ngột.\n\nRất thường gặp Thần kinh: chóng mặt, an thần.\n\nTim mạch: tụt huyết áp tư thế đứng.\n\nTiêu hóa: khô miệng.\n\nThường gặp Tâm thần: trầm cảm, rối loạn giấc ngủ.\n\nThần kinh: đau đầu.\n\nToàn thân: mệt mỏi.\n\nTiêu hóa: buồn nôn, nôn, đau tuyến nước bọt, táo bón.\n\nSinh dục: rối loạn cương dương.\n\nÍt gặp Tâm thần: ảo giác, ác mộng.\n\nThần kinh: dị cảm.\n\nTim mạch: nhịp chậm xoang, hiện tượng Raynaud.\n\nDa: ngứa, phát ban, mày đay.\n\nHiếm gặp Nội tiết: chứng vú to ở nam giới.\n\nTim mạch: blốc nhĩ thất.\n\nHô hấp: khô mũi.\n\nTiêu hóa: giả tắc đại tràng.\n\nDa: rụng tóc.\n\nXét nghiệm: tăng glucose huyết.\n\nMắt: giảm tiết nước mắt.\n\nChưa xác định được tần suất Tâm thần: trạng thái lú lẫn, giảm ham muốn tình dục.\n\nMắt: rối loạn điều tiết.\n\nTim mạch: loạn nhịp chậm."
+          "text": "Tùy theo đường dùng clonidin mà tỷ lệ các ADR xảy ra khác nhau.",
+          "block_id": "b0060"
+        },
+        {
+          "type": "text",
+          "text": "Tỷ lệ các ADR gặp với tỷ lệ cao nhất khi dùng clonidin đường uống.",
+          "block_id": "b0061"
+        },
+        {
+          "type": "text",
+          "text": "ADR chủ yếu của clonidin là khô miệng và buồn ngủ (khoảng 40%). Có thể xảy ra loạn chức năng sinh dục. Đã nhận xét thấy nhịp tim chậm rõ rệt ở một số trường hợp. Những ADR này phụ thuộc vào liều.",
+          "block_id": "b0062"
+        },
+        {
+          "type": "text",
+          "text": "Dùng miếng dán chứa clonidin thấm qua da gây các ADR giống như khi dùng đường uống nhưng tỷ lệ thấp hơn và ít trầm trọng hơn. Ngoài ra, dạng này còn có thể gây viêm da tiếp xúc.",
+          "block_id": "b0063"
+        },
+        {
+          "type": "text",
+          "text": "Những phản ứng cai thuốc đã xảy ra khi ngừng thuốc đột ngột sau liệu pháp dài hạn với clonidin ở một số người bệnh tăng huyết áp.",
+          "block_id": "b0064"
+        },
+        {
+          "type": "text",
+          "text": "Cũng có nguy cơ xảy ra tăng huyết áp hồi ứng nghiêm trọng khi ngừng thuốc đột ngột.",
+          "block_id": "b0065"
+        },
+        {
+          "type": "subheading",
+          "text": "Rất thường gặp",
+          "block_id": "b0066"
+        },
+        {
+          "type": "text",
+          "text": "Thần kinh: chóng mặt, an thần.",
+          "block_id": "b0067"
+        },
+        {
+          "type": "text",
+          "text": "Tim mạch: tụt huyết áp tư thế đứng.",
+          "block_id": "b0068"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: khô miệng.",
+          "block_id": "b0069"
+        },
+        {
+          "type": "subheading",
+          "text": "Thường gặp",
+          "block_id": "b0070"
+        },
+        {
+          "type": "text",
+          "text": "Tâm thần: trầm cảm, rối loạn giấc ngủ.",
+          "block_id": "b0071"
+        },
+        {
+          "type": "text",
+          "text": "Thần kinh: đau đầu.",
+          "block_id": "b0072"
+        },
+        {
+          "type": "text",
+          "text": "Toàn thân: mệt mỏi.",
+          "block_id": "b0073"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: buồn nôn, nôn, đau tuyến nước bọt, táo bón.",
+          "block_id": "b0074"
+        },
+        {
+          "type": "text",
+          "text": "Sinh dục: rối loạn cương dương.",
+          "block_id": "b0075"
+        },
+        {
+          "type": "subheading",
+          "text": "Ít gặp",
+          "block_id": "b0076"
+        },
+        {
+          "type": "text",
+          "text": "Tâm thần: ảo giác, ác mộng.",
+          "block_id": "b0077"
+        },
+        {
+          "type": "text",
+          "text": "Thần kinh: dị cảm.",
+          "block_id": "b0078"
+        },
+        {
+          "type": "text",
+          "text": "Tim mạch: nhịp chậm xoang, hiện tượng Raynaud.",
+          "block_id": "b0079"
+        },
+        {
+          "type": "text",
+          "text": "Da: ngứa, phát ban, mày đay.",
+          "block_id": "b0080"
+        },
+        {
+          "type": "subheading",
+          "text": "Hiếm gặp",
+          "block_id": "b0081"
+        },
+        {
+          "type": "text",
+          "text": "Nội tiết: chứng vú to ở nam giới.",
+          "block_id": "b0082"
+        },
+        {
+          "type": "text",
+          "text": "Tim mạch: blốc nhĩ thất.",
+          "block_id": "b0083"
+        },
+        {
+          "type": "text",
+          "text": "Hô hấp: khô mũi.",
+          "block_id": "b0084"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: giả tắc đại tràng.",
+          "block_id": "b0085"
+        },
+        {
+          "type": "text",
+          "text": "Da: rụng tóc.",
+          "block_id": "b0086"
+        },
+        {
+          "type": "text",
+          "text": "Xét nghiệm: tăng glucose huyết.",
+          "block_id": "b0087"
+        },
+        {
+          "type": "text",
+          "text": "Mắt: giảm tiết nước mắt.",
+          "block_id": "b0088"
+        },
+        {
+          "type": "subheading",
+          "text": "Chưa xác định được tần suất",
+          "block_id": "b0089"
+        },
+        {
+          "type": "text",
+          "text": "Tâm thần: trạng thái lú lẫn, giảm ham muốn tình dục.",
+          "block_id": "b0090"
+        },
+        {
+          "type": "text",
+          "text": "Mắt: rối loạn điều tiết.",
+          "block_id": "b0091"
+        },
+        {
+          "type": "text",
+          "text": "Tim mạch: loạn nhịp chậm.",
+          "block_id": "b0092"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "huong-dan-cach-xu-tri-adr",
       "title": "Hướng dẫn cách xử trí ADR",
-      "content": "Những thông số cần theo dõi cẩn thận: huyết áp đo ở tư thế đứng và ngồi/nằm ngửa, tần số và độ sâu hô hấp, sự giảm đau, trạng thái tâm thần, nhịp tim chậm (có thể điều trị bằng atropin).\n\nKhi xảy ra những ADR có thể giảm liều lượng thuốc. Phải đặt miếng dán chứa clonidin mỗi tuần một lần vào lúc đi ngủ, trên một vùng sạch sẽ, không có lông ở phần trên và mặt ngoài của cánh tay hoặc ngực; thay đổi luân phiên những chỗ dán mỗi tuần một lần.\n\nKhi ngừng thuốc phải giảm dần liều trong 2 - 4 ngày để tránh tăng huyết áp hồi ứng; trong khi tiêm ngoài màng cứng theo dõi cẩn thận trạng thái tim mạch và hô hấp.\n\nNgười bệnh không ngừng dùng thuốc nếu chưa có chỉ dẫn của thầy thuốc; kiểm tra hàng ngày để biết chắc là miếng dán hãy còn tại chỗ; thuốc có thể gây ngủ gà, suy giảm sự phối hợp và óc suy xét; phải hết sức thận trọng khi lái xe hoặc vận hành máy móc.",
+      "heading_block": "b0093",
       "blocks": [
         {
           "type": "text",
-          "text": "Những thông số cần theo dõi cẩn thận: huyết áp đo ở tư thế đứng và ngồi/nằm ngửa, tần số và độ sâu hô hấp, sự giảm đau, trạng thái tâm thần, nhịp tim chậm (có thể điều trị bằng atropin).\n\nKhi xảy ra những ADR có thể giảm liều lượng thuốc. Phải đặt miếng dán chứa clonidin mỗi tuần một lần vào lúc đi ngủ, trên một vùng sạch sẽ, không có lông ở phần trên và mặt ngoài của cánh tay hoặc ngực; thay đổi luân phiên những chỗ dán mỗi tuần một lần.\n\nKhi ngừng thuốc phải giảm dần liều trong 2 - 4 ngày để tránh tăng huyết áp hồi ứng; trong khi tiêm ngoài màng cứng theo dõi cẩn thận trạng thái tim mạch và hô hấp.\n\nNgười bệnh không ngừng dùng thuốc nếu chưa có chỉ dẫn của thầy thuốc; kiểm tra hàng ngày để biết chắc là miếng dán hãy còn tại chỗ; thuốc có thể gây ngủ gà, suy giảm sự phối hợp và óc suy xét; phải hết sức thận trọng khi lái xe hoặc vận hành máy móc."
+          "text": "Những thông số cần theo dõi cẩn thận: huyết áp đo ở tư thế đứng và ngồi/nằm ngửa, tần số và độ sâu hô hấp, sự giảm đau, trạng thái tâm thần, nhịp tim chậm (có thể điều trị bằng atropin).",
+          "block_id": "b0094"
+        },
+        {
+          "type": "text",
+          "text": "Khi xảy ra những ADR có thể giảm liều lượng thuốc. Phải đặt miếng dán chứa clonidin mỗi tuần một lần vào lúc đi ngủ, trên một vùng sạch sẽ, không có lông ở phần trên và mặt ngoài của cánh tay hoặc ngực; thay đổi luân phiên những chỗ dán mỗi tuần một lần.",
+          "block_id": "b0095"
+        },
+        {
+          "type": "text",
+          "text": "Khi ngừng thuốc phải giảm dần liều trong 2 - 4 ngày để tránh tăng huyết áp hồi ứng; trong khi tiêm ngoài màng cứng theo dõi cẩn thận trạng thái tim mạch và hô hấp.",
+          "block_id": "b0096"
+        },
+        {
+          "type": "text",
+          "text": "Người bệnh không ngừng dùng thuốc nếu chưa có chỉ dẫn của thầy thuốc; kiểm tra hàng ngày để biết chắc là miếng dán hãy còn tại chỗ; thuốc có thể gây ngủ gà, suy giảm sự phối hợp và óc suy xét; phải hết sức thận trọng khi lái xe hoặc vận hành máy móc.",
+          "block_id": "b0097"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "lieu-luong-va-cach-dung",
       "title": "Liều lượng và cách dùng",
-      "content": "Tăng huyết áp Người lớn: Uống: Khởi đầu 0,05 - 0,1 mg/lần, mỗi ngày 2 - 3 lần, tăng liều mỗi 2 - 3 ngày tùy theo đáp ứng của bệnh nhân. Hầu hết bệnh nhân được kiểm soát với khoảng liều 0,3 - 1,2 mg/ngày, tuy nhiên một số bệnh nhân có thể đòi hỏi liều hàng ngày cao hơn, ví dụ 1,8 mg trở lên. Các nghiên cứu đã chỉ ra rằng 2,4 mg là liều tối đa hiệu quả hàng ngày, nhưng liều cao như vậy hiếm khi được sử dụng.\n\nHệ điều trị qua da (miếng dán): Cứ cách 7 ngày dán 1 lần ở vùng da nguyên vẹn không có lông (vùng trên ngoài cánh tay hoặc vùng ngực). Mỗi miếng dán mới được dán trên một vị trí da khác vị trí dán trước đó. Đã có một số báo cáo hiếm hoi về việc cần thay miếng dán trước 7 ngày để duy trì kiểm soát huyết áp. Khởi đầu dùng miếng dán giải phóng 0,1 mg/ngày. Có thể điều chỉnh tăng liều sau 1 hoặc 2 tuần khi chưa đạt được mức giảm huyết áp mong muốn. Liều lớn hơn 2 miếng dán 0,3 mg thường không liên quan đến tăng hiệu quả.\n\nTiêm tĩnh mạch chậm: Trong cơn tăng huyết áp, nên tiêm tĩnh mạch chậm 150 - 300 microgam. Liều này có thể được lặp lại lên đến tối đa là 750 microgam trong khoảng thời gian 24 giờ. Tiêm tĩnh mạch clonidin nên được tiêm chậm trong 10 - 15 phút để tránh hiệu ứng tăng huyết áp thoáng qua có thể xảy ra.\n\nNgười cao tuổi: Không có thông tin cụ thể về việc sử dụng clonidin này ở người cao tuổi.\n\nCác thử nghiệm lâm sàng đã bao gồm những bệnh nhân trên 65 tuổi và không có phản ứng phụ đặc trưng cho nhóm tuổi này đã được báo cáo.\n\nNgười suy thận: Liều khởi đầu thấp hơn có thể có lợi cho bệnh nhân suy thận. Liều dùng phải được điều chỉnh theo đáp ứng hạ huyết áp và mức độ suy thận của từng bệnh nhân. Bệnh nhân cần được theo dõi cẩn thận. Vì chỉ loại bỏ một lượng tối thiểu clonidin trong quá trình thẩm tách máu định kỳ, nên không cần dùng clonidin bổ sung sau khi lọc máu.\n\nTăng huyết áp nặng ở trẻ em 2 - 17 tuổi: Uống: Khởi đầu 0,5 - 1 microgam/kg 3 lần một ngày, sau đó tăng liều dần nếu cần thiết đến 25 microgam/kg/ngày chia làm nhiều lần; tối đa 1,2 mg/ngày.\n\nTiêm tĩnh mạch chậm: 2 - 6 microgam/kg (tối đa mỗi liều 300 microgam) cho một liều.\n\nGiảm đau: Tiêm truyền ngoài màng cứng.\n\nNgười lớn: Liều khởi đầu được khuyến cáo của clonidin để truyền liên tục ngoài màng cứng là 30 microgam/giờ. Mặc dù liều lượng có thể được điều chỉnh tăng hoặc giảm tùy thuộc vào mức độ giảm đau và sự xuất hiện của các tác dụng phụ, kinh nghiệm với liều trên 40 microgam/giờ là hạn chế.\n\nDự phòng bệnh đau nửa đầu hoặc đau đầu do mạch máu tái phát, rối loạn vận mạch kỳ mãn kinh Người lớn: Khởi đầu uống 50 microgam, 2 lần/ngày. Nếu tình trạng không thuyên giảm sau 2 tuần, tăng lên 75 microgam, 2 lần/ngày.\n\nThời gian điều trị phụ thuộc vào mức độ nghiêm trọng của tình trạng. Nếu các triệu chứng tiếp tục xảy ra, bệnh nhân nên được thông báo rằng có thể mất 2 - 4 tuần cho đến khi clonidin phát huy hết tác dụng.\n\nKhi cần ngừng điều trị với clonidin, phải giảm liều dần dần trong vài ngày (2 - 4 ngày). Trong trường hợp ngừng thuốc quá nhanh như khi quên uống thuốc, có thể xảy ra những triệu chứng cai thuốc, bao gồm đánh trống ngực, bồn chồn, tình trạng kích động, bồn chồn vận động và trong một số trường hợp có tăng huyết áp hồi ứng cao hơn mức huyết áp ban đầu trước khi bắt đầu điều trị.\n\nKiểu ADR này thường thấy chủ yếu ở người có tăng huyết áp rất nặng, đang được điều trị đồng thời với những thuốc chống tăng huyết áp khác. Vì thế thuốc chẹn beta và clonidin có thể gây những tác dụng bùng phát huyết áp khi ngừng thuốc. Nếu xuất hiện những triệu chứng như vậy khi ngừng thuốc, cần bắt đầu điều trị lại với clonidin và lần ngừng clonidin này phải từ từ. Nếu tiêm nhanh tĩnh mạch, có nguy cơ xảy ra tăng huyết áp nghịch thường. Khi có u tế bào ưa crôm, clonidin không có tác dụng.",
+      "heading_block": "b0098",
       "blocks": [
         {
+          "type": "subheading",
+          "text": "Tăng huyết áp",
+          "block_id": "b0099"
+        },
+        {
+          "type": "subheading",
+          "text": "Người lớn:",
+          "block_id": "b0100"
+        },
+        {
           "type": "text",
-          "text": "Tăng huyết áp Người lớn: Uống: Khởi đầu 0,05 - 0,1 mg/lần, mỗi ngày 2 - 3 lần, tăng liều mỗi 2 - 3 ngày tùy theo đáp ứng của bệnh nhân. Hầu hết bệnh nhân được kiểm soát với khoảng liều 0,3 - 1,2 mg/ngày, tuy nhiên một số bệnh nhân có thể đòi hỏi liều hàng ngày cao hơn, ví dụ 1,8 mg trở lên. Các nghiên cứu đã chỉ ra rằng 2,4 mg là liều tối đa hiệu quả hàng ngày, nhưng liều cao như vậy hiếm khi được sử dụng.\n\nHệ điều trị qua da (miếng dán): Cứ cách 7 ngày dán 1 lần ở vùng da nguyên vẹn không có lông (vùng trên ngoài cánh tay hoặc vùng ngực). Mỗi miếng dán mới được dán trên một vị trí da khác vị trí dán trước đó. Đã có một số báo cáo hiếm hoi về việc cần thay miếng dán trước 7 ngày để duy trì kiểm soát huyết áp. Khởi đầu dùng miếng dán giải phóng 0,1 mg/ngày. Có thể điều chỉnh tăng liều sau 1 hoặc 2 tuần khi chưa đạt được mức giảm huyết áp mong muốn. Liều lớn hơn 2 miếng dán 0,3 mg thường không liên quan đến tăng hiệu quả.\n\nTiêm tĩnh mạch chậm: Trong cơn tăng huyết áp, nên tiêm tĩnh mạch chậm 150 - 300 microgam. Liều này có thể được lặp lại lên đến tối đa là 750 microgam trong khoảng thời gian 24 giờ. Tiêm tĩnh mạch clonidin nên được tiêm chậm trong 10 - 15 phút để tránh hiệu ứng tăng huyết áp thoáng qua có thể xảy ra.\n\nNgười cao tuổi: Không có thông tin cụ thể về việc sử dụng clonidin này ở người cao tuổi.\n\nCác thử nghiệm lâm sàng đã bao gồm những bệnh nhân trên 65 tuổi và không có phản ứng phụ đặc trưng cho nhóm tuổi này đã được báo cáo.\n\nNgười suy thận: Liều khởi đầu thấp hơn có thể có lợi cho bệnh nhân suy thận. Liều dùng phải được điều chỉnh theo đáp ứng hạ huyết áp và mức độ suy thận của từng bệnh nhân. Bệnh nhân cần được theo dõi cẩn thận. Vì chỉ loại bỏ một lượng tối thiểu clonidin trong quá trình thẩm tách máu định kỳ, nên không cần dùng clonidin bổ sung sau khi lọc máu.\n\nTăng huyết áp nặng ở trẻ em 2 - 17 tuổi: Uống: Khởi đầu 0,5 - 1 microgam/kg 3 lần một ngày, sau đó tăng liều dần nếu cần thiết đến 25 microgam/kg/ngày chia làm nhiều lần; tối đa 1,2 mg/ngày.\n\nTiêm tĩnh mạch chậm: 2 - 6 microgam/kg (tối đa mỗi liều 300 microgam) cho một liều.\n\nGiảm đau: Tiêm truyền ngoài màng cứng.\n\nNgười lớn: Liều khởi đầu được khuyến cáo của clonidin để truyền liên tục ngoài màng cứng là 30 microgam/giờ. Mặc dù liều lượng có thể được điều chỉnh tăng hoặc giảm tùy thuộc vào mức độ giảm đau và sự xuất hiện của các tác dụng phụ, kinh nghiệm với liều trên 40 microgam/giờ là hạn chế.\n\nDự phòng bệnh đau nửa đầu hoặc đau đầu do mạch máu tái phát, rối loạn vận mạch kỳ mãn kinh Người lớn: Khởi đầu uống 50 microgam, 2 lần/ngày. Nếu tình trạng không thuyên giảm sau 2 tuần, tăng lên 75 microgam, 2 lần/ngày.\n\nThời gian điều trị phụ thuộc vào mức độ nghiêm trọng của tình trạng. Nếu các triệu chứng tiếp tục xảy ra, bệnh nhân nên được thông báo rằng có thể mất 2 - 4 tuần cho đến khi clonidin phát huy hết tác dụng.\n\nKhi cần ngừng điều trị với clonidin, phải giảm liều dần dần trong vài ngày (2 - 4 ngày). Trong trường hợp ngừng thuốc quá nhanh như khi quên uống thuốc, có thể xảy ra những triệu chứng cai thuốc, bao gồm đánh trống ngực, bồn chồn, tình trạng kích động, bồn chồn vận động và trong một số trường hợp có tăng huyết áp hồi ứng cao hơn mức huyết áp ban đầu trước khi bắt đầu điều trị.\n\nKiểu ADR này thường thấy chủ yếu ở người có tăng huyết áp rất nặng, đang được điều trị đồng thời với những thuốc chống tăng huyết áp khác. Vì thế thuốc chẹn beta và clonidin có thể gây những tác dụng bùng phát huyết áp khi ngừng thuốc. Nếu xuất hiện những triệu chứng như vậy khi ngừng thuốc, cần bắt đầu điều trị lại với clonidin và lần ngừng clonidin này phải từ từ. Nếu tiêm nhanh tĩnh mạch, có nguy cơ xảy ra tăng huyết áp nghịch thường. Khi có u tế bào ưa crôm, clonidin không có tác dụng."
+          "text": "Uống: Khởi đầu 0,05 - 0,1 mg/lần, mỗi ngày 2 - 3 lần, tăng liều mỗi 2 - 3 ngày tùy theo đáp ứng của bệnh nhân. Hầu hết bệnh nhân được kiểm soát với khoảng liều 0,3 - 1,2 mg/ngày, tuy nhiên một số bệnh nhân có thể đòi hỏi liều hàng ngày cao hơn, ví dụ 1,8 mg trở lên. Các nghiên cứu đã chỉ ra rằng 2,4 mg là liều tối đa hiệu quả hàng ngày, nhưng liều cao như vậy hiếm khi được sử dụng.",
+          "block_id": "b0101"
+        },
+        {
+          "type": "text",
+          "text": "Hệ điều trị qua da (miếng dán): Cứ cách 7 ngày dán 1 lần ở vùng da nguyên vẹn không có lông (vùng trên ngoài cánh tay hoặc vùng ngực). Mỗi miếng dán mới được dán trên một vị trí da khác vị trí dán trước đó. Đã có một số báo cáo hiếm hoi về việc cần thay miếng dán trước 7 ngày để duy trì kiểm soát huyết áp. Khởi đầu dùng miếng dán giải phóng 0,1 mg/ngày. Có thể điều chỉnh tăng liều sau 1 hoặc 2 tuần khi chưa đạt được mức giảm huyết áp mong muốn. Liều lớn hơn 2 miếng dán 0,3 mg thường không liên quan đến tăng hiệu quả.",
+          "block_id": "b0102"
+        },
+        {
+          "type": "text",
+          "text": "Tiêm tĩnh mạch chậm: Trong cơn tăng huyết áp, nên tiêm tĩnh mạch chậm 150 - 300 microgam. Liều này có thể được lặp lại lên đến tối đa là 750 microgam trong khoảng thời gian 24 giờ. Tiêm tĩnh mạch clonidin nên được tiêm chậm trong 10 - 15 phút để tránh hiệu ứng tăng huyết áp thoáng qua có thể xảy ra.",
+          "block_id": "b0103"
+        },
+        {
+          "type": "subheading",
+          "text": "Người cao tuổi:",
+          "block_id": "b0104"
+        },
+        {
+          "type": "text",
+          "text": "Không có thông tin cụ thể về việc sử dụng clonidin này ở người cao tuổi.",
+          "block_id": "b0105"
+        },
+        {
+          "type": "text",
+          "text": "Các thử nghiệm lâm sàng đã bao gồm những bệnh nhân trên 65 tuổi và không có phản ứng phụ đặc trưng cho nhóm tuổi này đã được báo cáo.",
+          "block_id": "b0106"
+        },
+        {
+          "type": "subheading",
+          "text": "Người suy thận:",
+          "block_id": "b0107"
+        },
+        {
+          "type": "text",
+          "text": "Liều khởi đầu thấp hơn có thể có lợi cho bệnh nhân suy thận. Liều dùng phải được điều chỉnh theo đáp ứng hạ huyết áp và mức độ suy thận của từng bệnh nhân. Bệnh nhân cần được theo dõi cẩn thận. Vì chỉ loại bỏ một lượng tối thiểu clonidin trong quá trình thẩm tách máu định kỳ, nên không cần dùng clonidin bổ sung sau khi lọc máu.",
+          "block_id": "b0108"
+        },
+        {
+          "type": "subheading",
+          "text": "Tăng huyết áp nặng ở trẻ em 2 - 17 tuổi:",
+          "block_id": "b0109"
+        },
+        {
+          "type": "text",
+          "text": "Uống: Khởi đầu 0,5 - 1 microgam/kg 3 lần một ngày, sau đó tăng liều dần nếu cần thiết đến 25 microgam/kg/ngày chia làm nhiều lần; tối đa 1,2 mg/ngày.",
+          "block_id": "b0110"
+        },
+        {
+          "type": "text",
+          "text": "Tiêm tĩnh mạch chậm: 2 - 6 microgam/kg (tối đa mỗi liều 300 microgam) cho một liều.",
+          "block_id": "b0111"
+        },
+        {
+          "type": "text",
+          "text": "Giảm đau: Tiêm truyền ngoài màng cứng.",
+          "block_id": "b0112"
+        },
+        {
+          "type": "text",
+          "text": "Người lớn:",
+          "block_id": "b0113"
+        },
+        {
+          "type": "text",
+          "text": "Liều khởi đầu được khuyến cáo của clonidin để truyền liên tục ngoài màng cứng là 30 microgam/giờ. Mặc dù liều lượng có thể được điều chỉnh tăng hoặc giảm tùy thuộc vào mức độ giảm đau và sự xuất hiện của các tác dụng phụ, kinh nghiệm với liều trên 40 microgam/giờ là hạn chế.",
+          "block_id": "b0114"
+        },
+        {
+          "type": "text",
+          "text": "Dự phòng bệnh đau nửa đầu hoặc đau đầu do mạch máu tái phát, rối loạn vận mạch kỳ mãn kinh Người lớn:",
+          "block_id": "b0115"
+        },
+        {
+          "type": "text",
+          "text": "Khởi đầu uống 50 microgam, 2 lần/ngày. Nếu tình trạng không thuyên giảm sau 2 tuần, tăng lên 75 microgam, 2 lần/ngày.",
+          "block_id": "b0116"
+        },
+        {
+          "type": "text",
+          "text": "Thời gian điều trị phụ thuộc vào mức độ nghiêm trọng của tình trạng. Nếu các triệu chứng tiếp tục xảy ra, bệnh nhân nên được thông báo rằng có thể mất 2 - 4 tuần cho đến khi clonidin phát huy hết tác dụng.",
+          "block_id": "b0117"
+        },
+        {
+          "type": "text",
+          "text": "Khi cần ngừng điều trị với clonidin, phải giảm liều dần dần trong vài ngày (2 - 4 ngày). Trong trường hợp ngừng thuốc quá nhanh như khi quên uống thuốc, có thể xảy ra những triệu chứng cai thuốc, bao gồm đánh trống ngực, bồn chồn, tình trạng kích động, bồn chồn vận động và trong một số trường hợp có tăng huyết áp hồi ứng cao hơn mức huyết áp ban đầu trước khi bắt đầu điều trị.",
+          "block_id": "b0118"
+        },
+        {
+          "type": "text",
+          "text": "Kiểu ADR này thường thấy chủ yếu ở người có tăng huyết áp rất nặng, đang được điều trị đồng thời với những thuốc chống tăng huyết áp khác. Vì thế thuốc chẹn beta và clonidin có thể gây những tác dụng bùng phát huyết áp khi ngừng thuốc. Nếu xuất hiện những triệu chứng như vậy khi ngừng thuốc, cần bắt đầu điều trị lại với clonidin và lần ngừng clonidin này phải từ từ. Nếu tiêm nhanh tĩnh mạch, có nguy cơ xảy ra tăng huyết áp nghịch thường. Khi có u tế bào ưa crôm, clonidin không có tác dụng.",
+          "block_id": "b0119"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-tac-thuoc",
       "title": "Tương tác thuốc",
-      "content": "Những thuốc chống trầm cảm 3 vòng đối kháng với tác dụng gây hạ huyết áp của clonidin.\n\nNhững thuốc chẹn beta có thể làm tăng khả năng chậm nhịp tim ở người đang dùng clonidin và có thể làm tăng nguy cơ tăng huyết áp hồi ứng nặng khi ngừng thuốc, do đó phải ngừng thuốc chẹn beta trong ít ngày (7 - 10 ngày) trước khi bắt đầu điều trị với clonidin.\n\nVì clonidin gây chậm nhịp tim và ức chế dẫn truyền nhĩ thất nên phải hết sức thận trọng khi phối hợp với guanethidin, thuốc chẹn kênh calci, glycosid tim. Nhịp chậm xoang dẫn đến nhập viện và đặt máy tạo nhịp tim đã được báo cáo liên quan đến việc sử dụng đồng thời clonidin với diltiazem hoặc verapamil.\n\nKhông thể loại trừ việc dùng đồng thời clonidin với thuốc chẹn beta sẽ gây ra hoặc làm tăng các rối loạn mạch máu ngoại vi.\n\nCác thuốc có đặc tính chẹn receptor alpha2, ví dụ như mirtazapin, có thể loại bỏ tác dụng qua trung gian receptor alpha2 của clonidin theo cách phụ thuộc liều.\n\nNhững thuốc chống trầm cảm ba vòng làm tăng nguy cơ của đáp ứng tăng huyết áp khi ngừng clonidin đột ngột.\n\nNhững thuốc giảm đau gây ngủ có thể làm tăng tác dụng gây hạ huyết áp của clonidin. Ethanol và barbiturat có thể làm tăng sự ức chế hệ TKTW.\n\nTiêm ngoài màng cứng clonidin có thể kéo dài tác dụng phong bế cảm giác và vận động của những thuốc gây tê.\n\nClonidin có thể làm tăng tác dụng của alcol và thuốc ức chế TKTW.\n\nDựa trên những quan sát ở bệnh nhân trong tình trạng mê sảng do rượu, liều cao clonidin tiêm tĩnh mạch có thể làm tăng khả năng gây loạn nhịp tim (kéo dài QT, rung thất) của liều cao haloperidol tiêm tĩnh mạch. Mối quan hệ nhân quả và sự phù hợp đối với điều trị hạ huyết áp chưa được thiết lập.\n\nClonidin có tác dụng hiệp đồng với các thuốc điều trị tăng huyết áp khác nên khi phối hợp cần phải chỉnh liều cẩn thận.\n\nCác thuốc làm tăng huyết áp hoặc có tác dụng giữ ion natri (Na+) và giữ nước như thuốc chống viêm không steroid có thể làm giảm tác dụng điều trị của clonidin.\n\nAmitriptylin kết hợp với clonidin làm tăng biểu hiện tổn thương giác mạc ở chuột cống.",
+      "heading_block": "b0120",
       "blocks": [
         {
           "type": "text",
-          "text": "Những thuốc chống trầm cảm 3 vòng đối kháng với tác dụng gây hạ huyết áp của clonidin.\n\nNhững thuốc chẹn beta có thể làm tăng khả năng chậm nhịp tim ở người đang dùng clonidin và có thể làm tăng nguy cơ tăng huyết áp hồi ứng nặng khi ngừng thuốc, do đó phải ngừng thuốc chẹn beta trong ít ngày (7 - 10 ngày) trước khi bắt đầu điều trị với clonidin.\n\nVì clonidin gây chậm nhịp tim và ức chế dẫn truyền nhĩ thất nên phải hết sức thận trọng khi phối hợp với guanethidin, thuốc chẹn kênh calci, glycosid tim. Nhịp chậm xoang dẫn đến nhập viện và đặt máy tạo nhịp tim đã được báo cáo liên quan đến việc sử dụng đồng thời clonidin với diltiazem hoặc verapamil.\n\nKhông thể loại trừ việc dùng đồng thời clonidin với thuốc chẹn beta sẽ gây ra hoặc làm tăng các rối loạn mạch máu ngoại vi.\n\nCác thuốc có đặc tính chẹn receptor alpha2, ví dụ như mirtazapin, có thể loại bỏ tác dụng qua trung gian receptor alpha2 của clonidin theo cách phụ thuộc liều.\n\nNhững thuốc chống trầm cảm ba vòng làm tăng nguy cơ của đáp ứng tăng huyết áp khi ngừng clonidin đột ngột.\n\nNhững thuốc giảm đau gây ngủ có thể làm tăng tác dụng gây hạ huyết áp của clonidin. Ethanol và barbiturat có thể làm tăng sự ức chế hệ TKTW.\n\nTiêm ngoài màng cứng clonidin có thể kéo dài tác dụng phong bế cảm giác và vận động của những thuốc gây tê.\n\nClonidin có thể làm tăng tác dụng của alcol và thuốc ức chế TKTW.\n\nDựa trên những quan sát ở bệnh nhân trong tình trạng mê sảng do rượu, liều cao clonidin tiêm tĩnh mạch có thể làm tăng khả năng gây loạn nhịp tim (kéo dài QT, rung thất) của liều cao haloperidol tiêm tĩnh mạch. Mối quan hệ nhân quả và sự phù hợp đối với điều trị hạ huyết áp chưa được thiết lập.\n\nClonidin có tác dụng hiệp đồng với các thuốc điều trị tăng huyết áp khác nên khi phối hợp cần phải chỉnh liều cẩn thận.\n\nCác thuốc làm tăng huyết áp hoặc có tác dụng giữ ion natri (Na+) và giữ nước như thuốc chống viêm không steroid có thể làm giảm tác dụng điều trị của clonidin.\n\nAmitriptylin kết hợp với clonidin làm tăng biểu hiện tổn thương giác mạc ở chuột cống."
+          "text": "Những thuốc chống trầm cảm 3 vòng đối kháng với tác dụng gây hạ huyết áp của clonidin.",
+          "block_id": "b0121"
+        },
+        {
+          "type": "text",
+          "text": "Những thuốc chẹn beta có thể làm tăng khả năng chậm nhịp tim ở người đang dùng clonidin và có thể làm tăng nguy cơ tăng huyết áp hồi ứng nặng khi ngừng thuốc, do đó phải ngừng thuốc chẹn beta trong ít ngày (7 - 10 ngày) trước khi bắt đầu điều trị với clonidin.",
+          "block_id": "b0122"
+        },
+        {
+          "type": "text",
+          "text": "Vì clonidin gây chậm nhịp tim và ức chế dẫn truyền nhĩ thất nên phải hết sức thận trọng khi phối hợp với guanethidin, thuốc chẹn kênh calci, glycosid tim. Nhịp chậm xoang dẫn đến nhập viện và đặt máy tạo nhịp tim đã được báo cáo liên quan đến việc sử dụng đồng thời clonidin với diltiazem hoặc verapamil.",
+          "block_id": "b0123"
+        },
+        {
+          "type": "text",
+          "text": "Không thể loại trừ việc dùng đồng thời clonidin với thuốc chẹn beta sẽ gây ra hoặc làm tăng các rối loạn mạch máu ngoại vi.",
+          "block_id": "b0124"
+        },
+        {
+          "type": "text",
+          "text": "Các thuốc có đặc tính chẹn receptor alpha2, ví dụ như mirtazapin, có thể loại bỏ tác dụng qua trung gian receptor alpha2 của clonidin theo cách phụ thuộc liều.",
+          "block_id": "b0125"
+        },
+        {
+          "type": "text",
+          "text": "Những thuốc chống trầm cảm ba vòng làm tăng nguy cơ của đáp",
+          "block_id": "b0126"
+        },
+        {
+          "type": "text",
+          "text": "ứng tăng huyết áp khi ngừng clonidin đột ngột.",
+          "block_id": "b0127"
+        },
+        {
+          "type": "text",
+          "text": "Những thuốc giảm đau gây ngủ có thể làm tăng tác dụng gây hạ huyết áp của clonidin. Ethanol và barbiturat có thể làm tăng sự ức chế hệ TKTW.",
+          "block_id": "b0128"
+        },
+        {
+          "type": "text",
+          "text": "Tiêm ngoài màng cứng clonidin có thể kéo dài tác dụng phong bế cảm giác và vận động của những thuốc gây tê.",
+          "block_id": "b0129"
+        },
+        {
+          "type": "text",
+          "text": "Clonidin có thể làm tăng tác dụng của alcol và thuốc ức chế TKTW.",
+          "block_id": "b0130"
+        },
+        {
+          "type": "text",
+          "text": "Dựa trên những quan sát ở bệnh nhân trong tình trạng mê sảng do rượu, liều cao clonidin tiêm tĩnh mạch có thể làm tăng khả năng gây loạn nhịp tim (kéo dài QT, rung thất) của liều cao haloperidol tiêm tĩnh mạch. Mối quan hệ nhân quả và sự phù hợp đối với điều trị hạ huyết áp chưa được thiết lập.",
+          "block_id": "b0131"
+        },
+        {
+          "type": "text",
+          "text": "Clonidin có tác dụng hiệp đồng với các thuốc điều trị tăng huyết áp khác nên khi phối hợp cần phải chỉnh liều cẩn thận.",
+          "block_id": "b0132"
+        },
+        {
+          "type": "text",
+          "text": "Các thuốc làm tăng huyết áp hoặc có tác dụng giữ ion natri (Na+) và giữ nước như thuốc chống viêm không steroid có thể làm giảm tác dụng điều trị của clonidin.",
+          "block_id": "b0133"
+        },
+        {
+          "type": "text",
+          "text": "Amitriptylin kết hợp với clonidin làm tăng biểu hiện tổn thương giác mạc ở chuột cống.",
+          "block_id": "b0134"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "qua-lieu-va-xu-tri",
       "title": "Quá liều và xử trí",
-      "content": "Triệu chứng: Tăng huyết áp có thể xuất hiện sớm và có thể sau đó là hạ huyết áp, nhịp tim chậm, ức chế hô hấp, hạ thân nhiệt, buồn ngủ, giảm hoặc không có phản xạ, yếu, khó chịu và co đồng tử. Tần suất ức chế TKTW ở trẻ em có thể cao hơn so với người lớn. Dùng quá liều lượng lớn có thể gây ra giảm dẫn truyền tim có thể hồi phục hoặc rối loạn nhịp tim, ngừng thở, hôn mê và co giật. Các dấu hiệu và triệu chứng của quá liều thường xảy ra trong vòng 30 phút đến hai giờ sau khi phơi nhiễm với thuốc. Chỉ cần 0,1 mg clonidin đã tạo ra các dấu hiệu ngộ độc ở trẻ em.\n\nXử trí: Không có thuốc giải độc đặc hiệu. Quá liều clonidin có thể nhanh chóng dẫn đến ức chế TKTW; do đó, gây nôn bằng sirô ipecac không được khuyến cáo. Rửa dạ dày có thể được chỉ định khi mới uống phải gần đây và/hoặc uống nhiều. Sử dụng than hoạt và/hoặc thuốc tẩy có thể có lợi. Chăm sóc hỗ trợ có thể bao gồm atropin sulfat đối với nhịp tim chậm, dịch truyền tĩnh mạch và/hoặc thuốc vận mạch đối với hạ huyết áp và thuốc giãn mạch cho tăng huyết áp. Có thể dùng naloxon để điều trị suy hô hấp do clonidin, hạ huyết áp và/hoặc hôn mê; nên theo dõi huyết áp vì việc sử dụng naloxon đôi khi dẫn đến tăng huyết áp nghịch thường. Lọc máu không có khả năng tăng cường thải trừ clonidin một cách đáng kể.",
+      "heading_block": "b0135",
       "blocks": [
         {
           "type": "text",
-          "text": "Triệu chứng: Tăng huyết áp có thể xuất hiện sớm và có thể sau đó là hạ huyết áp, nhịp tim chậm, ức chế hô hấp, hạ thân nhiệt, buồn ngủ, giảm hoặc không có phản xạ, yếu, khó chịu và co đồng tử. Tần suất ức chế TKTW ở trẻ em có thể cao hơn so với người lớn. Dùng quá liều lượng lớn có thể gây ra giảm dẫn truyền tim có thể hồi phục hoặc rối loạn nhịp tim, ngừng thở, hôn mê và co giật. Các dấu hiệu và triệu chứng của quá liều thường xảy ra trong vòng 30 phút đến hai giờ sau khi phơi nhiễm với thuốc. Chỉ cần 0,1 mg clonidin đã tạo ra các dấu hiệu ngộ độc ở trẻ em.\n\nXử trí: Không có thuốc giải độc đặc hiệu. Quá liều clonidin có thể nhanh chóng dẫn đến ức chế TKTW; do đó, gây nôn bằng sirô ipecac không được khuyến cáo. Rửa dạ dày có thể được chỉ định khi mới uống phải gần đây và/hoặc uống nhiều. Sử dụng than hoạt và/hoặc thuốc tẩy có thể có lợi. Chăm sóc hỗ trợ có thể bao gồm atropin sulfat đối với nhịp tim chậm, dịch truyền tĩnh mạch và/hoặc thuốc vận mạch đối với hạ huyết áp và thuốc giãn mạch cho tăng huyết áp. Có thể dùng naloxon để điều trị suy hô hấp do clonidin, hạ huyết áp và/hoặc hôn mê; nên theo dõi huyết áp vì việc sử dụng naloxon đôi khi dẫn đến tăng huyết áp nghịch thường. Lọc máu không có khả năng tăng cường thải trừ clonidin một cách đáng kể."
+          "text": "Triệu chứng: Tăng huyết áp có thể xuất hiện sớm và có thể sau đó là hạ huyết áp, nhịp tim chậm, ức chế hô hấp, hạ thân nhiệt, buồn ngủ, giảm hoặc không có phản xạ, yếu, khó chịu và co đồng tử. Tần suất ức chế TKTW ở trẻ em có thể cao hơn so với người lớn. Dùng quá liều lượng lớn có thể gây ra giảm dẫn truyền tim có thể hồi phục hoặc rối loạn nhịp tim, ngừng thở, hôn mê và co giật. Các dấu hiệu và triệu chứng của quá liều thường xảy ra trong vòng 30 phút đến hai giờ sau khi phơi nhiễm với thuốc. Chỉ cần 0,1 mg clonidin đã tạo ra các dấu hiệu ngộ độc ở trẻ em.",
+          "block_id": "b0136"
+        },
+        {
+          "type": "text",
+          "text": "Xử trí: Không có thuốc giải độc đặc hiệu. Quá liều clonidin có thể nhanh chóng dẫn đến ức chế TKTW; do đó, gây nôn bằng sirô ipecac không được khuyến cáo. Rửa dạ dày có thể được chỉ định khi mới uống phải gần đây và/hoặc uống nhiều. Sử dụng than hoạt và/hoặc thuốc tẩy có thể có lợi. Chăm sóc hỗ trợ có thể bao gồm atropin sulfat đối với nhịp tim chậm, dịch truyền tĩnh mạch và/hoặc thuốc vận mạch đối với hạ huyết áp và thuốc giãn mạch cho tăng huyết áp. Có thể dùng naloxon để điều trị suy hô hấp do clonidin, hạ huyết áp và/hoặc hôn mê; nên theo dõi huyết áp vì việc sử dụng naloxon đôi khi dẫn đến tăng huyết áp nghịch thường. Lọc máu không có khả năng tăng cường thải trừ clonidin một cách đáng kể.",
+          "block_id": "b0137"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "cap-nhat-lan-cuoi",
       "title": "Cập nhật lần cuối",
-      "content": "2020.",
+      "heading_block": "b0138",
       "blocks": [
         {
           "type": "text",
-          "text": "2020."
+          "text": "2020.",
+          "block_id": "b0138"
         }
-      ],
-      "subsections": []
+      ]
     }
   ],
-  "tables": [],
   "quality": {
-    "status": "source-layout-rebuilt-v10.1-source-paragraph-boundaries",
-    "pdf_text_order": "left-column-then-right-column; visual line flow",
-    "paragraph_policy": "Paragraph boundaries are source-derived and stored only as blank lines. The client preserves those boundaries exactly; it must not create a new paragraph from label words such as “Trẻ em:” or “Người lớn:”. A lower-case continuation fragment is merged only when it follows a non-terminal source fragment; table footnotes remain separate. No client-side anchor or length-based sentence splitter is allowed.",
-    "table_policy": "source-table image inserted by PDF page/column/y position; table-cell text excluded from prose",
-    "validation": {
-      "raw_newline_inside_paragraph": false,
-      "table_count": 0,
-      "section_count": 16,
-      "client_anchor_resegmentation_disabled": true,
-      "client_length_sentence_chunking_disabled": true
-    }
+    "block_count": 138,
+    "heading_count": 13,
+    "subheading_count": 10,
+    "paragraph_count": 114,
+    "list_count": 0,
+    "table_count": 0,
+    "figure_count": 0,
+    "note_count": 1,
+    "page_count": 3
+  },
+  "tables": [],
+  "legacy_compat": {
+    "sections": "generated from v11 blocks for v10.4.5.39 renderer/chatbot compatibility"
   }
 }

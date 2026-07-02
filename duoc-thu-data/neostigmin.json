@@ -1,10 +1,9 @@
 {
-  "schema_version": "10.1-source-paragraph-boundaries",
+  "schema_version": "11.0.0",
   "id": "neostigmin",
   "title": "Neostigmin",
   "aliases": [
-    "neostigmin",
-    "neostigmin metylsulfat"
+    "neostigmin"
   ],
   "source": {
     "book": "Dược thư Quốc gia Việt Nam",
@@ -27,224 +26,4544 @@
       "boundary_method": "physical-source-title-band"
     }
   },
-  "sections": [
+  "parser": {
+    "name": "medplus-duoc-thu-v11-structured-pdf-parser",
+    "method": "PyMuPDF span -> line -> block",
+    "content_source": "Duocthu2023.pdf",
+    "old_json_usage": "id/title/page-boundary metadata and existing table asset path only; old content is not used",
+    "column_order": "left column -> right column -> next page",
+    "block_model": [
+      "heading",
+      "subheading",
+      "paragraph",
+      "list",
+      "table",
+      "figure",
+      "note"
+    ],
+    "table_policy": "no OCR; preserve existing duoc-thu-assets/<id>/pXXXX-tXX.png image_path"
+  },
+  "blocks": [
     {
-      "id": "thong-tin-au-chuyen-luan",
-      "title": "Thông tin đầu chuyên luận",
-      "content": "NEOSTIGMIN (Synstigmin)",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "NEOSTIGMIN (Synstigmin)"
-        }
+      "id": "b0001",
+      "type": "heading",
+      "level": 1,
+      "text": "NEOSTIGMIN",
+      "page": 1183,
+      "printed_page": 1189,
+      "column": 1,
+      "bbox": [
+        401.09,
+        599.67,
+        467.21,
+        613.51
       ],
-      "subsections": []
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "NEOSTIGMIN",
+          "bbox": [
+            401.09,
+            599.67,
+            467.21,
+            613.51
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
     },
     {
-      "id": "ten-chung-quoc-te",
-      "title": "Tên chung quốc tế",
-      "content": "Neostigmine.\n\nMã ATC: N07AA01, S01EB06.\n\nLoại thuốc: Thuốc kháng cholinesterase, thuốc tác dụng giống thần kinh đối giao cảm.",
+      "id": "b0002",
+      "type": "heading",
+      "level": 2,
+      "text": "(Synstigmin)",
+      "page": 1183,
+      "printed_page": 1189,
+      "column": 1,
+      "bbox": [
+        409.55,
+        615.18,
+        458.7,
+        627.64
+      ],
+      "style": {
+        "font_size": 9.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "MinionPro-Bold"
+        ]
+      },
+      "spans": [
+        {
+          "text": "(Synstigmin)",
+          "bbox": [
+            409.55,
+            615.18,
+            458.7,
+            627.64
+          ],
+          "font": "MinionPro-Bold",
+          "fontsize": 9.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0003",
+      "type": "paragraph",
+      "text": "Tên chung quốc tế: Neostigmine.",
+      "page": 1183,
+      "printed_page": 1189,
+      "column": 1,
+      "bbox": [
+        308.17,
+        637.38,
+        439.33,
+        650.53
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tên chung quốc tế: ",
+          "bbox": [
+            308.17,
+            637.38,
+            388.4,
+            650.53
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "Neostigmine.",
+          "bbox": [
+            388.4,
+            637.53,
+            439.33,
+            650.33
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0004",
+      "type": "paragraph",
+      "text": "Mã ATC: N07AA01, S01EB06.",
+      "page": 1183,
+      "printed_page": 1189,
+      "column": 1,
+      "bbox": [
+        308.17,
+        649.05,
+        431.76,
+        662.2
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mã ATC: ",
+          "bbox": [
+            308.17,
+            649.05,
+            348.63,
+            662.2
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "N07AA01, S01EB06.",
+          "bbox": [
+            348.63,
+            649.2,
+            431.76,
+            662.0
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0005",
+      "type": "paragraph",
+      "text": "Loại thuốc: Thuốc kháng cholinesterase, thuốc tác dụng giống thần kinh đối giao cảm.",
+      "page": 1183,
+      "printed_page": 1189,
+      "column": 1,
+      "bbox": [
+        308.17,
+        660.72,
+        562.51,
+        685.34
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0006",
+      "type": "heading",
+      "level": 2,
+      "text": "Dạng thuốc và hàm lượng",
+      "page": 1183,
+      "printed_page": 1189,
+      "column": 1,
+      "bbox": [
+        308.17,
+        687.56,
+        413.09,
+        700.71
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dạng thuốc và hàm lượng",
+          "bbox": [
+            308.17,
+            687.56,
+            413.09,
+            700.71
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0007",
+      "type": "paragraph",
+      "text": "Ống tiêm (neostigmin methyl sulfat): 0,5 mg/ml (ống tiêm 1 ml, 10 ml); 1 mg/ml (ống tiêm 1 ml, 10 ml); 2,5 mg/ml (ống tiêm 1 ml, 5 ml).",
+      "page": 1183,
+      "printed_page": 1189,
+      "column": 1,
+      "bbox": [
+        308.17,
+        699.88,
+        562.54,
+        737.02
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0008",
+      "type": "paragraph",
+      "text": "Bơm tiêm có sẵn thuốc tiêm tĩnh mạch (neostigmin methylsulfat):",
+      "page": 1183,
+      "printed_page": 1189,
+      "column": 1,
+      "bbox": [
+        308.17,
+        736.39,
+        562.54,
+        749.19
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Bơm tiêm có sẵn thuốc tiêm tĩnh mạch (neostigmin methylsulfat): ",
+          "bbox": [
+            308.17,
+            736.39,
+            562.54,
+            749.19
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0009",
+      "type": "paragraph",
+      "text": "1 mg/ml (bơm tiêm 3 ml).",
+      "page": 1183,
+      "printed_page": 1189,
+      "column": 1,
+      "bbox": [
+        308.17,
+        748.56,
+        409.34,
+        761.36
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "1 mg/ml (bơm tiêm 3 ml).",
+          "bbox": [
+            308.17,
+            748.56,
+            409.34,
+            761.36
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0010",
+      "type": "paragraph",
+      "text": "Viên nén (neostigmin bromid): 15 mg.",
+      "page": 1183,
+      "printed_page": 1189,
+      "column": 1,
+      "bbox": [
+        308.17,
+        760.73,
+        454.32,
+        773.53
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Viên nén (neostigmin bromid): 15 mg.",
+          "bbox": [
+            308.17,
+            760.73,
+            454.32,
+            773.53
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0011",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược lực học",
+      "page": 1183,
+      "printed_page": 1189,
+      "column": 1,
+      "bbox": [
+        308.17,
+        775.75,
+        361.77,
+        788.9
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược lực học",
+          "bbox": [
+            308.17,
+            775.75,
+            361.77,
+            788.9
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0012",
+      "type": "paragraph",
+      "text": "Neostigmin là thuốc kháng cholinesterase. Thuốc làm giảm quá",
+      "page": 1183,
+      "printed_page": 1189,
+      "column": 1,
+      "bbox": [
+        308.17,
+        788.07,
+        562.5,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Neostigmin là thuốc kháng cholinesterase. Thuốc làm giảm quá ",
+          "bbox": [
+            308.17,
+            788.07,
+            562.5,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0013",
+      "type": "paragraph",
+      "text": "trình thủy phân acetylcholin bằng cách cạnh tranh thuận nghịch với acetylcholin để gắn vào enzym acetylcholinesterase. Phức hợp neostigmin-enzym bị thủy phân với tốc độ chậm hơn nhiều so với phức hợp acetylcholin-enzym. Kết quả là, acetylcholin sẽ bị tích lũy ở synap cholinergic khiến tác dụng của chất này trên synap tăng cao và kéo dài. Nồng độ cao của acetylcholin ở các điểm nối thần kinh cơ có khả năng cạnh tranh và đảo ngược tác dụng của các thuốc giãn cơ hoạt động theo cơ chế phong bế thần kinh cơ không khử cực.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 0,
+      "bbox": [
+        35.43,
+        63.32,
+        289.77,
+        173.98
+      ],
+      "source": {
+        "line_count": 9
+      }
+    },
+    {
+      "id": "b0014",
+      "type": "paragraph",
+      "text": "Trên bệnh nhân nhược cơ, neostigmin có tác dụng làm tăng dẫn truyền thần kinh cơ, cải thiện triệu chứng bệnh.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 0,
+      "bbox": [
+        35.43,
+        173.42,
+        289.77,
+        198.45
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0015",
+      "type": "paragraph",
+      "text": "Neostigmin kích thích cả thụ thể muscarinic và nicotinic gây đáp ứng cholinergic lan tỏa, bao gồm: co đồng tử, tăng trương lực cơ trơn ở ruột và cơ xương, co thắt phế quản và niệu quản, chậm nhịp tim, kích thích tăng tiết nước bọt và mồ hôi. Ngoài ra, neostigmin còn có tác dụng giống acetylcholin trực tiếp trên cơ xương.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 0,
+      "bbox": [
+        35.43,
+        197.89,
+        289.77,
+        259.61
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0016",
+      "type": "paragraph",
+      "text": "Do có cấu trúc amoni bậc 4, neostigmin liều trung bình không qua được hàng rào máu - não để có tác dụng trên hệ TKTW. Tuy vậy, liều cực cao gây kích thích hệ TKTW và ức chế hệ TKTW ngay sau đó. Ngoài tác dụng ức chế thần kinh - cơ khử cực, ở mức liều này, thuốc còn có thể gây suy hô hấp, liệt và tử vong.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 0,
+      "bbox": [
+        35.43,
+        259.05,
+        289.78,
+        320.78
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0017",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược động học",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 0,
+      "bbox": [
+        35.43,
+        323.06,
+        96.54,
+        336.21
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược động học",
+          "bbox": [
+            35.43,
+            323.06,
+            96.54,
+            336.21
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0018",
+      "type": "paragraph",
+      "text": "Hấp thu: Neostigmin ở dạng muối bromid được hấp thu kém qua đường tiêu hóa. Trên bệnh nhân nhược cơ, nhịn đói, sau khi dùng liều 30 mg theo đường uống, chỉ có khoảng 1 - 2% lượng thuốc được hấp thu. Nồng độ đỉnh đạt được trong 1 - 2 giờ (có sự dao động lớn giữa các cá thể) sau khi dùng đường uống hoặc 30 phút sau khi dùng đường tiêm bắp. Tác dụng của neostigmin trên nhu động ruột bắt đầu trong 10 - 30 phút sau khi dùng đường tiêm và 2 - 4 giờ sau khi dùng đường uống. Sau khi tiêm, tác dụng tối đa của neostigmin đạt được trong 20 - 30 phút. Ở hầu hết bệnh nhân, tác dụng của neostigmin kéo dài trong 2,5 - 4 giờ sau khi tiêm bắp.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 0,
+      "bbox": [
+        35.43,
+        335.45,
+        289.77,
+        458.34
+      ],
+      "source": {
+        "line_count": 10
+      }
+    },
+    {
+      "id": "b0019",
+      "type": "paragraph",
+      "text": "Phân bố: Khoảng 15 - 25% neostigmin liên kết với albumin huyết thanh. Thể tích phân bố từ 0,12 - 1,4 lít/kg. Do có cấu trúc amoni bậc 4 nên neostigmin không qua được nhau thai và không vào sữa mẹ khi dùng liều điều trị. Tuy nhiên, khi dùng với liều cao, không loại trừ khả năng thuốc có thể qua được hàng rào nhau thai vì hiện tượng này đã xảy ra với một thuốc có cấu trúc và hoạt tính tương tự là pyridostigmin.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 0,
+      "bbox": [
+        35.43,
+        457.78,
+        289.77,
+        543.97
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0020",
+      "type": "paragraph",
+      "text": "Chuyển hóa: Neostigmin bị chuyển hóa chủ yếu bởi gan. Các sản phẩm chuyển hóa bao gồm 3-hydroxyphenyltrimethylamoni, 3-hydroxyphenyldimethylamin và dạng liên hợp với glucuronic.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 0,
+      "bbox": [
+        35.43,
+        543.41,
+        289.78,
+        580.67
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0021",
+      "type": "paragraph",
+      "text": "Tại các điểm nối thần kinh cơ, neostigmin bị thủy phân bởi acetylcholinesterase thành 3-hydroxyphenyltrimethylamoni. Hiện chưa rõ về hoạt tính của các chất chuyển hóa. Tuy nhiên, trên động vật, người ta thấy rằng 3-hydroxyphenyltrimethylamoni có hoạt tính tương tự nhưng yếu hơn neostigmin.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 0,
+      "bbox": [
+        35.43,
+        580.11,
+        289.77,
+        641.84
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0022",
+      "type": "paragraph",
+      "text": "Thải trừ: Neostigmin và các dạng chuyển hóa của nó được thải trừ nhờ quá trình bài tiết của các tế bào ống thận. Khoảng 80% liều đơn khi dùng đường tiêm bắp được thải trừ ra ngoài nước tiểu trong 24 giờ, trong đó dạng thuốc không biến đổi chiếm 50%. Độ thanh thải neostigmin giảm trên các bệnh nhân suy thận.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 0,
+      "bbox": [
+        35.43,
+        641.28,
+        289.77,
+        703.0
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0023",
+      "type": "paragraph",
+      "text": "Nửa đời thải trừ của thuốc thay đổi phụ thuộc vào đường dùng và đối tượng. Cụ thể khi dùng liều đơn theo đường tiêm tĩnh mạch, giá trị này dao động trong khoảng 24 - 123 phút; khi dùng theo đường tiêm bắp, nửa đời thải trừ của thuốc dao động trong khoảng 51 - 90 phút; khi dùng đường truyền tĩnh mạch trên 2 phút, nửa đời thải trừ của thuốc là 39 phút ở trẻ 2 - 10 tháng, 48 phút ở trẻ 1 - 6 tuổi trong khi ở người trưởng thành khỏe mạnh thời gian này là 67 phút và ở bệnh nhân suy thận là 181 phút.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 0,
+      "bbox": [
+        35.43,
+        702.44,
+        289.77,
+        800.87
+      ],
+      "source": {
+        "line_count": 8
+      }
+    },
+    {
+      "id": "b0024",
+      "type": "heading",
+      "level": 2,
+      "text": "Chỉ định",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        63.02,
+        335.03,
+        76.16
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chỉ định",
+          "bbox": [
+            299.39,
+            63.02,
+            335.03,
+            76.16
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0025",
+      "type": "subheading",
+      "level": 3,
+      "text": "Neostigmin bromid:",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        75.36,
+        375.3,
+        88.0
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Neostigmin bromid:",
+          "bbox": [
+            299.39,
+            75.36,
+            375.3,
+            88.0
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0026",
+      "type": "paragraph",
+      "text": "Bệnh nhược cơ.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        87.23,
+        359.7,
+        100.03
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Bệnh nhược cơ.",
+          "bbox": [
+            299.39,
+            87.23,
+            359.7,
+            100.03
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0027",
+      "type": "paragraph",
+      "text": "Liệt ruột và bí đái sau phẫu thuật (sau khi loại trừ tắc do cơ học).",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        99.26,
+        545.97,
+        112.06
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Liệt ruột và bí đái sau phẫu thuật (sau khi loại trừ tắc do cơ học).",
+          "bbox": [
+            299.39,
+            99.26,
+            545.97,
+            112.06
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0028",
+      "type": "subheading",
+      "level": 3,
+      "text": "Neostigmin methylsulfat:",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        111.46,
+        394.65,
+        124.09
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Neostigmin methylsulfat:",
+          "bbox": [
+            299.39,
+            111.46,
+            394.65,
+            124.09
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0029",
+      "type": "paragraph",
+      "text": "Giải độc khi dùng quá liều thuốc giãn cơ hoạt động theo cơ chế phong bế thần kinh cơ không khử cực.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        123.33,
+        553.72,
+        148.16
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0030",
+      "type": "paragraph",
+      "text": "Bệnh nhược cơ (chẩn đoán và điều trị).",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        147.39,
+        448.08,
+        160.19
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Bệnh nhược cơ (chẩn đoán và điều trị).",
+          "bbox": [
+            299.39,
+            147.39,
+            448.08,
+            160.19
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0031",
+      "type": "paragraph",
+      "text": "Liệt ruột và bí đái sau phẫu thuật (sau khi loại trừ tắc do cơ học).",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        159.43,
+        545.97,
+        172.22
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Liệt ruột và bí đái sau phẫu thuật (sau khi loại trừ tắc do cơ học).",
+          "bbox": [
+            299.39,
+            159.43,
+            545.97,
+            172.22
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0032",
+      "type": "paragraph",
+      "text": "Nhịp nhanh trên thất kịch phát.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        171.46,
+        419.97,
+        184.26
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Nhịp nhanh trên thất kịch phát. ",
+          "bbox": [
+            299.39,
+            171.46,
+            419.97,
+            184.26
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0033",
+      "type": "heading",
+      "level": 2,
+      "text": "Chống chỉ định",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        186.34,
+        361.69,
+        199.49
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chống chỉ định",
+          "bbox": [
+            299.39,
+            186.34,
+            361.69,
+            199.49
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0034",
+      "type": "paragraph",
+      "text": "Có tiền sử quá mẫn với neostigmin và bromid (ion bromid từ neostigmin bromid có thể gây phản ứng dị ứng).",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        198.52,
+        553.72,
+        223.35
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0035",
+      "type": "paragraph",
+      "text": "Tắc ruột và tắc đường tiết niệu nguyên nhân cơ học.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        222.59,
+        499.8,
+        235.38
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tắc ruột và tắc đường tiết niệu nguyên nhân cơ học. ",
+          "bbox": [
+            299.39,
+            222.59,
+            499.8,
+            235.38
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0036",
+      "type": "paragraph",
+      "text": "Viêm màng bụng.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        234.62,
+        367.16,
+        247.42
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Viêm màng bụng.",
+          "bbox": [
+            299.39,
+            234.62,
+            367.16,
+            247.42
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0037",
+      "type": "heading",
+      "level": 2,
+      "text": "Thận trọng",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        249.5,
+        345.57,
+        262.65
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thận trọng",
+          "bbox": [
+            299.39,
+            249.5,
+            345.57,
+            262.65
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ],
+      "note_role": "than trong",
+      "v11_fix": "note_title_reclassified_as_heading_alpha5"
+    },
+    {
+      "id": "b0038",
+      "type": "paragraph",
+      "text": "Việc sử dụng neostigmin để giải độc thuốc giãn cơ phải do bác sĩ đã được đào tạo và có kinh nghiệm trong việc sử dụng những loại thuốc tương tự đảm nhiệm. Bệnh nhân cần phải được ở trong môi trường thông khí tốt và có đường thở thông thoáng trước khi dùng neostigmin và điều kiện này cần được duy trì cho đến khi chức năng hô hấp được phục hồi hoàn toàn. Cần theo dõi liên tục chức năng thần kinh cơ để đảm bảo sự phục hồi đầy đủ của hệ thần kinh cơ. Để chắc chắn có thể loại bỏ nguy cơ giãn cơ tồn dư, cần kết hợp một phương pháp theo dõi có tính định lượng với các theo dõi lâm sàng khác. Hệ thần kinh cơ đánh giá là phục hồi đầy đủ khi chỉ số TOF đạt 0,9 và bệnh nhân hô hấp được bình thường.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        261.68,
+        553.72,
+        394.8
+      ],
+      "source": {
+        "line_count": 11
+      }
+    },
+    {
+      "id": "b0039",
+      "type": "paragraph",
+      "text": "Do nguy cơ gây co thắt phế quản và hen, neostigmin cần được dùng hết sức thận trọng đối với các bệnh nhân hen. Nhu động ruột gây ra do neostigmin có thể phá chỗ mới nối hồi trực tràng nếu thuốc cho sau phẫu thuật nên cũng cần phải hết sức thận trọng khi dùng neostigmin cho người bệnh mới phẫu thuật ruột hoặc bàng quang.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        394.04,
+        553.72,
+        454.97
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0040",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ mang thai",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        457.05,
+        374.6,
+        470.2
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ mang thai",
+          "bbox": [
+            299.39,
+            457.05,
+            374.6,
+            470.2
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0041",
+      "type": "paragraph",
+      "text": "Có rất ít dữ liệu về tác động của neostigmin trên thai nhi. Hiện vẫn chưa biết rõ liệu neostigmin có thể gây tổn hại cho thai nhi hay khả năng sinh nở của phụ nữ hay không. Tuy nhiên, thuốc kháng cholinesterase có thể gây kích thích tử cung và gây đẻ non khi tiêm tĩnh mạch cho người mang thai thời kỳ sắp sinh. Vì vậy, khi dùng neostigmin để điều trị nhược cơ cho phụ nữ mang thai, phải cân nhắc giữa lợi ích điều trị và nguy cơ có thể xảy ra (nếu cần sử dụng thuốc kháng cholinesterase để điều trị cho phụ nữ mang thai thì vẫn nên ưu tiên những hoạt chất khác).",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        469.23,
+        553.72,
+        578.29
+      ],
+      "source": {
+        "line_count": 9
+      }
+    },
+    {
+      "id": "b0042",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ cho con bú",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        580.37,
+        377.5,
+        593.52
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ cho con bú",
+          "bbox": [
+            299.39,
+            580.37,
+            377.5,
+            593.52
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0043",
+      "type": "paragraph",
+      "text": "Hiện vẫn chưa rõ là neostigmin có được bài tiết vào sữa hay không.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        592.56,
+        553.71,
+        605.35
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Hiện vẫn chưa rõ là neostigmin có được bài tiết vào sữa hay không. ",
+          "bbox": [
+            299.39,
+            592.56,
+            553.71,
+            605.35
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0044",
+      "type": "paragraph",
+      "text": "Rất ít bằng chứng lâm sàng và/hoặc kết luận của chuyên gia về nguy cơ cho trẻ sơ sinh khi người mẹ sử dụng neostigmin trong thời kỳ cho con bú. Cần cân nhắc lợi ích và nguy cơ có thể gặp phải khi dùng neostigmin cho phụ nữ cho con bú.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        604.59,
+        553.72,
+        653.48
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0045",
+      "type": "heading",
+      "level": 2,
+      "text": "Tác dụng không mong muốn (ADR)",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        655.57,
+        445.33,
+        668.71
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tác dụng không mong muốn (ADR)",
+          "bbox": [
+            299.39,
+            655.57,
+            445.33,
+            668.71
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0046",
+      "type": "subheading",
+      "level": 3,
+      "text": "Neostigmin bromid",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        667.83,
+        374.61,
+        680.55
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Neostigmin bromid",
+          "bbox": [
+            299.39,
+            667.83,
+            374.61,
+            680.55
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0047",
+      "type": "subheading",
+      "level": 3,
+      "text": "Thường gặp",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        679.94,
+        345.79,
+        692.58
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thường gặp",
+          "bbox": [
+            299.39,
+            679.94,
+            345.79,
+            692.58
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0048",
+      "type": "paragraph",
+      "text": "Tiêu hóa: tăng tiết nước bọt.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        691.81,
+        406.86,
+        704.61
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêu hóa: tăng tiết nước bọt.",
+          "bbox": [
+            299.39,
+            691.81,
+            406.86,
+            704.61
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0049",
+      "type": "paragraph",
+      "text": "Cơ xương: rung giật cơ.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        703.85,
+        390.59,
+        716.64
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cơ xương: rung giật cơ.",
+          "bbox": [
+            299.39,
+            703.85,
+            390.59,
+            716.64
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0050",
+      "type": "subheading",
+      "level": 3,
+      "text": "Nghiêm trọng",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        716.04,
+        351.9,
+        728.68
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Nghiêm trọng",
+          "bbox": [
+            299.39,
+            716.04,
+            351.9,
+            728.68
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0051",
+      "type": "paragraph",
+      "text": "Tim mạch: blốc nhĩ thất, chậm nhịp tim, ngừng tim, loạn nhịp tim.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        727.91,
+        551.34,
+        740.71
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tim mạch: blốc nhĩ thất, chậm nhịp tim, ngừng tim, loạn nhịp tim.",
+          "bbox": [
+            299.39,
+            727.91,
+            551.34,
+            740.71
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0052",
+      "type": "paragraph",
+      "text": "Miễn dịch: phản ứng quá mẫn.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        739.94,
+        415.88,
+        752.74
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Miễn dịch: phản ứng quá mẫn.",
+          "bbox": [
+            299.39,
+            739.94,
+            415.88,
+            752.74
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0053",
+      "type": "paragraph",
+      "text": "Thần kinh: mất ý thức, co giật.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        751.98,
+        416.42,
+        764.77
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thần kinh: mất ý thức, co giật.",
+          "bbox": [
+            299.39,
+            751.98,
+            416.42,
+            764.77
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0054",
+      "type": "subheading",
+      "level": 3,
+      "text": "Chưa xác định được tần suất",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        764.17,
+        409.55,
+        776.8
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chưa xác định được tần suất",
+          "bbox": [
+            299.39,
+            764.17,
+            409.55,
+            776.8
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0055",
+      "type": "paragraph",
+      "text": "Tiêu hóa: buồn nôn, nôn, tiêu chảy, cảm giác chuột rút vùng bụng.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        776.04,
+        551.2,
+        788.84
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêu hóa: buồn nôn, nôn, tiêu chảy, cảm giác chuột rút vùng bụng.",
+          "bbox": [
+            299.39,
+            776.04,
+            551.2,
+            788.84
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0056",
+      "type": "paragraph",
+      "text": "Miễn dịch: ban đỏ.",
+      "page": 1184,
+      "printed_page": 1190,
+      "column": 1,
+      "bbox": [
+        299.39,
+        788.07,
+        371.16,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Miễn dịch: ban đỏ.",
+          "bbox": [
+            299.39,
+            788.07,
+            371.16,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0057",
+      "type": "subheading",
+      "level": 3,
+      "text": "Neostigmin methylsulfat",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        63.24,
+        139.24,
+        75.96
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Neostigmin methylsulfat",
+          "bbox": [
+            43.43,
+            63.24,
+            139.24,
+            75.96
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0058",
+      "type": "subheading",
+      "level": 3,
+      "text": "Thường gặp",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        75.5,
+        89.84,
+        88.14
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thường gặp",
+          "bbox": [
+            43.43,
+            75.5,
+            89.84,
+            88.14
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0059",
+      "type": "paragraph",
+      "text": "Tim mạch: tụt huyết áp.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        87.51,
+        134.14,
+        100.31
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tim mạch: tụt huyết áp.",
+          "bbox": [
+            43.43,
+            87.51,
+            134.14,
+            100.31
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0060",
+      "type": "paragraph",
+      "text": "Tiêu hóa: buồn nôn, nôn.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        99.68,
+        138.62,
+        112.48
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêu hóa: buồn nôn, nôn.",
+          "bbox": [
+            43.43,
+            99.68,
+            138.62,
+            112.48
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0061",
+      "type": "subheading",
+      "level": 3,
+      "text": "Nghiêm trọng",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        112.02,
+        95.95,
+        124.65
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Nghiêm trọng",
+          "bbox": [
+            43.43,
+            112.02,
+            95.95,
+            124.65
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0062",
+      "type": "paragraph",
+      "text": "Tim mạch: blốc nhĩ thất, chậm nhịp tim (> 1%), ngừng tim, loạn nhịp tim.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        124.03,
+        297.77,
+        149.0
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0063",
+      "type": "paragraph",
+      "text": "Thần kinh: mất ý thức, co giật.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        148.37,
+        160.46,
+        161.17
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thần kinh: mất ý thức, co giật.",
+          "bbox": [
+            43.43,
+            148.37,
+            160.46,
+            161.17
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0064",
+      "type": "paragraph",
+      "text": "Miễn dịch: phản ứng quá mẫn, phù mạch, sốc phản vệ.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        160.55,
+        251.48,
+        173.34
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Miễn dịch: phản ứng quá mẫn, phù mạch, sốc phản vệ.",
+          "bbox": [
+            43.43,
+            160.55,
+            251.48,
+            173.34
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0065",
+      "type": "paragraph",
+      "text": "Hô hấp: suy hô hấp, liệt hô hấp.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        172.72,
+        164.55,
+        185.51
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Hô hấp: suy hô hấp, liệt hô hấp.",
+          "bbox": [
+            43.43,
+            172.72,
+            164.55,
+            185.51
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0066",
+      "type": "subheading",
+      "level": 3,
+      "text": "Chưa xác định được tần suất",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        185.05,
+        153.6,
+        197.69
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chưa xác định được tần suất",
+          "bbox": [
+            43.43,
+            185.05,
+            153.6,
+            197.69
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0067",
+      "type": "paragraph",
+      "text": "Tim mạch: nhịp nhanh, viêm tĩnh mạch huyết khối (gặp khi dùng thuốc theo đường truyền tĩnh mạch).",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        197.06,
+        297.76,
+        222.03
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0068",
+      "type": "paragraph",
+      "text": "Tiêu hóa: tiêu chảy, cảm giác chuột rút vùng bụng, tăng tiết nước bọt, khó nuốt, đầy hơi, tăng nhu động ruột (có thể dẫn tới đại tiện không tự chủ).",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        221.41,
+        297.77,
+        258.55
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0069",
+      "type": "paragraph",
+      "text": "Thần kinh: chóng mặt, ngủ gà, khó phát âm, đau đầu.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        257.92,
+        248.45,
+        270.72
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thần kinh: chóng mặt, ngủ gà, khó phát âm, đau đầu. ",
+          "bbox": [
+            43.43,
+            257.92,
+            248.45,
+            270.72
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0070",
+      "type": "paragraph",
+      "text": "Mắt: co đồng tử, tăng tiết nước mắt.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        270.09,
+        180.4,
+        282.89
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mắt: co đồng tử, tăng tiết nước mắt.",
+          "bbox": [
+            43.43,
+            270.09,
+            180.4,
+            282.89
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0071",
+      "type": "paragraph",
+      "text": "Hô hấp: tăng tiết phế quản, co thắt phế quản, khó thở, tăng cường hen.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        282.27,
+        295.42,
+        295.06
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Hô hấp: tăng tiết phế quản, co thắt phế quản, khó thở, tăng cường hen.",
+          "bbox": [
+            43.43,
+            282.27,
+            295.42,
+            295.06
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0072",
+      "type": "paragraph",
+      "text": "Da và các tổ chức dưới da: tăng tiết mồ hôi.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        294.44,
+        209.94,
+        307.23
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Da và các tổ chức dưới da: tăng tiết mồ hôi.",
+          "bbox": [
+            43.43,
+            294.44,
+            209.94,
+            307.23
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0073",
+      "type": "paragraph",
+      "text": "Cơ, xương, khớp: chuột rút, rung giật cơ, co cơ, yếu cơ, đau khớp, co thắt thanh quản Tiết niệu: tiểu tiện không tự chủ.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        306.61,
+        297.75,
+        343.75
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0074",
+      "type": "heading",
+      "level": 2,
+      "text": "Liều lượng và cách dùng",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        345.97,
+        143.61,
+        359.12
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng và cách dùng",
+          "bbox": [
+            43.43,
+            345.97,
+            143.61,
+            359.12
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0075",
+      "type": "subheading",
+      "level": 3,
+      "text": "Cách dùng",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        358.37,
+        88.83,
+        371.1
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Cách dùng ",
+          "bbox": [
+            43.43,
+            358.37,
+            88.83,
+            371.1
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0076",
+      "type": "paragraph",
+      "text": "Neostigmin bromid: Dùng theo đường uống.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        370.47,
+        215.37,
+        383.27
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Neostigmin bromid: Dùng theo đường uống. ",
+          "bbox": [
+            43.43,
+            370.47,
+            215.37,
+            383.27
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0077",
+      "type": "paragraph",
+      "text": "Neostigmin methylsulfat: Dùng theo đường tiêm bắp, tiêm tĩnh mạch chậm (trong khoảng thời gian ít nhất là 1 phút) hoặc tiêm dưới da.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        382.64,
+        297.77,
+        419.78
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0078",
+      "type": "subheading",
+      "level": 3,
+      "text": "Liều lượng",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        419.24,
+        89.59,
+        431.96
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng ",
+          "bbox": [
+            43.43,
+            419.24,
+            89.59,
+            431.96
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0079",
+      "type": "subheading",
+      "level": 3,
+      "text": "Giải độc thuốc giãn cơ:",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        431.49,
+        134.0,
+        444.13
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Giải độc thuốc giãn cơ:",
+          "bbox": [
+            43.43,
+            431.49,
+            134.0,
+            444.13
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0080",
+      "type": "paragraph",
+      "text": "Mức liều của neostigmin cần được tính toán dựa trên yêu cầu và đáp ứng của từng cá thể. Cần sử dụng máy theo dõi thần kinh ngoại biên TOF để quyết định khi nào cần dùng neostigmin và khi nào cần tăng liều thuốc này.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        443.5,
+        297.76,
+        492.82
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0081",
+      "type": "paragraph",
+      "text": "Người lớn: Để giải độc thuốc giãn cơ sau phẫu thuật, thông thường, với mức liều neostigmin methylsulfat là 0,03 - 0,07 mg/kg tiêm tĩnh mạch chậm sẽ đạt được chỉ số TOF = 0,9 trong vòng 20 - 30 phút sau khi tiêm. Việc lựa chọn mức liều thích hợp dựa trên nửa đời thải trừ của thuốc giãn cơ, mức độ phục hồi tự phát và yêu cầu về tốc độ phục hồi. Liều 0,03 mg/kg được sử dụng để giải độc những thuốc giãn cơ có nửa đời thải trừ ngắn (ví dụ: rocuronium) hoặc khi đáp ứng co cơ đầu tiên với kích thích TOF thực sự > 10% giá trị nền hoặc khi có đáp ứng co cơ thứ 2. Liều 0,07 mg/kg được sử dụng để giải độc những thuốc giãn cơ có nửa đời thải trừ thải dài (ví dụ: vecuronium, pancuronium) hoặc khi đáp ứng co cơ đầu tiên với kích thích TOF yếu (không thực sự > 10% giá trị nền) hay khi cần phục hồi nhanh. Ngoài cách tính liều dựa trên cân nặng, neostigmin cũng được dùng theo liều cố định là 0,5 - 2,5 mg. Mức liều tối đa của thuốc là 0,07 mg/kg hoặc 5 mg.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        492.44,
+        297.77,
+        679.15
+      ],
+      "source": {
+        "line_count": 15
+      }
+    },
+    {
+      "id": "b0082",
+      "type": "paragraph",
+      "text": "Trẻ em: liều của chuyên gia khuyên dùng là: 0,025 - 0,1 mg/kg cho trẻ sơ sinh và 0,025 - 0,08 mg/kg cho trẻ nhỏ. Liều tối đa cho trẻ em là 2,5 mg.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        678.52,
+        297.77,
+        715.66
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0083",
+      "type": "paragraph",
+      "text": "Để chống lại tác dụng muscarinic của neostigmin methylsulfat, cho 0,6 - 1,2 mg atropin sulfat hoặc 0,2 - 0,6 mg glycopyrolat (khoảng 0,2 mg glycopyrolat cho mỗi 1 mg neostigmin methylsulfat) tiêm tĩnh mạch cùng (trong 2 bơm tiêm khác nhau) hoặc 1 vài phút trước khi tiêm neostigmin methylsulfat. Khi có tim đập chậm, phải cho tiêm tĩnh mạch thuốc kháng muscarin trước neostigmin methylsulfat để tăng tần số tim lên khoảng 80 lần/phút.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 0,
+      "bbox": [
+        43.43,
+        715.04,
+        297.77,
+        800.87
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0084",
+      "type": "subheading",
+      "level": 3,
+      "text": "Bệnh nhược cơ:",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        63.49,
+        368.08,
+        76.13
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Bệnh nhược cơ:",
+          "bbox": [
+            307.39,
+            63.49,
+            368.08,
+            76.13
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0085",
+      "type": "paragraph",
+      "text": "Liều chẩn đoán: Với người lớn, liều neostigmin methylsulfat là 0,022 mg/kg, tiêm bắp 1 lần duy nhất.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        75.36,
+        561.72,
+        100.18
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0086",
+      "type": "paragraph",
+      "text": "Atropin 0,011 mg/kg nên được tiêm bắp cho bệnh nhân trước 30 phút hoặc tiêm tĩnh mạch ngay trước khi tiêm neostigmin sulfat.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        99.42,
+        561.72,
+        124.24
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0087",
+      "type": "paragraph",
+      "text": "Nếu có phản ứng cholinergic phải ngừng test và dùng 0,4 - 0,6 mg atropin tĩnh mạch.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        123.48,
+        561.72,
+        148.3
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0088",
+      "type": "paragraph",
+      "text": "Nếu kết quả không rõ ràng, làm lại test 1 ngày khác với neostigmin methylsulfat 0,031 mg/kg, tiêm bắp 1 lần duy nhất; atropin 0,016 mg/kg được tiêm bắp trước đó 30 phút. Với trẻ em < 2 tuổi, liều neostigmin methylsulfat là 0,04 mg/kg, tiêm bắp 1 lần duy nhất. Bệnh nhi nên được sử dụng atropin tiêm tĩnh mạch trước khi dùng neostigmin. Nếu kết quả không rõ ràng hoặc âm tính có thể lặp lại 1 lần nữa sau 4 giờ. Liều thông thường từ 0,5 - 1,5 mg.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        147.53,
+        561.72,
+        232.5
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0089",
+      "type": "paragraph",
+      "text": "Chú ý: Cần ngừng tất cả các thuốc kháng cholinesterase trước khi chẩn đoán 8 giờ.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        231.74,
+        561.74,
+        256.56
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0090",
+      "type": "paragraph",
+      "text": "Liều điều trị:",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        255.8,
+        361.73,
+        268.59
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Liều điều trị:  ",
+          "bbox": [
+            307.39,
+            255.8,
+            361.73,
+            268.59
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0091",
+      "type": "paragraph",
+      "text": "Với neostigmin bromid: Người lớn: Liều khởi đầu: 15 mg, 3 lần/ ngày. Liều thông thường: 15 - 375 mg/ngày, chia nhiều lần (trung bình 150 mg/ngày, chia nhiều lần). Khoảng cách giữa các liều phụ thuộc vào đáp ứng của bệnh nhân với mức liều cao được dành cho lúc mệt nhất (như 30 phút trước khi ăn). Trẻ em: Liều cần được cá thể hóa, trung bình từ 0,3 - 2 mg/kg/ngày, chia thành nhiều lần.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        267.82,
+        561.72,
+        340.77
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0092",
+      "type": "paragraph",
+      "text": "Với neostigmin methylsulfat: Người lớn: 0,5 - 2,5 mg tiêm tĩnh mạch, tiêm bắp, dưới da. Liều được tính toán dựa vào đáp ứng của bệnh nhân. Trẻ sơ sinh: nên được tiêm bắp 0,1 mg neostigmin cho lần đầu tiên. Sau đó, liều được hiệu chỉnh theo từng cá thể. Tuy nhiên, liều thông thường là 0,05 - 0,25 mg tiêm bắp hoặc 0,03 mg/ kg tiêm tĩnh mạch mỗi 2 - 4 giờ. Liều được giảm dần trước khi dừng hẳn. Thuốc cần phải được dùng ít nhất 30 phút trước khi ăn.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        340.0,
+        561.72,
+        424.97
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0093",
+      "type": "paragraph",
+      "text": "Việc điều trị hiếm khi được tiến hành sau khi trẻ được 8 tuần tuổi.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        424.2,
+        561.72,
+        437.0
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Việc điều trị hiếm khi được tiến hành sau khi trẻ được 8 tuần tuổi. \n",
+          "bbox": [
+            307.39,
+            424.2,
+            561.72,
+            437.0
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0094",
+      "type": "paragraph",
+      "text": "Trẻ < 12 tuổi: 0,2 - 0,5 mg theo đường tiêm bắp hoặc tiêm dưới da, lặp lại vào những thời điểm thích hợp trong ngày. Liều được hiệu chỉnh dần theo đáp ứng của bệnh nhi.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        436.23,
+        561.72,
+        473.09
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0095",
+      "type": "paragraph",
+      "text": "Trẻ em > 12 tuổi: Theo liều của người lớn.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        472.32,
+        469.38,
+        485.11
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Trẻ em > 12 tuổi: Theo liều của người lớn.",
+          "bbox": [
+            307.39,
+            472.32,
+            469.38,
+            485.11
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0096",
+      "type": "subheading",
+      "level": 3,
+      "text": "Liệt ruột và bí đái sau phẫu thuật:",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        484.51,
+        438.02,
+        497.14
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liệt ruột và bí đái sau phẫu thuật:",
+          "bbox": [
+            307.39,
+            484.51,
+            438.02,
+            497.14
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0097",
+      "type": "paragraph",
+      "text": "Liều dự phòng: Neostigmin methylsulfat: 0,25 mg tiêm dưới da hoặc tiêm bắp ngay sau khi phẫu thuật; lặp lại mỗi 4 - 6 giờ, trong 2 - 3 ngày.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        496.38,
+        561.72,
+        533.23
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0098",
+      "type": "paragraph",
+      "text": "Liều điều trị: 0,5 - 1 mg tiêm dưới da hoặc tiêm bắp; nếu không đi tiểu trong vòng 1 giờ, cần đặt ống thông tiểu cho bệnh nhân. Sau khi bàng quang đã trống, cần lặp lại liều trên sau mỗi 3 giờ và duy trì đến 5 liều.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        532.46,
+        561.75,
+        581.35
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0099",
+      "type": "paragraph",
+      "text": "Nhịp nhanh trên thất kịch phát: Thuốc được dùng theo đường tĩnh mạch.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        580.58,
+        559.36,
+        593.38
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Nhịp nhanh trên thất kịch phát:",
+          "bbox": [
+            307.39,
+            580.74,
+            416.37,
+            593.38
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        },
+        {
+          "text": " Thuốc được dùng theo đường tĩnh mạch.",
+          "bbox": [
+            416.07,
+            580.58,
+            559.36,
+            593.38
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0100",
+      "type": "paragraph",
+      "text": "Chỉ được sử dụng trong những trường hợp rất nặng, không đáp ứng với những phương pháp điều trị thông thường và sử dụng dưới sự giám sát chặt chẽ của chuyên gia đã có kinh nghiệm trong việc sử dụng thuốc này.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        592.61,
+        561.72,
+        641.49
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0101",
+      "type": "subheading",
+      "level": 3,
+      "text": "Đối tượng đặc biệt:",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        640.89,
+        382.28,
+        653.52
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Đối tượng đặc biệt:",
+          "bbox": [
+            307.39,
+            640.89,
+            382.28,
+            653.52
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0102",
+      "type": "paragraph",
+      "text": "Người suy thận: Nên giảm liều theo Clcr:",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        652.75,
+        461.97,
+        667.5
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Người suy thận: Nên giảm liều theo Cl",
+          "bbox": [
+            307.39,
+            652.75,
+            455.04,
+            665.55
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "cr",
+          "bbox": [
+            455.02,
+            660.04,
+            459.33,
+            667.5
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 5.54,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": ":",
+          "bbox": [
+            459.33,
+            652.75,
+            461.97,
+            665.55
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0103",
+      "type": "paragraph",
+      "text": "Clcr > 50 ml/phút: Không cần hiệu chỉnh liều.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        664.78,
+        479.86,
+        679.53
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cl",
+          "bbox": [
+            307.39,
+            664.78,
+            316.36,
+            677.58
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "cr",
+          "bbox": [
+            316.36,
+            672.07,
+            320.66,
+            679.53
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 5.54,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": " > 50 ml/phút: Không cần hiệu chỉnh liều.",
+          "bbox": [
+            320.66,
+            664.78,
+            479.86,
+            677.58
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0104",
+      "type": "paragraph",
+      "text": "Clcr từ 10 - 50 ml/phút: Dùng 50% liều thông thường.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        676.81,
+        512.8,
+        691.56
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cl",
+          "bbox": [
+            307.39,
+            676.81,
+            316.36,
+            689.61
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "cr",
+          "bbox": [
+            316.36,
+            684.1,
+            320.66,
+            691.56
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 5.54,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": " từ 10 - 50 ml/phút: Dùng 50% liều thông thường. ",
+          "bbox": [
+            320.66,
+            676.81,
+            512.8,
+            689.61
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0105",
+      "type": "paragraph",
+      "text": "Clcr < 10 ml/phút: Dùng 25% liều thông thường.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        688.84,
+        490.58,
+        703.58
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cl",
+          "bbox": [
+            307.39,
+            688.84,
+            316.36,
+            701.64
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "cr",
+          "bbox": [
+            316.36,
+            696.12,
+            320.66,
+            703.58
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 5.54,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": " < 10 ml/phút: Dùng 25% liều thông thường.",
+          "bbox": [
+            320.66,
+            688.84,
+            490.58,
+            701.64
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0106",
+      "type": "paragraph",
+      "text": "Với bệnh nhân dùng liệu pháp thay thế thận thường xuyên: Dùng 50% liều thông thường.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        700.87,
+        561.72,
+        725.7
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0107",
+      "type": "paragraph",
+      "text": "Người suy gan: Không cần hiệu chỉnh liều.",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        724.93,
+        471.12,
+        737.72
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Người suy gan:",
+          "bbox": [
+            307.39,
+            724.93,
+            366.11,
+            737.72
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "Không cần hiệu chỉnh liều.",
+          "bbox": [
+            368.49,
+            724.93,
+            471.12,
+            737.72
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0108",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương tác thuốc",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        739.8,
+        374.29,
+        752.95
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương tác thuốc",
+          "bbox": [
+            307.39,
+            739.8,
+            374.29,
+            752.95
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0109",
+      "type": "paragraph",
+      "text": "Neostigmin có thể làm giảm ngưỡng gây co giật của bupropion, đặc biệt trên người cao tuổi và trên bệnh nhân có tiền sử co giật hoặc có những yếu tố nguy cơ có thể dẫn tới co giật như: chấn thương sọ não, u não, xơ gan nặng, rối loạn chuyển hóa, nhiễm khuẩn TKTW,",
+      "page": 1185,
+      "printed_page": 1191,
+      "column": 1,
+      "bbox": [
+        307.39,
+        751.99,
+        561.72,
+        800.87
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0110",
+      "type": "paragraph",
+      "text": "ngộ độc rượu hoặc thuốc ngủ, nghiện opiat, cocain hoặc các chất kích thích, hạ đường huyết ở bệnh nhân đái tháo đường được điều trị bằng thuốc hạ đường huyết đường uống hoặc insulin.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        63.32,
+        289.77,
+        100.3
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0111",
+      "type": "paragraph",
+      "text": "Neostigmin ức chế chuyển hóa của succinylcholin, làm tăng nồng độ của chất này trong huyết thanh dẫn tới nguy cơ kéo dài tác dụng phong bế thần kinh cơ của thuốc này.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        99.59,
+        289.76,
+        136.57
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0112",
+      "type": "paragraph",
+      "text": "Neostigmin có thể có tác dụng hiệp đồng khi sử dụng với các thuốc ức chế cholinesterase khác như donepezil, ecothiopat (nhãn khoa)… và làm tăng độc tính của những thuốc này.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        135.87,
+        289.77,
+        172.84
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0113",
+      "type": "paragraph",
+      "text": "Neostigmin có thể làm tăng tác dụng điều trị cũng như ADR của amifampridin. Đồng thời, amifampridin cũng có thể làm tăng tác dụng điều trị và ADR của neostigmin.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        172.14,
+        289.77,
+        209.12
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0114",
+      "type": "paragraph",
+      "text": "Neostigmin làm giảm tác dụng điều trị của các thuốc kháng cholin và ngược lại các thuốc kháng cholin có thể làm giảm tác dụng điều trị của neostigmin.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        208.41,
+        289.77,
+        245.39
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0115",
+      "type": "paragraph",
+      "text": "Neostigmin kéo dài tác dụng điều trị của benoxinat.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        244.68,
+        232.01,
+        257.48
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Neostigmin kéo dài tác dụng điều trị của benoxinat.",
+          "bbox": [
+            35.43,
+            244.68,
+            232.01,
+            257.48
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0116",
+      "type": "paragraph",
+      "text": "Neostigmin làm tăng tác dụng làm chậm nhịp tim của các thuốc thuộc nhóm chẹn thụ thể beta (trừ: levobunolol và metipranolol).",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        256.77,
+        289.77,
+        281.66
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0117",
+      "type": "paragraph",
+      "text": "Neostigmin làm tăng tác dụng phụ của các chất chủ vận cholin.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        280.95,
+        276.06,
+        293.75
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Neostigmin làm tăng tác dụng phụ của các chất chủ vận cholin.",
+          "bbox": [
+            35.43,
+            280.95,
+            276.06,
+            293.75
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0118",
+      "type": "paragraph",
+      "text": "Các thuốc corticoid làm tăng tác dụng phụ/độc tính của neostigmin, đặc biệt là tác dụng làm yếu cơ.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        293.04,
+        289.77,
+        317.93
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0119",
+      "type": "paragraph",
+      "text": "Dipyridamol có thể làm giảm tác dụng của neostigmin.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        317.23,
+        244.68,
+        330.02
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Dipyridamol có thể làm giảm tác dụng của neostigmin.",
+          "bbox": [
+            35.43,
+            317.23,
+            244.68,
+            330.02
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0120",
+      "type": "paragraph",
+      "text": "Neostigmin không đối kháng mà thực tế kéo dài pha I của các thuốc phong bế thần kinh cơ không khử cực và đảo ngược pha II của những thuốc này. Tuy nhiên, thời gian chuyển tiếp giữa pha I và II thay đổi tùy theo người bệnh khiến cho việc xác định chính xác giai đoạn phong bế thần kinh - cơ khử cực trở nên khó khăn.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        329.32,
+        289.77,
+        390.48
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0121",
+      "type": "paragraph",
+      "text": "Điều này làm cho việc sử dụng neostigmin trở nên không hiệu quả hoặc nguy hiểm.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        389.77,
+        289.76,
+        414.66
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0122",
+      "type": "paragraph",
+      "text": "Các thuốc có tác dụng phong bế thần kinh cơ như kháng sinh aminoglycosid, clindamycin, colistin, cyclopropan và các thuốc gây mê đường hô hấp dẫn chất halogen có thể đối kháng tác dụng của neostigmin.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        413.95,
+        289.77,
+        463.02
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0123",
+      "type": "paragraph",
+      "text": "Atropin đối kháng với tác dụng muscarinic của neostigmin và tương tác này được sử dụng để làm mất các triệu chứng muscarinic trong ngộ độc neostigmin.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        462.31,
+        289.77,
+        499.29
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0124",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương kỵ",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        501.43,
+        75.17,
+        514.58
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương kỵ",
+          "bbox": [
+            35.43,
+            501.43,
+            75.17,
+            514.58
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0125",
+      "type": "paragraph",
+      "text": "Tránh dùng neostigmin và atropin trong cùng một bơm tiêm, vì có khả năng gây phản ứng.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        513.68,
+        289.76,
+        538.56
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0126",
+      "type": "heading",
+      "level": 2,
+      "text": "Quá liều và xử trí",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        540.71,
+        107.11,
+        553.85
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Quá liều và xử trí",
+          "bbox": [
+            35.43,
+            540.71,
+            107.11,
+            553.85
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0127",
+      "type": "paragraph",
+      "text": "Triệu chứng: Quá liều neostigmin có thể gây ra cơn cường cholin với các biểu hiện như: buồn nôn, nôn, tiêu chảy, tăng tiết nước bọt và mồ hôi, tăng tiết phế quản, co đồng tử, tăng tiết nước mắt, nhịp tim chậm hoặc nhịp tim nhanh, co thắt cơ tim, co thắt phế quản, tụt huyết áp, mất phối hợp, nhìn mờ, co rút cơ, yếu cơ, bó cơ, liệt.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        552.95,
+        289.77,
+        614.11
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0128",
+      "type": "paragraph",
+      "text": "Cần chú ý phân biệt giữa yếu cơ do quá liều neostigmin và yếu cơ do không đáp ứng với neostigmin (kháng neostigmin): nếu yếu cơ xuất hiện trong vòng 1 giờ sau khi dùng thuốc thì có thể là do quá liều còn nếu xuất hiện sau khi uống thuốc ít nhất 3 giờ thì đó có thể là do không đủ liều neostigmin hoặc kháng neostigmin.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        613.4,
+        289.77,
+        674.56
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0129",
+      "type": "paragraph",
+      "text": "Xử trí: Cần dừng ngay neostigmin và sử dụng atropin sulfat để kiểm soát các triệu chứng muscarin. Atropin chỉ có thể kiểm soát các triệu chứng muscarin chứ không thể làm giảm nhẹ tác động của neostigmin trên hệ cơ xương, do đó không thể khắc phục được tình trạng liệt hô hấp do quá liều neostigmin. Vì vậy, trong xử trí quá liều, quan trọng nhất là duy trì được hô hấp đầy đủ cho bệnh nhân.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        673.86,
+        289.77,
+        747.11
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0130",
+      "type": "paragraph",
+      "text": "Có thể sử dụng các biện pháp nhân tạo để đảm bảo thông khí, đồng thời chức năng tim cần được theo dõi chặt chẽ cho đến khi khả năng hô hấp tự động của bệnh nhân được phục hồi.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        746.4,
+        289.77,
+        783.38
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0131",
+      "type": "heading",
+      "text": "Cập nhật lần cuối",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        788.23,
+        130.7,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2020.",
+          "bbox": [
+            35.43,
+            788.23,
+            130.7,
+            800.87
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "level": 2,
+      "v11_fix": "cap_nhat_cap_nhap_lan_cuoi_normalized_alpha8"
+    },
+    {
+      "id": "b0131",
+      "type": "paragraph",
+      "text": "2020.",
+      "page": 1186,
+      "printed_page": 1192,
+      "column": 0,
+      "bbox": [
+        35.43,
+        788.23,
+        130.7,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2020.",
+          "bbox": [
+            35.43,
+            788.23,
+            130.7,
+            800.87
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "v11_parent_heading": "Cập nhật lần cuối"
+    }
+  ],
+  "sections": [
+    {
+      "id": "synstigmin",
+      "title": "(Synstigmin)",
+      "heading_block": "b0002",
       "blocks": [
         {
           "type": "text",
-          "text": "Neostigmine.\n\nMã ATC: N07AA01, S01EB06.\n\nLoại thuốc: Thuốc kháng cholinesterase, thuốc tác dụng giống thần kinh đối giao cảm."
+          "text": "Tên chung quốc tế: Neostigmine.",
+          "block_id": "b0003"
+        },
+        {
+          "type": "text",
+          "text": "Mã ATC: N07AA01, S01EB06.",
+          "block_id": "b0004"
+        },
+        {
+          "type": "text",
+          "text": "Loại thuốc: Thuốc kháng cholinesterase, thuốc tác dụng giống thần kinh đối giao cảm.",
+          "block_id": "b0005"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "dang-thuoc-va-ham-luong",
       "title": "Dạng thuốc và hàm lượng",
-      "content": "Ống tiêm (neostigmin methyl sulfat): 0,5 mg/ml (ống tiêm 1 ml, 10 ml); 1 mg/ml (ống tiêm 1 ml, 10 ml); 2,5 mg/ml (ống tiêm 1 ml, 5 ml).\n\nBơm tiêm có sẵn thuốc tiêm tĩnh mạch (neostigmin methylsulfat): 1 mg/ml (bơm tiêm 3 ml).\n\nViên nén (neostigmin bromid): 15 mg.",
+      "heading_block": "b0006",
       "blocks": [
         {
           "type": "text",
-          "text": "Ống tiêm (neostigmin methyl sulfat): 0,5 mg/ml (ống tiêm 1 ml, 10 ml); 1 mg/ml (ống tiêm 1 ml, 10 ml); 2,5 mg/ml (ống tiêm 1 ml, 5 ml).\n\nBơm tiêm có sẵn thuốc tiêm tĩnh mạch (neostigmin methylsulfat): 1 mg/ml (bơm tiêm 3 ml).\n\nViên nén (neostigmin bromid): 15 mg."
+          "text": "Ống tiêm (neostigmin methyl sulfat): 0,5 mg/ml (ống tiêm 1 ml, 10 ml); 1 mg/ml (ống tiêm 1 ml, 10 ml); 2,5 mg/ml (ống tiêm 1 ml, 5 ml).",
+          "block_id": "b0007"
+        },
+        {
+          "type": "text",
+          "text": "Bơm tiêm có sẵn thuốc tiêm tĩnh mạch (neostigmin methylsulfat):",
+          "block_id": "b0008"
+        },
+        {
+          "type": "text",
+          "text": "1 mg/ml (bơm tiêm 3 ml).",
+          "block_id": "b0009"
+        },
+        {
+          "type": "text",
+          "text": "Viên nén (neostigmin bromid): 15 mg.",
+          "block_id": "b0010"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "duoc-luc-hoc",
       "title": "Dược lực học",
-      "content": "Neostigmin là thuốc kháng cholinesterase. Thuốc làm giảm quá trình thủy phân acetylcholin bằng cách cạnh tranh thuận nghịch với acetylcholin để gắn vào enzym acetylcholinesterase. Phức hợp neostigmin-enzym bị thủy phân với tốc độ chậm hơn nhiều so với phức hợp acetylcholin-enzym. Kết quả là, acetylcholin sẽ bị tích lũy ở synap cholinergic khiến tác dụng của chất này trên synap tăng cao và kéo dài. Nồng độ cao của acetylcholin ở các điểm nối thần kinh cơ có khả năng cạnh tranh và đảo ngược tác dụng của các thuốc giãn cơ hoạt động theo cơ chế phong bế thần kinh cơ không khử cực.\n\nTrên bệnh nhân nhược cơ, neostigmin có tác dụng làm tăng dẫn truyền thần kinh cơ, cải thiện triệu chứng bệnh.\n\nNeostigmin kích thích cả thụ thể muscarinic và nicotinic gây đáp ứng cholinergic lan tỏa, bao gồm: co đồng tử, tăng trương lực cơ trơn ở ruột và cơ xương, co thắt phế quản và niệu quản, chậm nhịp tim, kích thích tăng tiết nước bọt và mồ hôi. Ngoài ra, neostigmin còn có tác dụng giống acetylcholin trực tiếp trên cơ xương.\n\nDo có cấu trúc amoni bậc 4, neostigmin liều trung bình không qua được hàng rào máu - não để có tác dụng trên hệ TKTW. Tuy vậy, liều cực cao gây kích thích hệ TKTW và ức chế hệ TKTW ngay sau đó. Ngoài tác dụng ức chế thần kinh - cơ khử cực, ở mức liều này, thuốc còn có thể gây suy hô hấp, liệt và tử vong.",
+      "heading_block": "b0011",
       "blocks": [
         {
           "type": "text",
-          "text": "Neostigmin là thuốc kháng cholinesterase. Thuốc làm giảm quá trình thủy phân acetylcholin bằng cách cạnh tranh thuận nghịch với acetylcholin để gắn vào enzym acetylcholinesterase. Phức hợp neostigmin-enzym bị thủy phân với tốc độ chậm hơn nhiều so với phức hợp acetylcholin-enzym. Kết quả là, acetylcholin sẽ bị tích lũy ở synap cholinergic khiến tác dụng của chất này trên synap tăng cao và kéo dài. Nồng độ cao của acetylcholin ở các điểm nối thần kinh cơ có khả năng cạnh tranh và đảo ngược tác dụng của các thuốc giãn cơ hoạt động theo cơ chế phong bế thần kinh cơ không khử cực.\n\nTrên bệnh nhân nhược cơ, neostigmin có tác dụng làm tăng dẫn truyền thần kinh cơ, cải thiện triệu chứng bệnh.\n\nNeostigmin kích thích cả thụ thể muscarinic và nicotinic gây đáp ứng cholinergic lan tỏa, bao gồm: co đồng tử, tăng trương lực cơ trơn ở ruột và cơ xương, co thắt phế quản và niệu quản, chậm nhịp tim, kích thích tăng tiết nước bọt và mồ hôi. Ngoài ra, neostigmin còn có tác dụng giống acetylcholin trực tiếp trên cơ xương.\n\nDo có cấu trúc amoni bậc 4, neostigmin liều trung bình không qua được hàng rào máu - não để có tác dụng trên hệ TKTW. Tuy vậy, liều cực cao gây kích thích hệ TKTW và ức chế hệ TKTW ngay sau đó. Ngoài tác dụng ức chế thần kinh - cơ khử cực, ở mức liều này, thuốc còn có thể gây suy hô hấp, liệt và tử vong."
+          "text": "Neostigmin là thuốc kháng cholinesterase. Thuốc làm giảm quá",
+          "block_id": "b0012"
+        },
+        {
+          "type": "text",
+          "text": "trình thủy phân acetylcholin bằng cách cạnh tranh thuận nghịch với acetylcholin để gắn vào enzym acetylcholinesterase. Phức hợp neostigmin-enzym bị thủy phân với tốc độ chậm hơn nhiều so với phức hợp acetylcholin-enzym. Kết quả là, acetylcholin sẽ bị tích lũy ở synap cholinergic khiến tác dụng của chất này trên synap tăng cao và kéo dài. Nồng độ cao của acetylcholin ở các điểm nối thần kinh cơ có khả năng cạnh tranh và đảo ngược tác dụng của các thuốc giãn cơ hoạt động theo cơ chế phong bế thần kinh cơ không khử cực.",
+          "block_id": "b0013"
+        },
+        {
+          "type": "text",
+          "text": "Trên bệnh nhân nhược cơ, neostigmin có tác dụng làm tăng dẫn truyền thần kinh cơ, cải thiện triệu chứng bệnh.",
+          "block_id": "b0014"
+        },
+        {
+          "type": "text",
+          "text": "Neostigmin kích thích cả thụ thể muscarinic và nicotinic gây đáp ứng cholinergic lan tỏa, bao gồm: co đồng tử, tăng trương lực cơ trơn ở ruột và cơ xương, co thắt phế quản và niệu quản, chậm nhịp tim, kích thích tăng tiết nước bọt và mồ hôi. Ngoài ra, neostigmin còn có tác dụng giống acetylcholin trực tiếp trên cơ xương.",
+          "block_id": "b0015"
+        },
+        {
+          "type": "text",
+          "text": "Do có cấu trúc amoni bậc 4, neostigmin liều trung bình không qua được hàng rào máu - não để có tác dụng trên hệ TKTW. Tuy vậy, liều cực cao gây kích thích hệ TKTW và ức chế hệ TKTW ngay sau đó. Ngoài tác dụng ức chế thần kinh - cơ khử cực, ở mức liều này, thuốc còn có thể gây suy hô hấp, liệt và tử vong.",
+          "block_id": "b0016"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "duoc-ong-hoc",
+      "id": "duoc-dong-hoc",
       "title": "Dược động học",
-      "content": "Hấp thu: Neostigmin ở dạng muối bromid được hấp thu kém qua đường tiêu hóa. Trên bệnh nhân nhược cơ, nhịn đói, sau khi dùng liều 30 mg theo đường uống, chỉ có khoảng 1 - 2% lượng thuốc được hấp thu. Nồng độ đỉnh đạt được trong 1 - 2 giờ (có sự dao động lớn giữa các cá thể) sau khi dùng đường uống hoặc 30 phút sau khi dùng đường tiêm bắp. Tác dụng của neostigmin trên nhu động ruột bắt đầu trong 10 - 30 phút sau khi dùng đường tiêm và 2 - 4 giờ sau khi dùng đường uống. Sau khi tiêm, tác dụng tối đa của neostigmin đạt được trong 20 - 30 phút. Ở hầu hết bệnh nhân, tác dụng của neostigmin kéo dài trong 2,5 - 4 giờ sau khi tiêm bắp.\n\nPhân bố: Khoảng 15 - 25% neostigmin liên kết với albumin huyết thanh. Thể tích phân bố từ 0,12 - 1,4 lít/kg. Do có cấu trúc amoni bậc 4 nên neostigmin không qua được nhau thai và không vào sữa mẹ khi dùng liều điều trị. Tuy nhiên, khi dùng với liều cao, không loại trừ khả năng thuốc có thể qua được hàng rào nhau thai vì hiện tượng này đã xảy ra với một thuốc có cấu trúc và hoạt tính tương tự là pyridostigmin.\n\nChuyển hóa: Neostigmin bị chuyển hóa chủ yếu bởi gan. Các sản phẩm chuyển hóa bao gồm 3-hydroxyphenyltrimethylamoni, 3-hydroxyphenyldimethylamin và dạng liên hợp với glucuronic.\n\nTại các điểm nối thần kinh cơ, neostigmin bị thủy phân bởi acetylcholinesterase thành 3-hydroxyphenyltrimethylamoni. Hiện chưa rõ về hoạt tính của các chất chuyển hóa. Tuy nhiên, trên động vật, người ta thấy rằng 3-hydroxyphenyltrimethylamoni có hoạt tính tương tự nhưng yếu hơn neostigmin.\n\nThải trừ: Neostigmin và các dạng chuyển hóa của nó được thải trừ nhờ quá trình bài tiết của các tế bào ống thận. Khoảng 80% liều đơn khi dùng đường tiêm bắp được thải trừ ra ngoài nước tiểu trong 24 giờ, trong đó dạng thuốc không biến đổi chiếm 50%. Độ thanh thải neostigmin giảm trên các bệnh nhân suy thận.\n\nNửa đời thải trừ của thuốc thay đổi phụ thuộc vào đường dùng và đối tượng. Cụ thể khi dùng liều đơn theo đường tiêm tĩnh mạch, giá trị này dao động trong khoảng 24 - 123 phút; khi dùng theo đường tiêm bắp, nửa đời thải trừ của thuốc dao động trong khoảng 51 - 90 phút; khi dùng đường truyền tĩnh mạch trên 2 phút, nửa đời thải trừ của thuốc là 39 phút ở trẻ 2 - 10 tháng, 48 phút ở trẻ 1 - 6 tuổi trong khi ở người trưởng thành khỏe mạnh thời gian này là 67 phút và ở bệnh nhân suy thận là 181 phút.",
+      "heading_block": "b0017",
       "blocks": [
         {
           "type": "text",
-          "text": "Hấp thu: Neostigmin ở dạng muối bromid được hấp thu kém qua đường tiêu hóa. Trên bệnh nhân nhược cơ, nhịn đói, sau khi dùng liều 30 mg theo đường uống, chỉ có khoảng 1 - 2% lượng thuốc được hấp thu. Nồng độ đỉnh đạt được trong 1 - 2 giờ (có sự dao động lớn giữa các cá thể) sau khi dùng đường uống hoặc 30 phút sau khi dùng đường tiêm bắp. Tác dụng của neostigmin trên nhu động ruột bắt đầu trong 10 - 30 phút sau khi dùng đường tiêm và 2 - 4 giờ sau khi dùng đường uống. Sau khi tiêm, tác dụng tối đa của neostigmin đạt được trong 20 - 30 phút. Ở hầu hết bệnh nhân, tác dụng của neostigmin kéo dài trong 2,5 - 4 giờ sau khi tiêm bắp.\n\nPhân bố: Khoảng 15 - 25% neostigmin liên kết với albumin huyết thanh. Thể tích phân bố từ 0,12 - 1,4 lít/kg. Do có cấu trúc amoni bậc 4 nên neostigmin không qua được nhau thai và không vào sữa mẹ khi dùng liều điều trị. Tuy nhiên, khi dùng với liều cao, không loại trừ khả năng thuốc có thể qua được hàng rào nhau thai vì hiện tượng này đã xảy ra với một thuốc có cấu trúc và hoạt tính tương tự là pyridostigmin.\n\nChuyển hóa: Neostigmin bị chuyển hóa chủ yếu bởi gan. Các sản phẩm chuyển hóa bao gồm 3-hydroxyphenyltrimethylamoni, 3-hydroxyphenyldimethylamin và dạng liên hợp với glucuronic.\n\nTại các điểm nối thần kinh cơ, neostigmin bị thủy phân bởi acetylcholinesterase thành 3-hydroxyphenyltrimethylamoni. Hiện chưa rõ về hoạt tính của các chất chuyển hóa. Tuy nhiên, trên động vật, người ta thấy rằng 3-hydroxyphenyltrimethylamoni có hoạt tính tương tự nhưng yếu hơn neostigmin.\n\nThải trừ: Neostigmin và các dạng chuyển hóa của nó được thải trừ nhờ quá trình bài tiết của các tế bào ống thận. Khoảng 80% liều đơn khi dùng đường tiêm bắp được thải trừ ra ngoài nước tiểu trong 24 giờ, trong đó dạng thuốc không biến đổi chiếm 50%. Độ thanh thải neostigmin giảm trên các bệnh nhân suy thận.\n\nNửa đời thải trừ của thuốc thay đổi phụ thuộc vào đường dùng và đối tượng. Cụ thể khi dùng liều đơn theo đường tiêm tĩnh mạch, giá trị này dao động trong khoảng 24 - 123 phút; khi dùng theo đường tiêm bắp, nửa đời thải trừ của thuốc dao động trong khoảng 51 - 90 phút; khi dùng đường truyền tĩnh mạch trên 2 phút, nửa đời thải trừ của thuốc là 39 phút ở trẻ 2 - 10 tháng, 48 phút ở trẻ 1 - 6 tuổi trong khi ở người trưởng thành khỏe mạnh thời gian này là 67 phút và ở bệnh nhân suy thận là 181 phút."
+          "text": "Hấp thu: Neostigmin ở dạng muối bromid được hấp thu kém qua đường tiêu hóa. Trên bệnh nhân nhược cơ, nhịn đói, sau khi dùng liều 30 mg theo đường uống, chỉ có khoảng 1 - 2% lượng thuốc được hấp thu. Nồng độ đỉnh đạt được trong 1 - 2 giờ (có sự dao động lớn giữa các cá thể) sau khi dùng đường uống hoặc 30 phút sau khi dùng đường tiêm bắp. Tác dụng của neostigmin trên nhu động ruột bắt đầu trong 10 - 30 phút sau khi dùng đường tiêm và 2 - 4 giờ sau khi dùng đường uống. Sau khi tiêm, tác dụng tối đa của neostigmin đạt được trong 20 - 30 phút. Ở hầu hết bệnh nhân, tác dụng của neostigmin kéo dài trong 2,5 - 4 giờ sau khi tiêm bắp.",
+          "block_id": "b0018"
+        },
+        {
+          "type": "text",
+          "text": "Phân bố: Khoảng 15 - 25% neostigmin liên kết với albumin huyết thanh. Thể tích phân bố từ 0,12 - 1,4 lít/kg. Do có cấu trúc amoni bậc 4 nên neostigmin không qua được nhau thai và không vào sữa mẹ khi dùng liều điều trị. Tuy nhiên, khi dùng với liều cao, không loại trừ khả năng thuốc có thể qua được hàng rào nhau thai vì hiện tượng này đã xảy ra với một thuốc có cấu trúc và hoạt tính tương tự là pyridostigmin.",
+          "block_id": "b0019"
+        },
+        {
+          "type": "text",
+          "text": "Chuyển hóa: Neostigmin bị chuyển hóa chủ yếu bởi gan. Các sản phẩm chuyển hóa bao gồm 3-hydroxyphenyltrimethylamoni, 3-hydroxyphenyldimethylamin và dạng liên hợp với glucuronic.",
+          "block_id": "b0020"
+        },
+        {
+          "type": "text",
+          "text": "Tại các điểm nối thần kinh cơ, neostigmin bị thủy phân bởi acetylcholinesterase thành 3-hydroxyphenyltrimethylamoni. Hiện chưa rõ về hoạt tính của các chất chuyển hóa. Tuy nhiên, trên động vật, người ta thấy rằng 3-hydroxyphenyltrimethylamoni có hoạt tính tương tự nhưng yếu hơn neostigmin.",
+          "block_id": "b0021"
+        },
+        {
+          "type": "text",
+          "text": "Thải trừ: Neostigmin và các dạng chuyển hóa của nó được thải trừ nhờ quá trình bài tiết của các tế bào ống thận. Khoảng 80% liều đơn khi dùng đường tiêm bắp được thải trừ ra ngoài nước tiểu trong 24 giờ, trong đó dạng thuốc không biến đổi chiếm 50%. Độ thanh thải neostigmin giảm trên các bệnh nhân suy thận.",
+          "block_id": "b0022"
+        },
+        {
+          "type": "text",
+          "text": "Nửa đời thải trừ của thuốc thay đổi phụ thuộc vào đường dùng và đối tượng. Cụ thể khi dùng liều đơn theo đường tiêm tĩnh mạch, giá trị này dao động trong khoảng 24 - 123 phút; khi dùng theo đường tiêm bắp, nửa đời thải trừ của thuốc dao động trong khoảng 51 - 90 phút; khi dùng đường truyền tĩnh mạch trên 2 phút, nửa đời thải trừ của thuốc là 39 phút ở trẻ 2 - 10 tháng, 48 phút ở trẻ 1 - 6 tuổi trong khi ở người trưởng thành khỏe mạnh thời gian này là 67 phút và ở bệnh nhân suy thận là 181 phút.",
+          "block_id": "b0023"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chi-inh",
+      "id": "chi-dinh",
       "title": "Chỉ định",
-      "content": "Neostigmin bromid: Bệnh nhược cơ.\n\nLiệt ruột và bí đái sau phẫu thuật (sau khi loại trừ tắc do cơ học).\n\nNeostigmin methylsulfat: Giải độc khi dùng quá liều thuốc giãn cơ hoạt động theo cơ chế phong bế thần kinh cơ không khử cực.\n\nBệnh nhược cơ (chẩn đoán và điều trị).\n\nLiệt ruột và bí đái sau phẫu thuật (sau khi loại trừ tắc do cơ học).\n\nNhịp nhanh trên thất kịch phát.",
+      "heading_block": "b0024",
       "blocks": [
         {
+          "type": "subheading",
+          "text": "Neostigmin bromid:",
+          "block_id": "b0025"
+        },
+        {
           "type": "text",
-          "text": "Neostigmin bromid: Bệnh nhược cơ.\n\nLiệt ruột và bí đái sau phẫu thuật (sau khi loại trừ tắc do cơ học).\n\nNeostigmin methylsulfat: Giải độc khi dùng quá liều thuốc giãn cơ hoạt động theo cơ chế phong bế thần kinh cơ không khử cực.\n\nBệnh nhược cơ (chẩn đoán và điều trị).\n\nLiệt ruột và bí đái sau phẫu thuật (sau khi loại trừ tắc do cơ học).\n\nNhịp nhanh trên thất kịch phát."
+          "text": "Bệnh nhược cơ.",
+          "block_id": "b0026"
+        },
+        {
+          "type": "text",
+          "text": "Liệt ruột và bí đái sau phẫu thuật (sau khi loại trừ tắc do cơ học).",
+          "block_id": "b0027"
+        },
+        {
+          "type": "subheading",
+          "text": "Neostigmin methylsulfat:",
+          "block_id": "b0028"
+        },
+        {
+          "type": "text",
+          "text": "Giải độc khi dùng quá liều thuốc giãn cơ hoạt động theo cơ chế phong bế thần kinh cơ không khử cực.",
+          "block_id": "b0029"
+        },
+        {
+          "type": "text",
+          "text": "Bệnh nhược cơ (chẩn đoán và điều trị).",
+          "block_id": "b0030"
+        },
+        {
+          "type": "text",
+          "text": "Liệt ruột và bí đái sau phẫu thuật (sau khi loại trừ tắc do cơ học).",
+          "block_id": "b0031"
+        },
+        {
+          "type": "text",
+          "text": "Nhịp nhanh trên thất kịch phát.",
+          "block_id": "b0032"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chong-chi-inh",
+      "id": "chong-chi-dinh",
       "title": "Chống chỉ định",
-      "content": "Có tiền sử quá mẫn với neostigmin và bromid (ion bromid từ neostigmin bromid có thể gây phản ứng dị ứng).\n\nTắc ruột và tắc đường tiết niệu nguyên nhân cơ học.\n\nViêm màng bụng.",
+      "heading_block": "b0033",
       "blocks": [
         {
           "type": "text",
-          "text": "Có tiền sử quá mẫn với neostigmin và bromid (ion bromid từ neostigmin bromid có thể gây phản ứng dị ứng).\n\nTắc ruột và tắc đường tiết niệu nguyên nhân cơ học.\n\nViêm màng bụng."
+          "text": "Có tiền sử quá mẫn với neostigmin và bromid (ion bromid từ neostigmin bromid có thể gây phản ứng dị ứng).",
+          "block_id": "b0034"
+        },
+        {
+          "type": "text",
+          "text": "Tắc ruột và tắc đường tiết niệu nguyên nhân cơ học.",
+          "block_id": "b0035"
+        },
+        {
+          "type": "text",
+          "text": "Viêm màng bụng.",
+          "block_id": "b0036"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "than-trong",
       "title": "Thận trọng",
-      "content": "Việc sử dụng neostigmin để giải độc thuốc giãn cơ phải do bác sĩ đã được đào tạo và có kinh nghiệm trong việc sử dụng những loại thuốc tương tự đảm nhiệm. Bệnh nhân cần phải được ở trong môi trường thông khí tốt và có đường thở thông thoáng trước khi dùng neostigmin và điều kiện này cần được duy trì cho đến khi chức năng hô hấp được phục hồi hoàn toàn. Cần theo dõi liên tục chức năng thần kinh cơ để đảm bảo sự phục hồi đầy đủ của hệ thần kinh cơ. Để chắc chắn có thể loại bỏ nguy cơ giãn cơ tồn dư, cần kết hợp một phương pháp theo dõi có tính định lượng với các theo dõi lâm sàng khác. Hệ thần kinh cơ đánh giá là phục hồi đầy đủ khi chỉ số TOF đạt 0,9 và bệnh nhân hô hấp được bình thường.\n\nDo nguy cơ gây co thắt phế quản và hen, neostigmin cần được dùng hết sức thận trọng đối với các bệnh nhân hen. Nhu động ruột gây ra do neostigmin có thể phá chỗ mới nối hồi trực tràng nếu thuốc cho sau phẫu thuật nên cũng cần phải hết sức thận trọng khi dùng neostigmin cho người bệnh mới phẫu thuật ruột hoặc bàng quang.",
+      "heading_block": "b0037",
       "blocks": [
         {
           "type": "text",
-          "text": "Việc sử dụng neostigmin để giải độc thuốc giãn cơ phải do bác sĩ đã được đào tạo và có kinh nghiệm trong việc sử dụng những loại thuốc tương tự đảm nhiệm. Bệnh nhân cần phải được ở trong môi trường thông khí tốt và có đường thở thông thoáng trước khi dùng neostigmin và điều kiện này cần được duy trì cho đến khi chức năng hô hấp được phục hồi hoàn toàn. Cần theo dõi liên tục chức năng thần kinh cơ để đảm bảo sự phục hồi đầy đủ của hệ thần kinh cơ. Để chắc chắn có thể loại bỏ nguy cơ giãn cơ tồn dư, cần kết hợp một phương pháp theo dõi có tính định lượng với các theo dõi lâm sàng khác. Hệ thần kinh cơ đánh giá là phục hồi đầy đủ khi chỉ số TOF đạt 0,9 và bệnh nhân hô hấp được bình thường.\n\nDo nguy cơ gây co thắt phế quản và hen, neostigmin cần được dùng hết sức thận trọng đối với các bệnh nhân hen. Nhu động ruột gây ra do neostigmin có thể phá chỗ mới nối hồi trực tràng nếu thuốc cho sau phẫu thuật nên cũng cần phải hết sức thận trọng khi dùng neostigmin cho người bệnh mới phẫu thuật ruột hoặc bàng quang."
+          "text": "Việc sử dụng neostigmin để giải độc thuốc giãn cơ phải do bác sĩ đã được đào tạo và có kinh nghiệm trong việc sử dụng những loại thuốc tương tự đảm nhiệm. Bệnh nhân cần phải được ở trong môi trường thông khí tốt và có đường thở thông thoáng trước khi dùng neostigmin và điều kiện này cần được duy trì cho đến khi chức năng hô hấp được phục hồi hoàn toàn. Cần theo dõi liên tục chức năng thần kinh cơ để đảm bảo sự phục hồi đầy đủ của hệ thần kinh cơ. Để chắc chắn có thể loại bỏ nguy cơ giãn cơ tồn dư, cần kết hợp một phương pháp theo dõi có tính định lượng với các theo dõi lâm sàng khác. Hệ thần kinh cơ đánh giá là phục hồi đầy đủ khi chỉ số TOF đạt 0,9 và bệnh nhân hô hấp được bình thường.",
+          "block_id": "b0038"
+        },
+        {
+          "type": "text",
+          "text": "Do nguy cơ gây co thắt phế quản và hen, neostigmin cần được dùng hết sức thận trọng đối với các bệnh nhân hen. Nhu động ruột gây ra do neostigmin có thể phá chỗ mới nối hồi trực tràng nếu thuốc cho sau phẫu thuật nên cũng cần phải hết sức thận trọng khi dùng neostigmin cho người bệnh mới phẫu thuật ruột hoặc bàng quang.",
+          "block_id": "b0039"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-mang-thai",
       "title": "Thời kỳ mang thai",
-      "content": "Có rất ít dữ liệu về tác động của neostigmin trên thai nhi. Hiện vẫn chưa biết rõ liệu neostigmin có thể gây tổn hại cho thai nhi hay khả năng sinh nở của phụ nữ hay không. Tuy nhiên, thuốc kháng cholinesterase có thể gây kích thích tử cung và gây đẻ non khi tiêm tĩnh mạch cho người mang thai thời kỳ sắp sinh. Vì vậy, khi dùng neostigmin để điều trị nhược cơ cho phụ nữ mang thai, phải cân nhắc giữa lợi ích điều trị và nguy cơ có thể xảy ra (nếu cần sử dụng thuốc kháng cholinesterase để điều trị cho phụ nữ mang thai thì vẫn nên ưu tiên những hoạt chất khác).",
+      "heading_block": "b0040",
       "blocks": [
         {
           "type": "text",
-          "text": "Có rất ít dữ liệu về tác động của neostigmin trên thai nhi. Hiện vẫn chưa biết rõ liệu neostigmin có thể gây tổn hại cho thai nhi hay khả năng sinh nở của phụ nữ hay không. Tuy nhiên, thuốc kháng cholinesterase có thể gây kích thích tử cung và gây đẻ non khi tiêm tĩnh mạch cho người mang thai thời kỳ sắp sinh. Vì vậy, khi dùng neostigmin để điều trị nhược cơ cho phụ nữ mang thai, phải cân nhắc giữa lợi ích điều trị và nguy cơ có thể xảy ra (nếu cần sử dụng thuốc kháng cholinesterase để điều trị cho phụ nữ mang thai thì vẫn nên ưu tiên những hoạt chất khác)."
+          "text": "Có rất ít dữ liệu về tác động của neostigmin trên thai nhi. Hiện vẫn chưa biết rõ liệu neostigmin có thể gây tổn hại cho thai nhi hay khả năng sinh nở của phụ nữ hay không. Tuy nhiên, thuốc kháng cholinesterase có thể gây kích thích tử cung và gây đẻ non khi tiêm tĩnh mạch cho người mang thai thời kỳ sắp sinh. Vì vậy, khi dùng neostigmin để điều trị nhược cơ cho phụ nữ mang thai, phải cân nhắc giữa lợi ích điều trị và nguy cơ có thể xảy ra (nếu cần sử dụng thuốc kháng cholinesterase để điều trị cho phụ nữ mang thai thì vẫn nên ưu tiên những hoạt chất khác).",
+          "block_id": "b0041"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-cho-con-bu",
       "title": "Thời kỳ cho con bú",
-      "content": "Hiện vẫn chưa rõ là neostigmin có được bài tiết vào sữa hay không.\n\nRất ít bằng chứng lâm sàng và/hoặc kết luận của chuyên gia về nguy cơ cho trẻ sơ sinh khi người mẹ sử dụng neostigmin trong thời kỳ cho con bú. Cần cân nhắc lợi ích và nguy cơ có thể gặp phải khi dùng neostigmin cho phụ nữ cho con bú.",
+      "heading_block": "b0042",
       "blocks": [
         {
           "type": "text",
-          "text": "Hiện vẫn chưa rõ là neostigmin có được bài tiết vào sữa hay không.\n\nRất ít bằng chứng lâm sàng và/hoặc kết luận của chuyên gia về nguy cơ cho trẻ sơ sinh khi người mẹ sử dụng neostigmin trong thời kỳ cho con bú. Cần cân nhắc lợi ích và nguy cơ có thể gặp phải khi dùng neostigmin cho phụ nữ cho con bú."
+          "text": "Hiện vẫn chưa rõ là neostigmin có được bài tiết vào sữa hay không.",
+          "block_id": "b0043"
+        },
+        {
+          "type": "text",
+          "text": "Rất ít bằng chứng lâm sàng và/hoặc kết luận của chuyên gia về nguy cơ cho trẻ sơ sinh khi người mẹ sử dụng neostigmin trong thời kỳ cho con bú. Cần cân nhắc lợi ích và nguy cơ có thể gặp phải khi dùng neostigmin cho phụ nữ cho con bú.",
+          "block_id": "b0044"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tac-dung-khong-mong-muon-adr",
       "title": "Tác dụng không mong muốn (ADR)",
-      "content": "Neostigmin bromid Thường gặp Tiêu hóa: tăng tiết nước bọt.\n\nCơ xương: rung giật cơ.\n\nNghiêm trọng Tim mạch: blốc nhĩ thất, chậm nhịp tim, ngừng tim, loạn nhịp tim.\n\nMiễn dịch: phản ứng quá mẫn.\n\nThần kinh: mất ý thức, co giật.\n\nChưa xác định được tần suất Tiêu hóa: buồn nôn, nôn, tiêu chảy, cảm giác chuột rút vùng bụng.\n\nMiễn dịch: ban đỏ.\n\nNeostigmin methylsulfat Thường gặp Tim mạch: tụt huyết áp.\n\nTiêu hóa: buồn nôn, nôn.\n\nNghiêm trọng Tim mạch: blốc nhĩ thất, chậm nhịp tim (> 1%), ngừng tim, loạn nhịp tim.\n\nThần kinh: mất ý thức, co giật.\n\nMiễn dịch: phản ứng quá mẫn, phù mạch, sốc phản vệ.\n\nHô hấp: suy hô hấp, liệt hô hấp.\n\nChưa xác định được tần suất Tim mạch: nhịp nhanh, viêm tĩnh mạch huyết khối (gặp khi dùng thuốc theo đường truyền tĩnh mạch).\n\nTiêu hóa: tiêu chảy, cảm giác chuột rút vùng bụng, tăng tiết nước bọt, khó nuốt, đầy hơi, tăng nhu động ruột (có thể dẫn tới đại tiện không tự chủ).\n\nThần kinh: chóng mặt, ngủ gà, khó phát âm, đau đầu.\n\nMắt: co đồng tử, tăng tiết nước mắt.\n\nHô hấp: tăng tiết phế quản, co thắt phế quản, khó thở, tăng cường hen.\n\nDa và các tổ chức dưới da: tăng tiết mồ hôi.\n\nCơ, xương, khớp: chuột rút, rung giật cơ, co cơ, yếu cơ, đau khớp, co thắt thanh quản Tiết niệu: tiểu tiện không tự chủ.",
+      "heading_block": "b0045",
       "blocks": [
         {
+          "type": "subheading",
+          "text": "Neostigmin bromid",
+          "block_id": "b0046"
+        },
+        {
+          "type": "subheading",
+          "text": "Thường gặp",
+          "block_id": "b0047"
+        },
+        {
           "type": "text",
-          "text": "Neostigmin bromid Thường gặp Tiêu hóa: tăng tiết nước bọt.\n\nCơ xương: rung giật cơ.\n\nNghiêm trọng Tim mạch: blốc nhĩ thất, chậm nhịp tim, ngừng tim, loạn nhịp tim.\n\nMiễn dịch: phản ứng quá mẫn.\n\nThần kinh: mất ý thức, co giật.\n\nChưa xác định được tần suất Tiêu hóa: buồn nôn, nôn, tiêu chảy, cảm giác chuột rút vùng bụng.\n\nMiễn dịch: ban đỏ.\n\nNeostigmin methylsulfat Thường gặp Tim mạch: tụt huyết áp.\n\nTiêu hóa: buồn nôn, nôn.\n\nNghiêm trọng Tim mạch: blốc nhĩ thất, chậm nhịp tim (> 1%), ngừng tim, loạn nhịp tim.\n\nThần kinh: mất ý thức, co giật.\n\nMiễn dịch: phản ứng quá mẫn, phù mạch, sốc phản vệ.\n\nHô hấp: suy hô hấp, liệt hô hấp.\n\nChưa xác định được tần suất Tim mạch: nhịp nhanh, viêm tĩnh mạch huyết khối (gặp khi dùng thuốc theo đường truyền tĩnh mạch).\n\nTiêu hóa: tiêu chảy, cảm giác chuột rút vùng bụng, tăng tiết nước bọt, khó nuốt, đầy hơi, tăng nhu động ruột (có thể dẫn tới đại tiện không tự chủ).\n\nThần kinh: chóng mặt, ngủ gà, khó phát âm, đau đầu.\n\nMắt: co đồng tử, tăng tiết nước mắt.\n\nHô hấp: tăng tiết phế quản, co thắt phế quản, khó thở, tăng cường hen.\n\nDa và các tổ chức dưới da: tăng tiết mồ hôi.\n\nCơ, xương, khớp: chuột rút, rung giật cơ, co cơ, yếu cơ, đau khớp, co thắt thanh quản Tiết niệu: tiểu tiện không tự chủ."
+          "text": "Tiêu hóa: tăng tiết nước bọt.",
+          "block_id": "b0048"
+        },
+        {
+          "type": "text",
+          "text": "Cơ xương: rung giật cơ.",
+          "block_id": "b0049"
+        },
+        {
+          "type": "subheading",
+          "text": "Nghiêm trọng",
+          "block_id": "b0050"
+        },
+        {
+          "type": "text",
+          "text": "Tim mạch: blốc nhĩ thất, chậm nhịp tim, ngừng tim, loạn nhịp tim.",
+          "block_id": "b0051"
+        },
+        {
+          "type": "text",
+          "text": "Miễn dịch: phản ứng quá mẫn.",
+          "block_id": "b0052"
+        },
+        {
+          "type": "text",
+          "text": "Thần kinh: mất ý thức, co giật.",
+          "block_id": "b0053"
+        },
+        {
+          "type": "subheading",
+          "text": "Chưa xác định được tần suất",
+          "block_id": "b0054"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: buồn nôn, nôn, tiêu chảy, cảm giác chuột rút vùng bụng.",
+          "block_id": "b0055"
+        },
+        {
+          "type": "text",
+          "text": "Miễn dịch: ban đỏ.",
+          "block_id": "b0056"
+        },
+        {
+          "type": "subheading",
+          "text": "Neostigmin methylsulfat",
+          "block_id": "b0057"
+        },
+        {
+          "type": "subheading",
+          "text": "Thường gặp",
+          "block_id": "b0058"
+        },
+        {
+          "type": "text",
+          "text": "Tim mạch: tụt huyết áp.",
+          "block_id": "b0059"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: buồn nôn, nôn.",
+          "block_id": "b0060"
+        },
+        {
+          "type": "subheading",
+          "text": "Nghiêm trọng",
+          "block_id": "b0061"
+        },
+        {
+          "type": "text",
+          "text": "Tim mạch: blốc nhĩ thất, chậm nhịp tim (> 1%), ngừng tim, loạn nhịp tim.",
+          "block_id": "b0062"
+        },
+        {
+          "type": "text",
+          "text": "Thần kinh: mất ý thức, co giật.",
+          "block_id": "b0063"
+        },
+        {
+          "type": "text",
+          "text": "Miễn dịch: phản ứng quá mẫn, phù mạch, sốc phản vệ.",
+          "block_id": "b0064"
+        },
+        {
+          "type": "text",
+          "text": "Hô hấp: suy hô hấp, liệt hô hấp.",
+          "block_id": "b0065"
+        },
+        {
+          "type": "subheading",
+          "text": "Chưa xác định được tần suất",
+          "block_id": "b0066"
+        },
+        {
+          "type": "text",
+          "text": "Tim mạch: nhịp nhanh, viêm tĩnh mạch huyết khối (gặp khi dùng thuốc theo đường truyền tĩnh mạch).",
+          "block_id": "b0067"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: tiêu chảy, cảm giác chuột rút vùng bụng, tăng tiết nước bọt, khó nuốt, đầy hơi, tăng nhu động ruột (có thể dẫn tới đại tiện không tự chủ).",
+          "block_id": "b0068"
+        },
+        {
+          "type": "text",
+          "text": "Thần kinh: chóng mặt, ngủ gà, khó phát âm, đau đầu.",
+          "block_id": "b0069"
+        },
+        {
+          "type": "text",
+          "text": "Mắt: co đồng tử, tăng tiết nước mắt.",
+          "block_id": "b0070"
+        },
+        {
+          "type": "text",
+          "text": "Hô hấp: tăng tiết phế quản, co thắt phế quản, khó thở, tăng cường hen.",
+          "block_id": "b0071"
+        },
+        {
+          "type": "text",
+          "text": "Da và các tổ chức dưới da: tăng tiết mồ hôi.",
+          "block_id": "b0072"
+        },
+        {
+          "type": "text",
+          "text": "Cơ, xương, khớp: chuột rút, rung giật cơ, co cơ, yếu cơ, đau khớp, co thắt thanh quản Tiết niệu: tiểu tiện không tự chủ.",
+          "block_id": "b0073"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "cach-dung",
-      "title": "Cách dùng",
-      "content": "Neostigmin bromid: Dùng theo đường uống.\n\nNeostigmin methylsulfat: Dùng theo đường tiêm bắp, tiêm tĩnh mạch chậm (trong khoảng thời gian ít nhất là 1 phút) hoặc tiêm dưới da.",
+      "id": "lieu-luong-va-cach-dung",
+      "title": "Liều lượng và cách dùng",
+      "heading_block": "b0074",
       "blocks": [
         {
-          "type": "text",
-          "text": "Neostigmin bromid: Dùng theo đường uống.\n\nNeostigmin methylsulfat: Dùng theo đường tiêm bắp, tiêm tĩnh mạch chậm (trong khoảng thời gian ít nhất là 1 phút) hoặc tiêm dưới da."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "lieu-luong",
-      "title": "Liều lượng",
-      "content": "Giải độc thuốc giãn cơ: Mức liều của neostigmin cần được tính toán dựa trên yêu cầu và đáp ứng của từng cá thể. Cần sử dụng máy theo dõi thần kinh ngoại biên TOF để quyết định khi nào cần dùng neostigmin và khi nào cần tăng liều thuốc này.\n\nNgười lớn: Để giải độc thuốc giãn cơ sau phẫu thuật, thông thường, với mức liều neostigmin methylsulfat là 0,03 - 0,07 mg/kg tiêm tĩnh mạch chậm sẽ đạt được chỉ số TOF = 0,9 trong vòng 20 - 30 phút sau khi tiêm. Việc lựa chọn mức liều thích hợp dựa trên nửa đời thải trừ của thuốc giãn cơ, mức độ phục hồi tự phát và yêu cầu về tốc độ phục hồi. Liều 0,03 mg/kg được sử dụng để giải độc những thuốc giãn cơ có nửa đời thải trừ ngắn (ví dụ: rocuronium) hoặc khi đáp ứng co cơ đầu tiên với kích thích TOF thực sự > 10% giá trị nền hoặc khi có đáp ứng co cơ thứ 2. Liều 0,07 mg/kg được sử dụng để giải độc những thuốc giãn cơ có nửa đời thải trừ thải dài (ví dụ: vecuronium, pancuronium) hoặc khi đáp ứng co cơ đầu tiên với kích thích TOF yếu (không thực sự > 10% giá trị nền) hay khi cần phục hồi nhanh. Ngoài cách tính liều dựa trên cân nặng, neostigmin cũng được dùng theo liều cố định là 0,5 - 2,5 mg. Mức liều tối đa của thuốc là 0,07 mg/kg hoặc 5 mg.\n\nTrẻ em: liều của chuyên gia khuyên dùng là: 0,025 - 0,1 mg/kg cho trẻ sơ sinh và 0,025 - 0,08 mg/kg cho trẻ nhỏ. Liều tối đa cho trẻ em là 2,5 mg.\n\nĐể chống lại tác dụng muscarinic của neostigmin methylsulfat, cho 0,6 - 1,2 mg atropin sulfat hoặc 0,2 - 0,6 mg glycopyrolat (khoảng 0,2 mg glycopyrolat cho mỗi 1 mg neostigmin methylsulfat) tiêm tĩnh mạch cùng (trong 2 bơm tiêm khác nhau) hoặc 1 vài phút trước khi tiêm neostigmin methylsulfat. Khi có tim đập chậm, phải cho tiêm tĩnh mạch thuốc kháng muscarin trước neostigmin methylsulfat để tăng tần số tim lên khoảng 80 lần/phút.\n\nBệnh nhược cơ: Liều chẩn đoán: Với người lớn, liều neostigmin methylsulfat là 0,022 mg/kg, tiêm bắp 1 lần duy nhất.\n\nAtropin 0,011 mg/kg nên được tiêm bắp cho bệnh nhân trước 30 phút hoặc tiêm tĩnh mạch ngay trước khi tiêm neostigmin sulfat.\n\nNếu có phản ứng cholinergic phải ngừng test và dùng 0,4 - 0,6 mg atropin tĩnh mạch.\n\nNếu kết quả không rõ ràng, làm lại test 1 ngày khác với neostigmin methylsulfat 0,031 mg/kg, tiêm bắp 1 lần duy nhất; atropin 0,016 mg/kg được tiêm bắp trước đó 30 phút. Với trẻ em < 2 tuổi, liều neostigmin methylsulfat là 0,04 mg/kg, tiêm bắp 1 lần duy nhất. Bệnh nhi nên được sử dụng atropin tiêm tĩnh mạch trước khi dùng neostigmin. Nếu kết quả không rõ ràng hoặc âm tính có thể lặp lại 1 lần nữa sau 4 giờ. Liều thông thường từ 0,5 - 1,5 mg.\n\nChú ý: Cần ngừng tất cả các thuốc kháng cholinesterase trước khi chẩn đoán 8 giờ.\n\nLiều điều trị: Với neostigmin bromid: Người lớn: Liều khởi đầu: 15 mg, 3 lần/ ngày. Liều thông thường: 15 - 375 mg/ngày, chia nhiều lần (trung bình 150 mg/ngày, chia nhiều lần). Khoảng cách giữa các liều phụ thuộc vào đáp ứng của bệnh nhân với mức liều cao được dành cho lúc mệt nhất (như 30 phút trước khi ăn). Trẻ em: Liều cần được cá thể hóa, trung bình từ 0,3 - 2 mg/kg/ngày, chia thành nhiều lần.\n\nVới neostigmin methylsulfat: Người lớn: 0,5 - 2,5 mg tiêm tĩnh mạch, tiêm bắp, dưới da. Liều được tính toán dựa vào đáp ứng của bệnh nhân. Trẻ sơ sinh: nên được tiêm bắp 0,1 mg neostigmin cho lần đầu tiên. Sau đó, liều được hiệu chỉnh theo từng cá thể. Tuy nhiên, liều thông thường là 0,05 - 0,25 mg tiêm bắp hoặc 0,03 mg/ kg tiêm tĩnh mạch mỗi 2 - 4 giờ. Liều được giảm dần trước khi dừng hẳn. Thuốc cần phải được dùng ít nhất 30 phút trước khi ăn.\n\nViệc điều trị hiếm khi được tiến hành sau khi trẻ được 8 tuần tuổi.\n\nTrẻ < 12 tuổi: 0,2 - 0,5 mg theo đường tiêm bắp hoặc tiêm dưới da, lặp lại vào những thời điểm thích hợp trong ngày. Liều được hiệu chỉnh dần theo đáp ứng của bệnh nhi.\n\nTrẻ em > 12 tuổi: Theo liều của người lớn.\n\nLiệt ruột và bí đái sau phẫu thuật: Liều dự phòng: Neostigmin methylsulfat: 0,25 mg tiêm dưới da hoặc tiêm bắp ngay sau khi phẫu thuật; lặp lại mỗi 4 - 6 giờ, trong 2 - 3 ngày.\n\nLiều điều trị: 0,5 - 1 mg tiêm dưới da hoặc tiêm bắp; nếu không đi tiểu trong vòng 1 giờ, cần đặt ống thông tiểu cho bệnh nhân. Sau khi bàng quang đã trống, cần lặp lại liều trên sau mỗi 3 giờ và duy trì đến 5 liều.\n\nNhịp nhanh trên thất kịch phát: Thuốc được dùng theo đường tĩnh mạch.\n\nChỉ được sử dụng trong những trường hợp rất nặng, không đáp ứng với những phương pháp điều trị thông thường và sử dụng dưới sự giám sát chặt chẽ của chuyên gia đã có kinh nghiệm trong việc sử dụng thuốc này.\n\nĐối tượng đặc biệt: Người suy thận: Nên giảm liều theo Clcr: Clcr > 50 ml/phút: Không cần hiệu chỉnh liều.\n\nClcr từ 10 - 50 ml/phút: Dùng 50% liều thông thường.\n\nClcr < 10 ml/phút: Dùng 25% liều thông thường.\n\nVới bệnh nhân dùng liệu pháp thay thế thận thường xuyên: Dùng 50% liều thông thường.\n\nNgười suy gan: Không cần hiệu chỉnh liều.",
-      "blocks": [
+          "type": "subheading",
+          "text": "Cách dùng",
+          "block_id": "b0075"
+        },
         {
           "type": "text",
-          "text": "Giải độc thuốc giãn cơ: Mức liều của neostigmin cần được tính toán dựa trên yêu cầu và đáp ứng của từng cá thể. Cần sử dụng máy theo dõi thần kinh ngoại biên TOF để quyết định khi nào cần dùng neostigmin và khi nào cần tăng liều thuốc này.\n\nNgười lớn: Để giải độc thuốc giãn cơ sau phẫu thuật, thông thường, với mức liều neostigmin methylsulfat là 0,03 - 0,07 mg/kg tiêm tĩnh mạch chậm sẽ đạt được chỉ số TOF = 0,9 trong vòng 20 - 30 phút sau khi tiêm. Việc lựa chọn mức liều thích hợp dựa trên nửa đời thải trừ của thuốc giãn cơ, mức độ phục hồi tự phát và yêu cầu về tốc độ phục hồi. Liều 0,03 mg/kg được sử dụng để giải độc những thuốc giãn cơ có nửa đời thải trừ ngắn (ví dụ: rocuronium) hoặc khi đáp ứng co cơ đầu tiên với kích thích TOF thực sự > 10% giá trị nền hoặc khi có đáp ứng co cơ thứ 2. Liều 0,07 mg/kg được sử dụng để giải độc những thuốc giãn cơ có nửa đời thải trừ thải dài (ví dụ: vecuronium, pancuronium) hoặc khi đáp ứng co cơ đầu tiên với kích thích TOF yếu (không thực sự > 10% giá trị nền) hay khi cần phục hồi nhanh. Ngoài cách tính liều dựa trên cân nặng, neostigmin cũng được dùng theo liều cố định là 0,5 - 2,5 mg. Mức liều tối đa của thuốc là 0,07 mg/kg hoặc 5 mg.\n\nTrẻ em: liều của chuyên gia khuyên dùng là: 0,025 - 0,1 mg/kg cho trẻ sơ sinh và 0,025 - 0,08 mg/kg cho trẻ nhỏ. Liều tối đa cho trẻ em là 2,5 mg.\n\nĐể chống lại tác dụng muscarinic của neostigmin methylsulfat, cho 0,6 - 1,2 mg atropin sulfat hoặc 0,2 - 0,6 mg glycopyrolat (khoảng 0,2 mg glycopyrolat cho mỗi 1 mg neostigmin methylsulfat) tiêm tĩnh mạch cùng (trong 2 bơm tiêm khác nhau) hoặc 1 vài phút trước khi tiêm neostigmin methylsulfat. Khi có tim đập chậm, phải cho tiêm tĩnh mạch thuốc kháng muscarin trước neostigmin methylsulfat để tăng tần số tim lên khoảng 80 lần/phút.\n\nBệnh nhược cơ: Liều chẩn đoán: Với người lớn, liều neostigmin methylsulfat là 0,022 mg/kg, tiêm bắp 1 lần duy nhất.\n\nAtropin 0,011 mg/kg nên được tiêm bắp cho bệnh nhân trước 30 phút hoặc tiêm tĩnh mạch ngay trước khi tiêm neostigmin sulfat.\n\nNếu có phản ứng cholinergic phải ngừng test và dùng 0,4 - 0,6 mg atropin tĩnh mạch.\n\nNếu kết quả không rõ ràng, làm lại test 1 ngày khác với neostigmin methylsulfat 0,031 mg/kg, tiêm bắp 1 lần duy nhất; atropin 0,016 mg/kg được tiêm bắp trước đó 30 phút. Với trẻ em < 2 tuổi, liều neostigmin methylsulfat là 0,04 mg/kg, tiêm bắp 1 lần duy nhất. Bệnh nhi nên được sử dụng atropin tiêm tĩnh mạch trước khi dùng neostigmin. Nếu kết quả không rõ ràng hoặc âm tính có thể lặp lại 1 lần nữa sau 4 giờ. Liều thông thường từ 0,5 - 1,5 mg.\n\nChú ý: Cần ngừng tất cả các thuốc kháng cholinesterase trước khi chẩn đoán 8 giờ.\n\nLiều điều trị: Với neostigmin bromid: Người lớn: Liều khởi đầu: 15 mg, 3 lần/ ngày. Liều thông thường: 15 - 375 mg/ngày, chia nhiều lần (trung bình 150 mg/ngày, chia nhiều lần). Khoảng cách giữa các liều phụ thuộc vào đáp ứng của bệnh nhân với mức liều cao được dành cho lúc mệt nhất (như 30 phút trước khi ăn). Trẻ em: Liều cần được cá thể hóa, trung bình từ 0,3 - 2 mg/kg/ngày, chia thành nhiều lần.\n\nVới neostigmin methylsulfat: Người lớn: 0,5 - 2,5 mg tiêm tĩnh mạch, tiêm bắp, dưới da. Liều được tính toán dựa vào đáp ứng của bệnh nhân. Trẻ sơ sinh: nên được tiêm bắp 0,1 mg neostigmin cho lần đầu tiên. Sau đó, liều được hiệu chỉnh theo từng cá thể. Tuy nhiên, liều thông thường là 0,05 - 0,25 mg tiêm bắp hoặc 0,03 mg/ kg tiêm tĩnh mạch mỗi 2 - 4 giờ. Liều được giảm dần trước khi dừng hẳn. Thuốc cần phải được dùng ít nhất 30 phút trước khi ăn.\n\nViệc điều trị hiếm khi được tiến hành sau khi trẻ được 8 tuần tuổi.\n\nTrẻ < 12 tuổi: 0,2 - 0,5 mg theo đường tiêm bắp hoặc tiêm dưới da, lặp lại vào những thời điểm thích hợp trong ngày. Liều được hiệu chỉnh dần theo đáp ứng của bệnh nhi.\n\nTrẻ em > 12 tuổi: Theo liều của người lớn.\n\nLiệt ruột và bí đái sau phẫu thuật: Liều dự phòng: Neostigmin methylsulfat: 0,25 mg tiêm dưới da hoặc tiêm bắp ngay sau khi phẫu thuật; lặp lại mỗi 4 - 6 giờ, trong 2 - 3 ngày.\n\nLiều điều trị: 0,5 - 1 mg tiêm dưới da hoặc tiêm bắp; nếu không đi tiểu trong vòng 1 giờ, cần đặt ống thông tiểu cho bệnh nhân. Sau khi bàng quang đã trống, cần lặp lại liều trên sau mỗi 3 giờ và duy trì đến 5 liều.\n\nNhịp nhanh trên thất kịch phát: Thuốc được dùng theo đường tĩnh mạch.\n\nChỉ được sử dụng trong những trường hợp rất nặng, không đáp ứng với những phương pháp điều trị thông thường và sử dụng dưới sự giám sát chặt chẽ của chuyên gia đã có kinh nghiệm trong việc sử dụng thuốc này.\n\nĐối tượng đặc biệt: Người suy thận: Nên giảm liều theo Clcr: Clcr > 50 ml/phút: Không cần hiệu chỉnh liều.\n\nClcr từ 10 - 50 ml/phút: Dùng 50% liều thông thường.\n\nClcr < 10 ml/phút: Dùng 25% liều thông thường.\n\nVới bệnh nhân dùng liệu pháp thay thế thận thường xuyên: Dùng 50% liều thông thường.\n\nNgười suy gan: Không cần hiệu chỉnh liều."
+          "text": "Neostigmin bromid: Dùng theo đường uống.",
+          "block_id": "b0076"
+        },
+        {
+          "type": "text",
+          "text": "Neostigmin methylsulfat: Dùng theo đường tiêm bắp, tiêm tĩnh mạch chậm (trong khoảng thời gian ít nhất là 1 phút) hoặc tiêm dưới da.",
+          "block_id": "b0077"
+        },
+        {
+          "type": "subheading",
+          "text": "Liều lượng",
+          "block_id": "b0078"
+        },
+        {
+          "type": "subheading",
+          "text": "Giải độc thuốc giãn cơ:",
+          "block_id": "b0079"
+        },
+        {
+          "type": "text",
+          "text": "Mức liều của neostigmin cần được tính toán dựa trên yêu cầu và đáp ứng của từng cá thể. Cần sử dụng máy theo dõi thần kinh ngoại biên TOF để quyết định khi nào cần dùng neostigmin và khi nào cần tăng liều thuốc này.",
+          "block_id": "b0080"
+        },
+        {
+          "type": "text",
+          "text": "Người lớn: Để giải độc thuốc giãn cơ sau phẫu thuật, thông thường, với mức liều neostigmin methylsulfat là 0,03 - 0,07 mg/kg tiêm tĩnh mạch chậm sẽ đạt được chỉ số TOF = 0,9 trong vòng 20 - 30 phút sau khi tiêm. Việc lựa chọn mức liều thích hợp dựa trên nửa đời thải trừ của thuốc giãn cơ, mức độ phục hồi tự phát và yêu cầu về tốc độ phục hồi. Liều 0,03 mg/kg được sử dụng để giải độc những thuốc giãn cơ có nửa đời thải trừ ngắn (ví dụ: rocuronium) hoặc khi đáp ứng co cơ đầu tiên với kích thích TOF thực sự > 10% giá trị nền hoặc khi có đáp ứng co cơ thứ 2. Liều 0,07 mg/kg được sử dụng để giải độc những thuốc giãn cơ có nửa đời thải trừ thải dài (ví dụ: vecuronium, pancuronium) hoặc khi đáp ứng co cơ đầu tiên với kích thích TOF yếu (không thực sự > 10% giá trị nền) hay khi cần phục hồi nhanh. Ngoài cách tính liều dựa trên cân nặng, neostigmin cũng được dùng theo liều cố định là 0,5 - 2,5 mg. Mức liều tối đa của thuốc là 0,07 mg/kg hoặc 5 mg.",
+          "block_id": "b0081"
+        },
+        {
+          "type": "text",
+          "text": "Trẻ em: liều của chuyên gia khuyên dùng là: 0,025 - 0,1 mg/kg cho trẻ sơ sinh và 0,025 - 0,08 mg/kg cho trẻ nhỏ. Liều tối đa cho trẻ em là 2,5 mg.",
+          "block_id": "b0082"
+        },
+        {
+          "type": "text",
+          "text": "Để chống lại tác dụng muscarinic của neostigmin methylsulfat, cho 0,6 - 1,2 mg atropin sulfat hoặc 0,2 - 0,6 mg glycopyrolat (khoảng 0,2 mg glycopyrolat cho mỗi 1 mg neostigmin methylsulfat) tiêm tĩnh mạch cùng (trong 2 bơm tiêm khác nhau) hoặc 1 vài phút trước khi tiêm neostigmin methylsulfat. Khi có tim đập chậm, phải cho tiêm tĩnh mạch thuốc kháng muscarin trước neostigmin methylsulfat để tăng tần số tim lên khoảng 80 lần/phút.",
+          "block_id": "b0083"
+        },
+        {
+          "type": "subheading",
+          "text": "Bệnh nhược cơ:",
+          "block_id": "b0084"
+        },
+        {
+          "type": "text",
+          "text": "Liều chẩn đoán: Với người lớn, liều neostigmin methylsulfat là 0,022 mg/kg, tiêm bắp 1 lần duy nhất.",
+          "block_id": "b0085"
+        },
+        {
+          "type": "text",
+          "text": "Atropin 0,011 mg/kg nên được tiêm bắp cho bệnh nhân trước 30 phút hoặc tiêm tĩnh mạch ngay trước khi tiêm neostigmin sulfat.",
+          "block_id": "b0086"
+        },
+        {
+          "type": "text",
+          "text": "Nếu có phản ứng cholinergic phải ngừng test và dùng 0,4 - 0,6 mg atropin tĩnh mạch.",
+          "block_id": "b0087"
+        },
+        {
+          "type": "text",
+          "text": "Nếu kết quả không rõ ràng, làm lại test 1 ngày khác với neostigmin methylsulfat 0,031 mg/kg, tiêm bắp 1 lần duy nhất; atropin 0,016 mg/kg được tiêm bắp trước đó 30 phút. Với trẻ em < 2 tuổi, liều neostigmin methylsulfat là 0,04 mg/kg, tiêm bắp 1 lần duy nhất. Bệnh nhi nên được sử dụng atropin tiêm tĩnh mạch trước khi dùng neostigmin. Nếu kết quả không rõ ràng hoặc âm tính có thể lặp lại 1 lần nữa sau 4 giờ. Liều thông thường từ 0,5 - 1,5 mg.",
+          "block_id": "b0088"
+        },
+        {
+          "type": "text",
+          "text": "Chú ý: Cần ngừng tất cả các thuốc kháng cholinesterase trước khi chẩn đoán 8 giờ.",
+          "block_id": "b0089"
+        },
+        {
+          "type": "text",
+          "text": "Liều điều trị:",
+          "block_id": "b0090"
+        },
+        {
+          "type": "text",
+          "text": "Với neostigmin bromid: Người lớn: Liều khởi đầu: 15 mg, 3 lần/ ngày. Liều thông thường: 15 - 375 mg/ngày, chia nhiều lần (trung bình 150 mg/ngày, chia nhiều lần). Khoảng cách giữa các liều phụ thuộc vào đáp ứng của bệnh nhân với mức liều cao được dành cho lúc mệt nhất (như 30 phút trước khi ăn). Trẻ em: Liều cần được cá thể hóa, trung bình từ 0,3 - 2 mg/kg/ngày, chia thành nhiều lần.",
+          "block_id": "b0091"
+        },
+        {
+          "type": "text",
+          "text": "Với neostigmin methylsulfat: Người lớn: 0,5 - 2,5 mg tiêm tĩnh mạch, tiêm bắp, dưới da. Liều được tính toán dựa vào đáp ứng của bệnh nhân. Trẻ sơ sinh: nên được tiêm bắp 0,1 mg neostigmin cho lần đầu tiên. Sau đó, liều được hiệu chỉnh theo từng cá thể. Tuy nhiên, liều thông thường là 0,05 - 0,25 mg tiêm bắp hoặc 0,03 mg/ kg tiêm tĩnh mạch mỗi 2 - 4 giờ. Liều được giảm dần trước khi dừng hẳn. Thuốc cần phải được dùng ít nhất 30 phút trước khi ăn.",
+          "block_id": "b0092"
+        },
+        {
+          "type": "text",
+          "text": "Việc điều trị hiếm khi được tiến hành sau khi trẻ được 8 tuần tuổi.",
+          "block_id": "b0093"
+        },
+        {
+          "type": "text",
+          "text": "Trẻ < 12 tuổi: 0,2 - 0,5 mg theo đường tiêm bắp hoặc tiêm dưới da, lặp lại vào những thời điểm thích hợp trong ngày. Liều được hiệu chỉnh dần theo đáp ứng của bệnh nhi.",
+          "block_id": "b0094"
+        },
+        {
+          "type": "text",
+          "text": "Trẻ em > 12 tuổi: Theo liều của người lớn.",
+          "block_id": "b0095"
+        },
+        {
+          "type": "subheading",
+          "text": "Liệt ruột và bí đái sau phẫu thuật:",
+          "block_id": "b0096"
+        },
+        {
+          "type": "text",
+          "text": "Liều dự phòng: Neostigmin methylsulfat: 0,25 mg tiêm dưới da hoặc tiêm bắp ngay sau khi phẫu thuật; lặp lại mỗi 4 - 6 giờ, trong 2 - 3 ngày.",
+          "block_id": "b0097"
+        },
+        {
+          "type": "text",
+          "text": "Liều điều trị: 0,5 - 1 mg tiêm dưới da hoặc tiêm bắp; nếu không đi tiểu trong vòng 1 giờ, cần đặt ống thông tiểu cho bệnh nhân. Sau khi bàng quang đã trống, cần lặp lại liều trên sau mỗi 3 giờ và duy trì đến 5 liều.",
+          "block_id": "b0098"
+        },
+        {
+          "type": "text",
+          "text": "Nhịp nhanh trên thất kịch phát: Thuốc được dùng theo đường tĩnh mạch.",
+          "block_id": "b0099"
+        },
+        {
+          "type": "text",
+          "text": "Chỉ được sử dụng trong những trường hợp rất nặng, không đáp ứng với những phương pháp điều trị thông thường và sử dụng dưới sự giám sát chặt chẽ của chuyên gia đã có kinh nghiệm trong việc sử dụng thuốc này.",
+          "block_id": "b0100"
+        },
+        {
+          "type": "subheading",
+          "text": "Đối tượng đặc biệt:",
+          "block_id": "b0101"
+        },
+        {
+          "type": "text",
+          "text": "Người suy thận: Nên giảm liều theo Clcr:",
+          "block_id": "b0102"
+        },
+        {
+          "type": "text",
+          "text": "Clcr > 50 ml/phút: Không cần hiệu chỉnh liều.",
+          "block_id": "b0103"
+        },
+        {
+          "type": "text",
+          "text": "Clcr từ 10 - 50 ml/phút: Dùng 50% liều thông thường.",
+          "block_id": "b0104"
+        },
+        {
+          "type": "text",
+          "text": "Clcr < 10 ml/phút: Dùng 25% liều thông thường.",
+          "block_id": "b0105"
+        },
+        {
+          "type": "text",
+          "text": "Với bệnh nhân dùng liệu pháp thay thế thận thường xuyên: Dùng 50% liều thông thường.",
+          "block_id": "b0106"
+        },
+        {
+          "type": "text",
+          "text": "Người suy gan: Không cần hiệu chỉnh liều.",
+          "block_id": "b0107"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-tac-thuoc",
       "title": "Tương tác thuốc",
-      "content": "Neostigmin có thể làm giảm ngưỡng gây co giật của bupropion, đặc biệt trên người cao tuổi và trên bệnh nhân có tiền sử co giật hoặc có những yếu tố nguy cơ có thể dẫn tới co giật như: chấn thương sọ não, u não, xơ gan nặng, rối loạn chuyển hóa, nhiễm khuẩn TKTW, ngộ độc rượu hoặc thuốc ngủ, nghiện opiat, cocain hoặc các chất kích thích, hạ đường huyết ở bệnh nhân đái tháo đường được điều trị bằng thuốc hạ đường huyết đường uống hoặc insulin.\n\nNeostigmin ức chế chuyển hóa của succinylcholin, làm tăng nồng độ của chất này trong huyết thanh dẫn tới nguy cơ kéo dài tác dụng phong bế thần kinh cơ của thuốc này.\n\nNeostigmin có thể có tác dụng hiệp đồng khi sử dụng với các thuốc ức chế cholinesterase khác như donepezil, ecothiopat (nhãn khoa)… và làm tăng độc tính của những thuốc này.\n\nNeostigmin có thể làm tăng tác dụng điều trị cũng như ADR của amifampridin. Đồng thời, amifampridin cũng có thể làm tăng tác dụng điều trị và ADR của neostigmin.\n\nNeostigmin làm giảm tác dụng điều trị của các thuốc kháng cholin và ngược lại các thuốc kháng cholin có thể làm giảm tác dụng điều trị của neostigmin.\n\nNeostigmin kéo dài tác dụng điều trị của benoxinat.\n\nNeostigmin làm tăng tác dụng làm chậm nhịp tim của các thuốc thuộc nhóm chẹn thụ thể beta (trừ: levobunolol và metipranolol).\n\nNeostigmin làm tăng tác dụng phụ của các chất chủ vận cholin.\n\nCác thuốc corticoid làm tăng tác dụng phụ/độc tính của neostigmin, đặc biệt là tác dụng làm yếu cơ.\n\nDipyridamol có thể làm giảm tác dụng của neostigmin.\n\nNeostigmin không đối kháng mà thực tế kéo dài pha I của các thuốc phong bế thần kinh cơ không khử cực và đảo ngược pha II của những thuốc này. Tuy nhiên, thời gian chuyển tiếp giữa pha I và II thay đổi tùy theo người bệnh khiến cho việc xác định chính xác giai đoạn phong bế thần kinh - cơ khử cực trở nên khó khăn.\n\nĐiều này làm cho việc sử dụng neostigmin trở nên không hiệu quả hoặc nguy hiểm.\n\nCác thuốc có tác dụng phong bế thần kinh cơ như kháng sinh aminoglycosid, clindamycin, colistin, cyclopropan và các thuốc gây mê đường hô hấp dẫn chất halogen có thể đối kháng tác dụng của neostigmin.\n\nAtropin đối kháng với tác dụng muscarinic của neostigmin và tương tác này được sử dụng để làm mất các triệu chứng muscarinic trong ngộ độc neostigmin.",
+      "heading_block": "b0108",
       "blocks": [
         {
           "type": "text",
-          "text": "Neostigmin có thể làm giảm ngưỡng gây co giật của bupropion, đặc biệt trên người cao tuổi và trên bệnh nhân có tiền sử co giật hoặc có những yếu tố nguy cơ có thể dẫn tới co giật như: chấn thương sọ não, u não, xơ gan nặng, rối loạn chuyển hóa, nhiễm khuẩn TKTW, ngộ độc rượu hoặc thuốc ngủ, nghiện opiat, cocain hoặc các chất kích thích, hạ đường huyết ở bệnh nhân đái tháo đường được điều trị bằng thuốc hạ đường huyết đường uống hoặc insulin.\n\nNeostigmin ức chế chuyển hóa của succinylcholin, làm tăng nồng độ của chất này trong huyết thanh dẫn tới nguy cơ kéo dài tác dụng phong bế thần kinh cơ của thuốc này.\n\nNeostigmin có thể có tác dụng hiệp đồng khi sử dụng với các thuốc ức chế cholinesterase khác như donepezil, ecothiopat (nhãn khoa)… và làm tăng độc tính của những thuốc này.\n\nNeostigmin có thể làm tăng tác dụng điều trị cũng như ADR của amifampridin. Đồng thời, amifampridin cũng có thể làm tăng tác dụng điều trị và ADR của neostigmin.\n\nNeostigmin làm giảm tác dụng điều trị của các thuốc kháng cholin và ngược lại các thuốc kháng cholin có thể làm giảm tác dụng điều trị của neostigmin.\n\nNeostigmin kéo dài tác dụng điều trị của benoxinat.\n\nNeostigmin làm tăng tác dụng làm chậm nhịp tim của các thuốc thuộc nhóm chẹn thụ thể beta (trừ: levobunolol và metipranolol).\n\nNeostigmin làm tăng tác dụng phụ của các chất chủ vận cholin.\n\nCác thuốc corticoid làm tăng tác dụng phụ/độc tính của neostigmin, đặc biệt là tác dụng làm yếu cơ.\n\nDipyridamol có thể làm giảm tác dụng của neostigmin.\n\nNeostigmin không đối kháng mà thực tế kéo dài pha I của các thuốc phong bế thần kinh cơ không khử cực và đảo ngược pha II của những thuốc này. Tuy nhiên, thời gian chuyển tiếp giữa pha I và II thay đổi tùy theo người bệnh khiến cho việc xác định chính xác giai đoạn phong bế thần kinh - cơ khử cực trở nên khó khăn.\n\nĐiều này làm cho việc sử dụng neostigmin trở nên không hiệu quả hoặc nguy hiểm.\n\nCác thuốc có tác dụng phong bế thần kinh cơ như kháng sinh aminoglycosid, clindamycin, colistin, cyclopropan và các thuốc gây mê đường hô hấp dẫn chất halogen có thể đối kháng tác dụng của neostigmin.\n\nAtropin đối kháng với tác dụng muscarinic của neostigmin và tương tác này được sử dụng để làm mất các triệu chứng muscarinic trong ngộ độc neostigmin."
+          "text": "Neostigmin có thể làm giảm ngưỡng gây co giật của bupropion, đặc biệt trên người cao tuổi và trên bệnh nhân có tiền sử co giật hoặc có những yếu tố nguy cơ có thể dẫn tới co giật như: chấn thương sọ não, u não, xơ gan nặng, rối loạn chuyển hóa, nhiễm khuẩn TKTW,",
+          "block_id": "b0109"
+        },
+        {
+          "type": "text",
+          "text": "ngộ độc rượu hoặc thuốc ngủ, nghiện opiat, cocain hoặc các chất kích thích, hạ đường huyết ở bệnh nhân đái tháo đường được điều trị bằng thuốc hạ đường huyết đường uống hoặc insulin.",
+          "block_id": "b0110"
+        },
+        {
+          "type": "text",
+          "text": "Neostigmin ức chế chuyển hóa của succinylcholin, làm tăng nồng độ của chất này trong huyết thanh dẫn tới nguy cơ kéo dài tác dụng phong bế thần kinh cơ của thuốc này.",
+          "block_id": "b0111"
+        },
+        {
+          "type": "text",
+          "text": "Neostigmin có thể có tác dụng hiệp đồng khi sử dụng với các thuốc ức chế cholinesterase khác như donepezil, ecothiopat (nhãn khoa)… và làm tăng độc tính của những thuốc này.",
+          "block_id": "b0112"
+        },
+        {
+          "type": "text",
+          "text": "Neostigmin có thể làm tăng tác dụng điều trị cũng như ADR của amifampridin. Đồng thời, amifampridin cũng có thể làm tăng tác dụng điều trị và ADR của neostigmin.",
+          "block_id": "b0113"
+        },
+        {
+          "type": "text",
+          "text": "Neostigmin làm giảm tác dụng điều trị của các thuốc kháng cholin và ngược lại các thuốc kháng cholin có thể làm giảm tác dụng điều trị của neostigmin.",
+          "block_id": "b0114"
+        },
+        {
+          "type": "text",
+          "text": "Neostigmin kéo dài tác dụng điều trị của benoxinat.",
+          "block_id": "b0115"
+        },
+        {
+          "type": "text",
+          "text": "Neostigmin làm tăng tác dụng làm chậm nhịp tim của các thuốc thuộc nhóm chẹn thụ thể beta (trừ: levobunolol và metipranolol).",
+          "block_id": "b0116"
+        },
+        {
+          "type": "text",
+          "text": "Neostigmin làm tăng tác dụng phụ của các chất chủ vận cholin.",
+          "block_id": "b0117"
+        },
+        {
+          "type": "text",
+          "text": "Các thuốc corticoid làm tăng tác dụng phụ/độc tính của neostigmin, đặc biệt là tác dụng làm yếu cơ.",
+          "block_id": "b0118"
+        },
+        {
+          "type": "text",
+          "text": "Dipyridamol có thể làm giảm tác dụng của neostigmin.",
+          "block_id": "b0119"
+        },
+        {
+          "type": "text",
+          "text": "Neostigmin không đối kháng mà thực tế kéo dài pha I của các thuốc phong bế thần kinh cơ không khử cực và đảo ngược pha II của những thuốc này. Tuy nhiên, thời gian chuyển tiếp giữa pha I và II thay đổi tùy theo người bệnh khiến cho việc xác định chính xác giai đoạn phong bế thần kinh - cơ khử cực trở nên khó khăn.",
+          "block_id": "b0120"
+        },
+        {
+          "type": "text",
+          "text": "Điều này làm cho việc sử dụng neostigmin trở nên không hiệu quả hoặc nguy hiểm.",
+          "block_id": "b0121"
+        },
+        {
+          "type": "text",
+          "text": "Các thuốc có tác dụng phong bế thần kinh cơ như kháng sinh aminoglycosid, clindamycin, colistin, cyclopropan và các thuốc gây mê đường hô hấp dẫn chất halogen có thể đối kháng tác dụng của neostigmin.",
+          "block_id": "b0122"
+        },
+        {
+          "type": "text",
+          "text": "Atropin đối kháng với tác dụng muscarinic của neostigmin và tương tác này được sử dụng để làm mất các triệu chứng muscarinic trong ngộ độc neostigmin.",
+          "block_id": "b0123"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-ky",
       "title": "Tương kỵ",
-      "content": "Tránh dùng neostigmin và atropin trong cùng một bơm tiêm, vì có khả năng gây phản ứng.",
+      "heading_block": "b0124",
       "blocks": [
         {
           "type": "text",
-          "text": "Tránh dùng neostigmin và atropin trong cùng một bơm tiêm, vì có khả năng gây phản ứng."
+          "text": "Tránh dùng neostigmin và atropin trong cùng một bơm tiêm, vì có khả năng gây phản ứng.",
+          "block_id": "b0125"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "qua-lieu-va-xu-tri",
       "title": "Quá liều và xử trí",
-      "content": "Triệu chứng: Quá liều neostigmin có thể gây ra cơn cường cholin với các biểu hiện như: buồn nôn, nôn, tiêu chảy, tăng tiết nước bọt và mồ hôi, tăng tiết phế quản, co đồng tử, tăng tiết nước mắt, nhịp tim chậm hoặc nhịp tim nhanh, co thắt cơ tim, co thắt phế quản, tụt huyết áp, mất phối hợp, nhìn mờ, co rút cơ, yếu cơ, bó cơ, liệt.\n\nCần chú ý phân biệt giữa yếu cơ do quá liều neostigmin và yếu cơ do không đáp ứng với neostigmin (kháng neostigmin): nếu yếu cơ xuất hiện trong vòng 1 giờ sau khi dùng thuốc thì có thể là do quá liều còn nếu xuất hiện sau khi uống thuốc ít nhất 3 giờ thì đó có thể là do không đủ liều neostigmin hoặc kháng neostigmin.\n\nXử trí: Cần dừng ngay neostigmin và sử dụng atropin sulfat để kiểm soát các triệu chứng muscarin. Atropin chỉ có thể kiểm soát các triệu chứng muscarin chứ không thể làm giảm nhẹ tác động của neostigmin trên hệ cơ xương, do đó không thể khắc phục được tình trạng liệt hô hấp do quá liều neostigmin. Vì vậy, trong xử trí quá liều, quan trọng nhất là duy trì được hô hấp đầy đủ cho bệnh nhân.\n\nCó thể sử dụng các biện pháp nhân tạo để đảm bảo thông khí, đồng thời chức năng tim cần được theo dõi chặt chẽ cho đến khi khả năng hô hấp tự động của bệnh nhân được phục hồi.",
+      "heading_block": "b0126",
       "blocks": [
         {
           "type": "text",
-          "text": "Triệu chứng: Quá liều neostigmin có thể gây ra cơn cường cholin với các biểu hiện như: buồn nôn, nôn, tiêu chảy, tăng tiết nước bọt và mồ hôi, tăng tiết phế quản, co đồng tử, tăng tiết nước mắt, nhịp tim chậm hoặc nhịp tim nhanh, co thắt cơ tim, co thắt phế quản, tụt huyết áp, mất phối hợp, nhìn mờ, co rút cơ, yếu cơ, bó cơ, liệt.\n\nCần chú ý phân biệt giữa yếu cơ do quá liều neostigmin và yếu cơ do không đáp ứng với neostigmin (kháng neostigmin): nếu yếu cơ xuất hiện trong vòng 1 giờ sau khi dùng thuốc thì có thể là do quá liều còn nếu xuất hiện sau khi uống thuốc ít nhất 3 giờ thì đó có thể là do không đủ liều neostigmin hoặc kháng neostigmin.\n\nXử trí: Cần dừng ngay neostigmin và sử dụng atropin sulfat để kiểm soát các triệu chứng muscarin. Atropin chỉ có thể kiểm soát các triệu chứng muscarin chứ không thể làm giảm nhẹ tác động của neostigmin trên hệ cơ xương, do đó không thể khắc phục được tình trạng liệt hô hấp do quá liều neostigmin. Vì vậy, trong xử trí quá liều, quan trọng nhất là duy trì được hô hấp đầy đủ cho bệnh nhân.\n\nCó thể sử dụng các biện pháp nhân tạo để đảm bảo thông khí, đồng thời chức năng tim cần được theo dõi chặt chẽ cho đến khi khả năng hô hấp tự động của bệnh nhân được phục hồi."
+          "text": "Triệu chứng: Quá liều neostigmin có thể gây ra cơn cường cholin với các biểu hiện như: buồn nôn, nôn, tiêu chảy, tăng tiết nước bọt và mồ hôi, tăng tiết phế quản, co đồng tử, tăng tiết nước mắt, nhịp tim chậm hoặc nhịp tim nhanh, co thắt cơ tim, co thắt phế quản, tụt huyết áp, mất phối hợp, nhìn mờ, co rút cơ, yếu cơ, bó cơ, liệt.",
+          "block_id": "b0127"
+        },
+        {
+          "type": "text",
+          "text": "Cần chú ý phân biệt giữa yếu cơ do quá liều neostigmin và yếu cơ do không đáp ứng với neostigmin (kháng neostigmin): nếu yếu cơ xuất hiện trong vòng 1 giờ sau khi dùng thuốc thì có thể là do quá liều còn nếu xuất hiện sau khi uống thuốc ít nhất 3 giờ thì đó có thể là do không đủ liều neostigmin hoặc kháng neostigmin.",
+          "block_id": "b0128"
+        },
+        {
+          "type": "text",
+          "text": "Xử trí: Cần dừng ngay neostigmin và sử dụng atropin sulfat để kiểm soát các triệu chứng muscarin. Atropin chỉ có thể kiểm soát các triệu chứng muscarin chứ không thể làm giảm nhẹ tác động của neostigmin trên hệ cơ xương, do đó không thể khắc phục được tình trạng liệt hô hấp do quá liều neostigmin. Vì vậy, trong xử trí quá liều, quan trọng nhất là duy trì được hô hấp đầy đủ cho bệnh nhân.",
+          "block_id": "b0129"
+        },
+        {
+          "type": "text",
+          "text": "Có thể sử dụng các biện pháp nhân tạo để đảm bảo thông khí, đồng thời chức năng tim cần được theo dõi chặt chẽ cho đến khi khả năng hô hấp tự động của bệnh nhân được phục hồi.",
+          "block_id": "b0130"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "cap-nhat-lan-cuoi",
       "title": "Cập nhật lần cuối",
-      "content": "2020.",
+      "heading_block": "b0131",
       "blocks": [
         {
           "type": "text",
-          "text": "2020."
+          "text": "2020.",
+          "block_id": "b0131"
         }
-      ],
-      "subsections": []
+      ]
     }
   ],
-  "tables": [],
   "quality": {
-    "status": "source-layout-rebuilt-v10.1-source-paragraph-boundaries",
-    "pdf_text_order": "left-column-then-right-column; visual line flow",
-    "paragraph_policy": "Paragraph boundaries are source-derived and stored only as blank lines. The client preserves those boundaries exactly; it must not create a new paragraph from label words such as “Trẻ em:” or “Người lớn:”. A lower-case continuation fragment is merged only when it follows a non-terminal source fragment; table footnotes remain separate. No client-side anchor or length-based sentence splitter is allowed.",
-    "table_policy": "source-table image inserted by PDF page/column/y position; table-cell text excluded from prose",
-    "validation": {
-      "raw_newline_inside_paragraph": false,
-      "table_count": 0,
-      "section_count": 17,
-      "client_anchor_resegmentation_disabled": true,
-      "client_length_sentence_chunking_disabled": true
-    }
+    "block_count": 131,
+    "heading_count": 14,
+    "subheading_count": 16,
+    "paragraph_count": 100,
+    "list_count": 0,
+    "table_count": 0,
+    "figure_count": 0,
+    "note_count": 1,
+    "page_count": 4
+  },
+  "tables": [],
+  "legacy_compat": {
+    "sections": "generated from v11 blocks for v10.4.5.39 renderer/chatbot compatibility"
   }
 }

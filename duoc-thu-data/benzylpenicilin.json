@@ -1,5 +1,5 @@
 {
-  "schema_version": "10.1-source-paragraph-boundaries",
+  "schema_version": "11.0.0",
   "id": "benzylpenicilin",
   "title": "Benzylpenicilin",
   "aliases": [
@@ -26,236 +26,4221 @@
       "boundary_method": "physical-source-title-band"
     }
   },
-  "sections": [
+  "parser": {
+    "name": "medplus-duoc-thu-v11-structured-pdf-parser",
+    "method": "PyMuPDF span -> line -> block",
+    "content_source": "Duocthu2023.pdf",
+    "old_json_usage": "id/title/page-boundary metadata and existing table asset path only; old content is not used",
+    "column_order": "left column -> right column -> next page",
+    "block_model": [
+      "heading",
+      "subheading",
+      "paragraph",
+      "list",
+      "table",
+      "figure",
+      "note"
+    ],
+    "table_policy": "no OCR; preserve existing duoc-thu-assets/<id>/pXXXX-tXX.png image_path"
+  },
+  "blocks": [
     {
-      "id": "thong-tin-au-chuyen-luan",
-      "title": "Thông tin đầu chuyên luận",
-      "content": "BENZYLPENICILIN (Penicilin G)",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "BENZYLPENICILIN (Penicilin G)"
-        }
+      "id": "b0001",
+      "type": "heading",
+      "level": 1,
+      "text": "BENZYLPENICILIN",
+      "page": 278,
+      "printed_page": 284,
+      "column": 1,
+      "bbox": [
+        386.41,
+        650.68,
+        480.31,
+        664.52
       ],
-      "subsections": []
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "BENZYLPENICILIN",
+          "bbox": [
+            386.41,
+            650.68,
+            480.31,
+            664.52
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
     },
     {
-      "id": "ten-chung-quoc-te",
-      "title": "Tên chung quốc tế",
-      "content": "Benzylpenicillin.\n\nMã ATC: J01CE01, S01AA14.\n\nLoại thuốc: Kháng sinh nhóm penicilin.",
+      "id": "b0002",
+      "type": "heading",
+      "level": 2,
+      "text": "(Penicilin G)",
+      "page": 278,
+      "printed_page": 284,
+      "column": 1,
+      "bbox": [
+        406.39,
+        665.09,
+        460.34,
+        678.93
+      ],
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "MinionPro-Bold"
+        ]
+      },
+      "spans": [
+        {
+          "text": "(P",
+          "bbox": [
+            406.39,
+            665.09,
+            415.9,
+            678.93
+          ],
+          "font": "MinionPro-Bold",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "enicilin  G)",
+          "bbox": [
+            415.9,
+            665.6,
+            460.34,
+            678.75
+          ],
+          "font": "MinionPro-Bold",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0003",
+      "type": "paragraph",
+      "text": "Tên chung quốc tế: Benzylpenicillin.",
+      "page": 278,
+      "printed_page": 284,
+      "column": 1,
+      "bbox": [
+        307.39,
+        688.55,
+        452.8,
+        701.7
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tên chung quốc tế: ",
+          "bbox": [
+            307.39,
+            688.55,
+            387.61,
+            701.7
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "Benzylpenicillin.",
+          "bbox": [
+            387.62,
+            688.71,
+            452.8,
+            701.5
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0004",
+      "type": "paragraph",
+      "text": "Mã ATC: J01CE01, S01AA14.",
+      "page": 278,
+      "printed_page": 284,
+      "column": 1,
+      "bbox": [
+        307.39,
+        700.48,
+        427.81,
+        713.62
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mã ATC: ",
+          "bbox": [
+            307.39,
+            700.48,
+            347.84,
+            713.62
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "J01CE01, S01AA14.",
+          "bbox": [
+            347.84,
+            700.63,
+            427.81,
+            713.42
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0005",
+      "type": "paragraph",
+      "text": "Loại thuốc: Kháng sinh nhóm penicilin.",
+      "page": 278,
+      "printed_page": 284,
+      "column": 1,
+      "bbox": [
+        307.39,
+        712.4,
+        462.03,
+        725.55
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Loại thuốc: ",
+          "bbox": [
+            307.39,
+            712.4,
+            356.47,
+            725.55
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "Kháng sinh nhóm penicilin.",
+          "bbox": [
+            356.47,
+            712.55,
+            462.03,
+            725.35
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0006",
+      "type": "heading",
+      "level": 2,
+      "text": "Dạng thuốc và hàm lượng",
+      "page": 278,
+      "printed_page": 284,
+      "column": 1,
+      "bbox": [
+        307.39,
+        727.48,
+        414.68,
+        740.63
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dạng thuốc và hàm lượng ",
+          "bbox": [
+            307.39,
+            727.48,
+            414.68,
+            740.63
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0007",
+      "type": "paragraph",
+      "text": "Benzylpenicilin (hay penicilin G) được dùng ở dạng muối natri hoặc kali. Hàm lượng thuốc được tính theo lượng benzylpenicilin.",
+      "page": 278,
+      "printed_page": 284,
+      "column": 1,
+      "bbox": [
+        307.39,
+        739.72,
+        561.73,
+        764.61
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0008",
+      "type": "paragraph",
+      "text": "600 mg benzylpenicilin tương đương với 1 triệu đơn vị.",
+      "page": 278,
+      "printed_page": 284,
+      "column": 1,
+      "bbox": [
+        307.39,
+        763.9,
+        519.34,
+        776.7
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "600 mg benzylpenicilin tương đương với 1 triệu đơn vị.",
+          "bbox": [
+            307.39,
+            763.9,
+            519.34,
+            776.7
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0009",
+      "type": "paragraph",
+      "text": "Thuốc bột pha tiêm: Lọ 500 000 đơn vị, 1 triệu đơn vị, 5 triệu đơn vị và 20 triệu đơn vị.",
+      "page": 278,
+      "printed_page": 284,
+      "column": 1,
+      "bbox": [
+        307.39,
+        775.99,
+        561.71,
+        800.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0010",
+      "type": "paragraph",
+      "text": "Dung dịch truyền tĩnh mạch penicilin G kali trong dextrose (bảo quản đông lạnh):",
+      "page": 279,
+      "printed_page": 285,
+      "column": 0,
+      "bbox": [
+        35.43,
+        63.32,
+        289.76,
+        88.15
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0011",
+      "type": "paragraph",
+      "text": "Lọ 1 triệu đơn vị, chứa 20 000 đơn vị/ml trong dextrose 4%.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 0,
+      "bbox": [
+        35.43,
+        87.38,
+        264.9,
+        100.18
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Lọ 1 triệu đơn vị, chứa 20 000 đơn vị/ml trong dextrose 4%.",
+          "bbox": [
+            35.43,
+            87.38,
+            264.9,
+            100.18
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0012",
+      "type": "paragraph",
+      "text": "Lọ 2 triệu đơn vị, chứa 40 000 đơn vị/ml trong dextrose 2,3%.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 0,
+      "bbox": [
+        35.43,
+        99.41,
+        274.4,
+        112.21
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Lọ 2 triệu đơn vị, chứa 40 000 đơn vị/ml trong dextrose 2,3%. ",
+          "bbox": [
+            35.43,
+            99.41,
+            274.4,
+            112.21
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0013",
+      "type": "paragraph",
+      "text": "Lọ 3 triệu đơn vị, chứa 60 000 đơn vị/ml trong dextrose 0,7%.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 0,
+      "bbox": [
+        35.43,
+        111.44,
+        274.4,
+        124.23
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Lọ 3 triệu đơn vị, chứa 60 000 đơn vị/ml trong dextrose 0,7%. ",
+          "bbox": [
+            35.43,
+            111.44,
+            274.4,
+            124.23
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0014",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược lực học",
+      "page": 279,
+      "printed_page": 285,
+      "column": 0,
+      "bbox": [
+        35.43,
+        126.32,
+        89.03,
+        139.46
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược lực học",
+          "bbox": [
+            35.43,
+            126.32,
+            89.03,
+            139.46
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0015",
+      "type": "paragraph",
+      "text": "Benzylpenicilin hay penicilin G là một kháng sinh penicilin tự nhiên, nhóm beta-lactam. Penicilin G diệt khuẩn bằng cách ức chế tổng hợp peptidoglycan của thành tế bào vi khuẩn, tác động vào quá trình nhân lên của vi khuẩn. Tuy nhiên, tác dụng này bị ức chế bởi penicilinase và beta-lactamase sinh ra bởi vi khuẩn.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 0,
+      "bbox": [
+        35.43,
+        138.5,
+        289.77,
+        199.41
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0016",
+      "type": "paragraph",
+      "text": "Penicilin G có tác dụng tốt với cầu khuẩn Gram dương, bao gồm Streptococcus nhóm B. Giá trị MIC thường rất khác nhau, từ dưới 0,002 microgam/ml đến 0,1 microgam/ml, tùy thuộc vào loài vi khuẩn và mức độ nhạy cảm. Nói chung, các cầu khuẩn Enterococcus kém nhạy cảm và đôi khi kháng hoàn toàn. Các Pneumococcus cũng kháng penicilin G và các kháng sinh betalactam khác. Trước đây, penicilin G được cho là có tác dụng ức chế các cầu khuẩn Gram âm như Meningococcus và Gonococcus với MIC thấp khoảng 0,03 microgam/ml. Nhưng tình trạng kháng thuốc lan tràn ở Việt Nam hiện nay làm cho penicilin G bị mất tác dụng trong một số trường hợp. Cho đến nay, Gonococcus gần như kháng penicilin G hoàn toàn do tạo beta-lactamase. Hiện tượng này là phổ biến ở cả khu vực Đông Nam Á.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 0,
+      "bbox": [
+        35.43,
+        198.64,
+        289.77,
+        355.79
+      ],
+      "source": {
+        "line_count": 13
+      }
+    },
+    {
+      "id": "b0017",
+      "type": "paragraph",
+      "text": "Nói chung, penicilin G có hiệu quả với Haemophilus influenzae tốt hơn penicilin V và ampicilin. Tuy nhiên hiện nay hiệu quả của penicilin G đối với H. influenzae giảm nhiều do vi khuẩn sinh ra beta-lactamase.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 0,
+      "bbox": [
+        35.43,
+        355.02,
+        289.76,
+        403.91
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0018",
+      "type": "paragraph",
+      "text": "Phần lớn các vi khuẩn kỵ khí khá nhạy cảm với penicilin G, gồm Clostridium spp., Fusobacterium spp. và Actinomyces israelii, trừ Bacteroides fragilis.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 0,
+      "bbox": [
+        35.43,
+        403.14,
+        289.77,
+        439.99
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0019",
+      "type": "paragraph",
+      "text": "Treponema pallidum (xoắn khuẩn giang mai) và những loài Treponema nhiệt đới khác thường nhạy cảm với penicilin G. Thuốc cũng có khả năng tác dụng với Leptospira và Actinomyces. Các vi khuẩn sinh độc tố như Corynebacterium diphtheriae, các vi khuẩn hoại thư, Cytocapnophagia canimorsis (bị nhiễm do chó cắn) cũng nhạy cảm với penicilin G.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 0,
+      "bbox": [
+        35.43,
+        439.23,
+        289.77,
+        512.17
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0020",
+      "type": "paragraph",
+      "text": "Sự đề kháng penicilin G có thể do vi khuẩn tạo ra penicilinase.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 0,
+      "bbox": [
+        35.43,
+        511.4,
+        289.77,
+        524.2
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Sự đề kháng penicilin G có thể do vi khuẩn tạo ra penicilinase. ",
+          "bbox": [
+            35.43,
+            511.4,
+            289.77,
+            524.2
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0021",
+      "type": "paragraph",
+      "text": "Đây là kiểu kháng phổ biến của các vi khuẩn Staphylococcus aureus, Pseudomonas spp., Bacteroides fragilis, Escherichia coli và Proteus. Loại kháng này có thể được hạn chế bằng cách dùng kết hợp với những chất ức chế beta-lactamase như acid clavulanic, tazobactam hoặc sulbactam.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 0,
+      "bbox": [
+        35.43,
+        523.43,
+        289.77,
+        584.34
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0022",
+      "type": "paragraph",
+      "text": "Penicilin G thường có tác dụng tốt với Streptococcus pneumoniae, Streptococcus pyogenes (nhóm A), Streptococcus agalactiae (nhóm B) Streptococcus viridans, S. bovis và Staphylococcus aureus nhạy cảm với penicilin. Tuy nhiên hiện nay, hầu hết các Staphylococcus aureus đã kháng penicilin G. Penicilin G dùng đơn độc không có tác dụng với nhiễm khuẩn nặng do Enterococcus như viêm màng trong tim.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 0,
+      "bbox": [
+        35.43,
+        583.58,
+        289.77,
+        668.55
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0023",
+      "type": "paragraph",
+      "text": "Với các Pneumococcus, cần lưu ý đặc biệt, do hiện nay các loài vi khuẩn Pneumococcus kháng penicilin G đã tăng lên. Các vi khuẩn nhạy cảm có MIC = 0,1 microgam/ml hoặc thấp hơn. Các vi khuẩn kháng trung bình thường có MIC = 0,1 - 2 microgam/ml và các loài kháng cao thì có MIC > 2 microgam/ml hoặc cao hơn.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 0,
+      "bbox": [
+        35.43,
+        667.78,
+        289.78,
+        728.69
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0024",
+      "type": "paragraph",
+      "text": "Các Pneumococcus kháng penicilin G thường kháng cả ampicilin, ticarcilin, piperacilin. Do sự kháng không phụ thuộc vào việc sinh beta-lactamase, nên sử dụng acid clavulanic hoặc các chất ức chế khác không có hiệu quả.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 0,
+      "bbox": [
+        35.43,
+        727.93,
+        289.77,
+        776.81
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0025",
+      "type": "paragraph",
+      "text": "Viêm màng não do Neisseria vẫn thường được điều trị bằng penicilin G, nhưng hiện nay các vi khuẩn Meningococcus kháng",
+      "page": 279,
+      "printed_page": 285,
+      "column": 0,
+      "bbox": [
+        35.43,
+        776.04,
+        289.76,
+        800.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0026",
+      "type": "paragraph",
+      "text": "penicilin G cao khá phổ biến. Penicilin G có thể vẫn là một thuốc được chọn để điều trị nhiễm Neisseria meningitidis và Pasteurella multocida, nhưng không còn được dùng để điều trị Neisseria gonorrhoeae nữa.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 1,
+      "bbox": [
+        299.39,
+        63.33,
+        553.72,
+        112.67
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0027",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược động học",
+      "page": 279,
+      "printed_page": 285,
+      "column": 1,
+      "bbox": [
+        299.39,
+        114.91,
+        360.49,
+        128.05
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược động học",
+          "bbox": [
+            299.39,
+            114.91,
+            360.49,
+            128.05
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0028",
+      "type": "paragraph",
+      "text": "Hấp thu: Penicilin G không bền trong môi trường acid, sẽ bị acid dạ dày phá hủy nếu dùng đường uống. Thuốc chủ yếu được dùng đường tiêm và tốt nhất nên tiêm tĩnh mạch.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 1,
+      "bbox": [
+        299.39,
+        127.24,
+        553.72,
+        164.4
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0029",
+      "type": "paragraph",
+      "text": "Penicilin G vào máu nhanh sau khi tiêm bắp dạng muối tan trong nước và thường đạt được nồng độ cao nhất trong vòng 15 - 30 phút.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 1,
+      "bbox": [
+        299.39,
+        163.79,
+        553.72,
+        188.77
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0030",
+      "type": "paragraph",
+      "text": "Sau khi tiêm bắp liều đơn 600 000 hoặc 1 triệu đơn vị penicilin G natri, nồng độ đỉnh của thuốc trong huyết tương đạt tương ứng khoảng 6 - 8 hoặc 20 microgam/ml.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 1,
+      "bbox": [
+        299.39,
+        188.15,
+        553.75,
+        225.31
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0031",
+      "type": "paragraph",
+      "text": "Sau khi truyền tĩnh mạch ngắt quãng 2 triệu đơn vị penicilin G mỗi 2 giờ hoặc 3 triệu đơn vị mỗi 3 giờ, nồng độ penicilin G huyết thanh trung bình đạt 20 microgam/ml. Penicilin G được hấp thu từ khoang màng bụng sau khi tiêm thấm tại chỗ, thuốc cũng được hấp thu từ bề mặt màng phổi, màng ngoài tim và ổ khớp. Penicilin G không hấp thu qua da còn nguyên vẹn.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 1,
+      "bbox": [
+        299.39,
+        224.7,
+        553.72,
+        298.4
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0032",
+      "type": "paragraph",
+      "text": "Phân bố: Thể tích phân bố của penicilin G khoảng 0,53 - 0,67 lít/ kg ở người có chức năng thận bình thường. Khoảng 45 - 68% thuốc liên kết với protein huyết tương. Benzylpenicilin phân bố rộng rãi với nồng độ khác nhau trong các mô và dịch cơ thể. Thuốc phân tán qua nhau thai, vào tuần hoàn thai và một lượng nhỏ xuất hiện trong sữa. Tỉ lệ nồng độ thuốc trong dịch não tủy so với trong máu ở người màng não bình thường < 1% và khi viêm màng não là 2 - 6%.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 1,
+      "bbox": [
+        299.39,
+        297.79,
+        553.75,
+        383.68
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0033",
+      "type": "paragraph",
+      "text": "Chuyển hóa, thải trừ: Khoảng 16 - 30% liều tiêm bắp được chuyển hóa thành acid peniciloic không có hoạt tính vi sinh. Một lượng nhỏ acid 6-aminopenicilanic (6APA) cũng được tìm thấy trong nước tiểu của bệnh nhân dùng peniclin G. Một tỉ lệ nhỏ của thuốc cũng được hydroxy hóa thành một vài chất chuyển hóa có hoạt tính vi sinh và cũng bài tiết qua thận. Penicilin G và các chất chuyển hóa được thải trừ qua thận chủ yếu nhờ bài tiết ở ống thận, vào nước tiểu. Một lượng nhỏ thuốc thải qua mật. Sau khi tiêm bắp, 60% liều dùng hoặc hơn được bài tiết qua nước tiểu ở dạng không đổi hoặc chất chuyển hóa trong vòng 6 giờ.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 1,
+      "bbox": [
+        299.39,
+        383.06,
+        553.72,
+        505.5
+      ],
+      "source": {
+        "line_count": 10
+      }
+    },
+    {
+      "id": "b0034",
+      "type": "paragraph",
+      "text": "Nửa đời thải trừ huyết thanh của penicilin G ở người có chức năng thận bình thường là 0,4 - 0,9 giờ, kéo dài ở trẻ sơ sinh, người cao tuổi và người suy thận. Nồng độ thuốc trong huyết thanh cao hơn và kéo dài hơn ở bệnh nhân suy thận. Ở bệnh nhân thiểu niệu có nồng độ creatinin huyết thanh nhỏ hơn 3 mg/dl, nửa đời huyết thanh của thuốc là 1 - 2 giờ, và ở bệnh nhân vô niệu là 6 - 20 giờ.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 1,
+      "bbox": [
+        299.39,
+        504.89,
+        553.72,
+        578.59
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0035",
+      "type": "paragraph",
+      "text": "Ở bệnh nhân vô niệu suy giảm chức năng gan, nửa đời huyết thanh của thuốc cao gấp 2 - 3 lần so với ở bệnh nhân vô niệu có chức năng gan bình thường.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 1,
+      "bbox": [
+        299.39,
+        577.98,
+        553.72,
+        615.14
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0036",
+      "type": "paragraph",
+      "text": "Nửa đời huyết thanh của penicilin G ở trẻ sơ sinh khác nhau tỉ lệ nghịch với tuổi, không phụ thuộc vào cân nặng lúc sinh. Nửa đời huyết thanh được ghi nhận ở trẻ sơ sinh từ 6 ngày tuổi trở xuống là 3,2 - 3,4 giờ, ở trẻ 7 - 13 ngày tuổi là 1,2 - 2,2 giờ và ở trẻ từ 14 ngày trở lên là 0,9 - 1,9 giờ.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 1,
+      "bbox": [
+        299.39,
+        614.52,
+        553.72,
+        676.05
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0037",
+      "type": "paragraph",
+      "text": "Benzylpenicilin có thể loại được bằng thẩm tách máu nhưng chỉ có một lượng nhỏ bị loại bằng lọc màng bụng.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 1,
+      "bbox": [
+        299.39,
+        675.43,
+        553.72,
+        700.41
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0038",
+      "type": "heading",
+      "level": 2,
+      "text": "Chỉ định",
+      "page": 279,
+      "printed_page": 285,
+      "column": 1,
+      "bbox": [
+        299.39,
+        702.65,
+        335.03,
+        715.79
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chỉ định",
+          "bbox": [
+            299.39,
+            702.65,
+            335.03,
+            715.79
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0039",
+      "type": "paragraph",
+      "text": "Benzylpenicilin được chỉ định cho các trường hợp nhiễm khuẩn gây ra bởi vi khuẩn nhạy cảm, bao gồm:",
+      "page": 279,
+      "printed_page": 285,
+      "column": 1,
+      "bbox": [
+        299.39,
+        714.98,
+        553.72,
+        739.96
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0040",
+      "type": "paragraph",
+      "text": "Viêm màng ngoài tim, viêm màng trong tim nhiễm khuẩn, viêm màng não do vi khuẩn nhạy cảm.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 1,
+      "bbox": [
+        299.39,
+        739.34,
+        553.73,
+        764.32
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0041",
+      "type": "paragraph",
+      "text": "Dự phòng nhiễm khuẩn sơ sinh ở phụ nữ mang thai nhiễm liên cầu nhóm B.",
+      "page": 279,
+      "printed_page": 285,
+      "column": 1,
+      "bbox": [
+        299.39,
+        763.71,
+        553.72,
+        788.69
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0042",
+      "type": "paragraph",
+      "text": "Ngoài ra, thuốc cũng có thể được sử dụng cho một số các loại",
+      "page": 279,
+      "printed_page": 285,
+      "column": 1,
+      "bbox": [
+        299.39,
+        788.07,
+        553.72,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Ngoài ra, thuốc cũng có thể được sử dụng cho một số các loại ",
+          "bbox": [
+            299.39,
+            788.07,
+            553.72,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0043",
+      "type": "paragraph",
+      "text": "nhiễm khuẩn khác (rất hạn chế trên lâm sàng):",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        63.32,
+        222.04,
+        76.12
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "nhiễm khuẩn khác (rất hạn chế trên lâm sàng): ",
+          "bbox": [
+            43.43,
+            63.32,
+            222.04,
+            76.12
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0044",
+      "type": "paragraph",
+      "text": "Bệnh than, bệnh bạch hầu, bệnh nhiễm khuẩn listeria, bệnh lyme, giang mai, sốt do chuột cắn vết thương nhiễm khuẩn (áp xe), nhiễm khuẩn da, nhiễm khuẩn ở mũi, họng, xoang mũi, tai giữa, viêm phổi. Nhiễm khuẩn huyết do vi khuẩn nhạy cảm.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        75.35,
+        297.77,
+        124.24
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0045",
+      "type": "paragraph",
+      "text": "Tuy nhiên, khi chỉ định cần tham khảo phần Dược lực học ở trên và điều trị dựa theo kết quả kháng sinh đồ và đáp ứng lâm sàng.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        123.47,
+        297.77,
+        148.3
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0046",
+      "type": "heading",
+      "level": 2,
+      "text": "Chống chỉ định",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        150.38,
+        105.73,
+        163.52
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chống chỉ định",
+          "bbox": [
+            43.43,
+            150.38,
+            105.73,
+            163.52
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0047",
+      "type": "paragraph",
+      "text": "Quá mẫn cảm với các penicilin.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        162.56,
+        164.02,
+        175.36
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Quá mẫn cảm với các penicilin.",
+          "bbox": [
+            43.43,
+            162.56,
+            164.02,
+            175.36
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0048",
+      "type": "heading",
+      "level": 2,
+      "text": "Thận trọng",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        177.44,
+        89.62,
+        190.58
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thận trọng",
+          "bbox": [
+            43.43,
+            177.44,
+            89.62,
+            190.58
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ],
+      "note_role": "than trong",
+      "v11_fix": "note_title_reclassified_as_heading_alpha5"
+    },
+    {
+      "id": "b0049",
+      "type": "paragraph",
+      "text": "Người có tiền sử dị ứng với penicilin và cephalosporin do có nguy cơ phản ứng chéo miễn dịch giữa benzylpenicilin và các cephalosporin.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        189.62,
+        297.77,
+        226.47
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0050",
+      "type": "paragraph",
+      "text": "Dùng penicilin natri hoặc kali liều cao (trên 6 g) đường tĩnh mạch có thể gây rối loạn cân bằng điện giải (tăng natri hoặc kali huyết).",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        225.71,
+        297.77,
+        250.53
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0051",
+      "type": "paragraph",
+      "text": "Dùng penicilin natri liều cao ồ ạt có thể dẫn đến giảm kali huyết và đôi khi tăng natri huyết, do đó đặc biệt thận trọng trên bệnh nhân đang dùng thuốc lợi tiểu giữ kali hoặc giảm kali huyết.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        249.77,
+        297.76,
+        286.62
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0052",
+      "type": "paragraph",
+      "text": "Với người bệnh suy giảm chức năng thận, dùng liều cao (trên 8 g/ ngày/người lớn) có thể gây kích ứng não, co giật và hôn mê. Cần theo dõi định kỳ chức năng thận, gan và các thông số huyết học khi sử dụng liều cao và kéo dài penicilin. Thận trọng với người bệnh suy giảm chức năng thận, đặc biệt ở trẻ sơ sinh và người cao tuổi.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        285.86,
+        297.77,
+        346.77
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0053",
+      "type": "paragraph",
+      "text": "Với người suy tim cần chú ý đặc biệt, do nguy cơ tăng natri huyết sau khi tiêm liều cao benzylpenicilin natri (lượng thường dùng xấp xỉ 2,8 mmol Na+ trong lọ 1 triệu đơn vị penicilin, tương ứng lượng natri có trong 18 ml dung dịch tiêm natri clorid 0,9%).",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        346.0,
+        297.76,
+        394.89
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0054",
+      "type": "paragraph",
+      "text": "Có thể xảy ra quá mẫn với da khi tiếp xúc với kháng sinh, nên thận trọng tránh tiếp xúc với thuốc. Cần tìm hiểu xem người bệnh có tiền sử dị ứng không, đặc biệt dị ứng với thuốc, vì dễ tăng phản ứng mẫn cảm với penicilin.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        394.12,
+        297.77,
+        443.01
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0055",
+      "type": "paragraph",
+      "text": "Thận trọng đặc biệt khi dùng benzylpenicilin liều cao cho người bị động kinh.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        442.24,
+        297.77,
+        467.07
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0056",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ mang thai",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        469.15,
+        118.64,
+        482.3
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ mang thai",
+          "bbox": [
+            43.43,
+            469.15,
+            118.64,
+            482.3
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0057",
+      "type": "paragraph",
+      "text": "Thuốc qua được nhau thai và phân bố vào dịch ối. Sử dụng penicilin cho phụ nữ mang thai nói chung không làm tăng nguy cơ có hại với thai nhi. Penicilin G là thuốc được lựa chọn trong điều trị thương hàn cho phụ nữ mang thai cũng như để dự phòng bệnh do Streptococcus nhóm B khởi phát sớm ở trẻ sơ sinh. Penicilin G cũng có thể được sử dụng khi cần điều trị đường tĩnh mạch cho phụ nữ mang thai hoặc phụ nữ sau sinh bị mắc bệnh than.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        481.33,
+        297.77,
+        566.31
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0058",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ cho con bú",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        568.39,
+        121.55,
+        581.53
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ cho con bú",
+          "bbox": [
+            43.43,
+            568.39,
+            121.55,
+            581.53
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0059",
+      "type": "paragraph",
+      "text": "Penicilin bài tiết qua sữa. Nên thận trọng khi dùng trong thời kỳ cho con bú. Nồng độ thuốc cao nhất trong sữa đạt được sau khi tiêm bắp 1 giờ. Các tác dụng bất lợi trên trẻ bú mẹ, không phụ thuộc liều bao gồm dị ứng, thay đổi hệ vi khuẩn đường ruột.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        580.57,
+        297.76,
+        629.45
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0060",
+      "type": "heading",
+      "level": 2,
+      "text": "Tác dụng không mong muốn (ADR)",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        631.54,
+        189.38,
+        644.68
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tác dụng không mong muốn (ADR)",
+          "bbox": [
+            43.43,
+            631.54,
+            189.38,
+            644.68
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0061",
+      "type": "paragraph",
+      "text": "Penicilin có độc tính thấp, nhưng là chất gây mẫn cảm đáng kể, thường gặp nhất là phản ứng da: xấp xỉ 2% số bệnh nhân điều trị.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        643.72,
+        297.76,
+        668.54
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0062",
+      "type": "paragraph",
+      "text": "Những phản ứng tại chỗ ở vị trí tiêm thuốc cũng hay gặp.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        667.78,
+        261.67,
+        680.57
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Những phản ứng tại chỗ ở vị trí tiêm thuốc cũng hay gặp.",
+          "bbox": [
+            43.43,
+            667.78,
+            261.67,
+            680.57
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0063",
+      "type": "subheading",
+      "level": 3,
+      "text": "Thường gặp",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        679.97,
+        89.84,
+        692.6
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thường gặp",
+          "bbox": [
+            43.43,
+            679.97,
+            89.84,
+            692.6
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0064",
+      "type": "paragraph",
+      "text": "Toàn thân: ngoại ban, sốt.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        691.84,
+        141.45,
+        704.63
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Toàn thân: ngoại ban, sốt.",
+          "bbox": [
+            43.43,
+            691.84,
+            141.45,
+            704.63
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0065",
+      "type": "paragraph",
+      "text": "Tiêu hóa: viêm đại tràng màng giả.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        703.87,
+        178.72,
+        716.66
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêu hóa: viêm đại tràng màng giả. ",
+          "bbox": [
+            43.43,
+            703.87,
+            178.72,
+            716.66
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0066",
+      "type": "paragraph",
+      "text": "Tại chỗ: phản ứng viêm tĩnh mạch nơi tiêm.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        715.89,
+        210.61,
+        728.69
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tại chỗ: phản ứng viêm tĩnh mạch nơi tiêm.",
+          "bbox": [
+            43.43,
+            715.89,
+            210.61,
+            728.69
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0067",
+      "type": "paragraph",
+      "text": "Khác: viêm tĩnh mạch huyết khối.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        727.92,
+        172.73,
+        740.72
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Khác: viêm tĩnh mạch huyết khối.",
+          "bbox": [
+            43.43,
+            727.92,
+            172.73,
+            740.72
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0068",
+      "type": "paragraph",
+      "text": "Phản ứng Jarisch - Herxheimer (sốt, ớn lạnh, đau đầu, phản ứng tại vị trí nhiễm trùng) trên bệnh nhân giang mai.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        739.95,
+        297.77,
+        764.78
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0069",
+      "type": "subheading",
+      "level": 3,
+      "text": "Ít gặp",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        764.18,
+        68.24,
+        776.81
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Ít gặp ",
+          "bbox": [
+            43.43,
+            764.18,
+            68.24,
+            776.81
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0070",
+      "type": "paragraph",
+      "text": "Máu: tăng bạch cầu ưa acid.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        776.04,
+        150.41,
+        788.84
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Máu: tăng bạch cầu ưa acid.",
+          "bbox": [
+            43.43,
+            776.04,
+            150.41,
+            788.84
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0071",
+      "type": "paragraph",
+      "text": "Rối loạn TKTW: đặc biệt khi dùng liều cao trên 60 g/ngày hoặc",
+      "page": 280,
+      "printed_page": 286,
+      "column": 0,
+      "bbox": [
+        43.43,
+        788.07,
+        297.76,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Rối loạn TKTW: đặc biệt khi dùng liều cao trên 60 g/ngày hoặc ",
+          "bbox": [
+            43.43,
+            788.07,
+            297.76,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0072",
+      "type": "paragraph",
+      "text": "trên bệnh nhân suy thận nặng.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        63.32,
+        421.37,
+        76.12
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "trên bệnh nhân suy thận nặng.",
+          "bbox": [
+            307.39,
+            63.32,
+            421.37,
+            76.12
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0073",
+      "type": "paragraph",
+      "text": "Da: mày đay.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        75.5,
+        357.68,
+        88.3
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Da: mày đay.",
+          "bbox": [
+            307.39,
+            75.5,
+            357.68,
+            88.3
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0074",
+      "type": "subheading",
+      "level": 3,
+      "text": "Hiếm gặp",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        87.85,
+        344.59,
+        100.48
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hiếm gặp",
+          "bbox": [
+            307.39,
+            87.85,
+            344.59,
+            100.48
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0075",
+      "type": "paragraph",
+      "text": "Toàn thân: phản ứng phản vệ.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        99.87,
+        420.05,
+        112.66
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Toàn thân: phản ứng phản vệ.",
+          "bbox": [
+            307.39,
+            99.87,
+            420.05,
+            112.66
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0076",
+      "type": "paragraph",
+      "text": "Máu: thiếu máu tan huyết, giảm bạch cầu, kéo dài thời gian chảy máu, giảm chức năng tiểu cầu (khi dùng liều cao đường tĩnh mạch).",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        112.05,
+        561.72,
+        137.03
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0077",
+      "type": "paragraph",
+      "text": "Viêm thận kẽ khi dùng liều cao trên 12 g/ngày.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        136.41,
+        487.44,
+        149.21
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Viêm thận kẽ khi dùng liều cao trên 12 g/ngày. ",
+          "bbox": [
+            307.39,
+            136.41,
+            487.44,
+            149.21
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0078",
+      "type": "paragraph",
+      "text": "Rối loạn điện giải: tăng kali hoặc natri huyết khi dùng liều cao.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        148.6,
+        547.22,
+        161.39
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Rối loạn điện giải: tăng kali hoặc natri huyết khi dùng liều cao.",
+          "bbox": [
+            307.39,
+            148.6,
+            547.22,
+            161.39
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0079",
+      "type": "paragraph",
+      "text": "Chú ý: Có thể thấy những triệu chứng của não như động kinh, đặc biệt ở những người bệnh có chức năng thận giảm và liều dùng hàng ngày trên 18 g với người lớn. Đặc biệt thận trọng với người trên 60 tuổi và trẻ sơ sinh. Nên xem xét cho giảm liều penicilin và điều trị chống co giật. Nồng độ thuốc cao trong dịch truyền có thể gây viêm tĩnh mạch huyết khối.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        160.78,
+        561.72,
+        234.49
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0080",
+      "type": "heading",
+      "level": 2,
+      "text": "Hướng dẫn cách xử trí ADR",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        236.72,
+        424.33,
+        249.87
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hướng dẫn cách xử trí ADR ",
+          "bbox": [
+            307.39,
+            236.72,
+            424.33,
+            249.87
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0081",
+      "type": "paragraph",
+      "text": "ADR phổ biến nhất của benzylpenicilin là phản ứng mẫn cảm, đặc biệt phát ban. Mẫn cảm với penicilin có thể gây phản ứng tức thì, gồm có phản ứng phản vệ, phù mạch, mẩn ngứa, đôi khi phát ban dát",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        249.05,
+        561.75,
+        286.22
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0082",
+      "type": "list",
+      "text": "- sần. Phản ứng muộn có thể là phản ứng giống bệnh huyết thanh và thiếu máu huyết tán. Do đó, trước khi dùng benzylpenicilin phải hỏi kỹ tiền sử mẫn cảm với penicilin, cephalosporin và các thuốc khác.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        285.6,
+        561.75,
+        322.76
+      ],
+      "source": {
+        "line_count": 3
+      },
+      "items": [
+        "sần. Phản ứng muộn có thể là phản ứng giống bệnh huyết thanh và",
+        "thiếu máu huyết tán. Do đó, trước khi dùng benzylpenicilin phải hỏi",
+        "kỹ tiền sử mẫn cảm với penicilin, cephalosporin và các thuốc khác."
+      ]
+    },
+    {
+      "id": "b0083",
+      "type": "paragraph",
+      "text": "Phải ngừng liệu pháp penicilin khi thấy phát ban, mẩn ngứa, bệnh giống bệnh huyết thanh, thiếu máu huyết tán, viêm da bong. Kháng histamin và corticosteroid, nếu cần, thường được dùng để điều trị phản ứng giống bệnh huyết thanh, tuy vậy tác dụng chưa rõ ràng.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        322.15,
+        561.72,
+        371.49
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0084",
+      "type": "paragraph",
+      "text": "Uống hoặc tiêm kháng histamin trước khi dùng penicilin không bảo vệ được mẫn cảm với thuốc.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        370.88,
+        561.71,
+        395.86
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0085",
+      "type": "subheading",
+      "level": 3,
+      "text": "Test da dùng để phát hiện mẫn cảm:",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        395.4,
+        445.04,
+        408.04
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Test da dùng để phát hiện mẫn cảm:",
+          "bbox": [
+            307.39,
+            395.4,
+            445.04,
+            408.04
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0086",
+      "type": "paragraph",
+      "text": "Test da được dùng để đánh giá nguy cơ hiện tại của phản ứng tức thì qua trung gian IgE, phản ứng nghiêm trọng nhất là phản ứng phản vệ. Phải có sẵn adrenalin để đề phòng trường hợp phản ứng phản vệ. Kết quả test da không đáng tin cậy nếu làm một thời gian lâu trước khi bắt đầu liệu pháp. Cũng đã có một số test được triển khai in vitro như test dùng chất hấp phụ dị nguyên phóng xạ.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        407.42,
+        561.72,
+        481.13
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0087",
+      "type": "paragraph",
+      "text": "Giải mẫn cảm cho người mẫn cảm với penicilin nhưng nhất thiết phải dùng penicilin: Phương pháp này có thể nguy hiểm, phải giám sát liên tục và phải luôn sẵn sàng phương tiện cấp cứu hồi sức và adrenalin. Giải mẫn cảm phải coi là tạm thời, phản ứng dị ứng có thể xảy ra trong thời gian tiếp xúc lần sau với penicilin G.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        480.68,
+        561.72,
+        542.04
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0088",
+      "type": "paragraph",
+      "text": "Phải theo dõi số lượng bạch cầu khi điều trị penicilin G kéo dài (≥ 10 ngày) vì 5 đến trên 15% người bệnh điều trị kéo dài có giảm bạch cầu đa nhân trung tính. Các dấu hiệu gồm có sốt, phát ban và tăng bạch cầu ưa acid.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        541.43,
+        561.72,
+        590.77
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0089",
+      "type": "paragraph",
+      "text": "Phải theo dõi cân bằng điện giải khi dùng benzylpenicilin liều cao (> 6 g) tĩnh mạch.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        590.16,
+        561.72,
+        615.14
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0090",
+      "type": "heading",
+      "level": 2,
+      "text": "Liều lượng và cách dùng",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        617.37,
+        407.56,
+        630.52
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng và cách dùng",
+          "bbox": [
+            307.39,
+            617.37,
+            407.56,
+            630.52
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0091",
+      "type": "subheading",
+      "level": 3,
+      "text": "Cách dùng",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        629.78,
+        350.41,
+        642.5
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Cách dùng",
+          "bbox": [
+            307.39,
+            629.78,
+            350.41,
+            642.5
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0092",
+      "type": "paragraph",
+      "text": "Thuốc được dùng theo đường tiêm bắp hoặc tiêm truyền tĩnh mạch.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        641.89,
+        561.72,
+        654.68
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thuốc được dùng theo đường tiêm bắp hoặc tiêm truyền tĩnh mạch. ",
+          "bbox": [
+            307.39,
+            641.89,
+            561.72,
+            654.68
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0093",
+      "type": "paragraph",
+      "text": "Có thể tiêm bắp hoặc tiêm tĩnh mạch liều tới tối đa 3 g. Liều lớn trên 12 g cần phải truyền tĩnh mạch liên tục.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        654.07,
+        561.72,
+        679.05
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0094",
+      "type": "paragraph",
+      "text": "Để hoàn nguyên bột pha tiêm, có thể dùng nước cất pha tiêm, dung dịch natri clorid 0,9% hoặc glucose 5%.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        678.43,
+        561.72,
+        703.41
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0095",
+      "type": "paragraph",
+      "text": "Tiêm bắp: Cần tiêm bắp sâu vào mông hoặc phần tư đùi trên phía ngoài, nên hạn chế thể tích, dung dịch có nồng độ tới tối đa 60 mg/ml sẽ đỡ gây khó chịu cho bệnh nhân.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        702.8,
+        561.75,
+        739.96
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0096",
+      "type": "paragraph",
+      "text": "Tiêm truyền tĩnh mạch ngắt quãng: Pha trong natri clorid 0,9% hoặc glucose 5% tới thể tích phù hợp để truyền trong khoảng 15 - 30 phút cho trẻ em và khoảng 30 - 60 phút cho người lớn.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        739.34,
+        561.74,
+        776.51
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0097",
+      "type": "paragraph",
+      "text": "Truyền tĩnh mạch liên tục: Có thể pha thuốc vào 1 - 2 lít dung dịch natri clorid 0,9% hoặc glucose 5%.",
+      "page": 280,
+      "printed_page": 286,
+      "column": 1,
+      "bbox": [
+        307.39,
+        775.89,
+        561.72,
+        800.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0098",
+      "type": "subheading",
+      "level": 3,
+      "text": "Liều lượng",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        63.24,
+        79.22,
+        75.96
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng",
+          "bbox": [
+            35.43,
+            63.24,
+            79.22,
+            75.96
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0099",
+      "type": "subheading",
+      "level": 3,
+      "text": "Liều thông thường:",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        75.36,
+        109.02,
+        88.0
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều thông thường:",
+          "bbox": [
+            35.43,
+            75.36,
+            109.02,
+            88.0
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0100",
+      "type": "paragraph",
+      "text": "Người lớn: Tiêm bắp hoặc tiêm tĩnh mạch chậm hoặc truyền tĩnh mạch: 0,6 - 4,8 g/ngày, chia 4 - 6 lần/ngày, tăng lên nếu cần trong nhiễm khuẩn nặng hơn (chỉ dùng đường tĩnh mạch nếu liều đơn độc trên 1,2 g và tốc độ truyền không quá 300 mg/phút).",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        87.23,
+        289.8,
+        136.12
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0101",
+      "type": "paragraph",
+      "text": "Trẻ em: Khuyến cáo dùng đường tĩnh mạch cho trẻ sơ sinh và trẻ nhỏ.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        135.36,
+        287.41,
+        148.16
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Trẻ em: Khuyến cáo dùng đường tĩnh mạch cho trẻ sơ sinh và trẻ nhỏ.",
+          "bbox": [
+            35.43,
+            135.36,
+            287.41,
+            148.16
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0102",
+      "type": "paragraph",
+      "text": "Trẻ sơ sinh dưới 7 ngày tuổi: 25 mg/kg/lần, cách 12 giờ/lần; tăng lên 25 mg/kg, cách 8 giờ/lần nếu cần.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        147.39,
+        289.76,
+        172.22
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0103",
+      "type": "paragraph",
+      "text": "Trẻ sơ sinh 7 - 28 ngày tuổi: 25 mg/kg/lần, cách 8 giờ/lần; liều gấp đôi trong trường hợp nhiễm khuẩn nặng.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        171.45,
+        289.76,
+        196.28
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0104",
+      "type": "paragraph",
+      "text": "Trẻ 1 tháng tuổi - 18 tuổi: 25 mg/kg/lần, cách 6 giờ/lần; tăng tới 50 mg/kg/lần, cách 4 - 6 giờ/lần (tối đa 2,4 g/lần, cách 4 giờ/lần) trong trường hợp nhiễm khuẩn nặng.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        195.52,
+        289.78,
+        232.38
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0105",
+      "type": "paragraph",
+      "text": "Viêm màng trong tim nhiễm khuẩn (phối hợp kháng sinh khác, thường phối hợp với aminosid): Tiêm tĩnh mạch chậm hoặc truyền tĩnh mạch: Người lớn: 1,2 g/lần, cách 4 giờ/lần, tăng lên nếu cần (như viêm nội tâm mạc do Enterococcus) tới 3 g/lần, cách nhau 4 giờ/lần. Trẻ em từ 1 tháng tuổi đến < 18 tuổi: 25 mg/kg/lần, cách 4 giờ/lần, tăng lên, nếu cần, tới 50 mg/kg/lần (tối đa: 2,4 g/lần, cách 4 giờ/lần).",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        231.77,
+        289.77,
+        316.6
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0106",
+      "type": "paragraph",
+      "text": "Dự phòng nhiễm khuẩn sơ sinh (ở phụ nữ mang thai nhiễm liên cầu nhóm B): Tiêm tĩnh mạch chậm hoặc truyền tĩnh mạch ban đầu 3 g, sau đó 1,5 g, cách 4 giờ/lần cho tới khi sinh.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        316.0,
+        289.8,
+        352.69
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0107",
+      "type": "paragraph",
+      "text": "Viêm màng não, bệnh não mô cầu: Người lớn: Tiêm tĩnh mạch chậm hoặc truyền tĩnh mạch: 2,4 g/lần, cách 4 giờ/lần. Trẻ sơ sinh < 7 ngày tuổi: 50 mg/kg/lần, cách 12 giờ/lần; trẻ sơ sinh 7 - 28 ngày tuổi: 50 mg/kg/lần, cách 8 giờ/lần. Trẻ 1 tháng tuổi - 18 tuổi:",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        351.93,
+        289.77,
+        400.82
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0108",
+      "type": "paragraph",
+      "text": "50 mg/kg/lần, cách 4 - 6 giờ/lần (tối đa 2,4 g, cách 4 giờ/lần).",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        400.06,
+        268.97,
+        412.85
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "50 mg/kg/lần, cách 4 - 6 giờ/lần (tối đa 2,4 g, cách 4 giờ/lần).",
+          "bbox": [
+            35.43,
+            400.06,
+            268.97,
+            412.85
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0109",
+      "type": "subheading",
+      "level": 3,
+      "text": "Liều cho người bệnh suy thận:",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        412.25,
+        153.87,
+        424.89
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều cho người bệnh suy thận: ",
+          "bbox": [
+            35.43,
+            412.25,
+            153.87,
+            424.89
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0110",
+      "type": "paragraph",
+      "text": "Bệnh nhân tiểu được có Clcr > 10 ml/phút/1,73 m2: Khởi đầu liều thông thường, sau đó dùng 50% liều thông thường mỗi 4 - 5 giờ.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        424.12,
+        289.77,
+        448.95
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0111",
+      "type": "paragraph",
+      "text": "Bệnh nhân có Clcr < 10 ml/phút/1,73 m2: Khởi đầu liều thông thường, sau đó dùng 50% liều thông thường mỗi 8 - 10 giờ.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        448.18,
+        289.76,
+        473.01
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0112",
+      "type": "paragraph",
+      "text": "Hoặc có thể điều chỉnh theo cách:",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        472.25,
+        164.18,
+        485.04
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Hoặc có thể điều chỉnh theo cách:",
+          "bbox": [
+            35.43,
+            472.25,
+            164.18,
+            485.04
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0113",
+      "type": "paragraph",
+      "text": "Clcr 10 - 50 ml/phút: Dùng 75% liều thông thường.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        484.28,
+        228.0,
+        499.02
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cl",
+          "bbox": [
+            35.43,
+            484.28,
+            44.32,
+            497.08
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "cr",
+          "bbox": [
+            44.22,
+            491.56,
+            48.47,
+            499.02
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 5.54,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": " 10 - 50 ml/phút: Dùng 75% liều thông thường.",
+          "bbox": [
+            48.41,
+            484.28,
+            228.0,
+            497.08
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0114",
+      "type": "paragraph",
+      "text": "Clcr < 10 ml/phút: Dùng 20 - 50% liều thông thường.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        496.31,
+        235.73,
+        511.05
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cl",
+          "bbox": [
+            35.43,
+            496.31,
+            44.32,
+            509.11
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "cr",
+          "bbox": [
+            44.22,
+            503.59,
+            48.47,
+            511.05
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 5.54,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": " < 10 ml/phút: Dùng 20 - 50% liều thông thường.",
+          "bbox": [
+            48.41,
+            496.31,
+            235.73,
+            509.11
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0115",
+      "type": "paragraph",
+      "text": "Lọc thận ngắt quãng (IHD) (dùng sau mỗi lần lọc máu): khởi đầu liều thông thường, sau đó 25 - 50% liều thông thường mỗi 4 - 6 giờ hoặc 50 - 100% liều thông thường mỗi 8 - 12 giờ.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        508.34,
+        289.77,
+        545.2
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0116",
+      "type": "paragraph",
+      "text": "Chạy thận nhân tạo: Phụ thuộc vào phương pháp lọc, loại màng lọc và tốc độ lọc. Với tốc độ lọc khoảng 1 - 2 lít/giờ và chức năng thận tồn dư còn rất ít, có thể khuyến cáo như sau:",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        544.44,
+        289.77,
+        581.3
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0117",
+      "type": "paragraph",
+      "text": "Lọc máu liên tục đường tĩnh mạch (CVVH): Liều tải 2,4 g, sau đó 1,2 g mỗi 4 - 6 giờ.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        580.53,
+        289.77,
+        605.36
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0118",
+      "type": "paragraph",
+      "text": "Thẩm tách máu liên tục đường tĩnh mạch (CVVHD): Liều tải 2,4 g, sau đó 1,2 - 1,8 g mỗi 4 - 6 giờ.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        604.6,
+        289.79,
+        629.43
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0119",
+      "type": "paragraph",
+      "text": "Lọc và thẩm tách máu liên tục đường tĩnh mạch (CVVHDF): Liều tải 2,4 g, sau đó 1,2 - 2,4 g mỗi 4 - 6 giờ.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        628.66,
+        289.77,
+        653.49
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0120",
+      "type": "paragraph",
+      "text": "Suy gan: Không cần hiệu chỉnh liều (trừ bệnh nhân suy gan kết hợp suy thận).",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        652.72,
+        289.77,
+        677.55
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0121",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương tác thuốc",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        679.64,
+        102.34,
+        692.78
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương tác thuốc",
+          "bbox": [
+            35.43,
+            679.64,
+            102.34,
+            692.78
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0122",
+      "type": "paragraph",
+      "text": "Dùng đồng thời các kháng sinh kìm khuẩn (như cloramphenicol, tetracyclin) có thể làm giảm tác dụng diệt khuẩn của penicilin G do làm chậm tốc độ phát triển của vi khuẩn.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        691.82,
+        289.77,
+        728.68
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0123",
+      "type": "paragraph",
+      "text": "Nửa đời thải trừ của penicilin G bị kéo dài khi dùng đồng thời với probenecid do cạnh tranh thải trừ ở ống thận. Tương tác này có thể được áp dụng trong điều trị để đạt được nồng độ thuốc trong huyết tương cao và kéo dài hơn.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        727.91,
+        289.77,
+        776.81
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0124",
+      "type": "paragraph",
+      "text": "Dùng đồng thời penicilin G và warfarin làm tăng nguy cơ chảy máu do penicilin G làm ảnh hưởng đến tổng hợp vitamin K thông",
+      "page": 281,
+      "printed_page": 287,
+      "column": 0,
+      "bbox": [
+        35.43,
+        776.04,
+        289.77,
+        800.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0125",
+      "type": "paragraph",
+      "text": "qua hệ vi sinh đường ruột. Cần theo dõi INR khi bắt đầu và dừng penicilin G.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 1,
+      "bbox": [
+        299.39,
+        63.32,
+        553.72,
+        88.21
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0126",
+      "type": "paragraph",
+      "text": "Benzylpenicilin có thể làm giảm hiệu quả của thuốc tránh thai khi dùng đồng thời.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 1,
+      "bbox": [
+        299.39,
+        87.5,
+        553.72,
+        112.39
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0127",
+      "type": "paragraph",
+      "text": "Tránh dùng đồng thời benzylpenicilin với BCG do làm giảm hiệu quả của BCG.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 1,
+      "bbox": [
+        299.39,
+        111.68,
+        553.72,
+        136.57
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0128",
+      "type": "paragraph",
+      "text": "Benzylpenicilin làm giảm thải trừ methotrexat, gây tăng nồng độ methotrexat, tăng nguy cơ độc tính, cần theo dõi cẩn thận khi dùng cùng penicilin G. Kiểm tra tiểu cầu, bạch cầu 2 lần/tuần trong hai tuần đầu và xác định nồng độ methotrexat nếu nghi ngờ độc tính.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 1,
+      "bbox": [
+        299.39,
+        135.87,
+        553.72,
+        184.94
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0129",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương kỵ",
+      "page": 281,
+      "printed_page": 287,
+      "column": 1,
+      "bbox": [
+        299.39,
+        187.08,
+        339.12,
+        200.23
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương kỵ",
+          "bbox": [
+            299.39,
+            187.08,
+            339.12,
+            200.23
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0130",
+      "type": "paragraph",
+      "text": "Benzylpenicilin có thể được hòa tan bằng nước cất pha tiêm hoặc dung dịch natri clorid 0,9% hoặc dextrose 5%.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 1,
+      "bbox": [
+        299.39,
+        199.32,
+        553.72,
+        224.21
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0131",
+      "type": "paragraph",
+      "text": "Thuốc tương kỵ với ion kim loại và cao su.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 1,
+      "bbox": [
+        299.39,
+        223.5,
+        465.79,
+        236.3
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Thuốc tương kỵ với ion kim loại và cao su. ",
+          "bbox": [
+            299.39,
+            223.5,
+            465.79,
+            236.3
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0132",
+      "type": "paragraph",
+      "text": "Không được trộn lẫn benzylpenicilin với kháng sinh nhóm aminoglycosid, amphotericin B, vancomycin và một số cephalosporin do có tương kỵ.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 1,
+      "bbox": [
+        299.39,
+        235.59,
+        553.72,
+        272.57
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0133",
+      "type": "heading",
+      "level": 2,
+      "text": "Quá liều và xử trí",
+      "page": 281,
+      "printed_page": 287,
+      "column": 1,
+      "bbox": [
+        299.39,
+        274.71,
+        371.06,
+        287.86
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Quá liều và xử trí",
+          "bbox": [
+            299.39,
+            274.71,
+            371.06,
+            287.86
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0134",
+      "type": "paragraph",
+      "text": "Nồng độ thuốc trong máu quá thừa có thể gây phản ứng có hại tới thần kinh như: co giật, liệt và có thể gây tử vong. Khi dùng quá liều, phải ngừng dùng thuốc và điều trị triệu chứng và hỗ trợ theo yêu cầu.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 1,
+      "bbox": [
+        299.39,
+        286.96,
+        553.72,
+        336.03
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0135",
+      "type": "heading",
+      "text": "Cập nhật lần cuối",
+      "page": 281,
+      "printed_page": 287,
+      "column": 1,
+      "bbox": [
+        299.39,
+        340.88,
+        394.65,
+        353.52
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2017.",
+          "bbox": [
+            299.39,
+            340.88,
+            394.65,
+            353.52
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "level": 2,
+      "v11_fix": "cap_nhat_cap_nhap_lan_cuoi_normalized_alpha8"
+    },
+    {
+      "id": "b0135",
+      "type": "paragraph",
+      "text": "2017.",
+      "page": 281,
+      "printed_page": 287,
+      "column": 1,
+      "bbox": [
+        299.39,
+        340.88,
+        394.65,
+        353.52
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2017.",
+          "bbox": [
+            299.39,
+            340.88,
+            394.65,
+            353.52
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "v11_parent_heading": "Cập nhật lần cuối"
+    }
+  ],
+  "sections": [
+    {
+      "id": "penicilin-g",
+      "title": "(Penicilin G)",
+      "heading_block": "b0002",
       "blocks": [
         {
           "type": "text",
-          "text": "Benzylpenicillin.\n\nMã ATC: J01CE01, S01AA14.\n\nLoại thuốc: Kháng sinh nhóm penicilin."
+          "text": "Tên chung quốc tế: Benzylpenicillin.",
+          "block_id": "b0003"
+        },
+        {
+          "type": "text",
+          "text": "Mã ATC: J01CE01, S01AA14.",
+          "block_id": "b0004"
+        },
+        {
+          "type": "text",
+          "text": "Loại thuốc: Kháng sinh nhóm penicilin.",
+          "block_id": "b0005"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "dang-thuoc-va-ham-luong",
       "title": "Dạng thuốc và hàm lượng",
-      "content": "Benzylpenicilin (hay penicilin G) được dùng ở dạng muối natri hoặc kali. Hàm lượng thuốc được tính theo lượng benzylpenicilin. 600 mg benzylpenicilin tương đương với 1 triệu đơn vị.\n\nThuốc bột pha tiêm: Lọ 500 000 đơn vị, 1 triệu đơn vị, 5 triệu đơn vị và 20 triệu đơn vị.\n\nDung dịch truyền tĩnh mạch penicilin G kali trong dextrose (bảo quản đông lạnh): Lọ 1 triệu đơn vị, chứa 20 000 đơn vị/ml trong dextrose 4%.\n\nLọ 2 triệu đơn vị, chứa 40 000 đơn vị/ml trong dextrose 2,3%.\n\nLọ 3 triệu đơn vị, chứa 60 000 đơn vị/ml trong dextrose 0,7%.",
+      "heading_block": "b0006",
       "blocks": [
         {
           "type": "text",
-          "text": "Benzylpenicilin (hay penicilin G) được dùng ở dạng muối natri hoặc kali. Hàm lượng thuốc được tính theo lượng benzylpenicilin. 600 mg benzylpenicilin tương đương với 1 triệu đơn vị.\n\nThuốc bột pha tiêm: Lọ 500 000 đơn vị, 1 triệu đơn vị, 5 triệu đơn vị và 20 triệu đơn vị.\n\nDung dịch truyền tĩnh mạch penicilin G kali trong dextrose (bảo quản đông lạnh): Lọ 1 triệu đơn vị, chứa 20 000 đơn vị/ml trong dextrose 4%.\n\nLọ 2 triệu đơn vị, chứa 40 000 đơn vị/ml trong dextrose 2,3%.\n\nLọ 3 triệu đơn vị, chứa 60 000 đơn vị/ml trong dextrose 0,7%."
+          "text": "Benzylpenicilin (hay penicilin G) được dùng ở dạng muối natri hoặc kali. Hàm lượng thuốc được tính theo lượng benzylpenicilin.",
+          "block_id": "b0007"
+        },
+        {
+          "type": "text",
+          "text": "600 mg benzylpenicilin tương đương với 1 triệu đơn vị.",
+          "block_id": "b0008"
+        },
+        {
+          "type": "text",
+          "text": "Thuốc bột pha tiêm: Lọ 500 000 đơn vị, 1 triệu đơn vị, 5 triệu đơn vị và 20 triệu đơn vị.",
+          "block_id": "b0009"
+        },
+        {
+          "type": "text",
+          "text": "Dung dịch truyền tĩnh mạch penicilin G kali trong dextrose (bảo quản đông lạnh):",
+          "block_id": "b0010"
+        },
+        {
+          "type": "text",
+          "text": "Lọ 1 triệu đơn vị, chứa 20 000 đơn vị/ml trong dextrose 4%.",
+          "block_id": "b0011"
+        },
+        {
+          "type": "text",
+          "text": "Lọ 2 triệu đơn vị, chứa 40 000 đơn vị/ml trong dextrose 2,3%.",
+          "block_id": "b0012"
+        },
+        {
+          "type": "text",
+          "text": "Lọ 3 triệu đơn vị, chứa 60 000 đơn vị/ml trong dextrose 0,7%.",
+          "block_id": "b0013"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "duoc-luc-hoc",
       "title": "Dược lực học",
-      "content": "Benzylpenicilin hay penicilin G là một kháng sinh penicilin tự nhiên, nhóm beta-lactam. Penicilin G diệt khuẩn bằng cách ức chế tổng hợp peptidoglycan của thành tế bào vi khuẩn, tác động vào quá trình nhân lên của vi khuẩn. Tuy nhiên, tác dụng này bị ức chế bởi penicilinase và beta-lactamase sinh ra bởi vi khuẩn.\n\nPenicilin G có tác dụng tốt với cầu khuẩn Gram dương, bao gồm Streptococcus nhóm B. Giá trị MIC thường rất khác nhau, từ dưới 0,002 microgam/ml đến 0,1 microgam/ml, tùy thuộc vào loài vi khuẩn và mức độ nhạy cảm. Nói chung, các cầu khuẩn Enterococcus kém nhạy cảm và đôi khi kháng hoàn toàn. Các Pneumococcus cũng kháng penicilin G và các kháng sinh betalactam khác. Trước đây, penicilin G được cho là có tác dụng ức chế các cầu khuẩn Gram âm như Meningococcus và Gonococcus với MIC thấp khoảng 0,03 microgam/ml. Nhưng tình trạng kháng thuốc lan tràn ở Việt Nam hiện nay làm cho penicilin G bị mất tác dụng trong một số trường hợp. Cho đến nay, Gonococcus gần như kháng penicilin G hoàn toàn do tạo beta-lactamase. Hiện tượng này là phổ biến ở cả khu vực Đông Nam Á.\n\nNói chung, penicilin G có hiệu quả với Haemophilus influenzae tốt hơn penicilin V và ampicilin. Tuy nhiên hiện nay hiệu quả của penicilin G đối với H. influenzae giảm nhiều do vi khuẩn sinh ra beta-lactamase.\n\nPhần lớn các vi khuẩn kỵ khí khá nhạy cảm với penicilin G, gồm Clostridium spp., Fusobacterium spp. và Actinomyces israelii, trừ Bacteroides fragilis.\n\nTreponema pallidum (xoắn khuẩn giang mai) và những loài Treponema nhiệt đới khác thường nhạy cảm với penicilin G. Thuốc cũng có khả năng tác dụng với Leptospira và Actinomyces. Các vi khuẩn sinh độc tố như Corynebacterium diphtheriae, các vi khuẩn hoại thư, Cytocapnophagia canimorsis (bị nhiễm do chó cắn) cũng nhạy cảm với penicilin G.\n\nSự đề kháng penicilin G có thể do vi khuẩn tạo ra penicilinase.\n\nĐây là kiểu kháng phổ biến của các vi khuẩn Staphylococcus aureus, Pseudomonas spp., Bacteroides fragilis, Escherichia coli và Proteus. Loại kháng này có thể được hạn chế bằng cách dùng kết hợp với những chất ức chế beta-lactamase như acid clavulanic, tazobactam hoặc sulbactam.\n\nPenicilin G thường có tác dụng tốt với Streptococcus pneumoniae, Streptococcus pyogenes (nhóm A), Streptococcus agalactiae (nhóm B) Streptococcus viridans, S. bovis và Staphylococcus aureus nhạy cảm với penicilin. Tuy nhiên hiện nay, hầu hết các Staphylococcus aureus đã kháng penicilin G. Penicilin G dùng đơn độc không có tác dụng với nhiễm khuẩn nặng do Enterococcus như viêm màng trong tim.\n\nVới các Pneumococcus, cần lưu ý đặc biệt, do hiện nay các loài vi khuẩn Pneumococcus kháng penicilin G đã tăng lên. Các vi khuẩn nhạy cảm có MIC = 0,1 microgam/ml hoặc thấp hơn. Các vi khuẩn kháng trung bình thường có MIC = 0,1 - 2 microgam/ml và các loài kháng cao thì có MIC > 2 microgam/ml hoặc cao hơn.\n\nCác Pneumococcus kháng penicilin G thường kháng cả ampicilin, ticarcilin, piperacilin. Do sự kháng không phụ thuộc vào việc sinh beta-lactamase, nên sử dụng acid clavulanic hoặc các chất ức chế khác không có hiệu quả.\n\nViêm màng não do Neisseria vẫn thường được điều trị bằng penicilin G, nhưng hiện nay các vi khuẩn Meningococcus kháng penicilin G cao khá phổ biến. Penicilin G có thể vẫn là một thuốc được chọn để điều trị nhiễm Neisseria meningitidis và Pasteurella multocida, nhưng không còn được dùng để điều trị Neisseria gonorrhoeae nữa.",
+      "heading_block": "b0014",
       "blocks": [
         {
           "type": "text",
-          "text": "Benzylpenicilin hay penicilin G là một kháng sinh penicilin tự nhiên, nhóm beta-lactam. Penicilin G diệt khuẩn bằng cách ức chế tổng hợp peptidoglycan của thành tế bào vi khuẩn, tác động vào quá trình nhân lên của vi khuẩn. Tuy nhiên, tác dụng này bị ức chế bởi penicilinase và beta-lactamase sinh ra bởi vi khuẩn.\n\nPenicilin G có tác dụng tốt với cầu khuẩn Gram dương, bao gồm Streptococcus nhóm B. Giá trị MIC thường rất khác nhau, từ dưới 0,002 microgam/ml đến 0,1 microgam/ml, tùy thuộc vào loài vi khuẩn và mức độ nhạy cảm. Nói chung, các cầu khuẩn Enterococcus kém nhạy cảm và đôi khi kháng hoàn toàn. Các Pneumococcus cũng kháng penicilin G và các kháng sinh betalactam khác. Trước đây, penicilin G được cho là có tác dụng ức chế các cầu khuẩn Gram âm như Meningococcus và Gonococcus với MIC thấp khoảng 0,03 microgam/ml. Nhưng tình trạng kháng thuốc lan tràn ở Việt Nam hiện nay làm cho penicilin G bị mất tác dụng trong một số trường hợp. Cho đến nay, Gonococcus gần như kháng penicilin G hoàn toàn do tạo beta-lactamase. Hiện tượng này là phổ biến ở cả khu vực Đông Nam Á.\n\nNói chung, penicilin G có hiệu quả với Haemophilus influenzae tốt hơn penicilin V và ampicilin. Tuy nhiên hiện nay hiệu quả của penicilin G đối với H. influenzae giảm nhiều do vi khuẩn sinh ra beta-lactamase.\n\nPhần lớn các vi khuẩn kỵ khí khá nhạy cảm với penicilin G, gồm Clostridium spp., Fusobacterium spp. và Actinomyces israelii, trừ Bacteroides fragilis.\n\nTreponema pallidum (xoắn khuẩn giang mai) và những loài Treponema nhiệt đới khác thường nhạy cảm với penicilin G. Thuốc cũng có khả năng tác dụng với Leptospira và Actinomyces. Các vi khuẩn sinh độc tố như Corynebacterium diphtheriae, các vi khuẩn hoại thư, Cytocapnophagia canimorsis (bị nhiễm do chó cắn) cũng nhạy cảm với penicilin G.\n\nSự đề kháng penicilin G có thể do vi khuẩn tạo ra penicilinase.\n\nĐây là kiểu kháng phổ biến của các vi khuẩn Staphylococcus aureus, Pseudomonas spp., Bacteroides fragilis, Escherichia coli và Proteus. Loại kháng này có thể được hạn chế bằng cách dùng kết hợp với những chất ức chế beta-lactamase như acid clavulanic, tazobactam hoặc sulbactam.\n\nPenicilin G thường có tác dụng tốt với Streptococcus pneumoniae, Streptococcus pyogenes (nhóm A), Streptococcus agalactiae (nhóm B) Streptococcus viridans, S. bovis và Staphylococcus aureus nhạy cảm với penicilin. Tuy nhiên hiện nay, hầu hết các Staphylococcus aureus đã kháng penicilin G. Penicilin G dùng đơn độc không có tác dụng với nhiễm khuẩn nặng do Enterococcus như viêm màng trong tim.\n\nVới các Pneumococcus, cần lưu ý đặc biệt, do hiện nay các loài vi khuẩn Pneumococcus kháng penicilin G đã tăng lên. Các vi khuẩn nhạy cảm có MIC = 0,1 microgam/ml hoặc thấp hơn. Các vi khuẩn kháng trung bình thường có MIC = 0,1 - 2 microgam/ml và các loài kháng cao thì có MIC > 2 microgam/ml hoặc cao hơn.\n\nCác Pneumococcus kháng penicilin G thường kháng cả ampicilin, ticarcilin, piperacilin. Do sự kháng không phụ thuộc vào việc sinh beta-lactamase, nên sử dụng acid clavulanic hoặc các chất ức chế khác không có hiệu quả.\n\nViêm màng não do Neisseria vẫn thường được điều trị bằng penicilin G, nhưng hiện nay các vi khuẩn Meningococcus kháng penicilin G cao khá phổ biến. Penicilin G có thể vẫn là một thuốc được chọn để điều trị nhiễm Neisseria meningitidis và Pasteurella multocida, nhưng không còn được dùng để điều trị Neisseria gonorrhoeae nữa."
+          "text": "Benzylpenicilin hay penicilin G là một kháng sinh penicilin tự nhiên, nhóm beta-lactam. Penicilin G diệt khuẩn bằng cách ức chế tổng hợp peptidoglycan của thành tế bào vi khuẩn, tác động vào quá trình nhân lên của vi khuẩn. Tuy nhiên, tác dụng này bị ức chế bởi penicilinase và beta-lactamase sinh ra bởi vi khuẩn.",
+          "block_id": "b0015"
+        },
+        {
+          "type": "text",
+          "text": "Penicilin G có tác dụng tốt với cầu khuẩn Gram dương, bao gồm Streptococcus nhóm B. Giá trị MIC thường rất khác nhau, từ dưới 0,002 microgam/ml đến 0,1 microgam/ml, tùy thuộc vào loài vi khuẩn và mức độ nhạy cảm. Nói chung, các cầu khuẩn Enterococcus kém nhạy cảm và đôi khi kháng hoàn toàn. Các Pneumococcus cũng kháng penicilin G và các kháng sinh betalactam khác. Trước đây, penicilin G được cho là có tác dụng ức chế các cầu khuẩn Gram âm như Meningococcus và Gonococcus với MIC thấp khoảng 0,03 microgam/ml. Nhưng tình trạng kháng thuốc lan tràn ở Việt Nam hiện nay làm cho penicilin G bị mất tác dụng trong một số trường hợp. Cho đến nay, Gonococcus gần như kháng penicilin G hoàn toàn do tạo beta-lactamase. Hiện tượng này là phổ biến ở cả khu vực Đông Nam Á.",
+          "block_id": "b0016"
+        },
+        {
+          "type": "text",
+          "text": "Nói chung, penicilin G có hiệu quả với Haemophilus influenzae tốt hơn penicilin V và ampicilin. Tuy nhiên hiện nay hiệu quả của penicilin G đối với H. influenzae giảm nhiều do vi khuẩn sinh ra beta-lactamase.",
+          "block_id": "b0017"
+        },
+        {
+          "type": "text",
+          "text": "Phần lớn các vi khuẩn kỵ khí khá nhạy cảm với penicilin G, gồm Clostridium spp., Fusobacterium spp. và Actinomyces israelii, trừ Bacteroides fragilis.",
+          "block_id": "b0018"
+        },
+        {
+          "type": "text",
+          "text": "Treponema pallidum (xoắn khuẩn giang mai) và những loài Treponema nhiệt đới khác thường nhạy cảm với penicilin G. Thuốc cũng có khả năng tác dụng với Leptospira và Actinomyces. Các vi khuẩn sinh độc tố như Corynebacterium diphtheriae, các vi khuẩn hoại thư, Cytocapnophagia canimorsis (bị nhiễm do chó cắn) cũng nhạy cảm với penicilin G.",
+          "block_id": "b0019"
+        },
+        {
+          "type": "text",
+          "text": "Sự đề kháng penicilin G có thể do vi khuẩn tạo ra penicilinase.",
+          "block_id": "b0020"
+        },
+        {
+          "type": "text",
+          "text": "Đây là kiểu kháng phổ biến của các vi khuẩn Staphylococcus aureus, Pseudomonas spp., Bacteroides fragilis, Escherichia coli và Proteus. Loại kháng này có thể được hạn chế bằng cách dùng kết hợp với những chất ức chế beta-lactamase như acid clavulanic, tazobactam hoặc sulbactam.",
+          "block_id": "b0021"
+        },
+        {
+          "type": "text",
+          "text": "Penicilin G thường có tác dụng tốt với Streptococcus pneumoniae, Streptococcus pyogenes (nhóm A), Streptococcus agalactiae (nhóm B) Streptococcus viridans, S. bovis và Staphylococcus aureus nhạy cảm với penicilin. Tuy nhiên hiện nay, hầu hết các Staphylococcus aureus đã kháng penicilin G. Penicilin G dùng đơn độc không có tác dụng với nhiễm khuẩn nặng do Enterococcus như viêm màng trong tim.",
+          "block_id": "b0022"
+        },
+        {
+          "type": "text",
+          "text": "Với các Pneumococcus, cần lưu ý đặc biệt, do hiện nay các loài vi khuẩn Pneumococcus kháng penicilin G đã tăng lên. Các vi khuẩn nhạy cảm có MIC = 0,1 microgam/ml hoặc thấp hơn. Các vi khuẩn kháng trung bình thường có MIC = 0,1 - 2 microgam/ml và các loài kháng cao thì có MIC > 2 microgam/ml hoặc cao hơn.",
+          "block_id": "b0023"
+        },
+        {
+          "type": "text",
+          "text": "Các Pneumococcus kháng penicilin G thường kháng cả ampicilin, ticarcilin, piperacilin. Do sự kháng không phụ thuộc vào việc sinh beta-lactamase, nên sử dụng acid clavulanic hoặc các chất ức chế khác không có hiệu quả.",
+          "block_id": "b0024"
+        },
+        {
+          "type": "text",
+          "text": "Viêm màng não do Neisseria vẫn thường được điều trị bằng penicilin G, nhưng hiện nay các vi khuẩn Meningococcus kháng",
+          "block_id": "b0025"
+        },
+        {
+          "type": "text",
+          "text": "penicilin G cao khá phổ biến. Penicilin G có thể vẫn là một thuốc được chọn để điều trị nhiễm Neisseria meningitidis và Pasteurella multocida, nhưng không còn được dùng để điều trị Neisseria gonorrhoeae nữa.",
+          "block_id": "b0026"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "duoc-ong-hoc",
+      "id": "duoc-dong-hoc",
       "title": "Dược động học",
-      "content": "Hấp thu: Penicilin G không bền trong môi trường acid, sẽ bị acid dạ dày phá hủy nếu dùng đường uống. Thuốc chủ yếu được dùng đường tiêm và tốt nhất nên tiêm tĩnh mạch.\n\nPenicilin G vào máu nhanh sau khi tiêm bắp dạng muối tan trong nước và thường đạt được nồng độ cao nhất trong vòng 15 - 30 phút.\n\nSau khi tiêm bắp liều đơn 600 000 hoặc 1 triệu đơn vị penicilin G natri, nồng độ đỉnh của thuốc trong huyết tương đạt tương ứng khoảng 6 - 8 hoặc 20 microgam/ml.\n\nSau khi truyền tĩnh mạch ngắt quãng 2 triệu đơn vị penicilin G mỗi 2 giờ hoặc 3 triệu đơn vị mỗi 3 giờ, nồng độ penicilin G huyết thanh trung bình đạt 20 microgam/ml. Penicilin G được hấp thu từ khoang màng bụng sau khi tiêm thấm tại chỗ, thuốc cũng được hấp thu từ bề mặt màng phổi, màng ngoài tim và ổ khớp. Penicilin G không hấp thu qua da còn nguyên vẹn.\n\nPhân bố: Thể tích phân bố của penicilin G khoảng 0,53 - 0,67 lít/ kg ở người có chức năng thận bình thường. Khoảng 45 - 68% thuốc liên kết với protein huyết tương. Benzylpenicilin phân bố rộng rãi với nồng độ khác nhau trong các mô và dịch cơ thể. Thuốc phân tán qua nhau thai, vào tuần hoàn thai và một lượng nhỏ xuất hiện trong sữa. Tỉ lệ nồng độ thuốc trong dịch não tủy so với trong máu ở người màng não bình thường < 1% và khi viêm màng não là 2 - 6%.\n\nChuyển hóa, thải trừ: Khoảng 16 - 30% liều tiêm bắp được chuyển hóa thành acid peniciloic không có hoạt tính vi sinh. Một lượng nhỏ acid 6-aminopenicilanic (6APA) cũng được tìm thấy trong nước tiểu của bệnh nhân dùng peniclin G. Một tỉ lệ nhỏ của thuốc cũng được hydroxy hóa thành một vài chất chuyển hóa có hoạt tính vi sinh và cũng bài tiết qua thận. Penicilin G và các chất chuyển hóa được thải trừ qua thận chủ yếu nhờ bài tiết ở ống thận, vào nước tiểu. Một lượng nhỏ thuốc thải qua mật. Sau khi tiêm bắp, 60% liều dùng hoặc hơn được bài tiết qua nước tiểu ở dạng không đổi hoặc chất chuyển hóa trong vòng 6 giờ.\n\nNửa đời thải trừ huyết thanh của penicilin G ở người có chức năng thận bình thường là 0,4 - 0,9 giờ, kéo dài ở trẻ sơ sinh, người cao tuổi và người suy thận. Nồng độ thuốc trong huyết thanh cao hơn và kéo dài hơn ở bệnh nhân suy thận. Ở bệnh nhân thiểu niệu có nồng độ creatinin huyết thanh nhỏ hơn 3 mg/dl, nửa đời huyết thanh của thuốc là 1 - 2 giờ, và ở bệnh nhân vô niệu là 6 - 20 giờ.\n\nỞ bệnh nhân vô niệu suy giảm chức năng gan, nửa đời huyết thanh của thuốc cao gấp 2 - 3 lần so với ở bệnh nhân vô niệu có chức năng gan bình thường.\n\nNửa đời huyết thanh của penicilin G ở trẻ sơ sinh khác nhau tỉ lệ nghịch với tuổi, không phụ thuộc vào cân nặng lúc sinh. Nửa đời huyết thanh được ghi nhận ở trẻ sơ sinh từ 6 ngày tuổi trở xuống là 3,2 - 3,4 giờ, ở trẻ 7 - 13 ngày tuổi là 1,2 - 2,2 giờ và ở trẻ từ 14 ngày trở lên là 0,9 - 1,9 giờ.\n\nBenzylpenicilin có thể loại được bằng thẩm tách máu nhưng chỉ có một lượng nhỏ bị loại bằng lọc màng bụng.",
+      "heading_block": "b0027",
       "blocks": [
         {
           "type": "text",
-          "text": "Hấp thu: Penicilin G không bền trong môi trường acid, sẽ bị acid dạ dày phá hủy nếu dùng đường uống. Thuốc chủ yếu được dùng đường tiêm và tốt nhất nên tiêm tĩnh mạch.\n\nPenicilin G vào máu nhanh sau khi tiêm bắp dạng muối tan trong nước và thường đạt được nồng độ cao nhất trong vòng 15 - 30 phút.\n\nSau khi tiêm bắp liều đơn 600 000 hoặc 1 triệu đơn vị penicilin G natri, nồng độ đỉnh của thuốc trong huyết tương đạt tương ứng khoảng 6 - 8 hoặc 20 microgam/ml.\n\nSau khi truyền tĩnh mạch ngắt quãng 2 triệu đơn vị penicilin G mỗi 2 giờ hoặc 3 triệu đơn vị mỗi 3 giờ, nồng độ penicilin G huyết thanh trung bình đạt 20 microgam/ml. Penicilin G được hấp thu từ khoang màng bụng sau khi tiêm thấm tại chỗ, thuốc cũng được hấp thu từ bề mặt màng phổi, màng ngoài tim và ổ khớp. Penicilin G không hấp thu qua da còn nguyên vẹn.\n\nPhân bố: Thể tích phân bố của penicilin G khoảng 0,53 - 0,67 lít/ kg ở người có chức năng thận bình thường. Khoảng 45 - 68% thuốc liên kết với protein huyết tương. Benzylpenicilin phân bố rộng rãi với nồng độ khác nhau trong các mô và dịch cơ thể. Thuốc phân tán qua nhau thai, vào tuần hoàn thai và một lượng nhỏ xuất hiện trong sữa. Tỉ lệ nồng độ thuốc trong dịch não tủy so với trong máu ở người màng não bình thường < 1% và khi viêm màng não là 2 - 6%.\n\nChuyển hóa, thải trừ: Khoảng 16 - 30% liều tiêm bắp được chuyển hóa thành acid peniciloic không có hoạt tính vi sinh. Một lượng nhỏ acid 6-aminopenicilanic (6APA) cũng được tìm thấy trong nước tiểu của bệnh nhân dùng peniclin G. Một tỉ lệ nhỏ của thuốc cũng được hydroxy hóa thành một vài chất chuyển hóa có hoạt tính vi sinh và cũng bài tiết qua thận. Penicilin G và các chất chuyển hóa được thải trừ qua thận chủ yếu nhờ bài tiết ở ống thận, vào nước tiểu. Một lượng nhỏ thuốc thải qua mật. Sau khi tiêm bắp, 60% liều dùng hoặc hơn được bài tiết qua nước tiểu ở dạng không đổi hoặc chất chuyển hóa trong vòng 6 giờ.\n\nNửa đời thải trừ huyết thanh của penicilin G ở người có chức năng thận bình thường là 0,4 - 0,9 giờ, kéo dài ở trẻ sơ sinh, người cao tuổi và người suy thận. Nồng độ thuốc trong huyết thanh cao hơn và kéo dài hơn ở bệnh nhân suy thận. Ở bệnh nhân thiểu niệu có nồng độ creatinin huyết thanh nhỏ hơn 3 mg/dl, nửa đời huyết thanh của thuốc là 1 - 2 giờ, và ở bệnh nhân vô niệu là 6 - 20 giờ.\n\nỞ bệnh nhân vô niệu suy giảm chức năng gan, nửa đời huyết thanh của thuốc cao gấp 2 - 3 lần so với ở bệnh nhân vô niệu có chức năng gan bình thường.\n\nNửa đời huyết thanh của penicilin G ở trẻ sơ sinh khác nhau tỉ lệ nghịch với tuổi, không phụ thuộc vào cân nặng lúc sinh. Nửa đời huyết thanh được ghi nhận ở trẻ sơ sinh từ 6 ngày tuổi trở xuống là 3,2 - 3,4 giờ, ở trẻ 7 - 13 ngày tuổi là 1,2 - 2,2 giờ và ở trẻ từ 14 ngày trở lên là 0,9 - 1,9 giờ.\n\nBenzylpenicilin có thể loại được bằng thẩm tách máu nhưng chỉ có một lượng nhỏ bị loại bằng lọc màng bụng."
+          "text": "Hấp thu: Penicilin G không bền trong môi trường acid, sẽ bị acid dạ dày phá hủy nếu dùng đường uống. Thuốc chủ yếu được dùng đường tiêm và tốt nhất nên tiêm tĩnh mạch.",
+          "block_id": "b0028"
+        },
+        {
+          "type": "text",
+          "text": "Penicilin G vào máu nhanh sau khi tiêm bắp dạng muối tan trong nước và thường đạt được nồng độ cao nhất trong vòng 15 - 30 phút.",
+          "block_id": "b0029"
+        },
+        {
+          "type": "text",
+          "text": "Sau khi tiêm bắp liều đơn 600 000 hoặc 1 triệu đơn vị penicilin G natri, nồng độ đỉnh của thuốc trong huyết tương đạt tương ứng khoảng 6 - 8 hoặc 20 microgam/ml.",
+          "block_id": "b0030"
+        },
+        {
+          "type": "text",
+          "text": "Sau khi truyền tĩnh mạch ngắt quãng 2 triệu đơn vị penicilin G mỗi 2 giờ hoặc 3 triệu đơn vị mỗi 3 giờ, nồng độ penicilin G huyết thanh trung bình đạt 20 microgam/ml. Penicilin G được hấp thu từ khoang màng bụng sau khi tiêm thấm tại chỗ, thuốc cũng được hấp thu từ bề mặt màng phổi, màng ngoài tim và ổ khớp. Penicilin G không hấp thu qua da còn nguyên vẹn.",
+          "block_id": "b0031"
+        },
+        {
+          "type": "text",
+          "text": "Phân bố: Thể tích phân bố của penicilin G khoảng 0,53 - 0,67 lít/ kg ở người có chức năng thận bình thường. Khoảng 45 - 68% thuốc liên kết với protein huyết tương. Benzylpenicilin phân bố rộng rãi với nồng độ khác nhau trong các mô và dịch cơ thể. Thuốc phân tán qua nhau thai, vào tuần hoàn thai và một lượng nhỏ xuất hiện trong sữa. Tỉ lệ nồng độ thuốc trong dịch não tủy so với trong máu ở người màng não bình thường < 1% và khi viêm màng não là 2 - 6%.",
+          "block_id": "b0032"
+        },
+        {
+          "type": "text",
+          "text": "Chuyển hóa, thải trừ: Khoảng 16 - 30% liều tiêm bắp được chuyển hóa thành acid peniciloic không có hoạt tính vi sinh. Một lượng nhỏ acid 6-aminopenicilanic (6APA) cũng được tìm thấy trong nước tiểu của bệnh nhân dùng peniclin G. Một tỉ lệ nhỏ của thuốc cũng được hydroxy hóa thành một vài chất chuyển hóa có hoạt tính vi sinh và cũng bài tiết qua thận. Penicilin G và các chất chuyển hóa được thải trừ qua thận chủ yếu nhờ bài tiết ở ống thận, vào nước tiểu. Một lượng nhỏ thuốc thải qua mật. Sau khi tiêm bắp, 60% liều dùng hoặc hơn được bài tiết qua nước tiểu ở dạng không đổi hoặc chất chuyển hóa trong vòng 6 giờ.",
+          "block_id": "b0033"
+        },
+        {
+          "type": "text",
+          "text": "Nửa đời thải trừ huyết thanh của penicilin G ở người có chức năng thận bình thường là 0,4 - 0,9 giờ, kéo dài ở trẻ sơ sinh, người cao tuổi và người suy thận. Nồng độ thuốc trong huyết thanh cao hơn và kéo dài hơn ở bệnh nhân suy thận. Ở bệnh nhân thiểu niệu có nồng độ creatinin huyết thanh nhỏ hơn 3 mg/dl, nửa đời huyết thanh của thuốc là 1 - 2 giờ, và ở bệnh nhân vô niệu là 6 - 20 giờ.",
+          "block_id": "b0034"
+        },
+        {
+          "type": "text",
+          "text": "Ở bệnh nhân vô niệu suy giảm chức năng gan, nửa đời huyết thanh của thuốc cao gấp 2 - 3 lần so với ở bệnh nhân vô niệu có chức năng gan bình thường.",
+          "block_id": "b0035"
+        },
+        {
+          "type": "text",
+          "text": "Nửa đời huyết thanh của penicilin G ở trẻ sơ sinh khác nhau tỉ lệ nghịch với tuổi, không phụ thuộc vào cân nặng lúc sinh. Nửa đời huyết thanh được ghi nhận ở trẻ sơ sinh từ 6 ngày tuổi trở xuống là 3,2 - 3,4 giờ, ở trẻ 7 - 13 ngày tuổi là 1,2 - 2,2 giờ và ở trẻ từ 14 ngày trở lên là 0,9 - 1,9 giờ.",
+          "block_id": "b0036"
+        },
+        {
+          "type": "text",
+          "text": "Benzylpenicilin có thể loại được bằng thẩm tách máu nhưng chỉ có một lượng nhỏ bị loại bằng lọc màng bụng.",
+          "block_id": "b0037"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chi-inh",
+      "id": "chi-dinh",
       "title": "Chỉ định",
-      "content": "Benzylpenicilin được chỉ định cho các trường hợp nhiễm khuẩn gây ra bởi vi khuẩn nhạy cảm, bao gồm: Viêm màng ngoài tim, viêm màng trong tim nhiễm khuẩn, viêm màng não do vi khuẩn nhạy cảm.\n\nDự phòng nhiễm khuẩn sơ sinh ở phụ nữ mang thai nhiễm liên cầu nhóm B.\n\nNgoài ra, thuốc cũng có thể được sử dụng cho một số các loại nhiễm khuẩn khác (rất hạn chế trên lâm sàng): Bệnh than, bệnh bạch hầu, bệnh nhiễm khuẩn listeria, bệnh lyme, giang mai, sốt do chuột cắn vết thương nhiễm khuẩn (áp xe), nhiễm khuẩn da, nhiễm khuẩn ở mũi, họng, xoang mũi, tai giữa, viêm phổi. Nhiễm khuẩn huyết do vi khuẩn nhạy cảm.\n\nTuy nhiên, khi chỉ định cần tham khảo phần Dược lực học ở trên và điều trị dựa theo kết quả kháng sinh đồ và đáp ứng lâm sàng.",
+      "heading_block": "b0038",
       "blocks": [
         {
           "type": "text",
-          "text": "Benzylpenicilin được chỉ định cho các trường hợp nhiễm khuẩn gây ra bởi vi khuẩn nhạy cảm, bao gồm: Viêm màng ngoài tim, viêm màng trong tim nhiễm khuẩn, viêm màng não do vi khuẩn nhạy cảm.\n\nDự phòng nhiễm khuẩn sơ sinh ở phụ nữ mang thai nhiễm liên cầu nhóm B.\n\nNgoài ra, thuốc cũng có thể được sử dụng cho một số các loại nhiễm khuẩn khác (rất hạn chế trên lâm sàng): Bệnh than, bệnh bạch hầu, bệnh nhiễm khuẩn listeria, bệnh lyme, giang mai, sốt do chuột cắn vết thương nhiễm khuẩn (áp xe), nhiễm khuẩn da, nhiễm khuẩn ở mũi, họng, xoang mũi, tai giữa, viêm phổi. Nhiễm khuẩn huyết do vi khuẩn nhạy cảm.\n\nTuy nhiên, khi chỉ định cần tham khảo phần Dược lực học ở trên và điều trị dựa theo kết quả kháng sinh đồ và đáp ứng lâm sàng."
+          "text": "Benzylpenicilin được chỉ định cho các trường hợp nhiễm khuẩn gây ra bởi vi khuẩn nhạy cảm, bao gồm:",
+          "block_id": "b0039"
+        },
+        {
+          "type": "text",
+          "text": "Viêm màng ngoài tim, viêm màng trong tim nhiễm khuẩn, viêm màng não do vi khuẩn nhạy cảm.",
+          "block_id": "b0040"
+        },
+        {
+          "type": "text",
+          "text": "Dự phòng nhiễm khuẩn sơ sinh ở phụ nữ mang thai nhiễm liên cầu nhóm B.",
+          "block_id": "b0041"
+        },
+        {
+          "type": "text",
+          "text": "Ngoài ra, thuốc cũng có thể được sử dụng cho một số các loại",
+          "block_id": "b0042"
+        },
+        {
+          "type": "text",
+          "text": "nhiễm khuẩn khác (rất hạn chế trên lâm sàng):",
+          "block_id": "b0043"
+        },
+        {
+          "type": "text",
+          "text": "Bệnh than, bệnh bạch hầu, bệnh nhiễm khuẩn listeria, bệnh lyme, giang mai, sốt do chuột cắn vết thương nhiễm khuẩn (áp xe), nhiễm khuẩn da, nhiễm khuẩn ở mũi, họng, xoang mũi, tai giữa, viêm phổi. Nhiễm khuẩn huyết do vi khuẩn nhạy cảm.",
+          "block_id": "b0044"
+        },
+        {
+          "type": "text",
+          "text": "Tuy nhiên, khi chỉ định cần tham khảo phần Dược lực học ở trên và điều trị dựa theo kết quả kháng sinh đồ và đáp ứng lâm sàng.",
+          "block_id": "b0045"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chong-chi-inh",
+      "id": "chong-chi-dinh",
       "title": "Chống chỉ định",
-      "content": "Quá mẫn cảm với các penicilin.",
+      "heading_block": "b0046",
       "blocks": [
         {
           "type": "text",
-          "text": "Quá mẫn cảm với các penicilin."
+          "text": "Quá mẫn cảm với các penicilin.",
+          "block_id": "b0047"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "than-trong",
       "title": "Thận trọng",
-      "content": "Người có tiền sử dị ứng với penicilin và cephalosporin do có nguy cơ phản ứng chéo miễn dịch giữa benzylpenicilin và các cephalosporin.\n\nDùng penicilin natri hoặc kali liều cao (trên 6 g) đường tĩnh mạch có thể gây rối loạn cân bằng điện giải (tăng natri hoặc kali huyết).\n\nDùng penicilin natri liều cao ồ ạt có thể dẫn đến giảm kali huyết và đôi khi tăng natri huyết, do đó đặc biệt thận trọng trên bệnh nhân đang dùng thuốc lợi tiểu giữ kali hoặc giảm kali huyết.\n\nVới người bệnh suy giảm chức năng thận, dùng liều cao (trên 8 g/ ngày/người lớn) có thể gây kích ứng não, co giật và hôn mê. Cần theo dõi định kỳ chức năng thận, gan và các thông số huyết học khi sử dụng liều cao và kéo dài penicilin. Thận trọng với người bệnh suy giảm chức năng thận, đặc biệt ở trẻ sơ sinh và người cao tuổi.\n\nVới người suy tim cần chú ý đặc biệt, do nguy cơ tăng natri huyết sau khi tiêm liều cao benzylpenicilin natri (lượng thường dùng xấp xỉ 2,8 mmol Na+ trong lọ 1 triệu đơn vị penicilin, tương ứng lượng natri có trong 18 ml dung dịch tiêm natri clorid 0,9%).\n\nCó thể xảy ra quá mẫn với da khi tiếp xúc với kháng sinh, nên thận trọng tránh tiếp xúc với thuốc. Cần tìm hiểu xem người bệnh có tiền sử dị ứng không, đặc biệt dị ứng với thuốc, vì dễ tăng phản ứng mẫn cảm với penicilin.\n\nThận trọng đặc biệt khi dùng benzylpenicilin liều cao cho người bị động kinh.",
+      "heading_block": "b0048",
       "blocks": [
         {
           "type": "text",
-          "text": "Người có tiền sử dị ứng với penicilin và cephalosporin do có nguy cơ phản ứng chéo miễn dịch giữa benzylpenicilin và các cephalosporin.\n\nDùng penicilin natri hoặc kali liều cao (trên 6 g) đường tĩnh mạch có thể gây rối loạn cân bằng điện giải (tăng natri hoặc kali huyết).\n\nDùng penicilin natri liều cao ồ ạt có thể dẫn đến giảm kali huyết và đôi khi tăng natri huyết, do đó đặc biệt thận trọng trên bệnh nhân đang dùng thuốc lợi tiểu giữ kali hoặc giảm kali huyết.\n\nVới người bệnh suy giảm chức năng thận, dùng liều cao (trên 8 g/ ngày/người lớn) có thể gây kích ứng não, co giật và hôn mê. Cần theo dõi định kỳ chức năng thận, gan và các thông số huyết học khi sử dụng liều cao và kéo dài penicilin. Thận trọng với người bệnh suy giảm chức năng thận, đặc biệt ở trẻ sơ sinh và người cao tuổi.\n\nVới người suy tim cần chú ý đặc biệt, do nguy cơ tăng natri huyết sau khi tiêm liều cao benzylpenicilin natri (lượng thường dùng xấp xỉ 2,8 mmol Na+ trong lọ 1 triệu đơn vị penicilin, tương ứng lượng natri có trong 18 ml dung dịch tiêm natri clorid 0,9%).\n\nCó thể xảy ra quá mẫn với da khi tiếp xúc với kháng sinh, nên thận trọng tránh tiếp xúc với thuốc. Cần tìm hiểu xem người bệnh có tiền sử dị ứng không, đặc biệt dị ứng với thuốc, vì dễ tăng phản ứng mẫn cảm với penicilin.\n\nThận trọng đặc biệt khi dùng benzylpenicilin liều cao cho người bị động kinh."
+          "text": "Người có tiền sử dị ứng với penicilin và cephalosporin do có nguy cơ phản ứng chéo miễn dịch giữa benzylpenicilin và các cephalosporin.",
+          "block_id": "b0049"
+        },
+        {
+          "type": "text",
+          "text": "Dùng penicilin natri hoặc kali liều cao (trên 6 g) đường tĩnh mạch có thể gây rối loạn cân bằng điện giải (tăng natri hoặc kali huyết).",
+          "block_id": "b0050"
+        },
+        {
+          "type": "text",
+          "text": "Dùng penicilin natri liều cao ồ ạt có thể dẫn đến giảm kali huyết và đôi khi tăng natri huyết, do đó đặc biệt thận trọng trên bệnh nhân đang dùng thuốc lợi tiểu giữ kali hoặc giảm kali huyết.",
+          "block_id": "b0051"
+        },
+        {
+          "type": "text",
+          "text": "Với người bệnh suy giảm chức năng thận, dùng liều cao (trên 8 g/ ngày/người lớn) có thể gây kích ứng não, co giật và hôn mê. Cần theo dõi định kỳ chức năng thận, gan và các thông số huyết học khi sử dụng liều cao và kéo dài penicilin. Thận trọng với người bệnh suy giảm chức năng thận, đặc biệt ở trẻ sơ sinh và người cao tuổi.",
+          "block_id": "b0052"
+        },
+        {
+          "type": "text",
+          "text": "Với người suy tim cần chú ý đặc biệt, do nguy cơ tăng natri huyết sau khi tiêm liều cao benzylpenicilin natri (lượng thường dùng xấp xỉ 2,8 mmol Na+ trong lọ 1 triệu đơn vị penicilin, tương ứng lượng natri có trong 18 ml dung dịch tiêm natri clorid 0,9%).",
+          "block_id": "b0053"
+        },
+        {
+          "type": "text",
+          "text": "Có thể xảy ra quá mẫn với da khi tiếp xúc với kháng sinh, nên thận trọng tránh tiếp xúc với thuốc. Cần tìm hiểu xem người bệnh có tiền sử dị ứng không, đặc biệt dị ứng với thuốc, vì dễ tăng phản ứng mẫn cảm với penicilin.",
+          "block_id": "b0054"
+        },
+        {
+          "type": "text",
+          "text": "Thận trọng đặc biệt khi dùng benzylpenicilin liều cao cho người bị động kinh.",
+          "block_id": "b0055"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-mang-thai",
       "title": "Thời kỳ mang thai",
-      "content": "Thuốc qua được nhau thai và phân bố vào dịch ối. Sử dụng penicilin cho phụ nữ mang thai nói chung không làm tăng nguy cơ có hại với thai nhi. Penicilin G là thuốc được lựa chọn trong điều trị thương hàn cho phụ nữ mang thai cũng như để dự phòng bệnh do Streptococcus nhóm B khởi phát sớm ở trẻ sơ sinh. Penicilin G cũng có thể được sử dụng khi cần điều trị đường tĩnh mạch cho phụ nữ mang thai hoặc phụ nữ sau sinh bị mắc bệnh than.",
+      "heading_block": "b0056",
       "blocks": [
         {
           "type": "text",
-          "text": "Thuốc qua được nhau thai và phân bố vào dịch ối. Sử dụng penicilin cho phụ nữ mang thai nói chung không làm tăng nguy cơ có hại với thai nhi. Penicilin G là thuốc được lựa chọn trong điều trị thương hàn cho phụ nữ mang thai cũng như để dự phòng bệnh do Streptococcus nhóm B khởi phát sớm ở trẻ sơ sinh. Penicilin G cũng có thể được sử dụng khi cần điều trị đường tĩnh mạch cho phụ nữ mang thai hoặc phụ nữ sau sinh bị mắc bệnh than."
+          "text": "Thuốc qua được nhau thai và phân bố vào dịch ối. Sử dụng penicilin cho phụ nữ mang thai nói chung không làm tăng nguy cơ có hại với thai nhi. Penicilin G là thuốc được lựa chọn trong điều trị thương hàn cho phụ nữ mang thai cũng như để dự phòng bệnh do Streptococcus nhóm B khởi phát sớm ở trẻ sơ sinh. Penicilin G cũng có thể được sử dụng khi cần điều trị đường tĩnh mạch cho phụ nữ mang thai hoặc phụ nữ sau sinh bị mắc bệnh than.",
+          "block_id": "b0057"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-cho-con-bu",
       "title": "Thời kỳ cho con bú",
-      "content": "Penicilin bài tiết qua sữa. Nên thận trọng khi dùng trong thời kỳ cho con bú. Nồng độ thuốc cao nhất trong sữa đạt được sau khi tiêm bắp 1 giờ. Các tác dụng bất lợi trên trẻ bú mẹ, không phụ thuộc liều bao gồm dị ứng, thay đổi hệ vi khuẩn đường ruột.",
+      "heading_block": "b0058",
       "blocks": [
         {
           "type": "text",
-          "text": "Penicilin bài tiết qua sữa. Nên thận trọng khi dùng trong thời kỳ cho con bú. Nồng độ thuốc cao nhất trong sữa đạt được sau khi tiêm bắp 1 giờ. Các tác dụng bất lợi trên trẻ bú mẹ, không phụ thuộc liều bao gồm dị ứng, thay đổi hệ vi khuẩn đường ruột."
+          "text": "Penicilin bài tiết qua sữa. Nên thận trọng khi dùng trong thời kỳ cho con bú. Nồng độ thuốc cao nhất trong sữa đạt được sau khi tiêm bắp 1 giờ. Các tác dụng bất lợi trên trẻ bú mẹ, không phụ thuộc liều bao gồm dị ứng, thay đổi hệ vi khuẩn đường ruột.",
+          "block_id": "b0059"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tac-dung-khong-mong-muon-adr",
       "title": "Tác dụng không mong muốn (ADR)",
-      "content": "Penicilin có độc tính thấp, nhưng là chất gây mẫn cảm đáng kể, thường gặp nhất là phản ứng da: xấp xỉ 2% số bệnh nhân điều trị.\n\nNhững phản ứng tại chỗ ở vị trí tiêm thuốc cũng hay gặp.\n\nThường gặp Toàn thân: ngoại ban, sốt.\n\nTiêu hóa: viêm đại tràng màng giả.\n\nTại chỗ: phản ứng viêm tĩnh mạch nơi tiêm.\n\nKhác: viêm tĩnh mạch huyết khối.\n\nPhản ứng Jarisch - Herxheimer (sốt, ớn lạnh, đau đầu, phản ứng tại vị trí nhiễm trùng) trên bệnh nhân giang mai.\n\nÍt gặp Máu: tăng bạch cầu ưa acid.\n\nRối loạn TKTW: đặc biệt khi dùng liều cao trên 60 g/ngày hoặc trên bệnh nhân suy thận nặng.\n\nDa: mày đay.\n\nHiếm gặp Toàn thân: phản ứng phản vệ.\n\nMáu: thiếu máu tan huyết, giảm bạch cầu, kéo dài thời gian chảy máu, giảm chức năng tiểu cầu (khi dùng liều cao đường tĩnh mạch).\n\nViêm thận kẽ khi dùng liều cao trên 12 g/ngày.\n\nRối loạn điện giải: tăng kali hoặc natri huyết khi dùng liều cao.\n\nChú ý: Có thể thấy những triệu chứng của não như động kinh, đặc biệt ở những người bệnh có chức năng thận giảm và liều dùng hàng ngày trên 18 g với người lớn. Đặc biệt thận trọng với người trên 60 tuổi và trẻ sơ sinh. Nên xem xét cho giảm liều penicilin và điều trị chống co giật. Nồng độ thuốc cao trong dịch truyền có thể gây viêm tĩnh mạch huyết khối.",
+      "heading_block": "b0060",
       "blocks": [
         {
           "type": "text",
-          "text": "Penicilin có độc tính thấp, nhưng là chất gây mẫn cảm đáng kể, thường gặp nhất là phản ứng da: xấp xỉ 2% số bệnh nhân điều trị.\n\nNhững phản ứng tại chỗ ở vị trí tiêm thuốc cũng hay gặp.\n\nThường gặp Toàn thân: ngoại ban, sốt.\n\nTiêu hóa: viêm đại tràng màng giả.\n\nTại chỗ: phản ứng viêm tĩnh mạch nơi tiêm.\n\nKhác: viêm tĩnh mạch huyết khối.\n\nPhản ứng Jarisch - Herxheimer (sốt, ớn lạnh, đau đầu, phản ứng tại vị trí nhiễm trùng) trên bệnh nhân giang mai.\n\nÍt gặp Máu: tăng bạch cầu ưa acid.\n\nRối loạn TKTW: đặc biệt khi dùng liều cao trên 60 g/ngày hoặc trên bệnh nhân suy thận nặng.\n\nDa: mày đay.\n\nHiếm gặp Toàn thân: phản ứng phản vệ.\n\nMáu: thiếu máu tan huyết, giảm bạch cầu, kéo dài thời gian chảy máu, giảm chức năng tiểu cầu (khi dùng liều cao đường tĩnh mạch).\n\nViêm thận kẽ khi dùng liều cao trên 12 g/ngày.\n\nRối loạn điện giải: tăng kali hoặc natri huyết khi dùng liều cao.\n\nChú ý: Có thể thấy những triệu chứng của não như động kinh, đặc biệt ở những người bệnh có chức năng thận giảm và liều dùng hàng ngày trên 18 g với người lớn. Đặc biệt thận trọng với người trên 60 tuổi và trẻ sơ sinh. Nên xem xét cho giảm liều penicilin và điều trị chống co giật. Nồng độ thuốc cao trong dịch truyền có thể gây viêm tĩnh mạch huyết khối."
+          "text": "Penicilin có độc tính thấp, nhưng là chất gây mẫn cảm đáng kể, thường gặp nhất là phản ứng da: xấp xỉ 2% số bệnh nhân điều trị.",
+          "block_id": "b0061"
+        },
+        {
+          "type": "text",
+          "text": "Những phản ứng tại chỗ ở vị trí tiêm thuốc cũng hay gặp.",
+          "block_id": "b0062"
+        },
+        {
+          "type": "subheading",
+          "text": "Thường gặp",
+          "block_id": "b0063"
+        },
+        {
+          "type": "text",
+          "text": "Toàn thân: ngoại ban, sốt.",
+          "block_id": "b0064"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: viêm đại tràng màng giả.",
+          "block_id": "b0065"
+        },
+        {
+          "type": "text",
+          "text": "Tại chỗ: phản ứng viêm tĩnh mạch nơi tiêm.",
+          "block_id": "b0066"
+        },
+        {
+          "type": "text",
+          "text": "Khác: viêm tĩnh mạch huyết khối.",
+          "block_id": "b0067"
+        },
+        {
+          "type": "text",
+          "text": "Phản ứng Jarisch - Herxheimer (sốt, ớn lạnh, đau đầu, phản ứng tại vị trí nhiễm trùng) trên bệnh nhân giang mai.",
+          "block_id": "b0068"
+        },
+        {
+          "type": "subheading",
+          "text": "Ít gặp",
+          "block_id": "b0069"
+        },
+        {
+          "type": "text",
+          "text": "Máu: tăng bạch cầu ưa acid.",
+          "block_id": "b0070"
+        },
+        {
+          "type": "text",
+          "text": "Rối loạn TKTW: đặc biệt khi dùng liều cao trên 60 g/ngày hoặc",
+          "block_id": "b0071"
+        },
+        {
+          "type": "text",
+          "text": "trên bệnh nhân suy thận nặng.",
+          "block_id": "b0072"
+        },
+        {
+          "type": "text",
+          "text": "Da: mày đay.",
+          "block_id": "b0073"
+        },
+        {
+          "type": "subheading",
+          "text": "Hiếm gặp",
+          "block_id": "b0074"
+        },
+        {
+          "type": "text",
+          "text": "Toàn thân: phản ứng phản vệ.",
+          "block_id": "b0075"
+        },
+        {
+          "type": "text",
+          "text": "Máu: thiếu máu tan huyết, giảm bạch cầu, kéo dài thời gian chảy máu, giảm chức năng tiểu cầu (khi dùng liều cao đường tĩnh mạch).",
+          "block_id": "b0076"
+        },
+        {
+          "type": "text",
+          "text": "Viêm thận kẽ khi dùng liều cao trên 12 g/ngày.",
+          "block_id": "b0077"
+        },
+        {
+          "type": "text",
+          "text": "Rối loạn điện giải: tăng kali hoặc natri huyết khi dùng liều cao.",
+          "block_id": "b0078"
+        },
+        {
+          "type": "text",
+          "text": "Chú ý: Có thể thấy những triệu chứng của não như động kinh, đặc biệt ở những người bệnh có chức năng thận giảm và liều dùng hàng ngày trên 18 g với người lớn. Đặc biệt thận trọng với người trên 60 tuổi và trẻ sơ sinh. Nên xem xét cho giảm liều penicilin và điều trị chống co giật. Nồng độ thuốc cao trong dịch truyền có thể gây viêm tĩnh mạch huyết khối.",
+          "block_id": "b0079"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "huong-dan-cach-xu-tri-adr",
       "title": "Hướng dẫn cách xử trí ADR",
-      "content": "ADR phổ biến nhất của benzylpenicilin là phản ứng mẫn cảm, đặc biệt phát ban. Mẫn cảm với penicilin có thể gây phản ứng tức thì, gồm có phản ứng phản vệ, phù mạch, mẩn ngứa, đôi khi phát ban dát - sần. Phản ứng muộn có thể là phản ứng giống bệnh huyết thanh và thiếu máu huyết tán. Do đó, trước khi dùng benzylpenicilin phải hỏi kỹ tiền sử mẫn cảm với penicilin, cephalosporin và các thuốc khác.\n\nPhải ngừng liệu pháp penicilin khi thấy phát ban, mẩn ngứa, bệnh giống bệnh huyết thanh, thiếu máu huyết tán, viêm da bong. Kháng histamin và corticosteroid, nếu cần, thường được dùng để điều trị phản ứng giống bệnh huyết thanh, tuy vậy tác dụng chưa rõ ràng.\n\nUống hoặc tiêm kháng histamin trước khi dùng penicilin không bảo vệ được mẫn cảm với thuốc.\n\nTest da dùng để phát hiện mẫn cảm: Test da được dùng để đánh giá nguy cơ hiện tại của phản ứng tức thì qua trung gian IgE, phản ứng nghiêm trọng nhất là phản ứng phản vệ. Phải có sẵn adrenalin để đề phòng trường hợp phản ứng phản vệ. Kết quả test da không đáng tin cậy nếu làm một thời gian lâu trước khi bắt đầu liệu pháp. Cũng đã có một số test được triển khai in vitro như test dùng chất hấp phụ dị nguyên phóng xạ.\n\nGiải mẫn cảm cho người mẫn cảm với penicilin nhưng nhất thiết phải dùng penicilin: Phương pháp này có thể nguy hiểm, phải giám sát liên tục và phải luôn sẵn sàng phương tiện cấp cứu hồi sức và adrenalin. Giải mẫn cảm phải coi là tạm thời, phản ứng dị ứng có thể xảy ra trong thời gian tiếp xúc lần sau với penicilin G.\n\nPhải theo dõi số lượng bạch cầu khi điều trị penicilin G kéo dài (≥ 10 ngày) vì 5 đến trên 15% người bệnh điều trị kéo dài có giảm bạch cầu đa nhân trung tính. Các dấu hiệu gồm có sốt, phát ban và tăng bạch cầu ưa acid.\n\nPhải theo dõi cân bằng điện giải khi dùng benzylpenicilin liều cao (> 6 g) tĩnh mạch.",
+      "heading_block": "b0080",
       "blocks": [
         {
           "type": "text",
-          "text": "ADR phổ biến nhất của benzylpenicilin là phản ứng mẫn cảm, đặc biệt phát ban. Mẫn cảm với penicilin có thể gây phản ứng tức thì, gồm có phản ứng phản vệ, phù mạch, mẩn ngứa, đôi khi phát ban dát - sần. Phản ứng muộn có thể là phản ứng giống bệnh huyết thanh và thiếu máu huyết tán. Do đó, trước khi dùng benzylpenicilin phải hỏi kỹ tiền sử mẫn cảm với penicilin, cephalosporin và các thuốc khác.\n\nPhải ngừng liệu pháp penicilin khi thấy phát ban, mẩn ngứa, bệnh giống bệnh huyết thanh, thiếu máu huyết tán, viêm da bong. Kháng histamin và corticosteroid, nếu cần, thường được dùng để điều trị phản ứng giống bệnh huyết thanh, tuy vậy tác dụng chưa rõ ràng.\n\nUống hoặc tiêm kháng histamin trước khi dùng penicilin không bảo vệ được mẫn cảm với thuốc.\n\nTest da dùng để phát hiện mẫn cảm: Test da được dùng để đánh giá nguy cơ hiện tại của phản ứng tức thì qua trung gian IgE, phản ứng nghiêm trọng nhất là phản ứng phản vệ. Phải có sẵn adrenalin để đề phòng trường hợp phản ứng phản vệ. Kết quả test da không đáng tin cậy nếu làm một thời gian lâu trước khi bắt đầu liệu pháp. Cũng đã có một số test được triển khai in vitro như test dùng chất hấp phụ dị nguyên phóng xạ.\n\nGiải mẫn cảm cho người mẫn cảm với penicilin nhưng nhất thiết phải dùng penicilin: Phương pháp này có thể nguy hiểm, phải giám sát liên tục và phải luôn sẵn sàng phương tiện cấp cứu hồi sức và adrenalin. Giải mẫn cảm phải coi là tạm thời, phản ứng dị ứng có thể xảy ra trong thời gian tiếp xúc lần sau với penicilin G.\n\nPhải theo dõi số lượng bạch cầu khi điều trị penicilin G kéo dài (≥ 10 ngày) vì 5 đến trên 15% người bệnh điều trị kéo dài có giảm bạch cầu đa nhân trung tính. Các dấu hiệu gồm có sốt, phát ban và tăng bạch cầu ưa acid.\n\nPhải theo dõi cân bằng điện giải khi dùng benzylpenicilin liều cao (> 6 g) tĩnh mạch."
+          "text": "ADR phổ biến nhất của benzylpenicilin là phản ứng mẫn cảm, đặc biệt phát ban. Mẫn cảm với penicilin có thể gây phản ứng tức thì, gồm có phản ứng phản vệ, phù mạch, mẩn ngứa, đôi khi phát ban dát",
+          "block_id": "b0081"
+        },
+        {
+          "type": "text",
+          "text": "sần. Phản ứng muộn có thể là phản ứng giống bệnh huyết thanh và\nthiếu máu huyết tán. Do đó, trước khi dùng benzylpenicilin phải hỏi\nkỹ tiền sử mẫn cảm với penicilin, cephalosporin và các thuốc khác.",
+          "block_id": "b0082"
+        },
+        {
+          "type": "text",
+          "text": "Phải ngừng liệu pháp penicilin khi thấy phát ban, mẩn ngứa, bệnh giống bệnh huyết thanh, thiếu máu huyết tán, viêm da bong. Kháng histamin và corticosteroid, nếu cần, thường được dùng để điều trị phản ứng giống bệnh huyết thanh, tuy vậy tác dụng chưa rõ ràng.",
+          "block_id": "b0083"
+        },
+        {
+          "type": "text",
+          "text": "Uống hoặc tiêm kháng histamin trước khi dùng penicilin không bảo vệ được mẫn cảm với thuốc.",
+          "block_id": "b0084"
+        },
+        {
+          "type": "subheading",
+          "text": "Test da dùng để phát hiện mẫn cảm:",
+          "block_id": "b0085"
+        },
+        {
+          "type": "text",
+          "text": "Test da được dùng để đánh giá nguy cơ hiện tại của phản ứng tức thì qua trung gian IgE, phản ứng nghiêm trọng nhất là phản ứng phản vệ. Phải có sẵn adrenalin để đề phòng trường hợp phản ứng phản vệ. Kết quả test da không đáng tin cậy nếu làm một thời gian lâu trước khi bắt đầu liệu pháp. Cũng đã có một số test được triển khai in vitro như test dùng chất hấp phụ dị nguyên phóng xạ.",
+          "block_id": "b0086"
+        },
+        {
+          "type": "text",
+          "text": "Giải mẫn cảm cho người mẫn cảm với penicilin nhưng nhất thiết phải dùng penicilin: Phương pháp này có thể nguy hiểm, phải giám sát liên tục và phải luôn sẵn sàng phương tiện cấp cứu hồi sức và adrenalin. Giải mẫn cảm phải coi là tạm thời, phản ứng dị ứng có thể xảy ra trong thời gian tiếp xúc lần sau với penicilin G.",
+          "block_id": "b0087"
+        },
+        {
+          "type": "text",
+          "text": "Phải theo dõi số lượng bạch cầu khi điều trị penicilin G kéo dài (≥ 10 ngày) vì 5 đến trên 15% người bệnh điều trị kéo dài có giảm bạch cầu đa nhân trung tính. Các dấu hiệu gồm có sốt, phát ban và tăng bạch cầu ưa acid.",
+          "block_id": "b0088"
+        },
+        {
+          "type": "text",
+          "text": "Phải theo dõi cân bằng điện giải khi dùng benzylpenicilin liều cao (> 6 g) tĩnh mạch.",
+          "block_id": "b0089"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "cach-dung",
-      "title": "Cách dùng",
-      "content": "Thuốc được dùng theo đường tiêm bắp hoặc tiêm truyền tĩnh mạch.\n\nCó thể tiêm bắp hoặc tiêm tĩnh mạch liều tới tối đa 3 g. Liều lớn trên 12 g cần phải truyền tĩnh mạch liên tục.\n\nĐể hoàn nguyên bột pha tiêm, có thể dùng nước cất pha tiêm, dung dịch natri clorid 0,9% hoặc glucose 5%.\n\nTiêm bắp: Cần tiêm bắp sâu vào mông hoặc phần tư đùi trên phía ngoài, nên hạn chế thể tích, dung dịch có nồng độ tới tối đa 60 mg/ml sẽ đỡ gây khó chịu cho bệnh nhân.\n\nTiêm truyền tĩnh mạch ngắt quãng: Pha trong natri clorid 0,9% hoặc glucose 5% tới thể tích phù hợp để truyền trong khoảng 15 - 30 phút cho trẻ em và khoảng 30 - 60 phút cho người lớn.\n\nTruyền tĩnh mạch liên tục: Có thể pha thuốc vào 1 - 2 lít dung dịch natri clorid 0,9% hoặc glucose 5%.",
+      "id": "lieu-luong-va-cach-dung",
+      "title": "Liều lượng và cách dùng",
+      "heading_block": "b0090",
       "blocks": [
         {
-          "type": "text",
-          "text": "Thuốc được dùng theo đường tiêm bắp hoặc tiêm truyền tĩnh mạch.\n\nCó thể tiêm bắp hoặc tiêm tĩnh mạch liều tới tối đa 3 g. Liều lớn trên 12 g cần phải truyền tĩnh mạch liên tục.\n\nĐể hoàn nguyên bột pha tiêm, có thể dùng nước cất pha tiêm, dung dịch natri clorid 0,9% hoặc glucose 5%.\n\nTiêm bắp: Cần tiêm bắp sâu vào mông hoặc phần tư đùi trên phía ngoài, nên hạn chế thể tích, dung dịch có nồng độ tới tối đa 60 mg/ml sẽ đỡ gây khó chịu cho bệnh nhân.\n\nTiêm truyền tĩnh mạch ngắt quãng: Pha trong natri clorid 0,9% hoặc glucose 5% tới thể tích phù hợp để truyền trong khoảng 15 - 30 phút cho trẻ em và khoảng 30 - 60 phút cho người lớn.\n\nTruyền tĩnh mạch liên tục: Có thể pha thuốc vào 1 - 2 lít dung dịch natri clorid 0,9% hoặc glucose 5%."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "lieu-luong",
-      "title": "Liều lượng",
-      "content": "Liều thông thường: Người lớn: Tiêm bắp hoặc tiêm tĩnh mạch chậm hoặc truyền tĩnh mạch: 0,6 - 4,8 g/ngày, chia 4 - 6 lần/ngày, tăng lên nếu cần trong nhiễm khuẩn nặng hơn (chỉ dùng đường tĩnh mạch nếu liều đơn độc trên 1,2 g và tốc độ truyền không quá 300 mg/phút).\n\nTrẻ em: Khuyến cáo dùng đường tĩnh mạch cho trẻ sơ sinh và trẻ nhỏ.\n\nTrẻ sơ sinh dưới 7 ngày tuổi: 25 mg/kg/lần, cách 12 giờ/lần; tăng lên 25 mg/kg, cách 8 giờ/lần nếu cần.\n\nTrẻ sơ sinh 7 - 28 ngày tuổi: 25 mg/kg/lần, cách 8 giờ/lần; liều gấp đôi trong trường hợp nhiễm khuẩn nặng.\n\nTrẻ 1 tháng tuổi - 18 tuổi: 25 mg/kg/lần, cách 6 giờ/lần; tăng tới 50 mg/kg/lần, cách 4 - 6 giờ/lần (tối đa 2,4 g/lần, cách 4 giờ/lần) trong trường hợp nhiễm khuẩn nặng.\n\nViêm màng trong tim nhiễm khuẩn (phối hợp kháng sinh khác, thường phối hợp với aminosid): Tiêm tĩnh mạch chậm hoặc truyền tĩnh mạch: Người lớn: 1,2 g/lần, cách 4 giờ/lần, tăng lên nếu cần (như viêm nội tâm mạc do Enterococcus) tới 3 g/lần, cách nhau 4 giờ/lần. Trẻ em từ 1 tháng tuổi đến < 18 tuổi: 25 mg/kg/lần, cách 4 giờ/lần, tăng lên, nếu cần, tới 50 mg/kg/lần (tối đa: 2,4 g/lần, cách 4 giờ/lần).\n\nDự phòng nhiễm khuẩn sơ sinh (ở phụ nữ mang thai nhiễm liên cầu nhóm B): Tiêm tĩnh mạch chậm hoặc truyền tĩnh mạch ban đầu 3 g, sau đó 1,5 g, cách 4 giờ/lần cho tới khi sinh.\n\nViêm màng não, bệnh não mô cầu: Người lớn: Tiêm tĩnh mạch chậm hoặc truyền tĩnh mạch: 2,4 g/lần, cách 4 giờ/lần. Trẻ sơ sinh < 7 ngày tuổi: 50 mg/kg/lần, cách 12 giờ/lần; trẻ sơ sinh 7 - 28 ngày tuổi: 50 mg/kg/lần, cách 8 giờ/lần. Trẻ 1 tháng tuổi - 18 tuổi: 50 mg/kg/lần, cách 4 - 6 giờ/lần (tối đa 2,4 g, cách 4 giờ/lần).\n\nLiều cho người bệnh suy thận: Bệnh nhân tiểu được có Clcr > 10 ml/phút/1,73 m2: Khởi đầu liều thông thường, sau đó dùng 50% liều thông thường mỗi 4 - 5 giờ.\n\nBệnh nhân có Clcr < 10 ml/phút/1,73 m2: Khởi đầu liều thông thường, sau đó dùng 50% liều thông thường mỗi 8 - 10 giờ.\n\nHoặc có thể điều chỉnh theo cách: Clcr 10 - 50 ml/phút: Dùng 75% liều thông thường.\n\nClcr < 10 ml/phút: Dùng 20 - 50% liều thông thường.\n\nLọc thận ngắt quãng (IHD) (dùng sau mỗi lần lọc máu): khởi đầu liều thông thường, sau đó 25 - 50% liều thông thường mỗi 4 - 6 giờ hoặc 50 - 100% liều thông thường mỗi 8 - 12 giờ.\n\nChạy thận nhân tạo: Phụ thuộc vào phương pháp lọc, loại màng lọc và tốc độ lọc. Với tốc độ lọc khoảng 1 - 2 lít/giờ và chức năng thận tồn dư còn rất ít, có thể khuyến cáo như sau: Lọc máu liên tục đường tĩnh mạch (CVVH): Liều tải 2,4 g, sau đó 1,2 g mỗi 4 - 6 giờ.\n\nThẩm tách máu liên tục đường tĩnh mạch (CVVHD): Liều tải 2,4 g, sau đó 1,2 - 1,8 g mỗi 4 - 6 giờ.\n\nLọc và thẩm tách máu liên tục đường tĩnh mạch (CVVHDF): Liều tải 2,4 g, sau đó 1,2 - 2,4 g mỗi 4 - 6 giờ.\n\nSuy gan: Không cần hiệu chỉnh liều (trừ bệnh nhân suy gan kết hợp suy thận).",
-      "blocks": [
+          "type": "subheading",
+          "text": "Cách dùng",
+          "block_id": "b0091"
+        },
         {
           "type": "text",
-          "text": "Liều thông thường: Người lớn: Tiêm bắp hoặc tiêm tĩnh mạch chậm hoặc truyền tĩnh mạch: 0,6 - 4,8 g/ngày, chia 4 - 6 lần/ngày, tăng lên nếu cần trong nhiễm khuẩn nặng hơn (chỉ dùng đường tĩnh mạch nếu liều đơn độc trên 1,2 g và tốc độ truyền không quá 300 mg/phút).\n\nTrẻ em: Khuyến cáo dùng đường tĩnh mạch cho trẻ sơ sinh và trẻ nhỏ.\n\nTrẻ sơ sinh dưới 7 ngày tuổi: 25 mg/kg/lần, cách 12 giờ/lần; tăng lên 25 mg/kg, cách 8 giờ/lần nếu cần.\n\nTrẻ sơ sinh 7 - 28 ngày tuổi: 25 mg/kg/lần, cách 8 giờ/lần; liều gấp đôi trong trường hợp nhiễm khuẩn nặng.\n\nTrẻ 1 tháng tuổi - 18 tuổi: 25 mg/kg/lần, cách 6 giờ/lần; tăng tới 50 mg/kg/lần, cách 4 - 6 giờ/lần (tối đa 2,4 g/lần, cách 4 giờ/lần) trong trường hợp nhiễm khuẩn nặng.\n\nViêm màng trong tim nhiễm khuẩn (phối hợp kháng sinh khác, thường phối hợp với aminosid): Tiêm tĩnh mạch chậm hoặc truyền tĩnh mạch: Người lớn: 1,2 g/lần, cách 4 giờ/lần, tăng lên nếu cần (như viêm nội tâm mạc do Enterococcus) tới 3 g/lần, cách nhau 4 giờ/lần. Trẻ em từ 1 tháng tuổi đến < 18 tuổi: 25 mg/kg/lần, cách 4 giờ/lần, tăng lên, nếu cần, tới 50 mg/kg/lần (tối đa: 2,4 g/lần, cách 4 giờ/lần).\n\nDự phòng nhiễm khuẩn sơ sinh (ở phụ nữ mang thai nhiễm liên cầu nhóm B): Tiêm tĩnh mạch chậm hoặc truyền tĩnh mạch ban đầu 3 g, sau đó 1,5 g, cách 4 giờ/lần cho tới khi sinh.\n\nViêm màng não, bệnh não mô cầu: Người lớn: Tiêm tĩnh mạch chậm hoặc truyền tĩnh mạch: 2,4 g/lần, cách 4 giờ/lần. Trẻ sơ sinh < 7 ngày tuổi: 50 mg/kg/lần, cách 12 giờ/lần; trẻ sơ sinh 7 - 28 ngày tuổi: 50 mg/kg/lần, cách 8 giờ/lần. Trẻ 1 tháng tuổi - 18 tuổi: 50 mg/kg/lần, cách 4 - 6 giờ/lần (tối đa 2,4 g, cách 4 giờ/lần).\n\nLiều cho người bệnh suy thận: Bệnh nhân tiểu được có Clcr > 10 ml/phút/1,73 m2: Khởi đầu liều thông thường, sau đó dùng 50% liều thông thường mỗi 4 - 5 giờ.\n\nBệnh nhân có Clcr < 10 ml/phút/1,73 m2: Khởi đầu liều thông thường, sau đó dùng 50% liều thông thường mỗi 8 - 10 giờ.\n\nHoặc có thể điều chỉnh theo cách: Clcr 10 - 50 ml/phút: Dùng 75% liều thông thường.\n\nClcr < 10 ml/phút: Dùng 20 - 50% liều thông thường.\n\nLọc thận ngắt quãng (IHD) (dùng sau mỗi lần lọc máu): khởi đầu liều thông thường, sau đó 25 - 50% liều thông thường mỗi 4 - 6 giờ hoặc 50 - 100% liều thông thường mỗi 8 - 12 giờ.\n\nChạy thận nhân tạo: Phụ thuộc vào phương pháp lọc, loại màng lọc và tốc độ lọc. Với tốc độ lọc khoảng 1 - 2 lít/giờ và chức năng thận tồn dư còn rất ít, có thể khuyến cáo như sau: Lọc máu liên tục đường tĩnh mạch (CVVH): Liều tải 2,4 g, sau đó 1,2 g mỗi 4 - 6 giờ.\n\nThẩm tách máu liên tục đường tĩnh mạch (CVVHD): Liều tải 2,4 g, sau đó 1,2 - 1,8 g mỗi 4 - 6 giờ.\n\nLọc và thẩm tách máu liên tục đường tĩnh mạch (CVVHDF): Liều tải 2,4 g, sau đó 1,2 - 2,4 g mỗi 4 - 6 giờ.\n\nSuy gan: Không cần hiệu chỉnh liều (trừ bệnh nhân suy gan kết hợp suy thận)."
+          "text": "Thuốc được dùng theo đường tiêm bắp hoặc tiêm truyền tĩnh mạch.",
+          "block_id": "b0092"
+        },
+        {
+          "type": "text",
+          "text": "Có thể tiêm bắp hoặc tiêm tĩnh mạch liều tới tối đa 3 g. Liều lớn trên 12 g cần phải truyền tĩnh mạch liên tục.",
+          "block_id": "b0093"
+        },
+        {
+          "type": "text",
+          "text": "Để hoàn nguyên bột pha tiêm, có thể dùng nước cất pha tiêm, dung dịch natri clorid 0,9% hoặc glucose 5%.",
+          "block_id": "b0094"
+        },
+        {
+          "type": "text",
+          "text": "Tiêm bắp: Cần tiêm bắp sâu vào mông hoặc phần tư đùi trên phía ngoài, nên hạn chế thể tích, dung dịch có nồng độ tới tối đa 60 mg/ml sẽ đỡ gây khó chịu cho bệnh nhân.",
+          "block_id": "b0095"
+        },
+        {
+          "type": "text",
+          "text": "Tiêm truyền tĩnh mạch ngắt quãng: Pha trong natri clorid 0,9% hoặc glucose 5% tới thể tích phù hợp để truyền trong khoảng 15 - 30 phút cho trẻ em và khoảng 30 - 60 phút cho người lớn.",
+          "block_id": "b0096"
+        },
+        {
+          "type": "text",
+          "text": "Truyền tĩnh mạch liên tục: Có thể pha thuốc vào 1 - 2 lít dung dịch natri clorid 0,9% hoặc glucose 5%.",
+          "block_id": "b0097"
+        },
+        {
+          "type": "subheading",
+          "text": "Liều lượng",
+          "block_id": "b0098"
+        },
+        {
+          "type": "subheading",
+          "text": "Liều thông thường:",
+          "block_id": "b0099"
+        },
+        {
+          "type": "text",
+          "text": "Người lớn: Tiêm bắp hoặc tiêm tĩnh mạch chậm hoặc truyền tĩnh mạch: 0,6 - 4,8 g/ngày, chia 4 - 6 lần/ngày, tăng lên nếu cần trong nhiễm khuẩn nặng hơn (chỉ dùng đường tĩnh mạch nếu liều đơn độc trên 1,2 g và tốc độ truyền không quá 300 mg/phút).",
+          "block_id": "b0100"
+        },
+        {
+          "type": "text",
+          "text": "Trẻ em: Khuyến cáo dùng đường tĩnh mạch cho trẻ sơ sinh và trẻ nhỏ.",
+          "block_id": "b0101"
+        },
+        {
+          "type": "text",
+          "text": "Trẻ sơ sinh dưới 7 ngày tuổi: 25 mg/kg/lần, cách 12 giờ/lần; tăng lên 25 mg/kg, cách 8 giờ/lần nếu cần.",
+          "block_id": "b0102"
+        },
+        {
+          "type": "text",
+          "text": "Trẻ sơ sinh 7 - 28 ngày tuổi: 25 mg/kg/lần, cách 8 giờ/lần; liều gấp đôi trong trường hợp nhiễm khuẩn nặng.",
+          "block_id": "b0103"
+        },
+        {
+          "type": "text",
+          "text": "Trẻ 1 tháng tuổi - 18 tuổi: 25 mg/kg/lần, cách 6 giờ/lần; tăng tới 50 mg/kg/lần, cách 4 - 6 giờ/lần (tối đa 2,4 g/lần, cách 4 giờ/lần) trong trường hợp nhiễm khuẩn nặng.",
+          "block_id": "b0104"
+        },
+        {
+          "type": "text",
+          "text": "Viêm màng trong tim nhiễm khuẩn (phối hợp kháng sinh khác, thường phối hợp với aminosid): Tiêm tĩnh mạch chậm hoặc truyền tĩnh mạch: Người lớn: 1,2 g/lần, cách 4 giờ/lần, tăng lên nếu cần (như viêm nội tâm mạc do Enterococcus) tới 3 g/lần, cách nhau 4 giờ/lần. Trẻ em từ 1 tháng tuổi đến < 18 tuổi: 25 mg/kg/lần, cách 4 giờ/lần, tăng lên, nếu cần, tới 50 mg/kg/lần (tối đa: 2,4 g/lần, cách 4 giờ/lần).",
+          "block_id": "b0105"
+        },
+        {
+          "type": "text",
+          "text": "Dự phòng nhiễm khuẩn sơ sinh (ở phụ nữ mang thai nhiễm liên cầu nhóm B): Tiêm tĩnh mạch chậm hoặc truyền tĩnh mạch ban đầu 3 g, sau đó 1,5 g, cách 4 giờ/lần cho tới khi sinh.",
+          "block_id": "b0106"
+        },
+        {
+          "type": "text",
+          "text": "Viêm màng não, bệnh não mô cầu: Người lớn: Tiêm tĩnh mạch chậm hoặc truyền tĩnh mạch: 2,4 g/lần, cách 4 giờ/lần. Trẻ sơ sinh < 7 ngày tuổi: 50 mg/kg/lần, cách 12 giờ/lần; trẻ sơ sinh 7 - 28 ngày tuổi: 50 mg/kg/lần, cách 8 giờ/lần. Trẻ 1 tháng tuổi - 18 tuổi:",
+          "block_id": "b0107"
+        },
+        {
+          "type": "text",
+          "text": "50 mg/kg/lần, cách 4 - 6 giờ/lần (tối đa 2,4 g, cách 4 giờ/lần).",
+          "block_id": "b0108"
+        },
+        {
+          "type": "subheading",
+          "text": "Liều cho người bệnh suy thận:",
+          "block_id": "b0109"
+        },
+        {
+          "type": "text",
+          "text": "Bệnh nhân tiểu được có Clcr > 10 ml/phút/1,73 m2: Khởi đầu liều thông thường, sau đó dùng 50% liều thông thường mỗi 4 - 5 giờ.",
+          "block_id": "b0110"
+        },
+        {
+          "type": "text",
+          "text": "Bệnh nhân có Clcr < 10 ml/phút/1,73 m2: Khởi đầu liều thông thường, sau đó dùng 50% liều thông thường mỗi 8 - 10 giờ.",
+          "block_id": "b0111"
+        },
+        {
+          "type": "text",
+          "text": "Hoặc có thể điều chỉnh theo cách:",
+          "block_id": "b0112"
+        },
+        {
+          "type": "text",
+          "text": "Clcr 10 - 50 ml/phút: Dùng 75% liều thông thường.",
+          "block_id": "b0113"
+        },
+        {
+          "type": "text",
+          "text": "Clcr < 10 ml/phút: Dùng 20 - 50% liều thông thường.",
+          "block_id": "b0114"
+        },
+        {
+          "type": "text",
+          "text": "Lọc thận ngắt quãng (IHD) (dùng sau mỗi lần lọc máu): khởi đầu liều thông thường, sau đó 25 - 50% liều thông thường mỗi 4 - 6 giờ hoặc 50 - 100% liều thông thường mỗi 8 - 12 giờ.",
+          "block_id": "b0115"
+        },
+        {
+          "type": "text",
+          "text": "Chạy thận nhân tạo: Phụ thuộc vào phương pháp lọc, loại màng lọc và tốc độ lọc. Với tốc độ lọc khoảng 1 - 2 lít/giờ và chức năng thận tồn dư còn rất ít, có thể khuyến cáo như sau:",
+          "block_id": "b0116"
+        },
+        {
+          "type": "text",
+          "text": "Lọc máu liên tục đường tĩnh mạch (CVVH): Liều tải 2,4 g, sau đó 1,2 g mỗi 4 - 6 giờ.",
+          "block_id": "b0117"
+        },
+        {
+          "type": "text",
+          "text": "Thẩm tách máu liên tục đường tĩnh mạch (CVVHD): Liều tải 2,4 g, sau đó 1,2 - 1,8 g mỗi 4 - 6 giờ.",
+          "block_id": "b0118"
+        },
+        {
+          "type": "text",
+          "text": "Lọc và thẩm tách máu liên tục đường tĩnh mạch (CVVHDF): Liều tải 2,4 g, sau đó 1,2 - 2,4 g mỗi 4 - 6 giờ.",
+          "block_id": "b0119"
+        },
+        {
+          "type": "text",
+          "text": "Suy gan: Không cần hiệu chỉnh liều (trừ bệnh nhân suy gan kết hợp suy thận).",
+          "block_id": "b0120"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-tac-thuoc",
       "title": "Tương tác thuốc",
-      "content": "Dùng đồng thời các kháng sinh kìm khuẩn (như cloramphenicol, tetracyclin) có thể làm giảm tác dụng diệt khuẩn của penicilin G do làm chậm tốc độ phát triển của vi khuẩn.\n\nNửa đời thải trừ của penicilin G bị kéo dài khi dùng đồng thời với probenecid do cạnh tranh thải trừ ở ống thận. Tương tác này có thể được áp dụng trong điều trị để đạt được nồng độ thuốc trong huyết tương cao và kéo dài hơn.\n\nDùng đồng thời penicilin G và warfarin làm tăng nguy cơ chảy máu do penicilin G làm ảnh hưởng đến tổng hợp vitamin K thông qua hệ vi sinh đường ruột. Cần theo dõi INR khi bắt đầu và dừng penicilin G.\n\nBenzylpenicilin có thể làm giảm hiệu quả của thuốc tránh thai khi dùng đồng thời.\n\nTránh dùng đồng thời benzylpenicilin với BCG do làm giảm hiệu quả của BCG.\n\nBenzylpenicilin làm giảm thải trừ methotrexat, gây tăng nồng độ methotrexat, tăng nguy cơ độc tính, cần theo dõi cẩn thận khi dùng cùng penicilin G. Kiểm tra tiểu cầu, bạch cầu 2 lần/tuần trong hai tuần đầu và xác định nồng độ methotrexat nếu nghi ngờ độc tính.",
+      "heading_block": "b0121",
       "blocks": [
         {
           "type": "text",
-          "text": "Dùng đồng thời các kháng sinh kìm khuẩn (như cloramphenicol, tetracyclin) có thể làm giảm tác dụng diệt khuẩn của penicilin G do làm chậm tốc độ phát triển của vi khuẩn.\n\nNửa đời thải trừ của penicilin G bị kéo dài khi dùng đồng thời với probenecid do cạnh tranh thải trừ ở ống thận. Tương tác này có thể được áp dụng trong điều trị để đạt được nồng độ thuốc trong huyết tương cao và kéo dài hơn.\n\nDùng đồng thời penicilin G và warfarin làm tăng nguy cơ chảy máu do penicilin G làm ảnh hưởng đến tổng hợp vitamin K thông qua hệ vi sinh đường ruột. Cần theo dõi INR khi bắt đầu và dừng penicilin G.\n\nBenzylpenicilin có thể làm giảm hiệu quả của thuốc tránh thai khi dùng đồng thời.\n\nTránh dùng đồng thời benzylpenicilin với BCG do làm giảm hiệu quả của BCG.\n\nBenzylpenicilin làm giảm thải trừ methotrexat, gây tăng nồng độ methotrexat, tăng nguy cơ độc tính, cần theo dõi cẩn thận khi dùng cùng penicilin G. Kiểm tra tiểu cầu, bạch cầu 2 lần/tuần trong hai tuần đầu và xác định nồng độ methotrexat nếu nghi ngờ độc tính."
+          "text": "Dùng đồng thời các kháng sinh kìm khuẩn (như cloramphenicol, tetracyclin) có thể làm giảm tác dụng diệt khuẩn của penicilin G do làm chậm tốc độ phát triển của vi khuẩn.",
+          "block_id": "b0122"
+        },
+        {
+          "type": "text",
+          "text": "Nửa đời thải trừ của penicilin G bị kéo dài khi dùng đồng thời với probenecid do cạnh tranh thải trừ ở ống thận. Tương tác này có thể được áp dụng trong điều trị để đạt được nồng độ thuốc trong huyết tương cao và kéo dài hơn.",
+          "block_id": "b0123"
+        },
+        {
+          "type": "text",
+          "text": "Dùng đồng thời penicilin G và warfarin làm tăng nguy cơ chảy máu do penicilin G làm ảnh hưởng đến tổng hợp vitamin K thông",
+          "block_id": "b0124"
+        },
+        {
+          "type": "text",
+          "text": "qua hệ vi sinh đường ruột. Cần theo dõi INR khi bắt đầu và dừng penicilin G.",
+          "block_id": "b0125"
+        },
+        {
+          "type": "text",
+          "text": "Benzylpenicilin có thể làm giảm hiệu quả của thuốc tránh thai khi dùng đồng thời.",
+          "block_id": "b0126"
+        },
+        {
+          "type": "text",
+          "text": "Tránh dùng đồng thời benzylpenicilin với BCG do làm giảm hiệu quả của BCG.",
+          "block_id": "b0127"
+        },
+        {
+          "type": "text",
+          "text": "Benzylpenicilin làm giảm thải trừ methotrexat, gây tăng nồng độ methotrexat, tăng nguy cơ độc tính, cần theo dõi cẩn thận khi dùng cùng penicilin G. Kiểm tra tiểu cầu, bạch cầu 2 lần/tuần trong hai tuần đầu và xác định nồng độ methotrexat nếu nghi ngờ độc tính.",
+          "block_id": "b0128"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-ky",
       "title": "Tương kỵ",
-      "content": "Benzylpenicilin có thể được hòa tan bằng nước cất pha tiêm hoặc dung dịch natri clorid 0,9% hoặc dextrose 5%.\n\nThuốc tương kỵ với ion kim loại và cao su.\n\nKhông được trộn lẫn benzylpenicilin với kháng sinh nhóm aminoglycosid, amphotericin B, vancomycin và một số cephalosporin do có tương kỵ.",
+      "heading_block": "b0129",
       "blocks": [
         {
           "type": "text",
-          "text": "Benzylpenicilin có thể được hòa tan bằng nước cất pha tiêm hoặc dung dịch natri clorid 0,9% hoặc dextrose 5%.\n\nThuốc tương kỵ với ion kim loại và cao su.\n\nKhông được trộn lẫn benzylpenicilin với kháng sinh nhóm aminoglycosid, amphotericin B, vancomycin và một số cephalosporin do có tương kỵ."
+          "text": "Benzylpenicilin có thể được hòa tan bằng nước cất pha tiêm hoặc dung dịch natri clorid 0,9% hoặc dextrose 5%.",
+          "block_id": "b0130"
+        },
+        {
+          "type": "text",
+          "text": "Thuốc tương kỵ với ion kim loại và cao su.",
+          "block_id": "b0131"
+        },
+        {
+          "type": "text",
+          "text": "Không được trộn lẫn benzylpenicilin với kháng sinh nhóm aminoglycosid, amphotericin B, vancomycin và một số cephalosporin do có tương kỵ.",
+          "block_id": "b0132"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "qua-lieu-va-xu-tri",
       "title": "Quá liều và xử trí",
-      "content": "Nồng độ thuốc trong máu quá thừa có thể gây phản ứng có hại tới thần kinh như: co giật, liệt và có thể gây tử vong. Khi dùng quá liều, phải ngừng dùng thuốc và điều trị triệu chứng và hỗ trợ theo yêu cầu.",
+      "heading_block": "b0133",
       "blocks": [
         {
           "type": "text",
-          "text": "Nồng độ thuốc trong máu quá thừa có thể gây phản ứng có hại tới thần kinh như: co giật, liệt và có thể gây tử vong. Khi dùng quá liều, phải ngừng dùng thuốc và điều trị triệu chứng và hỗ trợ theo yêu cầu."
+          "text": "Nồng độ thuốc trong máu quá thừa có thể gây phản ứng có hại tới thần kinh như: co giật, liệt và có thể gây tử vong. Khi dùng quá liều, phải ngừng dùng thuốc và điều trị triệu chứng và hỗ trợ theo yêu cầu.",
+          "block_id": "b0134"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "cap-nhat-lan-cuoi",
       "title": "Cập nhật lần cuối",
-      "content": "2017.",
+      "heading_block": "b0135",
       "blocks": [
         {
           "type": "text",
-          "text": "2017."
+          "text": "2017.",
+          "block_id": "b0135"
         }
-      ],
-      "subsections": []
+      ]
     }
   ],
-  "tables": [],
   "quality": {
-    "status": "source-layout-rebuilt-v10.1-source-paragraph-boundaries",
-    "pdf_text_order": "left-column-then-right-column; visual line flow",
-    "paragraph_policy": "Paragraph boundaries are source-derived and stored only as blank lines. The client preserves those boundaries exactly; it must not create a new paragraph from label words such as “Trẻ em:” or “Người lớn:”. A lower-case continuation fragment is merged only when it follows a non-terminal source fragment; table footnotes remain separate. No client-side anchor or length-based sentence splitter is allowed.",
-    "table_policy": "source-table image inserted by PDF page/column/y position; table-cell text excluded from prose",
-    "validation": {
-      "raw_newline_inside_paragraph": false,
-      "table_count": 0,
-      "section_count": 18,
-      "client_anchor_resegmentation_disabled": true,
-      "client_length_sentence_chunking_disabled": true
-    }
+    "block_count": 135,
+    "heading_count": 15,
+    "subheading_count": 8,
+    "paragraph_count": 110,
+    "list_count": 1,
+    "table_count": 0,
+    "figure_count": 0,
+    "note_count": 1,
+    "page_count": 4
+  },
+  "tables": [],
+  "legacy_compat": {
+    "sections": "generated from v11 blocks for v10.4.5.39 renderer/chatbot compatibility"
   }
 }

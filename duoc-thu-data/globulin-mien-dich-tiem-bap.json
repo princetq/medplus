@@ -1,9 +1,9 @@
 {
-  "schema_version": "10.1-source-paragraph-boundaries",
+  "schema_version": "11.0.0",
   "id": "globulin-mien-dich-tiem-bap",
   "title": "Globulin Miễn Dịch Tiêm Bắp",
   "aliases": [
-    "globulin mien dich tiem bap"
+    "Globulin Miễn Dịch Tiêm Bắp"
   ],
   "source": {
     "book": "Dược thư Quốc gia Việt Nam",
@@ -26,212 +26,2191 @@
       "boundary_method": "physical-source-title-band"
     }
   },
+  "parser": {
+    "name": "medplus-duoc-thu-v11-structured-pdf-parser",
+    "method": "PyMuPDF span -> line -> block",
+    "content_source": "Duocthu2023.pdf",
+    "old_json_usage": "id/title/page-boundary metadata and existing table asset path only; old content is not used",
+    "column_order": "left column -> right column -> next page",
+    "block_model": [
+      "heading",
+      "subheading",
+      "paragraph",
+      "list",
+      "table",
+      "figure",
+      "note"
+    ],
+    "table_policy": "no OCR; preserve existing duoc-thu-assets/<id>/pXXXX-tXX.png image_path"
+  },
+  "blocks": [
+    {
+      "id": "b0001",
+      "type": "heading",
+      "level": 1,
+      "text": "GLOBULIN MIỄN DỊCH TIÊM BẮP",
+      "page": 823,
+      "printed_page": 829,
+      "column": 1,
+      "bbox": [
+        343.27,
+        480.84,
+        507.0,
+        494.68
+      ],
+      "style": {
+        "font_size": 10.0,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "GLOBULIN MIỄN DỊCH TIÊM BẮP",
+          "bbox": [
+            343.27,
+            480.84,
+            507.0,
+            494.68
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 10.0,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0002",
+      "type": "paragraph",
+      "text": "Tên chung quốc tế: Immunoglobulin, normal human, for extravascular adm.",
+      "page": 823,
+      "printed_page": 829,
+      "column": 1,
+      "bbox": [
+        298.88,
+        504.22,
+        550.84,
+        528.68
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0003",
+      "type": "paragraph",
+      "text": "Mã ATC: J06BA01.",
+      "page": 823,
+      "printed_page": 829,
+      "column": 1,
+      "bbox": [
+        298.88,
+        527.24,
+        377.61,
+        540.38
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Mã ATC: ",
+          "bbox": [
+            298.88,
+            527.24,
+            339.34,
+            540.38
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "J06BA01.",
+          "bbox": [
+            339.34,
+            527.39,
+            377.61,
+            540.19
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0004",
+      "type": "paragraph",
+      "text": "Loại thuốc: Thuốc gây miễn dịch thụ động.",
+      "page": 823,
+      "printed_page": 829,
+      "column": 1,
+      "bbox": [
+        298.88,
+        538.75,
+        466.71,
+        551.89
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Loại thuốc: ",
+          "bbox": [
+            298.88,
+            538.75,
+            347.97,
+            551.89
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "text": "Thuốc gây miễn dịch thụ động.",
+          "bbox": [
+            347.97,
+            538.9,
+            466.71,
+            551.69
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0005",
+      "type": "heading",
+      "level": 2,
+      "text": "Dạng thuốc và hàm lượng",
+      "page": 823,
+      "printed_page": 829,
+      "column": 1,
+      "bbox": [
+        298.88,
+        553.75,
+        403.8,
+        566.9
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dạng thuốc và hàm lượng",
+          "bbox": [
+            298.88,
+            553.75,
+            403.8,
+            566.9
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0006",
+      "type": "paragraph",
+      "text": "Dung dịch để tiêm bắp chứa từ 15% đến 18% protein (2 ml, 10 ml) không có chất bảo quản, chứa 150 - 180 mg protein/ml.",
+      "page": 823,
+      "printed_page": 829,
+      "column": 1,
+      "bbox": [
+        298.88,
+        565.92,
+        553.22,
+        590.72
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0007",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược lực học",
+      "page": 823,
+      "printed_page": 829,
+      "column": 1,
+      "bbox": [
+        298.88,
+        592.78,
+        352.48,
+        605.93
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược lực học",
+          "bbox": [
+            298.88,
+            592.78,
+            352.48,
+            605.93
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0008",
+      "type": "paragraph",
+      "text": "Globulin miễn dịch tiêm bắp (IGIM) là một dung dịch vô khuẩn, không chứa chí nhiệt tố, gồm các globulin chứa nhiều loại kháng thể có mặt bình thường trong máu người trưởng thành. Các kháng thể IgG này được dùng để tạo miễn dịch thụ động nhờ sự gia tăng hiệu giá kháng thể và khả năng phản ứng kháng nguyên - kháng thể. Các kháng thể IgG có trong IGIM có tác dụng phòng bệnh hoặc làm thay đổi diễn biến của một số bệnh nhiễm khuẩn ở những người dễ mắc.",
+      "page": 823,
+      "printed_page": 829,
+      "column": 1,
+      "bbox": [
+        298.88,
+        604.94,
+        553.22,
+        701.8
+      ],
+      "source": {
+        "line_count": 8
+      }
+    },
+    {
+      "id": "b0009",
+      "type": "heading",
+      "level": 2,
+      "text": "Dược động học",
+      "page": 823,
+      "printed_page": 829,
+      "column": 1,
+      "bbox": [
+        298.88,
+        703.86,
+        359.99,
+        717.01
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Dược động học",
+          "bbox": [
+            298.88,
+            703.86,
+            359.99,
+            717.01
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0010",
+      "type": "paragraph",
+      "text": "Sau khi tiêm bắp IGIM, nồng độ đỉnh IgG huyết thanh đạt được trong vòng 2 ngày. IgG có trong IGIM được phân bố nhanh và ngang nhau giữa các khu vực trong và ngoài mạch máu. Nửa đời thải trừ của IgG ở những người có hàm lượng IgG bình thường khoảng 23 ngày. Thời gian tác dụng miễn dịch thường kéo dài trong vòng 3 - 4 tuần.",
+      "page": 823,
+      "printed_page": 829,
+      "column": 1,
+      "bbox": [
+        298.88,
+        716.02,
+        553.22,
+        788.86
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0011",
+      "type": "paragraph",
+      "text": "IGIM được dùng cho người suy giảm miễn dịch tiên phát như liệu",
+      "page": 823,
+      "printed_page": 829,
+      "column": 1,
+      "bbox": [
+        298.88,
+        788.07,
+        553.21,
+        800.87
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "IGIM được dùng cho người suy giảm miễn dịch tiên phát như liệu ",
+          "bbox": [
+            298.88,
+            788.07,
+            553.21,
+            800.87
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0012",
+      "type": "paragraph",
+      "text": "pháp thay thế. IGIM cũng được dùng để tạo miễn dịch thụ động cho những đối tượng nhạy cảm phải tiếp xúc với một số bệnh lây nhiễm khi chưa được tiêm vắc xin phòng các bệnh đó, hoặc khi có chống chỉ định tiêm vắc xin hoặc khi đã tiêm vắc xin nhưng chưa có đủ thời gian để kích thích hình thành kháng thể tạo miễn dịch chủ động cho đối tượng.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        63.32,
+        298.27,
+        137.04
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0013",
+      "type": "heading",
+      "level": 2,
+      "text": "Chỉ định",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        139.28,
+        79.58,
+        152.43
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chỉ định",
+          "bbox": [
+            43.94,
+            139.28,
+            79.58,
+            152.43
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0014",
+      "type": "paragraph",
+      "text": "Viêm gan A: Phơi nhiễm trong vòng 14 ngày và trước khi có biểu hiện của bệnh.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        151.62,
+        298.27,
+        176.6
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0015",
+      "type": "paragraph",
+      "text": "Sởi: Dự phòng cho người chưa tiêm phòng sởi, chưa mắc sởi bao giờ nhưng đã phơi nhiễm trước đó với sởi trong vòng 6 ngày. Trẻ em trên 12 tháng tuổi sau 3 tháng tiêm IGIM phải tiêm vắc xin phòng sởi vì kháng thể kháng sởi có thể đã giảm.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        175.99,
+        298.27,
+        225.34
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0016",
+      "type": "paragraph",
+      "text": "Thủy đậu: Khi không có globulin miễn dịch varicella zoster (VZIG); có thể thay thế bằng IGIM để dự phòng thủy đậu sau 72 giờ phơi nhiễm nhưng thường khuyến cáo dùng IGIV hơn là IGIM.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        224.73,
+        298.27,
+        261.9
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0017",
+      "type": "paragraph",
+      "text": "Rubella: Dự phòng sau phơi nhiễm (trong vòng 72 giờ) cho người mang thai để giảm nguy cơ lây nhiễm khi không muốn đi bệnh viện phá thai. Đây không phải là chỉ định thường lệ cho dự phòng rubella sau phơi nhiễm ở đầu thai kỳ.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        261.29,
+        298.27,
+        310.64
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0018",
+      "type": "paragraph",
+      "text": "Suy giảm globulin miễn dịch IgG: Liệu pháp thay thế để giúp ngăn chặn các nhiễm khuẩn nặng.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        310.03,
+        298.27,
+        335.01
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0019",
+      "type": "heading",
+      "level": 2,
+      "text": "Chống chỉ định",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        337.25,
+        106.24,
+        350.4
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chống chỉ định",
+          "bbox": [
+            43.94,
+            337.25,
+            106.24,
+            350.4
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0020",
+      "type": "paragraph",
+      "text": "Người đã có các phản ứng phản vệ hoặc phản ứng toàn thân nặng đối với globulin miễn dịch hay với bất kỳ thành phần nào có trong chế phẩm. Cần sẵn có adrenalin để xử trí ngay phản ứng phản vệ nếu xảy ra.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        349.58,
+        298.28,
+        398.94
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0021",
+      "type": "paragraph",
+      "text": "Người bị thiếu hụt IgA chọn lọc vì những người này có thể có kháng thể kháng IgA và phản ứng phản vệ có thể xảy ra sau khi tiêm IGIM hoặc các sản phẩm khác được điều chế từ máu có chứa IgA.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        398.33,
+        298.27,
+        447.68
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0022",
+      "type": "paragraph",
+      "text": "Giảm tiểu cầu nặng hoặc rối loạn đông máu trầm trọng.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        447.07,
+        257.13,
+        459.86
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Giảm tiểu cầu nặng hoặc rối loạn đông máu trầm trọng. ",
+          "bbox": [
+            43.94,
+            447.07,
+            257.13,
+            459.86
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0023",
+      "type": "paragraph",
+      "text": "Không được tiêm tĩnh mạch vì dễ gây sốc phản vệ.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        459.25,
+        237.49,
+        472.05
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Không được tiêm tĩnh mạch vì dễ gây sốc phản vệ.",
+          "bbox": [
+            43.94,
+            459.25,
+            237.49,
+            472.05
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0024",
+      "type": "heading",
+      "level": 2,
+      "text": "Thận trọng",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        474.29,
+        90.13,
+        487.43
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thận trọng",
+          "bbox": [
+            43.94,
+            474.29,
+            90.13,
+            487.43
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ],
+      "note_role": "than trong",
+      "v11_fix": "note_title_reclassified_as_heading_alpha5"
+    },
+    {
+      "id": "b0025",
+      "type": "paragraph",
+      "text": "Cần dùng IGIM thật thận trọng cho người bị chứng giảm tiểu cầu nặng hoặc bất cứ một rối loạn đông máu nào vì xuất huyết có thể xảy ra sau khi tiêm thuốc vào bắp thịt. Phải dùng kim tiêm nhỏ cỡ 23 hoặc nhỏ hơn, tiêm xong không day mà ấn chặt vị trí tiêm ít nhất trong vòng 2 phút. Các dữ liệu dịch tễ học và xét nghiệm chỉ ra rằng các chế phẩm IGIM hiện có không tạo ra một nguy cơ nào lan truyền virus gây bệnh suy giảm miễn dịch ở người (HIV). Cùng với việc sàng lọc tất cả các mẫu máu của người cho để phát hiện kháng thể kháng HIV và loại bỏ tất cả những mẫu có phản ứng dương tính, quy trình sản xuất IGIM bao gồm các bước thanh lọc nhằm có được một hành lang an toàn tối đa để loại trừ mọi lây nhiễm.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        486.62,
+        298.27,
+        621.27
+      ],
+      "source": {
+        "line_count": 11
+      }
+    },
+    {
+      "id": "b0026",
+      "type": "paragraph",
+      "text": "Không nên làm test da vì có thể xảy ra kích ứng tại chỗ làm đánh giá nhầm kết quả.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        620.66,
+        298.27,
+        645.64
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0027",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ mang thai",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        647.88,
+        119.15,
+        661.03
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ mang thai",
+          "bbox": [
+            43.94,
+            647.88,
+            119.15,
+            661.03
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0028",
+      "type": "paragraph",
+      "text": "Nói chung mang thai không coi là một chống chỉ định dùng globulin miễn dịch. Tuy nhiên, các nghiên cứu liên quan đến sự sinh sản ở động vật chưa được thực hiện đối với IGIM. Hiện còn chưa rõ liệu IGIM có gây hại cho thai khi dùng cho người mang thai hay không.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        660.22,
+        298.27,
+        709.57
+      ],
+      "source": {
+        "line_count": 4
+      }
+    },
+    {
+      "id": "b0029",
+      "type": "paragraph",
+      "text": "Do đó chỉ dùng IGIM trong thời kỳ thai nghén khi thật cần thiết.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        708.96,
+        289.08,
+        721.76
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Do đó chỉ dùng IGIM trong thời kỳ thai nghén khi thật cần thiết.",
+          "bbox": [
+            43.94,
+            708.96,
+            289.08,
+            721.76
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0030",
+      "type": "heading",
+      "level": 2,
+      "text": "Thời kỳ cho con bú",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        723.99,
+        122.06,
+        737.14
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Thời kỳ cho con bú",
+          "bbox": [
+            43.94,
+            723.99,
+            122.06,
+            737.14
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0031",
+      "type": "paragraph",
+      "text": "Vẫn chưa có dữ liệu nghiên cứu nào ở người. Hiện còn chưa rõ liệu IGIM có được phân bố vào trong sữa mẹ hay không.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        736.33,
+        298.27,
+        761.31
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0032",
+      "type": "heading",
+      "level": 2,
+      "text": "Tác dụng không mong muốn (ADR)",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        763.55,
+        189.89,
+        776.7
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tác dụng không mong muốn (ADR)",
+          "bbox": [
+            43.94,
+            763.55,
+            189.89,
+            776.7
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0033",
+      "type": "paragraph",
+      "text": "Đau, nhạy cảm đau và căng cứng cơ có thể xảy ra tại vị trí tiêm bắp và tồn tại một số giờ sau khi tiêm IGIM. Viêm tại chỗ, nổi mày đay",
+      "page": 824,
+      "printed_page": 830,
+      "column": 0,
+      "bbox": [
+        43.94,
+        775.89,
+        298.27,
+        800.87
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0034",
+      "type": "paragraph",
+      "text": "và phù mạch đôi khi xảy ra; nhức đầu, khó chịu và hội chứng thận hư cũng đã được thông báo.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        63.32,
+        562.22,
+        88.3
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0035",
+      "type": "paragraph",
+      "text": "Các lần tiêm nhắc lại IGIM, đặc biệt là ở những người dị ứng có thể gây mẫn cảm thường biểu hiện sốt, ớn lạnh và đổ mồ hôi. Các phản ứng tại chỗ và toàn thân nặng, kể cả sốc phản vệ ở người bệnh tăng mẫn cảm đối với IGIM cũng đã được thông báo. Nếu vô ý tiêm IGIM vào tĩnh mạch có thể dẫn đến những phản ứng tăng mẫn cảm nghiêm trọng.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        87.69,
+        562.23,
+        161.39
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0036",
+      "type": "subheading",
+      "level": 3,
+      "text": "Chưa xác định được tần suất",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        160.94,
+        418.05,
+        173.58
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 0.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-ItalicMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Chưa xác định được tần suất",
+          "bbox": [
+            307.89,
+            160.94,
+            418.05,
+            173.58
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0037",
+      "type": "paragraph",
+      "text": "Tim mạch: mặt bừng đỏ, phù mạch.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        172.96,
+        443.58,
+        185.76
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tim mạch: mặt bừng đỏ, phù mạch.",
+          "bbox": [
+            307.89,
+            172.96,
+            443.58,
+            185.76
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0038",
+      "type": "paragraph",
+      "text": "TKTW: rét run, ly bì, sốt.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        185.14,
+        405.17,
+        197.94
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "TKTW: rét run, ly bì, sốt.",
+          "bbox": [
+            307.89,
+            185.14,
+            405.17,
+            197.94
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0039",
+      "type": "paragraph",
+      "text": "Da liễu: ngứa, hồng ban.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        197.33,
+        401.69,
+        210.12
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Da liễu: ngứa, hồng ban.",
+          "bbox": [
+            307.89,
+            197.33,
+            401.69,
+            210.12
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0040",
+      "type": "paragraph",
+      "text": "Tiêu hóa: buồn nôn, nôn.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        209.51,
+        403.08,
+        222.3
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tiêu hóa: buồn nôn, nôn.",
+          "bbox": [
+            307.89,
+            209.51,
+            403.08,
+            222.3
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0041",
+      "type": "paragraph",
+      "text": "Tại chỗ: đau, cứng cơ ở vị trí tiêm.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        221.69,
+        440.24,
+        234.49
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Tại chỗ: đau, cứng cơ ở vị trí tiêm.",
+          "bbox": [
+            307.89,
+            221.69,
+            440.24,
+            234.49
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0042",
+      "type": "paragraph",
+      "text": "Cơ xương thần kinh: đau cơ.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        233.87,
+        416.77,
+        246.67
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cơ xương thần kinh: đau cơ.",
+          "bbox": [
+            307.89,
+            233.87,
+            416.77,
+            246.67
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0043",
+      "type": "paragraph",
+      "text": "Khác: phản ứng quá mẫn.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        246.05,
+        408.02,
+        258.85
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Khác: phản ứng quá mẫn. ",
+          "bbox": [
+            307.89,
+            246.05,
+            408.02,
+            258.85
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0044",
+      "type": "heading",
+      "level": 2,
+      "text": "Hướng dẫn cách xử trí ADR",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        261.08,
+        422.45,
+        274.23
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Hướng dẫn cách xử trí ADR",
+          "bbox": [
+            307.89,
+            261.08,
+            422.45,
+            274.23
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0045",
+      "type": "paragraph",
+      "text": "Cần chuẩn bị sẵn phương tiện cấp cứu khi xảy ra phản ứng phản vệ.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        273.42,
+        559.84,
+        286.22
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cần chuẩn bị sẵn phương tiện cấp cứu khi xảy ra phản ứng phản vệ.",
+          "bbox": [
+            307.89,
+            273.42,
+            559.84,
+            286.22
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0046",
+      "type": "heading",
+      "level": 2,
+      "text": "Liều lượng và cách dùng",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        288.45,
+        408.07,
+        301.6
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng và cách dùng",
+          "bbox": [
+            307.89,
+            288.45,
+            408.07,
+            301.6
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0047",
+      "type": "subheading",
+      "level": 3,
+      "text": "Cách dùng",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        300.86,
+        350.91,
+        313.58
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Cách dùng",
+          "bbox": [
+            307.89,
+            300.86,
+            350.91,
+            313.58
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0048",
+      "type": "paragraph",
+      "text": "IGIM không được tiêm dưới da, trong da hoặc tiêm tĩnh mạch.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        312.97,
+        548.3,
+        325.76
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "IGIM",
+          "bbox": [
+            307.89,
+            312.97,
+            329.52,
+            325.76
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "text": "không được tiêm dưới da, trong da hoặc tiêm tĩnh mạch. ",
+          "bbox": [
+            331.9,
+            312.97,
+            548.3,
+            325.76
+          ],
+          "font": "TimesNewRomanPSMT",
+          "fontsize": 9.5,
+          "flags": 4,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0049",
+      "type": "paragraph",
+      "text": "Ở người lớn và trẻ em, tiêm IGIM vào bắp thịt tốt nhất là vùng cơ delta hoặc vào mặt trước - bên của đùi. Vì nguy cơ tổn thương dây thần kinh tọa, do đó chỉ tiêm mông khi cần, tiêm một khối lượng lớn hơn 10 ml, phải chia thành nhiều liều nhỏ để tiêm ở nhiều vị trí. Đối với trẻ sơ sinh và trẻ nhỏ, tốt hơn hết là nên tiêm IGIM vào mặt trước bên của đùi. Tổng liều một lần tiêm bắp thịt không được vượt quá 20 ml (ngay cả đối với người lớn).",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        325.15,
+        562.22,
+        411.04
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0050",
+      "type": "paragraph",
+      "text": "Trước khi tiêm, phải kiểm tra bằng mắt để phát hiện các hạt nhỏ và sự đổi màu của dung dịch thuốc. Cần rút nhẹ piston của bơm tiêm ra một chút để đảm bảo rằng kim tiêm không xuyên vào mạch máu.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        410.42,
+        562.22,
+        447.58
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0051",
+      "type": "paragraph",
+      "text": "Nếu có máu hay bất cứ sự đổi màu bất thường nào xuất hiện trong bơm tiêm thì nên rút kim tiêm ra và hủy bỏ bơm tiêm đó. Một liều mới của IGIM được tiêm vào một vị trí khác, dùng một bơm tiêm và kim tiêm mới. Để đề phòng việc lây truyền virus viêm gan và các tác nhân nhiễm khuẩn khác từ người này sang người khác, mỗi người được tiêm IGIM cần được dùng cho riêng mình một bơm tiêm và kim tiêm vô khuẩn.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        446.97,
+        562.22,
+        532.86
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0052",
+      "type": "subheading",
+      "level": 3,
+      "text": "Liều lượng",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        532.32,
+        351.67,
+        545.04
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 1.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldItal"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Liều lượng",
+          "bbox": [
+            307.89,
+            532.32,
+            351.67,
+            545.04
+          ],
+          "font": "TimesNewRomanPS-BoldItal",
+          "fontsize": 9.5,
+          "flags": 22,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    },
+    {
+      "id": "b0053",
+      "type": "paragraph",
+      "text": "Viêm gan A: Dự phòng trước khi phơi nhiễm cho những người định đi du lịch vào vùng có bệnh viêm gan lưu hành (nên tiêm vắc xin phòng viêm gan A hơn): 0,02 ml/kg cho 1 liều duy nhất đối với người dự kiến phơi nhiễm dưới 3 tháng (liều này có tác dụng bảo vệ tới 3 tháng); 0,06 ml/kg cho 1 liều duy nhất đối với người dự kiến phơi nhiễm bằng hoặc trên 3 tháng. Lặp lại liều thích hợp cách 5 tháng 1 lần nếu tiếp tục phơi nhiễm.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        544.43,
+        562.22,
+        630.32
+      ],
+      "source": {
+        "line_count": 7
+      }
+    },
+    {
+      "id": "b0054",
+      "type": "paragraph",
+      "text": "Dự phòng sau phơi nhiễm: 0,02 ml/kg cho một liều duy nhất càng sớm càng tốt, trong vòng 14 ngày phơi nhiễm (nếu phơi nhiễm trên 2 tuần, không khuyến cáo tiêm IGIM). Không cần IgG nếu trước khi phơi nhiễm 1 tháng hay trên 1 tháng đã tiêm 1 liều vắc xin phòng viêm gan A.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        629.7,
+        562.23,
+        691.23
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0055",
+      "type": "paragraph",
+      "text": "Sởi: Dự phòng cho người có khả năng đáp ứng miễn dịch: 0,2 - 0,25 ml/kg/liều (liều tối đa 15 ml) cho một liều duy nhất trong vòng 6 ngày phơi nhiễm. 5 - 6 tháng sau nếu cần, cho tiêm vắc xin sởi sống giảm độc lực cho trẻ em từ 12 tháng trở lên trừ khi có chống chỉ định. Dự phòng cho người suy giảm miễn dịch: 0,5 ml/kg (tối đa 15 ml) cho một liều duy nhất ngay sau khi phơi nhiễm.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        690.61,
+        562.22,
+        764.32
+      ],
+      "source": {
+        "line_count": 6
+      }
+    },
+    {
+      "id": "b0056",
+      "type": "paragraph",
+      "text": "Rubella: Dự phòng trong khi mang thai: 0,55 ml/kg/liều cho một liều duy nhất trong vòng 72 giờ phơi nhiễm. Tuy nhiên, không khuyến cáo dùng theo thông lệ.",
+      "page": 824,
+      "printed_page": 830,
+      "column": 1,
+      "bbox": [
+        307.89,
+        763.71,
+        562.22,
+        800.87
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0057",
+      "type": "paragraph",
+      "text": "Thủy đậu: Dự phòng: 0,6 - 1,2 ml/kg (nên dùng globulin miễn dịch thủy đậu Varicella zoster VZIG hơn) trong vòng 72 giờ phơi nhiễm.",
+      "page": 825,
+      "printed_page": 831,
+      "column": 0,
+      "bbox": [
+        34.93,
+        63.33,
+        289.26,
+        88.29
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0058",
+      "type": "paragraph",
+      "text": "Để dự phòng, nếu không có sẵn VZIG, thường được khuyến cáo dùng IGIV (không phải là IGIM).",
+      "page": 825,
+      "printed_page": 831,
+      "column": 0,
+      "bbox": [
+        34.93,
+        87.66,
+        289.26,
+        112.62
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0059",
+      "type": "paragraph",
+      "text": "Suy giảm IgG: 0,66 ml/kg/liều (ít nhất 100 mg/kg), cách 3 - 4 tuần 1 lần. Lúc bắt đầu điều trị, có thể cho liều gấp đôi. Một số người bệnh có thể cần phải tiêm nhiều lần hơn.",
+      "page": 825,
+      "printed_page": 831,
+      "column": 0,
+      "bbox": [
+        34.93,
+        111.98,
+        289.28,
+        149.11
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0060",
+      "type": "paragraph",
+      "text": "Suy giảm globulin miễn dịch cần phải duy trì nồng độ IgG trong huyết tương trên 200 mg/100 ml để ngăn chặn nhiễm khuẩn nặng. Một liều đơn tối đa IGIM đối với người lớn: 30 - 50 ml; trẻ nhỏ: 20 - 30 ml.",
+      "page": 825,
+      "printed_page": 831,
+      "column": 0,
+      "bbox": [
+        34.93,
+        148.48,
+        289.29,
+        185.6
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0061",
+      "type": "heading",
+      "level": 2,
+      "text": "Tương tác thuốc",
+      "page": 825,
+      "printed_page": 831,
+      "column": 0,
+      "bbox": [
+        34.93,
+        187.81,
+        101.84,
+        200.96
+      ],
+      "style": {
+        "font_size": 9.5,
+        "bold_ratio": 1.0,
+        "italic_ratio": 0.0,
+        "fonts": [
+          "TimesNewRomanPS-BoldMT"
+        ]
+      },
+      "spans": [
+        {
+          "text": "Tương tác thuốc",
+          "bbox": [
+            34.93,
+            187.81,
+            101.84,
+            200.96
+          ],
+          "font": "TimesNewRomanPS-BoldMT",
+          "fontsize": 9.5,
+          "flags": 20,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b0062",
+      "type": "paragraph",
+      "text": "Vắc xin sống: Các chế phẩm globulin miễn dịch không ngăn cản đáp ứng miễn dịch của vắc xin virus cúm sống nhỏ mũi, vắc xin virus sốt vàng sống, vắc xin thương hàn sống uống hoặc vắc xin uống chống virus bại liệt sống. Các vắc xin sống này có thể cho đồng thời hoặc bất cứ lúc nào, trước hay sau globulin miễn dịch.",
+      "page": 825,
+      "printed_page": 831,
+      "column": 0,
+      "bbox": [
+        34.93,
+        200.13,
+        289.26,
+        261.58
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0063",
+      "type": "paragraph",
+      "text": "Vắc xin sởi, quai bị, rubella và thủy đậu: Các kháng thể có trong globulin miễn dịch có thể cản trở đáp ứng miễn dịch đối với các loại vắc xin này và các vắc xin này không được cho đồng thời mà phải cho cách nhau một khoảng thời gian nhất định trước hoặc sau khi dùng globulin miễn dịch.",
+      "page": 825,
+      "printed_page": 831,
+      "column": 0,
+      "bbox": [
+        34.93,
+        260.95,
+        289.27,
+        322.4
+      ],
+      "source": {
+        "line_count": 5
+      }
+    },
+    {
+      "id": "b0064",
+      "type": "paragraph",
+      "text": "Vắc xin bất hoạt và giải độc tố: Dùng vắc xin bất hoạt và giải độc tố đồng thời hoặc bất cứ lúc nào, trước hay sau khi tiêm globulin miễn dịch không tác động nhiều về lâm sàng đối với đáp ứng miễn dịch.",
+      "page": 825,
+      "printed_page": 831,
+      "column": 0,
+      "bbox": [
+        34.93,
+        321.77,
+        289.27,
+        358.89
+      ],
+      "source": {
+        "line_count": 3
+      }
+    },
+    {
+      "id": "b0065",
+      "type": "paragraph",
+      "text": "Vắc xin virus viêm gan A bất hoạt có thể tiêm đồng thời với globulin miễn dịch nhưng ở vị trí khác và dùng bơm tiêm riêng.",
+      "page": 825,
+      "printed_page": 831,
+      "column": 0,
+      "bbox": [
+        34.93,
+        358.26,
+        289.26,
+        383.22
+      ],
+      "source": {
+        "line_count": 2
+      }
+    },
+    {
+      "id": "b0066",
+      "type": "heading",
+      "text": "Cập nhật lần cuối",
+      "page": 825,
+      "printed_page": 831,
+      "column": 0,
+      "bbox": [
+        34.93,
+        388.15,
+        130.2,
+        400.78
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2017.",
+          "bbox": [
+            34.93,
+            388.15,
+            130.2,
+            400.78
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "level": 2,
+      "v11_fix": "cap_nhat_cap_nhap_lan_cuoi_normalized_alpha8"
+    },
+    {
+      "id": "b0066",
+      "type": "paragraph",
+      "text": "2017.",
+      "page": 825,
+      "printed_page": 831,
+      "column": 0,
+      "bbox": [
+        34.93,
+        388.15,
+        130.2,
+        400.78
+      ],
+      "source": {
+        "line_count": 1
+      },
+      "spans": [
+        {
+          "text": "Cập nhật lần cuối: 2017.",
+          "bbox": [
+            34.93,
+            388.15,
+            130.2,
+            400.78
+          ],
+          "font": "TimesNewRomanPS-ItalicMT",
+          "fontsize": 9.5,
+          "flags": 6,
+          "bold": false,
+          "italic": true
+        }
+      ],
+      "v11_parent_heading": "Cập nhật lần cuối"
+    }
+  ],
   "sections": [
-    {
-      "id": "thong-tin-au-chuyen-luan",
-      "title": "Thông tin đầu chuyên luận",
-      "content": "GLOBULIN MIỄN DỊCH TIÊM BẮP",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "GLOBULIN MIỄN DỊCH TIÊM BẮP"
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "ten-chung-quoc-te",
-      "title": "Tên chung quốc tế",
-      "content": "Immunoglobulin, normal human, for extravascular adm.\n\nMã ATC: J06BA01.\n\nLoại thuốc: Thuốc gây miễn dịch thụ động.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Immunoglobulin, normal human, for extravascular adm.\n\nMã ATC: J06BA01.\n\nLoại thuốc: Thuốc gây miễn dịch thụ động."
-        }
-      ],
-      "subsections": []
-    },
     {
       "id": "dang-thuoc-va-ham-luong",
       "title": "Dạng thuốc và hàm lượng",
-      "content": "Dung dịch để tiêm bắp chứa từ 15% đến 18% protein (2 ml, 10 ml) không có chất bảo quản, chứa 150 - 180 mg protein/ml.",
+      "heading_block": "b0005",
       "blocks": [
         {
           "type": "text",
-          "text": "Dung dịch để tiêm bắp chứa từ 15% đến 18% protein (2 ml, 10 ml) không có chất bảo quản, chứa 150 - 180 mg protein/ml."
+          "text": "Dung dịch để tiêm bắp chứa từ 15% đến 18% protein (2 ml, 10 ml) không có chất bảo quản, chứa 150 - 180 mg protein/ml.",
+          "block_id": "b0006"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "duoc-luc-hoc",
       "title": "Dược lực học",
-      "content": "Globulin miễn dịch tiêm bắp (IGIM) là một dung dịch vô khuẩn, không chứa chí nhiệt tố, gồm các globulin chứa nhiều loại kháng thể có mặt bình thường trong máu người trưởng thành. Các kháng thể IgG này được dùng để tạo miễn dịch thụ động nhờ sự gia tăng hiệu giá kháng thể và khả năng phản ứng kháng nguyên - kháng thể. Các kháng thể IgG có trong IGIM có tác dụng phòng bệnh hoặc làm thay đổi diễn biến của một số bệnh nhiễm khuẩn ở những người dễ mắc.",
+      "heading_block": "b0007",
       "blocks": [
         {
           "type": "text",
-          "text": "Globulin miễn dịch tiêm bắp (IGIM) là một dung dịch vô khuẩn, không chứa chí nhiệt tố, gồm các globulin chứa nhiều loại kháng thể có mặt bình thường trong máu người trưởng thành. Các kháng thể IgG này được dùng để tạo miễn dịch thụ động nhờ sự gia tăng hiệu giá kháng thể và khả năng phản ứng kháng nguyên - kháng thể. Các kháng thể IgG có trong IGIM có tác dụng phòng bệnh hoặc làm thay đổi diễn biến của một số bệnh nhiễm khuẩn ở những người dễ mắc."
+          "text": "Globulin miễn dịch tiêm bắp (IGIM) là một dung dịch vô khuẩn, không chứa chí nhiệt tố, gồm các globulin chứa nhiều loại kháng thể có mặt bình thường trong máu người trưởng thành. Các kháng thể IgG này được dùng để tạo miễn dịch thụ động nhờ sự gia tăng hiệu giá kháng thể và khả năng phản ứng kháng nguyên - kháng thể. Các kháng thể IgG có trong IGIM có tác dụng phòng bệnh hoặc làm thay đổi diễn biến của một số bệnh nhiễm khuẩn ở những người dễ mắc.",
+          "block_id": "b0008"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "duoc-ong-hoc",
+      "id": "duoc-dong-hoc",
       "title": "Dược động học",
-      "content": "Sau khi tiêm bắp IGIM, nồng độ đỉnh IgG huyết thanh đạt được trong vòng 2 ngày. IgG có trong IGIM được phân bố nhanh và ngang nhau giữa các khu vực trong và ngoài mạch máu. Nửa đời thải trừ của IgG ở những người có hàm lượng IgG bình thường khoảng 23 ngày. Thời gian tác dụng miễn dịch thường kéo dài trong vòng 3 - 4 tuần.\n\nIGIM được dùng cho người suy giảm miễn dịch tiên phát như liệu pháp thay thế. IGIM cũng được dùng để tạo miễn dịch thụ động cho những đối tượng nhạy cảm phải tiếp xúc với một số bệnh lây nhiễm khi chưa được tiêm vắc xin phòng các bệnh đó, hoặc khi có chống chỉ định tiêm vắc xin hoặc khi đã tiêm vắc xin nhưng chưa có đủ thời gian để kích thích hình thành kháng thể tạo miễn dịch chủ động cho đối tượng.",
+      "heading_block": "b0009",
       "blocks": [
         {
           "type": "text",
-          "text": "Sau khi tiêm bắp IGIM, nồng độ đỉnh IgG huyết thanh đạt được trong vòng 2 ngày. IgG có trong IGIM được phân bố nhanh và ngang nhau giữa các khu vực trong và ngoài mạch máu. Nửa đời thải trừ của IgG ở những người có hàm lượng IgG bình thường khoảng 23 ngày. Thời gian tác dụng miễn dịch thường kéo dài trong vòng 3 - 4 tuần.\n\nIGIM được dùng cho người suy giảm miễn dịch tiên phát như liệu pháp thay thế. IGIM cũng được dùng để tạo miễn dịch thụ động cho những đối tượng nhạy cảm phải tiếp xúc với một số bệnh lây nhiễm khi chưa được tiêm vắc xin phòng các bệnh đó, hoặc khi có chống chỉ định tiêm vắc xin hoặc khi đã tiêm vắc xin nhưng chưa có đủ thời gian để kích thích hình thành kháng thể tạo miễn dịch chủ động cho đối tượng."
+          "text": "Sau khi tiêm bắp IGIM, nồng độ đỉnh IgG huyết thanh đạt được trong vòng 2 ngày. IgG có trong IGIM được phân bố nhanh và ngang nhau giữa các khu vực trong và ngoài mạch máu. Nửa đời thải trừ của IgG ở những người có hàm lượng IgG bình thường khoảng 23 ngày. Thời gian tác dụng miễn dịch thường kéo dài trong vòng 3 - 4 tuần.",
+          "block_id": "b0010"
+        },
+        {
+          "type": "text",
+          "text": "IGIM được dùng cho người suy giảm miễn dịch tiên phát như liệu",
+          "block_id": "b0011"
+        },
+        {
+          "type": "text",
+          "text": "pháp thay thế. IGIM cũng được dùng để tạo miễn dịch thụ động cho những đối tượng nhạy cảm phải tiếp xúc với một số bệnh lây nhiễm khi chưa được tiêm vắc xin phòng các bệnh đó, hoặc khi có chống chỉ định tiêm vắc xin hoặc khi đã tiêm vắc xin nhưng chưa có đủ thời gian để kích thích hình thành kháng thể tạo miễn dịch chủ động cho đối tượng.",
+          "block_id": "b0012"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chi-inh",
+      "id": "chi-dinh",
       "title": "Chỉ định",
-      "content": "Viêm gan A: Phơi nhiễm trong vòng 14 ngày và trước khi có biểu hiện của bệnh.\n\nSởi: Dự phòng cho người chưa tiêm phòng sởi, chưa mắc sởi bao giờ nhưng đã phơi nhiễm trước đó với sởi trong vòng 6 ngày. Trẻ em trên 12 tháng tuổi sau 3 tháng tiêm IGIM phải tiêm vắc xin phòng sởi vì kháng thể kháng sởi có thể đã giảm.\n\nThủy đậu: Khi không có globulin miễn dịch varicella zoster (VZIG); có thể thay thế bằng IGIM để dự phòng thủy đậu sau 72 giờ phơi nhiễm nhưng thường khuyến cáo dùng IGIV hơn là IGIM.\n\nRubella: Dự phòng sau phơi nhiễm (trong vòng 72 giờ) cho người mang thai để giảm nguy cơ lây nhiễm khi không muốn đi bệnh viện phá thai. Đây không phải là chỉ định thường lệ cho dự phòng rubella sau phơi nhiễm ở đầu thai kỳ.\n\nSuy giảm globulin miễn dịch IgG: Liệu pháp thay thế để giúp ngăn chặn các nhiễm khuẩn nặng.",
+      "heading_block": "b0013",
       "blocks": [
         {
           "type": "text",
-          "text": "Viêm gan A: Phơi nhiễm trong vòng 14 ngày và trước khi có biểu hiện của bệnh.\n\nSởi: Dự phòng cho người chưa tiêm phòng sởi, chưa mắc sởi bao giờ nhưng đã phơi nhiễm trước đó với sởi trong vòng 6 ngày. Trẻ em trên 12 tháng tuổi sau 3 tháng tiêm IGIM phải tiêm vắc xin phòng sởi vì kháng thể kháng sởi có thể đã giảm.\n\nThủy đậu: Khi không có globulin miễn dịch varicella zoster (VZIG); có thể thay thế bằng IGIM để dự phòng thủy đậu sau 72 giờ phơi nhiễm nhưng thường khuyến cáo dùng IGIV hơn là IGIM.\n\nRubella: Dự phòng sau phơi nhiễm (trong vòng 72 giờ) cho người mang thai để giảm nguy cơ lây nhiễm khi không muốn đi bệnh viện phá thai. Đây không phải là chỉ định thường lệ cho dự phòng rubella sau phơi nhiễm ở đầu thai kỳ.\n\nSuy giảm globulin miễn dịch IgG: Liệu pháp thay thế để giúp ngăn chặn các nhiễm khuẩn nặng."
+          "text": "Viêm gan A: Phơi nhiễm trong vòng 14 ngày và trước khi có biểu hiện của bệnh.",
+          "block_id": "b0014"
+        },
+        {
+          "type": "text",
+          "text": "Sởi: Dự phòng cho người chưa tiêm phòng sởi, chưa mắc sởi bao giờ nhưng đã phơi nhiễm trước đó với sởi trong vòng 6 ngày. Trẻ em trên 12 tháng tuổi sau 3 tháng tiêm IGIM phải tiêm vắc xin phòng sởi vì kháng thể kháng sởi có thể đã giảm.",
+          "block_id": "b0015"
+        },
+        {
+          "type": "text",
+          "text": "Thủy đậu: Khi không có globulin miễn dịch varicella zoster (VZIG); có thể thay thế bằng IGIM để dự phòng thủy đậu sau 72 giờ phơi nhiễm nhưng thường khuyến cáo dùng IGIV hơn là IGIM.",
+          "block_id": "b0016"
+        },
+        {
+          "type": "text",
+          "text": "Rubella: Dự phòng sau phơi nhiễm (trong vòng 72 giờ) cho người mang thai để giảm nguy cơ lây nhiễm khi không muốn đi bệnh viện phá thai. Đây không phải là chỉ định thường lệ cho dự phòng rubella sau phơi nhiễm ở đầu thai kỳ.",
+          "block_id": "b0017"
+        },
+        {
+          "type": "text",
+          "text": "Suy giảm globulin miễn dịch IgG: Liệu pháp thay thế để giúp ngăn chặn các nhiễm khuẩn nặng.",
+          "block_id": "b0018"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "chong-chi-inh",
+      "id": "chong-chi-dinh",
       "title": "Chống chỉ định",
-      "content": "Người đã có các phản ứng phản vệ hoặc phản ứng toàn thân nặng đối với globulin miễn dịch hay với bất kỳ thành phần nào có trong chế phẩm. Cần sẵn có adrenalin để xử trí ngay phản ứng phản vệ nếu xảy ra.\n\nNgười bị thiếu hụt IgA chọn lọc vì những người này có thể có kháng thể kháng IgA và phản ứng phản vệ có thể xảy ra sau khi tiêm IGIM hoặc các sản phẩm khác được điều chế từ máu có chứa IgA.\n\nGiảm tiểu cầu nặng hoặc rối loạn đông máu trầm trọng.\n\nKhông được tiêm tĩnh mạch vì dễ gây sốc phản vệ.",
+      "heading_block": "b0019",
       "blocks": [
         {
           "type": "text",
-          "text": "Người đã có các phản ứng phản vệ hoặc phản ứng toàn thân nặng đối với globulin miễn dịch hay với bất kỳ thành phần nào có trong chế phẩm. Cần sẵn có adrenalin để xử trí ngay phản ứng phản vệ nếu xảy ra.\n\nNgười bị thiếu hụt IgA chọn lọc vì những người này có thể có kháng thể kháng IgA và phản ứng phản vệ có thể xảy ra sau khi tiêm IGIM hoặc các sản phẩm khác được điều chế từ máu có chứa IgA.\n\nGiảm tiểu cầu nặng hoặc rối loạn đông máu trầm trọng.\n\nKhông được tiêm tĩnh mạch vì dễ gây sốc phản vệ."
+          "text": "Người đã có các phản ứng phản vệ hoặc phản ứng toàn thân nặng đối với globulin miễn dịch hay với bất kỳ thành phần nào có trong chế phẩm. Cần sẵn có adrenalin để xử trí ngay phản ứng phản vệ nếu xảy ra.",
+          "block_id": "b0020"
+        },
+        {
+          "type": "text",
+          "text": "Người bị thiếu hụt IgA chọn lọc vì những người này có thể có kháng thể kháng IgA và phản ứng phản vệ có thể xảy ra sau khi tiêm IGIM hoặc các sản phẩm khác được điều chế từ máu có chứa IgA.",
+          "block_id": "b0021"
+        },
+        {
+          "type": "text",
+          "text": "Giảm tiểu cầu nặng hoặc rối loạn đông máu trầm trọng.",
+          "block_id": "b0022"
+        },
+        {
+          "type": "text",
+          "text": "Không được tiêm tĩnh mạch vì dễ gây sốc phản vệ.",
+          "block_id": "b0023"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "than-trong",
       "title": "Thận trọng",
-      "content": "Cần dùng IGIM thật thận trọng cho người bị chứng giảm tiểu cầu nặng hoặc bất cứ một rối loạn đông máu nào vì xuất huyết có thể xảy ra sau khi tiêm thuốc vào bắp thịt. Phải dùng kim tiêm nhỏ cỡ 23 hoặc nhỏ hơn, tiêm xong không day mà ấn chặt vị trí tiêm ít nhất trong vòng 2 phút. Các dữ liệu dịch tễ học và xét nghiệm chỉ ra rằng các chế phẩm IGIM hiện có không tạo ra một nguy cơ nào lan truyền virus gây bệnh suy giảm miễn dịch ở người (HIV). Cùng với việc sàng lọc tất cả các mẫu máu của người cho để phát hiện kháng thể kháng HIV và loại bỏ tất cả những mẫu có phản ứng dương tính, quy trình sản xuất IGIM bao gồm các bước thanh lọc nhằm có được một hành lang an toàn tối đa để loại trừ mọi lây nhiễm.\n\nKhông nên làm test da vì có thể xảy ra kích ứng tại chỗ làm đánh giá nhầm kết quả.",
+      "heading_block": "b0024",
       "blocks": [
         {
           "type": "text",
-          "text": "Cần dùng IGIM thật thận trọng cho người bị chứng giảm tiểu cầu nặng hoặc bất cứ một rối loạn đông máu nào vì xuất huyết có thể xảy ra sau khi tiêm thuốc vào bắp thịt. Phải dùng kim tiêm nhỏ cỡ 23 hoặc nhỏ hơn, tiêm xong không day mà ấn chặt vị trí tiêm ít nhất trong vòng 2 phút. Các dữ liệu dịch tễ học và xét nghiệm chỉ ra rằng các chế phẩm IGIM hiện có không tạo ra một nguy cơ nào lan truyền virus gây bệnh suy giảm miễn dịch ở người (HIV). Cùng với việc sàng lọc tất cả các mẫu máu của người cho để phát hiện kháng thể kháng HIV và loại bỏ tất cả những mẫu có phản ứng dương tính, quy trình sản xuất IGIM bao gồm các bước thanh lọc nhằm có được một hành lang an toàn tối đa để loại trừ mọi lây nhiễm.\n\nKhông nên làm test da vì có thể xảy ra kích ứng tại chỗ làm đánh giá nhầm kết quả."
+          "text": "Cần dùng IGIM thật thận trọng cho người bị chứng giảm tiểu cầu nặng hoặc bất cứ một rối loạn đông máu nào vì xuất huyết có thể xảy ra sau khi tiêm thuốc vào bắp thịt. Phải dùng kim tiêm nhỏ cỡ 23 hoặc nhỏ hơn, tiêm xong không day mà ấn chặt vị trí tiêm ít nhất trong vòng 2 phút. Các dữ liệu dịch tễ học và xét nghiệm chỉ ra rằng các chế phẩm IGIM hiện có không tạo ra một nguy cơ nào lan truyền virus gây bệnh suy giảm miễn dịch ở người (HIV). Cùng với việc sàng lọc tất cả các mẫu máu của người cho để phát hiện kháng thể kháng HIV và loại bỏ tất cả những mẫu có phản ứng dương tính, quy trình sản xuất IGIM bao gồm các bước thanh lọc nhằm có được một hành lang an toàn tối đa để loại trừ mọi lây nhiễm.",
+          "block_id": "b0025"
+        },
+        {
+          "type": "text",
+          "text": "Không nên làm test da vì có thể xảy ra kích ứng tại chỗ làm đánh giá nhầm kết quả.",
+          "block_id": "b0026"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-mang-thai",
       "title": "Thời kỳ mang thai",
-      "content": "Nói chung mang thai không coi là một chống chỉ định dùng globulin miễn dịch. Tuy nhiên, các nghiên cứu liên quan đến sự sinh sản ở động vật chưa được thực hiện đối với IGIM. Hiện còn chưa rõ liệu IGIM có gây hại cho thai khi dùng cho người mang thai hay không.\n\nDo đó chỉ dùng IGIM trong thời kỳ thai nghén khi thật cần thiết.",
+      "heading_block": "b0027",
       "blocks": [
         {
           "type": "text",
-          "text": "Nói chung mang thai không coi là một chống chỉ định dùng globulin miễn dịch. Tuy nhiên, các nghiên cứu liên quan đến sự sinh sản ở động vật chưa được thực hiện đối với IGIM. Hiện còn chưa rõ liệu IGIM có gây hại cho thai khi dùng cho người mang thai hay không.\n\nDo đó chỉ dùng IGIM trong thời kỳ thai nghén khi thật cần thiết."
+          "text": "Nói chung mang thai không coi là một chống chỉ định dùng globulin miễn dịch. Tuy nhiên, các nghiên cứu liên quan đến sự sinh sản ở động vật chưa được thực hiện đối với IGIM. Hiện còn chưa rõ liệu IGIM có gây hại cho thai khi dùng cho người mang thai hay không.",
+          "block_id": "b0028"
+        },
+        {
+          "type": "text",
+          "text": "Do đó chỉ dùng IGIM trong thời kỳ thai nghén khi thật cần thiết.",
+          "block_id": "b0029"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "thoi-ky-cho-con-bu",
       "title": "Thời kỳ cho con bú",
-      "content": "Vẫn chưa có dữ liệu nghiên cứu nào ở người. Hiện còn chưa rõ liệu IGIM có được phân bố vào trong sữa mẹ hay không.",
+      "heading_block": "b0030",
       "blocks": [
         {
           "type": "text",
-          "text": "Vẫn chưa có dữ liệu nghiên cứu nào ở người. Hiện còn chưa rõ liệu IGIM có được phân bố vào trong sữa mẹ hay không."
+          "text": "Vẫn chưa có dữ liệu nghiên cứu nào ở người. Hiện còn chưa rõ liệu IGIM có được phân bố vào trong sữa mẹ hay không.",
+          "block_id": "b0031"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tac-dung-khong-mong-muon-adr",
       "title": "Tác dụng không mong muốn (ADR)",
-      "content": "Đau, nhạy cảm đau và căng cứng cơ có thể xảy ra tại vị trí tiêm bắp và tồn tại một số giờ sau khi tiêm IGIM. Viêm tại chỗ, nổi mày đay và phù mạch đôi khi xảy ra; nhức đầu, khó chịu và hội chứng thận hư cũng đã được thông báo.\n\nCác lần tiêm nhắc lại IGIM, đặc biệt là ở những người dị ứng có thể gây mẫn cảm thường biểu hiện sốt, ớn lạnh và đổ mồ hôi. Các phản ứng tại chỗ và toàn thân nặng, kể cả sốc phản vệ ở người bệnh tăng mẫn cảm đối với IGIM cũng đã được thông báo. Nếu vô ý tiêm IGIM vào tĩnh mạch có thể dẫn đến những phản ứng tăng mẫn cảm nghiêm trọng.\n\nChưa xác định được tần suất Tim mạch: mặt bừng đỏ, phù mạch.\n\nTKTW: rét run, ly bì, sốt.\n\nDa liễu: ngứa, hồng ban.\n\nTiêu hóa: buồn nôn, nôn.\n\nTại chỗ: đau, cứng cơ ở vị trí tiêm.\n\nCơ xương thần kinh: đau cơ.\n\nKhác: phản ứng quá mẫn.",
+      "heading_block": "b0032",
       "blocks": [
         {
           "type": "text",
-          "text": "Đau, nhạy cảm đau và căng cứng cơ có thể xảy ra tại vị trí tiêm bắp và tồn tại một số giờ sau khi tiêm IGIM. Viêm tại chỗ, nổi mày đay và phù mạch đôi khi xảy ra; nhức đầu, khó chịu và hội chứng thận hư cũng đã được thông báo.\n\nCác lần tiêm nhắc lại IGIM, đặc biệt là ở những người dị ứng có thể gây mẫn cảm thường biểu hiện sốt, ớn lạnh và đổ mồ hôi. Các phản ứng tại chỗ và toàn thân nặng, kể cả sốc phản vệ ở người bệnh tăng mẫn cảm đối với IGIM cũng đã được thông báo. Nếu vô ý tiêm IGIM vào tĩnh mạch có thể dẫn đến những phản ứng tăng mẫn cảm nghiêm trọng.\n\nChưa xác định được tần suất Tim mạch: mặt bừng đỏ, phù mạch.\n\nTKTW: rét run, ly bì, sốt.\n\nDa liễu: ngứa, hồng ban.\n\nTiêu hóa: buồn nôn, nôn.\n\nTại chỗ: đau, cứng cơ ở vị trí tiêm.\n\nCơ xương thần kinh: đau cơ.\n\nKhác: phản ứng quá mẫn."
+          "text": "Đau, nhạy cảm đau và căng cứng cơ có thể xảy ra tại vị trí tiêm bắp và tồn tại một số giờ sau khi tiêm IGIM. Viêm tại chỗ, nổi mày đay",
+          "block_id": "b0033"
+        },
+        {
+          "type": "text",
+          "text": "và phù mạch đôi khi xảy ra; nhức đầu, khó chịu và hội chứng thận hư cũng đã được thông báo.",
+          "block_id": "b0034"
+        },
+        {
+          "type": "text",
+          "text": "Các lần tiêm nhắc lại IGIM, đặc biệt là ở những người dị ứng có thể gây mẫn cảm thường biểu hiện sốt, ớn lạnh và đổ mồ hôi. Các phản ứng tại chỗ và toàn thân nặng, kể cả sốc phản vệ ở người bệnh tăng mẫn cảm đối với IGIM cũng đã được thông báo. Nếu vô ý tiêm IGIM vào tĩnh mạch có thể dẫn đến những phản ứng tăng mẫn cảm nghiêm trọng.",
+          "block_id": "b0035"
+        },
+        {
+          "type": "subheading",
+          "text": "Chưa xác định được tần suất",
+          "block_id": "b0036"
+        },
+        {
+          "type": "text",
+          "text": "Tim mạch: mặt bừng đỏ, phù mạch.",
+          "block_id": "b0037"
+        },
+        {
+          "type": "text",
+          "text": "TKTW: rét run, ly bì, sốt.",
+          "block_id": "b0038"
+        },
+        {
+          "type": "text",
+          "text": "Da liễu: ngứa, hồng ban.",
+          "block_id": "b0039"
+        },
+        {
+          "type": "text",
+          "text": "Tiêu hóa: buồn nôn, nôn.",
+          "block_id": "b0040"
+        },
+        {
+          "type": "text",
+          "text": "Tại chỗ: đau, cứng cơ ở vị trí tiêm.",
+          "block_id": "b0041"
+        },
+        {
+          "type": "text",
+          "text": "Cơ xương thần kinh: đau cơ.",
+          "block_id": "b0042"
+        },
+        {
+          "type": "text",
+          "text": "Khác: phản ứng quá mẫn.",
+          "block_id": "b0043"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "huong-dan-cach-xu-tri-adr",
       "title": "Hướng dẫn cách xử trí ADR",
-      "content": "Cần chuẩn bị sẵn phương tiện cấp cứu khi xảy ra phản ứng phản vệ.",
+      "heading_block": "b0044",
       "blocks": [
         {
           "type": "text",
-          "text": "Cần chuẩn bị sẵn phương tiện cấp cứu khi xảy ra phản ứng phản vệ."
+          "text": "Cần chuẩn bị sẵn phương tiện cấp cứu khi xảy ra phản ứng phản vệ.",
+          "block_id": "b0045"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
-      "id": "cach-dung",
-      "title": "Cách dùng",
-      "content": "IGIM không được tiêm dưới da, trong da hoặc tiêm tĩnh mạch.\n\nỞ người lớn và trẻ em, tiêm IGIM vào bắp thịt tốt nhất là vùng cơ delta hoặc vào mặt trước - bên của đùi. Vì nguy cơ tổn thương dây thần kinh tọa, do đó chỉ tiêm mông khi cần, tiêm một khối lượng lớn hơn 10 ml, phải chia thành nhiều liều nhỏ để tiêm ở nhiều vị trí. Đối với trẻ sơ sinh và trẻ nhỏ, tốt hơn hết là nên tiêm IGIM vào mặt trước bên của đùi. Tổng liều một lần tiêm bắp thịt không được vượt quá 20 ml (ngay cả đối với người lớn).\n\nTrước khi tiêm, phải kiểm tra bằng mắt để phát hiện các hạt nhỏ và sự đổi màu của dung dịch thuốc. Cần rút nhẹ piston của bơm tiêm ra một chút để đảm bảo rằng kim tiêm không xuyên vào mạch máu.\n\nNếu có máu hay bất cứ sự đổi màu bất thường nào xuất hiện trong bơm tiêm thì nên rút kim tiêm ra và hủy bỏ bơm tiêm đó. Một liều mới của IGIM được tiêm vào một vị trí khác, dùng một bơm tiêm và kim tiêm mới. Để đề phòng việc lây truyền virus viêm gan và các tác nhân nhiễm khuẩn khác từ người này sang người khác, mỗi người được tiêm IGIM cần được dùng cho riêng mình một bơm tiêm và kim tiêm vô khuẩn.",
+      "id": "lieu-luong-va-cach-dung",
+      "title": "Liều lượng và cách dùng",
+      "heading_block": "b0046",
       "blocks": [
         {
-          "type": "text",
-          "text": "IGIM không được tiêm dưới da, trong da hoặc tiêm tĩnh mạch.\n\nỞ người lớn và trẻ em, tiêm IGIM vào bắp thịt tốt nhất là vùng cơ delta hoặc vào mặt trước - bên của đùi. Vì nguy cơ tổn thương dây thần kinh tọa, do đó chỉ tiêm mông khi cần, tiêm một khối lượng lớn hơn 10 ml, phải chia thành nhiều liều nhỏ để tiêm ở nhiều vị trí. Đối với trẻ sơ sinh và trẻ nhỏ, tốt hơn hết là nên tiêm IGIM vào mặt trước bên của đùi. Tổng liều một lần tiêm bắp thịt không được vượt quá 20 ml (ngay cả đối với người lớn).\n\nTrước khi tiêm, phải kiểm tra bằng mắt để phát hiện các hạt nhỏ và sự đổi màu của dung dịch thuốc. Cần rút nhẹ piston của bơm tiêm ra một chút để đảm bảo rằng kim tiêm không xuyên vào mạch máu.\n\nNếu có máu hay bất cứ sự đổi màu bất thường nào xuất hiện trong bơm tiêm thì nên rút kim tiêm ra và hủy bỏ bơm tiêm đó. Một liều mới của IGIM được tiêm vào một vị trí khác, dùng một bơm tiêm và kim tiêm mới. Để đề phòng việc lây truyền virus viêm gan và các tác nhân nhiễm khuẩn khác từ người này sang người khác, mỗi người được tiêm IGIM cần được dùng cho riêng mình một bơm tiêm và kim tiêm vô khuẩn."
-        }
-      ],
-      "subsections": []
-    },
-    {
-      "id": "lieu-luong",
-      "title": "Liều lượng",
-      "content": "Viêm gan A: Dự phòng trước khi phơi nhiễm cho những người định đi du lịch vào vùng có bệnh viêm gan lưu hành (nên tiêm vắc xin phòng viêm gan A hơn): 0,02 ml/kg cho 1 liều duy nhất đối với người dự kiến phơi nhiễm dưới 3 tháng (liều này có tác dụng bảo vệ tới 3 tháng); 0,06 ml/kg cho 1 liều duy nhất đối với người dự kiến phơi nhiễm bằng hoặc trên 3 tháng. Lặp lại liều thích hợp cách 5 tháng 1 lần nếu tiếp tục phơi nhiễm.\n\nDự phòng sau phơi nhiễm: 0,02 ml/kg cho một liều duy nhất càng sớm càng tốt, trong vòng 14 ngày phơi nhiễm (nếu phơi nhiễm trên 2 tuần, không khuyến cáo tiêm IGIM). Không cần IgG nếu trước khi phơi nhiễm 1 tháng hay trên 1 tháng đã tiêm 1 liều vắc xin phòng viêm gan A.\n\nSởi: Dự phòng cho người có khả năng đáp ứng miễn dịch: 0,2 - 0,25 ml/kg/liều (liều tối đa 15 ml) cho một liều duy nhất trong vòng 6 ngày phơi nhiễm. 5 - 6 tháng sau nếu cần, cho tiêm vắc xin sởi sống giảm độc lực cho trẻ em từ 12 tháng trở lên trừ khi có chống chỉ định. Dự phòng cho người suy giảm miễn dịch: 0,5 ml/kg (tối đa 15 ml) cho một liều duy nhất ngay sau khi phơi nhiễm.\n\nRubella: Dự phòng trong khi mang thai: 0,55 ml/kg/liều cho một liều duy nhất trong vòng 72 giờ phơi nhiễm. Tuy nhiên, không khuyến cáo dùng theo thông lệ.\n\nThủy đậu: Dự phòng: 0,6 - 1,2 ml/kg (nên dùng globulin miễn dịch thủy đậu Varicella zoster VZIG hơn) trong vòng 72 giờ phơi nhiễm.\n\nĐể dự phòng, nếu không có sẵn VZIG, thường được khuyến cáo dùng IGIV (không phải là IGIM).\n\nSuy giảm IgG: 0,66 ml/kg/liều (ít nhất 100 mg/kg), cách 3 - 4 tuần 1 lần. Lúc bắt đầu điều trị, có thể cho liều gấp đôi. Một số người bệnh có thể cần phải tiêm nhiều lần hơn.\n\nSuy giảm globulin miễn dịch cần phải duy trì nồng độ IgG trong huyết tương trên 200 mg/100 ml để ngăn chặn nhiễm khuẩn nặng. Một liều đơn tối đa IGIM đối với người lớn: 30 - 50 ml; trẻ nhỏ: 20 - 30 ml.",
-      "blocks": [
+          "type": "subheading",
+          "text": "Cách dùng",
+          "block_id": "b0047"
+        },
         {
           "type": "text",
-          "text": "Viêm gan A: Dự phòng trước khi phơi nhiễm cho những người định đi du lịch vào vùng có bệnh viêm gan lưu hành (nên tiêm vắc xin phòng viêm gan A hơn): 0,02 ml/kg cho 1 liều duy nhất đối với người dự kiến phơi nhiễm dưới 3 tháng (liều này có tác dụng bảo vệ tới 3 tháng); 0,06 ml/kg cho 1 liều duy nhất đối với người dự kiến phơi nhiễm bằng hoặc trên 3 tháng. Lặp lại liều thích hợp cách 5 tháng 1 lần nếu tiếp tục phơi nhiễm.\n\nDự phòng sau phơi nhiễm: 0,02 ml/kg cho một liều duy nhất càng sớm càng tốt, trong vòng 14 ngày phơi nhiễm (nếu phơi nhiễm trên 2 tuần, không khuyến cáo tiêm IGIM). Không cần IgG nếu trước khi phơi nhiễm 1 tháng hay trên 1 tháng đã tiêm 1 liều vắc xin phòng viêm gan A.\n\nSởi: Dự phòng cho người có khả năng đáp ứng miễn dịch: 0,2 - 0,25 ml/kg/liều (liều tối đa 15 ml) cho một liều duy nhất trong vòng 6 ngày phơi nhiễm. 5 - 6 tháng sau nếu cần, cho tiêm vắc xin sởi sống giảm độc lực cho trẻ em từ 12 tháng trở lên trừ khi có chống chỉ định. Dự phòng cho người suy giảm miễn dịch: 0,5 ml/kg (tối đa 15 ml) cho một liều duy nhất ngay sau khi phơi nhiễm.\n\nRubella: Dự phòng trong khi mang thai: 0,55 ml/kg/liều cho một liều duy nhất trong vòng 72 giờ phơi nhiễm. Tuy nhiên, không khuyến cáo dùng theo thông lệ.\n\nThủy đậu: Dự phòng: 0,6 - 1,2 ml/kg (nên dùng globulin miễn dịch thủy đậu Varicella zoster VZIG hơn) trong vòng 72 giờ phơi nhiễm.\n\nĐể dự phòng, nếu không có sẵn VZIG, thường được khuyến cáo dùng IGIV (không phải là IGIM).\n\nSuy giảm IgG: 0,66 ml/kg/liều (ít nhất 100 mg/kg), cách 3 - 4 tuần 1 lần. Lúc bắt đầu điều trị, có thể cho liều gấp đôi. Một số người bệnh có thể cần phải tiêm nhiều lần hơn.\n\nSuy giảm globulin miễn dịch cần phải duy trì nồng độ IgG trong huyết tương trên 200 mg/100 ml để ngăn chặn nhiễm khuẩn nặng. Một liều đơn tối đa IGIM đối với người lớn: 30 - 50 ml; trẻ nhỏ: 20 - 30 ml."
+          "text": "IGIM không được tiêm dưới da, trong da hoặc tiêm tĩnh mạch.",
+          "block_id": "b0048"
+        },
+        {
+          "type": "text",
+          "text": "Ở người lớn và trẻ em, tiêm IGIM vào bắp thịt tốt nhất là vùng cơ delta hoặc vào mặt trước - bên của đùi. Vì nguy cơ tổn thương dây thần kinh tọa, do đó chỉ tiêm mông khi cần, tiêm một khối lượng lớn hơn 10 ml, phải chia thành nhiều liều nhỏ để tiêm ở nhiều vị trí. Đối với trẻ sơ sinh và trẻ nhỏ, tốt hơn hết là nên tiêm IGIM vào mặt trước bên của đùi. Tổng liều một lần tiêm bắp thịt không được vượt quá 20 ml (ngay cả đối với người lớn).",
+          "block_id": "b0049"
+        },
+        {
+          "type": "text",
+          "text": "Trước khi tiêm, phải kiểm tra bằng mắt để phát hiện các hạt nhỏ và sự đổi màu của dung dịch thuốc. Cần rút nhẹ piston của bơm tiêm ra một chút để đảm bảo rằng kim tiêm không xuyên vào mạch máu.",
+          "block_id": "b0050"
+        },
+        {
+          "type": "text",
+          "text": "Nếu có máu hay bất cứ sự đổi màu bất thường nào xuất hiện trong bơm tiêm thì nên rút kim tiêm ra và hủy bỏ bơm tiêm đó. Một liều mới của IGIM được tiêm vào một vị trí khác, dùng một bơm tiêm và kim tiêm mới. Để đề phòng việc lây truyền virus viêm gan và các tác nhân nhiễm khuẩn khác từ người này sang người khác, mỗi người được tiêm IGIM cần được dùng cho riêng mình một bơm tiêm và kim tiêm vô khuẩn.",
+          "block_id": "b0051"
+        },
+        {
+          "type": "subheading",
+          "text": "Liều lượng",
+          "block_id": "b0052"
+        },
+        {
+          "type": "text",
+          "text": "Viêm gan A: Dự phòng trước khi phơi nhiễm cho những người định đi du lịch vào vùng có bệnh viêm gan lưu hành (nên tiêm vắc xin phòng viêm gan A hơn): 0,02 ml/kg cho 1 liều duy nhất đối với người dự kiến phơi nhiễm dưới 3 tháng (liều này có tác dụng bảo vệ tới 3 tháng); 0,06 ml/kg cho 1 liều duy nhất đối với người dự kiến phơi nhiễm bằng hoặc trên 3 tháng. Lặp lại liều thích hợp cách 5 tháng 1 lần nếu tiếp tục phơi nhiễm.",
+          "block_id": "b0053"
+        },
+        {
+          "type": "text",
+          "text": "Dự phòng sau phơi nhiễm: 0,02 ml/kg cho một liều duy nhất càng sớm càng tốt, trong vòng 14 ngày phơi nhiễm (nếu phơi nhiễm trên 2 tuần, không khuyến cáo tiêm IGIM). Không cần IgG nếu trước khi phơi nhiễm 1 tháng hay trên 1 tháng đã tiêm 1 liều vắc xin phòng viêm gan A.",
+          "block_id": "b0054"
+        },
+        {
+          "type": "text",
+          "text": "Sởi: Dự phòng cho người có khả năng đáp ứng miễn dịch: 0,2 - 0,25 ml/kg/liều (liều tối đa 15 ml) cho một liều duy nhất trong vòng 6 ngày phơi nhiễm. 5 - 6 tháng sau nếu cần, cho tiêm vắc xin sởi sống giảm độc lực cho trẻ em từ 12 tháng trở lên trừ khi có chống chỉ định. Dự phòng cho người suy giảm miễn dịch: 0,5 ml/kg (tối đa 15 ml) cho một liều duy nhất ngay sau khi phơi nhiễm.",
+          "block_id": "b0055"
+        },
+        {
+          "type": "text",
+          "text": "Rubella: Dự phòng trong khi mang thai: 0,55 ml/kg/liều cho một liều duy nhất trong vòng 72 giờ phơi nhiễm. Tuy nhiên, không khuyến cáo dùng theo thông lệ.",
+          "block_id": "b0056"
+        },
+        {
+          "type": "text",
+          "text": "Thủy đậu: Dự phòng: 0,6 - 1,2 ml/kg (nên dùng globulin miễn dịch thủy đậu Varicella zoster VZIG hơn) trong vòng 72 giờ phơi nhiễm.",
+          "block_id": "b0057"
+        },
+        {
+          "type": "text",
+          "text": "Để dự phòng, nếu không có sẵn VZIG, thường được khuyến cáo dùng IGIV (không phải là IGIM).",
+          "block_id": "b0058"
+        },
+        {
+          "type": "text",
+          "text": "Suy giảm IgG: 0,66 ml/kg/liều (ít nhất 100 mg/kg), cách 3 - 4 tuần 1 lần. Lúc bắt đầu điều trị, có thể cho liều gấp đôi. Một số người bệnh có thể cần phải tiêm nhiều lần hơn.",
+          "block_id": "b0059"
+        },
+        {
+          "type": "text",
+          "text": "Suy giảm globulin miễn dịch cần phải duy trì nồng độ IgG trong huyết tương trên 200 mg/100 ml để ngăn chặn nhiễm khuẩn nặng. Một liều đơn tối đa IGIM đối với người lớn: 30 - 50 ml; trẻ nhỏ: 20 - 30 ml.",
+          "block_id": "b0060"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "tuong-tac-thuoc",
       "title": "Tương tác thuốc",
-      "content": "Vắc xin sống: Các chế phẩm globulin miễn dịch không ngăn cản đáp ứng miễn dịch của vắc xin virus cúm sống nhỏ mũi, vắc xin virus sốt vàng sống, vắc xin thương hàn sống uống hoặc vắc xin uống chống virus bại liệt sống. Các vắc xin sống này có thể cho đồng thời hoặc bất cứ lúc nào, trước hay sau globulin miễn dịch.\n\nVắc xin sởi, quai bị, rubella và thủy đậu: Các kháng thể có trong globulin miễn dịch có thể cản trở đáp ứng miễn dịch đối với các loại vắc xin này và các vắc xin này không được cho đồng thời mà phải cho cách nhau một khoảng thời gian nhất định trước hoặc sau khi dùng globulin miễn dịch.\n\nVắc xin bất hoạt và giải độc tố: Dùng vắc xin bất hoạt và giải độc tố đồng thời hoặc bất cứ lúc nào, trước hay sau khi tiêm globulin miễn dịch không tác động nhiều về lâm sàng đối với đáp ứng miễn dịch.\n\nVắc xin virus viêm gan A bất hoạt có thể tiêm đồng thời với globulin miễn dịch nhưng ở vị trí khác và dùng bơm tiêm riêng.",
+      "heading_block": "b0061",
       "blocks": [
         {
           "type": "text",
-          "text": "Vắc xin sống: Các chế phẩm globulin miễn dịch không ngăn cản đáp ứng miễn dịch của vắc xin virus cúm sống nhỏ mũi, vắc xin virus sốt vàng sống, vắc xin thương hàn sống uống hoặc vắc xin uống chống virus bại liệt sống. Các vắc xin sống này có thể cho đồng thời hoặc bất cứ lúc nào, trước hay sau globulin miễn dịch.\n\nVắc xin sởi, quai bị, rubella và thủy đậu: Các kháng thể có trong globulin miễn dịch có thể cản trở đáp ứng miễn dịch đối với các loại vắc xin này và các vắc xin này không được cho đồng thời mà phải cho cách nhau một khoảng thời gian nhất định trước hoặc sau khi dùng globulin miễn dịch.\n\nVắc xin bất hoạt và giải độc tố: Dùng vắc xin bất hoạt và giải độc tố đồng thời hoặc bất cứ lúc nào, trước hay sau khi tiêm globulin miễn dịch không tác động nhiều về lâm sàng đối với đáp ứng miễn dịch.\n\nVắc xin virus viêm gan A bất hoạt có thể tiêm đồng thời với globulin miễn dịch nhưng ở vị trí khác và dùng bơm tiêm riêng."
+          "text": "Vắc xin sống: Các chế phẩm globulin miễn dịch không ngăn cản đáp ứng miễn dịch của vắc xin virus cúm sống nhỏ mũi, vắc xin virus sốt vàng sống, vắc xin thương hàn sống uống hoặc vắc xin uống chống virus bại liệt sống. Các vắc xin sống này có thể cho đồng thời hoặc bất cứ lúc nào, trước hay sau globulin miễn dịch.",
+          "block_id": "b0062"
+        },
+        {
+          "type": "text",
+          "text": "Vắc xin sởi, quai bị, rubella và thủy đậu: Các kháng thể có trong globulin miễn dịch có thể cản trở đáp ứng miễn dịch đối với các loại vắc xin này và các vắc xin này không được cho đồng thời mà phải cho cách nhau một khoảng thời gian nhất định trước hoặc sau khi dùng globulin miễn dịch.",
+          "block_id": "b0063"
+        },
+        {
+          "type": "text",
+          "text": "Vắc xin bất hoạt và giải độc tố: Dùng vắc xin bất hoạt và giải độc tố đồng thời hoặc bất cứ lúc nào, trước hay sau khi tiêm globulin miễn dịch không tác động nhiều về lâm sàng đối với đáp ứng miễn dịch.",
+          "block_id": "b0064"
+        },
+        {
+          "type": "text",
+          "text": "Vắc xin virus viêm gan A bất hoạt có thể tiêm đồng thời với globulin miễn dịch nhưng ở vị trí khác và dùng bơm tiêm riêng.",
+          "block_id": "b0065"
         }
-      ],
-      "subsections": []
+      ]
     },
     {
       "id": "cap-nhat-lan-cuoi",
       "title": "Cập nhật lần cuối",
-      "content": "2017.",
+      "heading_block": "b0066",
       "blocks": [
         {
           "type": "text",
-          "text": "2017."
+          "text": "2017.",
+          "block_id": "b0066"
         }
-      ],
-      "subsections": []
+      ]
     }
   ],
-  "tables": [],
   "quality": {
-    "status": "source-layout-rebuilt-v10.1-source-paragraph-boundaries",
-    "pdf_text_order": "left-column-then-right-column; visual line flow",
-    "paragraph_policy": "Paragraph boundaries are source-derived and stored only as blank lines. The client preserves those boundaries exactly; it must not create a new paragraph from label words such as “Trẻ em:” or “Người lớn:”. A lower-case continuation fragment is merged only when it follows a non-terminal source fragment; table footnotes remain separate. No client-side anchor or length-based sentence splitter is allowed.",
-    "table_policy": "source-table image inserted by PDF page/column/y position; table-cell text excluded from prose",
-    "validation": {
-      "raw_newline_inside_paragraph": false,
-      "table_count": 0,
-      "section_count": 16,
-      "client_anchor_resegmentation_disabled": true,
-      "client_length_sentence_chunking_disabled": true
-    }
+    "block_count": 66,
+    "heading_count": 12,
+    "subheading_count": 3,
+    "paragraph_count": 50,
+    "list_count": 0,
+    "table_count": 0,
+    "figure_count": 0,
+    "note_count": 1,
+    "page_count": 3
+  },
+  "tables": [],
+  "legacy_compat": {
+    "sections": "generated from v11 blocks for v10.4.5.39 renderer/chatbot compatibility"
   }
 }
