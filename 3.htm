@@ -7129,6 +7129,7 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-content.sb-visible::-we
 }
 </style>
 
+<style id="medplus-duoc-thu-view-button-bold-fix">.duoc-thu-view-btn,.duoc-thu-view-btn b{font-weight:900!important}.duoc-thu-excerpt-title{font-weight:900!important}</style>
 </head>
 <body>
 
@@ -13464,7 +13465,7 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-content.sb-visible::-we
             
             // 2c. Dựng nút XEM DƯỢC THƯ cho câu trả lời theo chuyên luận hoạt chất.
             text = text.replace(/\{\{DUOC_THU_VIEW:([^|}]+)\|([^}]+)\}\}/g, function(match, encodedId, encodedFocus) {
-                return '<button class="duoc-thu-view-btn" onclick="openDuocThuFromChat_(\'' + encodedId + '\', \'' + encodedFocus + '\', event)">📚 XEM DƯỢC THƯ</button>';
+                return '<button class="duoc-thu-view-btn" onclick="openDuocThuFromChat_(\'' + encodedId + '\', \'' + encodedFocus + '\', event)"><b>📚 XEM DƯỢC THƯ</b></button>';
             });
 
             // 2b. Bắt link HDSD dạng thô do nhánh quét ảnh/Gemini trả về: HDSD: https://..., Tờ HDSD: https://...
@@ -14634,7 +14635,7 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-content.sb-visible::-we
    Route priority (installed inside sendMessage):
      exact-brand HDSD -> Dược thư active ingredient -> group catalog -> AI.
    ================================================================ */
-const MEDPLUS_DUOC_THU_INDEX_URL = './duoc-thu-data/index.json?v=11.0.12';
+const MEDPLUS_DUOC_THU_INDEX_URL = './duoc-thu-data/index.json?v=11.0.14';
 const MEDPLUS_DUOC_THU_DATA_BASE = './duoc-thu-data/';
 let __medplusDuocThuIndexPromise = null;
 const __medplusDuocThuRecordCache = new Map();
@@ -14887,6 +14888,20 @@ function chooseDuocThuPassages_(question, record) {
     const candidates=buildCandidates();
     const exactCandidates=function(labelNorm, preferredParent){ const pn=norm(preferredParent||''); return candidates.filter(function(c){ if(norm(c.title)!==labelNorm)return false; if(pn && norm(c.parentTitle)!==pn && c.kind!=='intro')return false; return true; }).sort(function(a,b){ const rank={'leading-label':0,'block-subheading':1,'legacy-subsection':2,'paragraph-hit':3,'intro':4,'section':5}; return (rank[a.kind]||9)-(rank[b.kind]||9); }); };
     const toResult=function(c,score){return {parent:c.parent,section:c.section,isSubsection:c.kind!=='section',smartKind:c.kind,smartScore:score||999};};
+    const generalEffectIntent = /\btac\s+dung\b/.test(q)
+        && !/\b(tac\s+dung\s+phu|tac\s+dung\s+khong\s+mong\s+muon|adr|phan\s+ung\s+co\s+hai|co\s+che|pho\s+tac\s+dung|pho\s+khang\s+khuan)\b/.test(q);
+    if (generalEffectIntent) {
+        // v11.0.14: In clinical Vietnamese, “tác dụng/tác dụng chính” usually means
+        // “dùng để điều trị gì” plus the pharmacologic basis. Cite Chỉ định + Dược lực học.
+        // Do not pull Thận trọng only because it contains “phổ tác dụng hẹp”.
+        const out = [];
+        const indication = exactSection('Chỉ định');
+        const pharm = exactSection('Dược lực học');
+        if (indication) out.push({ parent: indication, section: indication, isSubsection: false, smartKind: 'effect-indication', smartScore: 1600 });
+        if (pharm) out.push({ parent: pharm, section: pharm, isSubsection: false, smartKind: 'effect-pharmacodynamics', smartScore: 1500 });
+        if (out.length) return out;
+    }
+
     if(labels.length){
         const hasPopulationDoseQualifier = labels.some(function(x){ return x.intent === 'population-child'; });
         const hasGeneralDoseOnly = labels.some(function(x){ return x.norm === 'lieu dung'; }) && !hasPopulationDoseQualifier && !labels.some(function(x){ return x.norm === 'cach dung' || x.norm === 'toc do truyen'; });
@@ -14942,9 +14957,28 @@ function buildDuocThuSourceLabel_(record) {
 
 function makeDuocThuViewToken_(record, focuses) {
     const items = Array.isArray(focuses) ? focuses : [focuses];
-    const focusIds = items.map(function(item) {
-        return item && item.section && item.section.id ? item.section.id : '';
-    }).filter(Boolean);
+    const focusIds = [];
+    const addId = function(id) {
+        id = String(id || '').trim();
+        if (id && focusIds.indexOf(id) < 0) focusIds.push(id);
+    };
+    items.forEach(function(item) {
+        if (!item) return;
+        // v11.0.13: synthetic citation nodes have ids that do not exist in the modal.
+        // Include the real parent section id and block ids so the Dược thư modal opens/highlights
+        // the cited section like v10.
+        if (item.parent && item.parent.id) addId(item.parent.id);
+        if (item.section && item.section.id) addId(item.section.id);
+        const blocks = item.section && Array.isArray(item.section.blocks) ? item.section.blocks : [];
+        blocks.forEach(function(block) {
+            if (!block) return;
+            if (typeof block === 'string') addId(block);
+            else {
+                if (block.id) addId(block.id);
+                if (block.block_id) addId(block.block_id);
+            }
+        });
+    });
     return '{{DUOC_THU_VIEW:' + encodeURIComponent(record.id) + '|' + encodeURIComponent(focusIds.join(',')) + '}}';
 }
 
@@ -15153,7 +15187,7 @@ function buildDuocThuChatCitation_(key) {
         const label = item.isSubsection && parent && parent.title !== sec.title
             ? escapeDuocThuHtml_(parent.title) + ' · ' + escapeDuocThuHtml_(sec.title)
             : escapeDuocThuHtml_(sec.title);
-        html += '<div class="duoc-thu-excerpt-section"><span class="duoc-thu-excerpt-title">' + label + '</span>'
+        html += '<div class="duoc-thu-excerpt-section"><b class="duoc-thu-excerpt-title">' + label + '</b>'
             + '<div class="duoc-thu-excerpt-line">' + renderDuocThuNodeContent_(record, sec) + '</div></div>';
     });
     html += '</div>';
@@ -15174,11 +15208,18 @@ function composeDuocThuExactAnswer_(record, passages) {
     } else if (sections.length === 1) {
         reply += 'Hãy xem chi tiết ở mục <b>' + escapeDuocThuHtml_(focus.section.title) + '</b>.\n\n';
     } else {
-        const titles = sections.map(function(item) { return escapeDuocThuHtml_(item.section.title); });
+        const seen = new Set();
+        const titles = [];
+        sections.forEach(function(item) {
+            const title = item && item.section ? String(item.section.title || '') : '';
+            const parent = item && item.parent ? String(item.parent.title || '') : '';
+            const key = parent + '|' + title;
+            if (!title || seen.has(key)) return;
+            seen.add(key);
+            titles.push(escapeDuocThuHtml_(title));
+        });
         reply += 'Hãy xem các nội dung liên quan dưới đây: <b>' + titles.join('</b>, <b>') + '</b>.\n\n';
     }
-    // Do not inject raw <img> HTML into the chat text. formatResponse() processes URLs and
-    // paragraphs before the final citation token is expanded, so image markup stays intact.
     const citationKey = cacheDuocThuChatCitation_(record, sections);
     reply += '{{DUOC_THU_CITE:' + citationKey + '}}\n\n';
     reply += '<span class="duoc-thu-chat-source">Nguồn: ' + escapeDuocThuHtml_(buildDuocThuSourceLabel_(record)) + '</span> '
