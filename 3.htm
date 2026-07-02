@@ -14766,415 +14766,452 @@ function sectionByTitle_(record, title) {
     }) || null;
 }
 
-function chooseDuocThuPassages_(question, record) {
-    const q = normalizeDuocThuText_(question);
-    const pick = function(title) { return sectionByTitle_(record, title); };
-    const titleNormOf = function(node) { return normalizeDuocThuText_(node && node.title || ''); };
-    const isOverdoseTitle = function(titleNorm) { return /\bqua\s+lieu\b/.test(titleNorm); };
-    const isDoseTitle = function(titleNorm) {
-        return !isOverdoseTitle(titleNorm) && (/\blieu\s+(dung|luong)\b/.test(titleNorm) || (/\blieu\b/.test(titleNorm) && !/\bqua\b/.test(titleNorm)));
-    };
-    const isAdministrationTitle = function(titleNorm) { return /\b(cach\s+dung|duong\s+dung|cach\s+su\s+dung)\b/.test(titleNorm); };
-    const hasOverdoseIntent = /\b(qua\s+lieu|xu\s+tri\s+qua\s+lieu|xu\s+ly\s+qua\s+lieu|ngo\s+doc|overdose)\b/.test(q);
-    const hasDoseIntent = !hasOverdoseIntent && /\b(lieu\s+dung|lieu\s+luong|lieu\b|dose|dosage)\b/.test(q);
-    const hasAdministrationIntent = !hasOverdoseIntent && /\b(cach\s+dung|cach\s+su\s+dung|duong\s+dung|dung\s+nhu\s+the\s+nao|administration)\b/.test(q);
 
-    const chooseSub = function(parentTitle, childTitle) {
-        const parent = pick(parentTitle);
-        if (!parent) return null;
-        const expected = normalizeDuocThuText_(childTitle);
-        let child = (parent.subsections || []).find(function(item) {
-            return normalizeDuocThuText_(item.title) === expected;
-        });
-        if (!child && expected === 'lieu dung') {
-            child = (parent.subsections || []).find(function(item) {
-                return isDoseTitle(titleNormOf(item));
-            });
-        }
-        if (!child && expected === 'cach dung') {
-            child = (parent.subsections || []).find(function(item) {
-                return isAdministrationTitle(titleNormOf(item));
-            });
-        }
-        return child ? { parent: parent, section: child, isSubsection: true } : { parent: parent, section: parent, isSubsection: false };
+
+
+function chooseDuocThuPassages_(question, record) {
+    const q = normalizeDuocThuText_(question || '');
+    const sections = Array.isArray(record && record.sections) ? record.sections : [];
+    const allBlocks = Array.isArray(record && record.blocks) ? record.blocks : [];
+    const blockMap = (typeof duocThuV11BlockMap_ === 'function') ? duocThuV11BlockMap_(record) : {};
+    const normalize = normalizeDuocThuText_;
+    const escapeRe = function(s) { return String(s || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); };
+    const resolveBlock = function(block) {
+        if (!block) return null;
+        if (typeof block === 'string') return blockMap[block] || null;
+        if (block.block_id) return blockMap[block.block_id] || block;
+        return block;
     };
-    const one = function(title) {
-        const section = pick(title);
-        return section ? [{ parent: section, section: section, isSubsection: false }] : [];
+    const blockText = function(b) { return String((b && (b.text || b.content)) || ''); };
+    const textNormOf = function(node) { return normalize(node && (node.text || node.content) || ''); };
+    const titleNormOf = function(node) { return normalize(node && node.title || ''); };
+    const sectionBlocks = function(section) {
+        return ((section && Array.isArray(section.blocks)) ? section.blocks : []).map(resolveBlock).filter(Boolean);
+    };
+    const isSubheadingBlock = function(block) {
+        return block && (block.type === 'subheading' || (block.type === 'heading' && Number(block.level || 3) >= 3));
+    };
+    const makeFineNode = function(parent, title, candidateBlocks, idSeed) {
+        const cleanTitle = String(title || '').trim() || String(parent && parent.title || 'Mục');
+        const idBase = String((parent && parent.id) || cleanTitle || 'section');
+        const seed = normalize(idSeed || cleanTitle).replace(/\s+/g, '-').slice(0, 72);
+        return {
+            id: idBase + '__' + seed,
+            title: cleanTitle,
+            blocks: (candidateBlocks || []).filter(Boolean),
+            content: ''
+        };
     };
     const dedupe = function(items) {
         const seen = new Set();
         return (items || []).filter(function(item) {
             if (!item || !item.section) return false;
-            const key = (item.section.id || item.section.title || '') + '|' + ((item.parent && item.parent.id) || '');
+            const key = ((item.parent && item.parent.id) || '') + '|' + (item.section.id || item.section.title || '');
             if (seen.has(key)) return false;
             seen.add(key);
             return true;
         });
     };
-    const byTitles = function(titles) {
-        let out = [];
-        (titles || []).forEach(function(title) { out = out.concat(one(title)); });
-        return dedupe(out);
-    };
 
-    const findDoseParent = function() {
-        const sections = record && Array.isArray(record.sections) ? record.sections : [];
-        return sections.find(function(sec) {
-            const t = titleNormOf(sec);
-            return isDoseTitle(t) || (!isOverdoseTitle(t) && /\blieu\b/.test(t) && isAdministrationTitle(t));
-        }) || pick('Liều lượng và cách dùng') || null;
-    };
-    const findChildByIntent = function(parent, matcher) {
-        if (!parent || !Array.isArray(parent.subsections)) return null;
-        return parent.subsections.find(function(sub) { return matcher(titleNormOf(sub)); }) || null;
-    };
-
-    // Strong intent routing, modeled after the HDSD citation router:
-    // match the requested toggle/sub-toggle title first, and only then scan body text.
-    // This prevents “liều dùng” questions from falling into “Quá liều và xử trí” just because both contain the token “liều”.
-    if (hasDoseIntent || hasAdministrationIntent) {
-        const parent = findDoseParent();
-        if (parent) {
-            if (hasDoseIntent && hasAdministrationIntent && /\b(lieu\s+luong\s+va\s+cach\s+dung|lieu\s+dung\s+va\s+cach\s+dung)\b/.test(q)) {
-                return [{ parent: parent, section: parent, isSubsection: false }];
-            }
-            if (hasAdministrationIntent && !hasDoseIntent) {
-                const adminChild = findChildByIntent(parent, isAdministrationTitle);
-                return [adminChild ? { parent: parent, section: adminChild, isSubsection: true } : { parent: parent, section: parent, isSubsection: false }];
-            }
-            const doseChild = findChildByIntent(parent, isDoseTitle);
-            return [doseChild ? { parent: parent, section: doseChild, isSubsection: true } : { parent: parent, section: parent, isSubsection: false }];
-        }
-    }
-
-    const rules = [
-        { re: /\b(ma atc|atc)\b/, titles: ['Mã ATC'] },
-        { re: /\b(ten chung quoc te|ten quoc te|ten khac|inn)\b/, titles: ['Tên chung quốc tế'] },
-        { re: /\b(dang thuoc va ham luong|dang thuoc|dang bao che|ham luong|nong do|bao nhieu mg|bao nhieu mcg|bao nhieu g)\b/, titles: ['Dạng thuốc và hàm lượng'] },
-        { re: /\b(loai thuoc|phan loai|nhom thuoc)\b/, titles: ['Loại thuốc'] },
-        { re: /\b(chi dinh|dieu tri|tri benh|dung cho benh gi)\b/, titles: ['Chỉ định'] },
-        { re: /\b(chong chi dinh|khong duoc dung|khong nen dung|ai khong dung)\b/, titles: ['Chống chỉ định'] },
-        { re: /\b(than trong|canh bao|luu y|than trong khi dung)\b/, titles: ['Thận trọng'] },
-        { re: /\b(tuong ky|khong tuong hop)\b/, titles: ['Tương kỵ'] },
-        { re: /\b(tuong tac|tuong tac thuoc|dung chung|phoi hop)\b/, titles: ['Tương tác thuốc'] },
-        { re: /\b(qua lieu|xu tri qua lieu|xu ly qua lieu|qua lieu lam gi)\b/, titles: ['Quá liều và xử trí'] },
-        { re: /\b(bao quan|dieu kien bao quan|giu thuoc)\b/, titles: ['Bảo quản'] },
-        { re: /\b(mang thai|thai ky|phu nu co thai)\b/, titles: ['Thời kỳ mang thai'] },
-        { re: /\b(cho con bu|bu me|phu nu cho con bu)\b/, titles: ['Thời kỳ cho con bú'] },
-        { re: /\b(tai lieu tham khao|tham khao|nguon tham khao)\b/, titles: ['Tài liệu tham khảo'] }
-    ];
-    for (let i = 0; i < rules.length; i++) {
-        if (rules[i].re.test(q)) {
-            const hit = byTitles(rules[i].titles);
-            if (hit.length) return hit;
-        }
-    }
-
-    const subRules = [
-        { re: /\b(hap thu)\b/, parent: 'Dược động học', child: 'Hấp thu' },
-        { re: /\b(phan bo)\b/, parent: 'Dược động học', child: 'Phân bố' },
-        { re: /\b(chuyen hoa)\b/, parent: 'Dược động học', child: 'Chuyển hóa' },
-        { re: /\b(thai tru|dao thai)\b/, parent: 'Dược động học', child: 'Thải trừ' },
-        { re: /\b(co che|co che tac dung)\b/, parent: 'Dược lực học', child: 'Cơ chế tác dụng' },
-        { re: /\b(pho tac dung)\b/, parent: 'Dược lực học', child: 'Phổ tác dụng' },
-        { re: /\b(khang thuoc)\b/, parent: 'Dược lực học', child: 'Kháng thuốc' },
-        { re: /\b(lieu dung|lieu luong|lieu)\b/, parent: 'Liều lượng và cách dùng', child: 'Liều dùng' },
-        { re: /\b(cach dung|cach su dung|duong dung)\b/, parent: 'Liều lượng và cách dùng', child: 'Cách dùng' }
-    ];
-    for (let j = 0; j < subRules.length; j++) {
-        if (subRules[j].re.test(q)) {
-            const subHit = chooseSub(subRules[j].parent, subRules[j].child);
-            if (subHit) return [subHit];
-        }
-    }
-
-    if (/\bduoc dong\b/.test(q)) return one('Dược động học');
-    if (/\bduoc luc\b/.test(q)) return one('Dược lực học');
-    if (/\b(tac dung phu|tac dung khong mong muon|adr|phan ung co hai)\b/.test(q)) {
-        let results = one('Tác dụng không mong muốn (ADR)');
-        if (/\b(xu tri|xu ly|cach xu tri)\b/.test(q)) results = results.concat(one('Hướng dẫn cách xử trí ADR'));
-        return dedupe(results);
-    }
-    if (/\b(tac dung|cong dung)\b/.test(q)) return byTitles(['Dược lực học', 'Chỉ định']);
-    if (/\b(la thuoc gi|la gi|thuoc gi)\b/.test(q)) return byTitles(['Loại thuốc', 'Dạng thuốc và hàm lượng', 'Dược lực học', 'Chỉ định']);
-
-    const titleHits = [];
-    (record.sections || []).forEach(function(sec) {
-        const titleNorm = normalizeDuocThuText_(sec.title || '');
-        const titleWords = titleNorm.split(' ').filter(function(w){ return w.length >= 4; });
-        const titleExact = titleNorm && (' ' + q + ' ').indexOf(' ' + titleNorm + ' ') >= 0;
-        const titleAllWords = titleWords.length >= 2 && titleWords.every(function(w){ return q.indexOf(w) >= 0; });
-        if (!(isOverdoseTitle(titleNorm) && !hasOverdoseIntent) && titleNorm && titleNorm.length >= 4 && (titleExact || titleAllWords)) {
-            titleHits.push({ parent: sec, section: sec, isSubsection: false });
-        }
-        (sec.subsections || []).forEach(function(sub) {
-            const subNorm = normalizeDuocThuText_(sub.title || '');
-            const subWords = subNorm.split(' ').filter(function(w){ return w.length >= 4; });
-            const subExact = subNorm && (' ' + q + ' ').indexOf(' ' + subNorm + ' ') >= 0;
-            const subAllWords = subWords.length >= 2 && subWords.every(function(w){ return q.indexOf(w) >= 0; });
-            if (!(isOverdoseTitle(subNorm) && !hasOverdoseIntent) && subNorm && subNorm.length >= 4 && (subExact || subAllWords)) {
-                titleHits.push({ parent: sec, section: sub, isSubsection: true });
-            }
-        });
-    });
-    if (titleHits.length) return dedupe(titleHits).slice(0, 3);
+    const stopWords = new Set((
+        'thuoc hoat chat duoc thu cua cho voi trong ve hoi gi nao bao nhieu co khong dung hay can biet thong tin benh ' +
+        'la gi nhu the nao the nao nhi nhe a uong tiem dat boi truyen nen phai duoc va hoac khi tren duoi neu thi ' +
+        'toi muon minh can cho biet phan muc noi dung cua no nay ay do cac nhung nhung ma lam sao sao co the ' +
+        'benh nhan nguoi dung su dung lieu co can hay khong khong the'
+    ).split(/\s+/));
 
     const aliasWords = new Set();
-    (record.aliases || []).forEach(function(alias) {
-        normalizeDuocThuText_(alias).split(/\s+/).forEach(function(w) { if (w.length >= 3) aliasWords.add(w); });
+    (record.aliases || []).concat([record.title || '', record.id || '']).forEach(function(alias) {
+        normalize(alias).split(/\s+/).forEach(function(w) { if (w && w.length >= 2) aliasWords.add(w); });
     });
-    const stop = new Set('thuoc hoat chat cua cho voi trong ve hoi gi nao bao nhieu co khong dung hay can biet thong tin benh dieu tri'.split(' '));
-    const terms = q.split(/\s+/).filter(function(w, i, arr) {
-        return w.length >= 4 && !aliasWords.has(w) && !stop.has(w) && arr.indexOf(w) === i;
+
+    const rawQueryWords = q.split(/\s+/).filter(Boolean);
+    const queryWords = [];
+    rawQueryWords.forEach(function(w) {
+        if (w.length >= 3 && !stopWords.has(w) && !aliasWords.has(w) && queryWords.indexOf(w) < 0) queryWords.push(w);
     });
-    if (terms.length) {
-        const scored = [];
-        (record.sections || []).forEach(function(sec, sectionIndex) {
-            const nodes = [{ parent: sec, section: sec, isSubsection: false, index: sectionIndex }]
-                .concat((sec.subsections || []).map(function(sub, subIndex) { return { parent: sec, section: sub, isSubsection: true, index: sectionIndex + (subIndex / 1000) }; }));
-            nodes.forEach(function(item) {
-                const node = item.section || {};
-                const title = normalizeDuocThuText_(node.title || '');
-                if (isOverdoseTitle(title) && !hasOverdoseIntent) return;
-                if (hasOverdoseIntent && isDoseTitle(title)) return;
-                const content = normalizeDuocThuText_((node.content || '') + ' ' + (Array.isArray(node.blocks) ? node.blocks.map(function(b){ return b && (b.text || b.content || ''); }).join(' ') : ''));
-                let score = 0;
-                terms.forEach(function(t) {
-                    if ((' ' + title + ' ').indexOf(' ' + t + ' ') >= 0) score += 90;
-                    if ((' ' + content + ' ').indexOf(' ' + t + ' ') >= 0) score += 22;
+
+    const phraseRules = [
+        ['ten chung quoc te', ['Tên chung quốc tế'], 30, 'intro'],
+        ['ten quoc te', ['Tên chung quốc tế'], 24, 'intro'],
+        ['ma atc', ['Mã ATC'], 30, 'intro'],
+        ['atc', ['Mã ATC'], 24, 'intro'],
+        ['loai thuoc', ['Loại thuốc'], 28, 'intro'],
+        ['nhom thuoc', ['Loại thuốc'], 22, 'intro'],
+        ['dang thuoc va ham luong', ['Dạng thuốc và hàm lượng'], 32, 'section'],
+        ['dang thuoc', ['Dạng thuốc và hàm lượng'], 24, 'section'],
+        ['ham luong', ['Dạng thuốc và hàm lượng'], 26, 'section'],
+        ['nong do', ['Dạng thuốc và hàm lượng'], 22, 'section'],
+        ['chi dinh', ['Chỉ định'], 30, 'section'],
+        ['dieu tri benh gi', ['Chỉ định'], 28, 'section'],
+        ['dung cho benh gi', ['Chỉ định'], 28, 'section'],
+        ['cong dung', ['Chỉ định'], 22, 'section'],
+        ['chong chi dinh', ['Chống chỉ định'], 32, 'section'],
+        ['khong duoc dung', ['Chống chỉ định'], 26, 'section'],
+        ['ai khong dung', ['Chống chỉ định'], 26, 'section'],
+        ['than trong', ['Thận trọng'], 30, 'section'],
+        ['canh bao', ['Thận trọng'], 20, 'section'],
+        ['luu y', ['Thận trọng'], 18, 'section'],
+        ['tuong tac thuoc', ['Tương tác thuốc'], 32, 'section'],
+        ['tuong tac', ['Tương tác thuốc'], 26, 'section'],
+        ['dung chung', ['Tương tác thuốc'], 20, 'section'],
+        ['phoi hop', ['Tương tác thuốc'], 18, 'section'],
+        ['tuong ky', ['Tương kỵ'], 30, 'section'],
+        ['mang thai', ['Thời kỳ mang thai'], 32, 'section'],
+        ['phu nu co thai', ['Thời kỳ mang thai'], 34, 'section'],
+        ['thai ky', ['Thời kỳ mang thai'], 28, 'section'],
+        ['cho con bu', ['Thời kỳ cho con bú'], 34, 'section'],
+        ['sua me', ['Thời kỳ cho con bú'], 28, 'section'],
+        ['bu me', ['Thời kỳ cho con bú'], 28, 'section'],
+        ['tac dung khong mong muon', ['Tác dụng không mong muốn (ADR)'], 32, 'section'],
+        ['tac dung phu', ['Tác dụng không mong muốn (ADR)'], 26, 'section'],
+        ['phan ung co hai', ['Tác dụng không mong muốn (ADR)'], 26, 'section'],
+        ['adr', ['Tác dụng không mong muốn (ADR)'], 24, 'section'],
+        ['xu tri adr', ['Hướng dẫn cách xử trí ADR'], 32, 'section'],
+        ['xu ly adr', ['Hướng dẫn cách xử trí ADR'], 30, 'section'],
+        ['qua lieu', ['Quá liều và xử trí'], 32, 'section'],
+        ['xu tri qua lieu', ['Quá liều và xử trí'], 36, 'section'],
+        ['xu ly qua lieu', ['Quá liều và xử trí'], 36, 'section'],
+        ['ngo doc', ['Quá liều và xử trí'], 22, 'section'],
+        ['bao quan', ['Bảo quản'], 30, 'section'],
+        ['tai lieu tham khao', ['Tài liệu tham khảo'], 28, 'section'],
+        ['cap nhat lan cuoi', ['Cập nhật lần cuối'], 34, 'section'],
+
+        ['lieu luong va cach dung', ['Liều lượng và cách dùng'], 26, 'dose-parent'],
+        ['lieu dung va cach dung', ['Liều lượng và cách dùng'], 26, 'dose-parent'],
+        ['lieu luong', ['Liều dùng'], 36, 'dose-child'],
+        ['lieu dung', ['Liều dùng'], 36, 'dose-child'],
+        ['lieu', ['Liều dùng'], 20, 'dose-child'],
+        ['nguoi lon', ['Người lớn'], 26, 'population-child'],
+        ['tre em', ['Trẻ em'], 28, 'population-child'],
+        ['tre so sinh', ['Trẻ sơ sinh'], 28, 'population-child'],
+        ['nguoi cao tuoi', ['Người cao tuổi'], 24, 'population-child'],
+        ['suy than', ['Suy thận'], 30, 'population-child'],
+        ['suy gan', ['Suy gan'], 30, 'population-child'],
+        ['chinh lieu', ['Suy thận', 'Suy gan', 'Liều dùng'], 20, 'population-child'],
+        ['hieu chinh lieu', ['Suy thận', 'Suy gan', 'Liều dùng'], 22, 'population-child'],
+        ['giam lieu', ['Suy thận', 'Suy gan', 'Liều dùng'], 20, 'population-child'],
+        ['cach dung', ['Cách dùng'], 36, 'dose-child'],
+        ['duong dung', ['Cách dùng'], 26, 'dose-child'],
+        ['dung luc nao', ['Cách dùng'], 24, 'dose-child'],
+        ['uong luc nao', ['Cách dùng'], 24, 'dose-child'],
+        ['truoc an', ['Cách dùng'], 20, 'dose-child'],
+        ['sau an', ['Cách dùng'], 20, 'dose-child'],
+        ['toc do truyen', ['Tốc độ truyền'], 40, 'dose-child'],
+        ['truyen tinh mach', ['Tốc độ truyền'], 30, 'dose-child'],
+        ['pha truyen', ['Tốc độ truyền', 'Cách dùng'], 24, 'dose-child'],
+
+        ['duoc dong hoc', ['Dược động học'], 24, 'pk-parent'],
+        ['hap thu', ['Hấp thu'], 40, 'pk-child'],
+        ['sinh kha dung', ['Hấp thu'], 28, 'pk-child'],
+        ['phan bo', ['Phân bố'], 40, 'pk-child'],
+        ['qua hang rao mau nao', ['Phân bố'], 28, 'pk-child'],
+        ['gan protein', ['Phân bố'], 26, 'pk-child'],
+        ['chuyen hoa', ['Chuyển hóa'], 40, 'pk-child'],
+        ['cyp', ['Chuyển hóa', 'Tương tác thuốc'], 22, 'pk-child'],
+        ['thai tru', ['Thải trừ'], 40, 'pk-child'],
+        ['dao thai', ['Thải trừ'], 32, 'pk-child'],
+        ['thoi gian ban thai', ['Thời gian bán thải'], 34, 'pk-child'],
+        ['ban thai', ['Thời gian bán thải'], 28, 'pk-child'],
+
+        ['duoc luc hoc', ['Dược lực học'], 24, 'pd-parent'],
+        ['co che tac dung', ['Cơ chế tác dụng'], 40, 'pd-child'],
+        ['co che', ['Cơ chế tác dụng'], 26, 'pd-child'],
+        ['pho tac dung', ['Phổ tác dụng'], 36, 'pd-child'],
+        ['pho khang khuan', ['Phổ tác dụng'], 30, 'pd-child'],
+        ['khang thuoc', ['Kháng thuốc'], 34, 'pd-child'],
+        ['de khang', ['Kháng thuốc'], 30, 'pd-child']
+    ];
+
+    const requestedLabels = [];
+    phraseRules.forEach(function(rule) {
+        const phrase = rule[0], labels = rule[1], weight = rule[2], intent = rule[3];
+        const phraseRe = new RegExp('(^|\\s)' + escapeRe(phrase) + '(\\s|$)');
+        if (phraseRe.test(q)) {
+            labels.forEach(function(label) {
+                requestedLabels.push({
+                    norm: normalize(label),
+                    title: label,
+                    weight: weight,
+                    intent: intent
                 });
-                if (score > 0) scored.push(Object.assign({}, item, { score: score }));
+            });
+        }
+    });
+
+    const hasIntent = function(intent) {
+        return requestedLabels.some(function(x) { return x.intent === intent; });
+    };
+    const hasLabel = function(labelNorm) {
+        return requestedLabels.some(function(x) { return x.norm === labelNorm; });
+    };
+
+    const broadParentAsked = hasIntent('dose-parent') || hasIntent('pk-parent') || hasIntent('pd-parent');
+    const preciseAsked = hasIntent('dose-child') || hasIntent('pk-child') || hasIntent('pd-child') || hasIntent('population-child');
+    const overdoseAsked = hasLabel('qua lieu va xu tri') || /\bqua\s+lieu\b/.test(q);
+
+    const labelFromLeadingText = function(textNorm) {
+        const tests = [
+            ['Tên chung quốc tế', /^ten\s+chung\s+quoc\s+te\b/],
+            ['Mã ATC', /^ma\s+atc\b/],
+            ['Loại thuốc', /^loai\s+thuoc\b/],
+            ['Hấp thu', /^hap\s+thu\b/],
+            ['Phân bố', /^phan\s+bo\b/],
+            ['Chuyển hóa', /^chuyen\s+hoa\b/],
+            ['Thải trừ', /^(thai\s+tru|dao\s+thai)\b/],
+            ['Thời gian bán thải', /^thoi\s+gian\s+ban\s+thai\b|^nua\s+doi\b|^t1\/2\b/],
+            ['Cơ chế tác dụng', /^co\s+che\b|^co\s+che\s+tac\s+dung\b/],
+            ['Phổ tác dụng', /^pho\s+tac\s+dung\b|^pho\s+khang\s+khuan\b/],
+            ['Kháng thuốc', /^khang\s+thuoc\b|^de\s+khang\b/],
+            ['Liều dùng', /^lieu\s+(dung|luong)\b/],
+            ['Cách dùng', /^cach\s+dung\b|^duong\s+dung\b/],
+            ['Tốc độ truyền', /^toc\s+do\s+truyen\b/],
+            ['Người lớn', /^nguoi\s+lon\b/],
+            ['Trẻ em', /^tre\s+em\b/],
+            ['Trẻ sơ sinh', /^tre\s+so\s+sinh\b/],
+            ['Người cao tuổi', /^nguoi\s+cao\s+tuoi\b/],
+            ['Suy thận', /^suy\s+than\b|^nguoi\s+benh\s+suy\s+than\b/],
+            ['Suy gan', /^suy\s+gan\b|^nguoi\s+benh\s+suy\s+gan\b/]
+        ];
+        for (let i = 0; i < tests.length; i++) {
+            if (tests[i][1].test(textNorm)) return tests[i][0];
+        }
+        return '';
+    };
+
+    const findParentForLabel = function(labelNorm) {
+        if (['lieu dung','cach dung','toc do truyen','nguoi lon','tre em','tre so sinh','nguoi cao tuoi','suy than','suy gan'].indexOf(labelNorm) >= 0) return 'Liều lượng và cách dùng';
+        if (['hap thu','phan bo','chuyen hoa','thai tru','thoi gian ban thai'].indexOf(labelNorm) >= 0) return 'Dược động học';
+        if (['co che tac dung','pho tac dung','khang thuoc'].indexOf(labelNorm) >= 0) return 'Dược lực học';
+        return '';
+    };
+
+    const pushCandidate = function(list, parent, title, blocks, kind, idSeed, baseBoost) {
+        blocks = (blocks || []).filter(Boolean);
+        if (!parent || !blocks.length) return;
+        const node = makeFineNode(parent, title || parent.title, blocks, idSeed || title || parent.id);
+        list.push({
+            parent: parent,
+            section: node,
+            isSubsection: kind !== 'section',
+            kind: kind || 'section',
+            title: title || parent.title || '',
+            parentTitle: parent.title || '',
+            blocks: blocks,
+            baseBoost: baseBoost || 0
+        });
+    };
+
+    const buildCandidates = function() {
+        const candidates = [];
+
+        sections.forEach(function(parent) {
+            const parentTitle = String(parent.title || 'Mục');
+            const parentBlocks = sectionBlocks(parent);
+            if (!parentBlocks.length && parent.content) {
+                pushCandidate(candidates, parent, parentTitle, [{ type: 'paragraph', text: parent.content }], 'section', parent.id, 0);
+                return;
+            }
+
+            pushCandidate(candidates, parent, parentTitle, parentBlocks, 'section', parent.id || parentTitle, 0);
+
+            (parent.subsections || []).forEach(function(sub) {
+                const subBlocks = Array.isArray(sub.blocks) && sub.blocks.length ? sub.blocks.map(resolveBlock).filter(Boolean) : (sub.content ? [{ type: 'paragraph', text: sub.content }] : []);
+                if (subBlocks.length) pushCandidate(candidates, parent, sub.title || parentTitle, subBlocks, 'legacy-subsection', sub.id || sub.title, 12);
+            });
+
+            let i = 0;
+            while (i < parentBlocks.length) {
+                const b = parentBlocks[i];
+                if (!isSubheadingBlock(b)) { i++; continue; }
+                let end = parentBlocks.length;
+                for (let j = i + 1; j < parentBlocks.length; j++) {
+                    if (isSubheadingBlock(parentBlocks[j])) { end = j; break; }
+                }
+                const title = String(b.text || '').replace(/\s*:$/, '').trim() || parentTitle;
+                pushCandidate(candidates, parent, title, parentBlocks.slice(i, end), 'block-subheading', b.id || title, 18);
+                i = end;
+            }
+
+            let labelStart = -1, labelTitle = '';
+            for (let k = 0; k < parentBlocks.length; k++) {
+                const label = labelFromLeadingText(textNormOf(parentBlocks[k]));
+                if (label) {
+                    if (labelStart >= 0) pushCandidate(candidates, parent, labelTitle, parentBlocks.slice(labelStart, k), 'leading-label', labelTitle, 22);
+                    labelStart = k;
+                    labelTitle = label;
+                }
+            }
+            if (labelStart >= 0) pushCandidate(candidates, parent, labelTitle, parentBlocks.slice(labelStart), 'leading-label', labelTitle, 22);
+
+            parentBlocks.forEach(function(b) {
+                if (!b || ['heading','subheading'].indexOf(b.type) >= 0) return;
+                const txt = textNormOf(b);
+                if (!txt) return;
+                const hasQueryWord = queryWords.some(function(w) { return txt.indexOf(w) >= 0; });
+                const hasExplicitLabel = requestedLabels.some(function(label) {
+                    return txt.indexOf(label.norm) >= 0 || normalize(parentTitle).indexOf(label.norm) >= 0;
+                });
+                if (!hasQueryWord && !hasExplicitLabel) return;
+                const label = labelFromLeadingText(txt);
+                pushCandidate(candidates, parent, label || parentTitle, [b], 'paragraph-hit', (b.id || label || parentTitle), 10);
             });
         });
-        scored.sort(function(a, b) { return b.score - a.score || a.index - b.index; });
-        if (scored.length && scored[0].score >= Math.max(24, terms.length * 14)) return dedupe(scored).slice(0, 2);
-    }
 
-    const aliases = (record.aliases || []).map(normalizeDuocThuText_);
-    if (aliases.indexOf(q) >= 0) return byTitles(['Loại thuốc', 'Dạng thuốc và hàm lượng', 'Chỉ định']);
-    return [];
-}
-
-function matchHospitalDrugsForDuocThu_(record, source) {
-    const data = Array.isArray(source) ? source : [];
-    const terms = (record.aliases || []).map(normalizeDuocThuText_).filter(function(term) { return term.length >= 4; });
-    if (!terms.length) return [];
-    const matches = data.filter(function(drug) {
-        const haystack = normalizeDuocThuText_([drug && drug.active || '', drug && drug.brand || '', drug && drug.name || ''].join(' '));
-        return terms.some(function(term) {
-            if ((' ' + haystack + ' ').indexOf(' ' + term + ' ') >= 0) return true;
-            const words = term.split(' ').filter(function(word) { return word.length >= 5; });
-            return words.length > 0 && words.every(function(word) { return haystack.indexOf(word) >= 0; });
+        const intro = [];
+        for (let i = 0; i < allBlocks.length; i++) {
+            const b = allBlocks[i];
+            if (!b) continue;
+            if (i > 0 && b.type === 'heading' && Number(b.level || 2) <= 2) break;
+            if (b.type !== 'heading') intro.push(b);
+        }
+        const introParent = { id: 'intro', title: 'Thông tin chung', blocks: intro };
+        intro.forEach(function(b) {
+            const t = textNormOf(b);
+            let title = 'Thông tin chung';
+            const label = labelFromLeadingText(t);
+            if (label) title = label;
+            pushCandidate(candidates, introParent, title, [b], 'intro', b.id || title, 16);
         });
+
+        return candidates;
+    };
+
+    const tokenScore = function(textNorm) {
+        let score = 0;
+        queryWords.forEach(function(w) {
+            const m = textNorm.match(new RegExp('(^|\\s)' + escapeRe(w) + '(?=\\s|$)', 'g'));
+            if (m && m.length) score += Math.min(14, 3 + m.length * 3);
+        });
+        return score;
+    };
+
+    const labelScore = function(candidate) {
+        let score = 0;
+        const cTitle = normalize(candidate.title || '');
+        const pTitle = normalize(candidate.parentTitle || '');
+        const cText = normalize([candidate.title, candidate.parentTitle].concat((candidate.blocks || []).map(blockText)).join(' '));
+
+        requestedLabels.forEach(function(label) {
+            const labelNorm = label.norm;
+            const desiredParent = findParentForLabel(labelNorm);
+            if (cTitle === labelNorm) score += label.weight + 45;
+            else if (cTitle.indexOf(labelNorm) >= 0 || labelNorm.indexOf(cTitle) >= 0) score += label.weight + 24;
+            else if (pTitle === labelNorm) score += label.weight + (broadParentAsked ? 26 : 8);
+            else if (pTitle.indexOf(labelNorm) >= 0) score += label.weight + (broadParentAsked ? 18 : 5);
+            else if (cText.indexOf(labelNorm) >= 0) score += Math.max(6, label.weight - 6);
+
+            if (desiredParent && normalize(desiredParent) === pTitle && cTitle === labelNorm) score += 30;
+            if (desiredParent && normalize(desiredParent) !== pTitle && cTitle === labelNorm) score -= 10;
+        });
+
+        return score;
+    };
+
+    const compactnessScore = function(candidate) {
+        const n = (candidate.blocks || []).length;
+        if (candidate.kind === 'leading-label') return 22;
+        if (candidate.kind === 'block-subheading') return 18;
+        if (candidate.kind === 'legacy-subsection') return 15;
+        if (candidate.kind === 'paragraph-hit') return 12;
+        if (candidate.kind === 'intro') return 12;
+        if (candidate.kind === 'section' && preciseAsked) return -28;
+        if (candidate.kind === 'section' && n > 18) return -12;
+        return 0;
+    };
+
+    const wrongBroadPenalty = function(candidate) {
+        const cTitle = normalize(candidate.title || '');
+        const pTitle = normalize(candidate.parentTitle || '');
+        let penalty = 0;
+
+        if (!overdoseAsked && /\bqua\s+lieu\b/.test(cTitle + ' ' + pTitle)) penalty -= 50;
+
+        if (hasLabel('lieu dung') && cTitle === 'cach dung' && !hasLabel('cach dung')) penalty -= 35;
+        if (hasLabel('cach dung') && cTitle === 'lieu dung' && !hasLabel('lieu dung')) penalty -= 35;
+        if (hasLabel('toc do truyen') && cTitle !== 'toc do truyen' && pTitle === 'lieu luong va cach dung') penalty -= 15;
+
+        if (hasIntent('pk-child') && pTitle === 'duoc dong hoc' && ['hap thu','phan bo','chuyen hoa','thai tru','thoi gian ban thai'].indexOf(cTitle) < 0) penalty -= 30;
+        if (hasIntent('pd-child') && pTitle === 'duoc luc hoc' && ['co che tac dung','pho tac dung','khang thuoc'].indexOf(cTitle) < 0) penalty -= 30;
+        if (hasIntent('population-child') && pTitle === 'lieu luong va cach dung' && !requestedLabels.some(function(l){ return l.norm === cTitle; })) penalty -= 12;
+
+        return penalty;
+    };
+
+    const scoreCandidate = function(candidate) {
+        const normText = normalize([candidate.title, candidate.parentTitle].concat((candidate.blocks || []).map(blockText)).join(' '));
+        return (candidate.baseBoost || 0)
+            + labelScore(candidate)
+            + tokenScore(normText)
+            + compactnessScore(candidate)
+            + wrongBroadPenalty(candidate);
+    };
+
+    const candidates = buildCandidates().map(function(candidate, order) {
+        candidate.smartScore = scoreCandidate(candidate);
+        candidate.order = order;
+        return candidate;
+    }).filter(function(candidate) {
+        return candidate.smartScore > 0 && candidate.blocks && candidate.blocks.length;
     });
-    return typeof dedupeDrugs_ === 'function' ? dedupeDrugs_(matches) : matches;
-}
 
-function buildDuocThuSourceLabel_(record) {
-    const p = record && record.source && record.source.printed_pages || {};
-    const pages = p.start ? ('tr. ' + p.start + (p.end && p.end !== p.start ? ('-' + p.end) : '')) : 'trang chưa xác định';
-    return (record.source && record.source.book || 'Dược thư Quốc gia Việt Nam') + ', '
-        + (record.source && record.source.edition || '2023') + ', mục ' + record.title + ', ' + pages + '.';
-}
+    candidates.sort(function(a, b) {
+        if (b.smartScore !== a.smartScore) return b.smartScore - a.smartScore;
+        const rank = { 'leading-label': 0, 'block-subheading': 1, 'legacy-subsection': 2, 'paragraph-hit': 3, 'intro': 4, 'section': 5 };
+        const ar = rank[a.kind] == null ? 9 : rank[a.kind];
+        const br = rank[b.kind] == null ? 9 : rank[b.kind];
+        if (ar !== br) return ar - br;
+        return a.order - b.order;
+    });
 
-function makeDuocThuViewToken_(record, focuses) {
-    const items = Array.isArray(focuses) ? focuses : [focuses];
-    const focusIds = items.map(function(item) {
-        return item && item.section && item.section.id ? item.section.id : '';
-    }).filter(Boolean);
-    return '{{DUOC_THU_VIEW:' + encodeURIComponent(record.id) + '|' + encodeURIComponent(focusIds.join(',')) + '}}';
-}
+    let results = dedupe(candidates.slice(0, 5).map(function(c) {
+        return {
+            parent: c.parent,
+            section: c.section,
+            isSubsection: c.kind !== 'section',
+            smartScore: c.smartScore,
+            smartKind: c.kind
+        };
+    }));
 
-function findDuocThuTable_(record, tableId) {
-    if (!record || !tableId) return null;
-    return (record.tables || []).find(function(table) { return table && table.id === tableId; }) || null;
-}
+    if (results.length) {
+        const hasFine = results.some(function(item) { return item.isSubsection; });
+        if (hasFine && preciseAsked) {
+            results = results.filter(function(item) {
+                if (item.isSubsection) return true;
+                const t = titleNormOf(item.section);
+                return requestedLabels.some(function(label) { return label.norm === t; });
+            });
+        }
 
-function printedPageForDuocThuTable_(record, table) {
-    const source = record && record.source || {};
-    const pdf = source.pdf_pages || {};
-    const printed = source.printed_pages || {};
-    const n = Number(table && table.source_pdf_page);
-    if (Number.isFinite(n) && Number.isFinite(Number(pdf.start)) && Number.isFinite(Number(printed.start))) {
-        return Number(printed.start) + (n - Number(pdf.start));
+        // When user asks one clear fine label, keep only the best matching small passage.
+        const fineLabels = requestedLabels.filter(function(x) {
+            return ['dose-child','pk-child','pd-child','population-child','intro'].indexOf(x.intent) >= 0;
+        });
+        if (fineLabels.length === 1 && results.length > 1) {
+            const wanted = fineLabels[0].norm;
+            const exact = results.filter(function(item) { return titleNormOf(item.section) === wanted; });
+            if (exact.length) results = exact;
+        }
+
+        return results.slice(0, 3);
     }
-    return n || '';
+
+    const sectionByTitle = function(title) {
+        const nt = normalize(title);
+        return sections.find(function(sec) { return normalize(sec.title || '') === nt; }) || null;
+    };
+    const one = function(title) {
+        const sec = sectionByTitle(title);
+        return sec ? [{ parent: sec, section: sec, isSubsection: false, smartScore: 1 }] : [];
+    };
+
+    if (/\bduoc\s+dong\b/.test(q)) return one('Dược động học');
+    if (/\bduoc\s+luc\b/.test(q)) return one('Dược lực học');
+    if (/\btac\s+dung|cong\s+dung\b/.test(q)) return one('Chỉ định').concat(one('Dược lực học')).slice(0, 2);
+    return one('Loại thuốc').concat(one('Dạng thuốc và hàm lượng')).concat(one('Chỉ định')).slice(0, 3);
 }
 
-function duocThuAssetUrl_(path) {
-    const raw = String(path || '').replace(/\\/g, '/').replace(/^\.\//, '');
-    if (!raw) return '';
-    try { return new URL(raw, document.baseURI).href; }
-    catch (e) { return encodeURI(raw); }
-}
-
-function firstDuocThuAlphabetic_(value) {
-    const match = String(value || '').match(/[A-Za-zÀ-ỹ]/u);
-    return match ? match[0] : '';
-}
-
-function isDuocThuTableFootnote_(value) {
-    return /^(?:[a-z]\.|\(\*+\)|\[\*+\])\s*/iu.test(String(value || '').trim());
-}
-
-function endsDuocThuSentence_(value) {
-    let tail = String(value || '').trim();
-    while (tail && /[\"'”’»\)\]]/.test(tail.charAt(tail.length - 1))) tail = tail.slice(0, -1).trim();
-    return /[.!?…]$/.test(tail);
-}
-
-function splitDuocThuParagraphs_(value) {
-    // Paragraph boundaries in the source JSON were determined from PDF layout.
-    // Preserve only those blank-line boundaries. Never split inside a phrase merely
-    // because it contains a label such as “Trẻ em:” or “Người lớn:”.
-    let text = String(value == null ? '' : value)
-        .replace(/\r/g, '')
-        .replace(/[ \t]+\n/g, '\n')
-        .replace(/\n[ \t]+/g, '\n')
-        .replace(/\n{3,}/g, '\n\n')
-        .trim();
-    if (!text) return [];
-
-    const rawBlocks = text.split(/\n{2,}/).map(function(block) {
-        return block.replace(/\s*\n\s*/g, ' ').replace(/\s{2,}/g, ' ').trim();
-    }).filter(Boolean);
-
-    const paragraphs = [];
-    rawBlocks.forEach(function(block) {
-        const first = firstDuocThuAlphabetic_(block);
-        const startsLowerCase = !!first && first === first.toLocaleLowerCase('vi-VN') && first !== first.toLocaleUpperCase('vi-VN');
-        const previous = paragraphs.length ? paragraphs[paragraphs.length - 1] : '';
-        // A lower-case visual continuation is never a fresh clinical paragraph
-        // unless it is a table footnote. Merge only where the preceding chunk
-        // has not already completed a sentence.
-        if (previous && startsLowerCase && !isDuocThuTableFootnote_(block) && !endsDuocThuSentence_(previous)) {
-            paragraphs[paragraphs.length - 1] = previous + ' ' + block;
-            return;
-        }
-        paragraphs.push(block);
-    });
-    return paragraphs;
-}
-
-function renderDuocThuText_(value) {
-    const paragraphs = splitDuocThuParagraphs_(value);
-    return paragraphs.map(function(p){ return '<p class="medplus-duoc-thu-paragraph">' + escapeDuocThuHtml_(p) + '</p>'; }).join('');
-}
-
-function renderDuocThuSourceTable_(record, table) {
-    if (!table || !table.image_path) return '';
-    const printedPage = printedPageForDuocThuTable_(record, table);
-    const src = duocThuAssetUrl_(table.image_path);
-    return '<figure class="medplus-duoc-thu-table-figure" data-duoc-table-id="' + escapeDuocThuHtml_(table.id || '') + '">'
-        + '<figcaption><b>Bảng gốc từ Dược thư</b>' + (printedPage ? ' - tr. ' + escapeDuocThuHtml_(printedPage) : '') + '</figcaption>'
-        + '<img class="medplus-duoc-thu-table-image" loading="lazy" decoding="async" alt="Bảng gốc từ Dược thư" src="' + escapeDuocThuHtml_(src) + '" onerror="var f=this.closest(\'figure\');if(f)f.classList.add(\'duoc-table-image-error\');this.remove();">'
-        + '<div class="medplus-duoc-thu-table-image-error-text">Không tải được ảnh bảng. Hãy kiểm tra thư mục duoc-thu-assets.</div>'
-        + '</figure>';
-}
-
-
-function duocThuV11BlockMap_(record){if(!record.__v11BlockMap){record.__v11BlockMap={};(record.blocks||[]).forEach(function(b){if(b&&b.id)record.__v11BlockMap[b.id]=b;});}return record.__v11BlockMap;}
-function duocThuV11ResolveBlock_(record, block){if(!block)return null;if(typeof block==='string')return duocThuV11BlockMap_(record)[block]||null;if(block.block_id)return duocThuV11BlockMap_(record)[block.block_id]||block;return block;}
-function duocThuV11IntroBlocks_(record){const out=[];const blocks=Array.isArray(record.blocks)?record.blocks:[];for(let i=0;i<blocks.length;i++){const b=blocks[i];if(!b)continue;if(i>0&&b.type==='heading'&&Number(b.level||2)<=2)break;out.push(b)}return out;}
-function renderDuocThuV11Block_(record, block){
-    block = duocThuV11ResolveBlock_(record, block); if(!block) return '';
-    const type = block.type || 'paragraph';
-    if(type === 'table') return renderDuocThuSourceTable_(record, {id:block.table_id||block.id, image_path:block.image_path||block.image, image:block.image||block.image_path, source_pdf_page:block.page, printed_page:block.printed_page, bbox:block.bbox});
-    if(type === 'figure') { const src = duocThuAssetUrl_(block.image_path||block.image||''); return src?'<figure class="medplus-duoc-thu-table-figure"><figcaption><b>Hình gốc từ Dược thư</b></figcaption><img class="medplus-duoc-thu-table-image" loading="lazy" decoding="async" alt="Hình gốc từ Dược thư" src="'+escapeDuocThuHtml_(src)+'"></figure>':''; }
-    if(type === 'list') { const items = Array.isArray(block.items)?block.items:String(block.text||'').split(/\n+/); return '<ul class="medplus-duoc-thu-list">'+items.filter(Boolean).map(function(x){return '<li>'+escapeDuocThuHtml_(x)+'</li>';}).join('')+'</ul>'; }
-    if(type === 'subheading') return '<div class="medplus-duoc-thu-subsection"><b>'+escapeDuocThuHtml_(String(block.text||''))+'</b></div>';
-    if(type === 'note') return '<div class="medplus-duoc-thu-text medplus-duoc-thu-note">'+renderDuocThuText_(block.text||'')+'</div>';
-    if(type === 'heading') return '';
-    return '<div class="medplus-duoc-thu-text">' + renderDuocThuText_(block.text || '') + '</div>';
-}
-function renderDuocThuNodeContent_(record, node) {
-    if (!node) return '';
-    const blocks = Array.isArray(node.blocks) && node.blocks.length
-        ? node.blocks
-        : (String(node.content || '').trim() ? [{ type: 'text', text: String(node.content || '') }] : []);
-    return blocks.map(function(block) {
-        if (!block) return '';
-        if (typeof block === 'string' || block.block_id) return renderDuocThuV11Block_(record, block);
-        if (block.type === 'table') return renderDuocThuSourceTable_(record, findDuocThuTable_(record, block.table_id) || block);
-        if (block.type === 'figure') return renderDuocThuV11Block_(record, block);
-        if (block.type === 'subheading') return '<div class="medplus-duoc-thu-subsection"><b>'+escapeDuocThuHtml_(String(block.text||''))+'</b></div>';
-        if (block.type === 'text') return '<div class="medplus-duoc-thu-text">' + renderDuocThuText_(block.text || '') + '</div>';
-        return renderDuocThuV11Block_(record, block);
-    }).join('');
-}
-function buildDuocThuV11LegacySectionMap_(record){
-    const map={};
-    (record.sections||[]).forEach(function(sec){
-        const key=normalizeDuocThuText_(sec&&sec.title||'');
-        if(key&&!map[key])map[key]=sec.id||'';
-    });
-    return map;
-}
-function buildDuocThuV11DisplaySections_(record){
-    const blocks=Array.isArray(record.blocks)?record.blocks:[];
-    const legacy=buildDuocThuV11LegacySectionMap_(record);
-    const intro=[], sections=[];
-    let current=null, seenTitle=false;
-    blocks.forEach(function(block){
-        if(!block)return;
-        const type=block.type||'paragraph';
-        const level=Number(block.level||2);
-        if(type==='heading' && level===1 && !seenTitle){
-            seenTitle=true;
-            return; /* tên thuốc đã có ở header modal, không lặp lại trong thân */
-        }
-        if(type==='heading' && level<=2){
-            current={
-                title:String(block.text||'Mục'),
-                id:block.id||'',
-                legacy_id:legacy[normalizeDuocThuText_(block.text||'')]||'',
-                blocks:[],
-                block_ids:[]
-            };
-            if(block.id)current.block_ids.push(block.id);
-            sections.push(current);
-            return;
-        }
-        if(current){
-            current.blocks.push(block);
-            if(block.id)current.block_ids.push(block.id);
-        }else{
-            intro.push(block);
-        }
-    });
-    return {intro:intro, sections:sections};
-}
-function isDuocThuV11DisplaySectionFocused_(section, focusIds){
-    if(!focusIds||!focusIds.length)return false;
-    if(focusIds.indexOf(section.id)>=0||focusIds.indexOf(section.legacy_id)>=0)return true;
-    return (section.block_ids||[]).some(function(id){return focusIds.indexOf(id)>=0;});
-}
-function renderDuocThuV11IntroForModal_(record, blocks){
-    if(!blocks||!blocks.length)return '';
-    return '<div class="detail-content medplus-duoc-thu-intro">'+blocks.map(function(block){return renderDuocThuV11Block_(record, block);}).join('')+'</div>';
-}
-function renderDuocThuV11DisplaySectionForModal_(record, section, focusIds){
-    const focused=isDuocThuV11DisplaySectionFocused_(section, focusIds);
-    const content=(section.blocks||[]).map(function(block){return renderDuocThuV11Block_(record, block);}).join('');
-    return '<details class="medplus-duoc-thu-section' + (focused ? ' duoc-thu-focus' : '') + '"' + (focused ? ' open' : '') + '>'
-        + '<summary>' + escapeDuocThuHtml_(section.title||'Mục') + '</summary>'
-        + '<div class="detail-content">' + content + '</div></details>';
-}
-
-let __medplusDuocThuChatCitationSequence = 0;
-const __medplusDuocThuChatCitationCache = new Map();
-
-function cacheDuocThuChatCitation_(record, passages) {
-    const key = 'dt' + Date.now().toString(36) + '_' + (++__medplusDuocThuChatCitationSequence).toString(36);
-    __medplusDuocThuChatCitationCache.set(key, { record: record, passages: passages || [] });
-    // Bound memory in long chat sessions without invalidating the most recent reply.
-    if (__medplusDuocThuChatCitationCache.size > 80) {
-        const first = __medplusDuocThuChatCitationCache.keys().next();
-        if (!first.done) __medplusDuocThuChatCitationCache.delete(first.value);
-    }
-    return key;
-}
 
 function buildDuocThuChatCitation_(key) {
     const entry = __medplusDuocThuChatCitationCache.get(String(key || ''));
