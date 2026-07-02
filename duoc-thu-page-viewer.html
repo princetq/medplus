@@ -116,6 +116,55 @@ body.dark .book-logo{
   .book-logo .duoc-book-year{font-size:7px!important}
 }
 
+
+/* v10.4.5.36 — mobile: tách nhóm công cụ viewer thành dòng riêng bên phải */
+@media(max-width:760px){
+  .source-topbar{
+    display:grid!important;
+    grid-template-columns:auto minmax(0,1fr)!important;
+    grid-template-areas:
+      "logo title"
+      ". actions"!important;
+    align-items:center!important;
+    gap:7px 8px!important;
+    padding:9px 10px 8px!important;
+  }
+  .source-topbar .book-logo{
+    grid-area:logo!important;
+    align-self:center!important;
+  }
+  .source-title{
+    grid-area:title!important;
+    min-width:0!important;
+    padding-right:0!important;
+  }
+  .source-title h1,
+  .source-title p{
+    max-width:100%!important;
+  }
+  .viewer-actions{
+    grid-area:actions!important;
+    position:static!important;
+    right:auto!important;
+    bottom:auto!important;
+    justify-self:end!important;
+    align-self:center!important;
+    display:flex!important;
+    max-width:100%!important;
+    overflow:visible!important;
+    margin:0!important;
+    gap:5px!important;
+    background:rgba(255,255,255,.78)!important;
+    padding:5px!important;
+    border-radius:999px!important;
+    backdrop-filter:blur(8px)!important;
+    -webkit-backdrop-filter:blur(8px)!important;
+  }
+  body.dark .viewer-actions{
+    background:rgba(7,22,35,.76)!important;
+  }
+}
+
 </style>
 </head>
 <body>
