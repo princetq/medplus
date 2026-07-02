@@ -14634,7 +14634,7 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-content.sb-visible::-we
    Route priority (installed inside sendMessage):
      exact-brand HDSD -> Dược thư active ingredient -> group catalog -> AI.
    ================================================================ */
-const MEDPLUS_DUOC_THU_INDEX_URL = './duoc-thu-data/index.json?v=11.0.11';
+const MEDPLUS_DUOC_THU_INDEX_URL = './duoc-thu-data/index.json?v=11.0.12';
 const MEDPLUS_DUOC_THU_DATA_BASE = './duoc-thu-data/';
 let __medplusDuocThuIndexPromise = null;
 const __medplusDuocThuRecordCache = new Map();
@@ -14844,10 +14844,61 @@ function chooseDuocThuPassages_(question, record) {
     if(labels.some(function(x){return x.norm==='tai lieu tham khao';})) labels=labels.filter(function(x){return x.norm!=='lieu dung' && x.intent!=='dose-child' && x.intent!=='population-child';});
     if(/\bsuy\s+than\b/.test(q)) labels=labels.filter(function(x){return x.norm!=='suy gan';});
     if(/\bsuy\s+gan\b/.test(q)) labels=labels.filter(function(x){return x.norm!=='suy than';});
+
+    // v11.0.12: dose/admin group override.
+    // A v11 monograph often has this real hierarchy:
+    // "Liều lượng và cách dùng" -> "Cách dùng" -> route-specific instructions -> "Liều lượng" -> disease/population doses.
+    // In raw blocks, "Liều lượng" may be followed by many peer subheadings such as disease names.
+    // For a general "liều dùng" question, citing only the first paragraph after "Liều lượng" is too narrow and misleading.
+    const makeDoseAdminGroupResult = function(kind) {
+        const parent = exactSection('Liều lượng và cách dùng') || sections.find(function(s) {
+            const t = norm(s.title || '');
+            return /\blieu\b/.test(t) && /\bcach\s+dung\b/.test(t);
+        });
+        if (!parent) return null;
+        const bl = blocksOf(parent);
+        if (!bl.length) return null;
+        const isAdminTitle = function(t) { return /^(cach\s+dung|duong\s+dung|cach\s+su\s+dung)\b/.test(t); };
+        const isDoseTitle = function(t) { return /^lieu\s+(luong|dung)\b/.test(t); };
+        let adminStart = -1, doseStart = -1;
+        for (let i = 0; i < bl.length; i++) {
+            if (!isSubhead(bl[i])) continue;
+            const t = norm(String(bl[i].text || '').replace(/\s*:$/, ''));
+            if (adminStart < 0 && isAdminTitle(t)) adminStart = i;
+            if (doseStart < 0 && isDoseTitle(t)) doseStart = i;
+        }
+        if (kind === 'admin') {
+            let start = adminStart >= 0 ? adminStart : 0;
+            let end = doseStart > start ? doseStart : bl.length;
+            const chosen = bl.slice(start, end).filter(Boolean);
+            if (!chosen.length) return null;
+            return { parent: parent, section: makeNode(parent, 'Cách dùng', chosen, 'cach-dung-full-group'), isSubsection: true, smartKind: 'admin-full-group', smartScore: 1400 };
+        }
+        if (kind === 'dose') {
+            let start = doseStart >= 0 ? doseStart : (adminStart >= 0 ? adminStart + 1 : 0);
+            let end = bl.length;
+            const chosen = bl.slice(start, end).filter(Boolean);
+            if (!chosen.length) return null;
+            return { parent: parent, section: makeNode(parent, 'Liều dùng', chosen, 'lieu-dung-full-group'), isSubsection: true, smartKind: 'dose-full-group', smartScore: 1400 };
+        }
+        return null;
+    };
+
     const candidates=buildCandidates();
     const exactCandidates=function(labelNorm, preferredParent){ const pn=norm(preferredParent||''); return candidates.filter(function(c){ if(norm(c.title)!==labelNorm)return false; if(pn && norm(c.parentTitle)!==pn && c.kind!=='intro')return false; return true; }).sort(function(a,b){ const rank={'leading-label':0,'block-subheading':1,'legacy-subsection':2,'paragraph-hit':3,'intro':4,'section':5}; return (rank[a.kind]||9)-(rank[b.kind]||9); }); };
     const toResult=function(c,score){return {parent:c.parent,section:c.section,isSubsection:c.kind!=='section',smartKind:c.kind,smartScore:score||999};};
     if(labels.length){
+        const hasPopulationDoseQualifier = labels.some(function(x){ return x.intent === 'population-child'; });
+        const hasGeneralDoseOnly = labels.some(function(x){ return x.norm === 'lieu dung'; }) && !hasPopulationDoseQualifier && !labels.some(function(x){ return x.norm === 'cach dung' || x.norm === 'toc do truyen'; });
+        const hasAdminOnly = labels.some(function(x){ return x.norm === 'cach dung'; }) && !labels.some(function(x){ return x.norm === 'lieu dung' || x.norm === 'toc do truyen'; });
+        if (hasGeneralDoseOnly) {
+            const doseGroup = makeDoseAdminGroupResult('dose');
+            if (doseGroup) return [doseGroup];
+        }
+        if (hasAdminOnly) {
+            const adminGroup = makeDoseAdminGroupResult('admin');
+            if (adminGroup) return [adminGroup];
+        }
         const broad=labels.filter(function(x){return ['section','intro','dose-parent','pk-parent','pd-parent'].indexOf(x.intent)>=0;});
         for(let i=0;i<broad.length;i++){ const ex=exactCandidates(broad[i].norm,''); if(ex.length)return [toResult(ex[0],1200)]; const sec=exactSection(broad[i].title); if(sec)return [{parent:sec,section:sec,isSubsection:false,smartKind:'section-exact',smartScore:1200}]; }
         const precise=labels.filter(function(x){return ['dose-child','pk-child','pd-child','population-child'].indexOf(x.intent)>=0;});
