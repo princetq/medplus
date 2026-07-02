@@ -14634,7 +14634,7 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-content.sb-visible::-we
    Route priority (installed inside sendMessage):
      exact-brand HDSD -> Dược thư active ingredient -> group catalog -> AI.
    ================================================================ */
-const MEDPLUS_DUOC_THU_INDEX_URL = './duoc-thu-data/index.json?v=11.0.8';
+const MEDPLUS_DUOC_THU_INDEX_URL = './duoc-thu-data/index.json?v=11.0.9';
 const MEDPLUS_DUOC_THU_DATA_BASE = './duoc-thu-data/';
 let __medplusDuocThuIndexPromise = null;
 const __medplusDuocThuRecordCache = new Map();
@@ -14765,9 +14765,6 @@ function sectionByTitle_(record, title) {
         return hasAllWords(t, expected);
     }) || null;
 }
-
-
-
 
 function chooseDuocThuPassages_(question, record) {
     const q = normalizeDuocThuText_(question || '');
@@ -15187,11 +15184,13 @@ function chooseDuocThuPassages_(question, record) {
         // When user asks one clear fine label, keep only the best matching small passage.
         const fineLabels = requestedLabels.filter(function(x) {
             return ['dose-child','pk-child','pd-child','population-child','intro'].indexOf(x.intent) >= 0;
+        }).filter(function(x, i, arr) {
+            return arr.findIndex(function(y) { return y.norm === x.norm; }) === i;
         });
         if (fineLabels.length === 1 && results.length > 1) {
             const wanted = fineLabels[0].norm;
             const exact = results.filter(function(item) { return titleNormOf(item.section) === wanted; });
-            if (exact.length) results = exact;
+            if (exact.length) results = [exact[0]];
         }
 
         return results.slice(0, 3);
@@ -15212,6 +15211,27 @@ function chooseDuocThuPassages_(question, record) {
     return one('Loại thuốc').concat(one('Dạng thuốc và hàm lượng')).concat(one('Chỉ định')).slice(0, 3);
 }
 
+function matchHospitalDrugsForDuocThu_(record, source) {
+    const data = Array.isArray(source) ? source : [];
+    const terms = (record.aliases || []).map(normalizeDuocThuText_).filter(function(term) { return term.length >= 4; });
+    if (!terms.length) return [];
+    const matches = data.filter(function(drug) {
+        const haystack = normalizeDuocThuText_([drug && drug.active || '', drug && drug.brand || '', drug && drug.name || ''].join(' '));
+        return terms.some(function(term) {
+            if ((' ' + haystack + ' ').indexOf(' ' + term + ' ') >= 0) return true;
+            const words = term.split(' ').filter(function(word) { return word.length >= 5; });
+            return words.length > 0 && words.every(function(word) { return haystack.indexOf(word) >= 0; });
+        });
+    });
+    return typeof dedupeDrugs_ === 'function' ? dedupeDrugs_(matches) : matches;
+}
+
+function buildDuocThuSourceLabel_(record) {
+    const p = record && record.source && record.source.printed_pages || {};
+    const pages = p.start ? ('tr. ' + p.start + (p.end && p.end !== p.start ? ('-' + p.end) : '')) : 'trang chưa xác định';
+    return (record.source && record.source.book || 'Dược thư Quốc gia Việt Nam') + ', '
+        + (record.source && record.source.edition || '2023') + ', mục ' + record.title + ', ' + pages + '.';
+}
 
 function makeDuocThuViewToken_(record, focuses) {
     const items = Array.isArray(focuses) ? focuses : [focuses];
