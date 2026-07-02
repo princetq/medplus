@@ -11029,16 +11029,152 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-content.sb-visible::-we
 
         function buildConciseHospitalCatalogIntroduction_(userMessage) {
             const q = normalizeChatText_(userMessage);
-            let note = 'Dưới đây là toàn bộ thuốc phù hợp trong danh mục hiện có của Bệnh viện Đa khoa tỉnh Tuyên Quang.';
+            let note = 'Tôi sẽ đối chiếu thuốc phù hợp trong danh mục bệnh viện theo tên thuốc, hoạt chất hoặc nhóm thuốc mà bạn hỏi.';
             if (/\bkhang sinh\b/.test(q)) {
-                note = 'Kháng sinh chỉ dùng để điều trị nhiễm khuẩn do vi khuẩn và cần sử dụng theo chẩn đoán, chỉ định của bác sĩ. Dưới đây là toàn bộ thuốc phù hợp trong danh mục hiện có của Bệnh viện Đa khoa tỉnh Tuyên Quang.';
+                note = 'Kháng sinh là thuốc dùng để điều trị nhiễm khuẩn do vi khuẩn, cần lựa chọn theo tác nhân gây bệnh, mức độ nhiễm khuẩn và kháng sinh đồ khi có. Người bệnh không nên tự ý dùng hoặc đổi kháng sinh nếu chưa có chỉ định của nhân viên y tế.';
             } else if (/\bhuyet ap\b/.test(q)) {
-                note = 'Thuốc điều trị tăng huyết áp cần được lựa chọn theo bệnh cảnh, huyết áp, chức năng thận và các bệnh kèm theo. Dưới đây là toàn bộ thuốc phù hợp trong danh mục hiện có của Bệnh viện Đa khoa tỉnh Tuyên Quang.';
+                note = 'Thuốc điều trị tăng huyết áp được lựa chọn theo mức huyết áp, nguy cơ tim mạch, chức năng thận và bệnh kèm theo. Người bệnh cần dùng thuốc đều và theo dõi huyết áp theo hướng dẫn của nhân viên y tế.';
             } else if (/\bkhop\b/.test(q)) {
-                note = 'Việc lựa chọn thuốc cơ xương khớp cần dựa trên nguyên nhân như viêm, thoái hóa hay gout. Dưới đây là toàn bộ thuốc đã qua hậu kiểm phù hợp trong danh mục hiện có của Bệnh viện Đa khoa tỉnh Tuyên Quang.';
+                note = 'Thuốc cơ xương khớp cần lựa chọn theo nguyên nhân như viêm, thoái hóa, gout hoặc đau cấp. Một số thuốc giảm đau/chống viêm có thể ảnh hưởng dạ dày, thận hoặc tim mạch nên cần dùng đúng chỉ định.';
             }
             return note;
         }
+
+        function isLikelyCompleteCatalogIntro_(value) {
+            const text = String(value || '').replace(/\s+/g, ' ').trim();
+            if (!text || text.length < 40) return false;
+            if (/[,:;\-–—]\s*$/.test(text)) return false;
+            const normalizedTail = normalizeChatText_(text).split(/\s+/).slice(-4).join(' ');
+            if (/\b(thuong|gom|bao gom|nhu|la|la mot|va|hoac|trong|cho|voi|de|nham|duoc|can|nen|khi|neu)\b$/.test(normalizedTail)) return false;
+            const last = text.slice(-1);
+            if (!/[.!?…)]/.test(last)) return false;
+            return true;
+        }
+
+        function catalogIntroNormalizeWhitespace_(value) {
+            return String(value || '')
+                .replace(/\r\n/g, '\n')
+                .replace(/[ \t]+/g, ' ')
+                .replace(/\s*\n\s*/g, '\n')
+                .replace(/\n{3,}/g, '\n\n')
+                .trim();
+        }
+
+        function catalogIntroLowerFirst_(value) {
+            const s = String(value || '').trim();
+            if (!s) return '';
+            return s.charAt(0).toLocaleLowerCase('vi') + s.slice(1);
+        }
+
+        function catalogIntroEnsurePeriod_(value) {
+            const s = String(value || '').trim();
+            if (!s) return '';
+            return /[.!?…)]$/.test(s) ? s : (s + '.');
+        }
+
+        function catalogIntroBlockText_(record, block) {
+            if (!block) return '';
+            let resolved = block;
+            if (typeof block === 'string') {
+                const blocks = Array.isArray(record && record.blocks) ? record.blocks : [];
+                resolved = blocks.find(function(item) { return item && item.id === block; }) || null;
+            } else if (block.block_id) {
+                const blocks = Array.isArray(record && record.blocks) ? record.blocks : [];
+                resolved = blocks.find(function(item) { return item && item.id === block.block_id; }) || block;
+            }
+            if (!resolved) return '';
+            return String(resolved.text || resolved.content || '').trim();
+        }
+
+        function extractDuocThuDrugTypeForCatalogIntro_(record) {
+            const blocks = Array.isArray(record && record.blocks) ? record.blocks : [];
+            for (let i = 0; i < blocks.length; i++) {
+                const b = blocks[i];
+                if (i > 0 && b && b.type === 'heading' && Number(b.level || 2) <= 2) break;
+                const text = catalogIntroBlockText_(record, b);
+                const match = text.match(/^\s*Loại\s+thuốc\s*:\s*(.+?)\s*$/i);
+                if (match && match[1]) return catalogIntroEnsurePeriod_(match[1].replace(/\s+/g, ' ').trim());
+            }
+            return '';
+        }
+
+        function buildDuocThuIndicationSummaryForCatalogIntro_(record) {
+            const section = (typeof sectionByTitle_ === 'function') ? sectionByTitle_(record, 'Chỉ định') : null;
+            if (!section) return '';
+            const blocks = Array.isArray(section.blocks) ? section.blocks : [];
+            const pieces = blocks.map(function(block) {
+                const text = catalogIntroBlockText_(record, block);
+                if (!text) return '';
+                if (/^\s*(chỉ\s*định|chi\s*dinh)\s*:?\s*$/i.test(text)) return '';
+                return text;
+            }).filter(Boolean);
+            if (!pieces.length && section.content) pieces.push(String(section.content || ''));
+            let text = pieces.join(' ').replace(/\s+/g, ' ').trim();
+            if (!text) return '';
+            const maxLen = 520;
+            const units = text.match(/[^.!?。]+[.!?。]+|[^.!?。]+$/g) || [text];
+            const kept = [];
+            let total = '';
+            for (let i = 0; i < units.length; i++) {
+                const unit = units[i].replace(/\s+/g, ' ').trim();
+                if (!unit) continue;
+                const next = (total ? total + ' ' : '') + unit;
+                if (next.length > maxLen && total.length >= 160) break;
+                kept.push(unit);
+                total = next;
+                if (total.length >= 260 && /[.!?。]$/.test(total)) break;
+            }
+            if (!total && units.length) total = units[0].replace(/\s+/g, ' ').trim();
+            if (total.length > maxLen) {
+                const cut = total.slice(0, maxLen + 1);
+                const lastSentence = Math.max(cut.lastIndexOf('.'), cut.lastIndexOf('!'), cut.lastIndexOf('?'), cut.lastIndexOf('。'));
+                if (lastSentence >= 120) total = cut.slice(0, lastSentence + 1).trim();
+                else total = cut.slice(0, cut.lastIndexOf(' ')).trim() + '…';
+            }
+            return catalogIntroEnsurePeriod_(total);
+        }
+
+        function buildDuocThuCatalogIntroductionFromRecord_(record) {
+            if (!record) return '';
+            const title = String(record.title || '').trim() || 'Thuốc này';
+            const typeText = extractDuocThuDrugTypeForCatalogIntro_(record);
+            const indicationText = buildDuocThuIndicationSummaryForCatalogIntro_(record);
+            const parts = [];
+            if (typeText) parts.push('**Loại thuốc:** ' + title + ' là ' + catalogIntroLowerFirst_(typeText));
+            if (indicationText) parts.push('**Chỉ định:** ' + indicationText);
+            const safetySource = normalizeChatText_((typeText || '') + ' ' + title);
+            if (/\bkhang sinh\b/.test(safetySource)) {
+                parts.push('**Lưu ý:** Đây là kháng sinh/thuốc kê đơn, cần dùng theo chẩn đoán và chỉ định của nhân viên y tế.');
+            }
+            const intro = catalogIntroNormalizeWhitespace_(parts.join('\n\n'));
+            return intro && (typeText || indicationText) ? intro : '';
+        }
+
+        async function buildDuocThuCatalogIntroductionForQuestion_(userMessage, selectedDrugs) {
+            try {
+                if (typeof ensureDuocThuIndex_ !== 'function' || typeof findDuocThuIndexMatch_ !== 'function' || typeof fetchDuocThuRecord_ !== 'function') return '';
+                const index = await ensureDuocThuIndex_();
+                if (!index || !Array.isArray(index.records) || !index.records.length) return '';
+                const candidates = [String(userMessage || '')];
+                (selectedDrugs || []).slice(0, 8).forEach(function(drug) {
+                    ['active', 'brand', 'name'].forEach(function(key) {
+                        const value = String((drug && drug[key]) || '').trim();
+                        if (value && candidates.indexOf(value) < 0) candidates.push(value);
+                    });
+                });
+                for (let i = 0; i < candidates.length; i++) {
+                    const match = findDuocThuIndexMatch_(candidates[i], index);
+                    if (!match || !match.id) continue;
+                    const record = await fetchDuocThuRecord_(match.id);
+                    const intro = buildDuocThuCatalogIntroductionFromRecord_(record);
+                    if (intro) return intro;
+                }
+            } catch (error) {
+                console.warn('[MedPlus] Không dựng được giới thiệu Dược thư trước danh mục:', error);
+            }
+            return '';
+        }
+
 
         function stripCatalogIntroLabels_(value) {
             return String(value || '')
@@ -11058,17 +11194,17 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-content.sb-visible::-we
             });
             if (!kept.length) return '';
 
-            // Nếu AI vẫn trả một chuỗi nhiều "Ý chính" ngắn, chỉ giữ tối đa 3 ý và gộp thành một đoạn tự nhiên.
             // Đây chỉ là phần dẫn trước danh mục, không được lấn át danh sách thuốc phía sau.
+            // Với fallback AI, chỉ giữ phần giới thiệu 3-4 dòng/câu và chặn câu bị sinh cụt.
             const appearsLikeFormerBulletSeries = rawLines.length >= 3;
-            if (appearsLikeFormerBulletSeries) return kept.slice(0, 3).join(' ');
-            return kept.slice(0, 2).join('\n\n').trim();
+            const candidate = appearsLikeFormerBulletSeries ? kept.slice(0, 4).join(' ') : kept.slice(0, 4).join('\n\n').trim();
+            return isLikelyCompleteCatalogIntro_(candidate) ? candidate : '';
         }
 
         async function composeConciseCatalogIntroductionWithAI_(userMessage, drugCount) {
             const prompt = 'Bạn là MedPlus AI của Khoa Dược - Bệnh viện Đa khoa tỉnh Tuyên Quang.\n'
                 + 'Chỉ viết PHẦN GIẢI THÍCH NGẮN đứng trước danh mục thuốc bệnh viện cho câu hỏi dưới đây.\n'
-                + 'Viết bằng tiếng Việt, 2–3 câu ngắn, tối đa khoảng 450 ký tự, đúng trọng tâm và có lưu ý an toàn phù hợp.\n'
+                + 'Viết bằng tiếng Việt, khoảng 3–4 dòng ngắn, tối đa khoảng 550 ký tự, giới thiệu thuốc/nhóm thuốc và tác dụng/chỉ định chính, có lưu ý an toàn phù hợp.\n'
                 + 'Không dùng nhãn hoặc tiêu đề như "Ý chính:", "Bản chất bệnh lý:", "Phân loại điều trị:", "Lưu ý quan trọng:", "Vai trò bác sĩ:" hay "Lời khuyên:".\n'
                 + 'Không dùng gạch đầu dòng, không đánh số, không tự liệt kê tên thuốc, không nhắc số lượng thuốc, không viết danh mục, không tạo liên kết HDSD.\n'
                 + 'Không lặp lại câu hỏi và không thêm thông tin ngoài phạm vi. Danh sách thuốc đã được website kiểm tra và sẽ tự hiển thị sau phần này.\n\n'
@@ -11103,9 +11239,13 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-content.sb-visible::-we
             // Với câu hỏi rõ là “bệnh viện có thuốc ... nào”, AI vẫn trả lời ngắn trước,
             // sau đó JavaScript mới dựng TOÀN BỘ danh mục và nút HDSD từ dữ liệu gốc.
             if (drugs.length > 0 && isDirectHospitalCatalogListQuestion_(userMessage)) {
-                const aiIntro = await composeConciseCatalogIntroductionWithAI_(userMessage, drugs.length);
+                // Direct catalog questions should still start with a complete, controlled drug intro.
+                // Priority: local Dược thư Loại thuốc + Chỉ định -> gated short AI intro -> safe generic fallback.
+                // The hospital drug list itself remains deterministic and is never written by AI.
+                const duocThuIntro = await buildDuocThuCatalogIntroductionForQuestion_(userMessage, drugs);
+                const aiIntro = duocThuIntro ? '' : await composeConciseCatalogIntroductionWithAI_(userMessage, drugs.length);
                 const fallbackIntro = buildConciseHospitalCatalogIntroduction_(userMessage);
-                return appendDeterministicDrugListToAnswer_(aiIntro || fallbackIntro, drugs);
+                return appendDeterministicDrugListToAnswer_(duocThuIntro || aiIntro || fallbackIntro, drugs);
             }
             if (shouldUseHDSDExcerptForExactBrand_(userMessage, drugs) && drugs.length > 0 && drugs.length <= 3) {
                 const hdsdGroundedAnswer = await composeHDSDGroundedAnswerWithAI_(userMessage, drugs);
