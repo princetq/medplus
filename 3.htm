@@ -15207,7 +15207,7 @@ function openMedPlusDuocThuPdfSource_(record, event){
 }
 
 
-async async function openDuocThuFromChat_(id, focusId, event) {
+async function openDuocThuFromChat_(id, focusId, event) {
     if (event) event.preventDefault();
     const record = await fetchDuocThuRecord_(decodeURIComponent(String(id || '')));
     if (!record) { alert('Không tải được nội dung chuyên luận Dược thư. Bạn vui lòng thử lại sau.'); return; }
