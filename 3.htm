@@ -14634,7 +14634,7 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-content.sb-visible::-we
    Route priority (installed inside sendMessage):
      exact-brand HDSD -> Dược thư active ingredient -> group catalog -> AI.
    ================================================================ */
-const MEDPLUS_DUOC_THU_INDEX_URL = './duoc-thu-data/index.json?v=11.0.0';
+const MEDPLUS_DUOC_THU_INDEX_URL = './duoc-thu-data/index.json?v=11.0.8';
 const MEDPLUS_DUOC_THU_DATA_BASE = './duoc-thu-data/';
 let __medplusDuocThuIndexPromise = null;
 const __medplusDuocThuRecordCache = new Map();
@@ -15212,6 +15212,204 @@ function chooseDuocThuPassages_(question, record) {
     return one('Loại thuốc').concat(one('Dạng thuốc và hàm lượng')).concat(one('Chỉ định')).slice(0, 3);
 }
 
+
+function makeDuocThuViewToken_(record, focuses) {
+    const items = Array.isArray(focuses) ? focuses : [focuses];
+    const focusIds = items.map(function(item) {
+        return item && item.section && item.section.id ? item.section.id : '';
+    }).filter(Boolean);
+    return '{{DUOC_THU_VIEW:' + encodeURIComponent(record.id) + '|' + encodeURIComponent(focusIds.join(',')) + '}}';
+}
+
+function findDuocThuTable_(record, tableId) {
+    if (!record || !tableId) return null;
+    return (record.tables || []).find(function(table) { return table && table.id === tableId; }) || null;
+}
+
+function printedPageForDuocThuTable_(record, table) {
+    const source = record && record.source || {};
+    const pdf = source.pdf_pages || {};
+    const printed = source.printed_pages || {};
+    const n = Number(table && table.source_pdf_page);
+    if (Number.isFinite(n) && Number.isFinite(Number(pdf.start)) && Number.isFinite(Number(printed.start))) {
+        return Number(printed.start) + (n - Number(pdf.start));
+    }
+    return n || '';
+}
+
+function duocThuAssetUrl_(path) {
+    const raw = String(path || '').replace(/\\/g, '/').replace(/^\.\//, '');
+    if (!raw) return '';
+    try { return new URL(raw, document.baseURI).href; }
+    catch (e) { return encodeURI(raw); }
+}
+
+function firstDuocThuAlphabetic_(value) {
+    const match = String(value || '').match(/[A-Za-zÀ-ỹ]/u);
+    return match ? match[0] : '';
+}
+
+function isDuocThuTableFootnote_(value) {
+    return /^(?:[a-z]\.|\(\*+\)|\[\*+\])\s*/iu.test(String(value || '').trim());
+}
+
+function endsDuocThuSentence_(value) {
+    let tail = String(value || '').trim();
+    while (tail && /[\"'”’»\)\]]/.test(tail.charAt(tail.length - 1))) tail = tail.slice(0, -1).trim();
+    return /[.!?…]$/.test(tail);
+}
+
+function splitDuocThuParagraphs_(value) {
+    // Paragraph boundaries in the source JSON were determined from PDF layout.
+    // Preserve only those blank-line boundaries. Never split inside a phrase merely
+    // because it contains a label such as “Trẻ em:” or “Người lớn:”.
+    let text = String(value == null ? '' : value)
+        .replace(/\r/g, '')
+        .replace(/[ \t]+\n/g, '\n')
+        .replace(/\n[ \t]+/g, '\n')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+    if (!text) return [];
+
+    const rawBlocks = text.split(/\n{2,}/).map(function(block) {
+        return block.replace(/\s*\n\s*/g, ' ').replace(/\s{2,}/g, ' ').trim();
+    }).filter(Boolean);
+
+    const paragraphs = [];
+    rawBlocks.forEach(function(block) {
+        const first = firstDuocThuAlphabetic_(block);
+        const startsLowerCase = !!first && first === first.toLocaleLowerCase('vi-VN') && first !== first.toLocaleUpperCase('vi-VN');
+        const previous = paragraphs.length ? paragraphs[paragraphs.length - 1] : '';
+        // A lower-case visual continuation is never a fresh clinical paragraph
+        // unless it is a table footnote. Merge only where the preceding chunk
+        // has not already completed a sentence.
+        if (previous && startsLowerCase && !isDuocThuTableFootnote_(block) && !endsDuocThuSentence_(previous)) {
+            paragraphs[paragraphs.length - 1] = previous + ' ' + block;
+            return;
+        }
+        paragraphs.push(block);
+    });
+    return paragraphs;
+}
+
+function renderDuocThuText_(value) {
+    const paragraphs = splitDuocThuParagraphs_(value);
+    return paragraphs.map(function(p){ return '<p class="medplus-duoc-thu-paragraph">' + escapeDuocThuHtml_(p) + '</p>'; }).join('');
+}
+
+function renderDuocThuSourceTable_(record, table) {
+    if (!table || !table.image_path) return '';
+    const printedPage = printedPageForDuocThuTable_(record, table);
+    const src = duocThuAssetUrl_(table.image_path);
+    return '<figure class="medplus-duoc-thu-table-figure" data-duoc-table-id="' + escapeDuocThuHtml_(table.id || '') + '">'
+        + '<figcaption><b>Bảng gốc từ Dược thư</b>' + (printedPage ? ' - tr. ' + escapeDuocThuHtml_(printedPage) : '') + '</figcaption>'
+        + '<img class="medplus-duoc-thu-table-image" loading="lazy" decoding="async" alt="Bảng gốc từ Dược thư" src="' + escapeDuocThuHtml_(src) + '" onerror="var f=this.closest(\'figure\');if(f)f.classList.add(\'duoc-table-image-error\');this.remove();">'
+        + '<div class="medplus-duoc-thu-table-image-error-text">Không tải được ảnh bảng. Hãy kiểm tra thư mục duoc-thu-assets.</div>'
+        + '</figure>';
+}
+
+
+function duocThuV11BlockMap_(record){if(!record.__v11BlockMap){record.__v11BlockMap={};(record.blocks||[]).forEach(function(b){if(b&&b.id)record.__v11BlockMap[b.id]=b;});}return record.__v11BlockMap;}
+function duocThuV11ResolveBlock_(record, block){if(!block)return null;if(typeof block==='string')return duocThuV11BlockMap_(record)[block]||null;if(block.block_id)return duocThuV11BlockMap_(record)[block.block_id]||block;return block;}
+function duocThuV11IntroBlocks_(record){const out=[];const blocks=Array.isArray(record.blocks)?record.blocks:[];for(let i=0;i<blocks.length;i++){const b=blocks[i];if(!b)continue;if(i>0&&b.type==='heading'&&Number(b.level||2)<=2)break;out.push(b)}return out;}
+function renderDuocThuV11Block_(record, block){
+    block = duocThuV11ResolveBlock_(record, block); if(!block) return '';
+    const type = block.type || 'paragraph';
+    if(type === 'table') return renderDuocThuSourceTable_(record, {id:block.table_id||block.id, image_path:block.image_path||block.image, image:block.image||block.image_path, source_pdf_page:block.page, printed_page:block.printed_page, bbox:block.bbox});
+    if(type === 'figure') { const src = duocThuAssetUrl_(block.image_path||block.image||''); return src?'<figure class="medplus-duoc-thu-table-figure"><figcaption><b>Hình gốc từ Dược thư</b></figcaption><img class="medplus-duoc-thu-table-image" loading="lazy" decoding="async" alt="Hình gốc từ Dược thư" src="'+escapeDuocThuHtml_(src)+'"></figure>':''; }
+    if(type === 'list') { const items = Array.isArray(block.items)?block.items:String(block.text||'').split(/\n+/); return '<ul class="medplus-duoc-thu-list">'+items.filter(Boolean).map(function(x){return '<li>'+escapeDuocThuHtml_(x)+'</li>';}).join('')+'</ul>'; }
+    if(type === 'subheading') return '<div class="medplus-duoc-thu-subsection"><b>'+escapeDuocThuHtml_(String(block.text||''))+'</b></div>';
+    if(type === 'note') return '<div class="medplus-duoc-thu-text medplus-duoc-thu-note">'+renderDuocThuText_(block.text||'')+'</div>';
+    if(type === 'heading') return '';
+    return '<div class="medplus-duoc-thu-text">' + renderDuocThuText_(block.text || '') + '</div>';
+}
+function renderDuocThuNodeContent_(record, node) {
+    if (!node) return '';
+    const blocks = Array.isArray(node.blocks) && node.blocks.length
+        ? node.blocks
+        : (String(node.content || '').trim() ? [{ type: 'text', text: String(node.content || '') }] : []);
+    return blocks.map(function(block) {
+        if (!block) return '';
+        if (typeof block === 'string' || block.block_id) return renderDuocThuV11Block_(record, block);
+        if (block.type === 'table') return renderDuocThuSourceTable_(record, findDuocThuTable_(record, block.table_id) || block);
+        if (block.type === 'figure') return renderDuocThuV11Block_(record, block);
+        if (block.type === 'subheading') return '<div class="medplus-duoc-thu-subsection"><b>'+escapeDuocThuHtml_(String(block.text||''))+'</b></div>';
+        if (block.type === 'text') return '<div class="medplus-duoc-thu-text">' + renderDuocThuText_(block.text || '') + '</div>';
+        return renderDuocThuV11Block_(record, block);
+    }).join('');
+}
+function buildDuocThuV11LegacySectionMap_(record){
+    const map={};
+    (record.sections||[]).forEach(function(sec){
+        const key=normalizeDuocThuText_(sec&&sec.title||'');
+        if(key&&!map[key])map[key]=sec.id||'';
+    });
+    return map;
+}
+function buildDuocThuV11DisplaySections_(record){
+    const blocks=Array.isArray(record.blocks)?record.blocks:[];
+    const legacy=buildDuocThuV11LegacySectionMap_(record);
+    const intro=[], sections=[];
+    let current=null, seenTitle=false;
+    blocks.forEach(function(block){
+        if(!block)return;
+        const type=block.type||'paragraph';
+        const level=Number(block.level||2);
+        if(type==='heading' && level===1 && !seenTitle){
+            seenTitle=true;
+            return; /* tên thuốc đã có ở header modal, không lặp lại trong thân */
+        }
+        if(type==='heading' && level<=2){
+            current={
+                title:String(block.text||'Mục'),
+                id:block.id||'',
+                legacy_id:legacy[normalizeDuocThuText_(block.text||'')]||'',
+                blocks:[],
+                block_ids:[]
+            };
+            if(block.id)current.block_ids.push(block.id);
+            sections.push(current);
+            return;
+        }
+        if(current){
+            current.blocks.push(block);
+            if(block.id)current.block_ids.push(block.id);
+        }else{
+            intro.push(block);
+        }
+    });
+    return {intro:intro, sections:sections};
+}
+function isDuocThuV11DisplaySectionFocused_(section, focusIds){
+    if(!focusIds||!focusIds.length)return false;
+    if(focusIds.indexOf(section.id)>=0||focusIds.indexOf(section.legacy_id)>=0)return true;
+    return (section.block_ids||[]).some(function(id){return focusIds.indexOf(id)>=0;});
+}
+function renderDuocThuV11IntroForModal_(record, blocks){
+    if(!blocks||!blocks.length)return '';
+    return '<div class="detail-content medplus-duoc-thu-intro">'+blocks.map(function(block){return renderDuocThuV11Block_(record, block);}).join('')+'</div>';
+}
+function renderDuocThuV11DisplaySectionForModal_(record, section, focusIds){
+    const focused=isDuocThuV11DisplaySectionFocused_(section, focusIds);
+    const content=(section.blocks||[]).map(function(block){return renderDuocThuV11Block_(record, block);}).join('');
+    return '<details class="medplus-duoc-thu-section' + (focused ? ' duoc-thu-focus' : '') + '"' + (focused ? ' open' : '') + '>'
+        + '<summary>' + escapeDuocThuHtml_(section.title||'Mục') + '</summary>'
+        + '<div class="detail-content">' + content + '</div></details>';
+}
+
+let __medplusDuocThuChatCitationSequence = 0;
+const __medplusDuocThuChatCitationCache = new Map();
+
+function cacheDuocThuChatCitation_(record, passages) {
+    const key = 'dt' + Date.now().toString(36) + '_' + (++__medplusDuocThuChatCitationSequence).toString(36);
+    __medplusDuocThuChatCitationCache.set(key, { record: record, passages: passages || [] });
+    // Bound memory in long chat sessions without invalidating the most recent reply.
+    if (__medplusDuocThuChatCitationCache.size > 80) {
+        const first = __medplusDuocThuChatCitationCache.keys().next();
+        if (!first.done) __medplusDuocThuChatCitationCache.delete(first.value);
+    }
+    return key;
+}
 
 function buildDuocThuChatCitation_(key) {
     const entry = __medplusDuocThuChatCitationCache.get(String(key || ''));
