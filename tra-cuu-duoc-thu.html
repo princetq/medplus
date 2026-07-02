@@ -2384,6 +2384,17 @@ body.dark-mode #hdsd-content .hdsd-table-scroll-force td{
 }
 </style>
 
+
+<style id="medplus-duoc-thu-v11-inner-layout-only-style">
+/* v11.0.3: chỉ bỏ ép chữ in hoa trong nội dung/toggle Dược thư, không đổi font/cỡ chữ/bố cục modal ngoài */
+#medplus-duoc-thu-modal .medplus-duoc-thu-section > summary,
+#medplus-duoc-thu-modal .medplus-duoc-thu-subsection > b,
+#duoc-modal .duoc-section > summary,
+#duoc-modal .duoc-subsection > b {
+  text-transform: none !important;
+}
+</style>
+
 </head>
 <body>
 
@@ -2820,11 +2831,16 @@ function findTable(rec,id){return(rec.tables||[]).find(function(t){return t&&t.i
 function printedPage(rec,t){const pdf=(rec.source||{}).pdf_pages||{},printed=(rec.source||{}).printed_pages||{},n=Number(t&&t.source_pdf_page);return Number.isFinite(n)&&Number.isFinite(Number(pdf.start))&&Number.isFinite(Number(printed.start))?Number(printed.start)+(n-Number(pdf.start)):(n||'')}
 function assetUrl(path){const raw=String(path||'').replace(/\\/g,'/').replace(/^\.\//,'');try{return new URL(raw,document.baseURI).href}catch(e){return encodeURI(raw)}}
 function renderTable(rec,t){if(!t||!t.image_path)return '';const src=assetUrl(t.image_path);return '<figure class="duoc-table-figure" data-duoc-table-id="'+esc(t.id||'')+'"><figcaption><b>Bảng gốc từ Dược thư</b>'+(printedPage(rec,t)?' - tr. '+esc(printedPage(rec,t)):'')+'</figcaption><img class="duoc-table-image" loading="lazy" decoding="async" alt="Bảng gốc từ Dược thư" src="'+esc(src)+'" onerror="var f=this.closest(\'figure\');if(f)f.classList.add(\'duoc-table-image-error\');this.remove();"><div class="duoc-table-image-error-text">Không tải được ảnh bảng. Hãy kiểm tra thư mục duoc-thu-assets.</div></figure>'}
+
 function duocV11BlockMap(rec){if(!rec.__v11BlockMap){rec.__v11BlockMap={};(rec.blocks||[]).forEach(function(b){if(b&&b.id)rec.__v11BlockMap[b.id]=b;});}return rec.__v11BlockMap}
 function duocV11ResolveBlock(rec,b){if(!b)return null;if(typeof b==='string')return duocV11BlockMap(rec)[b]||null;if(b.block_id)return duocV11BlockMap(rec)[b.block_id]||b;return b}
 function duocV11IntroBlocks(rec){const out=[];const blocks=Array.isArray(rec.blocks)?rec.blocks:[];for(let i=0;i<blocks.length;i++){const b=blocks[i];if(!b)continue;if(i>0&&b.type==='heading'&&Number(b.level||2)<=2)break;out.push(b)}return out}
-function duocV11RenderBlock(rec,b){b=duocV11ResolveBlock(rec,b);if(!b)return '';const type=b.type||'paragraph';if(type==='table'){return renderTable(rec,{id:b.table_id||b.id,image_path:b.image_path||b.image,image:b.image||b.image_path,source_pdf_page:b.page,printed_page:b.printed_page,bbox:b.bbox})}if(type==='figure'){const src=assetUrl(b.image_path||b.image||'');return src?'<figure class="duoc-table-figure"><figcaption><b>Hình gốc từ Dược thư</b></figcaption><img class="duoc-table-image" loading="lazy" decoding="async" alt="Hình gốc từ Dược thư" src="'+esc(src)+'"></figure>':''}if(type==='list'){const items=Array.isArray(b.items)?b.items:String(b.text||'').split(/\n+/);return '<ul class="duoc-v11-list">'+items.filter(Boolean).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>'}if(type==='subheading'){return '<div class="duoc-subsection"><b>'+esc(String(b.text||'').toLocaleUpperCase('vi-VN'))+'</b></div>'}if(type==='note'){return '<div class="duoc-text duoc-note"><p class="duoc-paragraph">'+esc(b.text||'')+'</p></div>'}if(type==='heading'){return ''}return '<div class="duoc-text">'+renderText(b.text||'')+'</div>'}
-function renderNode(rec,node){if(!node)return '';const blocks=Array.isArray(node.blocks)&&node.blocks.length?node.blocks:(String(node.content||'').trim()?[{type:'text',text:String(node.content||'')}]:[]);return blocks.map(function(b){if(!b)return '';if(typeof b==='string'||b.block_id)return duocV11RenderBlock(rec,b);if(b.type==='table')return renderTable(rec,findTable(rec,b.table_id)||b);if(b.type==='figure')return duocV11RenderBlock(rec,b);if(b.type==='subheading')return '<div class="duoc-subsection"><b>'+esc(String(b.text||'').toLocaleUpperCase('vi-VN'))+'</b></div>';if(b.type==='text')return '<div class="duoc-text">'+renderText(b.text||'')+'</div>';return duocV11RenderBlock(rec,b)}).join('')}
+function duocV11RenderBlock(rec,b){b=duocV11ResolveBlock(rec,b);if(!b)return '';const type=b.type||'paragraph';if(type==='table'){return renderTable(rec,{id:b.table_id||b.id,image_path:b.image_path||b.image,image:b.image||b.image_path,source_pdf_page:b.page,printed_page:b.printed_page,bbox:b.bbox})}if(type==='figure'){const src=assetUrl(b.image_path||b.image||'');return src?'<figure class="duoc-table-figure"><figcaption><b>Hình gốc từ Dược thư</b></figcaption><img class="duoc-table-image" loading="lazy" decoding="async" alt="Hình gốc từ Dược thư" src="'+esc(src)+'"></figure>':''}if(type==='list'){const items=Array.isArray(b.items)?b.items:String(b.text||'').split(/\n+/);return '<ul class="duoc-v11-list">'+items.filter(Boolean).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>'}if(type==='subheading'){return '<div class="duoc-subsection"><b>'+esc(String(b.text||''))+'</b></div>'}if(type==='note'){return '<div class="duoc-text duoc-note"><p class="duoc-paragraph">'+esc(b.text||'')+'</p></div>'}if(type==='heading'){return ''}return '<div class="duoc-text">'+renderText(b.text||'')+'</div>'}
+function renderNode(rec,node){if(!node)return '';const blocks=Array.isArray(node.blocks)&&node.blocks.length?node.blocks:(String(node.content||'').trim()?[{type:'text',text:String(node.content||'')}]:[]);return blocks.map(function(b){if(!b)return '';if(typeof b==='string'||b.block_id)return duocV11RenderBlock(rec,b);if(b.type==='table')return renderTable(rec,findTable(rec,b.table_id)||b);if(b.type==='figure')return duocV11RenderBlock(rec,b);if(b.type==='subheading')return '<div class="duoc-subsection"><b>'+esc(String(b.text||''))+'</b></div>';if(b.type==='text')return '<div class="duoc-text">'+renderText(b.text||'')+'</div>';return duocV11RenderBlock(rec,b)}).join('')}
+function duocV11LegacySectionMap(rec){const map={};(rec.sections||[]).forEach(function(sec){const k=norm(sec&&sec.title||'');if(k&&!map[k])map[k]=sec.id||''});return map}
+function buildDuocV11DisplaySections(rec){const blocks=Array.isArray(rec.blocks)?rec.blocks:[],legacy=duocV11LegacySectionMap(rec),intro=[],sections=[];let current=null,seenTitle=false;blocks.forEach(function(b){if(!b)return;const type=b.type||'paragraph',level=Number(b.level||2);if(type==='heading'&&level===1&&!seenTitle){seenTitle=true;return}if(type==='heading'&&level<=2){current={title:String(b.text||'Mục'),id:b.id||'',legacy_id:legacy[norm(b.text||'')]||'',blocks:[],block_ids:[]};if(b.id)current.block_ids.push(b.id);sections.push(current);return}if(current){current.blocks.push(b);if(b.id)current.block_ids.push(b.id)}else intro.push(b)});return{intro:intro,sections:sections}}
+function renderDuocV11Intro(rec,blocks){if(!blocks||!blocks.length)return '';return '<div class="duoc-section-body duoc-v11-intro">'+blocks.map(function(b){return duocV11RenderBlock(rec,b)}).join('')+'</div>'}
+function renderDuocV11Section(rec,sec){return '<details class="duoc-section"><summary>'+esc(sec.title||'Mục')+'</summary><div class="duoc-section-body">'+(sec.blocks||[]).map(function(b){return duocV11RenderBlock(rec,b)}).join('')+'</div></details>'}
 
 let medplusDrugPromise=null, lastBrandMatches=[], lastBrandContext=null;
 function uniqueText(arr){const seen=new Set();return (arr||[]).map(function(x){return String(x||'').trim()}).filter(function(x){const k=norm(x);if(!k||seen.has(k))return false;seen.add(k);return true})}
@@ -3085,25 +3101,20 @@ function openDuocThuPdfSource_(id,ev){
   }).catch(function(){alert('Không mở được nguồn ảnh của chuyên luận này.');});
 }
 
+
 function renderRecord(rec){
   const source=rec.source||{},p=source.printed_pages||{},pages=p.start?('tr. '+p.start+(p.end&&p.end!==p.start?'–'+p.end:'')):'trang chưa xác định';
+  const grouped=buildDuocV11DisplaySections(rec);
   let h='<button type="button" class="duoc-close" aria-label="Đóng">×</button>'
     +'<div class="duoc-modal-drug-header">'
     +'<button type="button" class="duoc-modal-book duoc-pdf-source-btn" data-duoc-pdf-source="'+esc(rec.id||'')+'" title="Mở nguồn PDF Dược thư tại trang chuyên luận"><span class="duoc-book-emblem">📚</span><span class="duoc-book-kicker">Dược thư</span><span class="duoc-book-year">2023</span></button>'
     +'<div class="duoc-modal-head"><h2>'+esc(rec.title)+'</h2><p>'+esc((source.book||'Dược thư Quốc gia Việt Nam')+', '+(source.edition||'2023')+', '+pages+'.')+'</p>'
     +'<div class="duoc-modal-actions"><button type="button" class="duoc-brand-open-btn" data-duoc-brand-record="'+esc(rec.id||'')+'" title="Mở biệt dược/HDSD liên quan"><span>BIỆT DƯỢC</span><span class="duoc-brand-count">…</span></button></div>'
-    +'</div></div><div class="duoc-modal-body">';
-  const intro=duocV11IntroBlocks(rec).filter(function(b){return !(b.type==='heading'&&Number(b.level||1)===1)});
-  if(intro.length){h+='<div class="duoc-section-body duoc-v11-intro">'+intro.map(function(b){return duocV11RenderBlock(rec,b)}).join('')+'</div>'}
-  (rec.sections||[]).forEach(function(sec){
-    const parent=renderNode(rec,sec),children=sec.render_mode==='children_only'&&Array.isArray(sec.subsections)&&sec.subsections.length;
-    const title=String(sec.title||'').toLocaleUpperCase('vi-VN');
-    h+='<details class="duoc-section"><summary>'+esc(title)+'</summary>';
-    if(parent)h+='<div class="duoc-section-body">'+parent+'</div>';
-    if(children){h+='<div class="duoc-subsections">';sec.subsections.forEach(function(sub){h+='<div class="duoc-subsection"><b>'+esc(String(sub.title||'').toLocaleUpperCase('vi-VN'))+'</b>'+renderNode(rec,sub)+'</div>'});h+='</div>'}
-    h+='</details>'
-  });
-  return h+'</div>'
+    +'</div></div><div class="duoc-modal-body">'
+    +renderDuocV11Intro(rec,grouped.intro)
+    +grouped.sections.map(function(sec){return renderDuocV11Section(rec,sec)}).join('')
+    +'</div>';
+  return h
 }
 async function openRecord(id){try{modalBox.innerHTML='<div class="duoc-loading">Đang tải chuyên luận...</div>';modal.classList.add('show');syncDuocPageScrollLock();const rec=await getRecord(id);modalBox.innerHTML=renderRecord(rec);modalBox.querySelector('.duoc-close').addEventListener('click',closeModal);updateBrandButtonForRecord(rec)}catch(e){modalBox.innerHTML='<button type="button" class="duoc-close" aria-label="Đóng">×</button><div class="duoc-empty">Không tải được chuyên luận. Hãy kiểm tra thư mục <b>duoc-thu-data</b> và thử lại.</div>';modalBox.querySelector('.duoc-close').addEventListener('click',closeModal)}}
 function closeModal(){modal.classList.remove('show');modalBox.innerHTML='';syncDuocPageScrollLock()}
