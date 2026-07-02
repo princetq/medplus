@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nguồn Dược thư 2023</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Nunito+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#2e7d32;--green-dark:#1b5e20;--green-soft:#e8f5e9;
+  --bg:#f4faf5;--panel:#ffffff;--text:#1f2a24;--muted:#63756a;--border:rgba(46,125,50,.22);
+  --font-body:'Inter','Segoe UI',system-ui,sans-serif;
+  --font-display:'Nunito Sans','Inter','Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{
+  height:100%;margin:0;overflow:hidden;
+  font-family:var(--font-body);
+  font-size:18px;
+  background:var(--bg);color:var(--text);
+  -webkit-tap-highlight-color:transparent;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+}
+body.dark{--bg:#071623;--panel:#0b1d38;--text:#e8f2ff;--muted:#bfd5c7;--border:rgba(80,220,180,.26);--green:#72e0aa;--green-dark:#72e0aa;--green-soft:#102646}
+.source-shell{height:100%;display:grid;grid-template-rows:auto 1fr;background:radial-gradient(circle at top left,rgba(76,175,80,.12),transparent 34%),var(--bg)}
+.source-topbar{display:flex;align-items:center;gap:12px;padding:11px 15px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.84);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:10;min-width:0}
+body.dark .source-topbar{background:rgba(7,22,35,.88)}
+
+.source-title{min-width:0;flex:1}.source-title h1{font-family:var(--font-display);font-size:20px;line-height:1.2;margin:0 0 4px;font-weight:900;color:var(--green-dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.source-title p{font-size:14px;line-height:1.35;margin:0;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.viewer-actions{display:flex;align-items:center;gap:7px;flex:0 0 auto}.viewer-actions button,.viewer-actions input{
+  height:36px;border:1px solid var(--border);border-radius:999px;background:var(--panel);color:var(--green-dark);
+  font-weight:800;font-family:var(--font-body);font-size:16px;box-shadow:0 3px 12px rgba(0,0,0,.05);
+}
+.viewer-actions button{
+  min-width:36px;width:36px;padding:0;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;text-align:center;
+  line-height:1;vertical-align:middle;
+}
+.viewer-actions button .btn-symbol{display:block;line-height:1;transform:translateY(-1px)}
+.viewer-actions button:hover{background:rgba(46,125,50,.08)}
+.viewer-actions input{width:86px;text-align:center;padding:0 8px;color:var(--text);border-radius:10px;font-weight:800}
+#fit-page{width:auto;min-width:44px;padding:0 11px;font-family:var(--font-display);font-size:15px}
+.viewer-stage-wrap{position:relative;overflow:hidden;min-height:0;background:linear-gradient(135deg,rgba(46,125,50,.04),rgba(46,125,50,.01))}.viewer-stage{position:absolute;inset:0;overflow:hidden;touch-action:none;cursor:grab}.viewer-stage.dragging{cursor:grabbing}.viewer-img{position:absolute;left:0;top:0;display:block;max-width:none;max-height:none;user-select:none;-webkit-user-drag:none;transform-origin:0 0;will-change:transform;box-shadow:0 10px 40px rgba(0,0,0,.20);background:#fff}.viewer-empty{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 35px rgba(0,0,0,.12);max-width:min(520px,86vw);text-align:center;color:var(--muted);line-height:1.5;font-size:17px}.viewer-loading{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:10px 13px;border-radius:999px;background:rgba(0,0,0,.56);color:#fff;font-size:15px;font-weight:800;pointer-events:none}.viewer-page-chip{position:absolute;left:12px;bottom:12px;z-index:4;padding:8px 11px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font-size:14px;font-weight:800;pointer-events:none}.hidden{display:none!important}
+@media(max-width:760px){
+  html,body{font-size:17px}
+  .source-topbar{padding:9px 10px;gap:8px;align-items:flex-start}.source-title h1{font-size:17px}.source-title p{font-size:13px}.viewer-actions{position:absolute;right:8px;bottom:8px;gap:5px;background:rgba(255,255,255,.75);padding:5px;border-radius:999px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}body.dark .viewer-actions{background:rgba(7,22,35,.72)}.viewer-actions button,.viewer-actions input{height:34px;font-size:15px}.viewer-actions button{width:34px;min-width:34px}.viewer-actions input{width:68px}.hide-mobile{display:none!important}
+}
+
+/* v10.4.5.34 — logo viewer lấy đúng kiểu logo trong chi tiết chuyên luận */
+.book-logo{
+  width:78px!important;
+  height:78px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex-direction:column!important;
+  flex-shrink:0!important;
+  background:linear-gradient(145deg,var(--green,#2e7d32),var(--green-dark,#1b5e20))!important;
+  border-radius:16px!important;
+  color:rgba(255,255,255,.94)!important;
+  text-align:center!important;
+  box-shadow:0 4px 16px rgba(13,51,32,.25)!important;
+  border:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+.book-logo .duoc-book-emblem{
+  width:36px!important;
+  height:36px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:18px!important;
+  line-height:1!important;
+  margin-bottom:4px!important;
+  border-radius:999px!important;
+  background:rgba(255,255,255,.10)!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+}
+.book-logo .duoc-book-kicker{
+  font-family:var(--font-display)!important;
+  font-size:7.5px!important;
+  line-height:1.05!important;
+  font-weight:900!important;
+  letter-spacing:.4px!important;
+  text-transform:uppercase!important;
+}
+.book-logo .duoc-book-year{
+  font-family:var(--font-display)!important;
+  font-size:8.5px!important;
+  line-height:1.05!important;
+  font-weight:900!important;
+  letter-spacing:.55px!important;
+}
+body.dark .book-logo{
+  background:linear-gradient(145deg,#2e7d32,#0d3f24)!important;
+  box-shadow:0 5px 18px rgba(0,0,0,.35)!important;
+}
+@media(max-width:760px){
+  .book-logo{
+    width:58px!important;
+    height:58px!important;
+    border-radius:14px!important;
+  }
+  .book-logo .duoc-book-emblem{
+    width:27px!important;
+    height:27px!important;
+    font-size:14.5px!important;
+    margin-bottom:3px!important;
+  }
+  .book-logo .duoc-book-kicker{font-size:6px!important}
+  .book-logo .duoc-book-year{font-size:7px!important}
+}
+
+</style>
+</head>
+<body>
+<div class="source-shell">
+  <header class="source-topbar">
+    <div class="book-logo" aria-hidden="true">
+      <span class="duoc-book-emblem">📚</span>
+      <span class="duoc-book-kicker">Dược thư</span>
+      <span class="duoc-book-year">2023</span>
+    </div>
+    <div class="source-title"><h1 id="source-title">Nguồn Dược thư Quốc gia Việt Nam 2023</h1><p id="source-subtitle">Đang mở trang nguồn...</p></div>
+    <div class="viewer-actions" aria-label="Điều khiển trang nguồn">
+      <button type="button" id="prev-page" title="Trang trước"><span class="btn-symbol">‹</span></button>
+      <input id="page-input" inputmode="numeric" aria-label="Số trang Dược thư" />
+      <button type="button" id="next-page" title="Trang sau"><span class="btn-symbol">›</span></button>
+      <button type="button" id="zoom-out" class="hide-mobile" title="Thu nhỏ"><span class="btn-symbol">−</span></button>
+      <button type="button" id="zoom-in" class="hide-mobile" title="Phóng to"><span class="btn-symbol">+</span></button>
+      <button type="button" id="fit-page" title="Vừa màn hình">Fit</button>
+    </div>
+  </header>
+  <main class="viewer-stage-wrap">
+    <div id="stage" class="viewer-stage"><img id="page-img" class="viewer-img" alt="Trang nguồn Dược thư" draggable="false"></div>
+    <div id="loading" class="viewer-loading">Đang tải trang...</div>
+    <div id="empty" class="viewer-empty hidden"></div>
+    <div id="page-chip" class="viewer-page-chip"></div>
+  </main>
+</div>
+<script>
+(function(){
+'use strict';
+const PAGE_DIR = './duoc-thu-data/pages/';
+const params = new URLSearchParams(location.search);
+let pdfPage = parseInt(params.get('page') || params.get('p') || '0', 10) || 0;
+const initialRecordId = String(params.get('id') || '').trim();
+let activeRecordId = initialRecordId;
+let firstPdfPage = 113, lastPdfPage = 1722, firstPrintedPage = 119, lastPrintedPage = 1728, pageRecords = null;
+const stage = document.getElementById('stage');
+const img = document.getElementById('page-img');
+const loading = document.getElementById('loading');
+const empty = document.getElementById('empty');
+const pageInput = document.getElementById('page-input');
+const chip = document.getElementById('page-chip');
+const titleEl = document.getElementById('source-title');
+const subtitleEl = document.getElementById('source-subtitle');
+let naturalW=1,naturalH=1,scale=1,x=0,y=0,pointers=new Map(),lastPinch=null,dragging=false;
+function pad(n){return String(n).padStart(4,'0');}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function pageSrc(n){return PAGE_DIR+'page-'+pad(n)+'.webp';}
+function num(v){const n=Number(v);return Number.isFinite(n)?n:0;}
+function recordForPage(page){
+  if(!Array.isArray(pageRecords)) return null;
+  if(activeRecordId){
+    const active = pageRecords.find(r=>String(r.id)===String(activeRecordId));
+    if(active && num(active.pdf_page_start)<=page && num(active.pdf_page_end||active.pdf_page_start)>=page) return active;
+  }
+  const found = pageRecords.find(r=>num(r.pdf_page_start)<=page && num(r.pdf_page_end||r.pdf_page_start)>=page);
+  if(found) activeRecordId = String(found.id || activeRecordId || '');
+  return found || null;
+}
+function printedForPdf(page, rec){
+  rec = rec || recordForPage(page);
+  if(rec && num(rec.pdf_page_start) && num(rec.printed_page_start)){
+    return num(rec.printed_page_start) + (page - num(rec.pdf_page_start));
+  }
+  return page + 6;
+}
+function pdfForPrinted(printed){
+  printed = parseInt(printed,10);
+  if(!Number.isFinite(printed)) return pdfPage;
+  if(Array.isArray(pageRecords)){
+    const active = activeRecordId ? pageRecords.find(r=>String(r.id)===String(activeRecordId)) : null;
+    if(active && num(active.printed_page_start)<=printed && num(active.printed_page_end||active.printed_page_start)>=printed){
+      return num(active.pdf_page_start) + (printed - num(active.printed_page_start));
+    }
+    const found = pageRecords.find(r=>num(r.printed_page_start)<=printed && num(r.printed_page_end||r.printed_page_start)>=printed);
+    if(found){
+      activeRecordId = String(found.id || activeRecordId || '');
+      return num(found.pdf_page_start) + (printed - num(found.printed_page_start));
+    }
+  }
+  return printed - 6;
+}
+function rangeLabel(rec){
+  if(!rec) return '';
+  const a = num(rec.printed_page_start), b = num(rec.printed_page_end || rec.printed_page_start);
+  if(!a) return '';
+  return a === b ? String(a) : (a + ' - ' + b);
+}
+function apply(){img.style.transform='translate('+x+'px,'+y+'px) scale('+scale+')';}
+function fit(){
+  const r = stage.getBoundingClientRect();
+  if(!r.width||!r.height||!naturalW||!naturalH)return;
+  scale = Math.min(r.width/naturalW, r.height/naturalH, 1.6);
+  x = (r.width - naturalW*scale)/2;
+  y = (r.height - naturalH*scale)/2;
+  apply();
+}
+function showEmpty(msg){empty.textContent=msg;empty.classList.remove('hidden');loading.classList.add('hidden');}
+function setTitle(){
+  const rec = recordForPage(pdfPage);
+  const printed = printedForPdf(pdfPage, rec);
+  titleEl.textContent = rec && rec.title ? rec.title : 'Nguồn Dược thư Quốc gia Việt Nam 2023';
+  if(rec && rec.title){
+    subtitleEl.textContent = 'Chuyên luận ' + rec.title + ' · Trang ' + rangeLabel(rec);
+  } else {
+    subtitleEl.textContent = 'Trang ' + printed;
+  }
+  pageInput.value = String(printed);
+  chip.textContent = 'Trang ' + printed;
+}
+function loadPage(n){
+  n = clamp(parseInt(n,10)||firstPdfPage, firstPdfPage, lastPdfPage);
+  pdfPage=n; setTitle();
+  loading.classList.remove('hidden'); empty.classList.add('hidden');
+  img.onload=function(){naturalW=img.naturalWidth||1;naturalH=img.naturalHeight||1;img.style.width=naturalW+'px';img.style.height=naturalH+'px';loading.classList.add('hidden');fit();};
+  img.onerror=function(){showEmpty('Không tìm thấy ảnh trang '+printedForPdf(pdfPage)+'. Hãy kiểm tra thư mục duoc-thu-data/pages/.');};
+  img.src=pageSrc(pdfPage);
+  try{history.replaceState(null,'','?page='+encodeURIComponent(pdfPage)+(activeRecordId?'&id='+encodeURIComponent(activeRecordId):''));}catch(e){}
+}
+function zoomAt(cx,cy,factor){
+  const r=stage.getBoundingClientRect(); const px=cx-r.left, py=cy-r.top; const old=scale; const next=clamp(old*factor,0.1,12); if(Math.abs(next-old)<0.0001)return;
+  const lx=(px-x)/old, ly=(py-y)/old; x=px-lx*next; y=py-ly*next; scale=next; apply();
+}
+function dist(a,b){return Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);} function mid(a,b){return{clientX:(a.clientX+b.clientX)/2,clientY:(a.clientY+b.clientY)/2};}
+stage.addEventListener('wheel',function(e){e.preventDefault();zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*0.0015));},{passive:false});
+stage.addEventListener('pointerdown',function(e){e.preventDefault();stage.setPointerCapture&&stage.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{clientX:e.clientX,clientY:e.clientY});dragging=true;stage.classList.add('dragging');if(pointers.size===2){const pts=Array.from(pointers.values());lastPinch={d:dist(pts[0],pts[1]),m:mid(pts[0],pts[1])};}});
+stage.addEventListener('pointermove',function(e){if(!pointers.has(e.pointerId))return;e.preventDefault();const prev=pointers.get(e.pointerId);pointers.set(e.pointerId,{clientX:e.clientX,clientY:e.clientY});if(pointers.size>=2){const pts=Array.from(pointers.values()).slice(0,2);const d=dist(pts[0],pts[1]);const m=mid(pts[0],pts[1]);if(lastPinch&&lastPinch.d>0){x+=m.clientX-lastPinch.m.clientX;y+=m.clientY-lastPinch.m.clientY;zoomAt(m.clientX,m.clientY,d/lastPinch.d);}lastPinch={d:d,m:m};}else if(dragging&&prev){x+=e.clientX-prev.clientX;y+=e.clientY-prev.clientY;apply();}});
+function pointerUp(e){pointers.delete(e.pointerId);if(pointers.size<2)lastPinch=null;if(pointers.size===0){dragging=false;stage.classList.remove('dragging');}}
+stage.addEventListener('pointerup',pointerUp);stage.addEventListener('pointercancel',pointerUp);stage.addEventListener('dblclick',function(e){e.preventDefault();fit();});
+document.getElementById('prev-page').addEventListener('click',()=>loadPage(pdfPage-1));
+document.getElementById('next-page').addEventListener('click',()=>loadPage(pdfPage+1));
+document.getElementById('zoom-in').addEventListener('click',()=>zoomAt(innerWidth/2,innerHeight/2,1.2));
+document.getElementById('zoom-out').addEventListener('click',()=>zoomAt(innerWidth/2,innerHeight/2,1/1.2));
+document.getElementById('fit-page').addEventListener('click',fit);
+pageInput.addEventListener('keydown',function(e){if(e.key==='Enter')loadPage(pdfForPrinted(pageInput.value));});
+pageInput.addEventListener('blur',function(){const printed=String(printedForPdf(pdfPage, recordForPage(pdfPage))); if(pageInput.value.trim()!==printed) loadPage(pdfForPrinted(pageInput.value));});
+window.addEventListener('resize',function(){fit();});
+document.addEventListener('contextmenu',function(e){e.preventDefault();});
+Promise.all([
+  fetch(PAGE_DIR+'pages.json').then(r=>r.ok?r.json():null).catch(()=>null),
+  fetch('./duoc-thu-data/source-pages.json').then(r=>r.ok?r.json():null).catch(()=>null)
+]).then(function(res){
+  const manifest=res[0], source=res[1];
+  if(manifest){firstPdfPage=Number(manifest.first_page)||firstPdfPage;lastPdfPage=Number(manifest.last_page)||lastPdfPage;}
+  if(source&&Array.isArray(source.records)){
+    pageRecords=source.records;
+    const printedStarts = pageRecords.map(r=>num(r.printed_page_start)).filter(Boolean);
+    const printedEnds = pageRecords.map(r=>num(r.printed_page_end||r.printed_page_start)).filter(Boolean);
+    if(printedStarts.length) firstPrintedPage = Math.min.apply(null, printedStarts);
+    if(printedEnds.length) lastPrintedPage = Math.max.apply(null, printedEnds);
+  }
+  if(!pdfPage) pdfPage=firstPdfPage;
+  loadPage(pdfPage);
+});
+})();
+</script>
+</body>
+</html>
