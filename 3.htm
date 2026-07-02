@@ -7129,7 +7129,6 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-content.sb-visible::-we
 }
 </style>
 
-<style id="medplus-duoc-thu-view-button-bold-fix">.duoc-thu-view-btn,.duoc-thu-view-btn b{font-weight:900!important}.duoc-thu-excerpt-title{font-weight:900!important}</style>
 </head>
 <body>
 
@@ -13465,7 +13464,7 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-content.sb-visible::-we
             
             // 2c. Dựng nút XEM DƯỢC THƯ cho câu trả lời theo chuyên luận hoạt chất.
             text = text.replace(/\{\{DUOC_THU_VIEW:([^|}]+)\|([^}]+)\}\}/g, function(match, encodedId, encodedFocus) {
-                return '<button class="duoc-thu-view-btn" onclick="openDuocThuFromChat_(\'' + encodedId + '\', \'' + encodedFocus + '\', event)"><b>📚 XEM DƯỢC THƯ</b></button>';
+                return '<button class="duoc-thu-view-btn" onclick="openDuocThuFromChat_(\'' + encodedId + '\', \'' + encodedFocus + '\', event)">📚 XEM DƯỢC THƯ</button>';
             });
 
             // 2b. Bắt link HDSD dạng thô do nhánh quét ảnh/Gemini trả về: HDSD: https://..., Tờ HDSD: https://...
@@ -14635,7 +14634,7 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-content.sb-visible::-we
    Route priority (installed inside sendMessage):
      exact-brand HDSD -> Dược thư active ingredient -> group catalog -> AI.
    ================================================================ */
-const MEDPLUS_DUOC_THU_INDEX_URL = './duoc-thu-data/index.json?v=11.0.14';
+const MEDPLUS_DUOC_THU_INDEX_URL = './duoc-thu-data/index.json?v=11.0.15';
 const MEDPLUS_DUOC_THU_DATA_BASE = './duoc-thu-data/';
 let __medplusDuocThuIndexPromise = null;
 const __medplusDuocThuRecordCache = new Map();
@@ -14707,7 +14706,7 @@ function isDuocThuIntentQuestion_(userMessage) {
     // Nếu câu có hoạt chất khớp Dược thư và hỏi thông tin chuyên luận, phải ưu tiên Dược thư.
     if (/\b(benh vien|bvdk|khoa duoc|danh muc)\b/.test(q)
         && /\b(co thuoc|thuoc nao|bao nhieu|so luong|liet ke|danh sach)\b/.test(q)) return false;
-    return /\b(la thuoc gi|la gi|thuoc gi|ma atc|atc|ten chung quoc te|ten quoc te|inn|ten khac|loai thuoc|phan loai|nhom thuoc|dang thuoc|dang bao che|ham luong|nong do|dang thuoc va ham luong|tac dung|cong dung|chi dinh|dieu tri|tri benh|chong chi dinh|khong duoc dung|khong nen dung|than trong|canh bao|luu y|lieu dung|lieu luong|lieu|cach dung|cach su dung|duong dung|tuong tac|tuong ky|duoc luc|duoc dong|co che|pho tac dung|khang thuoc|hap thu|phan bo|chuyen hoa|thai tru|tac dung phu|tac dung khong mong muon|adr|phan ung co hai|xu tri adr|xu ly adr|mang thai|thai ky|cho con bu|qua lieu|xu tri qua lieu|bao quan|tai lieu tham khao|tham khao)\b/.test(q);
+    return /\b(la thuoc gi|la gi|thuoc gi|ma atc|atc|ten chung quoc te|ten quoc te|inn|ten khac|loai thuoc|phan loai|nhom thuoc|dang thuoc|dang bao che|ham luong|nong do|dang thuoc va ham luong|tac dung|cong dung|chi dinh|dieu tri|tri benh|chong chi dinh|khong duoc dung|khong nen dung|ai khong dung|khong dung duoc|tranh dung|than trong|canh bao|luu y|lieu dung|lieu luong|lieu|cach dung|cach su dung|duong dung|tuong tac|tuong ky|duoc luc|duoc dong|co che|pho tac dung|khang thuoc|hap thu|phan bo|chuyen hoa|thai tru|dao thai|tac dung phu|tac dung khong mong muon|adr|phan ung co hai|xu tri adr|xu ly adr|xu tri tac dung phu|xu ly tac dung phu|mang thai|thai ky|phu nu co thai|co thai|ba bau|cho con bu|bu me|sua me|qua sua me|dang cho con bu|me cho con bu|qua lieu|xu tri qua lieu|bao quan|tai lieu tham khao|tham khao|thoi gian ban thai|ban thai|nua doi|t1\/2)\b/.test(q);
 }
 
 function findDuocThuIndexMatch_(question, index) {
@@ -14843,8 +14842,12 @@ function chooseDuocThuPassages_(question, record) {
     if(labels.some(function(x){return x.norm==='qua lieu va xu tri';}) || /\bqua\s+lieu\b/.test(q)) labels=labels.filter(function(x){return x.norm!=='lieu dung' && x.intent!=='dose-child' && x.intent!=='population-child';});
     if(labels.some(function(x){return x.norm==='chong chi dinh';})) labels=labels.filter(function(x){return x.norm!=='chi dinh';});
     if(labels.some(function(x){return x.norm==='tai lieu tham khao';})) labels=labels.filter(function(x){return x.norm!=='lieu dung' && x.intent!=='dose-child' && x.intent!=='population-child';});
+    if(labels.some(function(x){return x.norm==='huong dan cach xu tri adr';})) labels=labels.filter(function(x){return x.norm!=='tac dung khong mong muon adr';});
     if(/\bsuy\s+than\b/.test(q)) labels=labels.filter(function(x){return x.norm!=='suy gan';});
     if(/\bsuy\s+gan\b/.test(q)) labels=labels.filter(function(x){return x.norm!=='suy than';});
+    const hasPregnancyIntent = labels.some(function(x){return x.norm==='thoi ky mang thai';}) || /\b(mang\s+thai|thai\s+ky|phu\s+nu\s+co\s+thai|co\s+thai|ba\s+bau)\b/.test(q);
+    const hasLactationIntent = labels.some(function(x){return x.norm==='thoi ky cho con bu';}) || /\b(cho\s+con\s+bu|bu\s+me|sua\s+me|dang\s+cho\s+con\s+bu)\b/.test(q);
+    if(hasPregnancyIntent || hasLactationIntent) labels=labels.filter(function(x){return x.norm!=='than trong';});
 
     // v11.0.12: dose/admin group override.
     // A v11 monograph often has this real hierarchy:
@@ -14903,6 +14906,16 @@ function chooseDuocThuPassages_(question, record) {
     }
 
     if(labels.length){
+        const pregnancyPriority = labels.some(function(x){ return x.norm === 'thoi ky mang thai'; });
+        const lactationPriority = labels.some(function(x){ return x.norm === 'thoi ky cho con bu'; });
+        if (pregnancyPriority || lactationPriority) {
+            const out = [];
+            const pregSec = pregnancyPriority ? exactSection('Thời kỳ mang thai') : null;
+            const lactSec = lactationPriority ? exactSection('Thời kỳ cho con bú') : null;
+            if (pregSec) out.push({ parent: pregSec, section: pregSec, isSubsection: false, smartKind: 'pregnancy-priority', smartScore: 1700 });
+            if (lactSec) out.push({ parent: lactSec, section: lactSec, isSubsection: false, smartKind: 'lactation-priority', smartScore: 1680 });
+            if (out.length) return out;
+        }
         const hasPopulationDoseQualifier = labels.some(function(x){ return x.intent === 'population-child'; });
         const hasGeneralDoseOnly = labels.some(function(x){ return x.norm === 'lieu dung'; }) && !hasPopulationDoseQualifier && !labels.some(function(x){ return x.norm === 'cach dung' || x.norm === 'toc do truyen'; });
         const hasAdminOnly = labels.some(function(x){ return x.norm === 'cach dung'; }) && !labels.some(function(x){ return x.norm === 'lieu dung' || x.norm === 'toc do truyen'; });
