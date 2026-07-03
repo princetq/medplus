@@ -11029,16 +11029,17 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-content.sb-visible::-we
 
         function buildConciseHospitalCatalogIntroduction_(userMessage) {
             const q = normalizeChatText_(userMessage);
-            let note = 'Tôi sẽ đối chiếu thuốc phù hợp trong danh mục bệnh viện theo tên thuốc, hoạt chất hoặc nhóm thuốc mà bạn hỏi.';
+            let note = 'Dưới đây là toàn bộ thuốc phù hợp trong danh mục hiện có của Bệnh viện Đa khoa tỉnh Tuyên Quang.';
             if (/\bkhang sinh\b/.test(q)) {
-                note = 'Kháng sinh là thuốc dùng để điều trị nhiễm khuẩn do vi khuẩn, cần lựa chọn theo tác nhân gây bệnh, mức độ nhiễm khuẩn và kháng sinh đồ khi có. Người bệnh không nên tự ý dùng hoặc đổi kháng sinh nếu chưa có chỉ định của nhân viên y tế.';
+                note = 'Kháng sinh chỉ dùng để điều trị nhiễm khuẩn do vi khuẩn và cần sử dụng theo chẩn đoán, chỉ định của bác sĩ. Dưới đây là toàn bộ thuốc phù hợp trong danh mục hiện có của Bệnh viện Đa khoa tỉnh Tuyên Quang.';
             } else if (/\bhuyet ap\b/.test(q)) {
-                note = 'Thuốc điều trị tăng huyết áp được lựa chọn theo mức huyết áp, nguy cơ tim mạch, chức năng thận và bệnh kèm theo. Người bệnh cần dùng thuốc đều và theo dõi huyết áp theo hướng dẫn của nhân viên y tế.';
+                note = 'Thuốc điều trị tăng huyết áp cần được lựa chọn theo bệnh cảnh, huyết áp, chức năng thận và các bệnh kèm theo. Dưới đây là toàn bộ thuốc phù hợp trong danh mục hiện có của Bệnh viện Đa khoa tỉnh Tuyên Quang.';
             } else if (/\bkhop\b/.test(q)) {
-                note = 'Thuốc cơ xương khớp cần lựa chọn theo nguyên nhân như viêm, thoái hóa, gout hoặc đau cấp. Một số thuốc giảm đau/chống viêm có thể ảnh hưởng dạ dày, thận hoặc tim mạch nên cần dùng đúng chỉ định.';
+                note = 'Việc lựa chọn thuốc cơ xương khớp cần dựa trên nguyên nhân như viêm, thoái hóa hay gout. Dưới đây là toàn bộ thuốc đã qua hậu kiểm phù hợp trong danh mục hiện có của Bệnh viện Đa khoa tỉnh Tuyên Quang.';
             }
             return note;
         }
+
 
         function isLikelyCompleteCatalogIntro_(value) {
             const text = String(value || '').replace(/\s+/g, ' ').trim();
@@ -11155,26 +11156,17 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-content.sb-visible::-we
                 if (typeof ensureDuocThuIndex_ !== 'function' || typeof findDuocThuIndexMatch_ !== 'function' || typeof fetchDuocThuRecord_ !== 'function') return '';
                 const index = await ensureDuocThuIndex_();
                 if (!index || !Array.isArray(index.records) || !index.records.length) return '';
-                const candidates = [String(userMessage || '')];
-                (selectedDrugs || []).slice(0, 8).forEach(function(drug) {
-                    ['active', 'brand', 'name'].forEach(function(key) {
-                        const value = String((drug && drug[key]) || '').trim();
-                        if (value && candidates.indexOf(value) < 0) candidates.push(value);
-                    });
-                });
-                for (let i = 0; i < candidates.length; i++) {
-                    const match = findDuocThuIndexMatch_(candidates[i], index);
-                    if (!match || !match.id) continue;
-                    const record = await fetchDuocThuRecord_(match.id);
-                    const intro = buildDuocThuCatalogIntroductionFromRecord_(record);
-                    if (intro) return intro;
-                }
+                // Chỉ dùng giới thiệu Loại thuốc + Chỉ định khi chính câu hỏi có tên hoạt chất/chuyên luận cụ thể khớp Dược thư.
+                // Không suy diễn từ nhóm thuốc chung như “kháng sinh”, “thuốc huyết áp”, “thuốc khớp” bằng thuốc đầu tiên trong danh mục.
+                const match = findDuocThuIndexMatch_(String(userMessage || ''), index);
+                if (!match || !match.id) return '';
+                const record = await fetchDuocThuRecord_(match.id);
+                return buildDuocThuCatalogIntroductionFromRecord_(record);
             } catch (error) {
                 console.warn('[MedPlus] Không dựng được giới thiệu Dược thư trước danh mục:', error);
             }
             return '';
         }
-
 
         function stripCatalogIntroLabels_(value) {
             return String(value || '')
@@ -11239,9 +11231,8 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-content.sb-visible::-we
             // Với câu hỏi rõ là “bệnh viện có thuốc ... nào”, AI vẫn trả lời ngắn trước,
             // sau đó JavaScript mới dựng TOÀN BỘ danh mục và nút HDSD từ dữ liệu gốc.
             if (drugs.length > 0 && isDirectHospitalCatalogListQuestion_(userMessage)) {
-                // Direct catalog questions should still start with a complete, controlled drug intro.
-                // Priority: local Dược thư Loại thuốc + Chỉ định -> gated short AI intro -> safe generic fallback.
-                // The hospital drug list itself remains deterministic and is never written by AI.
+                // Câu hỏi danh mục trực tiếp vẫn cần mở đầu bằng kiến thức ngắn, nhưng danh sách thuốc
+                // phải luôn dựng từ dữ liệu gốc, không để AI tự liệt kê hoặc bịa thuốc.
                 const duocThuIntro = await buildDuocThuCatalogIntroductionForQuestion_(userMessage, drugs);
                 const aiIntro = duocThuIntro ? '' : await composeConciseCatalogIntroductionWithAI_(userMessage, drugs.length);
                 const fallbackIntro = buildConciseHospitalCatalogIntroduction_(userMessage);
