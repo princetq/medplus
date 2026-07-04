@@ -2887,7 +2887,10 @@ function duocV11IntroBlocks(rec){const out=[];const blocks=Array.isArray(rec.blo
 function duocV11RenderBlock(rec,b){b=duocV11ResolveBlock(rec,b);if(!b)return '';const type=b.type||'paragraph';if(type==='table'){return renderTable(rec,{id:b.table_id||b.id,image_path:b.image_path||b.image,image:b.image||b.image_path,source_pdf_page:b.page,printed_page:b.printed_page,bbox:b.bbox})}if(type==='figure'){const src=assetUrl(b.image_path||b.image||'');return src?'<figure class="duoc-table-figure"><figcaption><b>Hình gốc từ Dược thư</b></figcaption><img class="duoc-table-image" loading="lazy" decoding="async" alt="Hình gốc từ Dược thư" src="'+esc(src)+'"></figure>':''}if(type==='list'){const items=Array.isArray(b.items)?b.items:String(b.text||'').split(/\n+/);return '<ul class="duoc-v11-list">'+items.filter(Boolean).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>'}if(type==='subheading'){return '<div class="duoc-subsection"><b>'+esc(String(b.text||''))+'</b></div>'}if(type==='note'){return '<div class="duoc-text duoc-note"><p class="duoc-paragraph">'+esc(b.text||'')+'</p></div>'}if(type==='heading'){return ''}return '<div class="duoc-text">'+renderText(b.text||'')+'</div>'}
 function renderNode(rec,node){if(!node)return '';const blocks=Array.isArray(node.blocks)&&node.blocks.length?node.blocks:(String(node.content||'').trim()?[{type:'text',text:String(node.content||'')}]:[]);return blocks.map(function(b){if(!b)return '';if(typeof b==='string'||b.block_id)return duocV11RenderBlock(rec,b);if(b.type==='table')return renderTable(rec,findTable(rec,b.table_id)||b);if(b.type==='figure')return duocV11RenderBlock(rec,b);if(b.type==='subheading')return '<div class="duoc-subsection"><b>'+esc(String(b.text||''))+'</b></div>';if(b.type==='text')return '<div class="duoc-text">'+renderText(b.text||'')+'</div>';return duocV11RenderBlock(rec,b)}).join('')}
 function duocV11LegacySectionMap(rec){const map={};(rec.sections||[]).forEach(function(sec){const k=norm(sec&&sec.title||'');if(k&&!map[k])map[k]=sec.id||''});return map}
-function buildDuocV11DisplaySections(rec){const blocks=Array.isArray(rec.blocks)?rec.blocks:[],legacy=duocV11LegacySectionMap(rec),intro=[],sections=[];let current=null,seenTitle=false;blocks.forEach(function(b){if(!b)return;const type=b.type||'paragraph',level=Number(b.level||2);if(type==='heading'&&level===1&&!seenTitle){seenTitle=true;return}if(type==='heading'&&level<=2){current={title:String(b.text||'Mục'),id:b.id||'',legacy_id:legacy[norm(b.text||'')]||'',blocks:[],block_ids:[]};if(b.id)current.block_ids.push(b.id);sections.push(current);return}if(current){current.blocks.push(b);if(b.id)current.block_ids.push(b.id)}else intro.push(b)});return{intro:intro,sections:sections}}
+function isDuocV11ParentheticalNameHeading(b){return !!b&&(b.type||'paragraph')==='heading'&&/^\s*\([^)]{2,}\)\s*$/.test(String(b.text||''))}
+function getDuocV11HeaderTitle(rec){const blocks=Array.isArray(rec&&rec.blocks)?rec.blocks:[],base=String((rec&&rec.title)||(blocks[0]&&blocks[0].text)||'').trim(),second=isDuocV11ParentheticalNameHeading(blocks[1])?String(blocks[1].text||'').trim():'';if(base&&second&&norm(base).indexOf(norm(second.replace(/[()]/g,'')))<0)return base+' '+second;return base||String(rec&&rec.id||'Chuyên luận Dược thư')}
+function makeDuocV11DosageSectionFromInline(b,legacy){const raw=String(b&&b.text||'');if(!/^\s*Dạng thuốc và hàm lượng\b/i.test(raw))return null;const rest=raw.replace(/^\s*Dạng thuốc và hàm lượng\s*/i,'').trim(),cloned=Object.assign({},b);cloned.text=rest||raw;return{title:'Dạng thuốc và hàm lượng',id:b&&b.id?String(b.id)+'-section':'',legacy_id:legacy[norm('Dạng thuốc và hàm lượng')]||'',blocks:[cloned],block_ids:b&&b.id?[b.id]:[]}}
+function buildDuocV11DisplaySections(rec){const blocks=Array.isArray(rec.blocks)?rec.blocks:[],legacy=duocV11LegacySectionMap(rec),intro=[],sections=[];let current=null,seenTitle=false,skippedSecondName=false;blocks.forEach(function(b,order){if(!b)return;const type=b.type||'paragraph',level=Number(b.level||2);if(type==='heading'&&level===1&&!seenTitle){seenTitle=true;return}if(seenTitle&&!skippedSecondName&&order===1&&isDuocV11ParentheticalNameHeading(b)){skippedSecondName=true;return}const inlineDosage=type!=='heading'?makeDuocV11DosageSectionFromInline(b,legacy):null;if(inlineDosage&&(!current||norm(current.title||'')!=='dang thuoc va ham luong')){current=inlineDosage;sections.push(current);return}if(type==='heading'&&level<=2){current={title:String(b.text||'Mục'),id:b.id||'',legacy_id:legacy[norm(b.text||'')]||'',blocks:[],block_ids:[]};if(b.id)current.block_ids.push(b.id);sections.push(current);return}if(current){current.blocks.push(b);if(b.id)current.block_ids.push(b.id)}else intro.push(b)});return{intro:intro,sections:sections}}
 function renderDuocV11Intro(rec,blocks){if(!blocks||!blocks.length)return '';return '<div class="duoc-section-body duoc-v11-intro">'+blocks.map(function(b){return duocV11RenderBlock(rec,b)}).join('')+'</div>'}
 function renderDuocV11Section(rec,sec){return '<details class="duoc-section"><summary>'+esc(sec.title||'Mục')+'</summary><div class="duoc-section-body">'+(sec.blocks||[]).map(function(b){return duocV11RenderBlock(rec,b)}).join('')+'</div></details>'}
 
@@ -2896,7 +2899,7 @@ function uniqueText(arr){const seen=new Set();return (arr||[]).map(function(x){r
 function expandAliasVariants(value){
   const base=norm(value); if(!base)return[];
   const out=new Set([base]);
-  const pairs=[['hydroclorid','hydrochloride'],['clorid','chloride'],['sulfat','sulfate'],['sulfat','sulphate'],['natri','sodium'],['kali','potassium'],['calci','calcium'],['magnesi','magnesium'],['tartrat','tartrate'],['phosphat','phosphate'],['acetat','acetate'],['citrat','citrate'],['ampicilin','ampicillin'],['amoxicilin','amoxicillin'],['cefalexin','cephalexin'],['pyridoxin','pyridoxine'],['thiamin','thiamine']];
+  const pairs=[['hydroclorid','hydrochloride'],['clorid','chloride'],['sulfat','sulfate'],['sulfat','sulphate'],['natri','sodium'],['kali','potassium'],['calci','calcium'],['magnesi','magnesium'],['tartrat','tartrate'],['phosphat','phosphate'],['acetat','acetate'],['citrat','citrate'],['clavulanat','clavulanate'],['acid clavulanic','clavulanic acid'],['ampicilin','ampicillin'],['amoxicilin','amoxicillin'],['cefalexin','cephalexin'],['pyridoxin','pyridoxine'],['thiamin','thiamine']];
   Array.from(out).forEach(function(s){pairs.forEach(function(p){if(s.indexOf(p[0])>=0)out.add(s.replaceAll(p[0],p[1]));if(s.indexOf(p[1])>=0)out.add(s.replaceAll(p[1],p[0]));});});
   const s=base;
   if(/\b(epinephrin|epinephrine|adrenalin|adrenaline)\b/.test(s)){['epinephrin','epinephrine','adrenalin','adrenaline'].forEach(function(x){out.add(x)});}
@@ -2904,6 +2907,7 @@ function expandAliasVariants(value){
   if(/\b(vitamin b1|b1|thiamin|thiamine)\b/.test(s)){['vitamin b1','b1','thiamin','thiamine','thiamin mononitrat','thiamine hydrochloride','thiamin hydroclorid'].forEach(function(x){out.add(norm(x))});}
   if(/\b(vitamin b6|b6|pyridoxin|pyridoxine)\b/.test(s)){['vitamin b6','b6','pyridoxin','pyridoxine','pyridoxin hydroclorid','pyridoxine hydrochloride','pyridoxin hcl'].forEach(function(x){out.add(norm(x))});}
   if(/\b(vitamin b12|b12|cyanocobalamin|hydroxocobalamin|mecobalamin|methylcobalamin)\b/.test(s)){['vitamin b12','b12','cyanocobalamin','hydroxocobalamin','mecobalamin','methylcobalamin'].forEach(function(x){out.add(norm(x))});}
+  if(/\b(kali clavulanat|potassium clavulanate|clavulanate potassium|clavulanic acid|acid clavulanic)\b/.test(s)){['kali clavulanat','potassium clavulanate','clavulanate potassium','clavulanic acid','acid clavulanic','clavulanat kali'].forEach(function(x){out.add(norm(x))});}
   // Salt/base relaxation for sufficiently specific active names.
   Array.from(out).forEach(function(x){
     const relaxed=x.replace(/\b(hydroclorid|hydrochloride|hcl|sulfat|sulfate|sulphate|tartrat|tartrate|phosphat|phosphate|acetat|acetate|dihydrat|trihydrat)\b/g,'').replace(/\s+/g,' ').trim();
@@ -2912,6 +2916,37 @@ function expandAliasVariants(value){
   return Array.from(out).filter(function(x){return x && x.length>=2});
 }
 function getIndexRecordForId(id){return indexRecords.find(function(r){return r&&r.id===id})||null}
+function getHDSDMatchMetaForRecord(rec){const idx=getIndexRecordForId(rec&&rec.id);return (rec&&rec.hdsd_match)||(idx&&idx.hdsd_match)||null}
+function textHasAny(text,patterns){return patterns.some(function(p){return p.test(text)})}
+function isOphthalmicDrugText(text){return textHasAny(text,[/\b(nhan khoa|nho mat|thuoc nho mat|mat|ophthalmic|eye drop|eyedrop)\b/])}
+function isInjectableSystemicText(text){return textHasAny(text,[/\b(tiem|truyen|injection|injectable|iv|im)\b/])}
+function isRespiratoryDrugText(text){return textHasAny(text,[/\b(ho hap|hen|phe quan|khi dung|xong khi dung|dung cho khi dung|hit|xit|phun mu|nebul|inhal|asthma|bronch)\b/])}
+function isObstetricDrugText(text){return textHasAny(text,[/\b(san khoa|de non|chong co tu cung|giam co tu cung|tocolytic|uterine|obstetric|thai)\b/])}
+function isIntrauterineDrugText(text){return textHasAny(text,[/\b(dung cu tu cung|tu cung|vong|dat tu cung|iud|intrauterine|mirena)\b/])}
+function isOralDrugText(text){return textHasAny(text,[/\b(uong|vien|vien nen|vien nang|tablet|capsule|oral)\b/])}
+function isTopicalDrugText(text){return textHasAny(text,[/\b(thuoc boi|boi|kem|gel|cream|ointment|da lieu|ngoai da|topical)\b/])}
+function drugScopeMatchesRecord(drug,rec){
+  const meta=getHDSDMatchMetaForRecord(rec); if(!meta||!meta.scope)return true;
+  const text=norm([drug&&drug.active,drug&&drug.brand,drug&&drug.form,drug&&drug.group,drug&&drug.indication,drug&&drug.usage].filter(Boolean).join(' '));
+  const group=String(meta.group||''), scope=String(meta.scope||'');
+  if(group==='atropin'){
+    if(scope==='ophthalmic')return isOphthalmicDrugText(text) && !isInjectableSystemicText(text);
+    if(scope==='systemic')return !isOphthalmicDrugText(text) || isInjectableSystemicText(text);
+  }
+  if(group==='salbutamol'){
+    if(scope==='obstetric')return isObstetricDrugText(text);
+    if(scope==='respiratory')return !isObstetricDrugText(text) && (isRespiratoryDrugText(text)||/\b(siro|dung dich uong|uong|oral)\b/.test(text));
+  }
+  if(group==='levonorgestrel'){
+    if(scope==='intrauterine')return isIntrauterineDrugText(text);
+    if(scope==='oral')return !isIntrauterineDrugText(text) && (isOralDrugText(text)||!textHasAny(text,[/\b(iud|intrauterine|tu cung|vong)\b/]));
+  }
+  if(group==='tretinoin'){
+    if(scope==='topical')return isTopicalDrugText(text);
+    if(scope==='oral')return !isTopicalDrugText(text) && (isOralDrugText(text)||!textHasAny(text,[/\b(boi|kem|gel|cream|topical|ngoai da)\b/]));
+  }
+  return true;
+}
 function getAliasCandidatesForRecord(rec){
   const idx=getIndexRecordForId(rec&&rec.id);
   let raw=[];
@@ -2934,17 +2969,30 @@ function containsAlias(haystack,alias){
   return haystack===alias || (' '+haystack+' ').indexOf(' '+alias+' ')>=0 || haystack.startsWith(alias+' ') || haystack.endsWith(' '+alias);
 }
 function comboPartsForRecord(rec){
+  const id=String((rec&&rec.id)||'');
+  const comboAllow={
+    'amoxicilin-va-kali-clavulanat':1,
+    'ampicilin-va-sulbactam':1,
+    'artemether-va-lumefantrin':1,
+    'ciclopirox-va-ciclopirox-olamin':1,
+    'imipenem-va-cilastatin':1,
+    'lopinavir-va-ritonavir':1,
+    'ticarcilin-va-acid-clavulanic':1
+  };
+  if(!comboAllow[id])return[];
   const t=norm((rec&&rec.title)||'');
   if(t.indexOf(' va ')<0)return[];
-  const parts=t.split(/\s+va\s+/).map(function(x){return x.trim()}).filter(function(x){return x.length>=4});
+  const parts=t.replace(/\([^)]*\)/g,' ').split(/\s+va\s+/).map(function(x){return x.trim()}).filter(function(x){return x.length>=4&&!/^(cac thuoc tuong tu|thuoc tuong tu|dien giai|huyet thanh|pamoat)$/.test(x)});
   return parts.length>=2&&parts.length<=5?parts:[];
 }
+
 function partMatches(text,part){return expandAliasVariants(part).some(function(a){return containsAlias(text,a)});}
 function isDrugRelatedToRecord(drug,rec){
   if(!drug||!rec)return false;
   const active=norm(drug.active||''), brand=norm(drug.brand||''), form=norm(drug.form||''), usage=norm(drug.usage||'');
   const recId=String(rec.id||'');
   const activeText=[active,form,usage].join(' ');
+  if(!drugScopeMatchesRecord(drug,rec))return false;
   if(recId==='epinephrin' && /\b(nor\s*adrenalin|nor\s*adrenaline|noradrenalin|noradrenaline|norepinephrin|norepinephrine)\b/.test(activeText))return false;
   const parts=comboPartsForRecord(rec);
   if(parts.length){return parts.every(function(p){return partMatches(activeText,p)});}
@@ -2953,6 +3001,7 @@ function isDrugRelatedToRecord(drug,rec){
   // Brand fallback only for generic-named products: exact or prefix before dose/company suffix.
   return aliases.some(function(a){return a.length>=4 && (brand===a || brand.startsWith(a+' ') || brand.startsWith(a+' inj') || brand.startsWith(a+' injection'))});
 }
+
 function loadMedplusDrugs(){
   if(medplusDrugPromise)return medplusDrugPromise;
   medplusDrugPromise=fetch(MEDPLUS_JSON_URL,{cache:'force-cache'}).then(function(res){if(!res.ok)throw new Error('MEDPLUS_JSON');return res.json();}).then(function(data){return Array.isArray(data)?data:[];}).catch(function(){return[];});
@@ -3157,7 +3206,7 @@ function renderRecord(rec){
   let h='<button type="button" class="duoc-close" aria-label="Đóng">×</button>'
     +'<div class="duoc-modal-drug-header">'
     +'<button type="button" class="duoc-modal-book duoc-pdf-source-btn" data-duoc-pdf-source="'+esc(rec.id||'')+'" title="Mở nguồn PDF Dược thư tại trang chuyên luận"><span class="duoc-book-emblem">📚</span><span class="duoc-book-kicker">Dược thư</span><span class="duoc-book-year">2023</span></button>'
-    +'<div class="duoc-modal-head"><h2>'+esc(rec.title)+'</h2><p>'+esc((source.book||'Dược thư Quốc gia Việt Nam')+', '+(source.edition||'2023')+', '+pages+'.')+'</p>'
+    +'<div class="duoc-modal-head"><h2>'+esc(getDuocV11HeaderTitle(rec))+'</h2><p>'+esc((source.book||'Dược thư Quốc gia Việt Nam')+', '+(source.edition||'2023')+', '+pages+'.')+'</p>'
     +'<div class="duoc-modal-actions"><button type="button" class="duoc-brand-open-btn" data-duoc-brand-record="'+esc(rec.id||'')+'" title="Mở biệt dược/HDSD liên quan"><span>BIỆT DƯỢC</span><span class="duoc-brand-count">…</span></button></div>'
     +'</div></div><div class="duoc-modal-body">'
     +renderDuocV11Intro(rec,grouped.intro)
