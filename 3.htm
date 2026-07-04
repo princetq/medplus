@@ -7131,32 +7131,38 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-content.sb-visible::-we
 
 
 
-<style id="medplus-duoc-thu-ios-search-render-parity">
-/* v11.0.34 — Dược thư text parity with tra-cuu-duoc-thu.html.
-   Keep Unicode sub/sup from JSON; do not convert to HTML <sub>/<sup>.
-   Fix iPhone Safari rendering in HDSD Dược thư modal and chatbot citations by removing compressed typography from Dược thư content only. */
+<style id="medplus-duoc-thu-ios-unicode-subscript-search-parity-v35">
+/* v11.0.35 — iPhone Safari: render Unicode subscript/superscript in HDSD Dược thư modal and chatbot excerpts like tra-cuu-duoc-thu.html.
+   Keep JSON Unicode as-is. Do not convert to HTML <sub>/<sup>. */
 #medplus-duoc-thu-modal .medplus-duoc-thu-body,
-#medplus-duoc-thu-modal .medplus-duoc-thu-section .detail-content,
+#medplus-duoc-thu-modal .medplus-duoc-thu-body *,
+.chat-widget-container .duoc-thu-parent-excerpt,
+.chat-widget-container .duoc-thu-parent-excerpt * {
+  font-family:'Inter','Segoe UI',system-ui,sans-serif!important;
+  font-kerning:auto!important;
+  font-feature-settings:normal!important;
+  font-variant-position:normal!important;
+  text-rendering:optimizeLegibility!important;
+  -webkit-font-smoothing:antialiased!important;
+}
+#medplus-duoc-thu-modal .detail-content,
 #medplus-duoc-thu-modal .medplus-duoc-thu-text,
 #medplus-duoc-thu-modal .medplus-duoc-thu-paragraph,
-#medplus-duoc-thu-modal .medplus-duoc-thu-paragraph *,
-#medplus-duoc-thu-modal .medplus-duoc-thu-list,
-#medplus-duoc-thu-modal .medplus-duoc-thu-list *,
 #medplus-duoc-thu-modal .medplus-duoc-thu-subsection,
 #medplus-duoc-thu-modal .medplus-duoc-thu-subsection *,
 .chat-widget-container .duoc-thu-parent-excerpt,
-.chat-widget-container .duoc-thu-parent-excerpt .duoc-thu-excerpt-line,
+.chat-widget-container .duoc-thu-excerpt-line,
 .chat-widget-container .duoc-thu-parent-excerpt .medplus-duoc-thu-text,
 .chat-widget-container .duoc-thu-parent-excerpt .medplus-duoc-thu-paragraph,
-.chat-widget-container .duoc-thu-parent-excerpt .medplus-duoc-thu-paragraph *,
-.chat-widget-container .duoc-thu-parent-excerpt .medplus-duoc-thu-list,
-.chat-widget-container .duoc-thu-parent-excerpt .medplus-duoc-thu-list * {
-  letter-spacing: normal !important;
-  font-kerning: normal !important;
-  text-rendering: auto !important;
-  -webkit-font-smoothing: auto !important;
-  font-variant-position: normal !important;
-  font-feature-settings: normal !important;
+.chat-widget-container .duoc-thu-parent-excerpt .medplus-duoc-thu-subsection,
+.chat-widget-container .duoc-thu-parent-excerpt .medplus-duoc-thu-subsection * {
+  letter-spacing:normal!important;
+  white-space:normal!important;
+  overflow-wrap:normal!important;
+  word-wrap:normal!important;
+  word-break:normal!important;
+  line-break:auto!important;
+  hyphens:manual!important;
 }
 </style>
 
