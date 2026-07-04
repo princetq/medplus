@@ -2405,6 +2405,22 @@ body.dark-mode #hdsd-content .hdsd-table-scroll-force td{
 }
 </style>
 
+
+<style id="duoc-thu-half-life-display-style">
+/* v11.0.42 — display-only half-life rendering: JSON stays T₁/₂, UI shows T<sub>1/2</sub>. */
+#duoc-modal .duoc-thu-half-life-frac,
+.duoc-text .duoc-thu-half-life-frac,
+.duoc-v11-list .duoc-thu-half-life-frac{
+  font-size:.74em!important;
+  line-height:0!important;
+  vertical-align:baseline!important;
+  position:relative!important;
+  bottom:-.28em!important;
+  letter-spacing:normal!important;
+  font-kerning:normal!important;
+}
+</style>
+
 <style id="medplus-duoc-thu-v11-modal-reading-rhythm-style">
 /* v11.0.19 — Modal xem chuyên luận trên trang tra cứu: giãn đoạn giống modal Dược thư trong tờ HDSD. */
 #duoc-modal .duoc-section-body{
@@ -2441,6 +2457,24 @@ body.dark-mode #hdsd-content .hdsd-table-scroll-force td{
   #duoc-modal .duoc-section-body{padding:10px 12px!important}
   #duoc-modal .duoc-subsection{padding:12px!important}
   #duoc-modal .duoc-paragraph{font-size:16px!important;line-height:1.65!important}
+}
+</style>
+
+
+
+<style id="medplus-duoc-thu-v11-modal-backdrop-stability-style">
+/* v11.0.43 — PC modal backdrop stability: avoid intermittent bright flash caused by backdrop-filter repaint while reading. */
+#duoc-modal.duoc-modal{
+  background:rgba(5,15,10,.78)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  transform:translateZ(0);
+  isolation:isolate;
+}
+#duoc-modal .duoc-modal-box{
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  transform:translateZ(0);
 }
 </style>
 
@@ -2759,6 +2793,13 @@ function syncDuocPageScrollLock(){if(isAnyDuocModalOpen())lockDuocPageScroll();e
 function asciiDigits(v){const m={'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};return String(v||'').replace(/[₀₁₂₃₄₅₆₇₈₉⁰¹²³⁴⁵⁶⁷⁸⁹]/g,function(ch){return m[ch]||ch}).replace(/µ/g,'mc').replace(/μ/g,'mc')}
 function norm(v){return asciiDigits(String(v||'')).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase().replace(/&/g,' va ').replace(/[^a-z0-9\s]/g,' ').replace(/\bva\b/g,' va ').replace(/\s+/g,' ').trim()}
 function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+function renderDuocHalfLifeHtml(html){
+  return String(html==null?'':html).replace(/(^|[^A-Za-z0-9À-ỹ₀₁₂₃₄₅₆₇₈₉])([Tt])(?:₁|1)\s*[\/⁄]\s*(?:₂|2)(?=$|[^A-Za-z0-9À-ỹ₀₁₂₃₄₅₆₇₈₉])/g,function(_,prefix,t){
+    return prefix+t+'<sub class="duoc-thu-half-life-frac">1/2</sub>';
+  });
+}
+function escDuocText(v){return renderDuocHalfLifeHtml(esc(v))}
+
 function setAlphabetOpen(open){
   alphabet.classList.toggle('show', !!open);
   if(alphabetShell)alphabetShell.classList.toggle('show', !!open);
@@ -2874,7 +2915,7 @@ function splitParagraphs(v){
   });
   return out
 }
-function renderText(v){return splitParagraphs(v).map(function(p){return '<p class="duoc-paragraph">'+esc(p)+'</p>'}).join('')}
+function renderText(v){return splitParagraphs(v).map(function(p){return '<p class="duoc-paragraph">'+escDuocText(p)+'</p>'}).join('')}
 async function getRecord(id){if(recordCache.has(id))return recordCache.get(id);const res=await fetch(DATA_BASE+encodeURIComponent(id)+'.json',{cache:'force-cache'});if(!res.ok)throw new Error('Không tải được chuyên luận');const rec=await res.json();recordCache.set(id,rec);return rec}
 function findTable(rec,id){return(rec.tables||[]).find(function(t){return t&&t.id===id})||null}
 function printedPage(rec,t){const pdf=(rec.source||{}).pdf_pages||{},printed=(rec.source||{}).printed_pages||{},n=Number(t&&t.source_pdf_page);return Number.isFinite(n)&&Number.isFinite(Number(pdf.start))&&Number.isFinite(Number(printed.start))?Number(printed.start)+(n-Number(pdf.start)):(n||'')}
@@ -2884,8 +2925,8 @@ function renderTable(rec,t){if(!t||!t.image_path)return '';const src=assetUrl(t.
 function duocV11BlockMap(rec){if(!rec.__v11BlockMap){rec.__v11BlockMap={};(rec.blocks||[]).forEach(function(b){if(b&&b.id)rec.__v11BlockMap[b.id]=b;});}return rec.__v11BlockMap}
 function duocV11ResolveBlock(rec,b){if(!b)return null;if(typeof b==='string')return duocV11BlockMap(rec)[b]||null;if(b.block_id)return duocV11BlockMap(rec)[b.block_id]||b;return b}
 function duocV11IntroBlocks(rec){const out=[];const blocks=Array.isArray(rec.blocks)?rec.blocks:[];for(let i=0;i<blocks.length;i++){const b=blocks[i];if(!b)continue;if(i>0&&b.type==='heading'&&Number(b.level||2)<=2)break;out.push(b)}return out}
-function duocV11RenderBlock(rec,b){b=duocV11ResolveBlock(rec,b);if(!b)return '';const type=b.type||'paragraph';if(type==='table'){return renderTable(rec,{id:b.table_id||b.id,image_path:b.image_path||b.image,image:b.image||b.image_path,source_pdf_page:b.page,printed_page:b.printed_page,bbox:b.bbox})}if(type==='figure'){const src=assetUrl(b.image_path||b.image||'');return src?'<figure class="duoc-table-figure"><figcaption><b>Hình gốc từ Dược thư</b></figcaption><img class="duoc-table-image" loading="lazy" decoding="async" alt="Hình gốc từ Dược thư" src="'+esc(src)+'"></figure>':''}if(type==='list'){const items=Array.isArray(b.items)?b.items:String(b.text||'').split(/\n+/);return '<ul class="duoc-v11-list">'+items.filter(Boolean).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>'}if(type==='subheading'){return '<div class="duoc-subsection"><b>'+esc(String(b.text||''))+'</b></div>'}if(type==='note'){return '<div class="duoc-text duoc-note"><p class="duoc-paragraph">'+esc(b.text||'')+'</p></div>'}if(type==='heading'){return ''}return '<div class="duoc-text">'+renderText(b.text||'')+'</div>'}
-function renderNode(rec,node){if(!node)return '';const blocks=Array.isArray(node.blocks)&&node.blocks.length?node.blocks:(String(node.content||'').trim()?[{type:'text',text:String(node.content||'')}]:[]);return blocks.map(function(b){if(!b)return '';if(typeof b==='string'||b.block_id)return duocV11RenderBlock(rec,b);if(b.type==='table')return renderTable(rec,findTable(rec,b.table_id)||b);if(b.type==='figure')return duocV11RenderBlock(rec,b);if(b.type==='subheading')return '<div class="duoc-subsection"><b>'+esc(String(b.text||''))+'</b></div>';if(b.type==='text')return '<div class="duoc-text">'+renderText(b.text||'')+'</div>';return duocV11RenderBlock(rec,b)}).join('')}
+function duocV11RenderBlock(rec,b){b=duocV11ResolveBlock(rec,b);if(!b)return '';const type=b.type||'paragraph';if(type==='table'){return renderTable(rec,{id:b.table_id||b.id,image_path:b.image_path||b.image,image:b.image||b.image_path,source_pdf_page:b.page,printed_page:b.printed_page,bbox:b.bbox})}if(type==='figure'){const src=assetUrl(b.image_path||b.image||'');return src?'<figure class="duoc-table-figure"><figcaption><b>Hình gốc từ Dược thư</b></figcaption><img class="duoc-table-image" loading="lazy" decoding="async" alt="Hình gốc từ Dược thư" src="'+esc(src)+'"></figure>':''}if(type==='list'){const items=Array.isArray(b.items)?b.items:String(b.text||'').split(/\n+/);return '<ul class="duoc-v11-list">'+items.filter(Boolean).map(function(x){return '<li>'+escDuocText(x)+'</li>'}).join('')+'</ul>'}if(type==='subheading'){return '<div class="duoc-subsection"><b>'+escDuocText(String(b.text||''))+'</b></div>'}if(type==='note'){return '<div class="duoc-text duoc-note"><p class="duoc-paragraph">'+escDuocText(b.text||'')+'</p></div>'}if(type==='heading'){return ''}return '<div class="duoc-text">'+renderText(b.text||'')+'</div>'}
+function renderNode(rec,node){if(!node)return '';const blocks=Array.isArray(node.blocks)&&node.blocks.length?node.blocks:(String(node.content||'').trim()?[{type:'text',text:String(node.content||'')}]:[]);return blocks.map(function(b){if(!b)return '';if(typeof b==='string'||b.block_id)return duocV11RenderBlock(rec,b);if(b.type==='table')return renderTable(rec,findTable(rec,b.table_id)||b);if(b.type==='figure')return duocV11RenderBlock(rec,b);if(b.type==='subheading')return '<div class="duoc-subsection"><b>'+escDuocText(String(b.text||''))+'</b></div>';if(b.type==='text')return '<div class="duoc-text">'+renderText(b.text||'')+'</div>';return duocV11RenderBlock(rec,b)}).join('')}
 function duocV11LegacySectionMap(rec){const map={};(rec.sections||[]).forEach(function(sec){const k=norm(sec&&sec.title||'');if(k&&!map[k])map[k]=sec.id||''});return map}
 function isDuocV11ParentheticalNameHeading(b){return !!b&&(b.type||'paragraph')==='heading'&&/^\s*\([^)]{2,}\)\s*$/.test(String(b.text||''))}
 function getDuocV11HeaderTitle(rec){const blocks=Array.isArray(rec&&rec.blocks)?rec.blocks:[],base=String((rec&&rec.title)||(blocks[0]&&blocks[0].text)||'').trim(),second=isDuocV11ParentheticalNameHeading(blocks[1])?String(blocks[1].text||'').trim():'';if(base&&second&&norm(base).indexOf(norm(second.replace(/[()]/g,'')))<0)return base+' '+second;return base||String(rec&&rec.id||'Chuyên luận Dược thư')}
