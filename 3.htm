@@ -15288,18 +15288,54 @@ function buildDuocThuV11LegacySectionMap_(record){
     });
     return map;
 }
+
+function isDuocThuV11ParentheticalNameHeading_(block){
+    return !!block && (block.type || 'paragraph') === 'heading'
+        && /^\s*\([^)]{2,}\)\s*$/.test(String(block.text || ''));
+}
+function getDuocThuV11HeaderTitleForModal_(record){
+    const blocks = Array.isArray(record && record.blocks) ? record.blocks : [];
+    const base = String((record && record.title) || (blocks[0] && blocks[0].text) || '').trim();
+    const second = isDuocThuV11ParentheticalNameHeading_(blocks[1]) ? String(blocks[1].text || '').trim() : '';
+    if (base && second && normalizeDuocThuText_(base).indexOf(normalizeDuocThuText_(second.replace(/[()]/g, ''))) < 0) return base + ' ' + second;
+    return base || String(record && record.id || 'Chuyên luận Dược thư');
+}
+function makeDuocThuV11DosageSectionFromInline_(block, legacy){
+    const raw = String(block && block.text || '');
+    if (!/^\s*Dạng thuốc và hàm lượng\b/i.test(raw)) return null;
+    const rest = raw.replace(/^\s*Dạng thuốc và hàm lượng\s*/i, '').trim();
+    const cloned = Object.assign({}, block);
+    cloned.text = rest || raw;
+    return {
+        title: 'Dạng thuốc và hàm lượng',
+        id: block && block.id ? String(block.id) + '-section' : '',
+        legacy_id: legacy[normalizeDuocThuText_('Dạng thuốc và hàm lượng')] || '',
+        blocks: [cloned],
+        block_ids: block && block.id ? [block.id] : []
+    };
+}
 function buildDuocThuV11DisplaySections_(record){
     const blocks=Array.isArray(record.blocks)?record.blocks:[];
     const legacy=buildDuocThuV11LegacySectionMap_(record);
     const intro=[], sections=[];
-    let current=null, seenTitle=false;
-    blocks.forEach(function(block){
+    let current=null, seenTitle=false, skippedSecondName=false;
+    blocks.forEach(function(block, order){
         if(!block)return;
         const type=block.type||'paragraph';
         const level=Number(block.level||2);
         if(type==='heading' && level===1 && !seenTitle){
             seenTitle=true;
             return; /* tên thuốc đã có ở header modal, không lặp lại trong thân */
+        }
+        if(seenTitle && !skippedSecondName && order === 1 && isDuocThuV11ParentheticalNameHeading_(block)){
+            skippedSecondName = true;
+            return; /* tên phụ trong ngoặc hiển thị cạnh tên chuyên luận, không tạo toggle riêng */
+        }
+        const inlineDosage = (type !== 'heading') ? makeDuocThuV11DosageSectionFromInline_(block, legacy) : null;
+        if(inlineDosage && (!current || !/^(dang thuoc va ham luong)$/.test(normalizeDuocThuText_(current.title||'')))){
+            current = inlineDosage;
+            sections.push(current);
+            return;
         }
         if(type==='heading' && level<=2){
             current={
@@ -15361,7 +15397,7 @@ function buildDuocThuChatCitation_(key) {
     if (!passages.length) return '';
     let html = '<div class="duoc-thu-parent-excerpt" data-medplus-duoc-thu-citation="1">'
         + '<div class="duoc-thu-parent-excerpt-label">Trích từ <span class="duoc-thu-excerpt-parent-title">Dược thư Quốc gia Việt Nam</span> · '
-        + escapeDuocThuHtml_(record.title) + '</div>';
+        + escapeDuocThuHtml_(getDuocThuV11HeaderTitleForModal_(record)) + '</div>';
     passages.forEach(function(item) {
         const sec = item.section;
         const parent = item.parent || sec;
@@ -15489,7 +15525,7 @@ async function openDuocThuFromChat_(id, focusId, event) {
         + '<button class="close-btn" aria-label="Đóng">×</button>'
         + '<div class="medplus-duoc-thu-modal-head">'
         + '<button type="button" class="medplus-duoc-thu-source-logo" title="Mở nguồn PDF Dược thư tại trang chuyên luận" aria-label="Mở nguồn PDF Dược thư"><span class="book-icon">📚</span><span>DƯỢC THƯ</span><span>2023</span></button>'
-        + '<div class="medplus-duoc-thu-title-wrap"><h2>' + escapeDuocThuHtml_(record.title) + '</h2><p>' + escapeDuocThuHtml_(source) + '</p></div></div>'
+        + '<div class="medplus-duoc-thu-title-wrap"><h2>' + escapeDuocThuHtml_(getDuocThuV11HeaderTitleForModal_(record)) + '</h2><p>' + escapeDuocThuHtml_(source) + '</p></div></div>'
         + '<div class="medplus-duoc-thu-body">'
         + renderDuocThuV11IntroForModal_(record, grouped.intro)
         + grouped.sections.map(function(section){return renderDuocThuV11DisplaySectionForModal_(record, section, focusIds);}).join('')
@@ -15538,6 +15574,61 @@ function phraseInDuocThuText_(haystack, phrase) {
     const h = ' ' + normalizeDuocThuText_(haystack) + ' ';
     const p = normalizeDuocThuText_(phrase);
     return !!p && h.indexOf(' ' + p + ' ') >= 0;
+}
+
+/* v11.0.38 — HDSD active-composition normalization.
+   Read combined active ingredients written as A/B/C, A+B+C, A, B, C,
+   A - B - C, A-B-C, or vitamin shorthand such as B1/B6/B12.
+   This expands match sources only; it does not change the displayed HDSD text. */
+function expandHDSDActiveIngredientsForDuocThu_(value) {
+    const raw = String(value || '').trim();
+    const out = [];
+    const seen = new Set();
+    const add = function(text) {
+        text = String(text || '').replace(/\r/g, '\n').replace(/[ \t]+/g, ' ').replace(/\n{2,}/g, '\n').trim();
+        if (!text) return;
+        const key = normalizeDuocThuText_(text);
+        if (!key || seen.has(key)) return;
+        seen.add(key);
+        out.push(text);
+    };
+    add(raw);
+    if (!raw) return out;
+
+    const separatorExpanded = raw
+        .replace(/[＋﹢]/g, '+')
+        .replace(/\s*(?:\/|\+|,|;|&|\bva\b|\bvà\b|\band\b)\s*/gi, '\n')
+        .replace(/\s*[-–—]\s*/g, '\n');
+    add(separatorExpanded);
+    add(separatorExpanded.replace(/\n+/g, ' '));
+
+    const n = normalizeDuocThuText_(raw + '\n' + separatorExpanded)
+        .replace(/\bvit\s+/g, 'vitamin ')
+        .replace(/\bvitamin\s+b\s*(\d+)\b/g, 'vitamin b$1')
+        .replace(/\bb\s*(\d+)\b/g, 'b$1')
+        .replace(/\bvitamin\s+k\s*(\d+)\b/g, 'vitamin k$1')
+        .replace(/\bk\s*(\d+)\b/g, 'k$1');
+
+    const bNums = [];
+    n.replace(/\b(?:vitamin\s+)?b(\d{1,2})\b/g, function(_, num) {
+        if (bNums.indexOf(num) < 0) bNums.push(num);
+        return _;
+    });
+    if (bNums.length) {
+        add(bNums.map(function(num) { return 'Vitamin B' + num; }).join('\n'));
+        add(bNums.map(function(num) { return 'Vitamin B' + num; }).join(' '));
+    }
+    const kNums = [];
+    n.replace(/\b(?:vitamin\s+)?k(\d{1,2})\b/g, function(_, num) {
+        if (kNums.indexOf(num) < 0) kNums.push(num);
+        return _;
+    });
+    if (kNums.length) add(kNums.map(function(num) { return 'Vitamin K' + num; }).join('\n'));
+
+    // Common compact salt/INN variants in HDSD active fields.
+    const compact = normalizeDuocThuText_(raw).replace(/\s+/g, ' ');
+    if (/\bhcl\b/.test(compact)) add(compact.replace(/\bhcl\b/g, 'hydroclorid'));
+    return out;
 }
 function isDuocThuCombinationRecordForHDSD_(record) {
     const rawTitle = String(record && record.title || '');
@@ -15680,8 +15771,15 @@ function getHDSDMatchSourcesForDuocThu_(drug) {
     const active = [drug.active, drug.hoatChat, drug.hoat_chat, drug.ingredient, drug.ingredients, drug.composition, drug.thanhPhan, drug.thanh_phan]
         .filter(function(value) { return value != null && String(value).trim(); })
         .join('\n');
-    push('active', active, 3000000);
-    if (active && drug.strength) push('active_strength', active + '\n' + drug.strength, 2600000);
+    const activeVariants = expandHDSDActiveIngredientsForDuocThu_(active);
+    activeVariants.forEach(function(text, index) {
+        push(index === 0 ? 'active' : 'active_expanded', text, index === 0 ? 3000000 : 2990000);
+    });
+    if (active && drug.strength) {
+        expandHDSDActiveIngredientsForDuocThu_(active + '\n' + drug.strength).forEach(function(text, index) {
+            push(index === 0 ? 'active_strength' : 'active_strength_expanded', text, index === 0 ? 2600000 : 2590000);
+        });
+    }
     // Brand fallback is intentionally weaker and only helps generic-named products such as ADRENALIN or CEFTRIAXONE.
     push('brand_generic_fallback', getHDSDProductNameForDuocThu_(drug), active ? 650000 : 1800000);
     return rows;
