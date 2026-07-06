@@ -7181,6 +7181,12 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-content.sb-visible::-we
 }
 </style>
 
+
+<style id="medplus-duoc-thu-v11-table-note-style">
+#duoc-modal .medplus-duoc-thu-table-note{margin:6px 0 12px;color:var(--text,#1f2933);font-weight:700;line-height:1.55;border:0;background:transparent}
+#duoc-modal .medplus-duoc-thu-table-figure + .medplus-duoc-thu-table-note{margin-top:6px}
+body.dark #duoc-modal .medplus-duoc-thu-table-note,body.dark-mode #duoc-modal .medplus-duoc-thu-table-note{color:var(--text,#e5e7eb)}
+</style>
 </head>
 <body>
 
@@ -15285,6 +15291,7 @@ function renderDuocThuV11Block_(record, block){
     if(type === 'table') return renderDuocThuSourceTable_(record, {id:block.table_id||block.id, image_path:block.image_path||block.image, image:block.image||block.image_path, source_pdf_page:block.page, printed_page:block.printed_page, bbox:block.bbox});
     if(type === 'figure') { const src = duocThuAssetUrl_(block.image_path||block.image||''); return src?'<figure class="medplus-duoc-thu-table-figure"><figcaption><b>Hình gốc từ Dược thư</b></figcaption><img class="medplus-duoc-thu-table-image" loading="lazy" decoding="async" alt="Hình gốc từ Dược thư" src="'+escapeDuocThuHtml_(src)+'"></figure>':''; }
     if(type === 'list') { const items = Array.isArray(block.items)?block.items:String(block.text||'').split(/\n+/); return '<ul class="medplus-duoc-thu-list">'+items.filter(Boolean).map(function(x){return '<li>'+renderDuocThuEscapedText_(x)+'</li>';}).join('')+'</ul>'; }
+    if(type === 'table_note' || (type === 'subheading' && /^\s*[*†‡§#]+\s+/.test(String(block.text||'')))) return '<div class="medplus-duoc-thu-table-note"><b>'+renderDuocThuEscapedText_(String(block.text||''))+'</b></div>';
     if(type === 'subheading') return '<div class="medplus-duoc-thu-subsection"><b>'+renderDuocThuEscapedText_(String(block.text||''))+'</b></div>';
     if(type === 'note') return '<div class="medplus-duoc-thu-text medplus-duoc-thu-note">'+renderDuocThuText_(block.text||'')+'</div>';
     if(type === 'heading') return '';
@@ -15300,6 +15307,7 @@ function renderDuocThuNodeContent_(record, node) {
         if (typeof block === 'string' || block.block_id) return renderDuocThuV11Block_(record, block);
         if (block.type === 'table') return renderDuocThuSourceTable_(record, findDuocThuTable_(record, block.table_id) || block);
         if (block.type === 'figure') return renderDuocThuV11Block_(record, block);
+        if (block.type === 'table_note' || (block.type === 'subheading' && /^\s*[*†‡§#]+\s+/.test(String(block.text||'')))) return '<div class="medplus-duoc-thu-table-note"><b>'+renderDuocThuEscapedText_(String(block.text||''))+'</b></div>';
         if (block.type === 'subheading') return '<div class="medplus-duoc-thu-subsection"><b>'+renderDuocThuEscapedText_(String(block.text||''))+'</b></div>';
         if (block.type === 'text') return '<div class="medplus-duoc-thu-text">' + renderDuocThuText_(block.text || '') + '</div>';
         return renderDuocThuV11Block_(record, block);
