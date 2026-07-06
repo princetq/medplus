@@ -436,7 +436,9 @@ body.dark .source-substance{
 'use strict';
 const PAGE_DIR = './duoc-thu-data/pages/';
 const params = new URLSearchParams(location.search);
-let pdfPage = parseInt(params.get('page') || params.get('p') || '0', 10) || 0;
+let requestedPrintedPage = parseInt(params.get('page') || '0', 10) || 0;
+let requestedPdfPage = parseInt(params.get('pdf') || params.get('p') || '0', 10) || 0;
+let pdfPage = requestedPdfPage || requestedPrintedPage || 0;
 const initialRecordId = String(params.get('id') || '').trim();
 let activeRecordId = initialRecordId;
 let firstPdfPage = 113, lastPdfPage = 1722, firstPrintedPage = 119, lastPrintedPage = 1728, pageRecords = null;
@@ -522,7 +524,7 @@ function loadPage(n){
   img.onload=function(){naturalW=img.naturalWidth||1;naturalH=img.naturalHeight||1;img.style.width=naturalW+'px';img.style.height=naturalH+'px';loading.classList.add('hidden');fit();};
   img.onerror=function(){showEmpty('Không tìm thấy ảnh trang '+printedForPdf(pdfPage)+'. Hãy kiểm tra thư mục duoc-thu-data/pages/.');};
   img.src=pageSrc(pdfPage);
-  try{history.replaceState(null,'','?page='+encodeURIComponent(pdfPage)+(activeRecordId?'&id='+encodeURIComponent(activeRecordId):''));}catch(e){}
+  try{const printed=printedForPdf(pdfPage,recordForPage(pdfPage));history.replaceState(null,'','?page='+encodeURIComponent(printed)+'&pdf='+encodeURIComponent(pdfPage)+(activeRecordId?'&id='+encodeURIComponent(activeRecordId):''));}catch(e){}
 }
 function zoomAt(cx,cy,factor){
   const r=stage.getBoundingClientRect(); const px=cx-r.left, py=cy-r.top; const old=scale; const next=clamp(old*factor,0.1,12); if(Math.abs(next-old)<0.0001)return;
@@ -543,6 +545,26 @@ pageInput.addEventListener('keydown',function(e){if(e.key==='Enter')loadPage(pdf
 pageInput.addEventListener('blur',function(){const printed=String(printedForPdf(pdfPage, recordForPage(pdfPage))); if(pageInput.value.trim()!==printed) loadPage(pdfForPrinted(pageInput.value));});
 window.addEventListener('resize',function(){fit();});
 document.addEventListener('contextmenu',function(e){e.preventDefault();});
+
+function resolveInitialPdfPage(){
+  if(requestedPdfPage) return requestedPdfPage;
+  const requested = requestedPrintedPage;
+  if(!requested) return 0;
+  if(Array.isArray(pageRecords)&&activeRecordId){
+    const active = pageRecords.find(r=>String(r.id)===String(activeRecordId));
+    if(active){
+      const ps=num(active.printed_page_start), pe=num(active.printed_page_end||active.printed_page_start);
+      const fs=num(active.pdf_page_start), fe=num(active.pdf_page_end||active.pdf_page_start);
+      const inPrinted = ps&&requested>=ps&&requested<=pe;
+      const inPdf = fs&&requested>=fs&&requested<=fe;
+      if(inPrinted && !inPdf) return fs + (requested - ps);
+      if(inPdf && !inPrinted) return requested;
+      if(inPrinted && inPdf) return requested;
+    }
+  }
+  return requested;
+}
+
 Promise.all([
   fetch(PAGE_DIR+'pages.json').then(r=>r.ok?r.json():null).catch(()=>null),
   fetch('./duoc-thu-data/source-pages.json').then(r=>r.ok?r.json():null).catch(()=>null)
@@ -556,7 +578,7 @@ Promise.all([
     if(printedStarts.length) firstPrintedPage = Math.min.apply(null, printedStarts);
     if(printedEnds.length) lastPrintedPage = Math.max.apply(null, printedEnds);
   }
-  if(!pdfPage) pdfPage=firstPdfPage;
+  pdfPage = resolveInitialPdfPage() || firstPdfPage;
   loadPage(pdfPage);
 });
 })();
