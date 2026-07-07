@@ -7195,6 +7195,102 @@ body.dark .medplus-duoc-thu-table-figure .medplus-duoc-thu-table-note,body.dark-
 .chat-widget-container .duoc-thu-parent-excerpt .medplus-duoc-thu-table-figure .medplus-duoc-thu-table-note{color:#1f2933!important}
 body.dark-mode .chat-widget-container .duoc-thu-parent-excerpt .medplus-duoc-thu-table-figure .medplus-duoc-thu-table-note{color:#e5e7eb!important}
 </style>
+
+<style id="medplus-v11-047-chat-citation-zoom-style">
+/* v11.0.47 — Chatbot citation image zoom + table zoom scroll containment */
+.chat-widget-container .hdsd-chat-image-wrap img,
+.chat-widget-container .medplus-duoc-thu-table-image,
+.chat-widget-container .medplus-duoc-thu-table-figure img{
+  cursor:zoom-in!important;
+}
+.chat-widget-container .hdsd-parent-excerpt-line.hdsd-excerpt-media{
+  margin:10px 0 12px!important;
+  white-space:normal!important;
+}
+.chat-widget-container .hdsd-parent-excerpt-line.hdsd-excerpt-media .hdsd-chat-image-wrap{
+  margin:8px 0!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode{
+  padding:16px!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-box{
+  width:min(96vw,1180px)!important;
+  max-width:min(96vw,1180px)!important;
+  max-height:88vh!important;
+  overflow:visible!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content{
+  display:block!important;
+  width:100%!important;
+  max-width:calc(min(96vw,1180px) - 24px)!important;
+  max-height:calc(88vh - 24px)!important;
+  overflow:auto!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-x pan-y!important;
+  overscroll-behavior:contain!important;
+  scrollbar-gutter:stable both-edges!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap{
+  display:block!important;
+  width:max-content!important;
+  min-width:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  overflow:visible!important;
+  margin:0!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-scroll{
+  display:block!important;
+  width:max-content!important;
+  min-width:100%!important;
+  max-width:none!important;
+  overflow:visible!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table{
+  width:max-content!important;
+  min-width:100%!important;
+  max-width:none!important;
+  table-layout:auto!important;
+  border-collapse:collapse!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table th,
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table td{
+  min-width:120px!important;
+  max-width:380px!important;
+  white-space:pre-wrap!important;
+  overflow-wrap:break-word!important;
+  word-break:normal!important;
+  hyphens:auto!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-caption{
+  position:sticky!important;
+  left:0!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+}
+@media(max-width:767px){
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode{padding:10px!important;align-items:center!important;}
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-box{
+    width:94vw!important;
+    max-width:94vw!important;
+    max-height:84dvh!important;
+    padding:10px!important;
+  }
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content{
+    width:100%!important;
+    max-width:calc(94vw - 20px)!important;
+    max-height:calc(84dvh - 20px)!important;
+  }
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table th,
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table td{
+    min-width:128px!important;
+    max-width:340px!important;
+  }
+}
+</style>
+
 </head>
 <body>
 
@@ -10011,6 +10107,7 @@ body.dark-mode .chat-widget-container .duoc-thu-parent-excerpt .medplus-duoc-thu
             const layer = document.getElementById('medplus-chat-zoom-backdrop');
             if (!layer) return;
             layer.classList.remove('show');
+            layer.classList.remove('medplus-chat-table-zoom-mode', 'medplus-chat-image-zoom-mode');
             const content = layer.querySelector('.medplus-chat-zoom-content');
             if (content) content.innerHTML = '';
         }
@@ -10026,6 +10123,10 @@ body.dark-mode .chat-widget-container .duoc-thu-parent-excerpt .medplus-duoc-thu
             clone.querySelectorAll('.hdsd-chat-zoom-btn').forEach(function(b) { b.remove(); });
             content.innerHTML = '';
             content.appendChild(clone);
+            layer.classList.remove('medplus-chat-image-zoom-mode');
+            layer.classList.add('medplus-chat-table-zoom-mode');
+            content.scrollTop = 0;
+            content.scrollLeft = 0;
             layer.classList.add('show');
         }
 
@@ -10040,6 +10141,10 @@ body.dark-mode .chat-widget-container .duoc-thu-parent-excerpt .medplus-duoc-thu
             clone.alt = img.alt || 'Ảnh trích từ tờ HDSD';
             content.innerHTML = '';
             content.appendChild(clone);
+            layer.classList.remove('medplus-chat-table-zoom-mode');
+            layer.classList.add('medplus-chat-image-zoom-mode');
+            content.scrollTop = 0;
+            content.scrollLeft = 0;
             layer.classList.add('show');
         }
 
@@ -18620,7 +18725,16 @@ body.dark-mode #send-button svg,body.dark-mode .send-button svg{filter:drop-shad
       if(node.type==='table_row') continue;
       const text=clean(node&&node.text), focus=i===focusIndex;
       if(!text){
-        if(node && node.type==='image') lines.push('<div class="hdsd-parent-excerpt-line hdsd-excerpt-media-note">Nội dung chi tiết của phần này được trình bày bằng hình trong HDSD. Hãy bấm XEM HDSD để xem đầy đủ.</div>');
+        if(node && node.type==='image'){
+          let tokens='';
+          try {
+            const imgs=(typeof hdsdBlockImageItems_==='function'?hdsdBlockImageItems_(node.block):[]).map(function(img){
+              return {src:(img&&img.src)||'', caption:(typeof hdsdCleanImageCaptionForChat_==='function'?hdsdCleanImageCaptionForChat_((img&&img.caption)||''):((img&&img.caption)||''))};
+            });
+            tokens=typeof hdsdImagesToChatTokens_==='function'?hdsdImagesToChatTokens_(imgs):'';
+          } catch(e) { tokens=''; }
+          if(tokens) lines.push('<div class="hdsd-parent-excerpt-line hdsd-excerpt-media">'+tokens+'</div>');
+        }
         continue;
       }
       const footnote=isHDSDTableFootnoteText_(text);
@@ -18977,12 +19091,16 @@ body.dark-mode #send-button svg,body.dark-mode .send-button svg{filter:drop-shad
             }
           }
           document.addEventListener('click', function(e){
-            const img = e.target && e.target.closest ? e.target.closest('#hdsd-content img, #medplus-duoc-thu-modal .medplus-duoc-thu-table-image') : null;
+            const img = e.target && e.target.closest ? e.target.closest('#hdsd-content img, #medplus-duoc-thu-modal .medplus-duoc-thu-table-image, .chat-widget-container .hdsd-chat-zoomable-image, .chat-widget-container .medplus-duoc-thu-table-image, .chat-widget-container .medplus-duoc-thu-table-figure img') : null;
             if(!img || !img.src) return;
             openHDSDInteractiveImageZoom_(img.currentSrc || img.src, e);
           }, true);
           window.openHDSDInteractiveImageZoom_ = openHDSDInteractiveImageZoom_;
           window.closeHDSDInteractiveImageZoom_ = closeHDSDInteractiveImageZoom_;
+          window.openMedPlusChatImageInteractiveZoom_ = function(img, event){
+            if(!img || !img.src) return;
+            openHDSDInteractiveImageZoom_(img.currentSrc || img.src, event);
+          };
         })();
 
 </script>
