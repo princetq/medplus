@@ -10237,14 +10237,96 @@ body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus
         }
 
 
+
+        function setupMedPlusChatZoomHBar_(layer) {
+            if (!layer) return;
+            const box = layer.querySelector('.medplus-chat-zoom-box');
+            if (!box) return;
+            let bar = box.querySelector('.medplus-chat-zoom-hbar');
+            if (!bar) {
+                bar = document.createElement('div');
+                bar.className = 'medplus-chat-zoom-hbar';
+                bar.setAttribute('aria-hidden', 'true');
+                bar.innerHTML = '<div class="medplus-chat-zoom-hbar-thumb"></div>';
+                box.appendChild(bar);
+            }
+            if (bar.dataset.medplusReady === '1') return;
+            bar.dataset.medplusReady = '1';
+            const thumb = bar.querySelector('.medplus-chat-zoom-hbar-thumb');
+            let dragging = false;
+            function content() { return layer.querySelector('.medplus-chat-zoom-content'); }
+            function moveToClientX(clientX) {
+                const c = content();
+                if (!c || !thumb) return;
+                const maxScroll = Math.max(0, c.scrollWidth - c.clientWidth);
+                const rect = bar.getBoundingClientRect();
+                const track = Math.max(1, rect.width - (thumb.offsetWidth || 48) - 4);
+                let x = clientX - rect.left - ((thumb.offsetWidth || 48) / 2) - 2;
+                x = Math.max(0, Math.min(track, x));
+                c.scrollLeft = maxScroll ? (x / track) * maxScroll : 0;
+                refreshMedPlusChatZoomHBar_();
+            }
+            bar.addEventListener('pointerdown', function(e) {
+                if (!layer.classList.contains('medplus-chat-table-zoom-mode')) return;
+                e.preventDefault();
+                dragging = true;
+                try { bar.setPointerCapture(e.pointerId); } catch (_) {}
+                moveToClientX(e.clientX);
+            });
+            bar.addEventListener('pointermove', function(e) {
+                if (!dragging) return;
+                e.preventDefault();
+                moveToClientX(e.clientX);
+            });
+            function endDrag(e) {
+                dragging = false;
+                try { bar.releasePointerCapture(e.pointerId); } catch (_) {}
+            }
+            bar.addEventListener('pointerup', endDrag);
+            bar.addEventListener('pointercancel', endDrag);
+            window.addEventListener('resize', function(){ setTimeout(refreshMedPlusChatZoomHBar_, 40); }, { passive: true });
+        }
+        function bindMedPlusChatZoomScroll_(layer) {
+            if (!layer) return;
+            const c = layer.querySelector('.medplus-chat-zoom-content');
+            if (!c || c.dataset.medplusHbarBound === '1') return;
+            c.dataset.medplusHbarBound = '1';
+            c.addEventListener('scroll', refreshMedPlusChatZoomHBar_, { passive: true });
+        }
+        function refreshMedPlusChatZoomHBar_() {
+            const layer = document.getElementById('medplus-chat-zoom-backdrop');
+            if (!layer) return;
+            const bar = layer.querySelector('.medplus-chat-zoom-hbar');
+            const thumb = layer.querySelector('.medplus-chat-zoom-hbar-thumb');
+            const c = layer.querySelector('.medplus-chat-zoom-content');
+            if (!bar || !thumb || !c || !layer.classList.contains('medplus-chat-table-zoom-mode')) {
+                if (bar) bar.hidden = true;
+                return;
+            }
+            const maxScroll = Math.max(0, c.scrollWidth - c.clientWidth);
+            if (maxScroll <= 2) {
+                bar.hidden = true;
+                return;
+            }
+            bar.hidden = false;
+            const rect = bar.getBoundingClientRect();
+            const trackWidth = Math.max(1, rect.width - 4);
+            const thumbWidth = Math.max(48, Math.min(trackWidth, trackWidth * (c.clientWidth / Math.max(c.scrollWidth, 1))));
+            const maxLeft = Math.max(0, trackWidth - thumbWidth);
+            const left = maxScroll ? (c.scrollLeft / maxScroll) * maxLeft : 0;
+            thumb.style.width = thumbWidth + 'px';
+            thumb.style.transform = 'translateX(' + (left + 2) + 'px)';
+        }
+
         function ensureMedPlusChatZoomLayer_() {
             let layer = document.getElementById('medplus-chat-zoom-backdrop');
-            if (layer) return layer;
+            if (layer) { setupMedPlusChatZoomHBar_(layer); return layer; }
             layer = document.createElement('div');
             layer.id = 'medplus-chat-zoom-backdrop';
             layer.className = 'medplus-chat-zoom-backdrop';
-            layer.innerHTML = '<div class="medplus-chat-zoom-box" role="dialog" aria-modal="true" aria-label="Phóng to nội dung"><button type="button" class="medplus-chat-zoom-close" aria-label="Đóng">×</button><div class="medplus-chat-zoom-content"></div></div>';
+            layer.innerHTML = '<div class="medplus-chat-zoom-box" role="dialog" aria-modal="true" aria-label="Phóng to nội dung"><button type="button" class="medplus-chat-zoom-close" aria-label="Đóng">×</button><div class="medplus-chat-zoom-content"></div><div class="medplus-chat-zoom-hbar" aria-hidden="true"><div class="medplus-chat-zoom-hbar-thumb"></div></div></div>';
             document.body.appendChild(layer);
+            setupMedPlusChatZoomHBar_(layer);
             layer.addEventListener('click', function(e) {
                 if (e.target === layer || e.target.closest('.medplus-chat-zoom-close')) closeMedPlusChatZoom_();
             });
@@ -10279,6 +10361,9 @@ body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus
             content.scrollTop = 0;
             content.scrollLeft = 0;
             layer.classList.add('show');
+            setupMedPlusChatZoomHBar_(layer);
+            bindMedPlusChatZoomScroll_(layer);
+            requestAnimationFrame(function(){ refreshMedPlusChatZoomHBar_(); setTimeout(refreshMedPlusChatZoomHBar_, 120); });
         }
 
         function openMedPlusChatZoomFromImage_(img, event) {
@@ -13911,8 +13996,8 @@ body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus
                 catch (e) { return ''; }
             }
             // 2b. Bắt cú pháp markdown HDSD: [XEM HDSD](URL), [Tờ HDSD](URL), [Hướng dẫn sử dụng](URL)...
-            text = text.replace(/\[((?:XEM\s*)?(?:(?:TỜ|TO)\s*)?(?:HDSD|HƯỚNG DẪN SỬ DỤNG|HUONG DAN SU DUNG))\]\((https?:\/\/[^)]+)\)/gi, function(match, label, url) {
-                return buildHDSDChatButton_(url);
+            text = text.replace(/\[((?:XEM\s*)?(?:(?:TỜ|TO)\s*)?(?:HDSD|HƯỚNG DẪN SỬ DỤNG|HUONG DAN SU DUNG))\]\((https?:\/\/[^\s)]+)\)((?:&(?:hdsd-(?:focus|parent|version|parent-index|focus-index)=[^\s<)]+))*)\)?/gi, function(match, label, url, tail) {
+                return buildHDSDChatButton_(url + (tail || ''));
             });
             
             // 2c. Dựng nút XEM DƯỢC THƯ cho câu trả lời theo chuyên luận hoạt chất.
@@ -13924,6 +14009,8 @@ body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus
             text = text.replace(/((?:HDSD|TỜ HDSD|TO HDSD|HƯỚNG DẪN SỬ DỤNG|HUONG DAN SU DUNG)\s*(?:\([^)]*\))?\s*[:：-]\s*)(https?:\/\/[^\s<)"']+)/gi, function(match, prefix, url) {
                 return buildHDSDChatButton_(url);
             });
+            // v11.0.50 orphan hdsd param cleanup: remove query tails accidentally left outside the Markdown link.
+            text = text.replace(/(<button\b[^>]*>\s*📄\s*XEM HDSD\s*<\/button>)(?:\s*(?:&amp;|&)(?:hdsd-(?:focus|parent|version|parent-index|focus-index)=[^\s<)]*))+\)?/gi, '$1');
             
             // 3. Xử lý các link Markdown thông thường (nếu có)
             text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "<a href=\"$2\" target=\"_blank\">$1</a>");
@@ -19538,6 +19625,279 @@ body.dark-mode .medplus-chat-zoom-content .hdsd-chat-table th{
   window.fixMedPlusHDSDTables_ = prepareTables;
 })();
 </script>
+
+
+
+<style id="medplus-v11-0-50-chat-table-ui-final-fix">
+/* v11.0.50 — final chatbot citation table header + iPhone zoom scrollbar + close button containment */
+.chat-widget-container .hdsd-chat-table tr:first-child > th,
+.chat-widget-container .hdsd-chat-table tr:first-child > td,
+.hdsd-parent-excerpt .hdsd-chat-table tr:first-child > th,
+.hdsd-parent-excerpt .hdsd-chat-table tr:first-child > td,
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .hdsd-chat-table tr:first-child > th,
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .hdsd-chat-table tr:first-child > td{
+  background:#f1f3f4!important;
+  color:#263238!important;
+  font-weight:800!important;
+  text-align:center!important;
+  vertical-align:middle!important;
+}
+.chat-widget-container .hdsd-chat-table th,
+.hdsd-parent-excerpt .hdsd-chat-table th,
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .hdsd-chat-table th{
+  background:#f1f3f4!important;
+  color:#263238!important;
+  font-weight:800!important;
+  text-align:center!important;
+  vertical-align:middle!important;
+}
+body.dark-mode .chat-widget-container .hdsd-chat-table tr:first-child > th,
+body.dark-mode .chat-widget-container .hdsd-chat-table tr:first-child > td,
+body.dark-mode .hdsd-parent-excerpt .hdsd-chat-table tr:first-child > th,
+body.dark-mode .hdsd-parent-excerpt .hdsd-chat-table tr:first-child > td,
+body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .hdsd-chat-table tr:first-child > th,
+body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .hdsd-chat-table tr:first-child > td,
+body.dark-mode .chat-widget-container .hdsd-chat-table th,
+body.dark-mode .hdsd-parent-excerpt .hdsd-chat-table th,
+body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .hdsd-chat-table th{
+  background:#24384f!important;
+  color:#e7eef7!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-box{
+  padding:44px 12px 42px!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content{
+  max-height:calc(86vh - 92px)!important;
+  overflow:auto!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-x pan-y!important;
+  overscroll-behavior:contain!important;
+  scrollbar-gutter:stable both-edges!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-close{
+  top:8px!important;
+  right:8px!important;
+  left:auto!important;
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  min-height:34px!important;
+  border-radius:999px!important;
+  display:block!important;
+  padding:0!important;
+  margin:0!important;
+  line-height:0!important;
+  font-size:0!important;
+  text-indent:-9999px!important;
+  overflow:hidden!important;
+  transform:none!important;
+  box-sizing:border-box!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-close::before,
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-close::after{
+  content:''!important;
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  width:15px!important;
+  height:2px!important;
+  margin:0!important;
+  border-radius:999px!important;
+  background:currentColor!important;
+  transform-origin:center center!important;
+  display:block!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-close::before{transform:translate(-50%,-50%) rotate(45deg)!important;}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-close::after{transform:translate(-50%,-50%) rotate(-45deg)!important;}
+.medplus-chat-zoom-hbar{
+  display:none;
+  position:absolute;
+  left:14px;
+  right:14px;
+  bottom:12px;
+  height:18px;
+  z-index:8;
+  border-radius:999px;
+  background:rgba(46,125,50,.12);
+  border:1px solid rgba(46,125,50,.22);
+  box-sizing:border-box;
+  cursor:pointer;
+  touch-action:none;
+  user-select:none;
+  -webkit-user-select:none;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-hbar{display:block;}
+.medplus-chat-zoom-hbar[hidden]{display:none!important;}
+.medplus-chat-zoom-hbar-thumb{
+  position:absolute;
+  left:2px;
+  top:2px;
+  height:12px;
+  min-width:44px;
+  border-radius:999px;
+  background:rgba(46,125,50,.72);
+  box-shadow:0 1px 4px rgba(0,0,0,.18);
+  touch-action:none;
+}
+.medplus-chat-zoom-hbar:active .medplus-chat-zoom-hbar-thumb{background:#1b5e20;}
+body.dark-mode .medplus-chat-zoom-hbar{background:rgba(114,224,170,.12);border-color:rgba(114,224,170,.28);}
+body.dark-mode .medplus-chat-zoom-hbar-thumb{background:rgba(114,224,170,.72);}
+@media(max-width:767px){
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode{padding:8px!important;}
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-box{
+    width:96vw!important;
+    max-width:96vw!important;
+    max-height:86dvh!important;
+    padding:42px 10px 42px!important;
+  }
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content{
+    max-width:calc(96vw - 20px)!important;
+    max-height:calc(86dvh - 90px)!important;
+  }
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-close{
+    top:7px!important;
+    right:7px!important;
+    width:32px!important;
+    height:32px!important;
+    min-width:32px!important;
+    min-height:32px!important;
+  }
+  .medplus-chat-zoom-hbar{left:10px;right:10px;bottom:10px;height:20px;}
+  .medplus-chat-zoom-hbar-thumb{height:14px;min-width:48px;}
+}
+</style>
+
+
+<style id="medplus-v11-0-51-chat-table-zoom-native-momentum-scroll">
+/* v11.0.51 — bảng phóng to dùng cơ chế vuốt native giống bảng trích dẫn trên iPhone */
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode{
+  align-items:center!important;
+  justify-content:center!important;
+  overflow:hidden!important;
+  touch-action:none!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-box{
+  width:min(1100px,92vw)!important;
+  max-width:92vw!important;
+  max-height:86dvh!important;
+  padding:44px 12px 12px!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content{
+  width:100%!important;
+  max-width:calc(92vw - 24px)!important;
+  max-height:calc(86dvh - 56px)!important;
+  overflow:hidden!important;
+  -webkit-overflow-scrolling:auto!important;
+  touch-action:auto!important;
+  overscroll-behavior:contain!important;
+  border-radius:12px!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap{
+  display:flex!important;
+  flex-direction:column!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  max-height:calc(86dvh - 56px)!important;
+  overflow:hidden!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-scroll{
+  display:block!important;
+  flex:1 1 auto!important;
+  min-height:0!important;
+  width:100%!important;
+  max-width:100%!important;
+  max-height:calc(86dvh - 112px)!important;
+  overflow:auto!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:auto!important;
+  overscroll-behavior:contain!important;
+  scrollbar-gutter:stable both-edges!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table{
+  table-layout:fixed!important;
+  border-collapse:collapse!important;
+  max-width:none!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table th,
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table td{
+  white-space:pre-wrap!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+  line-break:auto!important;
+  hyphens:auto!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-caption{
+  flex:0 0 auto!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-hbar{
+  display:none!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-close{
+  top:8px!important;
+  right:10px!important;
+  left:auto!important;
+  transform:none!important;
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  min-height:34px!important;
+  border-radius:999px!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-close::before,
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-close::after{
+  content:''!important;
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  width:15px!important;
+  height:2px!important;
+  margin:0!important;
+  background:currentColor!important;
+  border-radius:999px!important;
+  transform-origin:center center!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-close::before{transform:translate(-50%,-50%) rotate(45deg)!important;}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-close::after{transform:translate(-50%,-50%) rotate(-45deg)!important;}
+@media(max-width:767px){
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode{padding:8px!important;}
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-box{
+    width:96vw!important;
+    max-width:96vw!important;
+    max-height:88dvh!important;
+    padding:42px 8px 10px!important;
+  }
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content{
+    max-width:calc(96vw - 16px)!important;
+    max-height:calc(88dvh - 52px)!important;
+  }
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap{
+    max-height:calc(88dvh - 52px)!important;
+  }
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-scroll{
+    max-height:calc(88dvh - 102px)!important;
+    overflow:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    touch-action:auto!important;
+  }
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-close{
+    top:7px!important;
+    right:9px!important;
+    width:32px!important;
+    height:32px!important;
+    min-width:32px!important;
+    min-height:32px!important;
+  }
+}
+</style>
 
 </body>
 </html>
