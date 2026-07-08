@@ -7188,9 +7188,10 @@ body.dark-mode #medplus-duoc-thu-modal .medplus-duoc-thu-content.sb-visible::-we
 body.dark #duoc-modal .medplus-duoc-thu-table-note,body.dark-mode #duoc-modal .medplus-duoc-thu-table-note{color:var(--text,#e5e7eb)}
 </style>
 
-<style id="medplus-v11-0-53-chat-citation-table-clean-style">
-/* v11.0.53 — Clean consolidated chatbot citation/zoom table CSS.
-   Fixes iPhone table zoom scroll by letting the real table scroll container handle native pan-x/pan-y. */
+<style id="medplus-v11-0-54-chat-citation-table-clean-style">
+/* v11.0.54 — Clean consolidated chatbot citation/zoom table CSS.
+   Root fix: table zoom uses the same native scroll container pattern as inline citation tables,
+   and global scroll-lock whitelists this container for iPhone/PC wheel/touch scrolling. */
 .chat-widget-container .hdsd-chat-image-wrap img,
 .chat-widget-container .medplus-duoc-thu-table-image,
 .chat-widget-container .medplus-duoc-thu-table-figure img{
@@ -7210,7 +7211,7 @@ body.dark #duoc-modal .medplus-duoc-thu-table-note,body.dark-mode #duoc-modal .m
   overflow-x:auto!important;
   overflow-y:visible!important;
   -webkit-overflow-scrolling:touch!important;
-  touch-action:auto!important;
+  touch-action:pan-x pan-y!important;
   scrollbar-gutter:stable both-edges;
 }
 .chat-widget-container .hdsd-chat-table tr:first-child > th,
@@ -7261,7 +7262,7 @@ body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .hdsd-ch
   width:100%!important;
   max-width:calc(92vw - 24px)!important;
   max-height:calc(86dvh - 56px)!important;
-  overflow:visible!important;
+  overflow:hidden!important;
   -webkit-overflow-scrolling:auto!important;
   touch-action:auto!important;
   overscroll-behavior:contain!important;
@@ -7281,8 +7282,8 @@ body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .hdsd-ch
 }
 .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-caption{
   flex:0 0 auto!important;
-  position:sticky!important;
-  left:0!important;
+  position:relative!important;
+  left:auto!important;
   width:100%!important;
   box-sizing:border-box!important;
 }
@@ -7293,14 +7294,32 @@ body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .hdsd-ch
   width:100%!important;
   max-width:100%!important;
   max-height:calc(86dvh - 112px)!important;
-  overflow-x:auto!important;
-  overflow-y:auto!important;
+  overflow:auto!important;
+  overflow-x:scroll!important;
+  overflow-y:scroll!important;
   -webkit-overflow-scrolling:touch!important;
   touch-action:pan-x pan-y!important;
   overscroll-behavior:contain!important;
   scrollbar-gutter:stable both-edges!important;
+  scrollbar-width:auto!important;
+  -ms-overflow-style:auto!important;
   position:relative!important;
   transform:translateZ(0);
+  background:#fff!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-scroll::-webkit-scrollbar{
+  width:12px!important;
+  height:12px!important;
+  display:block!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-scroll::-webkit-scrollbar-thumb{
+  background:rgba(46,125,50,.42)!important;
+  border-radius:999px!important;
+  border:3px solid rgba(255,255,255,.92)!important;
+}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-scroll::-webkit-scrollbar-track{
+  background:rgba(46,125,50,.08)!important;
+  border-radius:999px!important;
 }
 .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table{
   table-layout:fixed!important;
@@ -7308,12 +7327,14 @@ body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .hdsd-ch
   min-width:100%!important;
   max-width:none!important;
   border-collapse:collapse!important;
+  background:#fff!important;
 }
-.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-5 .hdsd-chat-table{min-width:620px!important;}
-.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-6 .hdsd-chat-table{min-width:720px!important;}
-.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-7 .hdsd-chat-table{min-width:820px!important;}
-.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-8 .hdsd-chat-table{min-width:920px!important;}
-.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-many .hdsd-chat-table{min-width:1040px!important;}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-4 .hdsd-chat-table{min-width:540px!important;}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-5 .hdsd-chat-table{min-width:660px!important;}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-6 .hdsd-chat-table{min-width:780px!important;}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-7 .hdsd-chat-table{min-width:900px!important;}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-8 .hdsd-chat-table{min-width:1020px!important;}
+.medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-many .hdsd-chat-table{min-width:1140px!important;}
 .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table th,
 .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table td{
   white-space:pre-wrap!important;
@@ -7361,6 +7382,17 @@ body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .hdsd-ch
 }
 .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-close::before{transform:translate(-50%,-50%) rotate(45deg)!important;}
 .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-close::after{transform:translate(-50%,-50%) rotate(-45deg)!important;}
+body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-scroll,
+body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table{
+  background:#0b1d38!important;
+}
+body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-scroll::-webkit-scrollbar-thumb{
+  background:rgba(80,220,180,.45)!important;
+  border-color:#0b1d38!important;
+}
+body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-scroll::-webkit-scrollbar-track{
+  background:rgba(80,220,180,.10)!important;
+}
 @media(max-width:767px){
   .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode{padding:8px!important;touch-action:auto!important;}
   .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-box{
@@ -7373,7 +7405,7 @@ body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .hdsd-ch
   .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content{
     max-width:calc(96vw - 16px)!important;
     max-height:calc(88dvh - 52px)!important;
-    overflow:visible!important;
+    overflow:hidden!important;
     touch-action:auto!important;
   }
   .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap{
@@ -7381,17 +7413,20 @@ body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .hdsd-ch
   }
   .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-scroll{
     max-height:calc(88dvh - 102px)!important;
-    overflow-x:auto!important;
-    overflow-y:auto!important;
+    overflow:auto!important;
+    overflow-x:scroll!important;
+    overflow-y:scroll!important;
     -webkit-overflow-scrolling:touch!important;
     touch-action:pan-x pan-y!important;
+    padding-bottom:10px!important;
   }
-  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-4 .hdsd-chat-table{min-width:520px!important;}
-  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-5 .hdsd-chat-table{min-width:620px!important;}
-  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-6 .hdsd-chat-table{min-width:720px!important;}
-  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-7 .hdsd-chat-table{min-width:820px!important;}
-  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-8 .hdsd-chat-table{min-width:920px!important;}
-  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-many .hdsd-chat-table{min-width:1040px!important;}
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-3 .hdsd-chat-table{min-width:430px!important;}
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-4 .hdsd-chat-table{min-width:540px!important;}
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-5 .hdsd-chat-table{min-width:660px!important;}
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-6 .hdsd-chat-table{min-width:780px!important;}
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-7 .hdsd-chat-table{min-width:900px!important;}
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-8 .hdsd-chat-table{min-width:1020px!important;}
+  .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-content .hdsd-chat-table-wrap.hdsd-chat-cols-many .hdsd-chat-table{min-width:1140px!important;}
   .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .medplus-chat-zoom-close{
     top:7px!important;
     right:9px!important;
@@ -7409,6 +7444,7 @@ body.dark-mode .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .hdsd-ch
     touch-action:auto!important;
   }
   .medplus-chat-zoom-backdrop.medplus-chat-table-zoom-mode .hdsd-chat-table-scroll{
+    overflow:auto!important;
     overflow-x:scroll!important;
     overflow-y:scroll!important;
     -webkit-overflow-scrolling:touch!important;
@@ -12333,30 +12369,47 @@ body.dark-mode .chat-widget-container .duoc-thu-parent-excerpt .medplus-duoc-thu
         let _scrollY = 0;
         let _scrollLockKeys = new Set();
         let _touchStartY = 0;
+        let _touchStartX = 0;
         let _touchBlocker = null;
         let _touchStartHandler = null;
 
-        function _canScrollEl(el, dy) {
+        function _canScrollEl(el, dy, dx) {
             var s = window.getComputedStyle(el);
-            if (!/(auto|scroll)/.test(s.overflowY)) return false;
-            if (el.scrollHeight <= el.clientHeight + 1) return false;
-            if (dy < 0) return el.scrollTop > 0;
-            if (dy > 0) return el.scrollTop < (el.scrollHeight - el.clientHeight - 1);
-            return true;
+            var absX = Math.abs(dx || 0);
+            var absY = Math.abs(dy || 0);
+            var canX = /(auto|scroll)/.test(s.overflowX) && el.scrollWidth > el.clientWidth + 1;
+            var canY = /(auto|scroll)/.test(s.overflowY) && el.scrollHeight > el.clientHeight + 1;
+            if (absX > absY && canX) {
+                if ((dx || 0) < 0) return el.scrollLeft > 0;
+                if ((dx || 0) > 0) return el.scrollLeft < (el.scrollWidth - el.clientWidth - 1);
+                return true;
+            }
+            if (canY) {
+                if ((dy || 0) < 0) return el.scrollTop > 0;
+                if ((dy || 0) > 0) return el.scrollTop < (el.scrollHeight - el.clientHeight - 1);
+                return true;
+            }
+            if (canX) return true;
+            return false;
         }
 
-        function _findScrollable(target, dy) {
+        function _findScrollable(target, dy, dx) {
             var el = target;
             while (el && el !== document.body) {
                 if (el.classList && (
                     el.classList.contains('modal-content') ||
                     el.classList.contains('iv-iframe-container') ||
+                    el.classList.contains('medplus-chat-zoom-content') ||
+                    el.classList.contains('hdsd-chat-table-scroll') ||
+                    el.classList.contains('hdsd-chat-table-wrap') ||
+                    el.classList.contains('hdsd-table-scroll') ||
+                    el.classList.contains('medplus-hdsd-table-scroll') ||
                     el.id === 'hdsd-content' ||
                     el.id === 'hdsd-share-box' ||
                     el.id === 'notif-list-wrap' ||
                     el.id === 'notif-detail-box' ||
                     el.classList.contains('chat-messages')
-                ) && _canScrollEl(el, dy)) return el;
+                ) && _canScrollEl(el, dy, dx)) return el;
                 el = el.parentElement;
             }
             return null;
@@ -12378,11 +12431,16 @@ body.dark-mode .chat-widget-container .duoc-thu-parent-excerpt .medplus-duoc-thu
             document.documentElement.style.overflow = 'hidden';
 
             _touchStartHandler = function(e) {
-                if (e.touches && e.touches[0]) _touchStartY = e.touches[0].clientY;
+                if (e.touches && e.touches[0]) {
+                    _touchStartY = e.touches[0].clientY;
+                    _touchStartX = e.touches[0].clientX;
+                }
             };
             _touchBlocker = function(e) {
-                var dy = _touchStartY - (e.touches && e.touches[0] ? e.touches[0].clientY : _touchStartY);
-                if (_findScrollable(e.target, dy)) return;
+                var t = e.touches && e.touches[0] ? e.touches[0] : null;
+                var dy = _touchStartY - (t ? t.clientY : _touchStartY);
+                var dx = _touchStartX - (t ? t.clientX : _touchStartX);
+                if (_findScrollable(e.target, dy, dx)) return;
                 if (e.cancelable) e.preventDefault();
             };
 
@@ -12397,12 +12455,17 @@ body.dark-mode .chat-widget-container .duoc-thu-parent-excerpt .medplus-duoc-thu
                 if (el.classList && (
                     el.classList.contains('modal-content') ||
                     el.classList.contains('iv-iframe-container') ||
+                    el.classList.contains('medplus-chat-zoom-content') ||
+                    el.classList.contains('hdsd-chat-table-scroll') ||
+                    el.classList.contains('hdsd-chat-table-wrap') ||
+                    el.classList.contains('hdsd-table-scroll') ||
+                    el.classList.contains('medplus-hdsd-table-scroll') ||
                     el.id === 'hdsd-content' ||
                     el.id === 'hdsd-share-box' ||
                     el.id === 'notif-list-wrap' ||
                     el.id === 'notif-detail-box' ||
                     el.classList.contains('chat-messages')
-                ) && _canScrollEl(el, e.deltaY)) return;
+                ) && _canScrollEl(el, e.deltaY, e.deltaX)) return;
                 el = el.parentElement;
             }
             e.preventDefault();
