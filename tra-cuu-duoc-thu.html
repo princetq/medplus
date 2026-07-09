@@ -3045,17 +3045,18 @@ function comboPartsForRecord(rec){
 function partMatches(text,part){return expandAliasVariants(part).some(function(a){return containsAlias(text,a)});}
 function isDrugRelatedToRecord(drug,rec){
   if(!drug||!rec)return false;
-  const active=norm(drug.active||''), brand=norm(drug.brand||''), form=norm(drug.form||''), usage=norm(drug.usage||'');
+  const active=norm(drug.active||''), form=norm(drug.form||''), usage=norm(drug.usage||'');
   const recId=String(rec.id||'');
+  // v11.0.56: chuyên luận Dược thư được nối theo hoạt chất/thành phần, không theo tên biệt dược.
+  // Tên biệt dược như "Velfovin Oral" không được tạo match vì chữ "oral" chỉ là mô tả/route.
   const activeText=[active,form,usage].join(' ');
+  if(!activeText.trim())return false;
   if(!drugScopeMatchesRecord(drug,rec))return false;
   if(recId==='epinephrin' && /\b(nor\s*adrenalin|nor\s*adrenaline|noradrenalin|noradrenaline|norepinephrin|norepinephrine)\b/.test(activeText))return false;
   const parts=comboPartsForRecord(rec);
   if(parts.length){return parts.every(function(p){return partMatches(activeText,p)});}
   const aliases=getAliasCandidatesForRecord(rec);
-  if(aliases.some(function(a){return containsAlias(activeText,a)}))return true;
-  // Brand fallback only for generic-named products: exact or prefix before dose/company suffix.
-  return aliases.some(function(a){return a.length>=4 && (brand===a || brand.startsWith(a+' ') || brand.startsWith(a+' inj') || brand.startsWith(a+' injection'))});
+  return aliases.some(function(a){return containsAlias(activeText,a)});
 }
 
 function loadMedplusDrugs(){
