@@ -16019,7 +16019,8 @@ const DUOC_THU_UNSAFE_STANDALONE_ALIASES_ = new Set([
     'tartrate','besylat','besylate','fumarat','fumarate','maleat','maleate','citrat','citrate','nitrat','nitrate',
     'mononitrat','mononitrate','succinat','succinate','lactat','lactate','bromid','bromide','iodid','iodide',
     'oxyd','oxide','oxid','hydroxyd','hydroxide','hydrat','hydrate','dinatri','disodium','uong','dung','trong','toan','than','nhan','khoa',
-    'ho','hap','san','vitamin','thuoc','acid','axit','muoi','salt','base','dang','duoi','as','equivalent'
+    'ho','hap','san','vitamin','thuoc','acid','axit','muoi','salt','base','dang','duoi','as','equivalent',
+    'oral','topical','ophthalmic','intrauterine','respiratory','obstetric','systemic','per','orale','route','delivery','system','inhalation','inhaled','eye','eyes','drop','drops'
 ]);
 function isSafeDuocThuAliasForHDSD_(value) {
     const alias = normalizeDuocThuText_(value);
@@ -16121,7 +16122,16 @@ function getDuocThuAliasMatchesForActive_(record, activeText) {
 }
 function getDuocThuDisplayTitleForHDSD_(record) {
     const meta = record && record.hdsd_match;
-    return String((meta && meta.display_title) || (record && record.title) || (record && record.id) || 'Chuyên luận Dược thư');
+    const title = String((record && record.title) || (record && record.id) || 'Chuyên luận Dược thư');
+    let display = String((meta && meta.display_title) || title);
+    /* v11.0.55: avoid duplicated route labels such as "Tretinoin (Uống) (uống)". */
+    if (meta && meta.scope_label && display !== title) {
+        const titleNorm = normalizeDuocThuText_(title);
+        const labelNorm = normalizeDuocThuText_(meta.scope_label);
+        const displayNorm = normalizeDuocThuText_(display);
+        if (labelNorm && titleNorm.indexOf(labelNorm) >= 0 && displayNorm.indexOf(titleNorm) === 0) display = title;
+    }
+    return display;
 }
 
 /* MEDPLUS_DUOC_THU_PRODUCT_ROUTE_OVERRIDE_V10_4_3_CLEAN
@@ -16242,8 +16252,8 @@ function getHDSDMatchSourcesForDuocThu_(drug) {
             push(index === 0 ? 'active_strength' : 'active_strength_expanded', text, index === 0 ? 2600000 : 2590000);
         });
     }
-    // Brand fallback is intentionally weaker and only helps generic-named products such as ADRENALIN or CEFTRIAXONE.
-    push('brand_generic_fallback', getHDSDProductNameForDuocThu_(drug), active ? 650000 : 1800000);
+    // v11.0.56: Dược thư phải được nối theo hoạt chất/thành phần, không theo tên biệt dược.
+    // Không dùng brand fallback để tránh tên thuốc chứa route/descriptor như "oral", "topical" kéo nhầm chuyên luận.
     return rows;
 }
 function scoreDuocThuRecordForHDSD_(record, activeText) {
@@ -16303,7 +16313,7 @@ async function findDuocThuRecordsForHDSD_(drug) {
         seenRows.add(key);
         bestById.push(row);
     });
-    const exactCombos = bestById.filter(function(row) { return row.isCombo && row.source && row.source.kind !== 'brand_generic_fallback'; });
+    const exactCombos = bestById.filter(function(row) { return row.isCombo && row.source; });
     if (exactCombos.length) return [exactCombos[0].record];
 
     const selected = [];
