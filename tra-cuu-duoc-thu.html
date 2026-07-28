@@ -756,6 +756,78 @@ body.dark-mode .duoc-open:hover {
 }
 .duoc-footer-badge svg { width: 14px; height: 14px; color: var(--color-accent); }
 
+
+/* ═══════════════════════════════
+   BACK TO TOP — đồng bộ trang tra cứu thuốc MedPlus
+═══════════════════════════════ */
+.duoc-back-top {
+  position: fixed;
+  left: 25px;
+  bottom: 25px;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2e7d32, #1b5e20);
+  color: #fff;
+  border: 2px solid rgba(255,255,255,.40);
+  box-shadow: 0 4px 15px rgba(0,0,0,.20);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: opacity .3s ease, transform .3s ease, visibility .3s ease, box-shadow .3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.duoc-back-top.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.duoc-back-top:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,.30);
+}
+.duoc-back-top:focus-visible {
+  outline: 3px solid rgba(67,160,71,.35);
+  outline-offset: 3px;
+}
+.duoc-back-top svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+body.dark-mode .duoc-back-top {
+  background: linear-gradient(135deg, #0d4a32, #062a1c);
+  border-color: rgba(80,220,180,.40);
+  color: #4df5c0;
+  box-shadow: 0 4px 18px rgba(0,0,0,.40), 0 0 12px rgba(80,220,180,.20);
+}
+body.dark-mode .duoc-back-top:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,.50), 0 0 22px rgba(80,220,180,.40);
+}
+body.duoc-scroll-locked .duoc-back-top {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+@media (max-width: 600px) {
+  .duoc-back-top {
+    left: 8px;
+    bottom: calc(8px + env(safe-area-inset-bottom));
+    width: 38px;
+    height: 38px;
+  }
+  .duoc-back-top svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
 /* ═══════════════════════════════
    MODAL
 ═══════════════════════════════ */
@@ -2407,17 +2479,24 @@ body.dark-mode #hdsd-content .hdsd-table-scroll-force td{
 
 
 <style id="duoc-thu-half-life-display-style">
-/* v11.0.42 — display-only half-life rendering: JSON stays T₁/₂, UI shows T<sub>1/2</sub>. */
+/* v11.0.60 — display-only half-life rendering.
+   Use one inline-block wrapper for the whole 1/2 group so the slash moves down
+   together with both digits on Safari/iPhone and desktop browsers. JSON stays unchanged. */
 #duoc-modal .duoc-thu-half-life-frac,
 .duoc-text .duoc-thu-half-life-frac,
 .duoc-v11-list .duoc-thu-half-life-frac{
+  display:inline-block!important;
   font-size:.74em!important;
-  line-height:0!important;
+  line-height:1!important;
   vertical-align:baseline!important;
-  position:relative!important;
-  bottom:-.28em!important;
+  position:static!important;
+  bottom:auto!important;
+  transform:translateY(.28em)!important;
+  transform-origin:center!important;
+  white-space:nowrap!important;
   letter-spacing:normal!important;
   font-kerning:normal!important;
+  font-family:inherit!important;
 }
 </style>
 
@@ -2592,6 +2671,13 @@ body.dark-mode #duoc-modal .duoc-table-figure .duoc-table-note{color:var(--color
     </div>
   </footer>
 </div>
+
+
+<button class="duoc-back-top" id="duoc-back-to-top" type="button" title="Lên đầu trang" aria-label="Lên đầu trang">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <polyline points="18 15 12 9 6 15"></polyline>
+  </svg>
+</button>
 
 <!-- ═══════ MODAL ═══════ -->
 <div class="duoc-modal" id="duoc-modal" role="dialog" aria-modal="true" aria-label="Chuyên luận Dược thư">
@@ -2801,13 +2887,30 @@ function unlockDuocPageScroll(){
   const now=currentDuocScrollY();
   if(Math.abs(now-y)>3){window.scrollTo({top:y,left:0,behavior:'auto'});}
 }
-function syncDuocPageScrollLock(){if(isAnyDuocModalOpen())lockDuocPageScroll();else unlockDuocPageScroll()}
+const duocBackToTopBtn=document.getElementById('duoc-back-to-top');
+function updateDuocBackToTop(){
+  if(!duocBackToTopBtn)return;
+  const shouldShow=currentDuocScrollY()>300&&!isAnyDuocModalOpen();
+  duocBackToTopBtn.classList.toggle('visible',shouldShow);
+}
+function scrollDuocToTop(){
+  const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream;
+  window.scrollTo({top:0,left:0,behavior:isIOS?'auto':'smooth'});
+}
+function syncDuocPageScrollLock(){
+  if(isAnyDuocModalOpen())lockDuocPageScroll();else unlockDuocPageScroll();
+  updateDuocBackToTop();
+}
+if(duocBackToTopBtn)duocBackToTopBtn.addEventListener('click',scrollDuocToTop);
+window.addEventListener('scroll',updateDuocBackToTop,{passive:true});
+window.addEventListener('pageshow',updateDuocBackToTop);
+document.addEventListener('DOMContentLoaded',updateDuocBackToTop);
 function asciiDigits(v){const m={'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};return String(v||'').replace(/[₀₁₂₃₄₅₆₇₈₉⁰¹²³⁴⁵⁶⁷⁸⁹]/g,function(ch){return m[ch]||ch}).replace(/µ/g,'mc').replace(/μ/g,'mc')}
 function norm(v){return asciiDigits(String(v||'')).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase().replace(/&/g,' va ').replace(/[^a-z0-9\s]/g,' ').replace(/\bva\b/g,' va ').replace(/\s+/g,' ').trim()}
 function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
 function renderDuocHalfLifeHtml(html){
   return String(html==null?'':html).replace(/(^|[^A-Za-z0-9À-ỹ₀₁₂₃₄₅₆₇₈₉])([Tt])(?:₁|1)\s*[\/⁄]\s*(?:₂|2)(?=$|[^A-Za-z0-9À-ỹ₀₁₂₃₄₅₆₇₈₉])/g,function(_,prefix,t){
-    return prefix+t+'<sub class="duoc-thu-half-life-frac">1/2</sub>';
+    return prefix+t+'<span class="duoc-thu-half-life-frac" role="presentation">1/2</span>';
   });
 }
 function escDuocText(v){return renderDuocHalfLifeHtml(esc(v))}
