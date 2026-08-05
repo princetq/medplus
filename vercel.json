@@ -1,11 +1,38 @@
 {
   "version": 2,
+  "cleanUrls": true,
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
         { "key": "Access-Control-Allow-Origin", "value": "*" }
       ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*\\.json",
+      "has": [
+        {
+          "type": "header",
+          "key": "referer",
+          "value": "^(?!https?://([^/]+\\.)?ngocanh\\.io\\.vn)"
+        }
+      ],
+      "destination": "/404",
+      "permanent": false
+    },
+    {
+      "source": "/:path*\\.webp",
+      "has": [
+        {
+          "type": "header",
+          "key": "referer",
+          "value": "^(?!https?://([^/]+\\.)?ngocanh\\.io\\.vn)"
+        }
+      ],
+      "destination": "/404",
+      "permanent": false
     }
   ]
 }
